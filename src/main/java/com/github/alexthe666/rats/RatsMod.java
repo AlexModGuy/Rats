@@ -68,7 +68,7 @@ public class RatsMod {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters ? biome.getSpawnableList(EnumCreatureType.MONSTER) : biome.getSpawnableList(EnumCreatureType.CREATURE);
-                    spawnList.add(new Biome.SpawnListEntry(EntityRat.class, 80, 1, 3));
+                    spawnList.add(new Biome.SpawnListEntry(EntityRat.class, RatsMod.CONFIG_OPTIONS.ratSpawnRate, 1, 3));
                 }
             }
         }
