@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DRD",
+    "R R",
+    "DRD"
+  ],
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_basic"
+  }
+}

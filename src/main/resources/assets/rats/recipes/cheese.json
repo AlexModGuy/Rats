@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:block_of_cheese",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "rats:cheese",
+    "data": 0,
+    "count": 4
+  }
+}

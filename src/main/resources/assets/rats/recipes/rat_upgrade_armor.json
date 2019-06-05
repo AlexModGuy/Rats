@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ISI",
+    "IUI",
+    "IBI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    },
+    "S": {
+      "item": "minecraft:shield",
+      "data": 0
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_armor"
+  }
+}

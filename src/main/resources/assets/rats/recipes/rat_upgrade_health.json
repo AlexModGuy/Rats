@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BHB",
+    "HUH",
+    "BHB"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:speckled_melon",
+      "data": 0
+    },
+    "B": {
+      "item": "minecraft:bread",
+      "data": 0
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_health"
+  }
+}

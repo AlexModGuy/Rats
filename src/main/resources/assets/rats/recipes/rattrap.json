@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ID ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "slabWood"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "D": {
+      "item": "minecraft:iron_trapdoor",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rattrap"
+  }
+}

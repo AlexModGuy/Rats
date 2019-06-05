@@ -1,0 +1,34 @@
+{
+  "multipart": [
+    {   "when": { "up": "false" },
+      "apply": { "model": "rats:rat_cage_top", "uvlock": false }
+    },
+    {   "when": { "down": "false" },
+      "apply": { "model": "rats:rat_cage_bottom", "uvlock": false }
+    },
+    {   "when": { "east": "false" },
+      "apply": { "model": "rats:rat_cage_bars", "y" : 90, "uvlock": false }
+    },
+    {   "when": { "west": "false" },
+      "apply": { "model": "rats:rat_cage_bars", "y" : 270, "uvlock": false }
+    },
+    {   "when": { "north": "false" },
+      "apply": { "model": "rats:rat_cage_bars", "y" : 0, "uvlock": false }
+    },
+    {   "when": { "south": "false" },
+      "apply": { "model": "rats:rat_cage_bars", "y" : 180, "uvlock": false }
+    },
+    {   "when": { "down": "false", "east": "false" },
+      "apply": { "model": "rats:rat_cage_bottom_right", "y" : 0, "uvlock": false }
+    },
+    {   "when": { "down": "false", "west": "false" },
+      "apply": { "model": "rats:rat_cage_bottom_left", "y" : 0, "uvlock": false }
+    },
+    {   "when": { "down": "false", "north": "false" },
+      "apply": { "model": "rats:rat_cage_bottom_left", "y" : 90, "uvlock": false }
+    },
+    {   "when": { "down": "false", "south": "false" },
+      "apply": { "model": "rats:rat_cage_bottom_right", "y" : 90, "uvlock": false }
+    }
+  ]
+}

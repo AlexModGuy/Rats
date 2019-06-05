@@ -1,0 +1,37 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DWD",
+    "HSA",
+    "DBD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockDiamond"
+    },
+    "W": {
+      "item": "minecraft:diamond_sword",
+      "data": 0
+    },
+    "H": {
+      "item": "rats:rat_upgrade_health",
+      "data": 0
+    },
+    "S": {
+      "item": "rats:rat_upgrade_strength",
+      "data": 0
+    },
+    "A": {
+      "item": "rats:rat_upgrade_armor",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_warrior"
+  }
+}

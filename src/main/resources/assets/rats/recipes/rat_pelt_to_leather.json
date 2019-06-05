@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:rat_pelt",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "minecraft:leather"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "rat_dig": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_dig_0",
+      "rats:rat_dig_1",
+      "rats:rat_dig_2"
+    ]
+  },
+  "rat_plague": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_plague_0",
+      "rats:rat_plague_1",
+      "rats:rat_plague_2"
+
+    ]
+  },
+  "rat_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_die_0",
+      "rats:rat_die_1"
+    ]
+  },
+  "rat_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_hurt_0",
+      "rats:rat_hurt_1",
+      "rats:rat_hurt_2"
+    ]
+  },
+  "rat_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_idle_0",
+      "rats:rat_idle_1",
+      "rats:rat_idle_2"
+    ]
+  },
+  "potion_effect_begin": {
+    "category": "neutral",
+    "sounds": [
+      "rats:potion_effect_begin"
+    ]
+  },
+  "potion_effect_end": {
+    "category": "neutral",
+    "sounds": [
+      "rats:potion_effect_end"
+    ]
+  }
+}

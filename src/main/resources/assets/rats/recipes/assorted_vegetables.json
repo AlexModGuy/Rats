@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "type": "forge:ore_dict",
+      "ore": "foodVegetable"
+    }
+  },
+  "result": {
+    "item": "rats:assorted_vegetables"
+  }
+}

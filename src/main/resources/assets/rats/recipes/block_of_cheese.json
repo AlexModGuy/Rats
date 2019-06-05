@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    }
+  },
+  "result": {
+    "item": "rats:block_of_cheese"
+  }
+}
