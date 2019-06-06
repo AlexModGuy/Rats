@@ -28,7 +28,9 @@ public class PotionConfitByaldi extends Potion {
         if (entityLivingBaseIn.getHealth() < entityLivingBaseIn.getMaxHealth()) {
             entityLivingBaseIn.heal(1.0F);
         }
-        ((EntityPlayer) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
+        if(entityLivingBaseIn instanceof EntityPlayer){
+            ((EntityPlayer) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
+        }
     }
 
     public boolean isReady(int duration, int amplifier) {
