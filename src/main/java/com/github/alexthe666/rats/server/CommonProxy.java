@@ -13,6 +13,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -43,6 +44,12 @@ public class CommonProxy {
                 RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE);
     }
 
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equalsIgnoreCase(RatsMod.MODID)) {
+            RatsMod.syncConfig();
+        }
+    }
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
