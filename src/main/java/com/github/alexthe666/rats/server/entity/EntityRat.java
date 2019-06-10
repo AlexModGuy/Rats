@@ -38,6 +38,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -85,6 +87,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public BlockPos depositPos;
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
+    private boolean isTameNavigator;
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -104,6 +107,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public EntityRat(World worldIn) {
         super(worldIn);
+        switchNavigator(false);
         this.setSize(0.49F, 0.49F);
         initInventory();
     }
@@ -193,8 +197,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
+    private void switchNavigator(boolean tame) {
+        if (tame) {
+            this.navigator = new PathNavigateGround(this, world);
+            this.isTameNavigator = true;
+        } else {
+            this.navigator = new RatPathNavigate(this, world);
+            this.isTameNavigator = false;
+        }
+    }
+
     protected PathNavigate createNavigator(World worldIn) {
-        return new RatPathNavigate(this, worldIn);
+        if(isTamed()){
+            return super.createNavigator(worldIn);
+        }else{
+            return new RatPathNavigate(this, worldIn);
+        }
     }
 
     public void writeEntityToNBT(NBTTagCompound compound) {
@@ -403,6 +421,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.heal(this.getMaxHealth());
         }
         super.onLivingUpdate();
+        if (!this.isTamed() && this.isTameNavigator) {
+            switchNavigator(false);
+        }
+        if (this.isTamed() && !this.isTameNavigator) {
+            switchNavigator(true);
+        }
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
