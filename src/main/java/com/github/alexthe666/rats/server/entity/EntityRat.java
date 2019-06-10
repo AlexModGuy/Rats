@@ -150,7 +150,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected boolean canDespawn() {
-        return !this.isTamed() && RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters;
+        return !this.isTamed() && !this.isChild() && RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters;
     }
 
     public boolean getCanSpawnHere() {
@@ -545,7 +545,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             baby.setPosition(mother.posX, mother.posY, mother.posZ);
             baby.setGrowingAge(-24000);
             if (mother.isTamed()) {
+                baby.setTamed(true);
                 baby.setOwnerId(mother.getOwnerId());
+            }else if (father.isTamed()) {
+                baby.setTamed(true);
+                baby.setOwnerId(father.getOwnerId());
             }
             world.spawnEntity(baby);
         }
