@@ -30,7 +30,7 @@ import java.util.Random;
 public class RatUtils {
 
     public static boolean isRatFood(ItemStack stack) {
-        return stack.getItem() instanceof ItemFood || isSeeds(stack) || stack.getItem() == Items.WHEAT;
+        return (stack.getItem() instanceof ItemFood || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
     }
 
     public static boolean isSeeds(ItemStack stack) {
