@@ -100,6 +100,9 @@ public class RatAIRaidChests extends EntityAIBase {
                     }else{
                         ItemStack duplicate = stack.copy();
                         duplicate.setCount(1);
+                        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         stack.shrink(1);
                         this.targetBlock = null;

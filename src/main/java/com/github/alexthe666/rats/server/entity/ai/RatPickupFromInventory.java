@@ -90,6 +90,9 @@ public class RatPickupFromInventory extends EntityAIBase {
                     this.resetTask();
                 }else{
                     ItemStack duplicate = stack.copy();
+                    if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                        this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                    }
                     if(this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER){
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         int size = stack.getMaxStackSize();

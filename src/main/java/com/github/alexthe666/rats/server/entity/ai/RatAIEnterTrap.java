@@ -96,6 +96,9 @@ public class RatAIEnterTrap extends EntityAIBase {
                 if (distance < 0.5F && canSeeChest()) {
                     ItemStack duplicate = ((TileEntityRatTrap) entity).getBait().copy();
                     duplicate.setCount(1);
+                    if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                        this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                    }
                     this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                     ((TileEntityRatTrap) entity).getBait().shrink(1);
                     this.targetBlock = null;

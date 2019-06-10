@@ -79,6 +79,9 @@ public class RatAIRaidCrops extends EntityAIBase {
                     }else{
                         ItemStack duplicate = stack.copy();
                         duplicate.setCount(1);
+                        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         this.entity.world.destroyBlock(targetBlock, false);
                         this.targetBlock = null;

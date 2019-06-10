@@ -86,6 +86,9 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             ItemStack duplicate = this.targetEntity.getItem().copy();
             duplicate.setCount(1);
             this.targetEntity.getItem().shrink(1);
+            if(!rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !rat.world.isRemote){
+                rat.entityDropItem(rat.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+            }
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
                 EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());

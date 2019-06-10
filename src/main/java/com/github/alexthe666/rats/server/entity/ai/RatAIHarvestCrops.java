@@ -85,6 +85,9 @@ public class RatAIHarvestCrops extends EntityAIBase {
                     if(!drops.isEmpty()){
                         ItemStack duplicate = drops.get(0).copy();
                         drops.remove(0);
+                        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         for(ItemStack drop : drops){
                             this.entity.entityDropItem(drop, 0);
