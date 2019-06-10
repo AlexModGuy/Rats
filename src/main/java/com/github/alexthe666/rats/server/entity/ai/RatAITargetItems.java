@@ -82,7 +82,6 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
-
             EntityRat rat = (EntityRat) this.taskOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             duplicate.setCount(1);
@@ -90,7 +89,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
                 EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-                if (!rat.isTamed() && targetPlayer != null && RatUtils.isCheese(duplicate)) {
+                if (!rat.isTamed() && targetPlayer != null && !rat.hasPlague() && RatUtils.isCheese(duplicate)) {
                     rat.wildTrust += 10;
                     rat.world.setEntityState(rat, (byte) 82);
                     if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0) {
