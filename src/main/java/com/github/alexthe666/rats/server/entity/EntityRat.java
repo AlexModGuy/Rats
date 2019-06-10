@@ -423,7 +423,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         } else if (!isDeadInTrap && deadInTrapProgress > 0.0F) {
             deadInTrapProgress -= 1F;
         }
-        if (digCooldown <= 0 && RatsMod.CONFIG_OPTIONS.ratsDigBlocks) {
+        if (digCooldown <= 0 && RatsMod.CONFIG_OPTIONS.ratsDigBlocks && !this.isTamed()) {
             findDigTarget();
             digTarget();
         }
@@ -678,12 +678,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             if (digPos != null && this.getDistanceSq(digPos) < 2) {
                 if (world.getTileEntity(digPos) == null) {
                     Material material = world.getBlockState(digPos).getMaterial();
-                    if (world.getBlockState(digPos).getBlockHardness(world, digPos) <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold && (material.isToolNotRequired() || material == Material.CRAFTED_SNOW) && digPos.getY() == (int) Math.round(this.posY)) {
+                    if (world.getBlockState(digPos).getBlockHardness(world, digPos) <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold && canDigBlock(world, digPos) && (material.isToolNotRequired() || material == Material.CRAFTED_SNOW) && digPos.getY() == (int) Math.round(this.posY)) {
                         diggingPos = digPos;
                     }
                 }
             }
         }
+    }
+
+    private boolean canDigBlock(World world, BlockPos pos){
+        return world.getBlockState(pos).isOpaqueCube();
     }
 
 
