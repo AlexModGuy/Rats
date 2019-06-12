@@ -40,9 +40,8 @@ public class TinkersCompat {
                 new HandleMaterialStats(1.5F, 40),
                 new ExtraMaterialStats(150));
         TinkerRegistry.addMaterialStats(CHEESE_MATERIAL, new BowMaterialStats(1.5F, 2f, -0.5F));
-        STRING_CHEESE.addItem("foodCheese", 1, Material.VALUE_Ingot);
-        STRING_CHEESE.addItem(RatsItemRegistry.CHEESE, 1, Material.VALUE_Ingot);
-        STRING_CHEESE.setRepresentativeItem(RatsItemRegistry.CHEESE);
+        STRING_CHEESE.addItem(RatsItemRegistry.STRING_CHEESE, 1, Material.VALUE_Ingot);
+        STRING_CHEESE.setRepresentativeItem(RatsItemRegistry.STRING_CHEESE);
         BowStringMaterialStats bowstring = new BowStringMaterialStats(1f);
         TinkerRegistry.addMaterialStats(STRING_CHEESE, bowstring);
 
