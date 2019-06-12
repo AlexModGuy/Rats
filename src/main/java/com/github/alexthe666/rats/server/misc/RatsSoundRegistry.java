@@ -22,6 +22,8 @@ public class RatsSoundRegistry {
     public static final SoundEvent RAT_DIG = createSoundEvent("rat_dig");
     @GameRegistry.ObjectHolder("rat_plague")
     public static final SoundEvent RAT_PLAGUE = createSoundEvent("rat_plague");
+    @GameRegistry.ObjectHolder("rat_flute")
+    public static final SoundEvent RAT_FLUTE = createSoundEvent("rat_flute");
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(RatsMod.MODID, soundName);

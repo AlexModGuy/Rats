@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " IR",
+    "IRT",
+    "RT "
+  ],
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "sugarcane"
+    },
+    "T": {
+      "item": "minecraft:hardened_clay",
+      "data": 0
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "nuggetIron"
+    }
+  },
+  "result": {
+    "item": "rats:rat_flute"
+  }
+}

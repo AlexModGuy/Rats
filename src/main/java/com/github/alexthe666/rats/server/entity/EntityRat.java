@@ -515,14 +515,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     private void tryBreeding() {
         List<EntityRat> list = world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - 0.5F, this.posY - 0.5F, this.posZ - 0.5F, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F));
-        for (EntityRat rat : list) {
-            if ((rat.isMale() && !this.isMale() || this.isMale() && !rat.isMale()) && !rat.isChild()) {
-                breedCooldown = 24000;
-                rat.breedCooldown = 24000;
-                createBabiesFrom(this.isMale() ? rat : this, this.isMale() ? this : rat);
-                this.world.setEntityState(this, (byte) 83);
-                rat.world.setEntityState(rat, (byte) 83);
-                break;
+        if(doBreedingSurvey()) {
+            for (EntityRat rat : list) {
+                if ((rat.isMale() && !this.isMale() || this.isMale() && !rat.isMale()) && !rat.isChild()) {
+                    breedCooldown = 24000;
+                    rat.breedCooldown = 24000;
+                    createBabiesFrom(this.isMale() ? rat : this, this.isMale() ? this : rat);
+                    this.world.setEntityState(this, (byte) 83);
+                    rat.world.setEntityState(rat, (byte) 83);
+                    break;
+                }
             }
         }
     }
@@ -1063,4 +1065,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return RatsSoundRegistry.RAT_HURT;
     }
 
+    public boolean onHearFlute(EntityPlayer player, RatCommand ratCommand) {
+        if(this.isTamed() && this.isOwner(player)){
+            this.setCommand(ratCommand);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean doBreedingSurvey() {
+        int ratCount = 0;
+        double dist = 1.5F;
+        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
+            if(rat.isInCage()){
+                ratCount++;
+            }
+        }
+        return ratCount < RatsMod.CONFIG_OPTIONS.ratCageCramming;
+    }
 }

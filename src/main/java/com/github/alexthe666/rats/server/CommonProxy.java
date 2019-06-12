@@ -41,7 +41,7 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(RatsSoundRegistry.POTION_EFFECT_BEGIN, RatsSoundRegistry.POTION_EFFECT_END, RatsSoundRegistry.RAT_IDLE,
-                RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE);
+                RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE, RatsSoundRegistry.RAT_FLUTE);
     }
 
     @SubscribeEvent

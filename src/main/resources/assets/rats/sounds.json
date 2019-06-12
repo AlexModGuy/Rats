@@ -1,4 +1,13 @@
 {
+  "rat_flute": {
+    "category": "neutral",
+    "sounds": [
+      "rats:flute_0",
+      "rats:flute_1",
+      "rats:flute_2",
+      "rats:flute_3"
+    ]
+  },
   "rat_dig": {
     "category": "neutral",
     "sounds": [

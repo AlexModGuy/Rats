@@ -1,0 +1,42 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "rats:items/rat_flute"
+    },
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [
+                -10,
+                260,
+                -40
+            ],
+            "translation": [
+                0,
+                1,
+                2.5
+            ],
+            "scale": [
+                0.9,
+                0.9,
+                0.9
+            ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [
+                -10,
+                -280,
+                40
+            ],
+            "translation": [
+                0,
+                1,
+                2.5
+            ],
+            "scale": [
+                0.9,
+                0.9,
+                0.9
+            ]
+        }
+    }
+}
