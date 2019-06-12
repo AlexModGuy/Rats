@@ -573,10 +573,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 heldItem.shrink(1);
                 if (heldItem.isEmpty()) {
                     this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
-                }
-                if (!this.tryDepositItemInContainers(burntItem)) {
-                    if (!world.isRemote) {
-                        this.entityDropItem(burntItem, 0.25F);
+                }else{
+                    if (!this.tryDepositItemInContainers(burntItem)) {
+                        if (!world.isRemote) {
+                            this.entityDropItem(burntItem, 0.25F);
+                        }
                     }
                 }
                 cookingProgress = 0;
