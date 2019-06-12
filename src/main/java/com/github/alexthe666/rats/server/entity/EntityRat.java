@@ -567,6 +567,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (heldItem.getItem() == RatsItemRegistry.ASSORTED_VEGETABLES) {
             burntItem = new ItemStack(RatsItemRegistry.CONFIT_BYALDI);
         }
+        if (heldItem.getItem() == RatsItemRegistry.CHEESE) {
+            burntItem = new ItemStack(RatsItemRegistry.STRING_CHEESE, 4);
+        }
         if (burntItem.isEmpty()) {
             cookingProgress = 0;
         } else {

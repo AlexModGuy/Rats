@@ -33,6 +33,8 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_flute")
     public static Item RAT_FLUTE = new ItemRatFlute();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":string_cheese")
+    public static Item STRING_CHEESE = new ItemStringCheese();
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":assorted_vegetables")
     public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, "assorted_vegetables");

@@ -15,6 +15,7 @@ item.rats.cheese_stick.name=Cheese Staff
 item.rats.chef_toque.name=Chef Toque
 item.rats.assorted_vegetables.name=Assorted Vegetables
 item.rats.confit_byaldi.name=Confit Byaldi
+item.rats.string_cheese.name=String Cheese
 item.rats.cheese_stick.desc0=Use on a rat to bind it
 item.rats.cheese_stick.desc1=Interact with an block to allow the rat to deposit items in it
 item.rats.cheese_stick.desc2=Sneak + Interact with an block to allow the rat to take items from it
