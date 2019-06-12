@@ -13,7 +13,7 @@ public class RatsItemRegistry {
     public static ItemArmor.ArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("ChefToque", "rats:cheftoque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese")
-    public static Item CHEESE = new ItemGenericFood(3, 0.5F, false, "cheese");
+    public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, "cheese");
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":raw_rat")
     public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, "raw_rat");
