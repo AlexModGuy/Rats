@@ -146,7 +146,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false, new Class[0]));
     }
 
     protected boolean canDespawn() {

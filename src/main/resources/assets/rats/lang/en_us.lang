@@ -86,3 +86,5 @@ rats.direction.slot=slot(s)
 rats.synesthesia=Synesthesia
 material.cheese.name=Cheese
 material.string_cheese.name=String Cheese
+modifier.ratty.name=Ratty
+modifier.ratty.desc=Randomly summons rats when used. If used in a fight, summoned rats will try to defend you!
