@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
@@ -237,7 +238,9 @@ public class ModelRat extends AdvancedModelBase {
         this.tail2.rotateAngleX -= f12 / 2F;
         float ulatingScale = 0.9F + (float)Math.sin(rat.ticksExisted * 0.75F) * 0.1F;
         if(!rat.isDeadInTrap) {
-            this.faceTarget(f3, f4, 2, neck, head);
+            if(RatsMod.PROXY.shouldRenderNameplates()){
+                this.faceTarget(f3, f4, 2, neck, head);
+            }
             this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, rat.ticksExisted, 1);
             this.swing(this.wisker1, speedIdle, degreeIdle, true, 0, 0, rat.ticksExisted, 1);
             this.flap(this.wisker2, speedIdle, degreeIdle, false, 1, 0, rat.ticksExisted, 1);
