@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.events.ServerEvents;
 import com.github.alexthe666.rats.server.inventory.GuiHandler;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
 import com.github.alexthe666.rats.server.message.MessageRatCommand;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
@@ -44,7 +45,7 @@ public class RatsMod {
     public static RatsMod INSTANCE;
     @SidedProxy(clientSide = "com.github.alexthe666.rats.client.ClientProxy", serverSide = "com.github.alexthe666.rats.server.CommonProxy")
     public static CommonProxy PROXY;
-    @NetworkWrapper({MessageRatCommand.class, MessageRatDismount.class})
+    @NetworkWrapper({MessageRatCommand.class, MessageRatDismount.class, MessageIncreaseRatRecipe.class})
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
     private static Logger logger;
     public static Potion CONFIT_BYALDI_POTION = new PotionConfitByaldi();
