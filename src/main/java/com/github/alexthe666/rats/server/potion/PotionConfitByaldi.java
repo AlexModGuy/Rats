@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.potion;
+package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.renderer.BufferBuilder;

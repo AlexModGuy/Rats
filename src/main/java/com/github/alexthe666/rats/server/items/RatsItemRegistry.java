@@ -68,4 +68,8 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_chef")
     public static Item RAT_UPGRADE_CHEF = new ItemRatUpgrade("rat_upgrade_chef", 2, 2);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_crafting")
+    public static Item RAT_UPGRADE_CRAFTING = new ItemRatUpgrade("rat_upgrade_crafting", 0, 2);
+
 }

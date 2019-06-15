@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats;
 
-import com.github.alexthe666.rats.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import com.github.alexthe666.rats.server.entity.EntityRat;
@@ -10,6 +9,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
 import com.github.alexthe666.rats.server.message.MessageRatCommand;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
+import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;

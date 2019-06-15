@@ -225,28 +225,28 @@ public class ModelRat extends AdvancedModelBase {
         progressPosition(leftThigh, rat.sitProgress, 2.5F, 0, 4.5F, 20F);
         progressPosition(rightThigh, rat.sitProgress, -2.5F, 0, 4.5F, 20F);
         if(rat.getAnimation() == EntityRat.ANIMATION_EAT){
-            this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, rat.ticksExisted, 1);
-            this.walk(this.head, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.2F, rat.ticksExisted, 1);
+            this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, f2, 1);
+            this.walk(this.head, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.2F, f2, 1);
             if(rat.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER) {
-                this.walk(this.leftArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, rat.ticksExisted, 1);
-                this.walk(this.rightArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, rat.ticksExisted, 1);
-                this.walk(this.rightHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, rat.ticksExisted, 1);
-                this.walk(this.leftHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, rat.ticksExisted, 1);
+                this.walk(this.leftArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
+                this.walk(this.rightArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
+                this.walk(this.rightHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
+                this.walk(this.leftHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
             }
         }
         this.tail1.rotateAngleX += f12;
         this.tail2.rotateAngleX -= f12 / 2F;
-        float ulatingScale = 0.9F + (float)Math.sin(rat.ticksExisted * 0.75F) * 0.1F;
+        float ulatingScale = 0.9F + (float)Math.sin(f2 * 0.75F) * 0.1F;
         if(!rat.isDeadInTrap) {
             if(RatsMod.PROXY.shouldRenderNameplates()){
                 this.faceTarget(f3, f4, 2, neck, head);
             }
-            this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, rat.ticksExisted, 1);
-            this.swing(this.wisker1, speedIdle, degreeIdle, true, 0, 0, rat.ticksExisted, 1);
-            this.flap(this.wisker2, speedIdle, degreeIdle, false, 1, 0, rat.ticksExisted, 1);
-            this.flap(this.wisker1, speedIdle, degreeIdle, false, 1, 0, rat.ticksExisted, 1);
-            this.walk(this.wisker2, speedIdle, degreeIdle, false, 2, 0, rat.ticksExisted, 1);
-            this.walk(this.wisker1, speedIdle, degreeIdle, false, 2, 0, rat.ticksExisted, 1);
+            this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, f2, 1);
+            this.swing(this.wisker1, speedIdle, degreeIdle, true, 0, 0, f2, 1);
+            this.flap(this.wisker2, speedIdle, degreeIdle, false, 1, 0, f2, 1);
+            this.flap(this.wisker1, speedIdle, degreeIdle, false, 1, 0, f2, 1);
+            this.walk(this.wisker2, speedIdle, degreeIdle, false, 2, 0, f2, 1);
+            this.walk(this.wisker1, speedIdle, degreeIdle, false, 2, 0, f2, 1);
             this.nose.setScale(ulatingScale, ulatingScale, ulatingScale);
         }
         if(running) {
@@ -296,6 +296,12 @@ public class ModelRat extends AdvancedModelBase {
 
             // progressRotation(rightHand, 20F, 0.9599310885968813F, -0.17453292519943295F, 0.08726646259971647F, 20F);
            // progressRotation(leftHand, 20F, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F, 20F);
+        }
+        if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING && rat.crafting){
+            this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
+            this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
+            this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);
+            this.walk(this.leftHand, speedRun, degreeRun * 1F, false, 5, 0.1F, f2, 1);
         }
     }
 

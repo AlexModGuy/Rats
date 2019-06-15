@@ -1,0 +1,37 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "WCW",
+    "PTA",
+    "WSW"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "P": {
+      "item": "minecraft:stone_pickaxe",
+      "data": 0
+    },
+    "A": {
+      "item": "minecraft:stone_axe",
+      "data": 0
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "workbench"
+    },
+    "S": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_crafting"
+  }
+}

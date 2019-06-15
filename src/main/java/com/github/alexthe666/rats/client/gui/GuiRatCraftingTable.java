@@ -11,6 +11,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -76,6 +78,8 @@ public class GuiRatCraftingTable extends GuiContainer {
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 94 + 2, 4210752);
         this.fontRenderer.drawString(net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
         this.fontRenderer.drawString(net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
+        int screenW = (this.width - 248) / 2;
+        int screenH = (this.height - 166) / 2;
         List<ItemStack> drawnIngredients = new ArrayList<>();
         if (tileFurnace instanceof TileEntityRatCraftingTable) {
             IRecipe recipe = ((TileEntityRatCraftingTable) tileFurnace).getSelectedRecipe();
@@ -100,6 +104,10 @@ public class GuiRatCraftingTable extends GuiContainer {
                                 }
                                 drawn.setCount(count);
                                 drawnIngredients.add(drawn);
+                                GlStateManager.enableLighting();
+                                GlStateManager.enableDepth();
+                                RenderHelper.enableGUIStandardItemLighting();
+                                GlStateManager.enableRescaleNormal();
                                 this.drawRecipeItemStack(drawn, 8 + renderingIndex * 18, 60);
                                 renderingIndex++;
                             }
@@ -107,6 +115,14 @@ public class GuiRatCraftingTable extends GuiContainer {
                     }
                 }
             }
+        }
+        if(mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24){
+            String ratDesc = I18n.format("container.rat_crafting_table.rat_desc");
+            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, fontRenderer);
+        }
+        if(mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()){
+            String ratDesc = I18n.format("container.rat_crafting_table.input_desc");
+            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, fontRenderer);
         }
     }
 
@@ -145,6 +161,11 @@ public class GuiRatCraftingTable extends GuiContainer {
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         int l = this.getCookProgressScaled(64);
         this.drawTexturedModalRect(i + 54, j + 21, 0, 211, l, 16);
+        if(((TileEntityRatCraftingTable)tileFurnace).hasRat){
+            this.drawTexturedModalRect(i + 9, j, 176, 0, 21, 21);
+        }else{
+            this.drawTexturedModalRect(i + 8, j + 15, 198, 0, 21, 21);
+        }
     }
 
     private int getCookProgressScaled(int pixels) {

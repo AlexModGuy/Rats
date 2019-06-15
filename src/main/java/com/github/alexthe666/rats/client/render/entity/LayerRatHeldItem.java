@@ -8,12 +8,15 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
 public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+    private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
+    private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
     RenderRat renderer;
 
     public LayerRatHeldItem(RenderRat renderer) {
@@ -44,7 +47,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.translate(0F, 0.25, 0.05F);
             } else {
-                translateToHand();
+                translateToHand(true);
                 GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
@@ -71,13 +74,30 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getMinecraft();
-            translateToHand();
+            translateToHand(true);
             GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(-70.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.translate(-0.155F, -0.225, 0.2F);
             GlStateManager.scale(2F, 2F, 2F);
             minecraft.getItemRenderer().renderItem(entity, PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND);
+        }
+        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(true);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, AXE_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, PICKAXE_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
         }
     }
 
@@ -88,11 +108,16 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
         ((ModelRat) this.renderer.getMainModel()).head.postRender(0.0625F);
     }
 
-    protected void translateToHand() {
+    protected void translateToHand(boolean left) {
         ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
         ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
-        ((ModelRat) this.renderer.getMainModel()).leftArm.postRender(0.0625F);
-        ((ModelRat) this.renderer.getMainModel()).leftHand.postRender(0.0625F);
+        if(left){
+            ((ModelRat) this.renderer.getMainModel()).leftArm.postRender(0.0625F);
+            ((ModelRat) this.renderer.getMainModel()).leftHand.postRender(0.0625F);
+        }else{
+            ((ModelRat) this.renderer.getMainModel()).rightArm.postRender(0.0625F);
+            ((ModelRat) this.renderer.getMainModel()).rightHand.postRender(0.0625F);
+        }
     }
 
 

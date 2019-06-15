@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "CTC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "blockCheese"
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "workbench"
+    }
+  },
+  "result": {
+    "item": "rats:rat_crafting_table"
+  }
+}

@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -88,6 +89,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
     private boolean isTameNavigator;
+    public boolean crafting = false;
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -104,7 +106,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public int cookingProgress = 0;
     public int breedCooldown = 0;
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "rat"));
-
+    private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
     public EntityRat(World worldIn) {
         super(worldIn);
         switchNavigator(false);
@@ -508,6 +511,35 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
         if (breedCooldown == 0 && this.isInCage() && !world.isRemote && !this.isChild()) {
             tryBreeding();
+        }
+        crafting = false;
+        if(this.isTamed() && this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+            TileEntity te = world.getTileEntity(new BlockPos(this).down());
+            if(te != null && te instanceof TileEntityRatCraftingTable){
+                TileEntityRatCraftingTable ratCraftingTable = (TileEntityRatCraftingTable)te;
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                if(ratCraftingTable.prevCookTime < ratCraftingTable.getField(0)){
+                    crafting = true;
+                    ItemStack stack = ratCraftingTable.getStackInSlot(0);
+                    if(stack.isEmpty()){
+                        this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    }else{
+                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                    }
+                    if(ratCraftingTable.prevCookTime % 20 == 0){
+                        this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
+                    }
+                }
+                if(ratCraftingTable.prevCookTime == 199){
+                    for(int i = 0; i < 4; i++){
+                        this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    }
+                    this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
+                }
+            }
         }
         prevUpgrade = this.getUpgrade();
         AnimationHandler.INSTANCE.updateAnimations(this);

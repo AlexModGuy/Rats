@@ -1,5 +1,8 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -12,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -25,12 +29,14 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     private static final int[] SLOTS_BOTTOM = new int[]{1};
     private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(11, ItemStack.EMPTY);
     private int cookTime;
+    public int prevCookTime;
     private int totalCookTime = 200;
     private String furnaceCustomName;
     private boolean canSwapRecipe;
     private List<IRecipe> currentApplicableRecipes = new ArrayList<>();
     private IRecipe selectedRecipe = null;
     private int selectedRecipeIndex = 0;
+    public boolean hasRat;
 
     public int getSizeInventory() {
         return this.inventory.size();
@@ -139,7 +145,13 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     @Override
     public void update() {
         boolean flag = false;
-
+        hasRat = false;
+        this.prevCookTime = cookTime;
+        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) pos.getX(), (double) pos.getY() + 1, (double) pos.getZ(), (double)pos.getX() + 1, (double) pos.getY() + 2, (double)pos.getZ() + 1))) {
+            if(rat.isTamed() && rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+                hasRat = true;
+            }
+        }
         if (!this.currentApplicableRecipes.isEmpty()) {
             if (this.currentApplicableRecipes.size() <= 1) {
                 selectedRecipe = currentApplicableRecipes.get(0);
@@ -149,7 +161,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         } else {
             this.currentApplicableRecipes = findMatchingRecipesFor(getStackInSlot(0));
         }
-        if (selectedRecipe != null && (this.getStackInSlot(1).isEmpty() || this.getStackInSlot(1).isItemEqual(selectedRecipe.getRecipeOutput()) && this.getStackInSlot(1).getCount() + selectedRecipe.getRecipeOutput().getCount() <= 64)) {
+        if (selectedRecipe != null && (this.getStackInSlot(1).isEmpty() || this.getStackInSlot(1).isItemEqual(selectedRecipe.getRecipeOutput()) && this.getStackInSlot(1).getCount() + selectedRecipe.getRecipeOutput().getCount() <= selectedRecipe.getRecipeOutput().getMaxStackSize() && this.getStackInSlot(1).isStackable())) {
             NonNullList<ItemStack> stacks = NonNullList.create();
             for (int i = 2; i < 11; i++) {
                 stacks.add(inventory.get(i));
