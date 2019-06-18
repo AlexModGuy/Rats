@@ -358,6 +358,7 @@ public class RatUtils {
 
     public static BlockPos findLowestRatCage(BlockPos pos, EntityCreature rat) {
         if (rat.world.getBlockState(pos.down()).getBlock() != RatsBlockRegistry.RAT_CAGE) {
+            System.out.println(rat.world.getBlockState(pos));
             return pos;
         } else {
             BlockPos blockpos;

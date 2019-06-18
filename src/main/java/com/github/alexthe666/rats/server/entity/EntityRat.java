@@ -242,7 +242,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected PathNavigate createNavigator(World worldIn) {
-        if(isTamed()){
+        if(isTamed() && !this.isInCage()){
             return super.createNavigator(worldIn);
         }else{
             return new RatPathNavigate(this, worldIn);
@@ -455,10 +455,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.heal(this.getMaxHealth());
         }
         super.onLivingUpdate();
-        if (!this.isTamed() && this.isTameNavigator) {
+        boolean wildNavigate = !this.isTamed() || this.isInCage();
+        if (wildNavigate && this.isTameNavigator) {
             switchNavigator(false);
         }
-        if (this.isTamed() && !this.isTameNavigator) {
+        if (!wildNavigate && !this.isTameNavigator) {
             switchNavigator(true);
         }
         if (this.isMoving()) {
@@ -534,8 +535,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 }
             }
         }
-        if (this.isInCage() && this.getAttackTarget() != null) {
-            this.setAttackTarget(null);
+        if (this.isInCage()) {
+            if(this.getAttackTarget() != null){
+                this.setAttackTarget(null);
+            }
+            if(this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER){
+                this.setCommand(RatCommand.WANDER);
+            }
         }
         if (this.breedCooldown > 0) {
             breedCooldown--;
