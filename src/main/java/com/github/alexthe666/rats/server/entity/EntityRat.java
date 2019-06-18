@@ -386,7 +386,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public RatCommand getCommand() {
-        return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, 5)];
+        return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
     }
 
 

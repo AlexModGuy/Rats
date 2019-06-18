@@ -30,8 +30,8 @@ public class TinkersCompat {
     public static void init() {
         TinkerMaterials.materials.add(CHEESE_MATERIAL);
         TinkerMaterials.materials.add(STRING_CHEESE);
-        TinkerRegistry.integrate(CHEESE_MATERIAL);
-        TinkerRegistry.integrate(STRING_CHEESE);
+        TinkerRegistry.integrate(CHEESE_MATERIAL).preInit();
+        TinkerRegistry.integrate(STRING_CHEESE).preInit();
         CHEESE_MATERIAL.addTrait(RAT_TRAIT);
         CHEESE_MATERIAL.addTrait(TinkerTraits.tasty);
         CHEESE_MATERIAL.addItem("foodCheese", 1, Material.VALUE_Ingot);
