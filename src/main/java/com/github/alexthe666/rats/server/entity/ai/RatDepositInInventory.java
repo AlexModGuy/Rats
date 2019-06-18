@@ -36,7 +36,7 @@ public class RatDepositInInventory extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT || this.entity.isInCage() || entity.getAttackTarget() != null) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || entity.getAttackTarget() != null) {
             return false;
         }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {

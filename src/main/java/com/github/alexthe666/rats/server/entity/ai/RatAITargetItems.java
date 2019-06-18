@@ -41,7 +41,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                if(rat.getCommand() == RatCommand.GATHER){
+                if(rat.getCommand() == RatCommand.GATHER || rat.getCommand() == RatCommand.HARVEST){
                     return item != null  && !item.getItem().isEmpty() && rat.canRatPickupItem(item.getItem());
                 }
                 return item instanceof EntityItem && !item.getItem().isEmpty() && RatUtils.isRatFood(item.getItem()) && rat.canRatPickupItem(item.getItem());
