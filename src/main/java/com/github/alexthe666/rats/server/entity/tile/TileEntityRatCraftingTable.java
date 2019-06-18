@@ -166,7 +166,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
             for (int i = 2; i < 11; i++) {
                 stacks.add(inventory.get(i));
             }
-            if (hasIngredients(selectedRecipe, stacks)) {
+            if (hasIngredients(selectedRecipe, stacks) && hasRat) {
                 cookTime++;
                 flag = true;
                 if (cookTime >= 200) {
