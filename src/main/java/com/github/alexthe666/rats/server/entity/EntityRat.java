@@ -146,6 +146,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this);
                 } else {
+                    if(entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()){
+                        return false;
+                    }
                     return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof EntityPlayer) || EntityRat.this.hasPlague()) && !entity.isChild();
                 }
             }
