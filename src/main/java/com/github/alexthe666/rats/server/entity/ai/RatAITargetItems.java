@@ -22,9 +22,11 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final Predicate<? super EntityItem> targetEntitySelector;
     private final int targetChance;
     protected EntityItem targetEntity;
+    private EntityRat rat;
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
         this(creature, checkSight, false);
+        this.setMutexBits(0);
     }
 
     public RatAITargetItems(EntityRat creature, boolean checkSight, boolean onlyNearby) {
@@ -34,11 +36,15 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     public RatAITargetItems(EntityRat creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
         super(creature, checkSight, onlyNearby);
         this.targetChance = chance;
+        this.rat = creature;
         this.theNearestAttackableTargetSorter = new RatAITargetItems.Sorter(creature);
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && RatUtils.isRatFood(item.getItem()) && ((EntityRat)RatAITargetItems.this.taskOwner).canRatPickupItem(item.getItem());
+                if(rat.getCommand() == RatCommand.GATHER){
+                    return item != null  && !item.getItem().isEmpty() && rat.canRatPickupItem(item.getItem());
+                }
+                return item instanceof EntityItem && !item.getItem().isEmpty() && RatUtils.isRatFood(item.getItem()) && rat.canRatPickupItem(item.getItem());
             }
         };
         this.setMutexBits(0);
@@ -46,7 +52,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!((EntityRat) this.taskOwner).canMove() || this.taskOwner.isRiding() || ((EntityRat) this.taskOwner).isInCage()) {
+        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage()) {
             return false;
         }
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
@@ -66,7 +72,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.taskOwner.getEntityBoundingBox().expand(targetDistance, targetDistance, targetDistance);
+        return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
     }
 
     @Override

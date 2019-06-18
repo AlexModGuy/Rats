@@ -33,7 +33,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.GATHER || this.entity.isInCage()) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage()) {
             return false;
         }
         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {

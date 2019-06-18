@@ -140,8 +140,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.tasks.addTask(4, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(2, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(0, new RatAITargetItems(this, false));
+        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this);
@@ -504,7 +504,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_CHEF && this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER) {
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_CHEF && this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST) {
             if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);

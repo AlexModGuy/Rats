@@ -6,6 +6,7 @@ public enum RatCommand {
     FOLLOW(true),
     HUNT(true),
     GATHER(true),
+    HARVEST(true),
     TRANSPORT(true);
 
     public boolean freeMove;
