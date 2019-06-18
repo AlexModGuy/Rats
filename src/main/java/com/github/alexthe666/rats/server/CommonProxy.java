@@ -2,13 +2,17 @@ package com.github.alexthe666.rats.server;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -20,10 +24,12 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
-
     public void preInit() {
 
     }
@@ -31,7 +37,9 @@ public class CommonProxy {
     public void init() {
 
     }
-    public void postInit() { }
+
+    public void postInit() {
+    }
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
@@ -41,7 +49,8 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(RatsSoundRegistry.POTION_EFFECT_BEGIN, RatsSoundRegistry.POTION_EFFECT_END, RatsSoundRegistry.RAT_IDLE,
-                RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE, RatsSoundRegistry.RAT_FLUTE);
+                RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE, RatsSoundRegistry.RAT_FLUTE,
+                RatsSoundRegistry.PIPER_LOOP);
     }
 
     @SubscribeEvent
@@ -97,7 +106,7 @@ public class CommonProxy {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item) {
-                    event.getRegistry().register((Item)obj);
+                    event.getRegistry().register((Item) obj);
                 } else if (obj instanceof Item[]) {
                     for (Item item : (Item[]) obj) {
                         event.getRegistry().register((item));
@@ -113,6 +122,7 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
         registerSpawnable(EntityEntryBuilder.<EntityRat>create(), event, EntityRat.class, "rat", 1, 0X30333E, 0XDAABA1);
+        registerSpawnable(EntityEntryBuilder.<EntityIllagerPiper>create(), event, EntityIllagerPiper.class, "illager_piper", 2, 0XCABC42, 0X3B6063);
     }
 
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {

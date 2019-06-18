@@ -73,7 +73,7 @@ public class RatAIRaidCrops extends EntityAIBase {
                 double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 1.5F) {
                     ItemStack stack = new ItemStack(block.getBlock().getItemDropped(block, this.entity.getRNG(), 0));
-                    if(stack == ItemStack.EMPTY){
+                    if(stack == ItemStack.EMPTY || !entity.canRatPickupItem(stack)){
                         this.targetBlock = null;
                         this.resetTask();
                     }else{

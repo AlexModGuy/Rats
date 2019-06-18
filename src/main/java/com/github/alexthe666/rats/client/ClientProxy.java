@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
+import com.github.alexthe666.rats.client.render.entity.RenderIllagerPiper;
 import com.github.alexthe666.rats.client.render.entity.RenderRat;
 import com.github.alexthe666.rats.client.render.tile.RatsTEISR;
 import com.github.alexthe666.rats.client.render.tile.RenderRatHole;
@@ -13,9 +14,11 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
+import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
+import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
@@ -25,7 +28,9 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -48,7 +53,6 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
 
-
     public void preInit() {
         TinkersCompatBridge.loadTinkersClientCompat();
     }
@@ -56,6 +60,7 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     public void init(){
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileEntityItemStackRenderer(TEISR);
@@ -163,5 +168,4 @@ public class ClientProxy extends CommonProxy {
     public Object getToqueModel() {
         return new ModelChefToque(1.0F);
     }
-
 }

@@ -48,8 +48,8 @@ public class GuiRatCraftingTable extends GuiContainer {
         this.buttonList.clear();
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 43, j + 58, false));
-        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 58, true));
+        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 43, j + 56, false));
+        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 56, true));
     }
 
     @Override

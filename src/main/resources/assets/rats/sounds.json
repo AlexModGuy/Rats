@@ -1,4 +1,10 @@
 {
+  "piper_loop" : {
+    "category": "neutral",
+    "sounds": [
+      "rats:piper_loop"
+    ]
+  },
   "rat_flute": {
     "category": "neutral",
     "sounds": [

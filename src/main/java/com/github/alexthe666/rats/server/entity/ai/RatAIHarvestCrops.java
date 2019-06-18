@@ -73,7 +73,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
             IBlockState block = this.entity.world.getBlockState(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
             if (block.getBlock() instanceof BlockBush) {
-                if(block.getBlock() instanceof BlockCrops && !((BlockCrops) block.getBlock()).isMaxAge(block)){
+                if (block.getBlock() instanceof BlockCrops && !((BlockCrops) block.getBlock()).isMaxAge(block)) {
                     this.targetBlock = null;
                     this.resetTask();
                     return;
@@ -82,24 +82,24 @@ public class RatAIHarvestCrops extends EntityAIBase {
                 if (distance < 1.5F) {
                     NonNullList<ItemStack> drops = NonNullList.create();
                     block.getBlock().getDrops(drops, this.entity.world, targetBlock, block, 0);
-                    if(!drops.isEmpty()){
+                    if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                         ItemStack duplicate = drops.get(0).copy();
                         drops.remove(0);
-                        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
                             this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
                         }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
-                        for(ItemStack drop : drops){
+                        for (ItemStack drop : drops) {
                             this.entity.entityDropItem(drop, 0);
                         }
-                    }
-                    this.entity.world.destroyBlock(targetBlock, false);
-                    if(block.getBlock() instanceof BlockCrops){
-                        this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
+                        this.entity.world.destroyBlock(targetBlock, false);
+                        if (block.getBlock() instanceof BlockCrops) {
+                            this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
+                        }
+                        this.entity.fleePos = this.targetBlock;
                     }
                     this.targetBlock = null;
                     this.resetTask();
-                    this.entity.fleePos = this.targetBlock;
                 }
             }
 

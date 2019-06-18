@@ -72,4 +72,10 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_crafting")
     public static Item RAT_UPGRADE_CRAFTING = new ItemRatUpgrade("rat_upgrade_crafting", 0, 2);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_blacklist")
+    public static Item RAT_UPGRADE_BLACKLIST = new ItemRatListUpgrade("rat_upgrade_blacklist", 0, 3, false);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_whitelist")
+    public static Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
+
 }

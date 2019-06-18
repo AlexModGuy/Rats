@@ -84,7 +84,7 @@ public class RatPickupFromInventory extends EntityAIBase {
                     toggleChest((IInventory)entity, false);
                 }
                 IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                ItemStack stack = RatUtils.getItemFromItemHandler(handler, this.entity.world.rand);
+                ItemStack stack = RatUtils.getItemFromItemHandler(this.entity, handler, this.entity.world.rand);
                 if(stack == ItemStack.EMPTY){
                     this.targetBlock = null;
                     this.resetTask();

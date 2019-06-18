@@ -54,11 +54,12 @@ public class RatUtils {
         return false;
     }
 
-    public static ItemStack getFoodFromInventory(IInventory inventory, Random random) {
+    public static ItemStack getFoodFromInventory(EntityRat rat, IInventory inventory, Random random) {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
-            if (isRatFood(inventory.getStackInSlot(i))) {
-                items.add(inventory.getStackInSlot(i));
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (isRatFood(stack) && rat.canRatPickupItem(stack)) {
+                items.add(stack);
             }
         }
         if (items.isEmpty()) {
@@ -70,17 +71,20 @@ public class RatUtils {
         }
     }
 
-    public static ItemStack getItemFromItemHandler(IItemHandler handler, Random random) {
+    public static ItemStack getItemFromItemHandler(EntityRat rat, IItemHandler handler, Random random) {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (int i = 0; i < handler.getSlots(); i++) {
-            items.add(handler.getStackInSlot(i));
+            ItemStack stack = handler.getStackInSlot(i);
+            if(rat.canRatPickupItem(stack)) {
+                items.add(stack);
+            }
         }
         if (items.isEmpty()) {
             return ItemStack.EMPTY;
         } else if (items.size() == 1) {
             return items.get(0);
         } else {
-            return items.get(random.nextInt(items.size() - 1));
+            return items.get(random.nextInt(items.size()));
         }
     }
 

@@ -1,0 +1,202 @@
+package com.github.alexthe666.rats.server.entity;
+
+import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+
+public class EntityIllagerPiper extends AbstractIllager implements IRangedAttackMob {
+
+    private final PiperAIStrife aiArrowAttack = new PiperAIStrife(this, 1.0D, 20, 15.0F);
+    private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.<Boolean>createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.<Integer>createKey(EntityIllagerPiper.class, DataSerializers.VARINT);
+    private int ratCooldown = 0;
+    private int fluteTicks = 0;
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "illager_piper"));
+
+    public EntityIllagerPiper(World world) {
+        super(world);
+        this.setCombatTask();
+    }
+
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
+        this.dataManager.register(RAT_COUNT, Integer.valueOf(0));
+    }
+
+    protected void initEntityAI() {
+        super.initEntityAI();
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityRat.class}));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+    }
+
+    public void setDead() {
+        if(!isDead){
+            double dist = 20F;
+            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
+                if(rat.isOwner(this)){
+                    rat.setTamed(false);
+                    rat.setOwnerId(null);
+                    rat.fleePos = new BlockPos(rat);
+                    rat.setAttackTarget(null);
+                    rat.setRevengeTarget(null);
+                }
+            }
+        }
+        this.isDead = true;
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("RatsSummoned", this.getRatsSummoned());
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        this.setRatsSummoned(compound.getInteger("RatsSummoned"));
+        this.setCombatTask();
+    }
+
+    public void setRatsSummoned(int count) {
+        this.dataManager.set(RAT_COUNT, Integer.valueOf(count));
+    }
+
+    public int getRatsSummoned() {
+        return Integer.valueOf(this.dataManager.get(RAT_COUNT).intValue());
+    }
+
+
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+        summonRat();
+    }
+
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+        this.setCombatTask();
+        return livingdata;
+    }
+
+    public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
+        super.setItemStackToSlot(slotIn, stack);
+
+        if (!this.world.isRemote && slotIn == EntityEquipmentSlot.MAINHAND) {
+            this.setCombatTask();
+        }
+    }
+
+    public void setCombatTask() {
+        if (this.world != null && !this.world.isRemote) {
+            this.tasks.removeTask(this.aiAttackOnCollide);
+            this.tasks.removeTask(this.aiArrowAttack);
+            ItemStack itemstack = this.getHeldItemMainhand();
+            if (itemstack.getItem() == RatsItemRegistry.RAT_FLUTE) {
+                int i = 100;
+                this.aiArrowAttack.setAttackCooldown(i);
+                this.tasks.addTask(4, this.aiArrowAttack);
+            } else {
+                this.tasks.addTask(4, this.aiAttackOnCollide);
+            }
+        }
+    }
+
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(RatsItemRegistry.RAT_FLUTE));
+    }
+
+
+    @Override
+    public void setSwingingArms(boolean swingingArms) {
+        this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public AbstractIllager.IllagerArmPose getArmPose() {
+        return IllagerArmPose.BOW_AND_ARROW;
+    }
+
+    public void summonRat(){
+        if(this.getRatsSummoned() < 6 && ratCooldown == 0) {
+            EntityRat rat = new EntityRat(this.world);
+            rat.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
+            rat.copyLocationAndAnglesFrom(this);
+            rat.setPlague(false);
+            if(!world.isRemote){
+                world.spawnEntity(rat);
+            }
+            rat.setTamed(true);
+            rat.setOwnerId(this.getUniqueID());
+            rat.setCommand(RatCommand.FOLLOW);
+            if (this.getAttackTarget() != null) {
+                rat.setAttackTarget(this.getAttackTarget());
+            }
+            this.setRatsSummoned(this.getRatsSummoned() + 1);
+            this.playSound(RatsSoundRegistry.RAT_FLUTE, 1,1);
+            ratCooldown = 150;
+        }
+    }
+
+    public void onLivingUpdate(){
+        super.onLivingUpdate();
+        if(ratCooldown > 0){
+            ratCooldown--;
+        }
+        fluteTicks++;
+        if(fluteTicks % 157 == 0){
+            this.playSound(RatsSoundRegistry.PIPER_LOOP, 1, 1);
+        }
+
+        if(this.getRatsSummoned() < 3 && ratCooldown == 0){
+            summonRat();
+        }
+    }
+
+    public EnumHandSide getPrimaryHand(){
+        return EnumHandSide.RIGHT;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
+    }
+}

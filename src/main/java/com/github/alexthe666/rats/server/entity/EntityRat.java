@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
+import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
@@ -28,6 +29,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -60,6 +62,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
@@ -150,6 +153,31 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false, new Class[0]));
+    }
+
+    @Nullable
+    public EntityLivingBase getOwner()
+    {
+        try
+        {
+            UUID uuid = this.getOwnerId();
+            EntityLivingBase player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            if(player != null){
+                return player;
+            }else{
+               if(!world.isRemote){
+                   Entity entity =  world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
+                   if(entity instanceof EntityLivingBase){
+                       return (EntityLivingBase)entity;
+                   }
+               }
+            }
+        }
+        catch (IllegalArgumentException var2)
+        {
+            return null;
+        }
+        return null;
     }
 
     protected boolean canDespawn() {
@@ -520,7 +548,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                if(ratCraftingTable.prevCookTime < ratCraftingTable.getField(0)){
+                if(ratCraftingTable.getField(0) > 0 ){
                     crafting = true;
                     ItemStack stack = ratCraftingTable.getStackInSlot(0);
                     if(stack.isEmpty()){
@@ -539,6 +567,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     }
                     this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
                 }
+            }
+        }
+        if(!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper){
+            EntityIllagerPiper piper = (EntityIllagerPiper)this.getOwner();
+            if(piper.getAttackTarget() != null){
+                this.setAttackTarget(piper.getAttackTarget());
             }
         }
         prevUpgrade = this.getUpgrade();
@@ -590,7 +624,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean canBeCollidedWith() {
-        return !this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer);
+        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !crafting;
     }
 
     private void tryCooking() {
@@ -711,7 +745,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected void collideWithEntity(Entity entityIn) {
-        if (!isInRatHole()) {
+        if (!isInRatHole() && !crafting) {
             entityIn.applyEntityCollision(this);
         }
         if (this.hasPlague()) {
@@ -862,6 +896,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected void onDeathUpdate() {
+
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
         if (this.deathTime == maxDeathTime) {
@@ -884,6 +919,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
             }
         }
+    }
+
+    public void setDead() {
+        if(!isDead && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper){
+            EntityIllagerPiper illagerPiper = (EntityIllagerPiper) this.getOwner();
+            illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
+        }
+        this.isDead = true;
     }
 
     public void updateRidden() {
@@ -1117,5 +1160,33 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             }
         }
         return ratCount < RatsMod.CONFIG_OPTIONS.ratCageCramming;
+    }
+
+    public boolean canRatPickupItem(ItemStack stack){
+        if(this.getUpgrade().getItem() instanceof ItemRatListUpgrade){
+            NBTTagCompound nbttagcompound1 = this.getUpgrade().getTagCompound();
+            if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+                NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+                ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                if(this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_BLACKLIST){
+                    for (ItemStack itemstack : nonnulllist) {
+                        if(itemstack.isItemEqual(stack)){
+                            return false;
+                        }
+                    }
+                    return true;
+                }else{
+                    //whitelist
+                    for (ItemStack itemstack : nonnulllist) {
+                        if(itemstack.isItemEqual(stack)){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+            }
+        }
+        return true;
     }
 }

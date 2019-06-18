@@ -93,7 +93,7 @@ public class RatAIRaidChests extends EntityAIBase {
                 }
                 if (distance < 1.5F && canSeeChest()) {
                     toggleChest(feeder, false);
-                    ItemStack stack = RatUtils.getFoodFromInventory(feeder, this.entity.world.rand);
+                    ItemStack stack = RatUtils.getFoodFromInventory(this.entity, feeder, this.entity.world.rand);
                     if(stack == ItemStack.EMPTY){
                         this.targetBlock = null;
                         this.resetTask();
