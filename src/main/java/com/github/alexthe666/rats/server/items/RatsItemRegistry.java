@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -16,7 +17,7 @@ public class RatsItemRegistry {
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, "cheese");
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":raw_rat")
-    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, "raw_rat");
+    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, "raw_rat").setPotionEffect(new PotionEffect(MobEffects.HUNGER, 200, 0), 1);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cooked_rat")
     public static Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, "cooked_rat");
