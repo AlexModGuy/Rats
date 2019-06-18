@@ -1147,7 +1147,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean onHearFlute(EntityPlayer player, RatCommand ratCommand) {
-        if(this.isTamed() && this.isOwner(player)){
+        if(this.isTamed() && this.isOwner(player) && !this.isChild()){
             this.setCommand(ratCommand);
             return true;
         }
