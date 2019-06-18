@@ -142,7 +142,7 @@ public class CommonProxy {
         event.getRegistry().register(builder.build());
     }
 
-    public Object getToqueModel() {
+    public Object getArmorModel(int index) {
         return null;
     }
 

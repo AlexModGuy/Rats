@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
+import com.github.alexthe666.rats.server.items.ItemPiperHat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -66,6 +67,10 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 if(itemstack.getItem() instanceof ItemChefToque){
                     GlStateManager.rotate(-25, 1, 0, 0);
                     GlStateManager.translate(0, 0.2, 0.035F);
+                }
+                if(itemstack.getItem() instanceof ItemPiperHat){
+                    GlStateManager.rotate(-10, 1, 0, 0);
+                    GlStateManager.translate(0, 0.2, -0.1);
                 }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));
                 {

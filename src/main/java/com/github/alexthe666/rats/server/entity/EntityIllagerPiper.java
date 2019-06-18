@@ -20,6 +20,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -157,6 +158,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
 
     public void summonRat(){
         if(this.getRatsSummoned() < 6 && ratCooldown == 0) {
+            world.setEntityState(this, (byte) 82);
             EntityRat rat = new EntityRat(this.world);
             rat.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
             rat.copyLocationAndAnglesFrom(this);
@@ -181,14 +183,43 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         if(ratCooldown > 0){
             ratCooldown--;
         }
-        fluteTicks++;
         if(fluteTicks % 157 == 0){
             this.playSound(RatsSoundRegistry.PIPER_LOOP, 1, 1);
+        }
+        fluteTicks++;
+        if(fluteTicks % 10 == 0){
+            world.setEntityState(this, (byte)83);
         }
 
         if(this.getRatsSummoned() < 3 && ratCooldown == 0){
             summonRat();
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 82) {
+            this.playEffect(0);
+        } else if (id == 83) {
+            this.playEffect(1);
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    protected void playEffect(int type) {
+        EnumParticleTypes enumparticletypes = EnumParticleTypes.NOTE;
+
+        if (type == 1) {
+            double d0 = 0.0;
+            this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+        }else{
+            double d0 = 0.65;
+            for (int i = 0; i < 9; ++i) {
+                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+            }
+        }
+
     }
 
     public EnumHandSide getPrimaryHand(){

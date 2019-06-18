@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
+import com.github.alexthe666.rats.client.model.ModelPiperHat;
 import com.github.alexthe666.rats.client.render.entity.RenderIllagerPiper;
 import com.github.alexthe666.rats.client.render.entity.RenderRat;
 import com.github.alexthe666.rats.client.render.tile.RatsTEISR;
@@ -165,7 +166,12 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SideOnly(Side.CLIENT)
-    public Object getToqueModel() {
-        return new ModelChefToque(1.0F);
+    public Object getArmorModel(int index) {
+        if(index == 0){
+            return new ModelChefToque(1.0F);
+
+        }else{
+            return new ModelPiperHat(1.0F);
+        }
     }
 }

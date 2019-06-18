@@ -33,6 +33,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_flute")
     public static Item RAT_FLUTE = new ItemRatFlute();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":piper_hat")
+    public static Item PIPER_HAT = new ItemPiperHat();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":string_cheese")
     public static Item STRING_CHEESE = new ItemStringCheese();
 

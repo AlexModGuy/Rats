@@ -127,7 +127,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.tasks.addTask(3, this.aiSit = new EntityAISit(this));
         this.tasks.addTask(3, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isEntityAlive() && (entity instanceof EntityPlayer && !EntityRat.this.isTamed() && !EntityRat.this.hasPlague() || entity instanceof EntityOcelot);
+                return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT && !EntityRat.this.isTamed() && !EntityRat.this.hasPlague() || entity instanceof EntityOcelot);
             }
         }, 32, 1.33D, 1.33D));
         this.tasks.addTask(4, new RatAIRaidChests(this));
