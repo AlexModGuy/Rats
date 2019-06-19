@@ -40,6 +40,10 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":string_cheese")
     public static Item STRING_CHEESE = new ItemStringCheese();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":creative_cheese")
+    public static Item CREATIVE_CHEESE = new ItemCreativeCheese();
+
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":assorted_vegetables")
     public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, "assorted_vegetables");
 
