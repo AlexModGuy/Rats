@@ -84,8 +84,16 @@ public class RatPickupFromInventory extends EntityAIBase {
                     toggleChest((IInventory)entity, false);
                 }
                 IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                ItemStack stack = RatUtils.getItemFromItemHandler(this.entity, handler, this.entity.world.rand);
-                if(stack == ItemStack.EMPTY){
+                int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler, this.entity.world.rand);
+                int extractSize = this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER ? 64 : 1;
+                ItemStack stack = ItemStack.EMPTY;
+                try{
+                    stack = handler.extractItem(slot, extractSize, false);
+                }catch(Exception e){
+                    System.err.println("Rat tried to extract item that didnt exist");
+                    e.printStackTrace();
+                }
+                if(slot == -1 || stack == ItemStack.EMPTY){
                     this.targetBlock = null;
                     this.resetTask();
                 }else{
@@ -93,15 +101,7 @@ public class RatPickupFromInventory extends EntityAIBase {
                     if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
                         this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
                     }
-                    if(this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER){
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
-                        int size = stack.getMaxStackSize();
-                        stack.shrink(size);
-                    }else{
-                        duplicate.setCount(1);
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
-                        stack.shrink(1);
-                    }
+                    this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                     this.targetBlock = null;
                     this.resetTask();
                 }

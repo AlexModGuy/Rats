@@ -980,6 +980,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
+        if(itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE){
+            this.setTamed(true);
+            this.world.setEntityState(this, (byte)83);
+            this.setTamedBy(player);
+            return true;
+        }
         if (itemstack.interactWithEntity(player, this, hand)) {
             return true;
         }

@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import scala.Int;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -72,17 +73,17 @@ public class RatUtils {
         }
     }
 
-    public static ItemStack getItemFromItemHandler(EntityRat rat, IItemHandler handler, Random random) {
-        List<ItemStack> items = new ArrayList<ItemStack>();
+    public static int getItemSlotFromItemHandler(EntityRat rat, IItemHandler handler, Random random) {
+        List<Integer> items = new ArrayList<Integer>();
 
         for (int i = 0; i < handler.getSlots(); i++) {
-            ItemStack stack = handler.extractItem(i, handler.getSlotLimit(i), false);
+            ItemStack stack = handler.extractItem(i, handler.getSlotLimit(i), true);
             if(rat.canRatPickupItem(stack)) {
-                items.add(stack);
+                items.add(i);
             }
         }
         if (items.isEmpty()) {
-            return ItemStack.EMPTY;
+            return -1;
         } else if (items.size() == 1) {
             return items.get(0);
         } else {
