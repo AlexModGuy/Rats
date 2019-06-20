@@ -1,7 +1,12 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.ai.RatAIFleeMobs;
+import com.github.alexthe666.rats.server.inventory.ContainerEmpty;
+import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.google.common.base.Predicate;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,10 +26,16 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class TileEntityRatCraftingTable extends TileEntity implements ITickable, ISidedInventory {
 
+    private static final Predicate<ItemStack> EMPTY_ITEM_PREDICATE = new Predicate<ItemStack>() {
+        public boolean apply(@Nullable ItemStack itemStack) {
+            return itemStack != null && !itemStack.isEmpty();
+        }
+    };;
     private static final int[] SLOTS_TOP = new int[]{2, 3, 4, 5, 6, 7, 8, 9, 10};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
     private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(11, ItemStack.EMPTY);
@@ -176,7 +187,31 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
                     } else if (this.getStackInSlot(1).isEmpty()) {
                         this.setInventorySlotContents(1, selectedRecipe.getRecipeOutput().copy());
                     }
-                    consumeIngredients(selectedRecipe, stacks, inventory);
+                    NonNullList<ItemStack> remainingItems = consumeIngredients(selectedRecipe, stacks, inventory);
+                    System.out.println(remainingItems);
+                    for(ItemStack stack : remainingItems){
+                        boolean depositied = false;
+                        for(int i = 2; i < 11; i++){
+                            if(stack.isStackable() && inventory.get(i).isItemEqual(stack) && inventory.get(i).getCount() + stack.getCount() <= inventory.get(i).getMaxStackSize() && !depositied){
+                                int remainingSize = inventory.get(i).getMaxStackSize() - inventory.get(i).getCount();
+                                int addToSize = Math.min(remainingSize, stack.getCount());
+                                stack.shrink(addToSize);
+                                inventory.get(i).grow(addToSize);
+                                if(stack.getCount() <= 0){
+                                    depositied = true;
+                                    break;
+                                }
+                            }
+                            if(inventory.get(i).isEmpty() && !depositied){
+                                depositied = true;
+                                this.setInventorySlotContents(i, stack);
+                                break;
+                            }
+                        }
+                        if(!depositied && !world.isRemote){
+                            InventoryHelper.spawnItemStack(world, this.getPos().getX() + 0.5, this.getPos().getY() + 1.5, this.getPos().getZ() + 0.5, stack);
+                        }
+                    }
                 }
             }
         }
@@ -322,12 +357,14 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         return ingredients.isEmpty();
     }
 
-    public static boolean consumeIngredients(IRecipe recipe, NonNullList<ItemStack> stacks, NonNullList<ItemStack> inv) {
+    public static NonNullList<ItemStack> consumeIngredients(IRecipe recipe, NonNullList<ItemStack> stacks, NonNullList<ItemStack> inv) {
         Map<Ingredient, Integer> ingredients = new HashMap<>();
+        InventoryCrafting inventoryCrafting = new InventoryCrafting(new ContainerEmpty(), 3, 3);
         for(Map.Entry<Ingredient, Integer> ing : compressRecipe(recipe).entrySet()){
             ingredients.put(ing.getKey(), ing.getValue());
         }
         Iterator<Ingredient> itr = ingredients.keySet().iterator();
+        NonNullList<ItemStack> removedItems = NonNullList.create();
         while (itr.hasNext()) {
             Ingredient ingredient = itr.next();
             ItemStack[] matches = ingredient.getMatchingStacks();
@@ -336,6 +373,9 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
             for (ItemStack stack : stacks) {
                 if (doesArrayContainStack(matches, stack) && removedCount < maxCount) {
                     removedCount += Math.min(stack.getCount(), maxCount);
+                    ItemStack copyStack = stack.copy();
+                    copyStack.setCount(removedCount);
+                    removedItems.add(copyStack);
                     stack.shrink(removedCount);
                 }
                 if(removedCount >= maxCount){
@@ -347,7 +387,17 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         for(int i = 0; i < stacks.size(); i++){
             inv.set(i + 2, stacks.get(i));
         }
-        return ingredients.isEmpty();
+        for(int i = 0; i < removedItems.size(); i++){
+            inventoryCrafting.setInventorySlotContents(i, removedItems.get(i));
+        }
+        NonNullList<ItemStack> remainWEmpties = recipe.getRemainingItems(inventoryCrafting);
+        NonNullList<ItemStack> remain = NonNullList.create();
+        for(ItemStack remaining : remainWEmpties){
+            if(!remaining.isEmpty()){
+                remain.add(remaining);
+            }
+        }
+        return remain;
     }
 
 
