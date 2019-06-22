@@ -1,11 +1,16 @@
 package com.github.alexthe666.rats.server.compat.tinkers;
 
+import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.smeltery.CastingRecipe;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
+import slimeknights.tconstruct.shared.TinkerFluids;
 import slimeknights.tconstruct.tools.TinkerMaterials;
 import slimeknights.tconstruct.tools.TinkerTraits;
 import slimeknights.tconstruct.tools.traits.TraitTasty;
@@ -52,5 +57,6 @@ public class TinkersCompat {
     }
 
     public static void post() {
+        TinkerRegistry.registerBasinCasting(new CastingRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), TinkerFluids.milk, 1000, RatsMod.CONFIG_OPTIONS.milkCauldronTime));
     }
 }

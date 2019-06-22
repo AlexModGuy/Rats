@@ -9,7 +9,7 @@ public class RatConfig {
     public int piperSpawnRate = 6;
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
-    public int milkCauldronTime = 1;
+    public int milkCauldronTime = 150;
     public boolean ratsDigBlocks = true;
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
