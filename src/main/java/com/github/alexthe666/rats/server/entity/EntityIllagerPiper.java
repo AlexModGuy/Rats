@@ -12,16 +12,14 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
@@ -68,10 +66,10 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
     }
 
     public void setDead() {
-        if(!isDead){
+        if (!isDead) {
             double dist = 20F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
-                if(rat.isOwner(this)){
+                if (rat.isOwner(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
                     rat.fleePos = new BlockPos(rat);
@@ -156,14 +154,14 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         return IllagerArmPose.BOW_AND_ARROW;
     }
 
-    public void summonRat(){
-        if(this.getRatsSummoned() < 6 && ratCooldown == 0) {
+    public void summonRat() {
+        if (this.getRatsSummoned() < 6 && ratCooldown == 0) {
             world.setEntityState(this, (byte) 82);
             EntityRat rat = new EntityRat(this.world);
             rat.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
             rat.copyLocationAndAnglesFrom(this);
             rat.setPlague(false);
-            if(!world.isRemote){
+            if (!world.isRemote) {
                 world.spawnEntity(rat);
             }
             rat.setTamed(true);
@@ -173,25 +171,25 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
                 rat.setAttackTarget(this.getAttackTarget());
             }
             this.setRatsSummoned(this.getRatsSummoned() + 1);
-            this.playSound(RatsSoundRegistry.RAT_FLUTE, 1,1);
+            this.playSound(RatsSoundRegistry.RAT_FLUTE, 1, 1);
             ratCooldown = 150;
         }
     }
 
-    public void onLivingUpdate(){
+    public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(ratCooldown > 0){
+        if (ratCooldown > 0) {
             ratCooldown--;
         }
-        if(fluteTicks % 157 == 0){
+        if (fluteTicks % 157 == 0) {
             this.playSound(RatsSoundRegistry.PIPER_LOOP, 1, 1);
         }
         fluteTicks++;
-        if(fluteTicks % 10 == 0){
-            world.setEntityState(this, (byte)83);
+        if (fluteTicks % 10 == 0) {
+            world.setEntityState(this, (byte) 83);
         }
 
-        if(this.getRatsSummoned() < 3 && ratCooldown == 0){
+        if (this.getRatsSummoned() < 3 && ratCooldown == 0) {
             summonRat();
         }
     }
@@ -213,7 +211,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         if (type == 1) {
             double d0 = 0.0;
             this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
-        }else{
+        } else {
             double d0 = 0.65;
             for (int i = 0; i < 9; ++i) {
                 this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
@@ -222,7 +220,15 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
 
     }
 
-    public EnumHandSide getPrimaryHand(){
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.VINDICATION_ILLAGER_DEATH;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_VINDICATION_ILLAGER_HURT;
+    }
+    
+    public EnumHandSide getPrimaryHand() {
         return EnumHandSide.RIGHT;
     }
 
