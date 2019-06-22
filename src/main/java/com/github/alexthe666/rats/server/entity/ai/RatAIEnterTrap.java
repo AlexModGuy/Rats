@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
@@ -42,16 +44,18 @@ public class RatAIEnterTrap extends EntityAIBase {
         if (this.entity.isTamed()) {
             return false;
         }
-        resetTarget();
+        if(entity.ticksExisted % RatsMod.CONFIG_OPTIONS.ratUpdateTick == 0){
+            resetTarget();//expensive operation
+        }
         return targetBlock != null;
     }
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            TileEntity entity = this.entity.world.getTileEntity(pos);
-            if (entity instanceof TileEntityRatTrap) {
-                if (!((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty()) {
+            if (this.entity.world.getBlockState(pos).getBlock() == RatsBlockRegistry.RAT_TRAP) {
+                TileEntity entity = this.entity.world.getTileEntity(pos);
+                if (entity != null && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty()) {
                     allBlocks.add(pos);
                 }
             }

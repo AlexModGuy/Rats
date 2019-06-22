@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +37,9 @@ public class RatAIRaidCrops extends EntityAIBase {
         if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
             return false;
         }
-        resetTarget();
+        if(entity.ticksExisted % RatsMod.CONFIG_OPTIONS.ratUpdateTick == 0){
+            resetTarget();//expensive operation
+        }
         return targetBlock != null;
     }
 

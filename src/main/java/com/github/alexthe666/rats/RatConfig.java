@@ -14,6 +14,7 @@ public class RatConfig {
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
+    public int ratUpdateTick = 10;
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -27,5 +28,6 @@ public class RatConfig {
         this.ratStrengthThreshold = config.getFloat("Rat Dig Strength", "all", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
         this.ratFluteDistance = config.getInt("Rat Flute Distance", "all", 2, 1, 100, "The how many chunks away can a rat here a rat flute");
         this.ratCageCramming = config.getInt("Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
+        this.ratUpdateTick = config.getInt("Rat Upgrade Tick", "all", 10, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests every fraction of a tick(20 per second). Default is 10, so rats update every half-second.");
     }
 }

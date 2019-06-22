@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.inventory.IInventory;
@@ -40,18 +42,23 @@ public class RatAIRaidChests extends EntityAIBase {
         if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
             return false;
         }
-        resetTarget();
+        if(entity.ticksExisted % RatsMod.CONFIG_OPTIONS.ratUpdateTick == 0){
+            resetTarget();//expensive operation
+        }
         return targetBlock != null;
     }
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            TileEntity entity = this.entity.world.getTileEntity(pos);
-            if (entity instanceof IInventory) {
-                IInventory inventory = (IInventory) entity;
-                if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
-                    allBlocks.add(pos);
+        BlockPos ratPos = this.entity.getPosition();
+        for (BlockPos pos : BlockPos.getAllInBox(ratPos.add(-RADIUS, -RADIUS / 2, -RADIUS), ratPos.add(RADIUS, RADIUS / 2, RADIUS))) {
+            if(this.entity.world.getBlockState(pos).getBlock() instanceof BlockContainer) {
+                TileEntity entity = this.entity.world.getTileEntity(pos);
+                if (entity instanceof IInventory) {
+                    IInventory inventory = (IInventory) entity;
+                    if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
+                        allBlocks.add(pos);
+                    }
                 }
             }
         }
