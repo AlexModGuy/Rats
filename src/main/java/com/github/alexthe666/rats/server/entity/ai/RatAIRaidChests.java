@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -49,15 +50,26 @@ public class RatAIRaidChests extends EntityAIBase {
     }
 
     private void resetTarget() {
+        String[] blacklist = RatsMod.CONFIG_OPTIONS.blacklistedRatBlocks;
         List<BlockPos> allBlocks = new ArrayList<>();
         BlockPos ratPos = this.entity.getPosition();
         for (BlockPos pos : BlockPos.getAllInBox(ratPos.add(-RADIUS, -RADIUS / 2, -RADIUS), ratPos.add(RADIUS, RADIUS / 2, RADIUS))) {
-            if(this.entity.world.getBlockState(pos).getBlock() instanceof BlockContainer) {
-                TileEntity entity = this.entity.world.getTileEntity(pos);
-                if (entity instanceof IInventory) {
-                    IInventory inventory = (IInventory) entity;
-                    if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
-                        allBlocks.add(pos);
+            Block block = this.entity.world.getBlockState(pos).getBlock();
+            if(block instanceof BlockContainer) {
+                boolean listed = false;
+                for(String name : blacklist){
+                    if(name.equalsIgnoreCase(block.getRegistryName().toString())){
+                        listed = true;
+                        break;
+                    }
+                }
+                if(!listed) {
+                    TileEntity entity = this.entity.world.getTileEntity(pos);
+                    if (entity instanceof IInventory) {
+                        IInventory inventory = (IInventory) entity;
+                        if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
+                            allBlocks.add(pos);
+                        }
                     }
                 }
             }
