@@ -7,6 +7,7 @@ public class RatConfig {
     public boolean spawnPiper = true;
     public int ratSpawnRate = 80;
     public int piperSpawnRate = 6;
+    public float piperHatDropRate = 0.09F;
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
     public int milkCauldronTime = 150;
@@ -22,6 +23,7 @@ public class RatConfig {
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
+        this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
         this.cheesemaking = config.getBoolean("Cheesemaking", "all", true, "True if cheese can be created in cauldrons");
         this.milkCauldronTime = config.getInt("Milk Curdling Time", "all", 150, 20, 1000000, "The time in ticks(20 per second) it takes for milk to turn into cheese in a cauldron");

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public class ClientEvent {
+public class ClientEvents {
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
 
     @SubscribeEvent
@@ -26,13 +26,6 @@ public class ClientEvent {
         }
         if (!event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && renderer.isShaderActive()) {
             renderer.stopUseShader();
-        }
-    }
-
-    @SubscribeEvent
-    public void onDrops(LivingDropsEvent event) {
-        if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof EntityPlayer && event.getEntityLiving().world.rand.nextFloat() < 0.09F + 0.05F * event.getLootingLevel()) {
-            event.getDrops().add(new EntityItem(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
     }
 

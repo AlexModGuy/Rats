@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.events;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -9,8 +10,10 @@ import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -23,6 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -111,6 +115,13 @@ public class ServerEvents {
                     itr.remove();
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onDrops(LivingDropsEvent event) {
+        if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof EntityPlayer && event.getEntityLiving().world.rand.nextFloat() < RatsMod.CONFIG_OPTIONS.piperHatDropRate + (RatsMod.CONFIG_OPTIONS.piperHatDropRate / 2) * event.getLootingLevel()) {
+            event.getDrops().add(new EntityItem(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
     }
 
