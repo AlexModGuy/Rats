@@ -105,7 +105,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             "rats:textures/entity/rat/tamed/rat_hooded_brown.png",
             "rats:textures/entity/rat/tamed/rat_hooded_gray.png",
             "rats:textures/entity/rat/tamed/rat_siamese.png",
-            "rats:textures/entity/rat/tamed/rat_white.png"
+            "rats:textures/entity/rat/tamed/rat_white.png",
+            "rats:textures/entity/rat/tamed/rat_hooded_yellow.png",
+            "rats:textures/entity/rat/tamed/rat_brown_undercoat.png",
+            "rats:textures/entity/rat/tamed/rat_dark_undercoat.png"
     };
     private ItemStack prevUpgrade = ItemStack.EMPTY;
     public int cookingProgress = 0;
