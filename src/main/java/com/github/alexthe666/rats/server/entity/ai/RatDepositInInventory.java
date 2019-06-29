@@ -70,16 +70,20 @@ public class RatDepositInInventory extends EntityAIBase {
         return true;
     }
 
+    private BlockPos getMovePos(){
+        return this.targetBlock.offset(this.entity.depositFacing);
+    }
+
     @Override
     public void updateTask() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
-            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
+            this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
             double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-            if (distance < 2.5F && distance >= 1.5F && canSeeChest() && entity instanceof IInventory) {
+            if (distance < 2.5F && distance >= 1.85F && canSeeChest() && entity instanceof IInventory) {
                 toggleChest((IInventory) entity, true);
             }
-            if (distance < 1.5F && canSeeChest()) {
+            if (distance < 1.85F && canSeeChest()) {
                 if (entity instanceof IInventory) {
                     toggleChest((IInventory) entity, false);
                 }

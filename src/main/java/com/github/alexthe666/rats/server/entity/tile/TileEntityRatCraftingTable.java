@@ -188,7 +188,6 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
                         this.setInventorySlotContents(1, selectedRecipe.getRecipeOutput().copy());
                     }
                     NonNullList<ItemStack> remainingItems = consumeIngredients(selectedRecipe, stacks, inventory);
-                    System.out.println(remainingItems);
                     for(ItemStack stack : remainingItems){
                         boolean depositied = false;
                         for(int i = 2; i < 11; i++){
