@@ -108,6 +108,7 @@ rats.direction.up=top
 rats.direction.down=bottom
 rats.direction.slot=slot(s)
 rats.synesthesia=Synesthesia
+rats.plague=Plague
 material.cheese.name=Cheese
 material.string_cheese.name=String Cheese
 modifier.ratty.name=Ratty

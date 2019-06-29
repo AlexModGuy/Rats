@@ -408,7 +408,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (flag) {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof EntityLivingBase) {
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 100));
+                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
             }
         }
         return flag;

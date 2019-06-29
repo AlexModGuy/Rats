@@ -43,7 +43,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(RatsMod.CONFIT_BYALDI_POTION);
+        event.getRegistry().registerAll(RatsMod.CONFIT_BYALDI_POTION, RatsMod.PLAGUE_POTION);
     }
 
     @SubscribeEvent

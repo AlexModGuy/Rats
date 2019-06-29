@@ -11,6 +11,7 @@ import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
 import com.github.alexthe666.rats.server.message.MessageRatCommand;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
+import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,6 +51,7 @@ public class RatsMod {
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
     private static Logger logger;
     public static Potion CONFIT_BYALDI_POTION = new PotionConfitByaldi();
+    public static Potion PLAGUE_POTION = new PotionPlague();
     public static Configuration config;
     public static RatConfig CONFIG_OPTIONS = new RatConfig();
     @EventHandler
