@@ -81,6 +81,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private int digCooldown = 0;
     public boolean holdInMouth = true;
     public static final Animation ANIMATION_EAT = Animation.create(10);
+    public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);
+    public static final Animation ANIMATION_IDLE_SNIFF = Animation.create(20);
     private int eatingTicks = 0;
     public int wildTrust = 0;
     public ContainerHorseChest ratInventory;
@@ -465,12 +467,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
-        boolean sitting = isSitting() || this.isRiding();
+        boolean sitting = isSitting() || this.isRiding() || this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF;
+        float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0) || this.getAnimation() == ANIMATION_EAT || this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER);
         if (sitting && sitProgress < 20.0F) {
-            sitProgress += 0.5F;
+            sitProgress += sitInc;
         } else if (!sitting && sitProgress > 0.0F) {
-            sitProgress -= 0.5F;
+            sitProgress -= sitInc;
         }
         if (holdingInHands && holdProgress < 5.0F) {
             holdProgress += 0.5F;
@@ -577,6 +580,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
                 }
             }
+        }
+        if(!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0){
+            this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
         if(!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper){
             EntityIllagerPiper piper = (EntityIllagerPiper)this.getOwner();
@@ -892,7 +898,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_EAT};
+        return new Animation[]{ANIMATION_EAT, ANIMATION_IDLE_SCRATCH, ANIMATION_IDLE_SNIFF};
     }
 
     public boolean canPhaseThroughBlock(World world, BlockPos pos) {

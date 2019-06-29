@@ -10,6 +10,7 @@ import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelRat extends AdvancedModelBase {
     public AdvancedModelRenderer body1;
@@ -147,7 +148,51 @@ public class ModelRat extends AdvancedModelBase {
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
         setRotationAngles(f, f1, f2, f3, f4, f5, (EntityRat) entity);
-        animator.update(entity);
+        animator.update(entity);//ANIMATION_IDLE_SCRATCH
+        animator.setAnimation(EntityRat.ANIMATION_IDLE_SCRATCH);
+        animator.startKeyframe(5);
+        scratchPosition();
+        rotateFrom(rightArm, -90, 0, 0);
+        rotateFrom(leftArm, -90, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        scratchPosition();
+        rotateFrom(rightArm, -25, 30, 0);
+        rotateFrom(leftArm, -25, -30, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        scratchPosition();
+        rotateFrom(rightArm, -90, 0, 0);
+        rotateFrom(leftArm, -90, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        scratchPosition();
+        rotateFrom(rightArm, -25, 30, 0);
+        rotateFrom(leftArm, -25, -30, 0);
+        animator.endKeyframe();
+        animator.resetKeyframe(5);
+        animator.setAnimation(EntityRat.ANIMATION_IDLE_SNIFF);
+        animator.startKeyframe(3);
+        rotateFrom(neck, -30, 0, 0);
+        rotateFrom(nose, 15, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        rotateFrom(neck, -60, 0, 0);
+        rotateFrom(nose, -15, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        rotateFrom(neck, -30, 0, 0);
+        rotateFrom(nose, 15, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        rotateFrom(neck, -60, 0, 0);
+        rotateFrom(nose, -15, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        rotateFrom(neck, -30, 0, 0);
+        rotateFrom(nose, 15, 0, 0);
+        animator.endKeyframe();
+        animator.resetKeyframe(5);
 
     }
 
@@ -163,7 +208,7 @@ public class ModelRat extends AdvancedModelBase {
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
-        if(rat.getRidingEntity() != null && rat.getRidingEntity() instanceof EntityLivingBase){
+        if (rat.getRidingEntity() != null && rat.getRidingEntity() instanceof EntityLivingBase) {
             maxTailRotation = (float) Math.toRadians(30);
             EntityLivingBase rider = (EntityLivingBase) rat.getRidingEntity();
             f12 = (float) Math.toRadians(-15) + rider.limbSwingAmount;
@@ -217,17 +262,17 @@ public class ModelRat extends AdvancedModelBase {
         progressRotation(rightHand, rat.sitProgress, 0.9599310885968813F, -0.17453292519943295F, 0.08726646259971647F, 20F);
         progressRotation(leftHand, rat.sitProgress, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F, 20F);
         progressRotation(body2, rat.sitProgress, 0.3490658503988659F, 0.0F, 0.0F, 20F);
-        if(!rat.isRiding()) {
+        if (!rat.isRiding()) {
             progressRotation(tail2, rat.sitProgress, 0.20943951023931953F, 0.6108652381980153F, 0.0F, 20F);
             progressRotation(tail1, rat.sitProgress, 1.2F, 0.17453292519943295F, 0.6981317007977318F, 20F);
         }
         progressPosition(body1, rat.sitProgress, 0, 16F, 0, 20F);
         progressPosition(leftThigh, rat.sitProgress, 2.5F, 0, 4.5F, 20F);
         progressPosition(rightThigh, rat.sitProgress, -2.5F, 0, 4.5F, 20F);
-        if(rat.getAnimation() == EntityRat.ANIMATION_EAT){
+        if (rat.getAnimation() == EntityRat.ANIMATION_EAT) {
             this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, f2, 1);
             this.walk(this.head, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.2F, f2, 1);
-            if(rat.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER) {
+            if (rat.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER) {
                 this.walk(this.leftArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
                 this.walk(this.rightArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
                 this.walk(this.rightHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
@@ -236,9 +281,9 @@ public class ModelRat extends AdvancedModelBase {
         }
         this.tail1.rotateAngleX += f12;
         this.tail2.rotateAngleX -= f12 / 2F;
-        float ulatingScale = 0.9F + (float)Math.sin(f2 * 0.75F) * 0.1F;
-        if(!rat.isDeadInTrap) {
-            if(RatsMod.PROXY.shouldRenderNameplates()){
+        float ulatingScale = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
+        if (!rat.isDeadInTrap) {
+            if (RatsMod.PROXY.shouldRenderNameplates() && rat.getAnimation() != EntityRat.ANIMATION_IDLE_SCRATCH) {
                 this.faceTarget(f3, f4, 2, neck, head);
             }
             this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, f2, 1);
@@ -249,7 +294,7 @@ public class ModelRat extends AdvancedModelBase {
             this.walk(this.wisker1, speedIdle, degreeIdle, false, 2, 0, f2, 1);
             this.nose.setScale(ulatingScale, ulatingScale, ulatingScale);
         }
-        if(running) {
+        if (running) {
             this.bob(this.body1, speedRun, degreeRun * 5F, false, f, f1);
             this.walk(this.body1, speedRun, degreeRun, false, 0, 0, f, f1);
             this.walk(this.body2, speedRun, degreeRun * 0.5F, false, 1, -0.1F, f, f1);
@@ -260,20 +305,20 @@ public class ModelRat extends AdvancedModelBase {
             this.walk(this.rightThigh, speedRun, degreeRun * 2F, true, 0, 0, f, f1);
             this.walk(this.rightFoot, speedRun, degreeRun * 2F, true, 3, -0.1F, f, f1);
             this.walk(this.leftFoot, speedRun, degreeRun * 2F, true, 3, -0.1F, f, f1);
-            if(!holdingInHands) {
+            if (!holdingInHands) {
                 this.walk(this.leftArm, speedRun, degreeRun * 2F, true, 2, 0, f, f1);
                 this.walk(this.rightArm, speedRun, degreeRun * 2F, true, 2, 0, f, f1);
                 this.walk(this.rightHand, speedRun, degreeRun * 2F, true, 5, -0.1F, f, f1);
                 this.walk(this.leftHand, speedRun, degreeRun * 2F, true, 5, -0.1F, f, f1);
             }
-        }else{
+        } else {
             this.walk(this.body1, speedWalk, degreeWalk * 0.25F, false, 0, 0, f, f1);
             this.walk(this.body2, speedWalk, degreeWalk * 0.25F, false, 1, 0.1F, f, f1);
             this.walk(this.rightThigh, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
             this.walk(this.rightFoot, speedWalk, degreeWalk * 2F, false, 3.5F, -0.1F, f, f1);
             this.walk(this.leftThigh, speedWalk, degreeWalk * 4F, true, 1, 0, f, f1);
             this.walk(this.leftFoot, speedWalk, degreeWalk * 2F, true, 3.5F, 0.1F, f, f1);
-            if(!holdingInHands) {
+            if (!holdingInHands) {
                 this.walk(this.rightArm, speedWalk, degreeWalk * 4F, true, 1, 0, f, f1);
                 this.walk(this.rightHand, speedWalk, degreeWalk * 2F, true, 3F, 0.1F, f, f1);
                 this.walk(this.leftArm, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
@@ -284,7 +329,7 @@ public class ModelRat extends AdvancedModelBase {
             this.walk(this.neck, speedWalk, degreeWalk * 0.25F, false, 2, 0, f, f1);
 
         }
-        if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER){
+        if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER) {
             leftArm.rotateAngleX = 1.3089969389957472F;
             rightArm.rotateAngleX = 1.3089969389957472F;
             rightHand.rotateAngleX = 0.9599310885968813F;
@@ -295,9 +340,9 @@ public class ModelRat extends AdvancedModelBase {
             leftHand.rotateAngleZ = -0.08726646259971647F;
 
             // progressRotation(rightHand, 20F, 0.9599310885968813F, -0.17453292519943295F, 0.08726646259971647F, 20F);
-           // progressRotation(leftHand, 20F, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F, 20F);
+            // progressRotation(leftHand, 20F, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F, 20F);
         }
-        if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING && rat.crafting){
+        if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING && rat.crafting) {
             this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
             this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
             this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);
@@ -321,6 +366,17 @@ public class ModelRat extends AdvancedModelBase {
         model.rotationPointX += progress * (x - model.defaultPositionX) / divisor;
         model.rotationPointY += progress * (y - model.defaultPositionY) / divisor;
         model.rotationPointZ += progress * (z - model.defaultPositionZ) / divisor;
+    }
+
+    private void scratchPosition() {
+        rotateFrom(neck, 38, 0, 0);
+        rotateFrom(head, 58, 0, 0);
+        rotateFrom(rightHand, 25, 10, -30);
+        rotateFrom(leftHand, 25, -10, 30);
+    }
+
+    private void rotateFrom(AdvancedModelRenderer renderer, float degX, float degY, float degZ) {
+        animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
 
 }
