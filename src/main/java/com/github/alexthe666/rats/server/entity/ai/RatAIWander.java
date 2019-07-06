@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.init.Blocks;
@@ -30,7 +31,7 @@ public class RatAIWander extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove()) {
+        if (!rat.canMove() || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
             return false;
         }
         if (!this.mustUpdate) {

@@ -87,7 +87,11 @@ public class RenderRat extends RenderLiving<EntityRat> {
                     GlStateManager.translate(0.0F, -0.7F, 0.25);
                 }
             }
+        }else{
+            float f7 = rat.prevFlyingPitch + (rat.flyingPitch - rat.prevFlyingPitch) * partialTickTime;
+            GL11.glRotatef(rat.flyingPitch, 1, 0, 0);
         }
+
     }
 
     protected ResourceLocation getEntityTexture(EntityRat entity) {

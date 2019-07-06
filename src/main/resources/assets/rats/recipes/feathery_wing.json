@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CFF",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "feather"
+    },
+    "C": {
+      "item": "minecraft:chicken",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:feathery_wing"
+  }
+}

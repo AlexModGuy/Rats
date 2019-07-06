@@ -46,6 +46,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":assorted_vegetables")
     public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, "assorted_vegetables");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
+    public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 
@@ -84,5 +87,8 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_whitelist")
     public static Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_flight")
+    public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
 }

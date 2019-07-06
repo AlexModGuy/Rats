@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.util.math.MathHelper;
@@ -22,8 +23,14 @@ public class RatAIFollowOwner extends EntityAIFollowOwner {
         if (!this.rat.isSitting()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
-
-                if (!rat.getNavigator().tryMoveToEntityLiving(owner, 1.33D) || rat.getDistance(owner) > 20) {
+                boolean shouldTeleport;
+                if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT){
+                    shouldTeleport = rat.getDistance(owner) > 20;
+                    rat.getMoveHelper().setMoveTo((double) owner.posX, (double) owner.posY + 2, (double) owner.posZ, 0.25D);
+                }else{
+                    shouldTeleport = !rat.getNavigator().tryMoveToEntityLiving(owner, 1.33D) || rat.getDistance(owner) > 20;
+                }
+                if (shouldTeleport) {
                     if (!rat.getLeashed() && !rat.isRiding()) {
                         if (rat.getDistanceSq(owner) >= 144.0D) {
                             int i = MathHelper.floor(owner.posX) - 2;

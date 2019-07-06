@@ -41,8 +41,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -62,6 +62,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
@@ -93,7 +94,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public BlockPos depositPos;
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
-    private boolean isTameNavigator;
+    /*
+       0 = tamed navigator
+       1 = wild navigator
+       2 = flight navigator
+     */
+    private int navigatorType;
     public boolean crafting = false;
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
@@ -115,10 +121,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public int breedCooldown = 0;
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "rat"));
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
+    public float flyingPitch;
+    public float prevFlyingPitch;
     public EntityRat(World worldIn) {
         super(worldIn);
-        switchNavigator(false);
+        switchNavigator(1);
         this.setSize(0.49F, 0.49F);
         initInventory();
     }
@@ -128,6 +136,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
         this.tasks.addTask(2, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
         this.tasks.addTask(2, new RatAIWander(this, 1.0D));
+        this.tasks.addTask(2, new RatAIWanderFlight(this));
         this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(3, this.aiSit = new EntityAISit(this));
         this.tasks.addTask(3, new RatAIFleeMobs(this, new Predicate<Entity>() {
@@ -151,7 +160,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this);
                 } else {
-                    if(entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()){
+                    if (entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
                         return false;
                     }
                     return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof EntityPlayer) || EntityRat.this.hasPlague()) && !entity.isChild();
@@ -164,25 +173,21 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     @Nullable
-    public EntityLivingBase getOwner()
-    {
-        try
-        {
+    public EntityLivingBase getOwner() {
+        try {
             UUID uuid = this.getOwnerId();
             EntityLivingBase player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
-            if(player != null){
+            if (player != null) {
                 return player;
-            }else{
-               if(!world.isRemote){
-                   Entity entity =  world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
-                   if(entity instanceof EntityLivingBase){
-                       return (EntityLivingBase)entity;
-                   }
-               }
+            } else {
+                if (!world.isRemote) {
+                    Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
+                    if (entity instanceof EntityLivingBase) {
+                        return (EntityLivingBase) entity;
+                    }
+                }
             }
-        }
-        catch (IllegalArgumentException var2)
-        {
+        } catch (IllegalArgumentException var2) {
             return null;
         }
         return null;
@@ -236,20 +241,26 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
-    private void switchNavigator(boolean tame) {
-        if (tame) {
+    private void switchNavigator(int type) {
+        if (type == 1) {
+            this.moveHelper = new EntityMoveHelper(this);
             this.navigator = new PathNavigateGround(this, world);
-            this.isTameNavigator = true;
-        } else {
+            this.navigatorType = 1;
+        } else if (type == 0) {
+            this.moveHelper = new EntityMoveHelper(this);
             this.navigator = new RatPathNavigate(this, world);
-            this.isTameNavigator = false;
+            this.navigatorType = 0;
+        } else if (type == 2) {
+            this.moveHelper = new RatFlyingMoveHelper(this);
+            this.navigator = new FlyingRatPathNavigate(this, world);
+            this.navigatorType = 2;
         }
     }
 
     protected PathNavigate createNavigator(World worldIn) {
-        if(isTamed() && !this.isInCage()){
+        if (isTamed() && !this.isInCage()) {
             return super.createNavigator(worldIn);
-        }else{
+        } else {
             return new RatPathNavigate(this, worldIn);
         }
     }
@@ -460,13 +471,49 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.heal(this.getMaxHealth());
         }
         super.onLivingUpdate();
-        boolean wildNavigate = !this.isTamed() || this.isInCage();
-        if (wildNavigate && this.isTameNavigator) {
-            switchNavigator(false);
+        this.prevFlyingPitch = flyingPitch;
+        if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+            if(navigatorType != 2){
+                switchNavigator(2);
+            }
+            if(canMove()) {
+                if (this.getMoveHelper().getY() > this.posY) {
+                    this.motionY += 0.08F;
+                }
+            }else if(!onGround){
+                this.motionY -= 0.08F;
+            }
+            if(!this.onGround){
+                double ydist = prevPosY - this.posY;//down 0.4 up -0.38
+                double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+                this.flyingPitch += (float) (ydist) * 20;
+                this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
+                float plateau = 2;
+                if(this.flyingPitch > plateau){
+                    this.flyingPitch -= planeDist * Math.abs(this.flyingPitch) / 90;
+                }
+                if(this.flyingPitch < -plateau){
+                    this.flyingPitch += planeDist * Math.abs(this.flyingPitch) / 90;
+                }
+                if(this.flyingPitch > 2F){
+                    this.flyingPitch -= 1F;
+
+                }else if(this.flyingPitch < -2F){
+                    this.flyingPitch += 1F;
+                }
+            }else{
+                this.flyingPitch = 0;
+            }
+        } else {
+            boolean wildNavigate = !this.isTamed() || this.isInCage();
+            if (wildNavigate && navigatorType != 1) {
+                switchNavigator(1);
+            }
+            if (!wildNavigate && navigatorType != 0) {
+                switchNavigator(0);
+            }
         }
-        if (!wildNavigate && !this.isTameNavigator) {
-            switchNavigator(true);
-        }
+
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
@@ -542,10 +589,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             }
         }
         if (this.isInCage()) {
-            if(this.getAttackTarget() != null){
+            if (this.getAttackTarget() != null) {
                 this.setAttackTarget(null);
             }
-            if(this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER){
+            if (this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER) {
                 this.setCommand(RatCommand.WANDER);
             }
         }
@@ -556,40 +603,40 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             tryBreeding();
         }
         crafting = false;
-        if(this.isTamed() && this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+        if (this.isTamed() && this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING) {
             TileEntity te = world.getTileEntity(new BlockPos(this).down());
-            if(te != null && te instanceof TileEntityRatCraftingTable){
-                TileEntityRatCraftingTable ratCraftingTable = (TileEntityRatCraftingTable)te;
+            if (te != null && te instanceof TileEntityRatCraftingTable) {
+                TileEntityRatCraftingTable ratCraftingTable = (TileEntityRatCraftingTable) te;
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                if(ratCraftingTable.getField(0) > 0 ){
+                if (ratCraftingTable.getField(0) > 0) {
                     crafting = true;
                     ItemStack stack = ratCraftingTable.getStackInSlot(0);
-                    if(stack.isEmpty()){
+                    if (stack.isEmpty()) {
                         this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    }else{
+                    } else {
                         this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
                         this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
                     }
-                    if(ratCraftingTable.prevCookTime % 20 == 0){
+                    if (ratCraftingTable.prevCookTime % 20 == 0) {
                         this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
                     }
                 }
-                if(ratCraftingTable.prevCookTime == 199){
-                    for(int i = 0; i < 4; i++){
+                if (ratCraftingTable.prevCookTime == 199) {
+                    for (int i = 0; i < 4; i++) {
                         this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                     }
                     this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
                 }
             }
         }
-        if(!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0){
+        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
-        if(!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper){
-            EntityIllagerPiper piper = (EntityIllagerPiper)this.getOwner();
-            if(piper.getAttackTarget() != null){
+        if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper) {
+            EntityIllagerPiper piper = (EntityIllagerPiper) this.getOwner();
+            if (piper.getAttackTarget() != null) {
                 this.setAttackTarget(piper.getAttackTarget());
             }
         }
@@ -599,7 +646,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     private void tryBreeding() {
         List<EntityRat> list = world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - 0.5F, this.posY - 0.5F, this.posZ - 0.5F, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F));
-        if(doBreedingSurvey()) {
+        if (doBreedingSurvey()) {
             for (EntityRat rat : list) {
                 if ((rat.isMale() && !this.isMale() || this.isMale() && !rat.isMale()) && !rat.isChild()) {
                     breedCooldown = 24000;
@@ -633,7 +680,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             if (mother.isTamed()) {
                 baby.setTamed(true);
                 baby.setOwnerId(mother.getOwnerId());
-            }else if (father.isTamed()) {
+            } else if (father.isTamed()) {
                 baby.setTamed(true);
                 baby.setOwnerId(father.getOwnerId());
             }
@@ -662,7 +709,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 heldItem.shrink(1);
                 if (heldItem.isEmpty()) {
                     this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
-                }else{
+                } else {
                     if (!this.tryDepositItemInContainers(burntItem)) {
                         if (!world.isRemote) {
                             this.entityDropItem(burntItem, 0.25F);
@@ -723,7 +770,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.getNavigator().clearPath();
             this.motionZ *= 0.0D;
             this.motionX *= 0.0D;
-            if(breakingTime % 40 == 0){
+            if (breakingTime % 40 == 0) {
                 this.playSound(RatsSoundRegistry.RAT_DIG, this.getSoundVolume(), this.getSoundPitch());
             }
             if (i != this.previousBreakProgress) {
@@ -782,29 +829,31 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     private void findDigTarget() {
-        if (((RatPathNavigate) this.getNavigator()).targetPosition != null) {
-            BlockPos target = ((RatPathNavigate) this.getNavigator()).targetPosition;
-            if (world.getTileEntity(target) != null) {
-                finalDigPathPoint = ((RatPathNavigate) this.getNavigator()).targetPosition;
+        if (this.getNavigator() instanceof RatPathNavigate) {
+            if (((RatPathNavigate) this.getNavigator()).targetPosition != null) {
+                BlockPos target = ((RatPathNavigate) this.getNavigator()).targetPosition;
+                if (world.getTileEntity(target) != null) {
+                    finalDigPathPoint = ((RatPathNavigate) this.getNavigator()).targetPosition;
+                }
             }
-        }
-        if (!this.collidedHorizontally || !this.getNavigator().noPath()) {
-            return;
-        }
-        if (finalDigPathPoint != null) {
-            BlockPos digPos = rayTraceBlockPos(finalDigPathPoint);
-            if (digPos != null && this.getDistanceSq(digPos) < 2) {
-                if (world.getTileEntity(digPos) == null) {
-                    Material material = world.getBlockState(digPos).getMaterial();
-                    if (world.getBlockState(digPos).getBlockHardness(world, digPos) <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold && canDigBlock(world, digPos) && (material.isToolNotRequired() || material == Material.CRAFTED_SNOW) && digPos.getY() == (int) Math.round(this.posY)) {
-                        diggingPos = digPos;
+            if (!this.collidedHorizontally || !this.getNavigator().noPath()) {
+                return;
+            }
+            if (finalDigPathPoint != null) {
+                BlockPos digPos = rayTraceBlockPos(finalDigPathPoint);
+                if (digPos != null && this.getDistanceSq(digPos) < 2) {
+                    if (world.getTileEntity(digPos) == null) {
+                        Material material = world.getBlockState(digPos).getMaterial();
+                        if (world.getBlockState(digPos).getBlockHardness(world, digPos) <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold && canDigBlock(world, digPos) && (material.isToolNotRequired() || material == Material.CRAFTED_SNOW) && digPos.getY() == (int) Math.round(this.posY)) {
+                            diggingPos = digPos;
+                        }
                     }
                 }
             }
         }
     }
 
-    private boolean canDigBlock(World world, BlockPos pos){
+    private boolean canDigBlock(World world, BlockPos pos) {
         return world.getBlockState(pos).isOpaqueCube();
     }
 
@@ -940,7 +989,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public void setDead() {
-        if(!isDead && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper){
+        if (!isDead && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper) {
             EntityIllagerPiper illagerPiper = (EntityIllagerPiper) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
         }
@@ -989,9 +1038,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if(itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE){
+        if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE) {
             this.setTamed(true);
-            this.world.setEntityState(this, (byte)83);
+            this.world.setEntityState(this, (byte) 83);
             this.setTamedBy(player);
             return true;
         }
@@ -1057,6 +1106,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     ratInventory.setInventorySlotContents(j, itemstack.copy());
                 }
             }
+        }
+    }
+
+    public void fall(float distance, float damageMultiplier) {
+        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+            super.fall(distance, damageMultiplier);
         }
     }
 
@@ -1150,10 +1205,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected SoundEvent getAmbientSound() {
-        if(this.hasPlague() && this.getAttackTarget() != null){
+        if (this.hasPlague() && this.getAttackTarget() != null) {
             return RatsSoundRegistry.RAT_PLAGUE;
         }
-        if(!this.hasPlague() && this.getHealth() < this.getMaxHealth() / 2D){
+        if (!this.hasPlague() && this.getHealth() < this.getMaxHealth() / 2D) {
             return RatsSoundRegistry.RAT_IDLE;
         }
         return super.getAmbientSound();
@@ -1168,7 +1223,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean onHearFlute(EntityPlayer player, RatCommand ratCommand) {
-        if(this.isTamed() && this.isOwner(player) && !this.isChild()){
+        if (this.isTamed() && this.isOwner(player) && !this.isChild()) {
             this.setCommand(ratCommand);
             return true;
         }
@@ -1179,30 +1234,30 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         int ratCount = 0;
         double dist = 1.5F;
         for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
-            if(rat.isInCage()){
+            if (rat.isInCage()) {
                 ratCount++;
             }
         }
         return ratCount < RatsMod.CONFIG_OPTIONS.ratCageCramming;
     }
 
-    public boolean canRatPickupItem(ItemStack stack){
-        if(this.getUpgrade().getItem() instanceof ItemRatListUpgrade){
+    public boolean canRatPickupItem(ItemStack stack) {
+        if (this.getUpgrade().getItem() instanceof ItemRatListUpgrade) {
             NBTTagCompound nbttagcompound1 = this.getUpgrade().getTagCompound();
             if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
-                if(this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_BLACKLIST){
+                if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_BLACKLIST) {
                     for (ItemStack itemstack : nonnulllist) {
-                        if(itemstack.isItemEqual(stack)){
+                        if (itemstack.isItemEqual(stack)) {
                             return false;
                         }
                     }
                     return true;
-                }else{
+                } else {
                     //whitelist
                     for (ItemStack itemstack : nonnulllist) {
-                        if(itemstack.isItemEqual(stack)){
+                        if (itemstack.isItemEqual(stack)) {
                             return true;
                         }
                     }
@@ -1214,9 +1269,17 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return true;
     }
 
+    public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
+        BlockPos pos = new BlockPos(x, rat.posY, z);
+        while (world.isAirBlock(pos.down()) && pos.getY() > 0) {
+            pos = pos.down();
+        }
+        return pos.up(2 + rat.getRNG().nextInt(3));
+    }
+
     public BlockPos getLightPosition() {
         BlockPos pos = new BlockPos(this);
-        if(!world.getBlockState(pos).isFullBlock()){
+        if (!world.getBlockState(pos).isFullBlock()) {
             return pos.up();
         }
         return pos;
