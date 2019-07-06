@@ -625,7 +625,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     babyColor = rand.nextInt(4);
                 }
             } else {
-                babyColor = rand.nextInt(RAT_TEXTURES.length - 1);
+                babyColor = rand.nextInt(RAT_TEXTURES.length);
             }
             baby.setColorVariant(babyColor);
             baby.setPosition(mother.posX, mother.posY, mother.posZ);
