@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rattrap"
+        },
+        "title": {
+            "translate": "advancements.rats.rattrap.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rattrap.description"
+        }
+    },
+    "parent": "rats:rats/root",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rattrap"
+                    }
+                ]
+            }
+        }
+    }
+}

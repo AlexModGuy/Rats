@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_health"
+        },
+        "title": {
+            "translate": "advancements.rats.tame_rat.title"
+        },
+        "description": {
+            "translate": "advancements.rats.tame_rat.description"
+        }
+    },
+    "parent": "rats:rats/cheese",
+    "criteria": {
+        "tamed_animal": {
+            "trigger": "minecraft:tame_animal",
+            "conditions": {
+                "entity_object": {
+                    "type": "rats:rat"
+                }
+            }
+        }
+    }
+}

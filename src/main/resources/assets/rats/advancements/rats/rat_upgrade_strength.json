@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_strength"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_upgrade_strength.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_upgrade_strength.description"
+        }
+    },
+    "parent": "rats:rats/rat_upgrade_basic",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_upgrade_strength"
+                    }
+                ]
+            }
+        }
+    }
+}

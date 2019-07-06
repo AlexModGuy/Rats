@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_cage"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_cage.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_cage.description"
+        }
+    },
+    "parent": "rats:rats/tame_rat",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_cage"
+                    }
+                ]
+            }
+        }
+    }
+}

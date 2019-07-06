@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_warrior"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_upgrade_warrior.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_upgrade_warrior.description"
+        }
+    },
+    "parent": "rats:rats/rat_upgrade_strength",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_upgrade_warrior"
+                    }
+                ]
+            }
+        }
+    }
+}

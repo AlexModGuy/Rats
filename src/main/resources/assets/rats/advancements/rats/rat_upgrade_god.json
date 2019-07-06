@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_god"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_upgrade_god.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_upgrade_god.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/rat_upgrade_warrior",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_upgrade_god"
+                    }
+                ]
+            }
+        }
+    }
+}

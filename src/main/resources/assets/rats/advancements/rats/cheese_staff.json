@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:cheese_stick"
+        },
+        "title": {
+            "translate": "advancements.rats.cheese_stick.title"
+        },
+        "description": {
+            "translate": "advancements.rats.cheese_stick.description"
+        }
+    },
+    "parent": "rats:rats/tame_rat",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:cheese_stick"
+                    }
+                ]
+            }
+        }
+    }
+}

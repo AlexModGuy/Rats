@@ -1,0 +1,43 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:chef_toque"
+        },
+        "title": {
+            "translate": "advancements.rats.chef_toque.title"
+        },
+        "description": {
+            "translate": "advancements.rats.chef_toque.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/rat_upgrade_chef",
+    "criteria": {
+        "confit_byaldi": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:confit_byaldi"
+                    }
+                ]
+            }
+        },
+        "string_cheese": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:string_cheese"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "confit_byaldi",
+            "string_cheese"
+        ]
+    ]
+}

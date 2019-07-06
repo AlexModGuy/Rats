@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:cheese"
+        },
+        "title": {
+            "translate": "advancements.rats.cheese.title"
+        },
+        "description": {
+            "translate": "advancements.rats.cheese.description"
+        }
+    },
+    "parent": "rats:rats/milk_cauldron",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:cheese"
+                    }
+                ]
+            }
+        }
+    }
+}
