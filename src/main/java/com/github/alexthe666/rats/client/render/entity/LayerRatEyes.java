@@ -25,7 +25,7 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
         }
         long roundedTime = rat.world.getWorldTime() % 24000;
         boolean night = roundedTime >= 13000 && roundedTime <= 22000;
-        BlockPos ratPos = new BlockPos(rat);
+        BlockPos ratPos = rat.getLightPosition();
         int i = rat.world.getLightFor(EnumSkyBlock.SKY, ratPos);
         int j = rat.world.getLightFor(EnumSkyBlock.BLOCK, ratPos);
         int brightness;

@@ -1213,4 +1213,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
         return true;
     }
+
+    public BlockPos getLightPosition() {
+        BlockPos pos = new BlockPos(this);
+        if(!world.getBlockState(pos).isFullBlock()){
+            return pos.up();
+        }
+        return pos;
+    }
 }
