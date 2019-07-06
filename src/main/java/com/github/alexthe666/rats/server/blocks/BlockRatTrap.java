@@ -10,6 +10,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -50,7 +51,7 @@ public class BlockRatTrap extends BlockContainer {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof TileEntityRatTrap) {
             if (!worldIn.isRemote && !((TileEntityRatTrap) tileentity).getBait().isEmpty()) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ((TileEntityRatTrap)tileentity).getBait()));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ((TileEntityRatTrap) tileentity).getBait()));
             }
             worldIn.updateComparatorOutputLevel(pos, this);
         }
@@ -58,12 +59,13 @@ public class BlockRatTrap extends BlockContainer {
     }
 
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        if(entityIn != null && entityIn instanceof EntityRat){
+        if (entityIn != null && entityIn instanceof EntityRat) {
             return;
-        }else{
+        } else {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
         }
     }
+
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         IBlockState actualState = getActualState(state, source, pos);
         if (actualState.getBlock() instanceof BlockRatTrap) {
@@ -145,8 +147,7 @@ public class BlockRatTrap extends BlockContainer {
         return false;
     }
 
-    public boolean hasComparatorInputOverride(IBlockState state)
-    {
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
@@ -160,13 +161,12 @@ public class BlockRatTrap extends BlockContainer {
     }
 
     @Deprecated
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return getWeakPower(blockState, blockAccess, pos, side);
     }
 
     @Deprecated
-    public boolean canProvidePower(IBlockState state)
-    {
+    public boolean canProvidePower(IBlockState state) {
         return true;
     }
 
@@ -181,7 +181,7 @@ public class BlockRatTrap extends BlockContainer {
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if(worldIn.isBlockPowered(pos)){
+        if (worldIn.isBlockPowered(pos)) {
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileEntityRatTrap) {
                 TileEntityRatTrap ratTrap = (TileEntityRatTrap) tile;
@@ -190,7 +190,11 @@ public class BlockRatTrap extends BlockContainer {
         }
     }
 
-        @Nullable
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityRatTrap();
