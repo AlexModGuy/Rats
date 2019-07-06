@@ -26,7 +26,7 @@ public class PotionPlague extends Potion {
     }
 
     public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
-        if(entityLivingBaseIn.ticksExisted % 300 / (amplifier + 1) == 0){
+        if(entityLivingBaseIn.ticksExisted % 300 / Math.max(1, amplifier + 1) == 0){
             entityLivingBaseIn.addPotionEffect(new PotionEffect(NEGATIVE_EFFECTS[(int)(Math.random() * NEGATIVE_EFFECTS.length)], 300 * (amplifier + 1), 0));
         }
     }
