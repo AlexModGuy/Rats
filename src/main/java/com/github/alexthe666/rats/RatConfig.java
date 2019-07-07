@@ -12,6 +12,7 @@ public class RatConfig {
     public boolean cheesemaking = true;
     public int milkCauldronTime = 150;
     public boolean ratsDigBlocks = true;
+    public boolean ratsBreakCrops = true;
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
@@ -24,10 +25,11 @@ public class RatConfig {
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
+        this.ratsBreakCrops = config.getBoolean("Rats Break Crops", "all", true, "True if wild rats will destroy and eat crops");
+        this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
         this.cheesemaking = config.getBoolean("Cheesemaking", "all", true, "True if cheese can be created in cauldrons");
         this.milkCauldronTime = config.getInt("Milk Curdling Time", "all", 150, 20, 1000000, "The time in ticks(20 per second) it takes for milk to turn into cheese in a cauldron");
-        this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratStrengthThreshold = config.getFloat("Rat Dig Strength", "all", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
         this.ratFluteDistance = config.getInt("Rat Flute Distance", "all", 2, 1, 100, "The how many chunks away can a rat here a rat flute");
         this.ratCageCramming = config.getInt("Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
