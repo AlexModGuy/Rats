@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
@@ -13,6 +14,7 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
@@ -49,10 +51,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -124,6 +123,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
     public float flyingPitch;
     public float prevFlyingPitch;
+
     public EntityRat(World worldIn) {
         super(worldIn);
         switchNavigator(1);
@@ -244,11 +244,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private void switchNavigator(int type) {
         if (type == 1) {
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new PathNavigateGround(this, world);
+            this.navigator = new RatPathNavigate(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new RatPathNavigate(this, world);
+            this.navigator = new PathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {
             this.moveHelper = new RatFlyingMoveHelper(this);
@@ -473,35 +473,35 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         super.onLivingUpdate();
         this.prevFlyingPitch = flyingPitch;
         if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
-            if(navigatorType != 2){
+            if (navigatorType != 2) {
                 switchNavigator(2);
             }
-            if(canMove()) {
+            if (canMove()) {
                 if (this.getMoveHelper().getY() > this.posY) {
                     this.motionY += 0.08F;
                 }
-            }else if(!onGround){
+            } else if (!onGround) {
                 this.motionY -= 0.08F;
             }
-            if(!this.onGround){
+            if (!this.onGround) {
                 double ydist = prevPosY - this.posY;//down 0.4 up -0.38
                 double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
                 this.flyingPitch += (float) (ydist) * 20;
                 this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
                 float plateau = 2;
-                if(this.flyingPitch > plateau){
+                if (this.flyingPitch > plateau) {
                     this.flyingPitch -= planeDist * Math.abs(this.flyingPitch) / 90;
                 }
-                if(this.flyingPitch < -plateau){
+                if (this.flyingPitch < -plateau) {
                     this.flyingPitch += planeDist * Math.abs(this.flyingPitch) / 90;
                 }
-                if(this.flyingPitch > 2F){
+                if (this.flyingPitch > 2F) {
                     this.flyingPitch -= 1F;
 
-                }else if(this.flyingPitch < -2F){
+                } else if (this.flyingPitch < -2F) {
                     this.flyingPitch += 1F;
                 }
-            }else{
+            } else {
                 this.flyingPitch = 0;
             }
         } else {
@@ -1115,6 +1115,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
     }
 
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+            super.updateFallState(y, onGroundIn, state, pos);
+        }
+        super.updateFallState(y, onGroundIn, state, pos);
+    }
+
     public RatStatus getRatStatus() {
         return status;
     }
@@ -1271,10 +1278,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
         BlockPos pos = new BlockPos(x, rat.posY, z);
-        while (world.isAirBlock(pos.down()) && pos.getY() > 0) {
+        while ((world.isAirBlock(pos.down()) || world.getBlockState(pos.down()).getBlock() instanceof BlockRatCage) && pos.getY() > 0) {
             pos = pos.down();
         }
-        return pos.up(2 + rat.getRNG().nextInt(3));
+        if (rat.isInCage()) {
+            return pos.up(rat.getRNG().nextInt(3));
+        } else {
+            return pos.up(2 + rat.getRNG().nextInt(3));
+        }
     }
 
     public BlockPos getLightPosition() {

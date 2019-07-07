@@ -114,7 +114,7 @@ public class RatUtils {
             for (int i4 = l2; i4 < i3; ++i4) {
                 for (int j4 = j3; j4 < k3; ++j4) {
                     IBlockState iblockstate1 = world.getBlockState(blockpos$pooledmutableblockpos.setPos(l3, i4, j4));
-                    if (iblockstate1.getBlock() == RatsBlockRegistry.RAT_HOLE) {
+                    if (iblockstate1.getBlock() == RatsBlockRegistry.RAT_HOLE || iblockstate1.getBlock() == RatsBlockRegistry.RAT_CAGE) {
                         blockpos$pooledmutableblockpos.release();
                         return true;
                     }
@@ -145,7 +145,7 @@ public class RatUtils {
                 IBlockState iblockstate = world.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
 
-                if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE) {
+                if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE && block != RatsBlockRegistry.RAT_CAGE) {
                     RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, vec31, vec32);
 
                     if (raytraceresult != null) {
@@ -247,7 +247,7 @@ public class RatUtils {
                     IBlockState iblockstate1 = world.getBlockState(blockpos);
                     Block block1 = iblockstate1.getBlock();
 
-                    if ((!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE) {
+                    if ((!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE && block1 != RatsBlockRegistry.RAT_CAGE) {
                         if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
                             RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, vec31, vec32);
 

@@ -17,8 +17,12 @@ public class RatFlyingMoveHelper extends EntityMoveHelper {
         if (this.action == EntityMoveHelper.Action.MOVE_TO) {
             if (rat.collidedHorizontally && !rat.onGround) {
                 rat.rotationYaw += 180.0F;
-                this.speed = 0.1F;
-                BlockPos target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(15) - 7, rat.posZ + rat.getRNG().nextInt(15) - 7, rat.getRNG());
+                int dist = 3;
+                if(!rat.isInCage()){
+                    this.speed = 0.1F;
+                    dist = 8;
+                }
+                BlockPos target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
                 this.posX = target.getX();
                 this.posY = target.getY();
                 this.posZ = target.getZ();
@@ -28,8 +32,8 @@ public class RatFlyingMoveHelper extends EntityMoveHelper {
             double d2 = this.posZ - rat.posZ;
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
             d3 = (double) MathHelper.sqrt(d3);
-
-            if (d3 < rat.getEntityBoundingBox().getAverageEdgeLength()) {
+            double edgeLength = rat.getEntityBoundingBox().getAverageEdgeLength();
+            if (d3 < edgeLength) {
                 this.action = EntityMoveHelper.Action.WAIT;
                 rat.motionX *= 0.5D;
                 rat.motionY *= 0.5D;
@@ -38,7 +42,6 @@ public class RatFlyingMoveHelper extends EntityMoveHelper {
                 rat.motionX += d0 / d3 * 0.1D * this.speed;
                 rat.motionY += d1 / d3 * 0.1D * this.speed;
                 rat.motionZ += d2 / d3 * 0.1D * this.speed;
-
                 if (rat.getAttackTarget() == null) {
                     rat.rotationYaw = -((float) MathHelper.atan2(rat.motionX, rat.motionZ)) * (180F / (float) Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;

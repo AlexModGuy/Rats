@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathNavigateFlying;
@@ -19,11 +21,16 @@ public class RatAIWanderFlight extends EntityAIBase {
 
     public boolean shouldExecute() {
         if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT && rat.canMove()) {
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(16) - 8, rat.posZ + rat.getRNG().nextInt(16) - 8, rat.getRNG());
-            return isDirectPathBetweenPoints(new Vec3d(target).add(0.5D, 0.5D, 0.5D)) && !rat.getMoveHelper().isUpdating();
-        } else {
-            return false;
+            int dist = 8;
+            if(rat.isInCage()){
+                dist = 3;
+            }
+            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+            if(!rat.getMoveHelper().isUpdating()){
+                return isDirectPathBetweenPoints(new Vec3d(target));
+            }
         }
+        return false;
     }
 
     public boolean shouldContinueExecuting() {
@@ -32,9 +39,13 @@ public class RatAIWanderFlight extends EntityAIBase {
 
     public void updateTask() {
         if (!isDirectPathBetweenPoints(new Vec3d(target))) {
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(15) - 7, rat.posZ + rat.getRNG().nextInt(15) - 7, rat.getRNG());
+            int dist = 8;
+            if(rat.isInCage()){
+                dist = 3;
+            }
+            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
         }
-        if (rat.world.isAirBlock(target)) {
+        if (rat.world.isAirBlock(target) || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
             rat.getMoveHelper().setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);
             if (rat.getAttackTarget() == null) {
                 rat.getLookHelper().setLookPosition((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 180.0F, 20.0F);
@@ -43,7 +54,7 @@ public class RatAIWanderFlight extends EntityAIBase {
     }
 
     public boolean isDirectPathBetweenPoints(Vec3d target) {
-        RayTraceResult rayTrace = rat.world.rayTraceBlocks(rat.getPositionVector(), target, false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(rat.world, rat.getPositionVector(), target.add(0.5, 0.5, 0.5), false);
         if (rayTrace != null && rayTrace.hitVec != null) {
             BlockPos sidePos = rayTrace.getBlockPos();
             BlockPos pos = new BlockPos(rayTrace.hitVec);

@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -135,9 +136,11 @@ public class BlockRatCage extends Block {
                 int ratCount = 0;
                 for (Entity entity : playerIn.getPassengers()) {
                     if (entity instanceof EntityRat && !((EntityRat) entity).isChild()) {
-                        entity.dismountRidingEntity();
-                        entity.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-                        ((EntityRat)entity).getNavigator().clearPath();
+                        EntityRat rat = (EntityRat)entity;
+                        rat.dismountRidingEntity();
+                        rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                        rat.getNavigator().clearPath();
+                        rat.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                         ratCount++;
                     }
                 }
