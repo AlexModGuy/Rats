@@ -203,7 +203,7 @@ public class ModelRat extends AdvancedModelBase {
         float degreeRun = 0.4F;
         float speedIdle = 0.75F;
         float degreeIdle = 0.15F;
-        boolean running = rat.isSprinting();
+        boolean running = rat.isSprinting() || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT;
         boolean holdingInHands = !rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER;
         float maxTailRotation = (float) Math.toRadians(15);
 

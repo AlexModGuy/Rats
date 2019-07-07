@@ -61,7 +61,7 @@ public class RatAIWanderFlight extends EntityAIBase {
             if (!rat.world.isAirBlock(pos) || !rat.world.isAirBlock(sidePos)) {
                 return true;
             } else {
-                return rayTrace.typeOfHit != RayTraceResult.Type.MISS;
+                return rayTrace.typeOfHit == RayTraceResult.Type.MISS;
             }
         }
         return true;

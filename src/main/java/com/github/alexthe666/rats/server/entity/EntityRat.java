@@ -1284,7 +1284,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (rat.isInCage()) {
             return pos.up(rat.getRNG().nextInt(3));
         } else {
-            return pos.up(2 + rat.getRNG().nextInt(3));
+            return pos.up(3 + rat.getRNG().nextInt(3));
         }
     }
 

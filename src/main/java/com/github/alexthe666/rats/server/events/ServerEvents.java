@@ -21,7 +21,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -31,9 +33,16 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -46,7 +55,7 @@ public class ServerEvents {
         if(event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(EnumHand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK){
             event.setUseBlock(Event.Result.DENY);
         }
-        if (RatsMod.CONFIG_OPTIONS.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && event.getItemStack().getItem() == Items.MILK_BUCKET) {
+        if (RatsMod.CONFIG_OPTIONS.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && isMilk(event.getItemStack())) {
             if (event.getWorld().getBlockState(event.getPos()).getValue(BlockCauldron.LEVEL) == 0) {
                 event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());
                 if(!event.getWorld().isRemote){
@@ -54,12 +63,28 @@ public class ServerEvents {
                 }
                 event.getEntityPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
                 if (!event.getEntityPlayer().isCreative()) {
-                    event.getItemStack().shrink(1);
-                    event.getEntityPlayer().setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
+                    if(event.getItemStack().getItem() == Items.MILK_BUCKET){
+                        event.getItemStack().shrink(1);
+                        event.getEntityPlayer().setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
+                    }else if(isMilk(event.getItemStack())){
+                        IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
+                        fluidHandler.drain(1000, true);
+                    }
                 }
                 event.setCanceled(true);
             }
         }
+    }
+
+    private boolean isMilk(ItemStack stack) {
+        if(stack.getItem() == Items.MILK_BUCKET){
+            return true;
+        }
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+        if(fluidStack != null && fluidStack.amount >= 1000 && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"))){
+            return true;
+        }
+        return false;
     }
 
     @SubscribeEvent
