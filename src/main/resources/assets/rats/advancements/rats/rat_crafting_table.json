@@ -4,10 +4,10 @@
             "item": "rats:rat_crafting_table"
         },
         "title": {
-            "translate": "advancements.rats.rat_cage.title"
+            "translate": "advancements.rats.rat_crafting_table.title"
         },
         "description": {
-            "translate": "advancements.rats.rat_cage.description"
+            "translate": "advancements.rats.rat_crafting_table.description"
         }
     },
     "parent": "rats:rats/rat_upgrade_crafting",

@@ -87,7 +87,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
         }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
+        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             EntityRat rat = (EntityRat) this.taskOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             duplicate.setCount(1);
