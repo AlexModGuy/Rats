@@ -963,7 +963,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected void onDeathUpdate() {
-
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
         if (this.deathTime == maxDeathTime) {

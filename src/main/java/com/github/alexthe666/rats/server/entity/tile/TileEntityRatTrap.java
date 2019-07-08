@@ -45,10 +45,12 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.65F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                rat.setKilledInTrap();
-                isShut = true;
-                world.playSound(null, this.getPos(), SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1F, 1F);
-                this.decreaseBait();
+                if(!rat.isDead) {
+                    rat.setKilledInTrap();
+                    isShut = true;
+                    world.playSound(null, this.getPos(), SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1F, 1F);
+                    this.decreaseBait();
+                }
             }
         }
     }
