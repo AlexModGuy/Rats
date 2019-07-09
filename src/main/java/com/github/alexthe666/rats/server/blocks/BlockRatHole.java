@@ -155,6 +155,15 @@ public class BlockRatHole extends BlockContainer {
         return false;
     }
 
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity){
+        if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
+            TileEntityRatHole te = (TileEntityRatHole) world.getTileEntity(pos);
+            return te.getImmitatedBlockState().getBlock().getSoundType();
+        }
+        return SoundType.WOOD;
+    }
+
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
