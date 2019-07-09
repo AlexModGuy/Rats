@@ -12,10 +12,10 @@
     },
     "parent": "rats:rats/cheese",
     "criteria": {
-        "tamed_animal": {
+        "tame_rat": {
             "trigger": "minecraft:tame_animal",
             "conditions": {
-                "entity_object": {
+                "entity": {
                     "type": "rats:rat"
                 }
             }
