@@ -10,6 +10,8 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
+import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -695,11 +697,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private void tryCooking() {
         ItemStack heldItem = this.getHeldItemMainhand();
         ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(heldItem).copy();
-        if (heldItem.getItem() == RatsItemRegistry.ASSORTED_VEGETABLES) {
-            burntItem = new ItemStack(RatsItemRegistry.CONFIT_BYALDI);
-        }
-        if (heldItem.getItem() == RatsItemRegistry.CHEESE) {
-            burntItem = new ItemStack(RatsItemRegistry.STRING_CHEESE, 4);
+        SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(heldItem);
+        if(recipe != null){
+            burntItem = recipe.getOutput().copy();
         }
         if (burntItem.isEmpty()) {
             cookingProgress = 0;

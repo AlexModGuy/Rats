@@ -18,10 +18,13 @@ public class RatsRecipeRegistry {
     public static List<SharedRecipe> CAULDRON_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_CHEF_RECIPES = new ArrayList<>();
 
-    public static void register(){
+    public static void preRegister(){
         CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CHEESE), new ItemStack(RatsItemRegistry.STRING_CHEESE, 4)));
+    }
+
+    public static void register(){
         OreDictionary.registerOre("foodCheese", RatsItemRegistry.CHEESE);
         OreDictionary.registerOre("listAllmeatraw", RatsItemRegistry.RAW_RAT);
         OreDictionary.registerOre("foodRatraw", RatsItemRegistry.RAW_RAT);
@@ -37,9 +40,19 @@ public class RatsRecipeRegistry {
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
     }
 
+
     public static BannerPattern addBanner(String name, ItemStack craftingStack) {
         Class<?>[] classes = {String.class, String.class, ItemStack.class};
         Object[] names = {name, "rats." + name, craftingStack};
         return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
+    }
+
+    public static SharedRecipe getRatChefRecipe(ItemStack stack) {
+        for (SharedRecipe recipe : RAT_CHEF_RECIPES) {
+            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+                return recipe;
+            }
+        }
+        return null;
     }
 }
