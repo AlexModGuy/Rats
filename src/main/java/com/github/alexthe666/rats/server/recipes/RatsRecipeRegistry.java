@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.BannerPattern;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -31,5 +33,13 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 1);
+        addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
+        addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
+    }
+
+    public static BannerPattern addBanner(String name, ItemStack craftingStack) {
+        Class<?>[] classes = {String.class, String.class, ItemStack.class};
+        Object[] names = {name, "rats." + name, craftingStack};
+        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
     }
 }

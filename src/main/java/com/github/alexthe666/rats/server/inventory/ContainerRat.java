@@ -7,6 +7,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemBanner;
+import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRat extends Container {
@@ -36,7 +38,7 @@ public class ContainerRat extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem().isValidArmor(stack, EntityEquipmentSlot.HEAD, player);
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && (stack.getItem().isValidArmor(stack, EntityEquipmentSlot.HEAD, player) || stack.getItem() instanceof ItemBanner);
             }
         });
         this.addSlotToContainer(new Slot(rat.ratInventory, 2, 61, 36) {

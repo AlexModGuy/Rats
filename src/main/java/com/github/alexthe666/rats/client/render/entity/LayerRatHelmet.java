@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -93,16 +94,32 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     }
                 }
             }
-        }else{
-            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
-            ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
-            ((ModelRat) this.renderer.getMainModel()).neck.postRender(0.0625F);
-            ((ModelRat) this.renderer.getMainModel()).head.postRender(0.0625F);
-            GlStateManager.translate(0, 0.025F, -0.2F);
-            GlStateManager.rotate(180, 1, 0, 0);
-            GlStateManager.rotate(180, 0, 1, 0);
-            GlStateManager.scale(0.8F, 0.8F, 0.8F);
-            Minecraft.getMinecraft().getItemRenderer().renderItem(entityLivingBaseIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
+        }else{//banner render
+            if(itemstack.getItem() instanceof ItemBanner){
+                ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
+                ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
+                GlStateManager.translate(0, -0.5F, -0.2F);
+                GlStateManager.rotate(180, 0, 0, 1);
+                if(entityLivingBaseIn instanceof EntityRat){
+                    EntityRat rat = (EntityRat)entityLivingBaseIn;
+                    float sitProgress = rat.sitProgress / 20F;
+                    GlStateManager.rotate(sitProgress * -40, 1, 0, 0);
+                    GlStateManager.translate(0, 0, -sitProgress * 0.04);
+
+                }
+                GlStateManager.scale(1.7F, 1.7F, 1.7F);
+                Minecraft.getMinecraft().getItemRenderer().renderItem(entityLivingBaseIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
+            }else{
+                ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
+                ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
+                ((ModelRat) this.renderer.getMainModel()).neck.postRender(0.0625F);
+                ((ModelRat) this.renderer.getMainModel()).head.postRender(0.0625F);
+                GlStateManager.translate(0, 0.025F, -0.2F);
+                GlStateManager.rotate(180, 1, 0, 0);
+                GlStateManager.rotate(180, 0, 1, 0);
+                GlStateManager.scale(0.8F, 0.8F, 0.8F);
+                Minecraft.getMinecraft().getItemRenderer().renderItem(entityLivingBaseIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
+            }
 
         }
 

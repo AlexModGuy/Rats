@@ -30,6 +30,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ModelPinkie PINKIE_MODEL = new ModelPinkie();
     private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/baby.png");
     private static final ResourceLocation JULIAN = new ResourceLocation("rats:textures/entity/rat/patreon/rat_julian.png");
+    private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
 
     public RenderRat() {
         super(Minecraft.getMinecraft().getRenderManager(), RAT_MODEL, 0.15F);
@@ -102,6 +103,9 @@ public class RenderRat extends RenderLiving<EntityRat> {
             if(!entity.getCustomNameTag().isEmpty()){
                 if(entity.getCustomNameTag().contains("julian") || entity.getCustomNameTag().contains("Julian")){
                     return JULIAN;
+                }
+                if(entity.getCustomNameTag().contains("shizuka") || entity.getCustomNameTag().contains("Shizuka")){
+                    return SHIZUKA;
                 }
             }
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);
