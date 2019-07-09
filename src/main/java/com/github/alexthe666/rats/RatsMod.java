@@ -49,7 +49,7 @@ public class RatsMod {
     public static CommonProxy PROXY;
     @NetworkWrapper({MessageRatCommand.class, MessageRatDismount.class, MessageIncreaseRatRecipe.class})
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
-    private static Logger logger;
+    public static Logger logger;
     public static Potion CONFIT_BYALDI_POTION = new PotionConfitByaldi();
     public static Potion PLAGUE_POTION = new PotionPlague();
     public static Configuration config;

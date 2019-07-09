@@ -67,8 +67,13 @@ public class RatAIRaidChests extends EntityAIBase {
                     TileEntity entity = this.entity.world.getTileEntity(pos);
                     if (entity instanceof IInventory) {
                         IInventory inventory = (IInventory) entity;
-                        if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
-                            allBlocks.add(pos);
+                        try {
+                            if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
+                                allBlocks.add(pos);
+                            }
+                        } catch (Exception e){
+                            RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
+                            e.printStackTrace();
                         }
                     }
                 }
