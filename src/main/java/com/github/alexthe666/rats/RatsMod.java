@@ -2,6 +2,7 @@ package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.compat.CraftTweakerCompatBridge;
+import com.github.alexthe666.rats.server.compat.ThaumcraftCompatBridge;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
@@ -93,6 +94,7 @@ public class RatsMod {
         RatsRecipeRegistry.preRegister();
         CraftTweakerCompatBridge.loadTweakerCompat();
         TinkersCompatBridge.loadTinkersCompat();
+        ThaumcraftCompatBridge.loadThaumcraftCompat();
     }
 
     @EventHandler

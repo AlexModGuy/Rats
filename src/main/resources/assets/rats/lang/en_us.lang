@@ -114,6 +114,7 @@ rats.direction.down=bottom
 rats.direction.slot=slot(s)
 rats.synesthesia=Synesthesia
 rats.plague=Plague
+tc.aspect.rattus=Rodents, Thievery, Frenemies
 material.cheese.name=Cheese
 material.string_cheese.name=String Cheese
 modifier.ratty.name=Ratty
