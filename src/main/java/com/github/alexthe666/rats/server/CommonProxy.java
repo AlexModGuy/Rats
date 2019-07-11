@@ -14,8 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +32,7 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
+
     public void preInit() {
 
     }
@@ -148,5 +151,14 @@ public class CommonProxy {
 
     public boolean shouldRenderNameplates() {
         return true;
+    }
+
+    public void openCheeseStaffGui() { }
+
+    public void setRefrencedRat(EntityRat rat){ }
+
+    public EntityRat getRefrencedRat(){ return null; }
+
+    public void setCheeseStaffContext(BlockPos pos, EnumFacing facing) {
     }
 }

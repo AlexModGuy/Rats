@@ -1276,6 +1276,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
+        if(rat.hasHome()){
+            x = (float)(rat.getHomePosition().getX() + rng.nextInt((int)rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance());
+            z = (float)(rat.getHomePosition().getZ() + rng.nextInt((int)rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance());
+        }
         BlockPos pos = new BlockPos(x, rat.posY, z);
         while ((world.isAirBlock(pos.down()) || world.getBlockState(pos.down()).getBlock() instanceof BlockRatCage) && pos.getY() > 0) {
             pos = pos.down();

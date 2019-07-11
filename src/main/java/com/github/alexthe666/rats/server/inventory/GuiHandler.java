@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.gui.GuiRatCraftingTable;
 import com.github.alexthe666.rats.client.gui.GuiRatUpgrade;

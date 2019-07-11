@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -44,56 +45,58 @@ public class ItemCheeseStick extends Item {
     }
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        RatsMod.PROXY.setCheeseStaffContext(pos, facing);
         Entity rat = null;
         ItemStack stack = player.getHeldItem(hand);
-        if(stack.getTagCompound().getUniqueId("RatUUID") != null){
+        if (stack.getTagCompound().getUniqueId("RatUUID") != null) {
             if (worldIn.getMinecraftServer() != null) {
                 rat = worldIn.getMinecraftServer().getEntityFromUuid(stack.getTagCompound().getUniqueId("RatUUID"));
             }
         }
-        if(!worldIn.isRemote){
-            if(rat == null || !(rat instanceof EntityRat)){
+        if (!worldIn.isRemote) {
+            if (rat == null || !(rat instanceof EntityRat)) {
+                RatsMod.NETWORK_WRAPPER.sendToAll(new MessageCheeseStaffRat(0, true));
                 player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.no_rat"), true);
-                return EnumActionResult.PASS;
-            }else{
-                EntityRat boundRat = (EntityRat)rat;
+            } else {
+                RatsMod.NETWORK_WRAPPER.sendToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+                EntityRat boundRat = (EntityRat) rat;
                 player.swingArm(hand);
-                if(worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null){
-                    player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.cannot_use_block"), true);
-                    return EnumActionResult.PASS;
-                }else{
-                    IItemHandler itemHandler = worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-                    String blockName = worldIn.getBlockState(pos).getBlock().getLocalizedName();
-                    if(player.isSneaking()){
-                        if(boundRat.pickupPos != null){
-                            boundRat.pickupPos = null;
-                            player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_take_items", rat.getName(), blockName), true);
-                            return EnumActionResult.SUCCESS;
-                        }else{
-                            boundRat.pickupPos = pos;
-                            player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.take_items", rat.getName(), blockName), true);
-                            return EnumActionResult.SUCCESS;
-                        }
-                    }else{
-                        if(boundRat.depositPos != null){
-                            boundRat.depositPos = null;
-                            boundRat.depositFacing = EnumFacing.UP;
-                            player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_deposit_items", rat.getName(), blockName), true);
-                            return EnumActionResult.SUCCESS;
-                        }else{
-                            boundRat.depositPos = pos;
-                            boundRat.depositFacing = facing;
-
-                            ITextComponent directionName = new TextComponentTranslation("rats.direction." + facing.getName()).appendText(" ").appendSibling(new TextComponentTranslation("rats.direction.slot"));
-                            player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.deposit_items", rat.getName(), blockName).appendText(" ").appendSibling(directionName), true);
-                            return EnumActionResult.SUCCESS;
-                        }
-                    }
-
-                }
             }
         }
-        return EnumActionResult.PASS;
+        RatsMod.PROXY.openCheeseStaffGui();
+
+            /*if (worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null) {
+                player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.cannot_use_block"), true);
+                return EnumActionResult.PASS;
+            } else {
+                /* IItemHandler itemHandler = worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+                String blockName = worldIn.getBlockState(pos).getBlock().getLocalizedName();
+                if (player.isSneaking()) {
+                    if (boundRat.pickupPos != null) {
+                        boundRat.pickupPos = null;
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_take_items", rat.getName(), blockName), true);
+                        return EnumActionResult.SUCCESS;
+                    } else {
+                        boundRat.pickupPos = pos;
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.take_items", rat.getName(), blockName), true);
+                        return EnumActionResult.SUCCESS;
+                    }
+                } else {
+                    if (boundRat.depositPos != null) {
+                        boundRat.depositPos = null;
+                        boundRat.depositFacing = EnumFacing.UP;
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_deposit_items", rat.getName(), blockName), true);
+                        return EnumActionResult.SUCCESS;
+                    } else {
+                        boundRat.depositPos = pos;
+                        boundRat.depositFacing = facing;
+
+                        ITextComponent directionName = new TextComponentTranslation("rats.direction." + facing.getName()).appendText(" ").appendSibling(new TextComponentTranslation("rats.direction.slot"));
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.deposit_items", rat.getName(), blockName).appendText(" ").appendSibling(directionName), true);
+                        return EnumActionResult.SUCCESS;
+                    }
+                }*/
+        return EnumActionResult.SUCCESS;
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

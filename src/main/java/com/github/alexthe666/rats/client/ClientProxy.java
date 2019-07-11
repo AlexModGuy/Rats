@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
 import com.github.alexthe666.rats.client.model.ModelPiperHat;
@@ -19,7 +20,6 @@ import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
-import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
@@ -29,11 +29,11 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -53,6 +53,9 @@ public class ClientProxy extends CommonProxy {
     private static final RatsTEISR TEISR = new RatsTEISR();
     @SideOnly(Side.CLIENT)
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
+    protected static EntityRat refrencedRat;
+    public static BlockPos refrencedPos;
+    public static EnumFacing refrencedFacing;
 
     public void preInit() {
         TinkersCompatBridge.loadTinkersClientCompat();
@@ -162,7 +165,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public boolean shouldRenderNameplates() {
-        return Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiRat);
+        return Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiRat) && !(Minecraft.getMinecraft().currentScreen instanceof GuiCheeseStaff);
     }
 
     @SideOnly(Side.CLIENT)
@@ -174,4 +177,29 @@ public class ClientProxy extends CommonProxy {
             return new ModelPiperHat(1.0F);
         }
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void openCheeseStaffGui() {
+        if(refrencedRat != null){
+            Minecraft.getMinecraft().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
+        }
+    }
+
+    @Override
+    public void setRefrencedRat(EntityRat rat){
+        refrencedRat = rat;
+    }
+
+    @Override
+    public EntityRat getRefrencedRat(){
+        return refrencedRat;
+    }
+
+    @Override
+    public void setCheeseStaffContext(BlockPos pos, EnumFacing facing) {
+        refrencedPos = pos;
+        refrencedFacing = facing;
+    }
+
 }
