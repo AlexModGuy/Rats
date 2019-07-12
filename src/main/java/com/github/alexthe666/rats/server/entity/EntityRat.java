@@ -590,6 +590,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 }
             }
         }
+        if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_ENDER) {
+            if(!world.isRemote) {
+                if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isRiding()) {
+                    Vec3d target = new Vec3d(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
+                    if (this.getDistanceSq(target.x, target.y, target.z) > 20 || !this.isDirectPathBetweenPoints(target)) {
+                        this.attemptTeleport(target.x, target.y, target.z);
+                    }
+                }
+            }else{
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+
+            }
+        }
         if (this.isInCage()) {
             if (this.getAttackTarget() != null) {
                 this.setAttackTarget(null);
@@ -698,7 +714,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         ItemStack heldItem = this.getHeldItemMainhand();
         ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(heldItem).copy();
         SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(heldItem);
-        if(recipe != null){
+        if (recipe != null) {
             burntItem = recipe.getOutput().copy();
         }
         if (burntItem.isEmpty()) {
@@ -1137,23 +1153,38 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.playEffect(0);
         } else if (id == 83) {
             this.playEffect(1);
+        }else if(id == 84){
+            this.playEffect(2);
         } else {
             super.handleStatusUpdate(id);
         }
     }
 
     protected void playEffect(int type) {
-        EnumParticleTypes enumparticletypes = EnumParticleTypes.SMOKE_NORMAL;
+        if(type == 2){
+            for (int j = 0; j < 5; ++j) {
+                double d6 = (double)(  j) / 5D;
+                float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.height;
+                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                world.spawnParticle(EnumParticleTypes.PORTAL, d3, d4, d5, (double) f, (double) f1, (double) f2);
+            }
+        }else{
+            EnumParticleTypes enumparticletypes = EnumParticleTypes.SMOKE_NORMAL;
 
-        if (type == 1) {
-            enumparticletypes = EnumParticleTypes.HEART;
-        }
+            if (type == 1) {
+                enumparticletypes = EnumParticleTypes.HEART;
+            }
 
-        for (int i = 0; i < 9; ++i) {
-            double d0 = this.rand.nextGaussian() * 0.02D;
-            double d1 = this.rand.nextGaussian() * 0.02D;
-            double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+            for (int i = 0; i < 9; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+            }
         }
     }
 
@@ -1275,10 +1306,71 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return true;
     }
 
+    public boolean attemptTeleport(double x, double y, double z) {
+        double d0 = this.posX;
+        double d1 = this.posY;
+        double d2 = this.posZ;
+        this.posX = x;
+        this.posY = y;
+        this.posZ = z;
+        this.world.setEntityState(this, (byte)84);
+        boolean flag = false;
+        BlockPos blockpos = new BlockPos(this);
+        World world = this.world;
+        Random random = this.getRNG();
+
+        if (world.isBlockLoaded(blockpos)) {
+            boolean flag1 = false;
+
+            while (!flag1 && blockpos.getY() > 0) {
+                BlockPos blockpos1 = blockpos.down();
+                IBlockState iblockstate = world.getBlockState(blockpos1);
+
+                if (iblockstate.getMaterial().blocksMovement()) {
+                    flag1 = true;
+                } else {
+                    --this.posY;
+                    blockpos = blockpos1;
+                }
+            }
+
+            if (flag1) {
+                this.setPositionAndUpdate(this.posX, this.posY, this.posZ);
+
+                if (world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(this.getEntityBoundingBox())) {
+                    flag = true;
+                }
+            }
+        }
+
+        if (!flag) {
+            this.setPositionAndUpdate(d0, d1, d2);
+            return false;
+        } else {
+            int i = 128;
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+            return true;
+        }
+    }
+
+    public boolean isDirectPathBetweenPoints(Vec3d target) {
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, getPositionVector(), target.add(0.5, 0.5, 0.5), false);
+        if (rayTrace != null && rayTrace.hitVec != null) {
+            BlockPos sidePos = rayTrace.getBlockPos();
+            BlockPos pos = new BlockPos(rayTrace.hitVec);
+            if (!world.isAirBlock(pos) || !world.isAirBlock(sidePos)) {
+                return true;
+            } else {
+                return rayTrace.typeOfHit == RayTraceResult.Type.MISS;
+            }
+        }
+        return true;
+    }
+
     public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
-        if(rat.hasHome()){
-            x = (float)(rat.getHomePosition().getX() + rng.nextInt((int)rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance());
-            z = (float)(rat.getHomePosition().getZ() + rng.nextInt((int)rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance());
+        if (rat.hasHome()) {
+            x = (float) (rat.getHomePosition().getX() + rng.nextInt((int) rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance() / 2);
+            z = (float) (rat.getHomePosition().getZ() + rng.nextInt((int) rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance() / 2);
         }
         BlockPos pos = new BlockPos(x, rat.posY, z);
         while ((world.isAirBlock(pos.down()) || world.getBlockState(pos.down()).getBlock() instanceof BlockRatCage) && pos.getY() > 0) {

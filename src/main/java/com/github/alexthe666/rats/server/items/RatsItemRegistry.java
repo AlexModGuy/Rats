@@ -91,4 +91,7 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_flight")
     public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ender")
+    public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 2);
+
 }

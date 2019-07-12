@@ -58,6 +58,8 @@ item.rats.rat_upgrade_flight.name=Rat Upgrade: Flight
 item.rats.rat_upgrade_flight0.desc=Rats gain the ability to flap rudimentary wings and fly
 item.rats.rat_upgrade_flight1.desc=Rats will move faster while flying and will not be bound the the constraints of land based travel
 item.rats.rat_upgrade_flight2.desc=Pretty much turns rats into pigeons
+item.rats.rat_upgrade_ender.name=Rat Upgrade: Ender
+
 item.rats.rat_flute.name=Rat Flute
 item.rats.rat_flute.desc0=Commands all tamed rats within the local area
 item.rats.rat_flute.desc1=Sneak and use to change command

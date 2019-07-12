@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,6 +14,7 @@ import net.minecraft.world.EnumSkyBlock;
 public class LayerRatEyes implements LayerRenderer<EntityRat> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png");
     private static final ResourceLocation TEXTURE_PLAGUE = new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png");
+    private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png");
     private final RenderRat ratRenderer;
 
     public LayerRatEyes(RenderRat ratRendererIn) {
@@ -35,7 +37,9 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
             brightness = Math.max(i, j);
         }
         if (brightness < 7) {
-            if(rat.hasPlague()){
+            if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_ENDER){
+                this.ratRenderer.bindTexture(TEXTURE_ENDER);
+            }else if(rat.hasPlague()){
                 this.ratRenderer.bindTexture(TEXTURE_PLAGUE);
             }else{
                 this.ratRenderer.bindTexture(TEXTURE);

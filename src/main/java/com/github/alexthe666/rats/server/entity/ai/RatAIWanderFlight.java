@@ -27,7 +27,7 @@ public class RatAIWanderFlight extends EntityAIBase {
             }
             target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
             if(!rat.getMoveHelper().isUpdating()){
-                return isDirectPathBetweenPoints(new Vec3d(target));
+                return rat.isDirectPathBetweenPoints(new Vec3d(target));
             }
         }
         return false;
@@ -38,9 +38,9 @@ public class RatAIWanderFlight extends EntityAIBase {
     }
 
     public void updateTask() {
-        if (!isDirectPathBetweenPoints(new Vec3d(target))) {
+        if (!rat.isDirectPathBetweenPoints(new Vec3d(target))) {
             int dist = 8;
-            if(rat.isInCage()){
+            if (rat.isInCage()) {
                 dist = 3;
             }
             target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
@@ -52,19 +52,4 @@ public class RatAIWanderFlight extends EntityAIBase {
             }
         }
     }
-
-    public boolean isDirectPathBetweenPoints(Vec3d target) {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(rat.world, rat.getPositionVector(), target.add(0.5, 0.5, 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
-            if (!rat.world.isAirBlock(pos) || !rat.world.isAirBlock(sidePos)) {
-                return true;
-            } else {
-                return rayTrace.typeOfHit == RayTraceResult.Type.MISS;
-            }
-        }
-        return true;
-    }
-
 }
