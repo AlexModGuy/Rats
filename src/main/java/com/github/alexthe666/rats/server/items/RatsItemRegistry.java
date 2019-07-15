@@ -94,4 +94,10 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ender")
     public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 2);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_lumberjack")
+    public static Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 2);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_miner")
+    public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 2, true);
+
 }

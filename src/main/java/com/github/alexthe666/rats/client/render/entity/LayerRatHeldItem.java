@@ -18,6 +18,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
+    private static ItemStack IRON_AXE_STACK = new ItemStack(Items.IRON_AXE);
+    private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     RenderRat renderer;
 
     public LayerRatHeldItem(RenderRat renderer) {
@@ -41,7 +43,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getMinecraft();
-            if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0 && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER) {
+            if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0
+                    && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -61,6 +64,9 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                         GlStateManager.translate(0F, -0.1F, -0.075F);
 
                     }
+                }
+                if(upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
+                    GlStateManager.translate(0.15F, 0.075F, 0);
 
                 }
             }
@@ -100,6 +106,16 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, PICKAXE_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
+        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK){
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, IRON_AXE_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
         if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
             Minecraft minecraft = Minecraft.getMinecraft();
             float wingAngle = entity.onGround ? 0 : (float)MathHelper.sin(ageInTicks) * 30;
@@ -113,7 +129,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.translate(0.55F, 0, 0.2F);
             GlStateManager.rotate(-90F, 1.0F, 0.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(entity, new ItemStack(RatsItemRegistry.FEATHERY_WING), ItemCameraTransforms.TransformType.GROUND);
+            minecraft.getItemRenderer().renderItem(entity, WING_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.translate(0F, -0.1F, 0F);
@@ -123,7 +139,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(-90F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(entity, new ItemStack(RatsItemRegistry.FEATHERY_WING), ItemCameraTransforms.TransformType.GROUND);
+            minecraft.getItemRenderer().renderItem(entity, WING_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
     }

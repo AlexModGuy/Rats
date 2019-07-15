@@ -86,6 +86,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         super.updateTask();
         if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
+            this.taskOwner.getNavigator().clearPath();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             EntityRat rat = (EntityRat) this.taskOwner;
