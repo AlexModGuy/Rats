@@ -19,12 +19,12 @@ public class RatsRecipeRegistry {
     public static List<SharedRecipe> RAT_CHEF_RECIPES = new ArrayList<>();
 
     public static void preRegister(){
-        CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CHEESE), new ItemStack(RatsItemRegistry.STRING_CHEESE, 4)));
     }
 
     public static void register(){
+        CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
         OreDictionary.registerOre("foodCheese", RatsItemRegistry.CHEESE);
         OreDictionary.registerOre("listAllmeatraw", RatsItemRegistry.RAW_RAT);
         OreDictionary.registerOre("foodRatraw", RatsItemRegistry.RAW_RAT);

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
@@ -371,4 +372,10 @@ public class RatUtils {
     }
 
 
+    public static boolean canRatBreakBlock(World world, BlockPos pos, EntityRat rat) {
+        IBlockState blockState = world.getBlockState(pos);
+        float hardness = blockState.getBlockHardness(world, pos);
+        return hardness != -1.0F && hardness <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold
+                && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && net.minecraft.entity.boss.EntityWither.canDestroyBlock(blockState.getBlock());
+    }
 }

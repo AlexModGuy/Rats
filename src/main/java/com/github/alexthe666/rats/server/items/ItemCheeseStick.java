@@ -102,6 +102,5 @@ public class ItemCheeseStick extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(I18n.format("item.rats.cheese_stick.desc0"));
         tooltip.add(I18n.format("item.rats.cheese_stick.desc1"));
-        tooltip.add(I18n.format("item.rats.cheese_stick.desc2"));
     }
 }

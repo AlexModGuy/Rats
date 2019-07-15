@@ -17,6 +17,7 @@ public class RatConfig {
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
     public int ratUpdateTick = 10;
+    public int tokenDropRate = 10000;
     public String[] blacklistedRatBlocks = new String[0];
 
     public void init(Configuration config) {
@@ -35,5 +36,6 @@ public class RatConfig {
         this.ratCageCramming = config.getInt("Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
         this.ratUpdateTick = config.getInt("Rat Upgrade Tick", "all", 10, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests every fraction of a tick(20 per second). Default is 10, so rats update every half-second.");
         this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
+        this.tokenDropRate = config.getInt("Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
     }
 }

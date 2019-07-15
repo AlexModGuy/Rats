@@ -52,6 +52,10 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":chunky_cheese_token")
+    public static Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
+
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic")
     public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
 
@@ -92,12 +96,12 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ender")
-    public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 2);
+    public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 3);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_lumberjack")
-    public static Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 2);
+    public static Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 1);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_miner")
-    public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 2, true);
+    public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
 
 }

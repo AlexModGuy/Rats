@@ -44,7 +44,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             }
             Minecraft minecraft = Minecraft.getMinecraft();
             if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0
-                    && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
+                    && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -65,9 +65,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
 
                     }
                 }
-                if(upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
-                    GlStateManager.translate(0.15F, 0.075F, 0);
-
+                if(upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK || upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_MINER) {
+                    GlStateManager.translate(0.15F, -0.075F, 0);
                 }
             }
             minecraft.getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.GROUND);
@@ -111,9 +110,18 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-15.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             minecraft.getItemRenderer().renderItem(entity, IRON_AXE_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_MINER){
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
         if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {

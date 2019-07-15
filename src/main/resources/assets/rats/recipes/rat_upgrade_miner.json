@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DPD",
+    "CUC",
+    "DCD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    },
+    "P": {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_miner"
+  }
+}

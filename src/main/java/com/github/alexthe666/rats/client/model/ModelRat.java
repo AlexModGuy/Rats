@@ -205,7 +205,8 @@ public class ModelRat extends AdvancedModelBase {
         float speedIdle = 0.75F;
         float degreeIdle = 0.15F;
         boolean running = rat.isSprinting() || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT;
-        boolean holdingInHands = !rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK;
+        boolean holdingInHands = !rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT ||
+                rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_MINER;
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
@@ -233,8 +234,10 @@ public class ModelRat extends AdvancedModelBase {
         progressRotation(rightThigh, rat.holdProgress, (float) Math.toRadians(70F), 0, 0, 5.0F);
         progressRotation(leftArm, rat.holdProgress, (float) Math.toRadians(60F), 0, 0, 5.0F);
         progressRotation(rightArm, rat.holdProgress, (float) Math.toRadians(60F), 0, 0, 5.0F);
-        progressRotation(leftHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(40F), 0, 5.0F);
-        progressRotation(rightHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(-40F), 0, 5.0F);
+        if (rat.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER && rat.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
+            progressRotation(leftHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(40F), 0, 5.0F);
+            progressRotation(rightHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(-40F), 0, 5.0F);
+        }
         progressPosition(body1, rat.holdProgress, 0, 16F, 0, 5.0F);
         progressPosition(leftThigh, rat.holdProgress, 2.5F, 0, 4.3F, 5.0F);
         progressPosition(rightThigh, rat.holdProgress, -2.5F, 0, 4.3F, 5.0F);
@@ -343,7 +346,7 @@ public class ModelRat extends AdvancedModelBase {
             // progressRotation(rightHand, 20F, 0.9599310885968813F, -0.17453292519943295F, 0.08726646259971647F, 20F);
             // progressRotation(leftHand, 20F, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F, 20F);
         }
-        if ((rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && rat.crafting) {
+        if ((rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK || rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_MINER) && rat.crafting) {
             this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
             this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
             this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);
@@ -370,7 +373,7 @@ public class ModelRat extends AdvancedModelBase {
     }
 
     private void scratchPosition(EntityRat rat) {
-        if(rat.holdProgress == 0) {
+        if (rat.holdProgress == 0) {
             rotateFrom(neck, 38, 0, 0);
             rotateFrom(head, 58, 0, 0);
             rotateFrom(rightHand, 25, 10, -30);
