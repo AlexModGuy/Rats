@@ -1,0 +1,12 @@
+{
+    "parent": "rats:block/grass_overlay_double",
+    "textures": {
+        "particle": "blocks/dirt",
+        "bottom": "blocks/dirt",
+        "top": "blocks/grass_top",
+        "side": "blocks/grass_side",
+        "overlay": "blocks/grass_side_overlay",
+        "overlay2": "rats:blocks/marbled_cheese_overlay"
+
+    }
+}

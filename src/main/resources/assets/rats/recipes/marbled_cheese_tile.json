@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:marbled_cheese",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:marbled_cheese_tile",
+    "count": 8
+  }
+}

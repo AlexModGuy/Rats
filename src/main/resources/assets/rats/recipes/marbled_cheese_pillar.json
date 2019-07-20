@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "C",
+    "C"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:marbled_cheese",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:marbled_cheese_pillar",
+    "data": 0,
+    "count": 2
+  }
+}

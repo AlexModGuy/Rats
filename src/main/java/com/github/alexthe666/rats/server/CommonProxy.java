@@ -1,12 +1,14 @@
 package com.github.alexthe666.rats.server;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.BlockGenericSlab;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
@@ -18,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,7 +37,6 @@ import java.util.UUID;
 public class CommonProxy {
 
     public void preInit() {
-
     }
 
     public void init() {
@@ -88,11 +90,17 @@ public class CommonProxy {
                 Object obj = f.get(null);
                 if (obj instanceof Block) {
                     ItemBlock itemBlock = new ItemBlock((Block) obj);
+                    if (obj instanceof BlockGenericSlab) {
+                        itemBlock = ((BlockGenericSlab) obj).getItemBlock();
+                    }
                     itemBlock.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(itemBlock);
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
                         ItemBlock itemBlock = new ItemBlock(block);
+                        if (block instanceof BlockGenericSlab) {
+                            itemBlock = ((BlockGenericSlab) obj).getItemBlock();
+                        }
                         itemBlock.setRegistryName(block.getRegistryName());
                         event.getRegistry().register(itemBlock);
                     }
@@ -122,6 +130,10 @@ public class CommonProxy {
         }
     }
 
+    @SubscribeEvent
+    public static void registerBiomes(RegistryEvent.Register<Biome> event) {
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
+    }
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
         registerSpawnable(EntityEntryBuilder.<EntityRat>create(), event, EntityRat.class, "rat", 1, 0X30333E, 0XDAABA1);
@@ -153,11 +165,15 @@ public class CommonProxy {
         return true;
     }
 
-    public void openCheeseStaffGui() { }
+    public void openCheeseStaffGui() {
+    }
 
-    public void setRefrencedRat(EntityRat rat){ }
+    public void setRefrencedRat(EntityRat rat) {
+    }
 
-    public EntityRat getRefrencedRat(){ return null; }
+    public EntityRat getRefrencedRat() {
+        return null;
+    }
 
     public void setCheeseStaffContext(BlockPos pos, EnumFacing facing) {
     }

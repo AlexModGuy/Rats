@@ -13,6 +13,7 @@ import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
+import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -101,6 +102,7 @@ public class RatsMod {
         PROXY.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         RatsRecipeRegistry.register();
+        RatsWorldRegistry.register();
     }
 
     @EventHandler

@@ -35,7 +35,9 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Items.CARROT);
         OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
-        GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 1);
+        GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
+        GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
+        GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);
         addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
     }

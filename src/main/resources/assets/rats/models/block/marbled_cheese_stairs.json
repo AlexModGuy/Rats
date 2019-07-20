@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "rats:blocks/marbled_cheese",
+        "top": "rats:blocks/marbled_cheese",
+        "side": "rats:blocks/marbled_cheese"
+    }
+}

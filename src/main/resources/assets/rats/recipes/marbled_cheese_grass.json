@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:marbled_cheese",
+      "data": 0
+    },
+    {
+      "item": "minecraft:grass",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "rats:marbled_cheese_grass",
+    "data": 0,
+    "count": 1
+  }
+}

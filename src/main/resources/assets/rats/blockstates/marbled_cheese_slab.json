@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "inventory": {
+      "model": "rats:marbled_cheese_slab"
+    },
+    "half=bottom": {
+      "model": "rats:marbled_cheese_slab"
+    },
+    "half=top": {
+      "model": "rats:marbled_cheese_slab_upper"
+    }
+  }
+}
