@@ -241,18 +241,13 @@ public class ModelRat extends AdvancedModelBase {
         progressPosition(body1, rat.holdProgress, 0, 16F, 0, 5.0F);
         progressPosition(leftThigh, rat.holdProgress, 2.5F, 0, 4.3F, 5.0F);
         progressPosition(rightThigh, rat.holdProgress, -2.5F, 0, 4.3F, 5.0F);
-        if(rat.isSkeleton()){
-            rat.deadInTrapProgress = 5;
-        }
         progressRotation(leftThigh, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, (float) Math.toRadians(-60F), 5.0F);
         progressRotation(rightThigh, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, (float) Math.toRadians(60F), 5.0F);
         progressRotation(leftFoot, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, 0, 5.0F);
         progressRotation(rightFoot, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, 0, 5.0F);
         progressRotation(leftArm, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, (float) Math.toRadians(-60F), 5.0F);
         progressRotation(rightArm, rat.deadInTrapProgress, (float) Math.toRadians(20F), 0, (float) Math.toRadians(60F), 5.0F);
-        if(!rat.isSkeleton()){
-            progressRotation(head, rat.deadInTrapProgress, (float) Math.toRadians(-20F), 0, 0, 5.0F);
-        }
+        progressRotation(head, rat.deadInTrapProgress, (float) Math.toRadians(-20F), 0, 0, 5.0F);
         progressRotation(tail1, rat.deadInTrapProgress, 0, (float) Math.toRadians(10F), 0, 5.0F);
         progressRotation(tail2, rat.deadInTrapProgress, 0, (float) Math.toRadians(30F), 0, 5.0F);
 

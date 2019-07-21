@@ -89,7 +89,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public int wildTrust = 0;
     public ContainerHorseChest ratInventory;
     private static final DataParameter<Boolean> IS_MALE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SKELETON = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
@@ -248,7 +247,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(IS_MALE, Boolean.valueOf(false));
-        this.dataManager.register(SKELETON, Boolean.valueOf(false));
         this.dataManager.register(PLAGUE, Boolean.valueOf(false));
         this.dataManager.register(COMMAND, Integer.valueOf(0));
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
@@ -417,19 +415,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return this.dataManager.get(IS_MALE).booleanValue();
     }
 
-    public void setSkeleton(boolean skeleton) {
-        this.dataManager.set(SKELETON, Boolean.valueOf(skeleton));
-        if(skeleton){
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-            isDeadInTrap = true;
-        }
-    }
-
-    public boolean isSkeleton() {
-        return this.dataManager.get(SKELETON).booleanValue();
-    }
-
-
     public void setCommand(RatCommand command) {
         setCommandInteger(command.ordinal());
     }
@@ -448,10 +433,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.isSkeleton()) {
-            destroySkeleton();
-            return true;
-        }
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
@@ -472,11 +453,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     @Override
     public void onLivingUpdate() {
-        if(isSkeleton()){
-            super.onLivingUpdate();
-            this.getNavigator().clearPath();
-            return;
-        }
         this.setRatStatus(RatStatus.IDLE);
         if (this.getUpgrade() != prevUpgrade) {
             setupHarvestAI();
@@ -574,7 +550,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         } else if (!holdingInHands && holdProgress > 0.0F) {
             holdProgress -= 0.5F;
         }
-        boolean inTrap = isDeadInTrap || isSkeleton();
+        boolean inTrap = isDeadInTrap;
         if (inTrap && deadInTrapProgress < 5.0F) {
             deadInTrapProgress += 1F;
         } else if (!inTrap && deadInTrapProgress > 0.0F) {
@@ -879,9 +855,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected void collideWithEntity(Entity entityIn) {
-        if(this.isSkeleton()){
-            destroySkeleton();
-        }
         if (!isInRatHole() && !crafting) {
             entityIn.applyEntityCollision(this);
         }
@@ -893,19 +866,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 100));
                 }
             }
-        }
-    }
-
-    private void destroySkeleton(){
-        if(this.isSkeleton()){
-            this.setDead();
-            for (int k = 0; k < 20; ++k) {
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
-            }
-            this.playSound(SoundEvents.ENTITY_SKELETON_DEATH, 1, 1.5F);
         }
     }
 
@@ -999,7 +959,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean canMove() {
-        return this.diggingPos == null && !this.isSitting() && this.getCommand().freeMove && !this.isChild() && !this.isSkeleton();
+        return this.diggingPos == null && !this.isSitting() && this.getCommand().freeMove && !this.isChild();
     }
 
     public boolean isInCage() {
@@ -1050,7 +1010,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     protected void onDeathUpdate() {
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
-        if (this.deathTime == maxDeathTime && !this.isSkeleton()) {
+        if (this.deathTime == maxDeathTime) {
             if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))) {
                 int i = this.getExperiencePoints(this.attackingPlayer);
                 i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
@@ -1121,7 +1081,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        destroySkeleton();
         if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE) {
             this.setTamed(true);
             this.world.setEntityState(this, (byte) 83);
@@ -1272,9 +1231,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.setMale(this.getRNG().nextBoolean());
         if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL) {
             this.setPlague(true);
-        }
-        if(this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId){
-            this.setSkeleton(true);
         }
         return livingdata;
     }

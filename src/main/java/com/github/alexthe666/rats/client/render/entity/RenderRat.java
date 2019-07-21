@@ -30,7 +30,6 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ModelPinkie PINKIE_MODEL = new ModelPinkie();
     private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/baby.png");
     private static final ResourceLocation ENDER_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_ender_upgrade.png");
-    private static final ResourceLocation SKELETON_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_skeleton.png");
     private static final ResourceLocation JULIAN = new ResourceLocation("rats:textures/entity/rat/patreon/rat_julian.png");
     private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
 
@@ -98,9 +97,6 @@ public class RenderRat extends RenderLiving<EntityRat> {
 
     protected ResourceLocation getEntityTexture(EntityRat entity) {
         String s = entity.getRatTexture();
-        if(entity.isSkeleton()){
-            return SKELETON_TEXTURE;
-        }
         if (entity.isChild()) {
             return PINKIE_TEXTURE;
         } else {
