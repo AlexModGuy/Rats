@@ -79,7 +79,6 @@ public class RatAIHarvestTrees extends EntityAIBase {
         if (!allBlocks.isEmpty()) {
             allBlocks.sort(this.targetSorter);
             this.targetBlock = allBlocks.get(0);
-            System.out.println(allBlocks);
         }
     }
 

@@ -24,7 +24,7 @@ public class ClientEvents {
         if (event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && !renderer.isShaderActive()) {
             renderer.loadShader(SYNESTHESIA);
         }
-        if (!event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && renderer.isShaderActive()) {
+        if (!event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && renderer.isShaderActive() && renderer.getShaderGroup().getShaderGroupName().equalsIgnoreCase(SYNESTHESIA.toString())) {
             renderer.stopUseShader();
         }
     }

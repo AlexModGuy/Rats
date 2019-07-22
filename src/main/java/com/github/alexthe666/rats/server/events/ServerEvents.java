@@ -86,7 +86,7 @@ public class ServerEvents {
                 if (!event.getEntityPlayer().isCreative()) {
                     if(event.getItemStack().getItem() == Items.MILK_BUCKET){
                         event.getItemStack().shrink(1);
-                        event.getEntityPlayer().setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
+                        event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
                     }else if(isMilk(event.getItemStack())){
                         IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
                         fluidHandler.drain(1000, true);

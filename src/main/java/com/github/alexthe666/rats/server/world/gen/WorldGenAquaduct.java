@@ -72,7 +72,6 @@ public class WorldGenAquaduct extends WorldGenerator {
                 }
             }
         }
-        System.out.println(template.getSize().getX());
         aquaDist += template.getSize().getX() - 1;
     }
 

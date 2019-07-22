@@ -37,7 +37,7 @@ public class RatAIRaidChests extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage()) {
+        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatsMod.CONFIG_OPTIONS.ratsStealItems) {
             return false;
         }
         if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
