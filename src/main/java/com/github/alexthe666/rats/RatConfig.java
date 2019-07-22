@@ -20,6 +20,7 @@ public class RatConfig {
     public int tokenDropRate = 10000;
     public String[] blacklistedRatBlocks = new String[0];
     public int ratlantisDimensionId = -8;
+    public int ratlantisPortalExitDimension = 0;
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -39,5 +40,6 @@ public class RatConfig {
         this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
         this.tokenDropRate = config.getInt("Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
         this.ratlantisDimensionId = config.getInt("Ratlantis Dimension ID", "all", -8, Integer.MIN_VALUE, Integer.MAX_VALUE, "Ratlantis Dimension ID");
+        this.ratlantisPortalExitDimension = config.getInt("Ratlantis Portal Exit Dimension ID", "all", 0, Integer.MIN_VALUE, Integer.MAX_VALUE, "What Dimension ID you are teleported to upon leaving Ratlantis");
     }
 }

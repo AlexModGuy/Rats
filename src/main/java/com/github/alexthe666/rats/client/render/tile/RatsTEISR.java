@@ -10,6 +10,7 @@ public class RatsTEISR extends TileEntityItemStackRenderer {
 
     private RenderRatHole renderRatHole = new RenderRatHole();
     private RenderRatTrap renderRatTrap = new RenderRatTrap();
+    private RenderRatlantisPortal renderRatlantisPortal = new RenderRatlantisPortal();
 
     public void renderByItem(ItemStack itemStackIn) {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE)) {
@@ -18,6 +19,9 @@ public class RatsTEISR extends TileEntityItemStackRenderer {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP)) {
             GL11.glScalef(1.2F, 1.2F, 1.2F);
             renderRatTrap.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+        }
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL)) {
+            renderRatlantisPortal.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
         }
     }
 }

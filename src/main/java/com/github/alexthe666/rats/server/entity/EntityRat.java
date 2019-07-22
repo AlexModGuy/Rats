@@ -29,6 +29,7 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerHorseChest;
@@ -89,6 +90,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public int wildTrust = 0;
     public ContainerHorseChest ratInventory;
     private static final DataParameter<Boolean> IS_MALE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
@@ -247,6 +249,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(IS_MALE, Boolean.valueOf(false));
+        this.dataManager.register(TOGA, Boolean.valueOf(false));
         this.dataManager.register(PLAGUE, Boolean.valueOf(false));
         this.dataManager.register(COMMAND, Integer.valueOf(0));
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
@@ -291,6 +294,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         compound.setInteger("Command", this.getCommandInteger());
         compound.setInteger("ColorVariant", this.getColorVariant());
         compound.setBoolean("Plague", this.hasPlague());
+        compound.setBoolean("Toga", this.hasToga());
         compound.setBoolean("IsMale", this.isMale());
         compound.setInteger("WildTrust", wildTrust);
         if (ratInventory != null) {
@@ -326,6 +330,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         wildTrust = compound.getInteger("WildTrust");
         this.setCommandInteger(compound.getInteger("Command"));
         this.setPlague(compound.getBoolean("Plague"));
+        this.setToga(compound.getBoolean("Toga"));
         this.setMale(compound.getBoolean("IsMale"));
         this.setColorVariant(compound.getInteger("ColorVariant"));
         if (ratInventory != null) {
@@ -398,6 +403,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return Integer.valueOf(this.dataManager.get(COLOR_VARIANT).intValue());
     }
 
+    public void setToga(boolean plague) {
+        this.dataManager.set(TOGA, Boolean.valueOf(plague));
+    }
+
+    public boolean hasToga() {
+        return this.dataManager.get(TOGA).booleanValue();
+    }
 
     public void setPlague(boolean plague) {
         this.dataManager.set(PLAGUE, Boolean.valueOf(plague));
@@ -1019,6 +1031,35 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     i -= j;
                     this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
                 }
+                if(rand.nextInt(RatsMod.CONFIG_OPTIONS.tokenDropRate) == 0){
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
+                }
+                if(this.hasToga()){
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
+                    if(this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId){
+                        boolean flag = false;
+                        if(!flag && rand.nextFloat() < 0.03F) {
+                            this.entityDropItem(new ItemStack(Items.DIAMOND), 0.0F);
+                            flag = true;
+                        }
+                        if(!flag && rand.nextFloat() < 0.6F) {
+                            this.entityDropItem(new ItemStack(RatsItemRegistry.CHEESE, 1 + rand.nextInt(3)), 0.0F);
+                            flag = true;
+                        }
+                        if(!flag && rand.nextFloat() < 0.3F) {
+                            this.entityDropItem(new ItemStack(Items.GOLD_INGOT), 0.0F);
+                            flag = true;
+                        }
+                        if(!flag && rand.nextFloat() < 0.3F) {
+                            this.entityDropItem(new ItemStack(Items.PRISMARINE_CRYSTALS), 0.0F);
+                            flag = true;
+                        }
+                        if(!flag && rand.nextFloat() < 0.3F) {
+                            this.entityDropItem(new ItemStack(Items.BOOK), 0.0F);
+                            flag = true;
+                        }
+                    }
+                }
             }
 
             this.setDead();
@@ -1081,6 +1122,19 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
+        if(itemstack.getItem() == RatsItemRegistry.RAT_TOGA){
+            if(!this.hasToga()){
+                if(!player.isCreative()) {
+                    itemstack.shrink(1);
+                }
+            }else{
+                if(!world.isRemote) {
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
+                }
+            }
+            this.setToga(!this.hasToga());
+            this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F, 1.5F);
+        }
         if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE) {
             this.setTamed(true);
             this.world.setEntityState(this, (byte) 83);
@@ -1231,6 +1285,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.setMale(this.getRNG().nextBoolean());
         if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL) {
             this.setPlague(true);
+        }
+        if(this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId){
+            this.setToga(true);
         }
         return livingdata;
     }

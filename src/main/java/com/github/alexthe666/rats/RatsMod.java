@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.server.CommonProxy;
+import com.github.alexthe666.rats.server.compat.ChiselCompatBridge;
 import com.github.alexthe666.rats.server.compat.CraftTweakerCompatBridge;
 import com.github.alexthe666.rats.server.compat.ThaumcraftCompatBridge;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
@@ -100,6 +101,7 @@ public class RatsMod {
     public void init(FMLInitializationEvent event) {
         logger.info("Rats is initializing");
         PROXY.init();
+        ChiselCompatBridge.loadChiselCompat();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         RatsRecipeRegistry.register();
         RatsWorldRegistry.register();

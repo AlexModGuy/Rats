@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class LayerRatPlague implements LayerRenderer<EntityRat> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_plague_overlay.png");
     private static final ResourceLocation TEXTURE_LUMBERJACK = new ResourceLocation("rats:textures/entity/rat/rat_lumberjack_upgrade.png");
+    private static final ResourceLocation TEXTURE_TOGA = new ResourceLocation("rats:textures/entity/rat/toga.png");
     private final RenderRat ratRenderer;
 
     public LayerRatPlague(RenderRat ratRendererIn) {
@@ -29,6 +30,10 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
         }
         if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
             this.ratRenderer.bindTexture(TEXTURE_LUMBERJACK);
+            this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        }
+        if (rat.hasToga()) {
+            this.ratRenderer.bindTexture(TEXTURE_TOGA);
             this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }

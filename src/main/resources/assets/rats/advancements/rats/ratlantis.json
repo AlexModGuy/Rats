@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:ratlantis_portal"
+        },
+        "title": {
+            "translate": "advancements.rats.ratlantis.title"
+        },
+        "description": {
+            "translate": "advancements.rats.ratlantis.description"
+        },
+        "frame": "goal"
+    },
+    "parent": "rats:rats/token",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:enter_block",
+            "conditions": {
+                "block": "rats:ratlantis_portal"
+            }
+        }
+    }
+}

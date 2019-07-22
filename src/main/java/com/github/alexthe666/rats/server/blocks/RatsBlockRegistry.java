@@ -80,4 +80,7 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_grass")
     public static Block MARBLED_CHEESE_GRASS = new BlockMarbledCheeseGrass();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantis_portal")
+    public static Block RATLANTIS_PORTAL = new BlockRatlantisPortal();
+
 }

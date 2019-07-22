@@ -55,6 +55,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":chunky_cheese_token")
     public static Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
+    public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic")
     public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
 
