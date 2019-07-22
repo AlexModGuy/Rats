@@ -751,13 +751,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !crafting;
     }
 
-    private void tryCooking() {
-        ItemStack heldItem = this.getHeldItemMainhand();
-        ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(heldItem).copy();
-        SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(heldItem);
+    public ItemStack getCookingResultFor(ItemStack stack){
+        ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
+        SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
         if (recipe != null) {
             burntItem = recipe.getOutput().copy();
         }
+        return burntItem;
+    }
+
+    private void tryCooking() {
+        ItemStack heldItem = this.getHeldItemMainhand();
+        ItemStack burntItem = getCookingResultFor(heldItem);
         if (burntItem.isEmpty()) {
             cookingProgress = 0;
         } else {

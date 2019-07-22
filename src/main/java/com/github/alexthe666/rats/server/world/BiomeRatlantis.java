@@ -34,10 +34,6 @@ public class BiomeRatlantis extends Biome {
         this.decorator.flowersPerChunk = 4;
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityParrot.class, 60, 1, 2));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRat.class, 60, 1, 5));
-        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityRat.class, 60, 1, 5));
-        this.spawnableCaveCreatureList.add(new Biome.SpawnListEntry(EntityRat.class, 60, 1, 5));
-        this.spawnableCaveCreatureList.add(new Biome.SpawnListEntry(EntityRat.class, 60, 1, 5));
     }
 
     public WorldGenerator getRandomWorldGenForGrass(Random rand) {
