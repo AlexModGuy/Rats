@@ -29,6 +29,9 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_tube")
+    public static Block RAT_TUBE = new BlockRatTube();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_raw")
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
 

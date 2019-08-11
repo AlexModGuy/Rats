@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
@@ -63,6 +64,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -97,6 +99,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public BlockPos depositPos;
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
+    public BlockPos tubeTarget = null;
+    public List<BlockPos> tubePath = new ArrayList<>();
     /*
        0 = tamed navigator
        1 = wild navigator
@@ -270,7 +274,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.navigatorType = 1;
         } else if (type == 0) {
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new PathNavigateGround(this, world);
+            this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {
             this.moveHelper = new RatFlyingMoveHelper(this);
@@ -503,6 +507,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
         super.onLivingUpdate();
         this.prevFlyingPitch = flyingPitch;
+        if(this.inTube()){
+            this.motionY += 0.08F;
+        }
         if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
             if (navigatorType != 2) {
                 switchNavigator(2);
@@ -1016,7 +1023,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean canPhaseThroughBlock(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() instanceof BlockFence || world.getBlockState(pos).getBlock() instanceof BlockFenceGate;
+        return world.getBlockState(pos).getBlock() instanceof BlockFence || world.getBlockState(pos).getBlock() instanceof BlockFenceGate || world.getBlockState(pos).getBlock() instanceof BlockRatTube;
     }
 
     public void setKilledInTrap() {
@@ -1483,5 +1490,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             return pos.up();
         }
         return pos;
+    }
+
+    public boolean inTube(){
+        BlockPos thispos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
+        return world.getBlockState(thispos).getBlock() instanceof BlockRatTube;
+    }
+
+    public boolean isAIDisabled(){
+        return inTube() || super.isAIDisabled();
+    }
+
+    public void setTubeTarget(BlockPos targetPosition) {
+        tubeTarget = targetPosition;
     }
 }

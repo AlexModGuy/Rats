@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
@@ -53,6 +54,7 @@ public class RatPathNavigate extends PathNavigateGround {
 
     public void onUpdateNavigation() {
         ++this.totalTicks;
+        ((EntityRat)this.entity).setTubeTarget(this.targetPosition);
 
         if (this.tryUpdatePath) {
             this.updatePath();

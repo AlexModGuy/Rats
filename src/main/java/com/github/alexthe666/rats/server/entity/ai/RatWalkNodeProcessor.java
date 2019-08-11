@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.pathfinding.PathNodeType;
@@ -23,7 +24,7 @@ public class RatWalkNodeProcessor extends WalkNodeProcessor {
                     int j1 = k + z;
                     PathNodeType pathnodetype = this.getPathNodeType(world, l, i1, j1);
                     Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                    if(block instanceof BlockRatHole || block instanceof BlockRatTrap || block instanceof BlockRatCage){
+                    if(block instanceof BlockRatHole || block instanceof BlockRatTrap || block instanceof BlockRatCage || block instanceof BlockRatTube){
                         pathnodetype = PathNodeType.WALKABLE;
                     }
                     if (pathnodetype == PathNodeType.DOOR_WOOD_CLOSED && canOpenDoorsIn && canEnterDoorsIn) {
