@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,6 +21,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -28,6 +30,7 @@ import scala.Int;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -515,5 +518,40 @@ public class RatUtils {
         float hardness = blockState.getBlockHardness(world, pos);
         return hardness != -1.0F && hardness <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold
                 && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && net.minecraft.entity.boss.EntityWither.canDestroyBlock(blockState.getBlock());
+    }
+
+    public static boolean isRatTube(IBlockAccess world, BlockPos offset) {
+        return world.getTileEntity(offset) instanceof TileEntityRatTube;
+    }
+
+    public static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
+        if(world.isAirBlock(pos)){
+            for(EnumFacing facing : EnumFacing.values()){
+                if(isRatTube(world, pos.offset(facing))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isLinkedToTube(IBlockAccess world, BlockPos offset){
+        return isRatTube(world, offset) || isConnectedToRatTube(world, offset);
+    }
+
+    public static class TubeSorter implements Comparator<EnumFacing> {
+        private final EntityRat theEntity;
+
+        public TubeSorter(EntityRat theEntityIn) {
+            this.theEntity = theEntityIn;
+        }
+
+        public int compare(EnumFacing p_compare_1_, EnumFacing p_compare_2_) {
+            BlockPos pos1 = new BlockPos(theEntity).offset(p_compare_1_);
+            BlockPos pos2 = new BlockPos(theEntity).offset(p_compare_2_);
+            double d0 = this.theEntity.tubeTarget.getDistance(pos1.getX(), pos1.getY(), pos1.getZ());
+            double d1 = this.theEntity.tubeTarget.getDistance(pos2.getX(), pos2.getY(), pos2.getZ());
+            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+        }
     }
 }

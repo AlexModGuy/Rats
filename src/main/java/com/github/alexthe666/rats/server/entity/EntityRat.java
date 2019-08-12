@@ -11,13 +11,14 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.pathfinding.AStar;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
@@ -30,6 +31,7 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -47,15 +49,16 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateFlying;
-import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.*;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -64,10 +67,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
@@ -96,15 +96,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    protected final RatUtils.TubeSorter tubeSorter = new RatUtils.TubeSorter(this);
     public BlockPos depositPos;
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
     public BlockPos tubeTarget = null;
-    public List<BlockPos> tubePath = new ArrayList<>();
+    public boolean prevInTube;
+    public boolean climbingTube = false;
     /*
        0 = tamed navigator
        1 = wild navigator
        2 = flight navigator
+       3 = tube navigator
      */
     private int navigatorType;
     public boolean crafting = false;
@@ -132,6 +135,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public float flyingPitch;
     public float prevFlyingPitch;
     private EntityAIBase aiHarvest;
+    private int tubeSteps;
 
     public EntityRat(World worldIn) {
         super(worldIn);
@@ -186,10 +190,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (this.aiHarvest == null) {
             aiHarvest = new RatAIHarvestCrops(this);
         }
-        if(this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && !(aiHarvest instanceof RatAIHarvestTrees)){
+        if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
         }
-        if(this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_MINER && !(aiHarvest instanceof RatAIHarvestMine)){
+        if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_MINER && !(aiHarvest instanceof RatAIHarvestMine)) {
             aiHarvest = new RatAIHarvestMine(this);
         }
         this.tasks.addTask(4, this.aiHarvest);
@@ -248,6 +252,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
     }
 
+    public boolean isOnLadder() {
+        if (this.inTube()) {
+            return climbingTube;
+        }
+        return super.isOnLadder();
+    }
 
     @Override
     protected void entityInit() {
@@ -268,18 +278,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     private void switchNavigator(int type) {
-        if (type == 1) {
+        if (type == 1) {//cage or wild
             this.moveHelper = new EntityMoveHelper(this);
             this.navigator = new RatPathNavigate(this, world);
             this.navigatorType = 1;
-        } else if (type == 0) {
+        } else if (type == 0) {//tamed
             this.moveHelper = new EntityMoveHelper(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
-        } else if (type == 2) {
+        } else if (type == 2) {//flying
             this.moveHelper = new RatFlyingMoveHelper(this);
             this.navigator = new FlyingRatPathNavigate(this, world);
             this.navigatorType = 2;
+        } else if (type == 3) {//tube
+            this.moveHelper = new RatTubeMoveHelper(this);
+            this.navigator = new RatTubePathNavigate(this, world);
+            this.navigatorType = 3;
         }
     }
 
@@ -505,12 +519,46 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             }
             this.heal(this.getMaxHealth());
         }
+        System.out.println(inTube());
         super.onLivingUpdate();
         this.prevFlyingPitch = flyingPitch;
-        if(this.inTube()){
-            this.motionY += 0.08F;
-        }
-        if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+        if (this.inTube()) {
+            if(tubeTarget != null){
+                for(BlockPos pos : new AStar(new BlockPos(this), tubeTarget, 1000).getPath(world)){
+                    if(pos != null){
+                        world.spawnParticle(EnumParticleTypes.HEART, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
+                    }
+                }
+            }
+            if (navigatorType != 3) {
+                switchNavigator(3);
+            }
+            if(climbingTube){
+                this.motionY += 0.1D;
+            }else if (!this.onGround && this.motionY < 0.0D) {
+                this.motionY *= 0.6D;
+            }
+            double ydist = prevPosY - this.posY;//down 0.4 up -0.38
+            double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+            this.flyingPitch += (float) (ydist) * 100;
+            this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
+            float plateau = 2;
+            if (this.flyingPitch > plateau) {
+                this.flyingPitch -= planeDist * Math.abs(this.flyingPitch) / 90;
+            }
+            if (this.flyingPitch < -plateau) {
+                this.flyingPitch += planeDist * Math.abs(this.flyingPitch) / 90;
+            }
+            if (this.flyingPitch > 2F) {
+                this.flyingPitch -= onGround ? Math.max(flyingPitch, 10) : 1F;
+            }
+            if (this.flyingPitch < -2F) {
+                this.flyingPitch += onGround ? Math.max(flyingPitch, 10) : 1F;
+            }
+            if(this.flyingPitch < 1F && flyingPitch > -1F && onGround){
+                this.flyingPitch = 0;
+            }
+        } else if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
             if (navigatorType != 2) {
                 switchNavigator(2);
             }
@@ -543,6 +591,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 this.flyingPitch = 0;
             }
         } else {
+            this.flyingPitch = 0;
             boolean wildNavigate = !this.isTamed() || this.isInCage();
             if (wildNavigate && navigatorType != 1) {
                 switchNavigator(1);
@@ -658,7 +707,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (breedCooldown == 0 && this.isInCage() && !world.isRemote && !this.isChild()) {
             tryBreeding();
         }
-        if(this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER){
+        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
             //crafting = false;
         }
         if (this.isTamed() && this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING) {
@@ -681,7 +730,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     if (ratCraftingTable.prevCookTime % 20 == 0) {
                         this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
                     }
-                }else{
+                } else {
                     crafting = false;
                     world.setEntityState(this, (byte) 86);
                 }
@@ -702,6 +751,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 this.setAttackTarget(piper.getAttackTarget());
             }
         }
+        prevInTube = inTube();
         prevUpgrade = this.getUpgrade();
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -758,7 +808,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !crafting;
     }
 
-    public ItemStack getCookingResultFor(ItemStack stack){
+    public ItemStack getCookingResultFor(ItemStack stack) {
         ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
         SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
         if (recipe != null) {
@@ -876,6 +926,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.breakingTime = 0;
             this.previousBreakProgress = -1;
         }
+
     }
 
     protected void collideWithEntity(Entity entityIn) {
@@ -1023,7 +1074,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean canPhaseThroughBlock(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() instanceof BlockFence || world.getBlockState(pos).getBlock() instanceof BlockFenceGate || world.getBlockState(pos).getBlock() instanceof BlockRatTube;
+        return world.getBlockState(pos).getBlock() instanceof BlockFence || world.getBlockState(pos).getBlock() instanceof BlockFenceGate;
     }
 
     public void setKilledInTrap() {
@@ -1043,30 +1094,30 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     i -= j;
                     this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
                 }
-                if(rand.nextInt(RatsMod.CONFIG_OPTIONS.tokenDropRate) == 0){
+                if (rand.nextInt(RatsMod.CONFIG_OPTIONS.tokenDropRate) == 0) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
                 }
-                if(this.hasToga()){
+                if (this.hasToga()) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
-                    if(this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId){
+                    if (this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
                         boolean flag = false;
-                        if(!flag && rand.nextFloat() < 0.03F) {
+                        if (!flag && rand.nextFloat() < 0.03F) {
                             this.entityDropItem(new ItemStack(Items.DIAMOND), 0.0F);
                             flag = true;
                         }
-                        if(!flag && rand.nextFloat() < 0.6F) {
+                        if (!flag && rand.nextFloat() < 0.6F) {
                             this.entityDropItem(new ItemStack(RatsItemRegistry.CHEESE, 1 + rand.nextInt(3)), 0.0F);
                             flag = true;
                         }
-                        if(!flag && rand.nextFloat() < 0.3F) {
+                        if (!flag && rand.nextFloat() < 0.3F) {
                             this.entityDropItem(new ItemStack(Items.GOLD_INGOT), 0.0F);
                             flag = true;
                         }
-                        if(!flag && rand.nextFloat() < 0.3F) {
+                        if (!flag && rand.nextFloat() < 0.3F) {
                             this.entityDropItem(new ItemStack(Items.PRISMARINE_CRYSTALS), 0.0F);
                             flag = true;
                         }
-                        if(!flag && rand.nextFloat() < 0.3F) {
+                        if (!flag && rand.nextFloat() < 0.3F) {
                             this.entityDropItem(new ItemStack(Items.BOOK), 0.0F);
                             flag = true;
                         }
@@ -1134,13 +1185,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if(itemstack.getItem() == RatsItemRegistry.RAT_TOGA){
-            if(!this.hasToga()){
-                if(!player.isCreative()) {
+        if (itemstack.getItem() == RatsItemRegistry.RAT_TOGA) {
+            if (!this.hasToga()) {
+                if (!player.isCreative()) {
                     itemstack.shrink(1);
                 }
-            }else{
-                if(!world.isRemote) {
+            } else {
+                if (!world.isRemote) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
                 }
             }
@@ -1220,13 +1271,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public void fall(float distance, float damageMultiplier) {
-        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
+        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER && !this.inTube()) {
             super.fall(distance, damageMultiplier);
         }
     }
 
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
-        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+        if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_FLIGHT && !this.inTube()) {
             super.updateFallState(y, onGroundIn, state, pos);
         }
     }
@@ -1298,7 +1349,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL) {
             this.setPlague(true);
         }
-        if(this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId){
+        if (this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
             this.setToga(true);
         }
         return livingdata;
@@ -1492,13 +1543,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return pos;
     }
 
-    public boolean inTube(){
-        BlockPos thispos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
-        return world.getBlockState(thispos).getBlock() instanceof BlockRatTube;
+    public boolean inTube() {
+        return isBlockInBB(this.getEntityBoundingBox());
     }
 
-    public boolean isAIDisabled(){
-        return inTube() || super.isAIDisabled();
+    private boolean isBlockInBB(AxisAlignedBB bb) {
+        BlockPos pos = new BlockPos(this);
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() instanceof BlockRatTube;
+    }
+
+    public boolean isAIDisabled() {
+        return super.isAIDisabled();
     }
 
     public void setTubeTarget(BlockPos targetPosition) {

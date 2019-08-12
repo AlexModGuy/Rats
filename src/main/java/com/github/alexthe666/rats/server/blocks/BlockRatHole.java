@@ -114,6 +114,7 @@ public class BlockRatHole extends BlockContainer {
         }
     }
 
+
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST);
     }

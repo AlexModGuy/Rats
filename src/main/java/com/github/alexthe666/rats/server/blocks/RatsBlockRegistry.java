@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RatsBlockRegistry {
@@ -29,8 +30,13 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_tube")
-    public static Block RAT_TUBE = new BlockRatTube();
+    public static Block[] RAT_TUBE_COLOR = new Block[16];
+
+    static {
+        for(int i = 0; i < 16; i++){
+            RAT_TUBE_COLOR[i] = new BlockRatTube(EnumDyeColor.byMetadata(i).getName());
+        }
+    }
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_raw")
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);

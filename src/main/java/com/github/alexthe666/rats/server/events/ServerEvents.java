@@ -157,6 +157,10 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
+        if(event.getEntity() instanceof EntityPlayer){
+            event.getEntity().width = 0.1F;
+            event.getEntity().height = 0.1F;
+        }
         if (event.getEntity() != null && event.getEntity() instanceof EntityRat) {
             Iterator<AxisAlignedBB> itr = event.getCollisionBoxesList().iterator();
             while (itr.hasNext()) {

@@ -3,10 +3,11 @@ package com.github.alexthe666.rats.server.pathfinding;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class AStarNode {
-    private static final float H = 2;
+    private static final float H = 1;
     private AStar aStar;
 
     public AStarNode start;
@@ -30,11 +31,13 @@ public class AStarNode {
         return baseCost + H * calcCost;
     }
 
-    public void generateReachablePos(World world) {
+    public void generateReachablePos(IBlockAccess world) {
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos offset = pos.offset(facing);
             if (AStar.isRatTube(world, offset)) {
                 travel(offset, baseCost + 1);
+            }else if (AStar.isConnectedToRatTube(world, offset)) {
+                travel(offset, baseCost + 10);
             }
         }
     }

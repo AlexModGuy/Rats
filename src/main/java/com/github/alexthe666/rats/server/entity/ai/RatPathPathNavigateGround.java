@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +16,12 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
 
     public RatPathPathNavigateGround(EntityRat entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
+    }
+
+    protected PathFinder getPathFinder() {
+        this.nodeProcessor = new RatWalkNodeProcessor();
+        this.nodeProcessor.setCanEnterDoors(true);
+        return new PathFinder(this.nodeProcessor);
     }
 
     public Path getPathToPos(BlockPos pos) {

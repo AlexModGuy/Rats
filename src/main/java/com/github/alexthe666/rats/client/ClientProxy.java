@@ -5,12 +5,10 @@ import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
 import com.github.alexthe666.rats.client.model.ModelPiperHat;
+import com.github.alexthe666.rats.client.model.StateMapperRatTube;
 import com.github.alexthe666.rats.client.render.entity.RenderIllagerPiper;
 import com.github.alexthe666.rats.client.render.entity.RenderRat;
-import com.github.alexthe666.rats.client.render.tile.RatsTEISR;
-import com.github.alexthe666.rats.client.render.tile.RenderRatHole;
-import com.github.alexthe666.rats.client.render.tile.RenderRatTrap;
-import com.github.alexthe666.rats.client.render.tile.RenderRatlantisPortal;
+import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
@@ -21,7 +19,10 @@ import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
+import com.github.alexthe666.rats.server.events.ClientEvents;
+import com.github.alexthe666.rats.server.events.ServerEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
@@ -34,6 +35,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -47,6 +49,7 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -74,10 +77,12 @@ public class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     public void init(){
+        MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTube.class, new RenderRatTubeDebug());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
         Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileEntityItemStackRenderer(TEISR);
@@ -88,6 +93,21 @@ public class ClientProxy extends CommonProxy {
                 return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic();
             }
         }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
+
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+            @Override
+            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+                Block block = state.getBlock();
+                int meta = 0;
+                for(int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++){
+                    if(block == RatsBlockRegistry.RAT_TUBE_COLOR[i]){
+                        meta = i;
+                    }
+                }
+                EnumDyeColor color = EnumDyeColor.byMetadata(meta);
+                return color.getColorValue();
+            }
+        }, RatsBlockRegistry.RAT_TUBE_COLOR);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
@@ -95,6 +115,20 @@ public class ClientProxy extends CommonProxy {
                 return Minecraft.getMinecraft().getBlockColors().colorMultiplier(state, null, null, tintIndex);
             }
         }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            @Override
+            public int colorMultiplier(ItemStack stack, int tintIndex) {
+                Block block = Block.getBlockFromItem(stack.getItem());
+                int meta = 0;
+                for(int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++){
+                    if(block == RatsBlockRegistry.RAT_TUBE_COLOR[i]){
+                        meta = i;
+                    }
+                }
+                EnumDyeColor color = EnumDyeColor.byMetadata(meta);
+                return color.getColorValue();
+            }
+        }, RatsBlockRegistry.RAT_TUBE_COLOR);
     }
 
     public void postInit() {
@@ -107,6 +141,11 @@ public class ClientProxy extends CommonProxy {
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TRAP, (new StateMap.Builder()).ignore(BlockRatTrap.FACING).build());
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_HOLE, (new StateMap.Builder()).ignore(BlockRatHole.NORTH, BlockRatHole.EAST, BlockRatHole.SOUTH, BlockRatHole.WEST).build());
+
+        for(int i = 0; i < 16; i++){
+            ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperRatTube()));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
+        }
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

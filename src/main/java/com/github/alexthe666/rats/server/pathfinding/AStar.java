@@ -1,7 +1,11 @@
 package com.github.alexthe666.rats.server.pathfinding;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ public class AStar {
         this.overflowLimit = overflowLimit;
     }
 
-    public BlockPos[] getPath(World world) {
+    public BlockPos[] getPath(IBlockAccess world) {
         if (!isRatTube(world, start.getPos()) && !isRatTube(world, end.getPos())) {
             return new BlockPos[0];
         }
@@ -46,9 +50,13 @@ public class AStar {
             shoppingList.remove(n);
             confirmedList.add(n);
         }
-
         if (!pathFound) {
-            return new BlockPos[0];
+            int length = confirmedList.size();
+            BlockPos[] locations = new BlockPos[length];
+            for (int i = 0; i < length; i++) {
+                locations[i] = confirmedList.get(i).getPos();
+            }
+            return locations;
         }
         int length = 1;
         AStarNode n = end;
@@ -77,8 +85,19 @@ public class AStar {
         }
     }
 
-    protected static boolean isRatTube(World world, BlockPos offset) {
+    protected static boolean isRatTube(IBlockAccess world, BlockPos offset) {
         return world.getTileEntity(offset) instanceof TileEntityRatTube;
     }
 
+    protected static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
+        if(world.isAirBlock(pos)){
+            for(EnumFacing facing : EnumFacing.values()){
+                IBlockState state = world.getBlockState(pos.offset(facing));
+                if(state.getBlock() instanceof BlockRatTube && state.getBlock().getMetaFromState(state) > 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

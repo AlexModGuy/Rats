@@ -28,16 +28,38 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         float i = this.getPos().getX() + 0.5F;
         float j = this.getPos().getY() + 0.5F;
         float k = this.getPos().getZ() + 0.5F;
-        float d0 = 0.45F;
+        float d0 = 0.65F;
         for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
+            if(!rat.prevInTube && rat.inTube()){
+                rat.setPosition(i, j - 0.25F, k);
+            }
             this.updateRat(rat);
         }
     }
 
     private void updateRat(EntityRat rat) {
-        BlockPos target = generateTubeTarget(rat);
-        BlockPos[] pathway = new AStar(new BlockPos(rat), target, 1000).getPath(world);
-        
+
+        /*if(!isPathwayValid(rat.tubePathway)){
+            rat.currentTubeNode = 0;
+            rat.tubePathway = new AStar(new BlockPos(rat), target, 1000).getPath(world);
+        }else{
+            if(rat.tubePathway[rat.tubePathway.length - 1].distanceSq(rat.posX, rat.posY, rat.posZ) < 2){
+                rat.currentTubeNode = 0;
+                rat.tubePathway = new AStar(new BlockPos(rat), target, 1000).getPath(world);
+            }
+            int max = rat.tubePathway.length - 1;
+            if(rat.currentTubeNode < max && rat.getDistanceSq(rat.tubePathway[MathHelper.clamp(rat.currentTubeNode, 0, max)]) < 2){
+                rat.currentTubeNode++;
+            }
+            if(rat.tubePathway != null && max > 0){
+                BlockPos currentNode = rat.tubePathway[MathHelper.clamp(rat.currentTubeNode, 0, max)];
+                rat.getMoveHelper().setMoveTo(currentNode.getX() + 0.5D, currentNode.getY() + 0.25D, currentNode.getZ() + 0.5D, 1.0D);
+            }
+        }*/
+    }
+
+    private boolean isPathwayValid(BlockPos[] pathway){
+        return pathway != null && pathway.length > 0;
     }
 
     private BlockPos generateTubeTarget(EntityRat rat) {
