@@ -47,7 +47,7 @@ public class RatDepositInInventory extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || entity.getAttackTarget() != null) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
         if(this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CHEF && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){

@@ -1,11 +1,10 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,7 +20,7 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
     protected PathFinder getPathFinder() {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
-        return new PathFinder(this.nodeProcessor);
+        return new RatPathFinder(this.nodeProcessor, (EntityRat)entity);
     }
 
     public Path getPathToPos(BlockPos pos) {
@@ -44,6 +43,10 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
             this.speed = speedIn;
             return true;
         }
+    }
+
+    public boolean canEntityStandOnPos(BlockPos pos) {
+        return this.world.getBlockState(pos.down()).isFullBlock() || this.world.getBlockState(pos).getBlock() instanceof BlockRatTube;
     }
 
     public void onUpdateNavigation() {

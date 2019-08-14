@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.pathfinding;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -32,12 +33,28 @@ public class AStarNode {
     }
 
     public void generateReachablePos(IBlockAccess world) {
+        boolean flag = false;
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos offset = pos.offset(facing);
-            if (AStar.isRatTube(world, offset)) {
+            BlockPos offPos;
+            if (AStar.isRatTube(world, offset) || world.getBlockState(offset).getBlock() instanceof BlockRatCage) {
                 travel(offset, baseCost + 1);
-            }else if (AStar.isConnectedToRatTube(world, offset)) {
-                travel(offset, baseCost + 10);
+                flag = true;
+            }else if ((offPos = AStar.getConnectedToRatTube(world, offset)) != null) {
+                travel(offPos, baseCost + 10);
+                flag = true;
+            }
+        }
+        if(aStar.includeAir) {
+            for (int i = -1; i < 1; i++) {
+                for (int j = -1; j < 1; j++) {
+                    for (int k = -1; k < 1; k++) {
+                        BlockPos offset = pos.add(i, j, k);
+                        if (world.isAirBlock(offset) && world.isSideSolid(offset.down(), EnumFacing.UP, false)) {
+                            travel(offset, baseCost + 50);
+                        }
+                    }
+                }
             }
         }
     }

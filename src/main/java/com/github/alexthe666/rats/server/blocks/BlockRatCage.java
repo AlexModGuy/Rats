@@ -8,6 +8,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,12 +34,13 @@ import java.util.List;
 
 public class BlockRatCage extends Block {
 
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool WEST = PropertyBool.create("west");
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final PropertyInteger NORTH = PropertyInteger.create("north", 0, 2);
+    public static final PropertyInteger EAST = PropertyInteger.create("east", 0, 2);
+    public static final PropertyInteger SOUTH = PropertyInteger.create("south", 0, 2);
+    public static final PropertyInteger WEST = PropertyInteger.create("west", 0, 2);
+    public static final PropertyInteger UP = PropertyInteger.create("up", 0, 2);
+    public static final PropertyInteger DOWN = PropertyInteger.create("down", 0, 2);
+
     private static final AxisAlignedBB BOTTOM_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.125F, 1F);
     private static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0F, 1F, 0F, 1F, 1F, 1F);
     private static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 0F);
@@ -53,14 +55,13 @@ public class BlockRatCage extends Block {
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats.rat_cage");
         this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(NORTH, Boolean.valueOf(false))
-                .withProperty(EAST, Boolean.valueOf(false))
-                .withProperty(SOUTH, Boolean.valueOf(false))
-                .withProperty(WEST, Boolean.valueOf(false))
-                .withProperty(UP, Boolean.valueOf(false))
-                .withProperty(DOWN, Boolean.valueOf(false))
+                .withProperty(NORTH, Integer.valueOf(0))
+                .withProperty(EAST, Integer.valueOf(0))
+                .withProperty(SOUTH, Integer.valueOf(0))
+                .withProperty(WEST, Integer.valueOf(0))
+                .withProperty(UP, Integer.valueOf(0))
+                .withProperty(DOWN, Integer.valueOf(0))
         );
-
         this.setRegistryName(RatsMod.MODID, "rat_cage");
     }
 
@@ -88,9 +89,12 @@ public class BlockRatCage extends Block {
                 .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN));
     }
 
-    private boolean canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+    private int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         BlockPos other = pos.offset(facing);
-        return world.getBlockState(other).getBlock() == this;
+        if(world.getBlockState(other).getBlock() instanceof BlockRatTube){
+            return 2;
+        }
+        return world.getBlockState(other).getBlock() == this ? 1 : 0;
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -100,22 +104,22 @@ public class BlockRatCage extends Block {
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         if (state.getBlock() instanceof BlockRatCage) {
             IBlockState actualState = getActualState(state, worldIn, pos);
-            if (!actualState.getValue(UP)) {
+            if (actualState.getValue(UP) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
             }
-            if (!actualState.getValue(DOWN)) {
+            if (actualState.getValue(DOWN) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, BOTTOM_AABB);
             }
-            if (!actualState.getValue(NORTH)) {
+            if (actualState.getValue(NORTH) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
             }
-            if (!actualState.getValue(SOUTH)) {
+            if (actualState.getValue(SOUTH) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
             }
-            if (!actualState.getValue(EAST)) {
+            if (actualState.getValue(EAST) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             }
-            if (!actualState.getValue(WEST)) {
+            if (actualState.getValue(WEST) == 0) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
         }

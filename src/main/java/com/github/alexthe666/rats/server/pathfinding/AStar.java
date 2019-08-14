@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.pathfinding;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -22,17 +24,15 @@ public class AStar {
     private AStarNode end;
     private int overflowLimit = 0;
     private boolean pathFound = false;
-
-    public AStar(BlockPos startPos, BlockPos endPos, int overflowLimit) {
+    protected boolean includeAir;
+    public AStar(BlockPos startPos, BlockPos endPos, int overflowLimit, boolean includeAir) {
         start = new AStarNode(this, null, startPos, 0, endPos);
         end = new AStarNode(this, start, endPos, 0, endPos);
         this.overflowLimit = overflowLimit;
+        this.includeAir = includeAir;
     }
 
     public BlockPos[] getPath(IBlockAccess world) {
-        if (!isRatTube(world, start.getPos()) && !isRatTube(world, end.getPos())) {
-            return new BlockPos[0];
-        }
         shoppingList.add(start);
         while (confirmedList.size() < overflowLimit && !pathFound && shoppingList.size() > 0) {
             AStarNode n = shoppingList.get(0);
@@ -89,15 +89,20 @@ public class AStar {
         return world.getTileEntity(offset) instanceof TileEntityRatTube;
     }
 
-    protected static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
-        if(world.isAirBlock(pos)){
-            for(EnumFacing facing : EnumFacing.values()){
-                IBlockState state = world.getBlockState(pos.offset(facing));
-                if(state.getBlock() instanceof BlockRatTube && state.getBlock().getMetaFromState(state) > 0){
-                    return true;
+    public static BlockPos getConnectedToRatTube(IBlockAccess world, BlockPos pos) {
+        for(EnumFacing facing : EnumFacing.values()){
+            BlockPos statePos = pos.offset(facing);
+            IBlockState state = world.getBlockState(statePos);
+            if(state.getBlock() instanceof BlockRatTube && state.getBlock().getMetaFromState(state) > 0){
+                for(int i = 0; i < EnumFacing.values().length; i++){
+                    PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                    BlockPos offsetInPos = statePos.offset(EnumFacing.values()[i]);
+                    if(state.getValue(bool) && ( world.isAirBlock(offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)){
+                        return offsetInPos;
+                    }
                 }
             }
         }
-        return false;
+        return null;
     }
 }

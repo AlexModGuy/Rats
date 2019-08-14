@@ -16,6 +16,7 @@ import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import javafx.scene.chart.Axis;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -48,7 +49,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -139,6 +142,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
 
     public EntityRat(World worldIn) {
         super(worldIn);
+        this.setPathPriority(PathNodeType.RAIL, 1000F);
         switchNavigator(1);
         this.setSize(0.49F, 0.49F);
         initInventory();
@@ -152,7 +156,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.tasks.addTask(2, new RatAIWander(this, 1.0D));
         this.tasks.addTask(2, new RatAIWanderFlight(this));
         this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
-        this.tasks.addTask(3, this.aiSit = new EntityAISit(this));
+        this.tasks.addTask(3, this.aiSit = new RatAISit(this));
         this.tasks.addTask(3, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
                 return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT && !EntityRat.this.isTamed() && !EntityRat.this.hasPlague() || entity instanceof EntityOcelot);
@@ -280,7 +284,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private void switchNavigator(int type) {
         if (type == 1) {//cage or wild
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new RatPathNavigate(this, world);
+            this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {//tamed
             this.moveHelper = new EntityMoveHelper(this);
@@ -484,6 +488,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     @Override
     public void onLivingUpdate() {
         this.setRatStatus(RatStatus.IDLE);
+        if(!this.inTube() && this.getNavigator().getPath() != null){
+            if(this.getNavigator().getPath().getFinalPathPoint() != null){
+                BlockPos endPoint = new BlockPos(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
+                //world.setBlockState(endPoint.down(), Blocks.EMERALD_BLOCK.getDefaultState());
+            }
+        }
         if (this.getUpgrade() != prevUpgrade) {
             setupHarvestAI();
             if (this.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_SPEED) {
@@ -519,17 +529,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             }
             this.heal(this.getMaxHealth());
         }
-        System.out.println(inTube());
         super.onLivingUpdate();
         this.prevFlyingPitch = flyingPitch;
         if (this.inTube()) {
-            if(tubeTarget != null){
-                for(BlockPos pos : new AStar(new BlockPos(this), tubeTarget, 1000).getPath(world)){
-                    if(pos != null){
-                        world.spawnParticle(EnumParticleTypes.HEART, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
-                    }
-                }
-            }
             if (navigatorType != 3) {
                 switchNavigator(3);
             }
@@ -697,9 +699,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             if (this.getAttackTarget() != null) {
                 this.setAttackTarget(null);
             }
-            if (this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER) {
+            /*if (this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER) {
                 this.setCommand(RatCommand.WANDER);
-            }
+            }*/
         }
         if (this.breedCooldown > 0) {
             breedCooldown--;
@@ -805,7 +807,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean canBeCollidedWith() {
-        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !crafting;
+        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !crafting && !this.inTube();
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {
@@ -930,7 +932,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     protected void collideWithEntity(Entity entityIn) {
-        if (!isInRatHole() && !crafting) {
+        if (!isInRatHole() && !crafting && !inTube()) {
             entityIn.applyEntityCollision(this);
         }
         if (this.hasPlague()) {
@@ -1544,13 +1546,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean inTube() {
-        return isBlockInBB(this.getEntityBoundingBox());
-    }
-
-    private boolean isBlockInBB(AxisAlignedBB bb) {
         BlockPos pos = new BlockPos(this);
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof BlockRatTube;
+        boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
+        if(state.getBlock() instanceof BlockRatTube){
+            List<AxisAlignedBB> aabbs = ((BlockRatTube) state.getBlock()).compileAABBList(world, pos, state);
+            for(AxisAlignedBB box : aabbs){
+                if(box.offset(pos).contains(this.getPositionVector().add(0, this.height/2, 0)) || box.offset(pos).contains(this.getPositionVector().add(0, 0, 0)) && above){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean isAIDisabled() {

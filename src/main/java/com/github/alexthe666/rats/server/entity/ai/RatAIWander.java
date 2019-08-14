@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -35,15 +34,26 @@ public class RatAIWander extends EntityAIBase {
             return false;
         }
         if (!this.mustUpdate) {
-            if (this.rat.getRNG().nextInt(rat.isInCage() ? 3 : executionChance) != 0) {
+            if (this.rat.getRNG().nextInt(rat.isInCage() || rat.inTube() ? 3 : executionChance) != 0) {
                 return false;
             }
         }
-        Vec3d vec3d;
-        boolean inCage = rat.isInCage();
+        Vec3d vec3d = null;
+        boolean inCage = rat.isInCage() || rat.inTube();
         if(inCage){
-            vec3d = RatUtils.findRandomCageTarget(this.rat, 5, 2);
-        }else{
+            if(rat.inTube()){
+                vec3d = RatUtils.generateRandomCagePos(this.rat, 30, 10, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), false);
+                if(vec3d == null){
+                    vec3d = RatUtils.generateRandomCageOrTubePos(this.rat, 20, 20, null, false);
+                }
+            }else{
+                vec3d = RatUtils.generateRandomTubePos(this.rat, 15, 3, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), false);
+                if(vec3d == null){
+                    vec3d = RatUtils.findRandomCageOrTubeTarget(this.rat, 15, 2);
+                }
+            }
+        }
+        if(!inCage || vec3d == null){
             vec3d = RandomPositionGenerator.findRandomTarget(this.rat, this.rat.isTamed() ? 5 : 10, 7);
         }
         if (vec3d == null) {

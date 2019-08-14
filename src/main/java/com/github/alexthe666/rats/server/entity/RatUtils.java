@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -24,9 +25,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
-import scala.Int;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -80,7 +79,9 @@ public class RatUtils {
 
     public static int getItemSlotFromItemHandler(EntityRat rat, IItemHandler handler, Random random) {
         List<Integer> items = new ArrayList<Integer>();
-
+        if(handler == null){
+            return -1;
+        }
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.extractItem(i, handler.getSlotLimit(i), true);
             if(rat.canRatPickupItem(stack)) {
@@ -431,12 +432,78 @@ public class RatUtils {
     }
 
     @Nullable
-    public static Vec3d findRandomCageTarget(EntityRat rat, int xz, int y) {
-        return generateRandomCagePos(rat, xz, y, null, false);
+    public static Vec3d findRandomCageOrTubeTarget(EntityRat rat, int xz, int y) {
+        return generateRandomCageOrTubePos(rat, xz, y, null, false);
     }
 
     @Nullable
-    private static Vec3d generateRandomCagePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+    public static Vec3d generateRandomCageOrTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+        PathNavigate pathnavigate = rat.getNavigator();
+        Random random = rat.getRNG();
+        boolean flag;
+
+        if (rat.hasHome()) {
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ)) + 4.0D;
+            double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
+            flag = d0 < d1 * d1;
+        } else {
+            flag = false;
+        }
+
+        boolean flag1 = false;
+        float f = -99999.0F;
+        int k1 = 0;
+        int i = 0;
+        int j = 0;
+
+        for (int k = 0; k < 10; ++k) {
+            int l = random.nextInt(2 * searchWidth + 1) - searchWidth;
+            int i1 = random.nextInt(2 * searchHeight + 1) - searchHeight;
+            int j1 = random.nextInt(2 * searchWidth + 1) - searchWidth;
+
+            if (positionVector == null || (double) l * positionVector.x + (double) j1 * positionVector.z >= 0.0D) {
+                if (rat.hasHome() && searchWidth > 1) {
+                    BlockPos blockpos = rat.getHomePosition();
+
+                    if (rat.posX > (double) blockpos.getX()) {
+                        l -= random.nextInt(searchWidth / 2);
+                    } else {
+                        l += random.nextInt(searchWidth / 2);
+                    }
+
+                    if (rat.posZ > (double) blockpos.getZ()) {
+                        j1 -= random.nextInt(searchWidth / 2);
+                    } else {
+                        j1 += random.nextInt(searchWidth / 2);
+                    }
+                }
+
+                BlockPos blockpos1 = new BlockPos((double) l + rat.posX, (double) i1 + rat.posY, (double) j1 + rat.posZ);
+
+                if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && (rat.world.getBlockState(blockpos1).getBlock() == RatsBlockRegistry.RAT_CAGE || rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube)) {
+                    blockpos1 = findLowestRatCage(blockpos1, rat);
+                    float f1 = rat.getBlockPathWeight(blockpos1);
+
+                    if (f1 > f) {
+                        f = f1;
+                        k1 = l;
+                        i = i1;
+                        j = j1;
+                        flag1 = true;
+                    }
+                }
+            }
+        }
+
+        if (flag1) {
+            return new Vec3d((double) k1 + rat.posX, (double) i + rat.posY, (double) j + rat.posZ);
+        } else {
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Vec3d generateRandomCagePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
         PathNavigate pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
@@ -501,12 +568,78 @@ public class RatUtils {
         }
     }
 
+    @Nullable
+    public static Vec3d generateRandomTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+        PathNavigate pathnavigate = rat.getNavigator();
+        Random random = rat.getRNG();
+        boolean flag;
+
+        if (rat.hasHome()) {
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ)) + 4.0D;
+            double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
+            flag = d0 < d1 * d1;
+        } else {
+            flag = false;
+        }
+
+        boolean flag1 = false;
+        float f = -99999.0F;
+        int k1 = 0;
+        int i = 0;
+        int j = 0;
+
+        for (int k = 0; k < 10; ++k) {
+            int l = random.nextInt(2 * searchWidth + 1) - searchWidth;
+            int i1 = random.nextInt(2 * searchHeight + 1) - searchHeight;
+            int j1 = random.nextInt(2 * searchWidth + 1) - searchWidth;
+
+            if (positionVector == null || (double) l * positionVector.x + (double) j1 * positionVector.z >= 0.0D) {
+                if (rat.hasHome() && searchWidth > 1) {
+                    BlockPos blockpos = rat.getHomePosition();
+
+                    if (rat.posX > (double) blockpos.getX()) {
+                        l -= random.nextInt(searchWidth / 2);
+                    } else {
+                        l += random.nextInt(searchWidth / 2);
+                    }
+
+                    if (rat.posZ > (double) blockpos.getZ()) {
+                        j1 -= random.nextInt(searchWidth / 2);
+                    } else {
+                        j1 += random.nextInt(searchWidth / 2);
+                    }
+                }
+
+                BlockPos blockpos1 = new BlockPos((double) l + rat.posX, (double) i1 + rat.posY, (double) j1 + rat.posZ);
+
+                if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube) {
+                    blockpos1 = findLowestRatCage(blockpos1, rat);
+                    float f1 = rat.getBlockPathWeight(blockpos1);
+
+                    if (f1 > f) {
+                        f = f1;
+                        k1 = l;
+                        i = i1;
+                        j = j1;
+                        flag1 = true;
+                    }
+                }
+            }
+        }
+
+        if (flag1) {
+            return new Vec3d((double) k1 + rat.posX, (double) i + rat.posY, (double) j + rat.posZ);
+        } else {
+            return null;
+        }
+    }
+
     public static BlockPos findLowestRatCage(BlockPos pos, EntityCreature rat) {
-        if (rat.world.getBlockState(pos.down()).getBlock() != RatsBlockRegistry.RAT_CAGE) {
+        if (rat.world.getBlockState(pos.down()).getBlock() != RatsBlockRegistry.RAT_CAGE && !(rat.world.getBlockState(pos.down()).getBlock() instanceof BlockRatTube)) {
             return pos;
         } else {
             BlockPos blockpos;
-            for (blockpos = pos.down(); blockpos.getY() > 0 && rat.world.getBlockState(blockpos).getBlock() == RatsBlockRegistry.RAT_CAGE; blockpos = blockpos.down()) {
+            for (blockpos = pos.down(); blockpos.getY() > 0 && rat.world.getBlockState(blockpos).getBlock() != RatsBlockRegistry.RAT_CAGE && !(rat.world.getBlockState(blockpos).getBlock() instanceof BlockRatTube); blockpos = blockpos.down()) {
             }
             return blockpos;
         }
@@ -535,8 +668,34 @@ public class RatUtils {
         return false;
     }
 
+    public static boolean isOpenRatTube(IBlockAccess world, EntityRat rat, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if(state.getBlock() instanceof BlockRatTube){
+            for(int i = 0; i < EnumFacing.values().length; i++){
+                PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                if(state.getValue(bool) && rat != null && rat.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean isLinkedToTube(IBlockAccess world, BlockPos offset){
         return isRatTube(world, offset) || isConnectedToRatTube(world, offset);
+    }
+
+    public static BlockPos offsetTubeEntrance(IBlockAccess worldIn, BlockPos pos) {
+        IBlockState state = worldIn.getBlockState(pos);
+        if(state.getBlock() instanceof BlockRatTube){
+            for(int i = 0; i < EnumFacing.values().length; i++){
+                PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                if(state.getValue(bool)){
+                    return pos.offset(EnumFacing.values()[i]);
+                }
+            }
+        }
+        return pos;
     }
 
     public static class TubeSorter implements Comparator<EnumFacing> {

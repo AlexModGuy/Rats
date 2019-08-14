@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -24,7 +25,7 @@ public class RatTubePathNavigate extends PathNavigateGround {
     protected PathFinder getPathFinder() {
         this.nodeProcessor = new RatTubeNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
-        return new RatTubePathFinder(this.nodeProcessor);
+        return new RatTubePathFinder(this.nodeProcessor, (EntityRat)entity);
     }
 
 
@@ -63,38 +64,10 @@ public class RatTubePathNavigate extends PathNavigateGround {
     }
 
     protected void pathFollow() {
-        Vec3d vec3d = this.getEntityPosition();
-        int i = this.currentPath.getCurrentPathLength();
-        float yVar = 1.5F;
-        for (int j = this.currentPath.getCurrentPathIndex(); j < this.currentPath.getCurrentPathLength(); ++j) {
-            if ((double) this.currentPath.getPathPointFromIndex(j).y != Math.floor(vec3d.y)) {
-                i = j;
-                break;
-            }
-        }
-
-        this.maxDistanceToWaypoint = this.entity.width > 0.75F ? this.entity.width / 2.0F : 0.75F - this.entity.width / 2.0F;
-        Vec3d vec3d1 = this.currentPath.getCurrentPos();
-
-        if (MathHelper.abs((float) (this.entity.posX - (vec3d1.x + 0.5D))) < this.maxDistanceToWaypoint && MathHelper.abs((float) (this.entity.posZ - (vec3d1.z + 0.5D))) < this.maxDistanceToWaypoint && Math.abs(this.entity.posY - vec3d1.y) < yVar) {
-            this.currentPath.setCurrentPathIndex(this.currentPath.getCurrentPathIndex() + 1);
-        }
-
-        int k = MathHelper.ceil(this.entity.width);
-        int l = MathHelper.ceil(this.entity.height);
-        int i1 = k;
-
-        for (int j1 = i - 1; j1 >= this.currentPath.getCurrentPathIndex(); --j1) {
-            if (this.isDirectPathBetweenPoints(vec3d, this.currentPath.getVectorFromIndex(this.entity, j1), k, l, i1)) {
-                this.currentPath.setCurrentPathIndex(j1);
-                break;
-            }
-        }
-
-        this.checkForStuck(vec3d);
+        super.pathFollow();
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {
-        return this.world.getBlockState(pos).getBlock() instanceof BlockRatTube;
+        return this.world.getBlockState(pos).getBlock() instanceof BlockRatTube || this.world.getBlockState(pos).getBlock() instanceof BlockRatCage;
     }
 }

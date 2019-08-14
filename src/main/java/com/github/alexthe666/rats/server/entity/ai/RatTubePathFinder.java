@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.pathfinding.AStar;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
@@ -9,8 +11,10 @@ import net.minecraft.pathfinding.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 import java.util.Set;
 
 public class RatTubePathFinder extends PathFinder {
@@ -19,10 +23,12 @@ public class RatTubePathFinder extends PathFinder {
     private final Set<PathPoint> closedSet = Sets.<PathPoint>newHashSet();
     private final PathPoint[] pathOptions = new PathPoint[32];
     private final NodeProcessor nodeProcessor;
+    private EntityRat rat;
 
-    public RatTubePathFinder(NodeProcessor processor) {
+    public RatTubePathFinder(NodeProcessor processor, EntityRat rat) {
         super(processor);
         this.nodeProcessor = processor;
+        this.rat = rat;
     }
 
     @Nullable
@@ -54,14 +60,19 @@ public class RatTubePathFinder extends PathFinder {
         BlockPos startPos = new BlockPos(pathFrom.x, pathFrom.y, pathFrom.z);
         BlockPos endPos = new BlockPos(pathTo.x, pathTo.y, pathTo.z);
 
-        AStar aStar = new AStar(startPos, endPos, 1000);
-
+        AStar aStar = new AStar(startPos, endPos, 1000, false);
         BlockPos[] pathBlocks = aStar.getPath(worldIn);
         PathPoint[] fromPos = new PathPoint[pathBlocks.length];
         for(int i = 0; i < pathBlocks.length; i++){
             fromPos[i] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
-            //world.setBlockState(pathBlocks[i].up(), Blocks.DIAMOND_BLOCK.getDefaultState());
+            //if(!(worldIn.getBlockState(pathBlocks[i].down()) instanceof BlockRatTube))
+            //rat.world.setBlockState(pathBlocks[i].down(), Blocks.STAINED_GLASS.getDefaultState());
         }
+        /*
+        Random random =     new Random();
+        if(pathBlocks.length > 0)
+        rat.world.setBlockState(pathBlocks[pathBlocks.length-1].down(), random.nextBoolean() ? Blocks.DIAMOND_BLOCK.getDefaultState() : Blocks.GOLD_BLOCK.getDefaultState());
+        */
         return new Path(fromPos);
     }
 

@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
+import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.Block;
@@ -26,7 +28,7 @@ public class RatTubeNodeProcessor extends WalkNodeProcessor {
                     int j1 = k + z;
                     PathNodeType pathnodetype = this.getPathNodeType(world, l, i1, j1);
                     Block block = world.getBlockState(new BlockPos(l, i1, j1)).getBlock();
-                    if (block instanceof BlockRatTube) {
+                    if (block instanceof BlockRatTube || block instanceof BlockRatCage || block instanceof BlockRatHole) {
                         pathnodetype = PathNodeType.WALKABLE;
                     } else {
                         //pathnodetype = PathNodeType.BLOCKED;

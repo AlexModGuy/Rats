@@ -1,0 +1,6 @@
+{
+	"parent": "rats:block/rat_cage_bottom_base",
+	"textures": {
+		"ground": "rats:blocks/cage_tube_ground"
+	}
+}

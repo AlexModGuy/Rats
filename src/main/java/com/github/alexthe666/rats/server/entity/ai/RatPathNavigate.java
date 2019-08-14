@@ -1,11 +1,15 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -23,11 +27,20 @@ public class RatPathNavigate extends PathNavigateGround {
     protected PathFinder getPathFinder() {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
-        return new PathFinder(this.nodeProcessor);
+        return new RatPathFinder(this.nodeProcessor, (EntityRat)entity);
     }
 
     public Path getPathToPos(BlockPos pos) {
         this.targetPosition = pos;
+        if(entity.world.getBlockState(pos) instanceof BlockRatTube){
+            IBlockState state = entity.world.getBlockState(pos);
+            for(int i = 0; i < EnumFacing.values().length; i++){
+                PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                if(state.getValue(bool) && entity.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]){
+                    return super.getPathToPos(pos.offset(EnumFacing.values()[i]));
+                }
+            }
+        }
         return super.getPathToPos(pos);
     }
 
@@ -84,5 +97,13 @@ public class RatPathNavigate extends PathNavigateGround {
                 this.targetPosition = null;
             }
         }
+    }
+
+    public boolean canEntityStandOnPos(BlockPos pos) {
+        if(this.world.getBlockState(pos).getBlock() instanceof BlockRatTube){
+            IBlockState state = this.world.getBlockState(pos);
+            return state.getBlock().getMetaFromState(state) > 0;
+        }
+        return this.world.getBlockState(pos.down()).isFullBlock();
     }
 }

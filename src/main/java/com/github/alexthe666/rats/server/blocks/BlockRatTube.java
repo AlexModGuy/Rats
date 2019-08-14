@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -46,7 +47,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     public static final PropertyBool OPEN_WEST = PropertyBool.create("open_west");
     public static final PropertyBool OPEN_UP = PropertyBool.create("open_up");
     public static final PropertyBool OPEN_DOWN = PropertyBool.create("open_down");
-    private static final PropertyBool[] ALL_OPEN_PROPS = new PropertyBool[]{OPEN_DOWN, OPEN_UP, OPEN_NORTH, OPEN_SOUTH, OPEN_WEST, OPEN_EAST};
+    public static final PropertyBool[] ALL_OPEN_PROPS = new PropertyBool[]{OPEN_DOWN, OPEN_UP, OPEN_NORTH, OPEN_SOUTH, OPEN_WEST, OPEN_EAST};
 
     private static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.2F, 0.8F, 0.2F, 0.8F, 0.8F, 0.8F);
     private static final AxisAlignedBB UP_AABB_CONNECT_1 = new AxisAlignedBB(0.2F, 0.8F, 0.2F, 0.8F, 1F, 0.2F);
@@ -59,6 +60,14 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_2_MAP = new HashMap<>();
     private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_3_MAP = new HashMap<>();
     private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_4_MAP = new HashMap<>();
+
+    private static final AxisAlignedBB INTERACT_AABB_CENTER = new AxisAlignedBB(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+    private static final AxisAlignedBB INTERACT_AABB_UP = new AxisAlignedBB(0.2F, 0.8F, 0.2F, 0.8F, 1F, 0.8F);
+    private static final AxisAlignedBB INTERACT_AABB_DOWN = new AxisAlignedBB(0.2F, 0F, 0.2F, 0.8F, 0.2F, 0.8F);
+    private static final AxisAlignedBB INTERACT_AABB_SOUTH = new AxisAlignedBB(0.2F, 0.2F, 0.8F, 0.8F, 0.8F, 1F);
+    private static final AxisAlignedBB INTERACT_AABB_NORTH = new AxisAlignedBB(0.2F, 0.2F, 0F, 0.8F, 0.8F, 0.2F);
+    private static final AxisAlignedBB INTERACT_AABB_WEST = new AxisAlignedBB(0F, 0.2F, 0.2F, 0.2F, 0.8F, 0.8F);
+    private static final AxisAlignedBB INTERACT_AABB_EAST = new AxisAlignedBB(0.8F, 0.2F, 0.2F, 1F, 0.8F, 0.8F);
 
     public BlockRatTube(String name) {
         super(Material.GLASS);
@@ -83,6 +92,33 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
         );
         this.setTickRandomly(true);
         GameRegistry.registerTileEntity(TileEntityRatTube.class, "rat_tube");
+    }
+
+    public List<AxisAlignedBB> compileAABBList(IBlockAccess worldIn, BlockPos pos, IBlockState state){
+        List<AxisAlignedBB> aabbs = new ArrayList<>();
+        aabbs.add(INTERACT_AABB_CENTER);
+        if (state.getBlock() instanceof BlockRatTube) {
+            IBlockState actualState = getActualState(state, worldIn, pos);
+            if (actualState.getValue(UP)) {
+                aabbs.add(INTERACT_AABB_UP);
+            }
+            if (actualState.getValue(DOWN)) {
+                aabbs.add(INTERACT_AABB_DOWN);
+            }
+            if (actualState.getValue(EAST)) {
+                aabbs.add(INTERACT_AABB_EAST);
+            }
+            if (actualState.getValue(WEST)) {
+                aabbs.add(INTERACT_AABB_WEST);
+            }
+            if (actualState.getValue(NORTH)) {
+                aabbs.add(INTERACT_AABB_NORTH);
+            }
+            if (actualState.getValue(SOUTH)) {
+                aabbs.add(INTERACT_AABB_SOUTH);
+            }
+        }
+        return aabbs;
     }
 
 
@@ -148,7 +184,12 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return FULL_BLOCK_AABB;
+        List<AxisAlignedBB> aabbs = compileAABBList(source, pos, state);
+        AxisAlignedBB bb = new AxisAlignedBB(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
+        for(AxisAlignedBB box : aabbs){
+            bb = bb.union(box);
+        }
+        return bb;
     }
 
 
@@ -220,7 +261,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     }
 
     private boolean canBeOpenNextToBlock(World worldIn, IBlockState sideState) {
-        return sideState.getBlock() != this;
+        return !(sideState.getBlock() instanceof BlockRatTube);
     }
 
     @SideOnly(Side.CLIENT)
@@ -249,7 +290,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
 
     private boolean canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         BlockPos other = pos.offset(facing);
-        return world.getBlockState(other).getBlock() == this;
+        return world.getBlockState(other).getBlock() instanceof BlockRatCage || world.getBlockState(other).getBlock() instanceof BlockRatTube;
     }
 
     public boolean isOpaqueCube(IBlockState state) {
@@ -260,7 +301,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
         return false;
     }
 
-    public IBlockState getStateFromMeta(int meta){
+    public IBlockState getStateFromMeta(int meta) {
         if(meta > 0){
             PropertyBool openSide = ALL_OPEN_PROPS[MathHelper.clamp(meta - 1, 0, ALL_OPEN_PROPS.length - 1)];
             return this.getDefaultState().withProperty(openSide, true);
@@ -284,7 +325,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() == Item.getItemFromBlock(this)) {
+        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() instanceof ItemBlock) {
             return false;
         } else {
             PropertyBool changing;
@@ -315,7 +356,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
                     alreadyOpened = true;
                 }
             }
-            if (!alreadyOpened) {
+            if (!alreadyOpened && canBeOpenNextToBlock(worldIn, worldIn.getBlockState(pos.offset(side)))) {
                 worldIn.setBlockState(pos, state.withProperty(changing, true));
                 updateTEOpening(worldIn, pos, side, true);
 

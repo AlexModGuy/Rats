@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -37,7 +38,7 @@ public class RatPickupFromInventory extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT || this.entity.isInCage() || entity.getAttackTarget() != null) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT || entity.getAttackTarget() != null) {
             return false;
         }
         if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
@@ -84,13 +85,16 @@ public class RatPickupFromInventory extends EntityAIBase {
                     toggleChest((IInventory)entity, false);
                 }
                 IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                if(handler == null){
+                    return;
+                }
                 int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler, this.entity.world.rand);
                 int extractSize = this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
                 try{
                     stack = handler.extractItem(slot, extractSize, false);
                 }catch(Exception e){
-                    System.err.println("Rat tried to extract item that didnt exist");
+                    RatsMod.logger.error("Rat tried to extract item that didnt exist");
                     e.printStackTrace();
                 }
                 if(slot == -1 || stack == ItemStack.EMPTY){
