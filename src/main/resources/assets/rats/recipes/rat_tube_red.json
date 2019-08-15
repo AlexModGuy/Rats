@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "TTT",
+    "TDT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "ratTube"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    }
+  },
+  "result": {
+    "item": "rats:rat_tube_red",
+    "count": 8
+  }
+}

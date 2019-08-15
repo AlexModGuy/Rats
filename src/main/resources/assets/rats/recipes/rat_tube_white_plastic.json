@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "PPP",
+    "   ",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "ingotPlastic"
+    }
+  },
+  "result": {
+    "item": "rats:rat_tube_white",
+    "count": 16
+
+  }
+}

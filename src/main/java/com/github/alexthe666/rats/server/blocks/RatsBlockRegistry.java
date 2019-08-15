@@ -38,6 +38,9 @@ public class RatsBlockRegistry {
         }
     }
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":garbage_pile")
+    public static Block GARBAGE_PILE = new BlockGarbage();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_raw")
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
 

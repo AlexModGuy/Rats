@@ -49,6 +49,12 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
     public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plastic_waste")
+    public static Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":raw_plastic")
+    public static Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 

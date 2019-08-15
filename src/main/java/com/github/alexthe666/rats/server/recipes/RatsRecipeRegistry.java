@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.recipes;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -35,9 +36,16 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Items.CARROT);
         OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
+        OreDictionary.registerOre("plastic", RatsItemRegistry.RAW_PLASTIC);
+        OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
+        for(Block block : RatsBlockRegistry.RAT_TUBE_COLOR){
+            OreDictionary.registerOre("ratTube", block);
+
+        }
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);
+        GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);
         addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
     }
