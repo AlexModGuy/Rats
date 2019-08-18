@@ -40,13 +40,13 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
             }
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4, 0);
         }
-        BlockPos blockpos = new BlockPos(this.getXWithOffset(18, -1), this.getYWithOffset(0), this.getZWithOffset(18, -1));
+        BlockPos blockpos = new BlockPos(this.getXWithOffset(0, 0), this.getYWithOffset(0), this.getZWithOffset(0, 0));
         EnumFacing facing = this.getCoordBaseMode().getOpposite();
         BlockPos genPos = blockpos.up();
         if (facing == EnumFacing.SOUTH) {
             genPos = genPos.offset(EnumFacing.WEST, 18).offset(EnumFacing.SOUTH, 2);
         }
-        return new WorldGenPetShop(this, facing.rotateYCCW()).generate(world, random, genPos);
+        return new WorldGenPetShop(this, facing).generate(world, random, genPos);
     }
 
     public IBlockState getBiomeBlock(IBlockState state) {

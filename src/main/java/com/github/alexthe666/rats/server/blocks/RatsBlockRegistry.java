@@ -27,6 +27,10 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_cage")
     public static Block RAT_CAGE = new BlockRatCage();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_cage_decorated")
+    public static Block RAT_CAGE_DECORATED = new BlockRatCageDecorated();
+
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
 

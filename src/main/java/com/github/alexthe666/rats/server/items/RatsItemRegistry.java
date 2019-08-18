@@ -1,8 +1,11 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.BlockRatTube;
+import net.minecraft.block.Block;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.potion.PotionEffect;
@@ -54,6 +57,14 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":raw_plastic")
     public static Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
+
+    public static Item[] RAT_IGLOOS = new Item[16];
+
+    static {
+        for(int i = 0; i < 16; i++){
+            RAT_IGLOOS[i] = new ItemRatIgloo(EnumDyeColor.byMetadata(i));
+        }
+    }
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);

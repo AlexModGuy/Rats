@@ -15,13 +15,17 @@ import java.util.List;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public class StateMapperRatTube extends StateMapperBase {
+public class StateMapperGeneric extends StateMapperBase {
 
-    public StateMapperRatTube() {}
+    private String loc;
+
+    public StateMapperGeneric(String loc) {
+        this.loc = loc;
+    }
 
     protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
         Map<IProperty<?>, Comparable<?>> map = Maps.<IProperty<?>, Comparable<?>>newLinkedHashMap(state.getProperties());
-        String s = String.format("rats:rat_tube");
+        String s = String.format("rats:" + loc);
         return new ModelResourceLocation(s, this.getPropertyString(map));
     }
 
