@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "ratIgloo"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeMagenta"
+    }
+  ],
+  "result": {
+    "item": "rats:rat_igloo_magenta",
+    "count": 1
+  }
+}

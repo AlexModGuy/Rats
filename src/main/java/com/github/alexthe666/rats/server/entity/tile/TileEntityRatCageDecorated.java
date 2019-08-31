@@ -47,12 +47,8 @@ public class TileEntityRatCageDecorated extends TileEntity {
         super.readFromNBT(compound);
     }
 
-    public Item getContainedItem(){
-        Item defState = Items.AIR;
-        if(!containedDeco.get(0).isEmpty()){
-            return containedDeco.get(0).getItem();
-        }
-        return defState;
+    public ItemStack getContainedItem(){
+        return containedDeco.get(0);
     }
 
     public void setContainedItem(ItemStack stack){

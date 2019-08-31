@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "PPP",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "ingotPlastic"
+    }
+  },
+  "result": {
+    "item": "rats:rat_igloo_white",
+    "count": 1
+
+  }
+}

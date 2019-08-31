@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
+import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -16,8 +18,12 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,6 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class BlockRatCage extends Block {
 
@@ -48,12 +55,12 @@ public class BlockRatCage extends Block {
     private static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(1F, 0F, 0F, 1F, 1F, 1F);
     private static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0F, 0F, 0F, 0F, 1F, 1F);
 
-    public BlockRatCage() {
+    public BlockRatCage(String name) {
         super(Material.IRON, MapColor.STONE);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.METAL);
         this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.rat_cage");
+        this.setTranslationKey("rats." + name);
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(NORTH, Integer.valueOf(0))
                 .withProperty(EAST, Integer.valueOf(0))
@@ -62,7 +69,7 @@ public class BlockRatCage extends Block {
                 .withProperty(UP, Integer.valueOf(0))
                 .withProperty(DOWN, Integer.valueOf(0))
         );
-        this.setRegistryName(RatsMod.MODID, "rat_cage");
+        this.setRegistryName(RatsMod.MODID, name);
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -89,13 +96,22 @@ public class BlockRatCage extends Block {
                 .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN));
     }
 
-    private int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+    protected int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         BlockPos other = pos.offset(facing);
-        if(world.getBlockState(other).getBlock() instanceof BlockRatTube){
+        if (world.getBlockState(other).getBlock() instanceof BlockRatTube) {
             return 2;
         }
-        return world.getBlockState(other).getBlock() == this ? 1 : 0;
+        return world.getBlockState(other).getBlock() instanceof BlockRatCage ? 1 : 0;
     }
+
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Item.getItemFromBlock(RatsBlockRegistry.RAT_CAGE);
+    }
+
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+        return new ItemStack(RatsBlockRegistry.RAT_CAGE);
+    }
+
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return FULL_BLOCK_AABB;
@@ -126,7 +142,34 @@ public class BlockRatCage extends Block {
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.getHeldItem(hand).isEmpty()) {
+        if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration) {
+            if (!((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).requiresGround() || canFenceConnectTo(worldIn, pos, EnumFacing.DOWN) != 1) {
+                EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
+                worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
+                TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
+                ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
+                decorated.setContainedItem(added);
+                worldIn.setTileEntity(pos, decorated);
+                if (!playerIn.isCreative()) {
+                    playerIn.getHeldItem(hand).shrink(1);
+                }
+                return true;
+            }
+        }
+        if (this.hasTileEntity(state)) {
+            ItemStack stack = this.getContainedItem(worldIn, pos);
+            boolean clearIt = true;
+            if (stack != ItemStack.EMPTY) {
+                clearIt = false;
+                if (playerIn.isSneaking()) {
+                    clearIt = true;
+                }
+            }
+            if (clearIt) {
+                worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState());
+            }
+        }
+        if (playerIn.getHeldItem(hand).isEmpty()) {
             boolean ridingRats = false;
             if (!playerIn.getPassengers().isEmpty()) {
                 for (Entity entity : playerIn.getPassengers()) {
@@ -140,7 +183,7 @@ public class BlockRatCage extends Block {
                 int ratCount = 0;
                 for (Entity entity : playerIn.getPassengers()) {
                     if (entity instanceof EntityRat && !((EntityRat) entity).isChild()) {
-                        EntityRat rat = (EntityRat)entity;
+                        EntityRat rat = (EntityRat) entity;
                         rat.dismountRidingEntity();
                         rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                         rat.getNavigator().clearPath();
@@ -154,7 +197,7 @@ public class BlockRatCage extends Block {
                 int ratCount = 0;
                 List<EntityRat> list = worldIn.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1));
                 for (EntityRat rat : list) {
-                    if(!rat.isChild()){
+                    if (!rat.isChild()) {
                         rat.setPosition(playerIn.posX, playerIn.posY, playerIn.posZ);
                     }
                     ratCount++;
@@ -178,6 +221,13 @@ public class BlockRatCage extends Block {
         return 0;
     }
 
+    public ItemStack getContainedItem(World world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
+        if (te != null && te instanceof TileEntityRatCageDecorated) {
+            return ((TileEntityRatCageDecorated) te).getContainedItem();
+        }
+        return ItemStack.EMPTY;
+    }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.SOLID;

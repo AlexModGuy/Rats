@@ -35,10 +35,10 @@ public class ClientEvents {
         }
         EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
         if (event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && !renderer.isShaderActive()) {
-            renderer.loadShader(SYNESTHESIA);
+           // renderer.loadShader(SYNESTHESIA);
         }
         if (!event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && renderer.isShaderActive() && renderer.getShaderGroup().getShaderGroupName().equalsIgnoreCase(SYNESTHESIA.toString())) {
-            renderer.stopUseShader();
+           // renderer.stopUseShader();
         }
     }
 

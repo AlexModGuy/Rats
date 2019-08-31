@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraftforge.common.util.EnumHelper;
@@ -40,7 +41,9 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
         for(Block block : RatsBlockRegistry.RAT_TUBE_COLOR){
             OreDictionary.registerOre("ratTube", block);
-
+        }
+        for(Item item : RatsItemRegistry.RAT_IGLOOS){
+            OreDictionary.registerOre("ratIgloo", item);
         }
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);

@@ -60,12 +60,7 @@ public class BlockRatHole extends BlockContainer {
                 .withProperty(SOUTH, Boolean.valueOf(false))
                 .withProperty(WEST, Boolean.valueOf(false))
         );
-
         GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
-    }
-
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
