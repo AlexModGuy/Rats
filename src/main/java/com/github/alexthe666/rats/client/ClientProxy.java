@@ -141,6 +141,25 @@ public class ClientProxy extends CommonProxy {
                 return color.getColorValue();
             }
         }, RatsItemRegistry.RAT_IGLOOS);
+
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            @Override
+            public int colorMultiplier(ItemStack stack, int tintIndex) {
+                if(tintIndex == 0){
+                    int meta = 0;
+                    for(int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++){
+                        if(stack.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]){
+                            meta = i;
+                        }
+                    }
+                    EnumDyeColor color = EnumDyeColor.byMetadata(meta);
+                    return color.getColorValue();
+                }else{
+                    return -1;
+                }
+
+            }
+        }, RatsItemRegistry.RAT_HAMMOCKS);
     }
 
     public void postInit() {
@@ -159,6 +178,7 @@ public class ClientProxy extends CommonProxy {
             ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
             ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
+            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
         }
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {

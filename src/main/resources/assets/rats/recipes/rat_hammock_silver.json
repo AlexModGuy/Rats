@@ -3,7 +3,7 @@
   "ingredients": [
     {
       "type": "forge:ore_dict",
-      "ore": "ratIgloo"
+      "ore": "ratHammock"
     },
     {
       "type": "forge:ore_dict",
@@ -11,7 +11,7 @@
     }
   ],
   "result": {
-    "item": "rats:rat_igloo_silver",
+    "item": "rats:rat_hammock_silver",
     "count": 1
   }
 }

@@ -3,15 +3,15 @@
   "ingredients": [
     {
       "type": "forge:ore_dict",
-      "ore": "ratIgloo"
+      "ore": "ratHammock"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "dyeLightGray"
+      "ore": "dyeLightBlue"
     }
   ],
   "result": {
-    "item": "rats:rat_igloo_silver",
+    "item": "rats:rat_hammock_light_blue",
     "count": 1
   }
 }

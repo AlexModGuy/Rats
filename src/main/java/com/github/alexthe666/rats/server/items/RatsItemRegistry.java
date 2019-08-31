@@ -66,6 +66,22 @@ public class RatsItemRegistry {
         }
     }
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_water_bottle")
+    public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_seed_bowl")
+    public static Item RAT_SEED_BOWL = new ItemRatDecoration("rat_seed_bowl");
+
+    public static Item[] RAT_HAMMOCKS = new Item[16];
+
+    static {
+        for(int i = 0; i < 16; i++){
+            RAT_HAMMOCKS[i] = new ItemRatHammock(EnumDyeColor.byMetadata(i));
+        }
+    }
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_breeding_lantern")
+    public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 

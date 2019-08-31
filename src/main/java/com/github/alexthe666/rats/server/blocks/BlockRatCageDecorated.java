@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -59,6 +60,7 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
                 .withProperty(FACING, EnumFacing.NORTH)
         );
         this.hasTileEntity = true;
+        this.setCreativeTab((CreativeTabs)null);
         GameRegistry.registerTileEntity(TileEntityRatCageDecorated.class, "rats.rat_cage_decorated");
     }
 
@@ -71,15 +73,13 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated) {
             TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
-            if(te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && ((IRatCageDecoration) te.getContainedItem().getItem()).requiresGround()){
-                if(canFenceConnectTo(worldIn, pos, EnumFacing.DOWN) == 1){
-                    EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
-                    if (!worldIn.isRemote) {
-                        worldIn.spawnEntity(entityItem);
-                    }
-                    te.setContainedItem(ItemStack.EMPTY);
-                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState());
+            if(te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)){
+                EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
+                if (!worldIn.isRemote) {
+                    worldIn.spawnEntity(entityItem);
                 }
+                te.setContainedItem(ItemStack.EMPTY);
+                worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState());
             }
         }
     }

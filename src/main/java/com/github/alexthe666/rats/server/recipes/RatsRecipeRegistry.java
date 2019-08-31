@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.BannerPattern;
@@ -39,12 +40,27 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
         OreDictionary.registerOre("plastic", RatsItemRegistry.RAW_PLASTIC);
         OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
+        OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
+        OreDictionary.registerOre("listAllseed", Items.WHEAT_SEEDS);
+        OreDictionary.registerOre("listAllseed", Items.PUMPKIN_SEEDS);
+        OreDictionary.registerOre("listAllseed", Items.BEETROOT_SEEDS);
+        OreDictionary.registerOre("listAllseed", Items.MELON_SEEDS);
         for(Block block : RatsBlockRegistry.RAT_TUBE_COLOR){
             OreDictionary.registerOre("ratTube", block);
         }
         for(Item item : RatsItemRegistry.RAT_IGLOOS){
             OreDictionary.registerOre("ratIgloo", item);
         }
+        for(Item item : RatsItemRegistry.RAT_HAMMOCKS){
+            OreDictionary.registerOre("ratHammock", item);
+        }
+        for(EnumDyeColor color : EnumDyeColor.values()){
+            String woolColor =  color.getTranslationKey();
+            woolColor = woolColor.substring(0,1).toUpperCase() + woolColor.substring(1).toLowerCase();
+            OreDictionary.registerOre("wool" + woolColor, new ItemStack(Blocks.WOOL, 1, color.getMetadata()));
+        }
+        OreDictionary.registerOre("woolLightBlue", new ItemStack(Blocks.WOOL, 1, 3));
+
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);

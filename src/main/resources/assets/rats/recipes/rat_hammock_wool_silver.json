@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SCS",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "woolSilver"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    }
+  },
+  "result": {
+    "item": "rats:rat_hammock_silver",
+    "count": 1
+
+  }
+}

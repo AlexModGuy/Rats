@@ -96,7 +96,7 @@ public class BlockRatCage extends Block {
                 .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN));
     }
 
-    protected int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+    public int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         BlockPos other = pos.offset(facing);
         if (world.getBlockState(other).getBlock() instanceof BlockRatTube) {
             return 2;
@@ -142,8 +142,8 @@ public class BlockRatCage extends Block {
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration) {
-            if (!((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).requiresGround() || canFenceConnectTo(worldIn, pos, EnumFacing.DOWN) != 1) {
+        if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
+            if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
                 EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
                 worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
                 TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();

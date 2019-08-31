@@ -1,22 +1,23 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "TTT",
-    "TDT",
-    "TTT"
+    "SSS",
+    "P P",
+    "PPP"
   ],
   "key": {
-    "T": {
+    "P": {
       "type": "forge:ore_dict",
-      "ore": "ratTube"
+      "ore": "ingotPlastic"
     },
-    "D": {
+    "S": {
       "type": "forge:ore_dict",
-      "ore": "dyeLightGray"
+      "ore": "listAllseed"
     }
   },
   "result": {
-    "item": "rats:rat_tube_silver",
-    "count": 8
+    "item": "rats:rat_seed_bowl",
+    "count": 1
+
   }
 }

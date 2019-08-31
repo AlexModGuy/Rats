@@ -15,13 +15,13 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemRatIgloo extends Item implements ICustomRendered, IRatCageDecoration {
+public class ItemRatHammock extends Item implements ICustomRendered, IRatCageDecoration {
     public EnumDyeColor color;
 
-    public ItemRatIgloo(EnumDyeColor color) {
+    public ItemRatHammock(EnumDyeColor color) {
         this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.rat_igloo_" + color.getName());
-        this.setRegistryName(RatsMod.MODID, "rat_igloo_" + color.getName());
+        this.setTranslationKey("rats.rat_hammock_" + color.getName());
+        this.setRegistryName(RatsMod.MODID, "rat_hammock_" + color.getName());
         this.color = color;
     }
 
@@ -31,6 +31,6 @@ public class ItemRatIgloo extends Item implements ICustomRendered, IRatCageDecor
 
     @Override
     public boolean canStay(World world, BlockPos pos, BlockRatCage cageBlock) {
-        return cageBlock.canFenceConnectTo(world, pos, EnumFacing.DOWN) != 1;
+        return cageBlock.canFenceConnectTo(world, pos, EnumFacing.UP) != 1;
     }
 }

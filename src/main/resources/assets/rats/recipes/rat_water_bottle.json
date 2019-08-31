@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "P",
+    "W",
+    "I"
+  ],
+  "key": {
+    "P": {
+      "item": "rats:plastic_waste",
+      "data": 0
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "listAllwater"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "nuggetIron"
+    }
+  },
+  "result": {
+    "item": "rats:rat_water_bottle"
+  }
+}
