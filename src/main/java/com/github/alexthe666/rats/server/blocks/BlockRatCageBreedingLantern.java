@@ -1,55 +1,32 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
-public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityProvider {
+public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEntityProvider {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    public BlockRatCageDecorated() {
-        super("rat_cage_decorated");
+    public BlockRatCageBreedingLantern() {
+        super("rat_cage_breeding_lantern");
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(NORTH, Integer.valueOf(0))
@@ -60,9 +37,10 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
                 .withProperty(DOWN, Integer.valueOf(0))
                 .withProperty(FACING, EnumFacing.NORTH)
         );
+        this.setLightLevel(0.5F);
         this.hasTileEntity = true;
         this.setCreativeTab((CreativeTabs)null);
-        GameRegistry.registerTileEntity(TileEntityRatCageDecorated.class, "rats.rat_cage_decorated");
+        GameRegistry.registerTileEntity(TileEntityRatCageBreedingLantern.class, "rats.rat_cage_breeding_lantern");
     }
 
     @Deprecated
@@ -72,8 +50,8 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated) {
-            TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageBreedingLantern) {
+            TileEntityRatCageBreedingLantern te = (TileEntityRatCageBreedingLantern) worldIn.getTileEntity(pos);
             if(te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)){
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
                 if (!worldIn.isRemote) {
@@ -102,8 +80,8 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated) {
-            TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageBreedingLantern) {
+            TileEntityRatCageBreedingLantern te = (TileEntityRatCageBreedingLantern) worldIn.getTileEntity(pos);
             if (te.getContainedItem() != null && !te.getContainedItem().isEmpty()) {
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
                 if (!worldIn.isRemote) {
@@ -117,6 +95,6 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityRatCageDecorated();
+        return new TileEntityRatCageBreedingLantern();
     }
 }

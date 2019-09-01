@@ -2,8 +2,10 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -145,14 +147,26 @@ public class BlockRatCage extends Block {
         if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
             if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
                 EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
-                worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
-                TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
-                ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
-                decorated.setContainedItem(added);
-                worldIn.setTileEntity(pos, decorated);
-                if (!playerIn.isCreative()) {
-                    playerIn.getHeldItem(hand).shrink(1);
+                if(playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN){
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
+                    TileEntityRatCageBreedingLantern decorated = new TileEntityRatCageBreedingLantern();
+                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
+                    decorated.setContainedItem(added);
+                    worldIn.setTileEntity(pos, decorated);
+                    if (!playerIn.isCreative()) {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                }else{
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
+                    TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
+                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
+                    decorated.setContainedItem(added);
+                    worldIn.setTileEntity(pos, decorated);
+                    if (!playerIn.isCreative()) {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
                 }
+
                 return true;
             }
         }

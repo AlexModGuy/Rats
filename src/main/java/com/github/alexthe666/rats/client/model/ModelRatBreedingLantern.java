@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 
 public class ModelRatBreedingLantern extends AdvancedModelBase {
@@ -64,6 +65,13 @@ public class ModelRatBreedingLantern extends AdvancedModelBase {
     }
     public void render(float f5) {
         this.resetToDefaultPose();
+        float speedIdle = 0.15F;
+        float degreeIdle = 0.05F;
+        AdvancedModelRenderer[] connectors = new AdvancedModelRenderer[]{connector1, connector2, connector3};
+        float swing = Minecraft.getMinecraft().player.ticksExisted;
+        this.chainWave(connectors, speedIdle, degreeIdle,  1, swing, 1);
+        this.chainFlap(connectors, speedIdle, degreeIdle,  -1, swing, 1);
+
         this.top.render(f5);
     }
 }

@@ -138,7 +138,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public float flyingPitch;
     public float prevFlyingPitch;
     private EntityAIBase aiHarvest;
-    private int tubeSteps;
 
     public EntityRat(World worldIn) {
         super(worldIn);
@@ -602,7 +601,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 switchNavigator(0);
             }
         }
-
+        if(breedCooldown > 0){
+            breedCooldown--;
+        }
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
@@ -703,12 +704,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 this.setCommand(RatCommand.WANDER);
             }*/
         }
-        if (this.breedCooldown > 0) {
-            breedCooldown--;
-        }
-        if (breedCooldown == 0 && this.isInCage() && !world.isRemote && !this.isChild()) {
-            tryBreeding();
-        }
         if (this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
             //crafting = false;
         }
@@ -762,24 +757,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && this.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER;
     }
 
-    private void tryBreeding() {
-        List<EntityRat> list = world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - 0.5F, this.posY - 0.5F, this.posZ - 0.5F, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F));
-        if (doBreedingSurvey()) {
-            for (EntityRat rat : list) {
-                if ((rat.isMale() && !this.isMale() || this.isMale() && !rat.isMale()) && !rat.isChild()) {
-                    breedCooldown = 24000;
-                    rat.breedCooldown = 24000;
-                    createBabiesFrom(this.isMale() ? rat : this, this.isMale() ? this : rat);
-                    this.world.setEntityState(this, (byte) 83);
-                    rat.world.setEntityState(rat, (byte) 83);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void createBabiesFrom(EntityRat mother, EntityRat father) {
-        for (int i = 0; i < 1 + rand.nextInt(4); i++) {
+    public void createBabiesFrom(EntityRat mother, EntityRat father) {
+        for (int i = 0; i < 1; i++) {//change later
             EntityRat baby = new EntityRat(this.world);
             baby.setMale(this.rand.nextBoolean());
             int babyColor = 0;
@@ -1399,7 +1378,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         if (this.hasPlague() && this.getAttackTarget() != null) {
             return RatsSoundRegistry.RAT_PLAGUE;
         }
-        if (!this.hasPlague() && this.getHealth() < this.getMaxHealth() / 2D) {
+        if (!this.hasPlague() && this.getHealth() < this.getMaxHealth() / 2D || this.isChild()) {
             return RatsSoundRegistry.RAT_IDLE;
         }
         return super.getAmbientSound();
