@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,13 +41,11 @@ public class VillageComponentGarbageHeap extends StructureVillagePieces.Village 
             }
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4, 0);
         }
-        BlockPos blockpos = new BlockPos(this.getXWithOffset(11, -1), this.getYWithOffset(0), this.getZWithOffset(11, -1));
+
+        BlockPos blockpos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ);
         EnumFacing facing = this.getCoordBaseMode().getOpposite();
         BlockPos genPos = blockpos.up();
-        if (facing == EnumFacing.SOUTH) {
-            genPos = genPos.offset(EnumFacing.WEST, 11).offset(EnumFacing.SOUTH, 2);
-        }
-        return new WorldGenGarbageHeap(this, facing.rotateY()).generate(world, random, genPos);
+        return new WorldGenGarbageHeap(this, facing.rotateYCCW()).generate(world, random, genPos);
     }
 
     public IBlockState getBiomeBlock(IBlockState state) {

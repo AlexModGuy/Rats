@@ -14,6 +14,8 @@ public class RatConfig {
     public boolean ratsDigBlocks = true;
     public boolean ratsBreakCrops = true;
     public boolean ratsStealItems = true;
+    public boolean villagePetShops = true;
+    public boolean villageGarbageHeaps = true;
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
@@ -31,6 +33,8 @@ public class RatConfig {
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.ratsBreakCrops = config.getBoolean("Rats Break Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = config.getBoolean("Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
+        this.villagePetShops = config.getBoolean("Village Pet Shops", "all", true, "True if pet shops can spawn in villages");
+        this.villageGarbageHeaps = config.getBoolean("Village Garbage Heap", "all", true, "True if garbage heaps can spawn in villages");
         this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
         this.cheesemaking = config.getBoolean("Cheesemaking", "all", true, "True if cheese can be created in cauldrons");

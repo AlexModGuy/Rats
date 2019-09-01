@@ -65,7 +65,7 @@ public class ModelRatBreedingLantern extends AdvancedModelBase {
     }
     public void render(float f5) {
         this.resetToDefaultPose();
-        float speedIdle = 0.15F;
+        float speedIdle = 0.1F;
         float degreeIdle = 0.05F;
         AdvancedModelRenderer[] connectors = new AdvancedModelRenderer[]{connector1, connector2, connector3};
         float swing = Minecraft.getMinecraft().player.ticksExisted;

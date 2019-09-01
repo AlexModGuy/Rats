@@ -189,6 +189,7 @@ entity.rat.staff.un_set_home_point=Unset rat home point
 entity.rat.cage.deposit=Deposited %s Rat(s) in cage
 entity.rat.cage.withdrawal=Released %s Rat(s) from cage
 entity.illager_piper.name=Pied Piper
+entity.Villager.pet_shop_owner=Pet Shop Owner
 container.rat_crafting_table=Rat Crafting Table
 container.rat_crafting_table.required=Required Items
 container.rat_crafting_table.input=Input

@@ -24,15 +24,13 @@ import java.util.Random;
 public class RatsVillageProcessor implements ITemplateProcessor {
 
     private Biome biome;
-    private ResourceLocation loot;
     private BlockPos blockPos;
     private PlacementSettings settings;
     private int spawnedOcelots;
     private int spawnedWolves;
     private WorldGenPetShop petShop;
-    public RatsVillageProcessor(BlockPos pos, WorldGenPetShop worldGenPetShop, PlacementSettings settings, ResourceLocation loot, Biome biome) {
+    public RatsVillageProcessor(BlockPos pos, WorldGenPetShop worldGenPetShop, PlacementSettings settings, Biome biome) {
         this.biome = biome;
-        this.loot = loot;
         this.blockPos = pos;
         this.settings = settings;
         this.spawnedOcelots = 0;
@@ -42,7 +40,8 @@ public class RatsVillageProcessor implements ITemplateProcessor {
 
     @Nullable
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
-        if (blockInfoIn.blockState.getBlock() instanceof BlockChest && loot != null) {
+        if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {
+            ResourceLocation loot = blockInfoIn.blockState.getBlock() == Blocks.TRAPPED_CHEST ? WorldGenPetShop.UPSTAIRS_LOOT : WorldGenPetShop.LOOT;
             Random rand = new Random(worldIn.getSeed() + pos.toLong());
             NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
             tag.setString("LootTable", loot.toString());
@@ -71,6 +70,7 @@ public class RatsVillageProcessor implements ITemplateProcessor {
             petShop.parrotPos.add(pos);
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.COAL_BLOCK) {//spawn shopkeeper
+            petShop.villagerPos.add(pos);
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
         }else{
             IBlockState state = getBiomeSpecificBlockState(blockInfoIn.blockState, biome);

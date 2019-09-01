@@ -53,7 +53,7 @@ public class WorldGenGarbageHeap extends WorldGenerator {
         Biome biome = worldIn.getBiome(position);
         int xSize = template.getSize().getX() / 2;
         int zSize = template.getSize().getZ()/ 2;
-        template.addBlocksToWorld(worldIn, position.down(3).offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize), new RatsVillageProcessor(position.up(3), null, settings, null, biome), settings, 2);
+        template.addBlocksToWorld(worldIn, position.down(3).offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize), new RatsVillageProcessor(position.up(3), null, settings, biome), settings, 2);
         return true;
     }
 }

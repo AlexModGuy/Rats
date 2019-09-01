@@ -18,14 +18,13 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class WorldGenPetShop extends WorldGenerator {
 
     private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_pet_shop");
+    public static final ResourceLocation UPSTAIRS_LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop_upstairs");
+    public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop");
     private VillageComponentPetShop component;
     private Rotation rotation;
     private EnumFacing facing;
@@ -34,6 +33,7 @@ public class WorldGenPetShop extends WorldGenerator {
     public List<BlockPos> rabbitPos = new ArrayList<>();
     public List<BlockPos> ratPos = new ArrayList<>();
     public List<BlockPos> parrotPos = new ArrayList<>();
+    public List<BlockPos> villagerPos = new ArrayList<>();
 
     public WorldGenPetShop(VillageComponentPetShop component, EnumFacing facing){
         this.component = component;
@@ -62,6 +62,7 @@ public class WorldGenPetShop extends WorldGenerator {
         parrotPos.clear();
         wolfPos.clear();
         ratPos.clear();
+        villagerPos.clear();
         rabbitPos.clear();
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
@@ -70,44 +71,83 @@ public class WorldGenPetShop extends WorldGenerator {
         Biome biome = worldIn.getBiome(position);
         int xSize = template.getSize().getX() / 2;
         int zSize = template.getSize().getZ() / 2;
-        template.addBlocksToWorld(worldIn, position.up(2), new RatsVillageProcessor(position.up(3), this, settings, null, biome), settings, 2);
+        int spawnedVillager = 0;
+        template.addBlocksToWorld(worldIn, position.up(2), new RatsVillageProcessor(position.up(3), this, settings, biome), settings, 2);
         //.offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize)
-        for(BlockPos pos : ocelotPos){
-            EntityOcelot ocelot = new EntityOcelot(worldIn);
-            //ocelot.enablePersistence();
-            ocelot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(ocelot);
+        Iterator<BlockPos> ocelotItr = ocelotPos.iterator();
+        while(ocelotItr.hasNext()){
+            BlockPos pos = ocelotItr.next();
+            if(worldIn.rand.nextInt(3) == 0){
+                EntityOcelot ocelot = new EntityOcelot(worldIn);
+                //ocelot.enablePersistence();
+                ocelot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+                worldIn.spawnEntity(ocelot);
+            }
+            ocelotItr.remove();
         }
-        for(BlockPos pos : ratPos){
+        Iterator<BlockPos> ratItr = ratPos.iterator();
+        while(ratItr.hasNext()){
+            BlockPos pos = ratItr.next();
             EntityRat rat = new EntityRat(worldIn);
-            //rat.enablePersistence();
+            rat.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
             rat.setPlague(false);
+            //ocelot.enablePersistence();
             rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
             worldIn.spawnEntity(rat);
+            ratItr.remove();
         }
-        for(BlockPos pos : rabbitPos){
-            EntityAnimal rat = worldIn.rand.nextBoolean() ? new EntityRat(worldIn) : new EntityRabbit(worldIn);
-            //rat.enablePersistence();
-            rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(rat);
+
+        Iterator<BlockPos> rabbitItr = rabbitPos.iterator();
+        while(rabbitItr.hasNext()){
+            BlockPos pos = rabbitItr.next();
+            if(worldIn.rand.nextInt(3) == 0) {
+                EntityAnimal rat = worldIn.rand.nextBoolean() ? new EntityRat(worldIn) : new EntityRabbit(worldIn);
+                //ocelot.enablePersistence();
+                rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+                worldIn.spawnEntity(rat);
+            }
+            rabbitItr.remove();
         }
-        for(BlockPos pos : wolfPos){
-            EntityWolf wolf = new EntityWolf(worldIn);
-            //wolf.enablePersistence();
-            wolf.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(wolf);
+
+        Iterator<BlockPos> wolfItr = wolfPos.iterator();
+        while(wolfItr.hasNext()){
+            BlockPos pos = wolfItr.next();
+            if(worldIn.rand.nextInt(3) == 0) {
+                EntityWolf wolf = new EntityWolf(worldIn);
+                //ocelot.enablePersistence();
+                wolf.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+                worldIn.spawnEntity(wolf);
+            }
+            wolfItr.remove();
         }
-        for(BlockPos pos : parrotPos){
-            EntityParrot parrot = new EntityParrot(worldIn);
-            parrot.setVariant(rand.nextInt(5));
-            //parrot.enablePersistence();
-            parrot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(parrot);
+
+        Iterator<BlockPos> parrotItr = parrotPos.iterator();
+        while(parrotItr.hasNext()){
+            BlockPos pos = parrotItr.next();
+            if(worldIn.rand.nextInt(3) == 0) {
+                EntityParrot parrot = new EntityParrot(worldIn);
+                //ocelot.enablePersistence();
+                parrot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+                worldIn.spawnEntity(parrot);
+            }
+            parrotItr.remove();
+        }
+        Iterator<BlockPos> villageItr = villagerPos.iterator();
+        while(villageItr.hasNext() && spawnedVillager < 1){
+            BlockPos pos = villageItr.next();
+            EntityVillager villager = new EntityVillager(worldIn);
+            villager.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
+            villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
+            villager.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+            worldIn.spawnEntity(villager);
+            villageItr.remove();
+            spawnedVillager++;
         }
         ocelotPos.clear();
         parrotPos.clear();
         wolfPos.clear();
         ratPos.clear();
+        villagerPos.clear();
         rabbitPos.clear();
         return true;
     }

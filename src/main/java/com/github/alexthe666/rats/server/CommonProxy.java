@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
+import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -56,6 +58,12 @@ public class CommonProxy {
         event.getRegistry().registerAll(RatsSoundRegistry.POTION_EFFECT_BEGIN, RatsSoundRegistry.POTION_EFFECT_END, RatsSoundRegistry.RAT_IDLE,
                 RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE, RatsSoundRegistry.RAT_FLUTE,
                 RatsSoundRegistry.PIPER_LOOP);
+    }
+
+
+    @SubscribeEvent
+    public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
+        event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
     }
 
     @SubscribeEvent
