@@ -19,6 +19,17 @@ public class BlockGeneric extends Block {
         this.setRegistryName(RatsMod.MODID, name);
     }
 
+    public BlockGeneric(String name, Material mat, float hardness, float resistance, SoundType sound, float light) {
+        super(mat);
+        this.setHardness(hardness);
+        this.setResistance(resistance);
+        this.setSoundType(sound);
+        this.setCreativeTab(RatsMod.TAB);
+        this.setTranslationKey("rats." + name);
+        this.setRegistryName(RatsMod.MODID, name);
+        this.setLightLevel(light);
+    }
+
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         if(this == RatsBlockRegistry.MARBLED_CHEESE_DIRT){

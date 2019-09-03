@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "rats:blocks/ratglove_flower"
+    }
+}

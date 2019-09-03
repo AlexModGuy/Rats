@@ -68,6 +68,7 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_water_bottle")
     public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_seed_bowl")
     public static Item RAT_SEED_BOWL = new ItemRatDecoration("rat_seed_bowl");
 
@@ -90,6 +91,15 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
     public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_petals")
+    public static Item RATGLOVE_PETALS = new ItemGeneric("ratglove_petals");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":arcane_technology")
+    public static Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantean_flame")
+    public static Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic")
     public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");

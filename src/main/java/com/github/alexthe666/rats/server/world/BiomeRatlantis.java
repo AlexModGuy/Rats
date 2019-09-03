@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import com.github.alexthe666.rats.server.world.gen.WorldGenMarblePile;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -34,6 +35,8 @@ public class BiomeRatlantis extends Biome {
         this.decorator.flowersPerChunk = 4;
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityParrot.class, 60, 1, 2));
+        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityRatlanteanSpirit.class, 60, 1, 3));
+        addFlower(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState(), 30);
     }
 
     public WorldGenerator getRandomWorldGenForGrass(Random rand) {

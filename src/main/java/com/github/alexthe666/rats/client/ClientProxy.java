@@ -6,14 +6,13 @@ import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
 import com.github.alexthe666.rats.client.model.ModelPiperHat;
 import com.github.alexthe666.rats.client.model.StateMapperGeneric;
-import com.github.alexthe666.rats.client.render.entity.RenderIllagerPiper;
-import com.github.alexthe666.rats.client.render.entity.RenderRat;
+import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
+import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.blocks.*;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
-import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
-import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.events.ClientEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -38,6 +37,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -73,6 +73,10 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanFlame.class, new RenderRatlanteanFlame());
+        RenderingRegistry.registerEntityRenderingHandler(EntityMarbleCheeseGolem.class, new RenderMarbledCheeseGolem());
+        RenderingRegistry.registerEntityRenderingHandler(EntityGolemBeam.class, new RenderGolemBeam());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -297,4 +301,14 @@ public class ClientProxy extends CommonProxy {
         refrencedFacing = facing;
     }
 
+    public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
+        World world = Minecraft.getMinecraft().world;
+        if (world == null) {
+            return;
+        }
+        if (name.equals("rat_ghost")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRatGhost(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+        }
+
+    }
 }

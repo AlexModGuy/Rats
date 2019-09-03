@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.world.village;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
@@ -138,6 +139,7 @@ public class WorldGenPetShop extends WorldGenerator {
             EntityVillager villager = new EntityVillager(worldIn);
             villager.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
             villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
+            villager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(villager)), (IEntityLivingData)null, false);
             villager.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
             worldIn.spawnEntity(villager);
             villageItr.remove();

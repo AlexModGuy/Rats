@@ -48,6 +48,9 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":garbage_pile")
     public static Block GARBAGE_PILE = new BlockGarbage();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_flower")
+    public static Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_raw")
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
 
@@ -98,6 +101,12 @@ public class RatsBlockRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_grass")
     public static Block MARBLED_CHEESE_GRASS = new BlockMarbledCheeseGrass();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_rat_head")
+    public static Block MARBLED_CHEESE_RAT_HEAD = new BlockMarbledCheeseRatHead();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_golem_core")
+    public static Block MARBLED_CHEESE_GOLEM_CORE = new BlockGeneric("marbled_cheese_golem_core", Material.ROCK, 5.0F, 30.0F, SoundType.STONE, 0.7F);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantis_portal")
     public static Block RATLANTIS_PORTAL = new BlockRatlantisPortal();
