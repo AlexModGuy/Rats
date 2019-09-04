@@ -142,7 +142,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isEntityInvulnerable(source)) {
             return false;
-        } else if (source != DamageSource.DROWN && !(source.getTrueSource() instanceof EntityWither)) {
+        } else if (source != DamageSource.DROWN && !(source.getTrueSource() instanceof EntityMarbleCheeseGolem)) {
             if (this.blockBreakCounter <= 0) {
                 this.blockBreakCounter = 20;
             }
@@ -190,14 +190,14 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
             this.faceEntity(this.getAttackTarget(), 360, 80);
 
         }
-        if(!this.useRangedAttack && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 6 && this.canEntityBeSeen(this.getAttackTarget())) {
+        if(!this.useRangedAttack && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(ANIMATION_MELEE);
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getAttackTarget().posX - this.posX, this.getAttackTarget().posZ - this.posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -381,10 +381,10 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
                 EntityMarbleCheeseGolem.this.moveHelper.setMoveTo((double) entitylivingbase.posX, (double) entitylivingbase.posY + 1, (double) entitylivingbase.posZ, 1D);
             }
         }
+    }
 
-        @Nullable
-        protected ResourceLocation getLootTable() {
-            return LOOT;
-        }
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
     }
 }

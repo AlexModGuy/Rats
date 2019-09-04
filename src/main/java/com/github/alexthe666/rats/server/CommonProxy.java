@@ -149,6 +149,7 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityRatlanteanFlame>create(), event, EntityRatlanteanFlame.class, "ratlantean_flame", 4);
         registerSpawnable(EntityEntryBuilder.<EntityMarbleCheeseGolem>create(), event, EntityMarbleCheeseGolem.class, "marbled_cheese_golem", 5, 0XE8E4D7, 0X72E955);
         registerUnspawnable(EntityEntryBuilder.<EntityGolemBeam>create(), event, EntityGolemBeam.class, "marbled_cheese_golem_beam", 6);
+        registerSpawnable(EntityEntryBuilder.<EntityMarbleCheeseGolem>create(), event, EntityFeralRatlantean.class, "feral_ratlantean", 7, 0X30333E, 0XECECEC);
     }
 
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {

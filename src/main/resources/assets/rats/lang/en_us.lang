@@ -202,6 +202,7 @@ entity.Villager.pet_shop_owner=Pet Shop Owner
 entity.ratlantean_spirit.name=Ratlantean Spirit
 entity.ratlantean_flame.name=Ratlantean Soul Flame
 entity.marbled_cheese_golem.name=Ratlantean Automaton
+entity.feral_ratlantean.name=Feral Ratlantean
 container.rat_crafting_table=Rat Crafting Table
 container.rat_crafting_table.required=Required Items
 container.rat_crafting_table.input=Input

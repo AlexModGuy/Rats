@@ -152,6 +152,7 @@ public class ModelMarbledCheeseGolem extends AdvancedModelBase {
         animator.endKeyframe();
         animator.setStaticKeyframe(5);
         animator.resetKeyframe(5);
+        animator.endKeyframe();
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityMarbleCheeseGolem rat) {

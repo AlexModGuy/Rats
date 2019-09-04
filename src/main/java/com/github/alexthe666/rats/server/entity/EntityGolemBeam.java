@@ -30,7 +30,7 @@ public class EntityGolemBeam extends EntityArrow {
 
     public void onUpdate() {
         float sqrt = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-        if (sqrt < 0.1F || this.inGround || this.collidedHorizontally) {
+        if (sqrt < 0.2F || this.inGround || this.collidedHorizontally) {
             this.setDead();
             Explosion explosion = world.createExplosion(this.shootingEntity, this.posX, this.posY, this.posZ, 0.0F,  net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, shootingEntity));
             explosion.doExplosionA();
