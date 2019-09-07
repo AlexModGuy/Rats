@@ -1,15 +1,21 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -25,10 +31,41 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity 
     public static final Animation ANIMATION_BITE = Animation.create(15);
     public static final Animation ANIMATION_SLASH = Animation.create(25);
     public static final Animation ANIMATION_SNIFF = Animation.create(20);
+    private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
+        public boolean apply(@Nullable EntityLivingBase entity) {
+            return entity.isEntityAlive() && !(entity instanceof EntityFeralRatlantean) && !(entity instanceof EntityNeoRatlantean) && !(entity instanceof EntityMarbleCheeseGolem) && !(entity instanceof EntityRatlanteanSpirit)  && !(entity instanceof EntityRat);
+        }
+    };
 
     public EntityFeralRatlantean(World worldIn) {
         super(worldIn);
-        this.setSize(1.5F, 0.8F);
+        this.setSize(1.85F, 1.2F);
+    }
+
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
+    }
+
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+    }
+
+    public boolean attackEntityAsMob(Entity entityIn) {
+        if(this.getAnimation() == NO_ANIMATION){
+            this.setAnimation(rand.nextBoolean() ? ANIMATION_SLASH : ANIMATION_BITE);
+        }
+        return true;
     }
 
     @Override
@@ -40,8 +77,24 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity 
 
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        this.setAnimation(ANIMATION_SLASH);
         AnimationHandler.INSTANCE.updateAnimations(this);
+        if(this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
+            if (this.getAnimation() == NO_ANIMATION) {
+                this.setAnimation(rand.nextBoolean() ? ANIMATION_BITE : ANIMATION_SLASH);
+            }
+            this.faceEntity(this.getAttackTarget(), 360, 80);
+            if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+            }
+            if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 ||this.getAnimationTick() == 16)) {
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+            }
+        }
+        if(!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION){
+            this.setAnimation(ANIMATION_SNIFF);
+        }
     }
 
 
@@ -104,5 +157,9 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity 
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{ANIMATION_BITE, ANIMATION_SLASH, ANIMATION_SNIFF};
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return RatsSoundRegistry.RAT_PLAGUE;
     }
 }

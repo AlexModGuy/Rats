@@ -46,7 +46,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     public static final Animation ANIMATION_RANGED = Animation.create(15);
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
-            return entity.isEntityAlive() && !(entity instanceof EntityMarbleCheeseGolem) && !(entity instanceof EntityRatlanteanSpirit);
+            return entity.isEntityAlive() && !(entity instanceof EntityMarbleCheeseGolem) & !(entity instanceof EntityNeoRatlantean) && !(entity instanceof EntityRatlanteanSpirit) && !(entity instanceof EntityFeralRatlantean);
         }
     };
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "marbled_cheese_golem"));
@@ -66,7 +66,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.8D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
     }

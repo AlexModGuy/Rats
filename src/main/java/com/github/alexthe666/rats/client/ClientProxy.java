@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
 import com.github.alexthe666.rats.client.model.ModelPiperHat;
 import com.github.alexthe666.rats.client.model.StateMapperGeneric;
+import com.github.alexthe666.rats.client.particle.ParticleLightning;
 import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
@@ -78,6 +79,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityMarbleCheeseGolem.class, new RenderMarbledCheeseGolem());
         RenderingRegistry.registerEntityRenderingHandler(EntityGolemBeam.class, new RenderGolemBeam());
         RenderingRegistry.registerEntityRenderingHandler(EntityFeralRatlantean.class, new RenderFeralRatlantean());
+        RenderingRegistry.registerEntityRenderingHandler(EntityNeoRatlantean.class, new RenderNeoRatlantean());
+        RenderingRegistry.registerEntityRenderingHandler(EntityNeoBeam.class, new RenderNeoBeam());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLaserPortal.class, new RenderLaserPortal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -310,6 +314,8 @@ public class ClientProxy extends CommonProxy {
         if (name.equals("rat_ghost")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRatGhost(world, x, y, z, (float)motX, (float)motY, (float)motZ));
         }
-
+        if (name.equals("rat_lightning")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+        }
     }
 }

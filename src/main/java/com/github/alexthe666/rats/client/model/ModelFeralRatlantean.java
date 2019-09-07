@@ -489,6 +489,7 @@ public class ModelFeralRatlantean extends AdvancedModelBase {
         this.swing(frontRightLeg, walkSpeed, -walkDegree * 1F, true, 1.5F, -0.25F, f, f1);
         this.swing(backLeftThigh, walkSpeed, -walkDegree * 1.25F, false, 0F, -0.25F, f, f1);
         this.swing(backRightThigh, walkSpeed, -walkDegree * 1.25F, true, 0F, -0.25F, f, f1);
+        this.faceTarget(f3, f4, 2, neck, head1);
     }
 
     public void setRotateAngle(AdvancedModelRenderer advancedModelRenderer, float x, float y, float z) {
