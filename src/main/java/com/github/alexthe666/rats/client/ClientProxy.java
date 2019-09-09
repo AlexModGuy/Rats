@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.ModelChefToque;
 import com.github.alexthe666.rats.client.model.ModelPiperHat;
+import com.github.alexthe666.rats.client.model.ModelPiratHat;
 import com.github.alexthe666.rats.client.model.StateMapperGeneric;
 import com.github.alexthe666.rats.client.particle.ParticleLightning;
 import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
@@ -28,6 +29,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.entity.RenderPotion;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -82,6 +85,11 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityNeoRatlantean.class, new RenderNeoRatlantean());
         RenderingRegistry.registerEntityRenderingHandler(EntityNeoBeam.class, new RenderNeoBeam());
         RenderingRegistry.registerEntityRenderingHandler(EntityLaserPortal.class, new RenderLaserPortal());
+        RenderingRegistry.registerEntityRenderingHandler(EntityThrownBlock.class, new RenderThrownBlock());
+        RenderingRegistry.registerEntityRenderingHandler(EntityVialOfSentience.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPiratBoat.class, new RenderPiratBoat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityCheeseCannonball.class, new RenderSnowball<EntityCheeseCannonball>(Minecraft.getMinecraft().getRenderManager(), RatsItemRegistry.CHEESE_CANNONBALL, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPirat.class, new RenderPirat());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -276,7 +284,8 @@ public class ClientProxy extends CommonProxy {
     public Object getArmorModel(int index) {
         if(index == 0){
             return new ModelChefToque(1.0F);
-
+        }else if(index == 2){
+            return new ModelPiratHat(1.0F);
         }else{
             return new ModelPiperHat(1.0F);
         }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
@@ -268,6 +269,9 @@ public class ModelRat extends AdvancedModelBase {
         if (!rat.isRiding()) {
             progressRotation(tail2, rat.sitProgress, 0.20943951023931953F, 0.6108652381980153F, 0.0F, 20F);
             progressRotation(tail1, rat.sitProgress, 1.2F, 0.17453292519943295F, 0.6981317007977318F, 20F);
+        }else if(rat instanceof EntityPirat){
+            progressRotation(tail1, rat.sitProgress, 1.1F, 0, 0, 20F);
+
         }
         progressPosition(body1, rat.sitProgress, 0, 16F, 0, 20F);
         progressPosition(leftThigh, rat.sitProgress, 2.5F, 0, 4.5F, 20F);

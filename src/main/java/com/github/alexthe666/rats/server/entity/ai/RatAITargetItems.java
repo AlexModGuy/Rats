@@ -99,7 +99,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
                 EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-                if (!rat.isTamed() && targetPlayer != null && !rat.hasPlague() && RatUtils.isCheese(duplicate)) {
+                if (!rat.isTamed() && targetPlayer != null && rat.canBeTamed() && RatUtils.isCheese(duplicate)) {
                     rat.wildTrust += 10;
                     rat.world.setEntityState(rat, (byte) 82);
                     if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0) {

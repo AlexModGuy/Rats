@@ -111,4 +111,8 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantis_portal")
     public static Block RATLANTIS_PORTAL = new BlockRatlantisPortal();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":compressed_rat")
+    public static Block COMPRESSED_RAT = new BlockCompressedRat();
+
+
 }

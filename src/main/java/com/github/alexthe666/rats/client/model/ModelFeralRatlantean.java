@@ -467,9 +467,9 @@ public class ModelFeralRatlantean extends AdvancedModelBase {
         this.walk(this.midBody, walkSpeed, walkDegree, false, 0, 0, f, f1);
         this.walk(this.frontBody, walkSpeed, walkDegree * 0.5F, false, 1, -0.1F, f, f1);
         this.walk(this.neck, walkSpeed, walkDegree * 0.5F, false, 2, 0, f, f1);
-        this.walk(this.tail1, walkSpeed, walkDegree * 2F, false, -1, 0.3F, f, f1);
-        this.walk(this.tail2, walkSpeed, walkDegree * 1F, false, -2, 0.0F, f, f1);
-        this.walk(this.tail3, walkSpeed, walkDegree * 1F, false, -3, 0.0F, f, f1);
+        this.walk(this.tail1, walkSpeed, walkDegree * 1F, false, -1, 0.3F, f, f1);
+        this.walk(this.tail2, walkSpeed, walkDegree * 0.5F, false, -2, 0.1F, f, f1);
+        this.walk(this.tail3, walkSpeed, walkDegree * 0.5F, false, -3, 0.0F, f, f1);
         this.walk(this.tail4, walkSpeed, walkDegree * 0.5F, false, -4, 0.1F, f, f1);
         this.walk(this.backLeftThigh, walkSpeed, walkDegree * 2F, true, 0, 0, f, f1);
         this.walk(this.backRightThigh, walkSpeed, walkDegree * 2F, true, 0, 0, f, f1);

@@ -1,37 +1,52 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, IRangedAttackMob {
+public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
     private int animationTick;
     private Animation currentAnimation;
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
-            return entity.isEntityAlive() && !(entity instanceof EntityMarbleCheeseGolem) && !(entity instanceof EntityNeoRatlantean) && !(entity instanceof EntityRatlanteanSpirit) && !(entity instanceof EntityFeralRatlantean);
+            return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
+    private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS));
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
     private int attackSelection = 0;
     private int summonCooldown = 0;
+
     public EntityNeoRatlantean(World worldIn) {
         super(worldIn);
         this.setHealth(this.getMaxHealth());
@@ -40,6 +55,19 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         this.experienceValue = 80;
         this.moveHelper = new EntityNeoRatlantean.AIMoveControl(this);
     }
+
+    protected void updateAITasks() {
+        super.updateAITasks();
+        if(this.ticksExisted % 100 == 0){
+            this.heal(1);
+        }
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+    }
+
+    public boolean isNonBoss() {
+        return false;
+    }
+
 
     @Override
     protected void entityInit() {
@@ -65,6 +93,25 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         super.readEntityFromNBT(compound);
         this.setColorVariant(compound.getInteger("ColorVariant"));
         attackSelection = compound.getInteger("AttackSelection");
+        if (this.hasCustomName()) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
+    }
+
+    public void setCustomNameTag(String name) {
+        super.setCustomNameTag(name);
+        this.bossInfo.setName(this.getDisplayName());
+    }
+
+
+    public void addTrackingPlayer(EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    public void removeTrackingPlayer(EntityPlayerMP player) {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
     }
 
     @Nullable
@@ -76,29 +123,80 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
 
     public void onUpdate() {
         super.onUpdate();
-        if(world.isRemote){
+        if (world.isRemote) {
             RatsMod.PROXY.spawnParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     this.posY + this.getEyeHeight() + (double) (this.rand.nextFloat() * 0.35F),
                     this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
-                    0.0F,  0.0F, 0.0F);
+                    0.0F, 0.0F, 0.0F);
         }
-        if(summonCooldown > 0){
+        if (summonCooldown > 0) {
             summonCooldown--;
         }
     }
 
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(!world.isRemote && this.getAttackTarget() != null){
-            if(attackSelection == 0 && summonCooldown == 0){
+
+        if (!world.isRemote && this.getAttackTarget() != null) {
+            Entity entity = this.getAttackTarget();
+            if (attackSelection == 0 && summonCooldown == 0) {
                 summonCooldown = 100;
                 int bounds = 5;
-                for(int i = 0; i < rand.nextInt(2) + 3; i++){
-                    EntityLaserPortal laserPortal = new EntityLaserPortal(world, this.getAttackTarget().posX + this.rand.nextInt(bounds*2) - bounds, this.posY + 2, this.getAttackTarget().posZ + this.rand.nextInt(bounds*2) - bounds, this);
+                for (int i = 0; i < rand.nextInt(3) + 3; i++) {
+                    EntityLaserPortal laserPortal = new EntityLaserPortal(world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, this);
                     world.spawnEntity(laserPortal);
                 }
+                resetAttacks();
+            }
+            if (attackSelection == 1 && summonCooldown == 0) {
+                int bounds = 20;
+                this.world.addWeatherEffect(new EntityLightningBolt(this.world, entity.posX, entity.posY, entity.posZ, false));
+                for (int i = 0; i < rand.nextInt(3) + 2; i++) {
+                    this.world.addWeatherEffect(new EntityLightningBolt(this.world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, entity.posY, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, false));
+                }
+                summonCooldown = 100;
+                resetAttacks();
+            }
+            if (attackSelection == 2 && summonCooldown == 0) {
+                int searchRange = 10;
+                BlockPos ourPos = new BlockPos(this);
+                List<BlockPos> listOfAll = new ArrayList<>();
+                for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange))) {
+                    IBlockState state = world.getBlockState(pos);
+                    if (!world.isAirBlock(pos) && canPickupBlock(state)) {
+                        listOfAll.add(pos);
+                    }
+                }
+                boolean flag = false;
+                if (listOfAll.size() > 0) {
+                    BlockPos pos = listOfAll.get(rand.nextInt(listOfAll.size()));
+                    EntityThrownBlock thrownBlock = new EntityThrownBlock(world, world.getBlockState(pos), this);
+                    thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                    if (!world.isRemote) {
+                        world.spawnEntity(thrownBlock);
+                    }
+                    RatsMod.NETWORK_WRAPPER.sendToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                    summonCooldown = 40;
+                }
+                resetAttacks();
+            }
+            if (attackSelection == 3 && summonCooldown == 0) {
+                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 200));
+                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.WITHER, 200));
+                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 200));
+                summonCooldown = 40;
+                resetAttacks();
             }
         }
+    }
+
+    public void resetAttacks(){
+        attackSelection = rand.nextInt(4);
+    }
+
+    public boolean canPickupBlock(IBlockState state) {
+        return EntityWither.canDestroyBlock(state.getBlock());
     }
 
     protected void initEntityAI() {
@@ -110,7 +208,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
@@ -118,6 +216,14 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+    }
+
+    public void fall(float distance, float damageMultiplier) {
+
+    }
+
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+
     }
 
     @Override
@@ -192,7 +298,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         }
     }
 
-    public class AIFollowPrey  extends EntityAIBase {
+    public class AIFollowPrey extends EntityAIBase {
         private final EntityNeoRatlantean parentEntity;
         public int attackTimer;
         private double followDist;
@@ -205,7 +311,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
             followDist = EntityNeoRatlantean.this.getEntityBoundingBox().getAverageEdgeLength();
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
-            return entitylivingbase!= null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
+            return entitylivingbase != null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
         }
 
         public void startExecuting() {
@@ -218,9 +324,9 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
-            if(entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)){
+            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
 
-                EntityNeoRatlantean.this.moveHelper.setMoveTo((double) entitylivingbase.posX + rand.nextInt(10) - 20, (double) entitylivingbase.posY + 3, (double) entitylivingbase.posZ  + rand.nextInt(10) - 20, 1D);
+                EntityNeoRatlantean.this.moveHelper.setMoveTo((double) entitylivingbase.posX + rand.nextInt(10) - 20, (double) entitylivingbase.posY + 3, (double) entitylivingbase.posZ + rand.nextInt(10) - 20, 1D);
             }
         }
     }

@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
 import com.github.alexthe666.rats.server.items.ItemPiperHat;
+import com.github.alexthe666.rats.server.items.ItemPiratHat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -39,13 +40,13 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
     }
 
     public void doRenderLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(!(this.renderer.getMainModel() instanceof  ModelRat)){
+        if (!(this.renderer.getMainModel() instanceof ModelRat)) {
             return;
         }
         ItemStack itemstack = entityLivingBaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
         GlStateManager.pushMatrix();
-        if(entityLivingBaseIn instanceof EntityRat && ((EntityRat) entityLivingBaseIn).getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_GOD){
-            for(ModelRenderer renderer : renderer.getMainModel().boxList){
+        if (entityLivingBaseIn instanceof EntityRat && ((EntityRat) entityLivingBaseIn).getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_GOD) {
+            for (ModelRenderer renderer : renderer.getMainModel().boxList) {
                 GlStateManager.pushMatrix();
                 renderEnchantedGlint(this.renderer, entityLivingBaseIn, renderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
                 GlStateManager.popMatrix();
@@ -65,13 +66,18 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 GlStateManager.translate(0, 0.025F, -0.035F);
                 GlStateManager.rotate(0, 1, 0, 0);
                 GlStateManager.scale(0.425F, 0.425F, 0.425F);
-                if(itemstack.getItem() instanceof ItemChefToque){
+                if (itemstack.getItem() instanceof ItemChefToque) {
                     GlStateManager.rotate(-25, 1, 0, 0);
                     GlStateManager.translate(0, 0.2, 0.035F);
                 }
-                if(itemstack.getItem() instanceof ItemPiperHat){
+                if (itemstack.getItem() instanceof ItemPiperHat) {
                     GlStateManager.rotate(-10, 1, 0, 0);
                     GlStateManager.translate(0, 0.2, -0.1);
+                }
+                if (itemstack.getItem() instanceof ItemPiratHat) {
+                    GlStateManager.rotate(-5, 1, 0, 0);
+                    GlStateManager.translate(0, 0.3, 0);
+                    GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));
                 {
@@ -94,14 +100,14 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     }
                 }
             }
-        }else{//banner render
-            if(itemstack.getItem() instanceof ItemBanner){
+        } else {//banner render
+            if (itemstack.getItem() instanceof ItemBanner) {
                 ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
                 GlStateManager.translate(0, -0.5F, -0.2F);
                 GlStateManager.rotate(180, 0, 0, 1);
-                if(entityLivingBaseIn instanceof EntityRat){
-                    EntityRat rat = (EntityRat)entityLivingBaseIn;
+                if (entityLivingBaseIn instanceof EntityRat) {
+                    EntityRat rat = (EntityRat) entityLivingBaseIn;
                     float sitProgress = rat.sitProgress / 20F;
                     GlStateManager.rotate(sitProgress * -40, 1, 0, 0);
                     GlStateManager.translate(0, 0, -sitProgress * 0.04);
@@ -109,7 +115,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 }
                 GlStateManager.scale(1.7F, 1.7F, 1.7F);
                 Minecraft.getMinecraft().getItemRenderer().renderItem(entityLivingBaseIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
-            }else{
+            } else {
                 ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).neck.postRender(0.0625F);
@@ -126,9 +132,8 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         GlStateManager.popMatrix();
     }
 
-    public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, EntityLivingBase p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_)
-    {
-        float f = (float)p_188364_1_.ticksExisted + p_188364_5_;
+    public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, EntityLivingBase p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_) {
+        float f = (float) p_188364_1_.ticksExisted + p_188364_5_;
         p_188364_0_.bindTexture(ENCHANTED_ITEM_GLINT_RES);
         Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
         GlStateManager.enableBlend();
@@ -137,8 +142,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         float f1 = 0.5F;
         GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
 
-        for (int i = 0; i < 2; ++i)
-        {
+        for (int i = 0; i < 2; ++i) {
             GlStateManager.disableLighting();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
             float f2 = 0.76F;
@@ -147,8 +151,8 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
             GlStateManager.loadIdentity();
             float f3 = 0.33333334F;
             GlStateManager.scale(0.33333334F, 0.33333334F, 0.33333334F);
-            GlStateManager.rotate(30.0F - (float)i * 60.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.translate(0.0F, f * (0.001F + (float)i * 0.003F) * 20.0F, 0.0F);
+            GlStateManager.rotate(30.0F - (float) i * 60.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.translate(0.0F, f * (0.001F + (float) i * 0.003F) * 20.0F, 0.0F);
             GlStateManager.matrixMode(5888);
             model.render(p_188364_9_);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);

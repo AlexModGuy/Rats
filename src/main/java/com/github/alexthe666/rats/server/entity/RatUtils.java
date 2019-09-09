@@ -79,12 +79,12 @@ public class RatUtils {
 
     public static int getItemSlotFromItemHandler(EntityRat rat, IItemHandler handler, Random random) {
         List<Integer> items = new ArrayList<Integer>();
-        if(handler == null){
+        if (handler == null) {
             return -1;
         }
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.extractItem(i, handler.getSlotLimit(i), true);
-            if(rat.canRatPickupItem(stack)) {
+            if (rat.canRatPickupItem(stack)) {
                 items.add(i);
             }
         }
@@ -658,9 +658,9 @@ public class RatUtils {
     }
 
     public static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
-        if(world.isAirBlock(pos)){
-            for(EnumFacing facing : EnumFacing.values()){
-                if(isRatTube(world, pos.offset(facing))){
+        if (world.isAirBlock(pos)) {
+            for (EnumFacing facing : EnumFacing.values()) {
+                if (isRatTube(world, pos.offset(facing))) {
                     return true;
                 }
             }
@@ -670,10 +670,10 @@ public class RatUtils {
 
     public static boolean isOpenRatTube(IBlockAccess world, EntityRat rat, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if(state.getBlock() instanceof BlockRatTube){
-            for(int i = 0; i < EnumFacing.values().length; i++){
+        if (state.getBlock() instanceof BlockRatTube) {
+            for (int i = 0; i < EnumFacing.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if(state.getValue(bool) && rat != null && rat.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]){
+                if (state.getValue(bool) && rat != null && rat.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]) {
                     return true;
                 }
             }
@@ -681,21 +681,111 @@ public class RatUtils {
         return false;
     }
 
-    public static boolean isLinkedToTube(IBlockAccess world, BlockPos offset){
+    public static boolean isLinkedToTube(IBlockAccess world, BlockPos offset) {
         return isRatTube(world, offset) || isConnectedToRatTube(world, offset);
     }
 
     public static BlockPos offsetTubeEntrance(IBlockAccess worldIn, BlockPos pos) {
         IBlockState state = worldIn.getBlockState(pos);
-        if(state.getBlock() instanceof BlockRatTube){
-            for(int i = 0; i < EnumFacing.values().length; i++){
+        if (state.getBlock() instanceof BlockRatTube) {
+            for (int i = 0; i < EnumFacing.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if(state.getValue(bool)){
+                if (state.getValue(bool)) {
                     return pos.offset(EnumFacing.values()[i]);
                 }
             }
         }
         return pos;
+    }
+
+    public static Vec3d generateRandomWaterPos(EntityCreature p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vec3d p_191379_3_, boolean p_191379_4_) {
+        PathNavigate pathnavigate = p_191379_0_.getNavigator();
+        Random random = p_191379_0_.getRNG();
+        boolean flag;
+
+        if (p_191379_0_.hasHome()) {
+            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.posX), (double) MathHelper.floor(p_191379_0_.posY), (double) MathHelper.floor(p_191379_0_.posZ)) + 4.0D;
+            double d1 = (double) (p_191379_0_.getMaximumHomeDistance() + (float) p_191379_1_);
+            flag = d0 < d1 * d1;
+        } else {
+            flag = false;
+        }
+
+        boolean flag1 = false;
+        float f = -99999.0F;
+        int k1 = 0;
+        int i = 0;
+        int j = 0;
+
+        for (int k = 0; k < 10; ++k) {
+            int l = random.nextInt(2 * p_191379_1_ + 1) - p_191379_1_;
+            int i1 = random.nextInt(2 * p_191379_2_ + 1) - p_191379_2_;
+            int j1 = random.nextInt(2 * p_191379_1_ + 1) - p_191379_1_;
+
+            if (p_191379_3_ == null || (double) l * p_191379_3_.x + (double) j1 * p_191379_3_.z >= 0.0D) {
+                if (p_191379_0_.hasHome() && p_191379_1_ > 1) {
+                    BlockPos blockpos = p_191379_0_.getHomePosition();
+
+                    if (p_191379_0_.posX > (double) blockpos.getX()) {
+                        l -= random.nextInt(p_191379_1_ / 2);
+                    } else {
+                        l += random.nextInt(p_191379_1_ / 2);
+                    }
+
+                    if (p_191379_0_.posZ > (double) blockpos.getZ()) {
+                        j1 -= random.nextInt(p_191379_1_ / 2);
+                    } else {
+                        j1 += random.nextInt(p_191379_1_ / 2);
+                    }
+                }
+
+                BlockPos blockpos1 = new BlockPos((double) l + p_191379_0_.posX, (double) i1 + p_191379_0_.posY, (double) j1 + p_191379_0_.posZ);
+
+                if ((!flag || p_191379_0_.isWithinHomeDistanceFromPosition(blockpos1)) && pathnavigate.canEntityStandOnPos(blockpos1)) {
+                    if (!p_191379_4_) {
+                        blockpos1 = moveAboveSolid(blockpos1, p_191379_0_);
+
+                        if (isWaterDestination(blockpos1, p_191379_0_)) {
+                            continue;
+                        }
+                    }
+
+                    float f1 = p_191379_0_.getBlockPathWeight(blockpos1);
+
+                    if (f1 > f) {
+                        f = f1;
+                        k1 = l;
+                        i = i1;
+                        j = j1;
+                        flag1 = true;
+                    }
+                }
+            }
+        }
+
+        if (flag1) {
+            return new Vec3d((double) k1 + p_191379_0_.posX, (double) i + p_191379_0_.posY, (double) j + p_191379_0_.posZ);
+        } else {
+            return null;
+        }
+    }
+
+    private static BlockPos moveAboveSolid(BlockPos p_191378_0_, EntityCreature p_191378_1_) {
+        if (!p_191378_1_.world.getBlockState(p_191378_0_).getMaterial().isSolid()) {
+            return p_191378_0_;
+        } else {
+            BlockPos blockpos;
+
+            for (blockpos = p_191378_0_.up(); blockpos.getY() < p_191378_1_.world.getHeight() && p_191378_1_.world.getBlockState(blockpos).getMaterial().isSolid(); blockpos = blockpos.up()) {
+                ;
+            }
+
+            return blockpos;
+        }
+    }
+
+    private static boolean isWaterDestination(BlockPos p_191380_0_, EntityCreature p_191380_1_) {
+        return p_191380_1_.world.getBlockState(p_191380_0_).getMaterial() == Material.WATER;
     }
 
     public static class TubeSorter implements Comparator<EnumFacing> {

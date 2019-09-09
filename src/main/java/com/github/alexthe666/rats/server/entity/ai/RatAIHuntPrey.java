@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +16,9 @@ public class RatAIHuntPrey<T extends EntityLivingBase> extends EntityAINearestAt
     }
 
     public boolean shouldExecute() {
+        if(this.rat instanceof EntityPirat){
+            return super.shouldExecute();
+        }
         return (this.rat.isTamed() || this.rat.hasPlague()) && !rat.isInCage() && rat.shouldHunt() && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && super.shouldExecute();
     }
 

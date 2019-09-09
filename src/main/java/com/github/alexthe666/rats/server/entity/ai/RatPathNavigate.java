@@ -27,6 +27,7 @@ public class RatPathNavigate extends PathNavigateGround {
     protected PathFinder getPathFinder() {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
+        this.nodeProcessor.setCanSwim(true);
         return new RatPathFinder(this.nodeProcessor, (EntityRat)entity);
     }
 

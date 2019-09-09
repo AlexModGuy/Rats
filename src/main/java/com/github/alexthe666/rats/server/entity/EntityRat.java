@@ -106,6 +106,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public BlockPos tubeTarget = null;
     public boolean prevInTube;
     public boolean climbingTube = false;
+    public boolean waterBased = false;
     /*
        0 = tamed navigator
        1 = wild navigator
@@ -1146,6 +1147,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return true;
     }
 
+    public void removePassengers()
+    {
+
+    }
+
     public void updateRiding(Entity riding) {
         if (riding != null && riding.isPassenger(this) && riding instanceof EntityPlayer) {
             int i = riding.getPassengers().indexOf(this);
@@ -1179,7 +1185,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.setToga(!this.hasToga());
             this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F, 1.5F);
         }
-        if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE) {
+        if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE && this.canBeTamed()) {
             this.setTamed(true);
             this.world.setEntityState(this, (byte) 83);
             this.setTamedBy(player);
@@ -1208,6 +1214,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             }
         }
         return false;
+    }
+
+    public boolean canBeTamed() {
+        return !this.hasPlague();
     }
 
     public ItemStack getUpgrade() {

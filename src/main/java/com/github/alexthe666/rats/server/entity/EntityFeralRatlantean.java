@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity {
+public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity, IRatlantean {
 
     private int animationTick;
     private Animation currentAnimation;
@@ -33,10 +33,9 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity 
     public static final Animation ANIMATION_SNIFF = Animation.create(20);
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
-            return entity.isEntityAlive() && !(entity instanceof EntityFeralRatlantean) && !(entity instanceof EntityNeoRatlantean) && !(entity instanceof EntityMarbleCheeseGolem) && !(entity instanceof EntityRatlanteanSpirit)  && !(entity instanceof EntityRat);
+            return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
-
     public EntityFeralRatlantean(World worldIn) {
         super(worldIn);
         this.setSize(1.85F, 1.2F);

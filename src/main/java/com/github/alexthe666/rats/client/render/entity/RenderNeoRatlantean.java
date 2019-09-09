@@ -25,7 +25,9 @@ public class RenderNeoRatlantean extends RenderLiving<EntityNeoRatlantean> {
     }
 
     protected void preRenderCallback(EntityNeoRatlantean rat, float partialTickTime) {
-        GL11.glTranslatef(0.0F, -0.2F, 0.0F);
+        if(!rat.onGround){
+            GL11.glTranslatef(0.0F, -0.2F, 0.0F);
+        }
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 

@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity {
+public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity, IRatlantean {
 
     private int animationTick;
     private Animation currentAnimation;

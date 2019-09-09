@@ -25,12 +25,14 @@ public class EntityLaserPortal extends Entity {
     public EntityLaserPortal(World worldIn) {
         super(worldIn);
         this.setSize(0.9F, 1.5F);
+        this.isImmuneToFire = true;
     }
 
     public EntityLaserPortal(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setSize(0.9F, 1.5F);
         this.setPosition(x, y, z);
+        this.isImmuneToFire = true;
     }
 
     public EntityLaserPortal(World worldIn, double x, double y, double z, EntityLivingBase creator) {
@@ -38,6 +40,7 @@ public class EntityLaserPortal extends Entity {
         this.setSize(0.9F, 1.5F);
         this.setPosition(x, y, z);
         this.setCreator(creator);
+        this.isImmuneToFire = true;
     }
 
     public void setCreator(@Nullable EntityLivingBase ownerIn) {
@@ -56,7 +59,7 @@ public class EntityLaserPortal extends Entity {
         if(ticksExisted > 250 && scaleOfPortal > 0.0F){
             scaleOfPortal -= 0.05F;
         }
-        if(ticksExisted % 100 == 0){
+        if(ticksExisted % 50 == 0){
             this.tryFiring();
         }else{
             faceTarget();

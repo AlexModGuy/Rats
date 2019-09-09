@@ -67,6 +67,7 @@ public class RatsRecipeRegistry {
         GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);
         addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
+        addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
     }
 
 

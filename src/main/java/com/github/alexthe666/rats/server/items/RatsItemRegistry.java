@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RatsItemRegistry {
 
     public static ItemArmor.ArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("ChefToque", "rats:cheftoque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static Item.ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 3.5F, 30);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese")
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, "cheese");
@@ -100,6 +101,18 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantean_flame")
     public static Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":vial_of_sentience")
+    public static Item VIAL_OF_SENTIENCE = new ItemVialOfSentience();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":pirat_hat")
+    public static Item PIRAT_HAT = new ItemPiratHat();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":pirat_cutlass")
+    public static Item PIRAT_CUTLASS = new ItemPiratCutlass();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese_cannonball")
+    public static Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic")
     public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");

@@ -192,7 +192,9 @@ public class ModelNeoRatlantean extends AdvancedModelBase {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
         this.body1.render(f5);
-        this.floatyPivot.render(f5);
+        if(!entity.onGround){
+            this.floatyPivot.render(f5);
+        }
     }
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
@@ -243,6 +245,12 @@ public class ModelNeoRatlantean extends AdvancedModelBase {
         this.walk(this.tail1_1, speedRun, degreeRun * 0.5F, false, -2, 0.1F, f, f1);
         this.faceTarget(f3, f4, 2, neck, head);
         this.faceTarget(f3, f4, 2, floatyPivot);
+        if(rat.onGround){
+            this.walk(this.rightThigh, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
+            this.walk(this.rightFoot, speedWalk, degreeWalk * 2F, false, 3.5F, -0.1F, f, f1);
+            this.walk(this.leftThigh, speedWalk, degreeWalk * 4F, true, 1, 0, f, f1);
+            this.walk(this.leftFoot, speedWalk, degreeWalk * 2F, true, 3.5F, 0.1F, f, f1);
+        }
     }
 
     public void setRotateAngle(AdvancedModelRenderer advancedModelRenderer, float x, float y, float z) {

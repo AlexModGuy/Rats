@@ -35,7 +35,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntity, IRangedAttackMob {
+public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
     private int blockBreakCounter;
     private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS));
@@ -46,7 +46,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     public static final Animation ANIMATION_RANGED = Animation.create(15);
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
-            return entity.isEntityAlive() && !(entity instanceof EntityMarbleCheeseGolem) & !(entity instanceof EntityNeoRatlantean) && !(entity instanceof EntityRatlanteanSpirit) && !(entity instanceof EntityFeralRatlantean);
+            return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "marbled_cheese_golem"));
