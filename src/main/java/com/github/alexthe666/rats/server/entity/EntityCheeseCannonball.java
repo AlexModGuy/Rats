@@ -40,6 +40,15 @@ public class EntityCheeseCannonball extends EntityThrowable {
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender() {
+        return 15728880;
+    }
+
+    public float getBrightness() {
+        return 1.0F;
+    }
+
     protected void onImpact(RayTraceResult result) {
         if (result.entityHit != null) {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);

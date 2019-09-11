@@ -113,7 +113,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
        2 = flight navigator
        3 = tube navigator
      */
-    private int navigatorType;
+    protected int navigatorType;
     public boolean crafting = false;
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
@@ -281,7 +281,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
-    private void switchNavigator(int type) {
+    protected void switchNavigator(int type) {
         if (type == 1) {//cage or wild
             this.moveHelper = new EntityMoveHelper(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
@@ -1083,7 +1083,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
                     if (this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
                         boolean flag = false;
-                        if (!flag && rand.nextFloat() < 0.03F) {
+                        if (!flag && rand.nextFloat() < 0.01F) {
                             this.entityDropItem(new ItemStack(Items.DIAMOND), 0.0F);
                             flag = true;
                         }

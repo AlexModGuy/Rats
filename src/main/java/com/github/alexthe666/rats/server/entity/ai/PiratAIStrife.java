@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
 
@@ -33,15 +34,11 @@ public class PiratAIStrife extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        return this.entity.getAttackTarget() != null;
-    }
-
-    protected boolean isPipeInMainhand() {
-        return !this.entity.getHeldItemMainhand().isEmpty() && this.entity.getHeldItemMainhand().getItem() == RatsItemRegistry.RAT_FLUTE;
+        return this.entity.getAttackTarget() != null && this.entity.isRiding();
     }
 
     public boolean shouldContinueExecuting() {
-        return (this.shouldExecute() || !this.entity.getNavigator().noPath());
+        return this.shouldExecute();
     }
 
     public void startExecuting() {

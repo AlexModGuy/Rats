@@ -15,7 +15,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RatsItemRegistry {
 
     public static ItemArmor.ArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("ChefToque", "rats:cheftoque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static Item.ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 3.5F, 30);
+    public static Item.ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
+    public static Item.ToolMaterial BAGHNAKHS_MATERIAL = EnumHelper.addToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese")
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, "cheese");
@@ -95,6 +96,12 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_petals")
     public static Item RATGLOVE_PETALS = new ItemGeneric("ratglove_petals");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":feral_rat_claw")
+    public static Item FERAL_RAT_CLAW = new ItemGeneric("feral_rat_claw");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":feral_bagh_nakhs")
+    public static Item FERAL_BAGH_NAKHS = new ItemBaghNakhs();
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":arcane_technology")
     public static Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);

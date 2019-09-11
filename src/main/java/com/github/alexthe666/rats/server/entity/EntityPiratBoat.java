@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.server.entity.ai.PiratPathNavigate;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.BlockLiquid;
@@ -12,8 +13,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
@@ -24,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHandSide;
@@ -39,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.List;
 
-public class EntityPiratBoat extends EntityLiving implements IRatlantean {
+public class EntityPiratBoat extends EntityMob implements IRatlantean {
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.<ItemStack>emptyList();
     public static final ItemStack BANNER = generateBanner();
     private final float[] paddlePositions;
@@ -52,6 +56,8 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
         super(worldIn);
         this.paddlePositions = new float[2];
         this.setSize(1.75F, 0.8F);
+        this.navigator = new PiratPathNavigate(this, world);
+        this.moveHelper = new EntityPirat.PiratMoveHelper(this);
     }
 
     public boolean writeToNBTOptional(NBTTagCompound compound) {
@@ -61,11 +67,25 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
         return true;
     }
 
-    public boolean canBeSteered()
-    {
+    public boolean canBeSteered() {
         return true;
     }
 
+    public boolean canPassengerSteer() {
+        return true;
+    }
+
+    @Override
+    public Entity getControllingPassenger() {
+        if (!this.getPassengers().isEmpty()) {
+            for (Entity entity : this.getPassengers()) {
+                if (entity instanceof EntityPirat) {
+                    return entity;
+                }
+            }
+        }
+        return null;
+    }
 
     @Override
     protected void entityInit() {
@@ -121,7 +141,12 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
 
     public void onUpdate() {
         super.onUpdate();
-        if(this.posY < this.waterLevel && deathTime == 0){
+        if (this.getRidingEntity() != null) {
+            if (!this.getRidingEntity().isRiding()) {
+                this.getRidingEntity().startRiding(this, true);
+            }
+        }
+        if (this.posY < this.waterLevel && deathTime == 0 && (isOverWater() || inWater)) {
             this.setPosition(this.posX, this.waterLevel, this.posZ);
         }
         checkInWater();
@@ -135,7 +160,7 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
             fireCooldown--;
         }
         prevFire = this.isFiring();
-        if(!this.isBeingRidden()){
+        if (!this.isBeingRidden()) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
     }
@@ -158,7 +183,7 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
         }
     }
 
-    protected void doWaterSplashEffect(){
+    protected void doWaterSplashEffect() {
     }
 
     private static ItemStack generateBanner() {
@@ -208,25 +233,29 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
             }
             EntityCheeseCannonball cannonball = new EntityCheeseCannonball(world, pirat);
             cannonball.ignoreEntity = this;
-            float radius = 1.4F;
+            float radius = 1.6F;
             float angle = (0.01745329251F * (this.renderYawOffset));
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 0.8 + posY;
             double d0 = target.posY + (double) target.getEyeHeight();
             double d1 = target.posX - extraX;
-            double d2 = d0 - extraY;
             double d3 = target.posZ - extraZ;
-            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+            double d2 = d0 - extraY;
+            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.65F;
+            float velocity = this.getDistance(target) * 0.045F;
             cannonball.setPosition(extraX, extraY, extraZ);
-            cannonball.shoot(d1, d2 + (double) f, d3, 1F, 0F);
-            this.playSound(SoundEvents.ENTITY_FIREWORK_SHOOT, 3.0F, 0.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0.4F);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
                 this.world.spawnEntity(cannonball);
-
             }
             this.setFiring(true);
         }
+    }
+
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
     private boolean checkInWater() {
@@ -271,7 +300,41 @@ public class EntityPiratBoat extends EntityLiving implements IRatlantean {
         return SoundEvents.BLOCK_WOOD_HIT;
     }
 
-    public boolean shouldDismountInWater(Entity rider){
+    public boolean shouldDismountInWater(Entity rider) {
         return false;
     }
+
+    public void travel(float strafe, float vertical, float forward) {
+        if (this.isBeingRidden() && this.canBeSteered()) {
+            EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
+            this.rotationYaw = entitylivingbase.rotationYaw;
+            this.prevRotationYaw = this.rotationYaw;
+            this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.renderYawOffset = this.rotationYaw;
+            this.rotationYawHead = this.renderYawOffset;
+            strafe = entitylivingbase.moveStrafing;
+            forward = entitylivingbase.moveForward;
+            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
+            if (this.canPassengerSteer()) {
+                this.setAIMoveSpeed(this.getAIMoveSpeed());
+                super.travel(strafe, vertical, forward);
+            }
+            this.prevLimbSwingAmount = this.limbSwingAmount;
+            double d1 = this.posX - this.prevPosX;
+            double d0 = this.posZ - this.prevPosZ;
+            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+
+            if (f2 > 1.0F) {
+                f2 = 1.0F;
+            }
+
+            this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
+            this.limbSwing += this.limbSwingAmount;
+        } else {
+            this.jumpMovementFactor = 0.02F;
+            super.travel(strafe, vertical, forward);
+        }
+    }
+
 }
