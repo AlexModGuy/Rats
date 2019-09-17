@@ -181,13 +181,23 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
     public static Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined")
-    public static Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
-
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_feral_bite")
     public static Item RAT_UPGRADE_FERAL_BITE = new ItemRatUpgrade("rat_upgrade_feral_bite");
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_buccaneer")
     public static Item RAT_UPGRADE_BUCCANEER = new ItemRatUpgrade("rat_upgrade_buccaneer", 1, 2);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ratinator")
+    public static Item RAT_UPGRADE_RATINATOR = new ItemRatUpgrade("rat_upgrade_ratinator", 2, 3);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_psychic")
+    public static Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined")
+    public static Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined_creative")
+    public static Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
+
 
 }

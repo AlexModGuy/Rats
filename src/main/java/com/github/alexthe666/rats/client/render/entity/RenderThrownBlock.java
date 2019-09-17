@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class RenderThrownBlock extends Render<EntityThrownBlock> {
-    private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
+    private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
     private static final ModelCube MODEL_CUBE = new ModelCube(1.1F);
 
     public RenderThrownBlock() {

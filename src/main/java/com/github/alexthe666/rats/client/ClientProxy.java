@@ -85,7 +85,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityGolemBeam.class, new RenderGolemBeam());
         RenderingRegistry.registerEntityRenderingHandler(EntityFeralRatlantean.class, new RenderFeralRatlantean());
         RenderingRegistry.registerEntityRenderingHandler(EntityNeoRatlantean.class, new RenderNeoRatlantean());
-        RenderingRegistry.registerEntityRenderingHandler(EntityNeoBeam.class, new RenderNeoBeam());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLaserBeam.class, new RenderLaserBeam());
         RenderingRegistry.registerEntityRenderingHandler(EntityLaserPortal.class, new RenderLaserPortal());
         RenderingRegistry.registerEntityRenderingHandler(EntityThrownBlock.class, new RenderThrownBlock());
         RenderingRegistry.registerEntityRenderingHandler(EntityVialOfSentience.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));

@@ -74,6 +74,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)) {
+            GlStateManager.pushMatrix();
             ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
             GlStateManager.pushMatrix();
             GlStateManager.pushMatrix();
@@ -93,6 +94,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.enableLighting();
                 GlStateManager.popMatrix();
             }
+            GlStateManager.popMatrix();
             GlStateManager.popMatrix();
         }
         if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)){

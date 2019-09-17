@@ -20,7 +20,7 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_SPEED, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PLATTER, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_HEALTH, HEALTH_INCREASES);
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ARMOR, ARMOR_INCREASES);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ARMOR, ArrayUtils.add(ARMOR_INCREASES, RatsItemRegistry.RAT_UPGRADE_RATINATOR));
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_STRENGTH, ATTACK_INCREASES);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_WARRIOR, ArrayUtils.addAll(HEALTH_INCREASES, ArrayUtils.addAll(ARMOR_INCREASES, ATTACK_INCREASES)));
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_GOD, ArrayUtils.addAll(HEALTH_INCREASES, ArrayUtils.addAll(ARMOR_INCREASES, ATTACK_INCREASES)));
@@ -33,8 +33,11 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, new Item[]{RatsItemRegistry.RAT_UPGRADE_MINER});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_MINER, new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN, new Item[0]);
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_RATINATOR, new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PSYCHIC, new Item[0]);
     }
 
     public static boolean doesConflict(Item first, Item second){

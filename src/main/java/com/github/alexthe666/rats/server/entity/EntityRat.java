@@ -9,8 +9,8 @@ import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
-import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
@@ -24,6 +24,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -66,6 +68,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -138,7 +141,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
     private EntityAIBase aiHarvest;
-    private int rangedAttackCooldown = 0;
+    private int rangedAttackCooldownCannon = 0;
+    private int rangedAttackCooldownLaser = 0;
+    private int rangedAttackCooldownPsychic = 0;
     private int visualCooldown = 0;
 
     public EntityRat(World worldIn) {
@@ -500,7 +505,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             if (this.hasPlague() && entityIn instanceof EntityLivingBase) {
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
             }
-            if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)){
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
@@ -699,16 +704,29 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         }
         if (world.isRemote && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE) && this.getRNG().nextInt(5) == 0) {
             float sitAddition = 0.125f * (sitProgress / 20F);
+            float radius = 0.3F - sitAddition;
+            float angle = (0.01745329251F * (this.renderYawOffset));
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
+            double extraY = 0.125 + posY + sitAddition;
+            float particleRand = 0.1F;
+            RatsMod.PROXY.spawnParticle("saliva", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
+                    extraY,
+                    extraZ + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
+                    0F, 0.0F, 0F);
+        }
+        if (world.isRemote && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC) && this.getRNG().nextInt(5) == 0) {
+            float sitAddition = 0.125f * (sitProgress / 20F);
             float radius = 0.45F - sitAddition;
             float angle = (0.01745329251F * (this.renderYawOffset));
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 0.12 + posY + sitAddition;
-            float particleRand = 0.1F;
-            RatsMod.PROXY.spawnParticle("saliva", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
+            float particleRand = 0.4F;
+            RatsMod.PROXY.spawnParticle("rat_lightning", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
-                    0F,  0.0F, 0F);
+                    0F, 0.0F, 0F);
         }
         if (this.isInCage()) {
             if (this.getAttackTarget() != null) {
@@ -759,12 +777,50 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 this.setAttackTarget(piper.getAttackTarget());
             }
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)){
-            if(this.getVisualFlag() && visualCooldown == 0){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+            if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 30 == 0) {
+                this.heal(1.0F);
+            }
+            if (rangedAttackCooldownPsychic == 0 && this.getAttackTarget() != null) {
+                if (rand.nextBoolean()) {
+                    rangedAttackCooldownPsychic = 50;
+                    BlockPos ourPos = new BlockPos(this);
+                    int searchRange = 10;
+                    List<BlockPos> listOfAll = new ArrayList<>();
+                    for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange))) {
+                        IBlockState state = world.getBlockState(pos);
+                        if (!world.isAirBlock(pos) && EntityWither.canDestroyBlock(state.getBlock())) {
+                            listOfAll.add(pos);
+                        }
+                    }
+                    if (listOfAll.size() > 0) {
+                        BlockPos pos = listOfAll.get(rand.nextInt(listOfAll.size()));
+                        EntityThrownBlock thrownBlock = new EntityThrownBlock(world, world.getBlockState(pos), this);
+                        thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                        thrownBlock.dropBlock = false;
+                        if (!world.isRemote) {
+                            world.spawnEntity(thrownBlock);
+                        }
+                        RatsMod.NETWORK_WRAPPER.sendToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
+                    } else {
+                        rangedAttackCooldownPsychic = 5;
+                    }
+                } else {
+                    rangedAttackCooldownPsychic = 100;
+                    int bounds = 5;
+                    for (int i = 0; i < rand.nextInt(2) + 1; i++) {
+                        EntityLaserPortal laserPortal = new EntityLaserPortal(world, this.getAttackTarget().posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, this.getAttackTarget().posZ + this.rand.nextInt(bounds * 2) - bounds, this);
+                        world.spawnEntity(laserPortal);
+                    }
+                }
+            }
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)) {
+            if (this.getVisualFlag() && visualCooldown == 0) {
                 this.setVisualFlag(false);
             }
-            if(rangedAttackCooldown == 0 && this.getAttackTarget() != null){
-                rangedAttackCooldown = 60;
+            if (rangedAttackCooldownCannon == 0 && this.getAttackTarget() != null) {
+                rangedAttackCooldownCannon = 60;
                 EntityCheeseCannonball cannonball = new EntityCheeseCannonball(world, this);
                 cannonball.ignoreEntity = this;
                 double extraY = 0.6 + posY;
@@ -783,10 +839,39 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 }
             }
         }
-        if(rangedAttackCooldown > 0){
-            rangedAttackCooldown--;
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
+            if (rangedAttackCooldownLaser == 0 && this.getAttackTarget() != null) {
+                rangedAttackCooldownLaser = 10;
+                float radius = 0.3F;
+                for (int i = 0; i < 2; i++) {
+                    float angle = (0.01745329251F * (this.renderYawOffset + (i == 0 ? 90 : -90)));
+                    double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
+                    double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
+                    double extraY = 0.2 + posY;
+                    double targetRelativeX = this.getAttackTarget().posX - extraX;
+                    double targetRelativeY = this.getAttackTarget().posY - extraY;
+                    double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
+                    EntityLaserBeam beam = new EntityLaserBeam(world, this);
+                    beam.setRGB(1.0F, 0.0F, 0.0F);
+                    beam.setDamage(2.0F);
+                    beam.setPosition(extraX, extraY, extraZ);
+                    beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
+                    if (!world.isRemote) {
+                        world.spawnEntity(beam);
+                    }
+                }
+            }
         }
-        if(visualCooldown > 0){
+        if (rangedAttackCooldownCannon > 0) {
+            rangedAttackCooldownCannon--;
+        }
+        if (rangedAttackCooldownLaser > 0) {
+            rangedAttackCooldownLaser--;
+        }
+        if (rangedAttackCooldownPsychic > 0) {
+            rangedAttackCooldownPsychic--;
+        }
+        if (visualCooldown > 0) {
             visualCooldown--;
         }
         prevInTube = inTube();
@@ -1409,7 +1494,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean shouldEyesGlow() {
-        return true;
+        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER);
     }
 
     @Nullable
@@ -1457,9 +1542,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     public boolean canRatPickupItem(ItemStack stack) {
         if ((this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST)) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
             NBTTagCompound nbttagcompound1;
-            if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)){
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
                 nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST).getTagCompound();
-            }else{
+            } else {
                 nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTagCompound();
             }
             if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
@@ -1593,8 +1678,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
-                for(ItemStack stack1 : nonnulllist){
-                    if(stack1.getItem() == item){
+                for (ItemStack stack1 : nonnulllist) {
+                    if (stack1.getItem() == item) {
                         return stack1;
                     }
                 }
@@ -1603,47 +1688,77 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         return ItemStack.EMPTY;
     }
 
-    public boolean hasUpgrade(Item item){
-        if(!this.getUpgradeSlot().isEmpty()){
+    public boolean hasUpgrade(Item item) {
+        if (!this.getUpgradeSlot().isEmpty()) {
             return getUpgrade(item) != ItemStack.EMPTY;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private void onUpgradeChanged(){
+    private void onUpgradeChanged() {
         setupHarvestAI();
+        boolean flagHealth = false;
+        boolean flagArmor = false;
+        boolean flagAttack = false;
+        boolean flagSpeed = false;
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SPEED)) {
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        } else {
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            tryIncreaseStat(SharedMonsterAttributes.MOVEMENT_SPEED, 0.5D);
+            flagSpeed = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500D);
-            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(50D);
-            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(50D);
-
-        } else if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WARRIOR)) {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40D);
-            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12D);
-            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10D);
-        } else {
-            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_HEALTH)) {
-                this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25D);
-            } else {
-                this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8D);
-            }
-            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARMOR)) {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10D);
-            } else {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0D);
-            }
-            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRENGTH)) {
-                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5D);
-            } else {
-                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1D);
-            }
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 500D);
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 50D);
+            tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 50D);
+            flagHealth = true;
+            flagArmor = true;
+            flagAttack = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WARRIOR)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 40D);
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 12D);
+            tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 10D);
+            flagHealth = true;
+            flagArmor = true;
+            flagAttack = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_HEALTH)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 25D);
+            flagHealth = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARMOR)) {
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 10D);
+            flagArmor = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRENGTH)) {
+            tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 5D);
+            flagAttack = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 30D);
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 80D);
+            flagHealth = true;
+            flagArmor = true;
+        }
+        if (!flagHealth) {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        }
+        if (!flagArmor) {
+            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        }
+        if (!flagAttack) {
+            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        }
+        if (!flagSpeed) {
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         }
         this.heal(this.getMaxHealth());
+    }
+
+    private void tryIncreaseStat(IAttribute stat, double value) {
+        double prev = this.getEntityAttribute(stat).getAttributeValue();
+        if (prev < value) {
+            this.getEntityAttribute(stat).setBaseValue(value);
+        }
     }
 }

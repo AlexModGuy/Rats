@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.server.entity.EntityLaserBeam;
+import com.github.alexthe666.rats.server.entity.EntityLaserPortal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,16 +16,17 @@ import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 
-public class RenderNeoBeam extends RenderArrow {
+public class RenderLaserBeam extends RenderArrow {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_beam.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/laser_beam.png");
 
-    public RenderNeoBeam() {
+    public RenderLaserBeam() {
         super(Minecraft.getMinecraft().getRenderManager());
     }
 
     public void doRender(EntityArrow entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.bindEntityTexture(entity);
+        EntityLaserBeam beam = (EntityLaserBeam)entity;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
@@ -57,6 +60,8 @@ public class RenderNeoBeam extends RenderArrow {
             GlStateManager.enableColorMaterial();
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));
         }
+        float[] rgb = beam.getRGB();
+        GlStateManager.color(rgb[0], rgb[1], rgb[2], 1.0F);
 
         GlStateManager.glNormal3f(0.05625F, 0.0F, 0.0F);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);

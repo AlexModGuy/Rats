@@ -6,6 +6,10 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -15,17 +19,51 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityNeoBeam extends EntityArrow {
+public class EntityLaserBeam extends EntityArrow {
 
-    public EntityNeoBeam(World worldIn) {
+    private static final DataParameter<Float> R = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> G = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> B = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
+
+    public EntityLaserBeam(World worldIn) {
         super(worldIn);
         this.setDamage(6F);
     }
 
-    public EntityNeoBeam(World worldIn, double x, double y, double z) {
+    public EntityLaserBeam(World worldIn, double x, double y, double z, float r, float g, float b) {
         this(worldIn);
         this.setPosition(x, y, z);
         this.setDamage(6F);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(R, Float.valueOf(0.66F));
+        this.dataManager.register(G, Float.valueOf(0.97F));
+        this.dataManager.register(B, Float.valueOf(0.97F));
+    }
+
+    public float[] getRGB() {
+        return new float[]{this.dataManager.get(R), this.dataManager.get(G), this.dataManager.get(B)};
+    }
+
+    public void setRGB(float newR, float newG, float newB) {
+        this.dataManager.set(R, newR);
+        this.dataManager.set(G, newG);
+        this.dataManager.set(B, newB);
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setFloat("ColorR", getRGB()[0]);
+        compound.setFloat("ColorG", getRGB()[1]);
+        compound.setFloat("ColorB", getRGB()[2]);
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        setRGB(compound.getFloat("ColorR"), compound.getFloat("ColorG"), compound.getFloat("ColorB")) ;
     }
 
     public void onUpdate() {
@@ -84,7 +122,7 @@ public class EntityNeoBeam extends EntityArrow {
     }
 
 
-    public EntityNeoBeam(World worldIn, EntityLivingBase shooter) {
+    public EntityLaserBeam(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
         this.setDamage(6F);
     }

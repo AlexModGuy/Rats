@@ -1,11 +1,13 @@
 package com.github.alexthe666.rats.server.entity;
 
 
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -33,6 +35,7 @@ public class EntityThrownBlock extends Entity {
     private int ticksAlive;
     private int ticksInAir;
     public IBlockState fallTile;
+    public boolean dropBlock = true;
     public NBTTagCompound tileEntityData;
 
     public EntityThrownBlock(World worldIn) {
@@ -94,9 +97,9 @@ public class EntityThrownBlock extends Entity {
             this.motionX *= (double) f;
             this.motionY *= (double) f;
             this.motionZ *= (double) f;
-            if (this.shootingEntity != null && shootingEntity instanceof EntityNeoRatlantean) {
-                if (((EntityNeoRatlantean) shootingEntity).getAttackTarget() != null) {
-                    EntityLivingBase target = ((EntityNeoRatlantean) shootingEntity).getAttackTarget();
+            if (this.shootingEntity != null && shootingEntity instanceof EntityLiving) {
+                if (((EntityLiving) shootingEntity).getAttackTarget() != null) {
+                    EntityLivingBase target = ((EntityLiving) shootingEntity).getAttackTarget();
                     double d0 = target.posX - this.posX;
                     double d1 = target.posY - this.posY;
                     double d2 = target.posZ - this.posZ;
@@ -130,7 +133,9 @@ public class EntityThrownBlock extends Entity {
                 }
                 BlockPos blockpos1 = result.getBlockPos().up();
                 if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, (Entity) null)) {
-                    this.world.setBlockState(blockpos1, this.fallTile);
+                    if(dropBlock){
+                        this.world.setBlockState(blockpos1, this.fallTile);
+                    }
                     if (block instanceof BlockFalling) {
                         ((BlockFalling) block).onEndFalling(this.world, blockpos1, this.fallTile, fallTile);
                     }
@@ -154,7 +159,7 @@ public class EntityThrownBlock extends Entity {
                     }
                     this.setDead();
                 } else if (this.world.getGameRules().getBoolean("doEntityDrops")) {
-                    if(!world.isRemote){
+                    if(!world.isRemote && dropBlock){
                         this.entityDropItem(new ItemStack(block, 1, block.damageDropped(this.fallTile)), 0.0F);
                     }
                     this.setDead();

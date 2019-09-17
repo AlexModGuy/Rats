@@ -1,11 +1,13 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.google.common.base.Predicate;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -22,6 +24,11 @@ public class EntityLaserPortal extends Entity {
     private UUID ownerUniqueId;
     public float scaleOfPortal;
     public float scaleOfPortalPrev;
+    public static final Predicate<Entity> MONSTER_NOT_RAT = new Predicate<Entity>() {
+        public boolean apply(@Nullable Entity entity) {
+            return entity != null && !(entity instanceof EntityRat) && entity instanceof IMob;
+        }
+    };
     public EntityLaserPortal(World worldIn) {
         super(worldIn);
         this.setSize(0.9F, 1.5F);
@@ -96,6 +103,15 @@ public class EntityLaserPortal extends Entity {
             if(target == null && this.getCreator() instanceof EntityMob){
                 target = world.getNearestPlayerNotCreative(this, 30);
             }
+            if(target == null && this.getCreator() instanceof EntityRat && ((EntityRat) this.getCreator()).isTamed()){
+                EntityLivingBase closest = null;
+                for(Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getEntityBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)){
+                    if(entity instanceof EntityLivingBase && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))){
+                        closest = (EntityLivingBase)entity;
+                    }
+                }
+                target = closest;
+            }
             if(target != null){
                 double d0 = this.posX - target.posX;
                 double d1 = this.posY - (target.posY);
@@ -106,7 +122,7 @@ public class EntityLaserPortal extends Entity {
                 double targetRelativeX = target.posX - this.posX;
                 double targetRelativeY = target.posY - this.posY - 1.0F;
                 double targetRelativeZ = target.posZ - this.posZ;
-                EntityNeoBeam beam = new EntityNeoBeam(world, this.getCreator());
+                EntityLaserBeam beam = new EntityLaserBeam(world, this.getCreator());
                 beam.setPosition(this.posX, this.posY + 1.0F, this.posZ);
                 beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
                 if(!world.isRemote){

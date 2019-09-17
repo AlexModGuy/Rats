@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockGenericSlab;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
-import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsUpgradeConflictRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -12,10 +11,8 @@ import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -31,9 +28,6 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
@@ -153,7 +147,7 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityGolemBeam>create(), event, EntityGolemBeam.class, "marbled_cheese_golem_beam", 6);
         registerSpawnable(EntityEntryBuilder.<EntityFeralRatlantean>create(), event, EntityFeralRatlantean.class, "feral_ratlantean", 7, 0X30333E, 0XECECEC);
         registerSpawnable(EntityEntryBuilder.<EntityNeoRatlantean>create(), event, EntityNeoRatlantean.class, "neo_ratlantean", 8, 0X30333E, 0X00EFEF);
-        registerUnspawnable(EntityEntryBuilder.<EntityNeoBeam>create(), event, EntityNeoBeam.class, "neo_ratlantean_beam", 9);
+        registerUnspawnable(EntityEntryBuilder.<EntityLaserBeam>create(), event, EntityLaserBeam.class, "laser_beam", 9);
         registerUnspawnable(EntityEntryBuilder.<EntityLaserPortal>create(), event, EntityLaserPortal.class, "neo_ratlantean_portal", 10);
         registerUnspawnable(EntityEntryBuilder.<EntityThrownBlock>create(), event, EntityThrownBlock.class, "thrown_block", 11);
         registerUnspawnable(EntityEntryBuilder.<EntityVialOfSentience>create(), event, EntityVialOfSentience.class, "vial_of_sentience", 12);

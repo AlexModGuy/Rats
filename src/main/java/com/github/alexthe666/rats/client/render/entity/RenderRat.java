@@ -26,7 +26,7 @@ import java.util.Map;
 public class RenderRat extends RenderLiving<EntityRat> {
 
     private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();
-    private static final ModelRat RAT_MODEL = new ModelRat();
+    private static final ModelRat RAT_MODEL = new ModelRat(0.0F);
     private static final ModelPinkie PINKIE_MODEL = new ModelPinkie();
     private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/baby.png");
     private static final ResourceLocation ENDER_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_ender_upgrade.png");

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -100,6 +101,9 @@ public class InventoryRatUpgrade implements ISidedInventory {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
+        if(upgradeStack.getItem() instanceof ItemRatCombinedUpgrade){
+            return ItemRatCombinedUpgrade.canCombineWithUpgrade(upgradeStack, stack);
+        }
         return !(stack.getItem() instanceof ItemRatListUpgrade);
     }
 
