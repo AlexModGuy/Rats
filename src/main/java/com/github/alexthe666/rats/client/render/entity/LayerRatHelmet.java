@@ -34,6 +34,48 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         this.renderer = rendererIn;
     }
 
+    public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, EntityLivingBase p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_) {
+        renderEnchantedGlint(p_188364_0_, p_188364_1_, model, p_188364_3_, p_188364_4_, p_188364_5_, p_188364_6_, p_188364_7_, p_188364_8_, p_188364_9_
+                , 0.38F, 0.19F, 0.608F);
+    }
+
+    public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, EntityLivingBase p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_, float r, float g, float b) {
+        float f = (float) p_188364_1_.ticksExisted + p_188364_5_;
+        p_188364_0_.bindTexture(ENCHANTED_ITEM_GLINT_RES);
+        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+        GlStateManager.enableBlend();
+        GlStateManager.depthFunc(514);
+        GlStateManager.depthMask(false);
+        float f1 = 0.5F;
+        GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
+
+        for (int i = 0; i < 2; ++i) {
+            GlStateManager.disableLighting();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+            float f2 = 0.76F;
+            GlStateManager.color(r, g, b, 1.0F);
+            GlStateManager.matrixMode(5890);
+            GlStateManager.loadIdentity();
+            float f3 = 0.33333334F;
+            GlStateManager.scale(0.33333334F, 0.33333334F, 0.33333334F);
+            GlStateManager.rotate(30.0F - (float) i * 60.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.translate(0.0F, f * (0.001F + (float) i * 0.003F) * 20.0F, 0.0F);
+            GlStateManager.matrixMode(5888);
+            model.render(p_188364_9_);
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        }
+
+        GlStateManager.matrixMode(5890);
+        GlStateManager.loadIdentity();
+        GlStateManager.matrixMode(5888);
+        GlStateManager.enableLighting();
+        GlStateManager.depthMask(true);
+        GlStateManager.depthFunc(515);
+        GlStateManager.disableBlend();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+    }
+
     protected void initArmor() {
         this.modelLeggings = new ModelBiped(0.5F);
         this.modelArmor = new ModelBiped(1.0F);
@@ -49,6 +91,13 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
             for (ModelRenderer renderer : renderer.getMainModel().boxList) {
                 GlStateManager.pushMatrix();
                 renderEnchantedGlint(this.renderer, entityLivingBaseIn, renderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+                GlStateManager.popMatrix();
+            }
+        }
+        if (entityLivingBaseIn instanceof EntityRat && ((EntityRat) entityLivingBaseIn).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            for (ModelRenderer renderer : renderer.getMainModel().boxList) {
+                GlStateManager.pushMatrix();
+                renderEnchantedGlint(this.renderer, entityLivingBaseIn, renderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 0.0F, 1.0F, 0.0F);
                 GlStateManager.popMatrix();
             }
         }
@@ -130,43 +179,6 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         }
 
         GlStateManager.popMatrix();
-    }
-
-    public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, EntityLivingBase p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_) {
-        float f = (float) p_188364_1_.ticksExisted + p_188364_5_;
-        p_188364_0_.bindTexture(ENCHANTED_ITEM_GLINT_RES);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
-        GlStateManager.enableBlend();
-        GlStateManager.depthFunc(514);
-        GlStateManager.depthMask(false);
-        float f1 = 0.5F;
-        GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
-
-        for (int i = 0; i < 2; ++i) {
-            GlStateManager.disableLighting();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
-            float f2 = 0.76F;
-            GlStateManager.color(0.38F, 0.19F, 0.608F, 1.0F);
-            GlStateManager.matrixMode(5890);
-            GlStateManager.loadIdentity();
-            float f3 = 0.33333334F;
-            GlStateManager.scale(0.33333334F, 0.33333334F, 0.33333334F);
-            GlStateManager.rotate(30.0F - (float) i * 60.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.translate(0.0F, f * (0.001F + (float) i * 0.003F) * 20.0F, 0.0F);
-            GlStateManager.matrixMode(5888);
-            model.render(p_188364_9_);
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        }
-
-        GlStateManager.matrixMode(5890);
-        GlStateManager.loadIdentity();
-        GlStateManager.matrixMode(5888);
-        GlStateManager.enableLighting();
-        GlStateManager.depthMask(true);
-        GlStateManager.depthFunc(515);
-        GlStateManager.disableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
     }
 
     @SuppressWarnings("incomplete-switch")

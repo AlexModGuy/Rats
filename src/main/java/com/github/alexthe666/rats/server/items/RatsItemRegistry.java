@@ -178,6 +178,18 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_miner")
     public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_asbestos")
+    public static Item RAT_UPGRADE_ASBESTOS = new ItemRatUpgrade("rat_upgrade_asbestos", 0, 4);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_underwater")
+    public static Item RAT_UPGRADE_UNDERWATER = new ItemRatUpgrade("rat_upgrade_underwater", 0, 3);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_poison")
+    public static Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_damage_protection")
+    public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 3);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
     public static Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
 
@@ -193,11 +205,13 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_psychic")
     public static Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_nonbeliever")
+    public static Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined")
     public static Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined_creative")
     public static Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
-
 
 }

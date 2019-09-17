@@ -26,7 +26,7 @@ public class ItemRatUpgrade extends ItemGeneric {
     }
 
     public EnumRarity getRarity(ItemStack stack) {
-        if(rarity != 0){
+        if(rarity != 0 && rarity != 4){
             return EnumRarity.values()[rarity];
         }
         return super.getRarity(stack);
@@ -34,7 +34,7 @@ public class ItemRatUpgrade extends ItemGeneric {
 
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack){
-        return rarity == 3 || super.hasEffect(stack);
+        return rarity >= 3 || super.hasEffect(stack);
     }
 
 

@@ -38,6 +38,10 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_RATINATOR, new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PSYCHIC, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ASBESTOS, new Item[]{RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_POISON, new Item[]{RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_UNDERWATER, new Item[]{RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION, new Item[]{RatsItemRegistry.RAT_UPGRADE_ASBESTOS, RatsItemRegistry.RAT_UPGRADE_POISON, RatsItemRegistry.RAT_UPGRADE_UNDERWATER});
     }
 
     public static boolean doesConflict(Item first, Item second){

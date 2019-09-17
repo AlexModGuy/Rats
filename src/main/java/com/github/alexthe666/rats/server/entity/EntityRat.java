@@ -411,6 +411,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
+
         if (this.isEntityInvulnerable(source) || source == DamageSource.IN_WALL && this.isRiding()) {
             return false;
         } else {
@@ -775,6 +776,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             EntityIllagerPiper piper = (EntityIllagerPiper) this.getOwner();
             if (piper.getAttackTarget() != null) {
                 this.setAttackTarget(piper.getAttackTarget());
+            }
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 30 == 0) {
+                this.heal(1.0F);
             }
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
@@ -1494,7 +1500,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
     }
 
     public boolean shouldEyesGlow() {
-        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER);
+        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER);
     }
 
     @Nullable
@@ -1740,6 +1746,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             flagHealth = true;
             flagArmor = true;
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 1000D);
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 100D);
+            tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 100D);
+            flagHealth = true;
+            flagArmor = true;
+            flagAttack = true;
+        }
         if (!flagHealth) {
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
         }
@@ -1761,4 +1775,28 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             this.getEntityAttribute(stat).setBaseValue(value);
         }
     }
+
+    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+        if(potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))){
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
+
+    public boolean isEntityInvulnerable(DamageSource source) {
+        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+            return true;
+        }
+        if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+            return true;
+        }
+        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+            return true;
+        }
+        if (source == DamageSource.FALL && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION)) {
+            return true;
+        }
+        return super.isEntityInvulnerable(source);
+    }
+
 }
