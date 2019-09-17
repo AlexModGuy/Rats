@@ -24,7 +24,7 @@ public class RatAIFollowOwner extends EntityAIFollowOwner {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 boolean shouldTeleport;
-                if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT){
+                if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)){
                     shouldTeleport = rat.getDistance(owner) > 20;
                     rat.getMoveHelper().setMoveTo((double) owner.posX, (double) owner.posY + 2, (double) owner.posZ, 0.25D);
                 }else{

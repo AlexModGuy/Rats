@@ -1,0 +1,41 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "key": {
+    "A": {
+      "item": "rats:arcane_technology"
+    },
+    "B": {
+      "item": "rats:pirat_hat"
+    },
+    "C": {
+      "item": "rats:psionic_rat_brain"
+    },
+    "D": {
+      "item": "rats:rat_toga"
+    },
+    "E": {
+      "item": "rats:gem_of_ratlantis"
+    },
+    "F": {
+      "item": "rats:marbled_cheese_rat_head"
+    },
+    "G": {
+      "item": "rats:ratglove_petals"
+    },
+    "H": {
+      "item": "rats:feral_rat_claw"
+    },
+    "I": {
+      "item": "rats:ratlantean_flame"
+    }
+  },
+  "result": {
+    "item": "rats:idol_of_ratlantis",
+    "count": 1
+  }
+}

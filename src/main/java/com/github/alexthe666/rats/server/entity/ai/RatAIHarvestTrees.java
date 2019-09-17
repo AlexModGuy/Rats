@@ -49,7 +49,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || this.entity.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !this.entity.hasUpgrade( RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
             return false;
         }
         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {

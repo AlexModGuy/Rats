@@ -45,7 +45,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         }
         ItemStack itemstack = entityLivingBaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
         GlStateManager.pushMatrix();
-        if (entityLivingBaseIn instanceof EntityRat && ((EntityRat) entityLivingBaseIn).getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_GOD) {
+        if (entityLivingBaseIn instanceof EntityRat && ((EntityRat) entityLivingBaseIn).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
             for (ModelRenderer renderer : renderer.getMainModel().boxList) {
                 GlStateManager.pushMatrix();
                 renderEnchantedGlint(this.renderer, entityLivingBaseIn, renderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);

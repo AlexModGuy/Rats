@@ -159,7 +159,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         hasRat = false;
         this.prevCookTime = cookTime;
         for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) pos.getX(), (double) pos.getY() + 1, (double) pos.getZ(), (double)pos.getX() + 1, (double) pos.getY() + 2, (double)pos.getZ() + 1))) {
-            if(rat.isTamed() && rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+            if(rat.isTamed() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)){
                 hasRat = true;
             }
         }

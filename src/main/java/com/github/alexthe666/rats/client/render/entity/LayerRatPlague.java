@@ -28,7 +28,7 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.disableBlend();
         }
-        if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) {
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
             this.ratRenderer.bindTexture(TEXTURE_LUMBERJACK);
             this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }

@@ -15,10 +15,12 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
@@ -40,6 +42,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         super(worldIn);
         this.setSize(1.85F, 1.2F);
     }
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "feral_ratlantean"));
 
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
@@ -160,5 +163,10 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
 
     protected SoundEvent getAmbientSound() {
         return RatsSoundRegistry.RAT_PLAGUE;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
     }
 }

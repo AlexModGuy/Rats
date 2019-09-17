@@ -1,10 +1,12 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.client.model.ModelPiratCannon;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.init.Blocks;
@@ -31,7 +33,6 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             return;
         }
         ItemStack itemstack = entity.getHeldItem(EnumHand.MAIN_HAND);
-        ItemStack upgradeStack = entity.getHeldItem(EnumHand.OFF_HAND);
         if (!itemstack.isEmpty()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F);
             GlStateManager.pushMatrix();
@@ -44,7 +45,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             }
             Minecraft minecraft = Minecraft.getMinecraft();
             if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0
-                    && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_PLATTER && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_LUMBERJACK && upgradeStack.getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
+                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)  && !entity.hasUpgrade( RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !entity.hasUpgrade( RatsItemRegistry.RAT_UPGRADE_MINER)) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -56,7 +57,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.translate(-0.155F, -0.025, 0.125F);
-                if(upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER){
+                if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)){
                     GlStateManager.translate(0F, 0.25F, 0F);
                     if(itemstack.getItem() instanceof ItemBlock){
                         GlStateManager.rotate(-90, 1.0F, 0.0F, 0.0F);
@@ -65,14 +66,36 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
 
                     }
                 }
-                if(upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK || upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_MINER) {
+                if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
                     GlStateManager.translate(0.15F, -0.075F, 0);
                 }
             }
             minecraft.getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
-        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER){
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)) {
+            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
+            GlStateManager.pushMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, -0.925F, 0.2F);
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            this.renderer.bindTexture(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON);
+            LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            GlStateManager.popMatrix();
+            if(entity.getVisualFlag()){
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -0.925F, 0.2F);
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                GlStateManager.disableLighting();
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
+                this.renderer.bindTexture(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON_FIRE);
+                LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                GlStateManager.enableLighting();
+                GlStateManager.popMatrix();
+            }
+            GlStateManager.popMatrix();
+        }
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)){
             if (this.renderer.getMainModel().isChild) {
                 GlStateManager.translate(0.0F, 0.625F, 0.0F);
                 GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
@@ -88,7 +111,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.scale(2F, 2F, 2F);
             minecraft.getItemRenderer().renderItem(entity, PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND);
         }
-        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_CRAFTING){
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)){
             Minecraft minecraft = Minecraft.getMinecraft();
             GlStateManager.pushMatrix();
             translateToHand(true);
@@ -105,7 +128,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, PICKAXE_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
-        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_LUMBERJACK){
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)){
             Minecraft minecraft = Minecraft.getMinecraft();
             GlStateManager.pushMatrix();
             translateToHand(false);
@@ -115,7 +138,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, IRON_AXE_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
-        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_MINER){
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)){
             Minecraft minecraft = Minecraft.getMinecraft();
             GlStateManager.pushMatrix();
             translateToHand(false);
@@ -124,7 +147,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
-        if(!upgradeStack.isEmpty() && upgradeStack.getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT) {
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             float wingAngle = entity.onGround ? 0 : (float)MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;

@@ -111,7 +111,6 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
             this.setDead();
         }
         switchNavigator(4);
-        System.out.println(world.isRemote + "    " + isRiding());
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {

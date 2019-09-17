@@ -46,7 +46,7 @@ public class RatAIHarvestMine extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || this.entity.getUpgrade().getItem() != RatsItemRegistry.RAT_UPGRADE_MINER) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
             return false;
         }
         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -71,7 +71,7 @@ public class RatAIHarvestMine extends EntityAIBase {
     }
 
     private NonNullList<ItemStack> getMiningList(){
-        NBTTagCompound nbttagcompound1 = entity.getUpgrade().getTagCompound();
+        NBTTagCompound nbttagcompound1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTagCompound();
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);

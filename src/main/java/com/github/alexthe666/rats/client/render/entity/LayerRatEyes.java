@@ -37,7 +37,7 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
             brightness = Math.max(i, j);
         }
         if (brightness < 7) {
-            if(rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_ENDER){
+            if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)){
                 this.ratRenderer.bindTexture(TEXTURE_ENDER);
             }else if(rat.hasPlague()){
                 this.ratRenderer.bindTexture(TEXTURE_PLAGUE);

@@ -20,7 +20,7 @@ public class RatAIWanderFlight extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if (rat.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_FLIGHT && rat.canMove()) {
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && rat.canMove()) {
             int dist = 8;
             if(rat.isInCage()){
                 dist = 3;

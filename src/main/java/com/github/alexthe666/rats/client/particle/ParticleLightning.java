@@ -13,8 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class ParticleLightning extends ParticleFlame {
 
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("rats:textures/particle/lightning_0.png");

@@ -50,7 +50,7 @@ public class RatDepositInInventory extends EntityAIBase {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if(this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_CHEF && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
+        if(this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
             return false;
         }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -94,7 +94,7 @@ public class RatDepositInInventory extends EntityAIBase {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_MINER && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if(rayPos != null && !rayPos.equals(targetBlock)) {
                     IBlockState block = this.entity.world.getBlockState(rayPos);

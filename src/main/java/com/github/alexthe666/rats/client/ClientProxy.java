@@ -9,6 +9,8 @@ import com.github.alexthe666.rats.client.model.ModelPiratHat;
 import com.github.alexthe666.rats.client.model.StateMapperGeneric;
 import com.github.alexthe666.rats.client.particle.ParticleLightning;
 import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
+import com.github.alexthe666.rats.client.particle.ParticleSaliva;
+import com.github.alexthe666.rats.client.particle.ParticleUpgradeCombiner;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
@@ -95,9 +97,11 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageDecorated.class, new RenderRatCageDecorated());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageBreedingLantern.class, new RenderRatCageDecorated());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeCombiner.class, new RenderUpgradeCombiner());
         Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileEntityItemStackRenderer(TEISR);
+        Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_COMBINER).setTileEntityItemStackRenderer(TEISR);
         Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
             @Override
             public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
@@ -325,6 +329,12 @@ public class ClientProxy extends CommonProxy {
         }
         if (name.equals("rat_lightning")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+        }
+        if (name.equals("upgrade_combiner")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+        }
+        if (name.equals("saliva")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSaliva(world, x, y, z));
         }
     }
 }

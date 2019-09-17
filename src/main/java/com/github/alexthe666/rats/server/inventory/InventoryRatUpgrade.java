@@ -148,7 +148,6 @@ public class InventoryRatUpgrade implements ISidedInventory {
         return isItemValidForSlot(index, itemStackIn);
     }
 
-
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
         return true;

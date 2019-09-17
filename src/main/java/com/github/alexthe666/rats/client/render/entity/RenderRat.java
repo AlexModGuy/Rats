@@ -100,7 +100,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
         if (entity.isChild()) {
             return PINKIE_TEXTURE;
         } else {
-            if(entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_ENDER){
+            if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)){
                 return ENDER_UPGRADE_TEXTURE;
             }
             if(!entity.getCustomNameTag().isEmpty()){

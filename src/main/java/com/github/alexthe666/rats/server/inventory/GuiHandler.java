@@ -3,8 +3,10 @@ package com.github.alexthe666.rats.server.inventory;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.gui.GuiRatCraftingTable;
 import com.github.alexthe666.rats.client.gui.GuiRatUpgrade;
+import com.github.alexthe666.rats.client.gui.GuiUpgradeCombiner;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -31,6 +33,9 @@ public class GuiHandler implements IGuiHandler {
             EnumHand hand = EnumHand.MAIN_HAND;
             return new ContainerRatUpgrade(player, player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
+        if(ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner){
+            return new ContainerUpgradeCombiner((TileEntityUpgradeCombiner) tile, player);
+        }
         return null;
     }
 
@@ -48,6 +53,9 @@ public class GuiHandler implements IGuiHandler {
         if(ID == 3){
             EnumHand hand = EnumHand.MAIN_HAND;
             return new GuiRatUpgrade(player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
+        }
+        if(ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner){
+            return new GuiUpgradeCombiner((TileEntityUpgradeCombiner) tile, player.inventory);
         }
         return null;
     }

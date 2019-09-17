@@ -50,11 +50,11 @@ public class EntityCheeseCannonball extends EntityThrowable {
     }
 
     protected void onImpact(RayTraceResult result) {
-        if (result.entityHit != null) {
+        if (result.entityHit != null && (thrower == null || !result.entityHit.isOnSameTeam(thrower))) {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
         }
-        if (result != null && result.getBlockPos() != null) {
-            Explosion explosion = world.createExplosion(this, this.posX, this.posY, this.posZ, 1.0F, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this));
+        if(this.ticksExisted > 2) {
+            RatExplosion explosion = new RatExplosion(world, thrower == null ? this : thrower, this.posX, this.posY, this.posZ, 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, thrower == null ? this : thrower));
             explosion.doExplosionA();
             explosion.doExplosionB(true);
             this.setDead();

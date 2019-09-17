@@ -11,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerPiratBoatSail implements LayerRenderer<EntityPiratBoat> {
     private final RenderPiratBoat ratRenderer;
-    private static final ModelPiratCannon MODEL_PIRAT_CANNON = new ModelPiratCannon();
-    private static final ResourceLocation TEXTURE_PIRATE_CANNON = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon.png");
-    private static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon_fire.png");
+    protected static final ModelPiratCannon MODEL_PIRAT_CANNON = new ModelPiratCannon();
+    protected static final ResourceLocation TEXTURE_PIRATE_CANNON = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon.png");
+    protected static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon_fire.png");
 
     public LayerPiratBoatSail(RenderPiratBoat ratRendererIn) {
         this.ratRenderer = ratRendererIn;

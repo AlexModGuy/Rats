@@ -89,7 +89,7 @@ public class RatPickupFromInventory extends EntityAIBase {
                     return;
                 }
                 int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler, this.entity.world.rand);
-                int extractSize = this.entity.getUpgrade().getItem() == RatsItemRegistry.RAT_UPGRADE_PLATTER ? 64 : 1;
+                int extractSize = this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
                 try{
                     stack = handler.extractItem(slot, extractSize, false);
