@@ -2,6 +2,9 @@ package com.github.alexthe666.rats.server.compat.jei;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.compat.jei.archeologist.ArcheologistRecipeCategory;
+import com.github.alexthe666.rats.server.compat.jei.archeologist.ArcheologistRecipeHandler;
+import com.github.alexthe666.rats.server.compat.jei.archeologist.ArcheologistRecipeWrapper;
 import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeCategory;
 import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeHandler;
 import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeWrapper;
@@ -26,6 +29,7 @@ public class RatsJEIPlugin implements IModPlugin {
 
     public static final String CAULDRON_ID = "rats.cauldron";
     public static final String CHEF_RAT_ID = "rats.chef_rat";
+    public static final String ARCHEOLOGIST_RAT_ID = "rats.archeologist_rat";
 
     @SuppressWarnings("deprecation")
     public void register(IModRegistry registry) {
@@ -39,11 +43,16 @@ public class RatsJEIPlugin implements IModPlugin {
         registry.addRecipeHandlers(new ChefRecipeHandler());
         registry.handleRecipes(SharedRecipe.class, new ChefRatFactory(), CHEF_RAT_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(RatsItemRegistry.RAT_UPGRADE_CHEF), CHEF_RAT_ID);
+        registry.addRecipes(RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES, ARCHEOLOGIST_RAT_ID);
+        registry.addRecipeHandlers(new ArcheologistRecipeHandler());
+        registry.handleRecipes(SharedRecipe.class, new ArcheologistRatFactory(), ARCHEOLOGIST_RAT_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST), ARCHEOLOGIST_RAT_ID);
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE));
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE_STICK));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_FLUTE));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_CHEF));
+        addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_WHITELIST));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_BLACKLIST));
         addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_TRAP));
@@ -57,6 +66,7 @@ public class RatsJEIPlugin implements IModPlugin {
             registry.addRecipeCategories(new CauldronRecipeCategory());
         }
         registry.addRecipeCategories(new ChefRecipeCategory());
+        registry.addRecipeCategories(new ArcheologistRecipeCategory());
     }
 
     public class CauldronFactory implements IRecipeWrapperFactory<SharedRecipe> {
@@ -70,6 +80,13 @@ public class RatsJEIPlugin implements IModPlugin {
         @Override
         public IRecipeWrapper getRecipeWrapper(SharedRecipe recipe) {
             return new ChefRecipeWrapper(recipe);
+        }
+    }
+
+    public class ArcheologistRatFactory implements IRecipeWrapperFactory<SharedRecipe> {
+        @Override
+        public IRecipeWrapper getRecipeWrapper(SharedRecipe recipe) {
+            return new ArcheologistRecipeWrapper(recipe);
         }
     }
 

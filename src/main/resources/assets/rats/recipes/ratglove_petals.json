@@ -1,0 +1,37 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    },
+    {
+      "item": "rats:ratglove_flower"
+    }
+  ],
+  "result": {
+    "item": "rats:ratglove_petals",
+    "data": 0,
+    "count": 1
+  }
+}

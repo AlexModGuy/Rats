@@ -18,6 +18,7 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
@@ -687,6 +688,24 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                 }
             }
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && !this.getHeldItemMainhand().isEmpty()) {
+            this.tryArcheology();
+            if (cookingProgress > 0) {
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                if (cookingProgress == 99) {
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                } else {
+                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[]{Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE)});
+                    if (rand.nextFloat() < 0.125F) {
+                        this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    }
+                }
+            }
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
             if (!world.isRemote) {
                 if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isRiding()) {
@@ -885,6 +904,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+
     private boolean shouldSitDuringAnimation() {
         return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER);
     }
@@ -928,6 +948,37 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
             burntItem = recipe.getOutput().copy();
         }
         return burntItem;
+    }
+
+    public ItemStack getArcheologyResultFor(ItemStack stack) {
+        SharedRecipe recipe = RatsRecipeRegistry.getArcheologistRecipe(stack);
+        if (recipe != null) {
+            return recipe.getOutput().copy();
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private void tryArcheology() {
+        ItemStack heldItem = this.getHeldItemMainhand();
+        ItemStack burntItem = getArcheologyResultFor(heldItem);
+        if (burntItem.isEmpty()) {
+            cookingProgress = 0;
+        } else {
+            cookingProgress++;
+            if (cookingProgress == 100) {
+                heldItem.shrink(1);
+                if (heldItem.isEmpty()) {
+                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                } else {
+                    if (!this.tryDepositItemInContainers(burntItem)) {
+                        if (!world.isRemote) {
+                            this.entityDropItem(burntItem, 0.25F);
+                        }
+                    }
+                }
+                cookingProgress = 0;
+            }
+        }
     }
 
     private void tryCooking() {

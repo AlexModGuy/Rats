@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.blocks.BlockRatTube;
-import net.minecraft.block.Block;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -91,6 +89,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":chunky_cheese_token")
     public static Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":archeologist_hat")
+    public static Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
     public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
 
@@ -119,7 +120,7 @@ public class RatsItemRegistry {
     public static Item PSIONIC_RAT_BRAIN = new ItemGeneric("psionic_rat_brain", 2);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":pirat_hat")
-    public static Item PIRAT_HAT = new ItemPiratHat();
+    public static Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":pirat_cutlass")
     public static Item PIRAT_CUTLASS = new ItemPiratCutlass();
@@ -188,7 +189,10 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_damage_protection")
-    public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 3);
+    public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
+    public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
     public static Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");

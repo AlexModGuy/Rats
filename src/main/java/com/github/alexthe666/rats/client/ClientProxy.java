@@ -3,10 +3,7 @@ package com.github.alexthe666.rats.client;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
-import com.github.alexthe666.rats.client.model.ModelChefToque;
-import com.github.alexthe666.rats.client.model.ModelPiperHat;
-import com.github.alexthe666.rats.client.model.ModelPiratHat;
-import com.github.alexthe666.rats.client.model.StateMapperGeneric;
+import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.ParticleLightning;
 import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
 import com.github.alexthe666.rats.client.particle.ParticleSaliva;
@@ -288,10 +285,12 @@ public class ClientProxy extends CommonProxy {
     public Object getArmorModel(int index) {
         if(index == 0){
             return new ModelChefToque(1.0F);
+        }else if(index == 1){
+            return new ModelPiperHat(1.0F);
         }else if(index == 2){
             return new ModelPiratHat(1.0F);
         }else{
-            return new ModelPiperHat(1.0F);
+            return new ModelArcheologistHat(1.0F);
         }
     }
 

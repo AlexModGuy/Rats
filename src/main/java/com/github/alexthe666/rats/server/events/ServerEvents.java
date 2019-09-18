@@ -11,8 +11,13 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.EntityHusk;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +35,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -140,8 +146,19 @@ public class ServerEvents {
             EntityAnimal animal = (EntityAnimal) event.getEntity();
             animal.targetTasks.addTask(5, new EntityAINearestAttackableTarget(animal, EntityRat.class, true));
         }
+        if (event.getEntity() != null && event.getEntity() instanceof EntityHusk) {
+            if(((EntityHusk) event.getEntity()).getRNG().nextFloat() < 0.3){
+                event.getEntity().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                ((EntityLiving) event.getEntity()).setDropChance(EntityEquipmentSlot.HEAD, 0.5F);
+            }
+        }
+        if (event.getEntity() != null && (event.getEntity() instanceof AbstractSkeleton || event.getEntity() instanceof EntityZombie) && BiomeDictionary.hasType(event.getWorld().getBiome(event.getEntity().getPosition()), BiomeDictionary.Type.JUNGLE)) {
+            if(((EntityHusk) event.getEntity()).getRNG().nextFloat() < 0.3){
+                event.getEntity().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                ((EntityLiving) event.getEntity()).setDropChance(EntityEquipmentSlot.HEAD, 0.5F);
+            }
+        }
     }
-
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
         if (event.getEntityPlayer().isSneaking() && !event.getEntityPlayer().getPassengers().isEmpty()) {

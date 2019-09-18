@@ -20,14 +20,29 @@ public class RatsRecipeRegistry {
 
     public static List<SharedRecipe> CAULDRON_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_CHEF_RECIPES = new ArrayList<>();
+    public static List<SharedRecipe> RAT_ARCHEOLOGIST_RECIPES = new ArrayList<>();
 
     public static void preRegister(){
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CHEESE), new ItemStack(RatsItemRegistry.STRING_CHEESE, 4)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.EMERALD), new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC), new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.PIPER_HAT), new ItemStack(RatsItemRegistry.PIRAT_HAT)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.BLAZE_POWDER), new ItemStack(RatsItemRegistry.RATLANTEAN_FLAME)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(RatsItemRegistry.RAT_TOGA)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.RABBIT_FOOT), new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.FIRE_CHARGE), new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.IRON_SWORD), new ItemStack(RatsItemRegistry.PIRAT_CUTLASS)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.RABBIT_HIDE), new ItemStack(RatsItemRegistry.RAT_PELT)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
     }
 
     public static void register(){
         CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.SKULL), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(RatsBlockRegistry.RATGLOVE_FLOWER)));
         OreDictionary.registerOre("foodCheese", RatsItemRegistry.CHEESE);
         OreDictionary.registerOre("listAllmeatraw", RatsItemRegistry.RAW_RAT);
         OreDictionary.registerOre("foodRatraw", RatsItemRegistry.RAW_RAT);
@@ -79,6 +94,15 @@ public class RatsRecipeRegistry {
 
     public static SharedRecipe getRatChefRecipe(ItemStack stack) {
         for (SharedRecipe recipe : RAT_CHEF_RECIPES) {
+            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    public static SharedRecipe getArcheologistRecipe(ItemStack stack) {
+        for (SharedRecipe recipe : RAT_ARCHEOLOGIST_RECIPES) {
             if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
                 return recipe;
             }

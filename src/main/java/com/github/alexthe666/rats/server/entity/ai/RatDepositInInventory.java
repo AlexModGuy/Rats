@@ -53,6 +53,9 @@ public class RatDepositInInventory extends EntityAIBase {
         if(this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
             return false;
         }
+        if(this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && this.entity.getArcheologyResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
+            return false;
+        }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             return false;
         }

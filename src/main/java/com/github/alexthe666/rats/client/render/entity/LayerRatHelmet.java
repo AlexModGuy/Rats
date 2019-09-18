@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
 import com.github.alexthe666.rats.server.items.ItemPiperHat;
-import com.github.alexthe666.rats.server.items.ItemPiratHat;
+import com.github.alexthe666.rats.server.items.ItemHat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -123,9 +123,14 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     GlStateManager.rotate(-10, 1, 0, 0);
                     GlStateManager.translate(0, 0.2, -0.1);
                 }
-                if (itemstack.getItem() instanceof ItemPiratHat) {
+                if (itemstack.getItem() == RatsItemRegistry.PIRAT_HAT) {
                     GlStateManager.rotate(-5, 1, 0, 0);
                     GlStateManager.translate(0, 0.3, 0);
+                    GlStateManager.scale(1.425F, 1.425F, 1.425F);
+                }
+                if (itemstack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
+                    GlStateManager.rotate(-5, 1, 0, 0);
+                    GlStateManager.translate(0, 0.5, 0);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));

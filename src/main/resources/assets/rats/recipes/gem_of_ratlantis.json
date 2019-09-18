@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "EEE",
+    "EPE",
+    "EEE"
+  ],
+  "key": {
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "gemEmerald"
+    },
+    "P": {
+      "item": "rats:ratglove_petals"
+    }
+  },
+  "result": {
+    "item": "rats:gem_of_ratlantis"
+  }
+}

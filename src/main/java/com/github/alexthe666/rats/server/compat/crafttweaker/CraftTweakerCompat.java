@@ -32,4 +32,16 @@ public class CraftTweakerCompat {
         RatsRecipeRegistry.RAT_CHEF_RECIPES.removeIf(recipe -> recipe.getOutput().copy().isItemEqual(output));
     }
 
+    @ZenMethod
+    public static void addArcheologistRatRecipe(IItemStack iinput, IItemStack ioutput) {
+        RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ioutput)));
+    }
+
+    @ZenMethod
+    public static void removeArcheologistRatRecipe(IItemStack ioutput) {
+        ItemStack output = CraftTweakerMC.getItemStack(ioutput).copy();
+        output.setCount(1);
+        RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES.removeIf(recipe -> recipe.getOutput().copy().isItemEqual(output));
+    }
+
 }

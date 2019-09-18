@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " RC",
+    "SRC",
+    " RC"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:feral_rat_claw",
+      "data": 0
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "R": {
+      "item": "minecraft:rotten_flesh"
+    }
+  },
+  "result": {
+    "item": "rats:feral_bagn_nakhs"
+  }
+}
