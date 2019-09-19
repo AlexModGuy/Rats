@@ -1,0 +1,36 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "XYZ",
+    "AWA"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:block_of_cheese"
+    },
+    "A": {
+      "item": "minecraft:golden_apple",
+      "data": 0
+    },
+    "W": {
+      "item": "rats:feathery_wing",
+      "data": 0
+    },
+    "X": {
+      "item": "rats:rat_upgrade_asbestos",
+      "data": 0
+    },
+    "Y": {
+      "item": "rats:rat_upgrade_underwater",
+      "data": 0
+    },
+    "Z": {
+      "item": "rats:rat_upgrade_poison",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_damage_protection"
+  }
+}

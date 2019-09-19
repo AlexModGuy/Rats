@@ -86,6 +86,12 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":token_fragment")
+    public static Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":token_piece")
+    public static Item TOKEN_PIECE = new ItemGeneric("token_piece");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":chunky_cheese_token")
     public static Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
 

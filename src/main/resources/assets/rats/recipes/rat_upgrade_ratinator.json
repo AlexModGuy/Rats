@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "IAI",
+    "AUA",
+    "IAI"
+  ],
+  "key": {
+    "A": {
+      "item": "rats:arcane_technology"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_ratlantean"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_ratinator"
+  }
+}

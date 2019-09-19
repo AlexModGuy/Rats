@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "EEE",
+    "EPE",
+    "EEE"
+  ],
+  "key": {
+    "E": {
+      "item": "rats:marbled_cheese_raw"
+    },
+    "P": {
+      "item": "rats:gem_of_ratlantis"
+    }
+  },
+  "result": {
+    "item": "rats:marbled_cheese_golem_core"
+  }
+}

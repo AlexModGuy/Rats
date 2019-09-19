@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DRD",
+    "R R",
+    "DRD"
+  ],
+  "key": {
+    "R": {
+      "item": "rats:marbled_cheese_raw"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemEmerald"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_basic_ratlantean"
+  }
+}

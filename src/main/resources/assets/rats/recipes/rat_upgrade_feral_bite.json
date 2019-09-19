@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DDD",
+    "RUF",
+    "DDD"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "F": {
+      "item": "minecraft:spider_eye"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_ratlantean"
+    },
+    "D": {
+      "item": "rats:feral_rat_claw"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_feral_bite"
+  }
+}

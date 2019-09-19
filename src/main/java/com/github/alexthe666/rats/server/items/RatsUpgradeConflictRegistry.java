@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class RatsUpgradeConflictRegistry {
     private static Map<Item, Item[]> REGISTERED_CONFLICTS = Maps.<Item, Item[]>newHashMap();
-    private static Item[] HEALTH_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_HEALTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD};
-    private static Item[] ARMOR_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD};
-    private static Item[] ATTACK_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_STRENGTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD};
+    private static Item[] HEALTH_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_HEALTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
+    private static Item[] ARMOR_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
+    private static Item[] ATTACK_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_STRENGTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
 
     public static void init() {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC, new Item[0]);
@@ -24,6 +24,7 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_STRENGTH, ATTACK_INCREASES);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_WARRIOR, ArrayUtils.addAll(HEALTH_INCREASES, ArrayUtils.addAll(ARMOR_INCREASES, ATTACK_INCREASES)));
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_GOD, ArrayUtils.addAll(HEALTH_INCREASES, ArrayUtils.addAll(ARMOR_INCREASES, ATTACK_INCREASES)));
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER, ArrayUtils.addAll(HEALTH_INCREASES, ArrayUtils.addAll(ARMOR_INCREASES, ATTACK_INCREASES)));
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHEF, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CRAFTING, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BLACKLIST, new Item[]{RatsItemRegistry.RAT_UPGRADE_WHITELIST});

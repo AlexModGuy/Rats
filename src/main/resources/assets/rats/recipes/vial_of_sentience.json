@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FCF",
+    "FRF",
+    "FBF"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:feral_rat_claw"
+    },
+    "R": {
+      "item": "rats:ratglove_petals"
+    },
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "F": {
+      "item": "rats:ratlantean_flame"
+    }
+  },
+  "result": {
+    "item": "rats:vial_of_sentience"
+  }
+}

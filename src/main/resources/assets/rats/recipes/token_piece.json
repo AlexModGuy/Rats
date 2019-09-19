@@ -1,0 +1,37 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    }
+  ],
+  "result": {
+    "item": "rats:token_piece",
+    "data": 0,
+    "count": 1
+  }
+}

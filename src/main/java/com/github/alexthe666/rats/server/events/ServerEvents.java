@@ -29,6 +29,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -38,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fluids.FluidStack;
@@ -197,5 +199,11 @@ public class ServerEvents {
         }
     }
 
-
+    @SubscribeEvent
+    public void onLivingHeal(LivingHealEvent event) {
+        if(event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION) != null){
+            PotionEffect effect = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
+            event.setCanceled(true);
+        }
+    }
 }

@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "AUB",
+    "UIU",
+    "BUA"
+  ],
+  "key": {
+    "I": {
+      "item": "rats:idol_of_ratlantis"
+    },
+    "A": {
+      "item": "rats:arcane_technology",
+      "data": 0
+    },
+    "B": {
+      "item": "rats:psionic_rat_brain",
+      "data": 0
+    },
+    "U": {
+      "item": "rats:rat_upgrade_god",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_nonbeliever"
+  }
+}

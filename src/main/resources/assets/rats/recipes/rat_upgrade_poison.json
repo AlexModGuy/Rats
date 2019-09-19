@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "EEE",
+    "DUD",
+    "PPP"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:spider_eye"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dustGlowstone"
+    },
+    "P": {
+      "item": "minecraft:poisonous_potato",
+      "data": 0
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_poison"
+  }
+}

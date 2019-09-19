@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DRD",
+    "RUR",
+    "DRD"
+  ],
+  "key": {
+    "R": {
+      "item": "rats:gem_of_ratlantis"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_ratlantean"
+    },
+    "D": {
+      "item": "rats:feral_rat_claw"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_combined"
+  }
+}

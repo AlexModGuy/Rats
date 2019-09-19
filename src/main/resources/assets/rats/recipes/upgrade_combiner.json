@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " I ",
+    "PBP",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "item": "rats:marbled_cheese_pillar"
+    },
+    "I": {
+      "item": "rats:idol_of_ratlantis"
+    },
+    "B": {
+      "item": "rats:marbled_cheese_brick_chiseled"
+    },
+    "C": {
+      "item": "rats:marbled_cheese_chiseled"
+    }
+  },
+  "result": {
+    "item": "rats:upgrade_combiner"
+  }
+}

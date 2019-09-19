@@ -19,16 +19,12 @@ import java.util.ArrayList;
 
 public class PotionPlague extends Potion {
 
-    private static final Potion[] NEGATIVE_EFFECTS = new Potion[]{MobEffects.WITHER, MobEffects.POISON, MobEffects.HUNGER, MobEffects.BLINDNESS, MobEffects.MINING_FATIGUE, MobEffects.NAUSEA, MobEffects.SLOWNESS, MobEffects.UNLUCK, MobEffects.WEAKNESS};
     public PotionPlague() {
         super(false, 0X445637);
         this.setRegistryName(RatsMod.MODID, "plague");
     }
 
     public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
-        if(entityLivingBaseIn.ticksExisted % 300 / Math.max(1, amplifier + 1) == 0){
-            entityLivingBaseIn.addPotionEffect(new PotionEffect(NEGATIVE_EFFECTS[(int)(Math.random() * NEGATIVE_EFFECTS.length)], 300 * (amplifier + 1), 0));
-        }
     }
 
     public boolean isReady(int duration, int amplifier) {

@@ -43,6 +43,7 @@ public class RatsJEIPlugin implements IModPlugin {
         registry.addRecipeHandlers(new ChefRecipeHandler());
         registry.handleRecipes(SharedRecipe.class, new ChefRatFactory(), CHEF_RAT_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(RatsItemRegistry.RAT_UPGRADE_CHEF), CHEF_RAT_ID);
+
         registry.addRecipes(RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES, ARCHEOLOGIST_RAT_ID);
         registry.addRecipeHandlers(new ArcheologistRecipeHandler());
         registry.handleRecipes(SharedRecipe.class, new ArcheologistRatFactory(), ARCHEOLOGIST_RAT_ID);

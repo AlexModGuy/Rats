@@ -24,6 +24,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, ISidedInventory {
 
+    private static final int[] SLOTS_TOP = new int[]{0, 2};
+    private static final int[] SLOTS_SIDE = new int[]{1};
+    private static final int[] SLOTS_BOTTOM = new int[]{3};
     public int ticksExisted;
     public float ratRotation;
     public float ratRotationPrev;
@@ -330,7 +333,13 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return new int[0];
+        if (side == EnumFacing.DOWN) {
+            return SLOTS_BOTTOM;
+        } else if (side == EnumFacing.UP) {
+            return SLOTS_TOP;
+        } else {
+            return SLOTS_SIDE;
+        }
     }
 
     @Override
@@ -355,6 +364,23 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     @Override
     public boolean hasCustomName() {
         return false;
+    }
+
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
+    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
+
+    @Override
+    @javax.annotation.Nullable
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
+        if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            if (facing == EnumFacing.DOWN)
+                return (T) handlerBottom;
+            else if (facing == EnumFacing.UP)
+                return (T) handlerTop;
+            else
+                return (T) handlerSide;
+        return super.getCapability(capability, facing);
     }
 
     @Override
