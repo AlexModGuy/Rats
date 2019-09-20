@@ -874,8 +874,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
                     double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
                     double extraY = 0.2 + posY;
                     double targetRelativeX = this.getAttackTarget().posX - extraX;
-                    double targetRelativeY = this.getAttackTarget().posY - extraY;
+                    double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height/2 - extraY;
                     double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
+                    this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
                     EntityLaserBeam beam = new EntityLaserBeam(world, this);
                     beam.setRGB(1.0F, 0.0F, 0.0F);
                     beam.setDamage(2.0F);

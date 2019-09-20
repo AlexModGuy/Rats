@@ -26,6 +26,30 @@ public class RatsSoundRegistry {
     public static final SoundEvent RAT_FLUTE = createSoundEvent("rat_flute");
     @GameRegistry.ObjectHolder("piper_loop")
     public static final SoundEvent PIPER_LOOP = createSoundEvent("piper_loop");
+    @GameRegistry.ObjectHolder("rat_laser")
+    public static final SoundEvent LASER = createSoundEvent("rat_laser");
+    @GameRegistry.ObjectHolder("ratlantean_spirit_idle")
+    public static final SoundEvent RATLANTEAN_SPIRIT_IDLE = createSoundEvent("ratlantean_spirit_idle");
+    @GameRegistry.ObjectHolder("ratlantean_spirit_hurt")
+    public static final SoundEvent RATLANTEAN_SPIRIT_HURT = createSoundEvent("ratlantean_spirit_hurt");
+    @GameRegistry.ObjectHolder("ratlantean_spirit_die")
+    public static final SoundEvent RATLANTEAN_SPIRIT_DIE = createSoundEvent("ratlantean_spirit_die");
+    @GameRegistry.ObjectHolder("ratlantean_automaton_idle")
+    public static final SoundEvent RATLANTEAN_AUTOMATON_IDLE = createSoundEvent("ratlantean_automaton_idle");
+    @GameRegistry.ObjectHolder("ratlantean_automaton_hurt")
+    public static final SoundEvent RATLANTEAN_AUTOMATON_HURT = createSoundEvent("ratlantean_automaton_hurt");
+    @GameRegistry.ObjectHolder("ratlantean_automaton_die")
+    public static final SoundEvent RATLANTEAN_AUTOMATON_DIE = createSoundEvent("ratlantean_automaton_die");
+    @GameRegistry.ObjectHolder("neoratlantean_idle")
+    public static final SoundEvent NEORATLANTEAN_IDLE = createSoundEvent("neoratlantean_idle");
+    @GameRegistry.ObjectHolder("neoratlantean_hurt")
+    public static final SoundEvent NEORATLANTEAN_HURT = createSoundEvent("neoratlantean_hurt");
+    @GameRegistry.ObjectHolder("neoratlantean_die")
+    public static final SoundEvent NEORATLANTEAN_DIE = createSoundEvent("neoratlantean_die");
+    @GameRegistry.ObjectHolder("neoratlantean_loop")
+    public static final SoundEvent NEORATLANTEAN_LOOP = createSoundEvent("neoratlantean_loop");
+    @GameRegistry.ObjectHolder("neoratlantean_summon")
+    public static final SoundEvent NEORATLANTEAN_SUMMON = createSoundEvent("neoratlantean_summon");
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(RatsMod.MODID, soundName);

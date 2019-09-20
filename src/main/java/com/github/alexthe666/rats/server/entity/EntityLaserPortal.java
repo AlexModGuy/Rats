@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
@@ -120,9 +121,10 @@ public class EntityLaserPortal extends Entity {
                 float f = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.rotationYaw = f % 360;
                 double targetRelativeX = target.posX - this.posX;
-                double targetRelativeY = target.posY - this.posY - 1.0F;
+                double targetRelativeY = target.posY + target.height/2 - this.posY - 1.0F;
                 double targetRelativeZ = target.posZ - this.posZ;
                 EntityLaserBeam beam = new EntityLaserBeam(world, this.getCreator());
+                this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
                 beam.setPosition(this.posX, this.posY + 1.0F, this.posZ);
                 beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
                 if(!world.isRemote){

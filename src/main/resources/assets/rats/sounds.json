@@ -1,4 +1,90 @@
 {
+  "rat_laser": {
+    "category": "neutral",
+    "sounds": [
+      "rats:laser_0",
+      "rats:laser_1"
+    ]
+  },
+  "neoratlantean_loop": {
+    "category": "neutral",
+    "sounds": [
+      "rats:neoratlantean_loop"
+    ]
+  },
+  "neoratlantean_summon": {
+    "category": "neutral",
+    "sounds": [
+      "rats:neoratlantean_summon_0"
+    ]
+  },
+  "neoratlantean_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:neoratlantean_die_0"
+    ]
+  },
+  "neoratlantean_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:neoratlantean_hurt_0",
+      "rats:neoratlantean_hurt_1",
+      "rats:neoratlantean_hurt_2",
+      "rats:neoratlantean_hurt_3"
+
+    ]
+  },
+  "neoratlantean_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:neoratlantean_idle_0",
+      "rats:neoratlantean_idle_1",
+      "rats:neoratlantean_idle_2",
+      "rats:neoratlantean_idle_3"
+    ]
+  },
+  "ratlantean_automaton_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_automaton_die_0"
+    ]
+  },
+  "ratlantean_automaton_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_automaton_hurt_0"
+    ]
+  },
+  "ratlantean_automaton_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_automaton_idle_0",
+      "rats:ratlantean_automaton_idle_1",
+      "rats:ratlantean_automaton_idle_2",
+      "rats:ratlantean_automaton_idle_3"
+    ]
+  },
+  "ratlantean_spirit_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_spirit_die_0"
+    ]
+  },
+  "ratlantean_spirit_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_spirit_hurt_0",
+      "rats:ratlantean_spirit_hurt_1"
+    ]
+  },
+  "ratlantean_spirit_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_spirit_idle_0",
+      "rats:ratlantean_spirit_idle_1",
+      "rats:ratlantean_spirit_idle_2"
+    ]
+  },
   "piper_loop" : {
     "category": "neutral",
     "sounds": [

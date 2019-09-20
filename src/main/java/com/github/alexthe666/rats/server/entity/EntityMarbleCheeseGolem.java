@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -166,15 +167,15 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_WITHER_AMBIENT;
+        return RatsSoundRegistry.RATLANTEAN_AUTOMATON_IDLE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_WITHER_HURT;
+        return RatsSoundRegistry.RATLANTEAN_AUTOMATON_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_WITHER_DEATH;
+        return RatsSoundRegistry.RATLANTEAN_AUTOMATON_DIE;
     }
 
     public void onLivingUpdate() {
@@ -224,6 +225,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
             EntityGolemBeam beam = new EntityGolemBeam(world, this);
             beam.setPosition(extraX, extraY, extraZ);
             beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
+            this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
             if(!world.isRemote){
                 world.spawnEntity(beam);
             }

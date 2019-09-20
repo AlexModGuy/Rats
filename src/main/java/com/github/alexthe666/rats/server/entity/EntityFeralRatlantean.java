@@ -165,6 +165,14 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         return RatsSoundRegistry.RAT_PLAGUE;
     }
 
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return RatsSoundRegistry.RAT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.RAT_DIE;
+    }
+
     @Nullable
     protected ResourceLocation getLootTable() {
         return LOOT;

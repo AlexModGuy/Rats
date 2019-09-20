@@ -131,6 +131,27 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "piper",
+            "conditions": [
+                {
+                    "condition": "killed_by_player"
+                },
+                {
+                    "condition": "random_chance_with_looting",
+                    "chance": 0.05,
+                    "looting_multiplier": 0.05
+                }
+            ],
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "rats:token_fragment",
+                    "weight": 1
+                }
+            ]
         }
     ]
 }

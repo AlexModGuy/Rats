@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -16,7 +17,9 @@ import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -236,6 +239,18 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
     @Nullable
     protected ResourceLocation getLootTable() {
         return LOOT;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
 }
