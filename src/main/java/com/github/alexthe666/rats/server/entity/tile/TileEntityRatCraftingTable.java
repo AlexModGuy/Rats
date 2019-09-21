@@ -316,12 +316,16 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         return super.getCapability(capability, facing);
     }
 
+    private static List<IRecipe> EMPTY_LIST = new ArrayList<>();
     private static List<IRecipe> findMatchingRecipesFor(ItemStack stack) {
-        List<IRecipe> allRecipes = new ArrayList<>(ForgeRegistries.RECIPES.getValues());
-        List<IRecipe> matchingRecipes = new ArrayList<>();
-        for (IRecipe recipe : allRecipes) {
-            if (recipe.canFit(3, 3) && recipe.getRecipeOutput().isItemEqual(stack)) {
-                matchingRecipes.add(recipe);
+        List<IRecipe> matchingRecipes = EMPTY_LIST;
+        if(!stack.isEmpty()) {
+            matchingRecipes = new ArrayList<>();
+            List<IRecipe> allRecipes = new ArrayList<>(ForgeRegistries.RECIPES.getValues());
+            for (IRecipe recipe : allRecipes) {
+                if (recipe.canFit(3, 3) && recipe.getRecipeOutput().isItemEqual(stack)) {
+                    matchingRecipes.add(recipe);
+                }
             }
         }
         return matchingRecipes;
