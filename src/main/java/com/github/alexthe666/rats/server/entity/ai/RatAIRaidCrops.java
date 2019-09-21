@@ -2,31 +2,32 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIMoveToBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAIRaidCrops extends EntityAIBase {
-    private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
+public class RatAIRaidCrops extends RatAIMoveToBlock {
     private final EntityRat entity;
-    private final BlockSorter targetSorter;
-    private int feedingTicks;
+    private boolean stop = false;
 
     public RatAIRaidCrops(EntityRat entity) {
-        super();
+        super(entity, 1.0F, 20);
         this.entity = entity;
-        this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(0);
+    }
+
+    public static boolean isCrops(World world, BlockPos pos) {
+        IBlockState block = world.getBlockState(pos.up());
+        return block.getBlock() instanceof BlockCrops;
     }
 
     @Override
@@ -34,88 +35,56 @@ public class RatAIRaidCrops extends EntityAIBase {
         if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatsMod.CONFIG_OPTIONS.ratsBreakCrops) {
             return false;
         }
-        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
+
+        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             return false;
         }
-        if(entity.ticksExisted % RatsMod.CONFIG_OPTIONS.ratUpdateTick == 0){
-            resetTarget();//expensive operation
-        }
-        return targetBlock != null;
-    }
-
-    private void resetTarget() {
-        List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            IBlockState block = this.entity.world.getBlockState(pos);
-            if (block.getBlock() instanceof BlockCrops) {
-                allBlocks.add(pos);
+        if (this.runDelay <= 0) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.world, this.entity)) {
+                return false;
             }
         }
-        if (!allBlocks.isEmpty()) {
-            allBlocks.sort(this.targetSorter);
-            this.targetBlock = allBlocks.get(0);
-        }
+        return super.shouldExecute();
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.entity.world.getBlockState(targetBlock).getBlock() instanceof BlockCrops;
-    }
-
-    public void resetTask(){
-        this.entity.getNavigator().clearPath();
-        resetTarget();
+        return super.shouldContinueExecuting() && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
     }
 
     @Override
     public void updateTask() {
-        if (this.targetBlock != null) {
-            IBlockState block = this.entity.world.getBlockState(this.targetBlock);
-            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
+        super.updateTask();
+
+        if (this.getIsAboveDestination() && this.destinationBlock != null) {
+            BlockPos cropsPos = this.destinationBlock.up();
+            IBlockState block = this.entity.world.getBlockState(cropsPos);
             if (block.getBlock() instanceof BlockCrops) {
-                double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                double distance = this.entity.getDistance(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
                 if (distance < 1.5F) {
                     ItemStack stack = new ItemStack(block.getBlock().getItemDropped(block, this.entity.getRNG(), 0));
-                    if(stack == ItemStack.EMPTY || !entity.canRatPickupItem(stack)){
-                        this.targetBlock = null;
-                        this.resetTask();
-                    }else{
+                    if (stack == ItemStack.EMPTY || !entity.canRatPickupItem(stack)) {
+                        //
+                        stop = true;
+                    } else {
                         ItemStack duplicate = stack.copy();
                         duplicate.setCount(1);
-                        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
                             this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
                         }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
-                        this.entity.world.destroyBlock(targetBlock, false);
-                        this.targetBlock = null;
-                        this.resetTask();
+                        this.entity.world.destroyBlock(cropsPos, false);
                     }
-                    this.entity.fleePos = this.targetBlock;
+                    this.entity.fleePos = cropsPos;
+                    this.runDelay = 10;
                 }
             }
-
         }
+
     }
 
-    public class BlockSorter implements Comparator<BlockPos> {
-        private final Entity entity;
-
-        public BlockSorter(Entity entity) {
-            this.entity = entity;
-        }
-
-        @Override
-        public int compare(BlockPos pos1, BlockPos pos2) {
-            double distance1 = this.getDistance(pos1);
-            double distance2 = this.getDistance(pos2);
-            return Double.compare(distance1, distance2);
-        }
-
-        private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
-            return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
-        }
+    @Override
+    protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
+        return isCrops(worldIn, pos);
     }
 }

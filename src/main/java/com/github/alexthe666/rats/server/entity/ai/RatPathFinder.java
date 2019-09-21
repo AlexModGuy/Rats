@@ -57,7 +57,7 @@ public class RatPathFinder extends PathFinder {
         List<BlockPos> openTubes = new ArrayList<>();
         PathPoint tubePathEnd = pathFrom;
         Path tubePath = null;
-        if(rat.getDistanceSqToCenter(endPos) > 10 && !rat.isInCage()) {
+        if(rat.getDistanceSqToCenter(endPos) > 10 && !rat.isInCage() && rat.isTamed()) {
             for (BlockPos pos : BlockPos.getAllInBox(startPos.add(-10, -10, -10), startPos.add(10, 10, 10))) {
                 if (RatUtils.isOpenRatTube(worldIn, rat, pos)) {
                     openTubes.add(pos);

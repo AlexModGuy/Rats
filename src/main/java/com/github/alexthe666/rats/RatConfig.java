@@ -22,7 +22,7 @@ public class RatConfig {
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
-    public int ratUpdateTick = 10;
+    public int ratUpdateDelay = 100;
     public int tokenDropRate = 10000;
     public String[] blacklistedRatBlocks = new String[0];
     public boolean disableRatlantis = false;
@@ -49,7 +49,7 @@ public class RatConfig {
         this.ratStrengthThreshold = config.getFloat("Rat Dig Strength", "all", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
         this.ratFluteDistance = config.getInt("Rat Flute Distance", "all", 2, 1, 100, "The how many chunks away can a rat here a rat flute");
         this.ratCageCramming = config.getInt("Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
-        this.ratUpdateTick = config.getInt("Rat Upgrade Tick", "all", 10, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests every fraction of a tick(20 per second). Default is 10, so rats update every half-second.");
+        this.ratUpdateDelay = config.getInt("Rat Upgrade Delay", "all", 100, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests, once every this number of ticks(with added standard deviation for servers)");
         this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
         this.tokenDropRate = config.getInt("Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
         this.disableRatlantis = config.getBoolean("Disable Ratlantis", "all", false, "True if Ratlantis dimension is disabled - alternative methods of getting resources will be provided. WARNING: Leave the dimension and restart the game before changing this. You must be fun at parties.");

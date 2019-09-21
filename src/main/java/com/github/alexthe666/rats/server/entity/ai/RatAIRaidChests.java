@@ -15,24 +15,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAIRaidChests extends EntityAIBase {
-    private static final int RADIUS = 16;
+public class RatAIRaidChests extends RatAIMoveToBlock {
 
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
-    private final BlockSorter targetSorter;
-    private int feedingTicks;
 
     public RatAIRaidChests(EntityRat entity) {
-        super();
+        super(entity, 1.0F, 20);
         this.entity = entity;
-        this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(0);
     }
 
     @Override
@@ -43,75 +38,65 @@ public class RatAIRaidChests extends EntityAIBase {
         if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
             return false;
         }
-        if(entity.ticksExisted % RatsMod.CONFIG_OPTIONS.ratUpdateTick == 0){
-            resetTarget();//expensive operation
+        if (this.runDelay <= 0) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.world, this.entity)) {
+                return false;
+            }
         }
-        return targetBlock != null;
+        return super.shouldExecute();
     }
 
-    private void resetTarget() {
+    public static boolean isChestRaidable(World world, BlockPos pos) {
         String[] blacklist = RatsMod.CONFIG_OPTIONS.blacklistedRatBlocks;
-        List<BlockPos> allBlocks = new ArrayList<>();
-        BlockPos ratPos = this.entity.getPosition();
-        for (BlockPos pos : BlockPos.getAllInBox(ratPos.add(-RADIUS, -RADIUS / 2, -RADIUS), ratPos.add(RADIUS, RADIUS / 2, RADIUS))) {
-            Block block = this.entity.world.getBlockState(pos).getBlock();
-            if(block instanceof BlockContainer) {
-                boolean listed = false;
-                for(String name : blacklist){
-                    if(name.equalsIgnoreCase(block.getRegistryName().toString())){
-                        listed = true;
-                        break;
-                    }
+        if(world.getBlockState(pos).getBlock() instanceof BlockContainer) {
+            Block block = world.getBlockState(pos).getBlock();
+            boolean listed = false;
+            for(String name : blacklist){
+                if(name.equalsIgnoreCase(block.getRegistryName().toString())){
+                    listed = true;
+                    break;
                 }
-                if(!listed) {
-                    TileEntity entity = this.entity.world.getTileEntity(pos);
-                    if (entity instanceof IInventory) {
-                        IInventory inventory = (IInventory) entity;
-                        try {
-                            if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
-                                allBlocks.add(pos);
-                            }
-                        } catch (Exception e){
-                            RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
-                            e.printStackTrace();
+            }
+            if(!listed) {
+                TileEntity entity = world.getTileEntity(pos);
+                if (entity instanceof IInventory) {
+                    IInventory inventory = (IInventory) entity;
+                    try {
+                        if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
+                            return true;
                         }
+                    } catch (Exception e){
+                        RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
+                        e.printStackTrace();
                     }
                 }
             }
         }
-        if (!allBlocks.isEmpty()) {
-            allBlocks.sort(this.targetSorter);
-            this.targetBlock = allBlocks.get(0);
-        }
+        return false;
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
-    }
-
-    public void resetTask(){
-        this.entity.getNavigator().clearPath();
-        resetTarget();
+        return super.shouldContinueExecuting() && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
     }
 
     public boolean canSeeChest(){
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), false);
         if (rayTrace != null && rayTrace.hitVec != null) {
             BlockPos sidePos = rayTrace.getBlockPos();
             BlockPos pos = new BlockPos(rayTrace.hitVec);
-            return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(targetBlock);
+            return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(destinationBlock);
         }
         return true;
     }
     @Override
     public void updateTask() {
-        if (this.targetBlock != null) {
-            TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
-            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
+        super.updateTask();
+        if (this.getIsAboveDestination() && this.destinationBlock != null) {
+            TileEntity entity = this.entity.world.getTileEntity(this.destinationBlock);
             if (entity instanceof IInventory) {
                 IInventory feeder = (IInventory) entity;
-                double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                double distance = this.entity.getDistance(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ());
                 if(distance < 2.5F && distance >= 1.5F && canSeeChest()){
                     toggleChest(feeder, true);
                 }
@@ -119,7 +104,7 @@ public class RatAIRaidChests extends EntityAIBase {
                     toggleChest(feeder, false);
                     ItemStack stack = RatUtils.getFoodFromInventory(this.entity, feeder, this.entity.world.rand);
                     if(stack == ItemStack.EMPTY){
-                        this.targetBlock = null;
+                        this.destinationBlock = null;
                         this.resetTask();
                     }else{
                         ItemStack duplicate = stack.copy();
@@ -129,15 +114,20 @@ public class RatAIRaidChests extends EntityAIBase {
                         }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         stack.shrink(1);
-                        this.targetBlock = null;
+                        this.destinationBlock = null;
                         this.resetTask();
 
                     }
-                    this.entity.fleePos = this.targetBlock;
+                    this.entity.fleePos = this.destinationBlock;
                 }
             }
 
         }
+    }
+
+    @Override
+    protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
+        return pos != null && isChestRaidable(worldIn, pos);
     }
 
     public void toggleChest(IInventory te, boolean open){
@@ -145,11 +135,11 @@ public class RatAIRaidChests extends EntityAIBase {
             TileEntityChest chest = (TileEntityChest) te;
             if(open){
                 chest.numPlayersUsing++;
-                this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
+                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
             }else{
                 if(chest.numPlayersUsing > 0){
                     chest.numPlayersUsing = 0;
-                    this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
+                    this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
                 }
             }
         }
