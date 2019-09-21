@@ -21,7 +21,7 @@ public class ItemHat extends ItemArmor {
     private String name;
 
     public ItemHat(String name, int modelIndex) {
-        super(RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD);
+        super(RatsItemRegistry.HAT_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD);
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats." + name);
         this.setRegistryName(RatsMod.MODID, name);

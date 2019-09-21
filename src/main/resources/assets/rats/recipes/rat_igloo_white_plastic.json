@@ -7,7 +7,7 @@
   "key": {
     "P": {
       "type": "forge:ore_dict",
-      "ore": "ingotPlastic"
+      "ore": "plasticOrGlass"
     }
   },
   "result": {

@@ -44,26 +44,28 @@ public class BlockRatlantisPortal extends BlockContainer {
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
-            if ((entity instanceof EntityPlayerMP)) {
-                EntityPlayerMP thePlayer = (EntityPlayerMP) entity;
-                if (thePlayer.timeUntilPortal > 0) {
-                    thePlayer.timeUntilPortal = 10;
-                } else if (thePlayer.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
-                    thePlayer.timeUntilPortal = 10;
-                    thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisDimensionId, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId)));
-                } else {
-                    thePlayer.timeUntilPortal = 10;
-                    thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension)));
+        if(!RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+            if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
+                if ((entity instanceof EntityPlayerMP)) {
+                    EntityPlayerMP thePlayer = (EntityPlayerMP) entity;
+                    if (thePlayer.timeUntilPortal > 0) {
+                        thePlayer.timeUntilPortal = 10;
+                    } else if (thePlayer.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
+                        thePlayer.timeUntilPortal = 10;
+                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisDimensionId, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId)));
+                    } else {
+                        thePlayer.timeUntilPortal = 10;
+                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension)));
+                    }
                 }
-            }
-            if (!(entity instanceof EntityPlayer)) {
-                if (entity.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
-                    entity.timeUntilPortal = 10;
-                    entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId);
-                } else {
-                    entity.timeUntilPortal = 10;
-                    entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension);
+                if (!(entity instanceof EntityPlayer)) {
+                    if (entity.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
+                        entity.timeUntilPortal = 10;
+                        entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId);
+                    } else {
+                        entity.timeUntilPortal = 10;
+                        entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension);
+                    }
                 }
             }
         }

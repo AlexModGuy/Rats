@@ -22,6 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -147,6 +148,9 @@ public class BlockRatCage extends Block {
         if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
             if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
                 EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
+                if(!worldIn.isRemote){
+                    BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP)playerIn, playerIn);
+                }
                 if(playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN){
                     worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
                     TileEntityRatCageBreedingLantern decorated = new TileEntityRatCageBreedingLantern();

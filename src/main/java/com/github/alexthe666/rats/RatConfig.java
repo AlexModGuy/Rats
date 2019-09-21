@@ -8,20 +8,24 @@ public class RatConfig {
     public int ratSpawnRate = 80;
     public int piperSpawnRate = 6;
     public float piperHatDropRate = 0.09F;
+    public float archeologistHatSpawnRate = 0.12F;
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
     public int milkCauldronTime = 150;
     public boolean ratsDigBlocks = true;
     public boolean ratsBreakCrops = true;
     public boolean ratsStealItems = true;
+    public boolean golemsTargetRats = true;
     public boolean villagePetShops = true;
     public boolean villageGarbageHeaps = true;
+    public boolean disablePlastic = false;
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
     public int ratUpdateTick = 10;
     public int tokenDropRate = 10000;
     public String[] blacklistedRatBlocks = new String[0];
+    public boolean disableRatlantis = false;
     public int ratlantisDimensionId = -8;
     public int ratlantisPortalExitDimension = 0;
 
@@ -31,8 +35,10 @@ public class RatConfig {
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
+        this.archeologistHatSpawnRate = config.getFloat("Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
         this.ratsBreakCrops = config.getBoolean("Rats Break Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = config.getBoolean("Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
+        this.golemsTargetRats = config.getBoolean("Golems Target Rats", "all", true, "True if iron golems will attack wild rats");
         this.villagePetShops = config.getBoolean("Village Pet Shops", "all", true, "True if pet shops can spawn in villages");
         this.villageGarbageHeaps = config.getBoolean("Village Garbage Heap", "all", true, "True if garbage heaps can spawn in villages");
         this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
@@ -45,6 +51,8 @@ public class RatConfig {
         this.ratUpdateTick = config.getInt("Rat Upgrade Tick", "all", 10, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests every fraction of a tick(20 per second). Default is 10, so rats update every half-second.");
         this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
         this.tokenDropRate = config.getInt("Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
+        this.disableRatlantis = config.getBoolean("Disable Ratlantis", "all", false, "True if Ratlantis dimension is disabled - alternative methods of getting resources will be provided. WARNING: Leave the dimension and restart the game before changing this. You must be fun at parties.");
+        this.disablePlastic = config.getBoolean("Disable Plastic", "all", false, "True if Plastic item is disabled - alternative methods of getting rat cage deco will be provided. WARNING: Leave the restard the game after changing this. You must be fun at parties.");
         this.ratlantisDimensionId = config.getInt("Ratlantis Dimension ID", "all", -8, Integer.MIN_VALUE, Integer.MAX_VALUE, "Ratlantis Dimension ID");
         this.ratlantisPortalExitDimension = config.getInt("Ratlantis Portal Exit Dimension ID", "all", 0, Integer.MIN_VALUE, Integer.MAX_VALUE, "What Dimension ID you are teleported to upon leaving Ratlantis");
     }

@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "rats:rat_pelt"
+            "item": "rats:ratglove_petals"
         },
         "title": {
             "translate": "advancements.rats.root.title"

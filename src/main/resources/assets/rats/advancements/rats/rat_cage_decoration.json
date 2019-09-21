@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_water_bottle"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_cage_decoration.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_cage_decoration.description"
+        }
+    },
+    "parent": "rats:rats/rat_cage",
+    "criteria": {
+        "rat_cage_decoration": {
+            "trigger": "rats:rat_cage_decoration"
+        }
+    }
+}

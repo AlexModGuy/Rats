@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:gem_of_ratlantis"
+        },
+        "title": {
+            "translate": "advancements.rats.gem_of_ratlantis.title"
+        },
+        "description": {
+            "translate": "advancements.rats.gem_of_ratlantis.description"
+        }
+    },
+    "parent": "rats:rats/ratglove_petals",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:gem_of_ratlantis"
+                    }
+                ]
+            }
+        }
+    }
+}

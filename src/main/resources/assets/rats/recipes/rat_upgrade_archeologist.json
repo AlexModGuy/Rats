@@ -27,8 +27,8 @@
       "ore": "bone"
     },
     "C": {
-      "item": "rats:idol_of_ratlantis",
-      "data": 0
+      "type": "forge:ore_dict",
+      "ore": "tokenOrIdolFlag"
     },
     "M": {
       "item": "rats:marbled_cheese_raw",

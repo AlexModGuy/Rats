@@ -1,11 +1,14 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.VillagerTradeTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -47,6 +50,7 @@ import java.util.Random;
 public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityProvider {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final RatCageDecoTrigger DECO_TRIGGER = (RatCageDecoTrigger) CriteriaTriggers.register(new RatCageDecoTrigger());
 
     public BlockRatCageDecorated() {
         super("rat_cage_decorated");

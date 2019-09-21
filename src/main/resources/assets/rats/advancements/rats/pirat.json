@@ -1,0 +1,67 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:pirat_hat"
+        },
+        "title": {
+            "translate": "advancements.rats.pirat.title"
+        },
+        "description": {
+            "translate": "advancements.rats.pirat.description"
+        }
+    },
+    "parent": "rats:rats/ratlantis",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:pirat_hat"
+                    }
+                ]
+            }
+        },
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:pirat"
+                }
+            }
+        },
+        "killed_by": {
+            "trigger": "minecraft:player_hurt_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:pirat"
+                }
+            }
+        },
+        "killed_boat": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:pirat_boat"
+                }
+            }
+        },
+        "killed_by_boat": {
+            "trigger": "minecraft:player_hurt_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:pirat_boat"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "item",
+            "killed",
+            "killed_by",
+            "killed_boat",
+            "killed_by_boat"
+        ]
+    ]
+}

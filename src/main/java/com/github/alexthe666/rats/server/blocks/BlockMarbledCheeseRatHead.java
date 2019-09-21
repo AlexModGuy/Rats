@@ -39,7 +39,16 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
 
     private static final Predicate<IBlockState> IS_MARBLE = new Predicate<IBlockState>() {
         public boolean apply(@Nullable IBlockState p_apply_1_) {
-            return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE);
+            return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_PILLAR
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_TILE
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_CHISELED
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY
+                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED
+            );
         }
     };
 

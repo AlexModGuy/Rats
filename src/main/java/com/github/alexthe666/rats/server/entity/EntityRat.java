@@ -74,7 +74,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class EntityRat extends EntityTameable implements IAnimatedEntity, IMob {
+public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public static final Animation ANIMATION_EAT = Animation.create(10);
     public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);

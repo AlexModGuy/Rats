@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.recipes;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
@@ -34,8 +35,10 @@ public class RatsRecipeRegistry {
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.FIRE_CHARGE), new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.IRON_SWORD), new ItemStack(RatsItemRegistry.PIRAT_CUTLASS)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.RABBIT_HIDE), new ItemStack(RatsItemRegistry.RAT_PELT)));
-        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
-        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
+        if(RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+            RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
+            RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
+        }
     }
 
     public static void register(){
@@ -53,13 +56,25 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Items.CARROT);
         OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
-        OreDictionary.registerOre("plastic", RatsItemRegistry.RAW_PLASTIC);
-        OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
-        OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
+        if(RatsMod.CONFIG_OPTIONS.disablePlastic){
+            OreDictionary.registerOre("plasticOrGlass", Blocks.GLASS_PANE);
+            OreDictionary.registerOre("plasticOrBottle", Items.GLASS_BOTTLE);
+        }else{
+            OreDictionary.registerOre("plasticOrGlass", RatsItemRegistry.RAW_PLASTIC);
+            OreDictionary.registerOre("plasticOrBottle", RatsItemRegistry.PLASTIC_WASTE);
+            OreDictionary.registerOre("plastic", RatsItemRegistry.RAW_PLASTIC);
+            OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
+        }
+         OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
         OreDictionary.registerOre("listAllseed", Items.WHEAT_SEEDS);
         OreDictionary.registerOre("listAllseed", Items.PUMPKIN_SEEDS);
         OreDictionary.registerOre("listAllseed", Items.BEETROOT_SEEDS);
         OreDictionary.registerOre("listAllseed", Items.MELON_SEEDS);
+        if(RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+            OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.CHUNKY_CHEESE_TOKEN);
+        }else{
+            OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.IDOL_OF_RATLANTIS);
+        }
         for(Block block : RatsBlockRegistry.RAT_TUBE_COLOR){
             OreDictionary.registerOre("ratTube", block);
         }
@@ -83,6 +98,10 @@ public class RatsRecipeRegistry {
         addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
         addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
+        RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairItem(new ItemStack(Blocks.WOOL));
+        RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairItem(new ItemStack(Items.LEATHER));
+        RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairItem(new ItemStack(Items.IRON_INGOT));
+        RatsItemRegistry.BAGHNAKHS_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW));
     }
 
 

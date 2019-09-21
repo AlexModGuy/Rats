@@ -119,7 +119,9 @@ public class CommonProxy {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item) {
-                    event.getRegistry().register((Item) obj);
+                    if((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatsMod.CONFIG_OPTIONS.disablePlastic){
+                        event.getRegistry().register((Item) obj);
+                    }
                 } else if (obj instanceof Item[]) {
                     for (Item item : (Item[]) obj) {
                         event.getRegistry().register((item));

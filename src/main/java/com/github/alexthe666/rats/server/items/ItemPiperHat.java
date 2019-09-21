@@ -19,7 +19,7 @@ import java.util.List;
 public class ItemPiperHat extends ItemArmor {
 
     public ItemPiperHat() {
-        super(RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD);
+        super(RatsItemRegistry.HAT_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD);
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats.piper_hat");
         this.setRegistryName(RatsMod.MODID, "piper_hat");

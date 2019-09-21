@@ -8,7 +8,7 @@
   "key": {
     "P": {
       "type": "forge:ore_dict",
-      "ore": "ingotPlastic"
+      "ore": "plasticOrGlass"
     },
     "S": {
       "type": "forge:ore_dict",

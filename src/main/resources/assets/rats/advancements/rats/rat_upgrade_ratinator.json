@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_ratinator"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_upgrade_ratinator.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_upgrade_ratinator.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/marbled_cheese_golem",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_upgrade_ratinator"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -8,6 +8,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
-public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlantean {
+public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlantean, IMob {
 
     private PiratAIStrife aiArrowAttack;
     private EntityAIAttackMelee aiAttackOnCollide;

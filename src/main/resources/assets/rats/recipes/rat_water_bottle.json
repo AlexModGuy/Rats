@@ -7,8 +7,8 @@
   ],
   "key": {
     "P": {
-      "item": "rats:plastic_waste",
-      "data": 0
+      "type": "forge:ore_dict",
+      "ore": "plasticOrBottle"
     },
     "W": {
       "type": "forge:ore_dict",
