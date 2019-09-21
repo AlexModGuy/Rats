@@ -22,24 +22,4 @@ import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber
 public class ClientEvents {
-    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
-
-    @SubscribeEvent
-    public void onPlayerInteract(LivingEvent.LivingUpdateEvent event) {
-        //Minecraft.getMinecraft().debugRenderer.pathfinding.render(Minecraft.getMinecraft().getRenderPartialTicks(), 0);
-        Field debugField = ReflectionHelper.findField(DebugRenderer.class, ObfuscationReflectionHelper.remapFieldNames(DebugRenderer.class.getName(), new String[]{"pathfindingEnabled", "pathfindingEnabled"}));
-        try {
-            debugField.set(Minecraft.getMinecraft().debugRenderer,true);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
-        if (event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && !renderer.isShaderActive()) {
-           // renderer.loadShader(SYNESTHESIA);
-        }
-        if (!event.getEntityLiving().isPotionActive(RatsMod.CONFIT_BYALDI_POTION) && renderer.isShaderActive() && renderer.getShaderGroup().getShaderGroupName().equalsIgnoreCase(SYNESTHESIA.toString())) {
-           // renderer.stopUseShader();
-        }
-    }
-
 }

@@ -244,7 +244,7 @@ public class ClientProxy extends CommonProxy {
             if (synesthesia && !renderer.isShaderActive()) {
                 renderer.loadShader(SYNESTHESIA);
             }
-            if (!synesthesia && renderer.isShaderActive()) {
+            if (!synesthesia && renderer.isShaderActive() && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
                 renderer.stopUseShader();
             }
             if(prevSynesthesiaProgress == 2 && synesthesia){
