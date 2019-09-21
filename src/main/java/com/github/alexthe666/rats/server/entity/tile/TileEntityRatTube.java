@@ -4,6 +4,8 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.pathfinding.AStar;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -22,18 +24,21 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
 
     public EnumFacing opening = null;
     public boolean isNode = false;
+    private static PropertyBool[] allOpenVars = new PropertyBool[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
 
     @Override
     public void update() {
-        float i = this.getPos().getX() + 0.5F;
-        float j = this.getPos().getY() + 0.5F;
-        float k = this.getPos().getZ() + 0.5F;
-        float d0 = 0.65F;
-        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-            if(!rat.prevInTube && rat.inTube()){
-                rat.setPosition(i, j - 0.25F, k);
+        if(isOpen()) {
+            float i = this.getPos().getX() + 0.5F;
+            float j = this.getPos().getY() + 0.2F;
+            float k = this.getPos().getZ() + 0.5F;
+            float d0 = 0.65F;
+            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
+                if (rat.shouldBeSuckedIntoTube()) {
+                    rat.setPosition(i, j, k);
+                }
+                this.updateRat(rat);
             }
-            this.updateRat(rat);
         }
     }
 
@@ -58,18 +63,16 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         }*/
     }
 
-    private boolean isPathwayValid(BlockPos[] pathway){
-        return pathway != null && pathway.length > 0;
-    }
-
-    private BlockPos generateTubeTarget(EntityRat rat) {
-        for(int i = 0; i < 20; i++){
-            BlockPos pos = new BlockPos(rat).add(rat.getRNG().nextInt(30) - 15, rat.getRNG().nextInt(20) - 10, rat.getRNG().nextInt(30) - 15);
-            if(rat.world.getTileEntity(pos) instanceof TileEntityRatTube){
-                return pos;
+    private boolean isOpen(){
+        IBlockState state = world.getBlockState(this.getPos());
+        if(state.getBlock() instanceof BlockRatTube){
+            for (PropertyBool opened : allOpenVars) {
+                if (state.getValue(opened)) {
+                    return true;
+                }
             }
         }
-        return rat.getPosition();
+        return false;
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {

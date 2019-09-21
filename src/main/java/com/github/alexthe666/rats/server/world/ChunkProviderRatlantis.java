@@ -56,7 +56,6 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
         for (int i = x; i < x + 16; i++) {
             for (int k = z; k < z + 16; k++) {
                 float dis = perlin2.turbulence2(i / 150F, k / 150F, 10) * 300 + 200;
-                System.out.println(dis);
                 float heightBase = height - (dis / (float) width) + (perlin1.turbulence2(i / 50F, k / 50F, 4F) * 5F);
                 for (int y = 0; y < 256; y++) {
                     Block i4 = Blocks.AIR;

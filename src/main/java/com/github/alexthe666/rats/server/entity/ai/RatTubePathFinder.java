@@ -62,11 +62,9 @@ public class RatTubePathFinder extends PathFinder {
 
         AStar aStar = new AStar(startPos, endPos, 1000, false);
         BlockPos[] pathBlocks = aStar.getPath(worldIn);
-        PathPoint[] fromPos = new PathPoint[pathBlocks.length];
-        for(int i = 0; i < pathBlocks.length; i++){
-            fromPos[i] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
-            //if(!(worldIn.getBlockState(pathBlocks[i].down()) instanceof BlockRatTube))
-            //rat.world.setBlockState(pathBlocks[i].down(), Blocks.STAINED_GLASS.getDefaultState());
+        PathPoint[] fromPos = new PathPoint[pathBlocks.length-1];
+        for(int i = 1; i < pathBlocks.length; i++){
+            fromPos[i-1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
         }
         /*
         Random random =     new Random();

@@ -684,7 +684,7 @@ public class RatUtils {
         if (state.getBlock() instanceof BlockRatTube) {
             for (int i = 0; i < EnumFacing.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if (state.getValue(bool) && rat != null && rat.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]) {
+                if (state.getValue(bool) && rat != null) {
                     return true;
                 }
             }

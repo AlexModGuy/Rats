@@ -51,6 +51,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -100,7 +101,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     };
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
-    protected final RatUtils.TubeSorter tubeSorter = new RatUtils.TubeSorter(this);
     public float sitProgress;
     public float holdProgress;
     public float deadInTrapProgress;
@@ -113,6 +113,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
     public BlockPos tubeTarget = null;
+    public int tubeTicks;
+    private int tubeCooldown = 0;
+    private boolean inTube;
     public boolean prevInTube;
     public boolean climbingTube = false;
     public boolean waterBased = false;
@@ -320,7 +323,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             this.navigatorType = 2;
         } else if (type == 3) {//tube
             this.moveHelper = new RatTubeMoveHelper(this);
-            this.navigator = new RatTubePathNavigate(this, world);
+            RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
+            if(this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null){
+                PathPoint point = this.navigator.getPath().getFinalPathPoint();
+                newNav.tryMoveToXYZ(point.x, point.y, point.z, 1.0F);
+            }
+            this.navigator = newNav;
             this.navigatorType = 3;
         }
     }
@@ -527,11 +535,21 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     @Override
     public void onLivingUpdate() {
+        prevInTube = inTube;
         this.setRatStatus(RatStatus.IDLE);
         if (!this.inTube() && this.getNavigator().getPath() != null) {
             if (this.getNavigator().getPath().getFinalPathPoint() != null) {
                 BlockPos endPoint = new BlockPos(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
                 //world.setBlockState(endPoint.down(), Blocks.EMERALD_BLOCK.getDefaultState());
+            }
+        }
+        if(this.inTubeGenerally()){
+            if(tubeCooldown < 40){
+                tubeCooldown++;
+            }
+        }else{
+            if(tubeCooldown > -20){
+                tubeCooldown--;
             }
         }
         if (this.getUpgradeSlot() != prevUpgrade) {
@@ -901,8 +919,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (visualCooldown > 0) {
             visualCooldown--;
         }
-        prevInTube = inTube();
         prevUpgrade = this.getUpgradeSlot();
+        inTube = inTubeLogic();
+        if(this.inTube){
+            tubeTicks++;
+        }else{
+            tubeTicks = 0;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -1203,7 +1226,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isInCage() {
-        return world.getBlockState(this.getPosition()).getBlock() == RatsBlockRegistry.RAT_CAGE;
+        return world.getBlockState(this.getPosition()).getBlock() instanceof BlockRatCage;
     }
 
     @Nullable
@@ -1701,6 +1724,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean inTube() {
+        return inTube;
+    }
+
+    private boolean inTubeLogic(){
         BlockPos pos = new BlockPos(this);
         IBlockState state = world.getBlockState(pos);
         boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
@@ -1714,6 +1741,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         return false;
     }
+
+    private boolean inTubeGenerally(){
+        BlockPos pos = new BlockPos(this);
+        IBlockState state = world.getBlockState(pos);
+        boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
+        return state.getBlock() instanceof BlockRatTube || above;
+    }
+
 
     public boolean isAIDisabled() {
         return super.isAIDisabled();
@@ -1855,5 +1890,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     protected void setupTamedAI(){
         Arrays.fill(this.inventoryArmorDropChances, 1.0F);
         Arrays.fill(this.inventoryHandsDropChances, 1.0F);
+    }
+
+    public boolean shouldBeSuckedIntoTube() {
+        if(tubeTicks < 15 && !prevInTube && !inTube()) {
+            return tubeCooldown < 0;
+        }
+        return false;
     }
 }
