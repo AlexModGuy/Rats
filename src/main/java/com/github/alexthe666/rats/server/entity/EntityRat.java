@@ -1517,7 +1517,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setColorVariant(this.getRNG().nextInt(4));
         this.setMale(this.getRNG().nextBoolean());
-        if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL) {
+        if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL && RatsMod.CONFIG_OPTIONS.plagueRats) {
             this.setPlague(true);
         }
         if (this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {

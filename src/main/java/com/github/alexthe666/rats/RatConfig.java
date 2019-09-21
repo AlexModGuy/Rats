@@ -11,6 +11,7 @@ public class RatConfig {
     public float archeologistHatSpawnRate = 0.12F;
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
+    public boolean plagueRats = true;
     public int milkCauldronTime = 150;
     public boolean ratsDigBlocks = true;
     public boolean ratsBreakCrops = true;
@@ -32,6 +33,7 @@ public class RatConfig {
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
+        this.plagueRats = config.getBoolean("Plague Rats", "all", true, "True if plague rats are to spawn naturally");
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
