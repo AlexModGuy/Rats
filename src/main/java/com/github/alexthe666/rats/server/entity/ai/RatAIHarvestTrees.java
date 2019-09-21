@@ -185,13 +185,18 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     public static final boolean isBlockLog(IBlockState block) {
-        return block.getBlock() instanceof BlockLog || block.getBlock().getTranslationKey().contains("log") || block.getBlock().getTranslationKey().contains("Log");
+        String transKey = block.getBlock().getTranslationKey().toLowerCase();
+        return block.getBlock() instanceof BlockLog
+                || transKey.contains("log")
+                || transKey.contains("tree")
+                || transKey.contains("branch")
+                || transKey.contains("wood");
     }
 
     public static final boolean isBlockLeaf(IBlockState block) {
+        String transKey = block.getBlock().getTranslationKey().toLowerCase();
         return block.getBlock() instanceof BlockLeaves
-                || block.getBlock().getTranslationKey().contains("leaf") || block.getBlock().getTranslationKey().contains("leaves")
-                || block.getBlock().getTranslationKey().contains("Leaf") || block.getBlock().getTranslationKey().contains("Leaves");
+                || transKey.contains("leaf") || transKey.contains("leaves");
     }
 
     public class BlockSorter implements Comparator<BlockPos> {
