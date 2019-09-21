@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -162,6 +163,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
         World world = entity.world;
         BlockPos base = new BlockPos(this.targetBlock);
         while(isBlockLog(world.getBlockState(base))){
+            destroyedLeaves = 0;
             destroyLeaves(base);
             world.destroyBlock(base, true);
             base = base.up();
@@ -169,7 +171,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     private void destroyLeaves(BlockPos base) {
-        if(destroyedLeaves < 50000) {
+        if(destroyedLeaves < RatsMod.CONFIG_OPTIONS.maxDestroyedLeaves) {
             for (BlockPos pos : BlockPos.getAllInBox(base.add(-1, -1, -1), base.add(1, 1, 1))) {
                 if (!pos.equals(base)) {
                     if (isBlockLog(entity.world.getBlockState(pos)) || isBlockLeaf(entity.world.getBlockState(pos))) {
