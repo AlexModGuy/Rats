@@ -39,7 +39,7 @@ public class RatConfig {
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.archeologistHatSpawnRate = config.getFloat("Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
-        this.ratsBreakCrops = config.getBoolean("Rats Break Crops", "all", true, "True if wild rats will destroy and eat crops");
+        this.ratsBreakCrops = config.getBoolean("Rats Raid Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = config.getBoolean("Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
         this.golemsTargetRats = config.getBoolean("Golems Target Rats", "all", true, "True if iron golems will attack wild rats");
         this.villagePetShops = config.getBoolean("Village Pet Shops", "all", true, "True if pet shops can spawn in villages");

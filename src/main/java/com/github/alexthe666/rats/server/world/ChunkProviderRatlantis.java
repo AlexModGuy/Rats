@@ -55,11 +55,9 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
         int z = chunkZ << 4;
         for (int i = x; i < x + 16; i++) {
             for (int k = z; k < z + 16; k++) {
-                float dis = (float) Math.sqrt((0D - i) * (0D - i) + (0D - k) * (0D - k));
+                float dis = perlin2.turbulence2(i / 150F, k / 150F, 10) * 300 + 200;
+                System.out.println(dis);
                 float heightBase = height - (dis / (float) width) + (perlin1.turbulence2(i / 50F, k / 50F, 4F) * 5F);
-                if (heightBase < 50f) {
-                    heightBase = 50f;
-                }
                 for (int y = 0; y < 256; y++) {
                     Block i4 = Blocks.AIR;
                     if (heightBase > 67) {
@@ -165,11 +163,10 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
 
     private int drawnPaths = 0;
     private void addStructures(World world, Random rand, BlockPos blockpos) {
-        if(rand.nextInt(5) == 0 && world.getBlockState(world.getHeight(blockpos).down()).isOpaqueCube()){
+        if(rand.nextInt(4) == 0 && world.getBlockState(world.getHeight(blockpos).down()).isOpaqueCube()){
             new WorldGenRatRuin(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
-        double dist = blockpos.getDistance(0, 0, 0);
-        if(rand.nextInt((int)Math.max(40, dist/10)) == 0 && world.getBlockState(world.getHeight(blockpos).down()).getBlock() instanceof BlockLiquid){
+        if(rand.nextInt(40) == 0 && world.getBlockState(world.getHeight(blockpos).down()).getBlock() instanceof BlockLiquid){
             new WorldGenAquaduct(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
     }

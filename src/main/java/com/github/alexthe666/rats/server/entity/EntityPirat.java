@@ -4,6 +4,8 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityBoat;
@@ -21,6 +23,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
@@ -144,6 +147,12 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         }
         this.setCombatTask();
         return livingdata;
+    }
+
+    public boolean getCanSpawnHere() {
+        BlockPos pos = new BlockPos(this);
+        IBlockState iblockstate = this.world.getBlockState((pos).down());
+        return iblockstate.getMaterial() == Material.WATER && !world.isDaytime();
     }
 
     public boolean canBeTamed() {

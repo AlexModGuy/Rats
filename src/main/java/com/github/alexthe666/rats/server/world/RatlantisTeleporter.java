@@ -23,9 +23,9 @@ public class RatlantisTeleporter extends Teleporter {
 
     @Override
     public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
-        if (worldServerInstance.provider.getDimension() != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
-            entity.setPositionAndRotation(0, 110, 0, 0, 0);
+        if (worldServerInstance.provider.getDimension() == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
             this.placeInPortal(entity);
+            entity.setPositionAndRotation(0, 110, 0, 0, 0);
         }else{
             if(entity instanceof EntityPlayer && ((EntityPlayer) entity).getBedLocation() != null){
                 BlockPos bedPos = ((EntityPlayer) entity).getBedLocation();
@@ -42,19 +42,19 @@ public class RatlantisTeleporter extends Teleporter {
         entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         BlockPos portalBottom = new BlockPos(1, 111, 1);
         for(BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2))){
-            entity.world.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
-            entity.world.setBlockState(pos.up(3), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+            worldServerInstance.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+            worldServerInstance.setBlockState(pos.up(4), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
         }
-        for(int i = 1; i < 3; i++){
-            entity.world.setBlockState(portalBottom.add(2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
-            entity.world.setBlockState(portalBottom.add(2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
-            entity.world.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
-            entity.world.setBlockState(portalBottom.add(-2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
+        for(int i = 1; i < 4; i++){
+            worldServerInstance.setBlockState(portalBottom.add(2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
+            worldServerInstance.setBlockState(portalBottom.add(2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
+            worldServerInstance.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
+            worldServerInstance.setBlockState(portalBottom.add(-2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
         }
-        entity.world.setBlockState(portalBottom, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-        entity.world.setBlockState(portalBottom.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-        entity.world.setBlockState(portalBottom.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-        entity.world.setBlockState(portalBottom.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+        worldServerInstance.setBlockState(portalBottom, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+        worldServerInstance.setBlockState(portalBottom.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        worldServerInstance.setBlockState(portalBottom.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        worldServerInstance.setBlockState(portalBottom.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
     }
 
     @Override

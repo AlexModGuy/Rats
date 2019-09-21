@@ -13,6 +13,7 @@ import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
@@ -158,7 +159,7 @@ public class ServerEvents {
             }
         }
         if (event.getEntity() != null && (event.getEntity() instanceof AbstractSkeleton || event.getEntity() instanceof EntityZombie) && BiomeDictionary.hasType(event.getWorld().getBiome(event.getEntity().getPosition()), BiomeDictionary.Type.JUNGLE)) {
-            if (((EntityHusk) event.getEntity()).getRNG().nextFloat() < RatsMod.CONFIG_OPTIONS.archeologistHatSpawnRate) {
+            if (((EntityLiving) event.getEntity()).getRNG().nextFloat() < RatsMod.CONFIG_OPTIONS.archeologistHatSpawnRate) {
                 event.getEntity().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
                 ((EntityLiving) event.getEntity()).setDropChance(EntityEquipmentSlot.HEAD, 0.5F);
             }
