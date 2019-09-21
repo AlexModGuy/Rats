@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
@@ -8,25 +7,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -36,30 +29,30 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     private PiratAIStrife aiArrowAttack;
     private EntityAIAttackMelee aiAttackOnCollide;
-    private int attackCooldown = 40;
+    private int attackCooldown = 70;
 
     public EntityPirat(World worldIn) {
         super(worldIn);
         waterBased = true;
-        Arrays.fill(this.inventoryArmorDropChances, 0.1F);
-        Arrays.fill(this.inventoryHandsDropChances, 0.15F);
-
+        Arrays.fill(this.inventoryArmorDropChances, 0.2F);
+        Arrays.fill(this.inventoryHandsDropChances, 0.2F);
+        this.moveHelper = new PiratMoveHelper(this);
+        this.navigator = new PiratPathNavigate(this, world);
     }
 
+    public boolean isInWater() {
+        return super.isInWater() && !this.isRiding();
+    }
+
+
     protected void switchNavigator(int type) {
-        if ((this.isRiding() || this.isInWater()) && navigatorType != 4) {
-            this.moveHelper = new PiratMoveHelper(this);
-            this.navigator = new PiratPathNavigate(this, world);
-            this.navigatorType = 4;
-        } else {
-            super.switchNavigator(type);
-        }
     }
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, aiArrowAttack = new PiratAIStrife(this, 1.0D, 20, 30.0F));
         this.tasks.addTask(1, aiAttackOnCollide = new EntityAIAttackMelee(this, 1.45D, false));
+        this.tasks.addTask(2, new PiratAIWander(this, 1.0D));
         this.tasks.addTask(2, new RatAIWander(this, 1.0D));
         this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(3, this.aiSit = new RatAISit(this));
@@ -71,7 +64,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
                 return !(entity instanceof IRatlantean) && entity instanceof EntityLivingBase && !entity.isOnSameTeam(EntityPirat.this);
             }
         }));
-        this.targetTasks.addTask(2, new RatAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new RatAIHurtByTarget(this, false));
         this.tasks.removeTask(this.aiAttackOnCollide);
     }
 
@@ -114,7 +107,6 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
             this.setDead();
         }
-        switchNavigator(4);
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
@@ -122,11 +114,9 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.setCombatTask();
     }
 
-    public void updateRiding(Entity riding) {
-        super.updateRiding(riding);
-        if (riding != null && riding.isPassenger(this) && riding instanceof EntityPiratBoat) {
-            this.setPosition(riding.posX, riding.posY + 0.45F, riding.posZ);
-        }
+    public double getYOffset()
+    {
+        return 0.45D;
     }
 
     @Nullable
@@ -151,8 +141,30 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this);
-        IBlockState iblockstate = this.world.getBlockState((pos).down());
-        return iblockstate.getMaterial() == Material.WATER && !world.isDaytime();
+        IBlockState iblockstate = this.world.getBlockState(pos.down());
+        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && iblockstate.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
+    }
+
+    protected boolean isValidLightLevel() {
+        BlockPos blockpos = world.getHeight(new BlockPos(posX, 0, this.posZ));
+        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+            return false;
+        } else {
+            int i = this.world.getLightFromNeighbors(blockpos);
+
+            if (this.world.isThundering()) {
+                int j = this.world.getSkylightSubtracted();
+                this.world.setSkylightSubtracted(10);
+                i = this.world.getLightFromNeighbors(blockpos);
+                this.world.setSkylightSubtracted(j);
+            }
+
+            return i <= this.rand.nextInt(8);
+        }
+    }
+
+    public boolean isNotColliding() {
+        return this.world.checkNoEntityCollision(this.getEntityBoundingBox(), this);
     }
 
     public boolean canBeTamed() {
@@ -177,26 +189,42 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     public boolean handleWaterMovement() {
         if (this.getRidingEntity() instanceof EntityPiratBoat) {
             this.inWater = false;
+        } else if (this.world.handleMaterialAcceleration(this.getEntityBoundingBox().grow(0.0D, -0.4000000059604645D, 0.0D).shrink(0.001D), Material.WATER, this)) {
+            if (!this.inWater && !this.firstUpdate) {
+                this.doWaterSplashEffect();
+            }
+            this.fallDistance = 0.0F;
+            this.inWater = true;
+            this.extinguish();
+        } else {
+            this.inWater = false;
         }
-        return super.handleWaterMovement();
+
+        return this.inWater;
+    }
+
+    public void updateRiding(Entity riding) {
+
     }
 
     public void updateRidden() {
-        super.updateRidden();
         Entity entity = this.getRidingEntity();
-        if (entity != null && entity.isDead) {
-            // this.dismountRidingEntity();
+        if (this.isRiding() && entity.isDead) {
+            this.dismountRidingEntity();
         } else {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
-            this.onUpdate();
+            if (!updateBlocked)
+                this.onUpdate();
             if (this.isRiding()) {
-                this.updateRiding(entity);
+                entity.updatePassenger(this);
             }
         }
+        this.prevOnGroundSpeedFactor = this.onGroundSpeedFactor;
+        this.onGroundSpeedFactor = 0.0F;
+        this.fallDistance = 0.0F;
     }
-
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
@@ -209,7 +237,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
             if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPiratBoat) {
                 ((EntityPiratBoat) this.getRidingEntity()).shoot(this);
             }
-            attackCooldown = 40;
+            attackCooldown = 70;
         }
     }
 
@@ -256,10 +284,13 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
                 if (pathnavigate != null) {
                     NodeProcessor nodeprocessor = pathnavigate.getNodeProcessor();
 
-                    if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.posX + (double) f7), MathHelper.floor(this.entity.posY), MathHelper.floor(this.entity.posZ + (double) f8)) != PathNodeType.WALKABLE) {
-                        this.moveForward = 1.0F;
-                        this.moveStrafe = 0.0F;
-                        f1 = f;
+                    if (nodeprocessor != null) {
+                        PathNodeType type = nodeprocessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.posX + (double) f7), MathHelper.floor(this.entity.posY), MathHelper.floor(this.entity.posZ + (double) f8));
+                        if (type != PathNodeType.WALKABLE && type != PathNodeType.WATER) {
+                            this.moveForward = 1.0F;
+                            this.moveStrafe = 0.0F;
+                            f1 = f;
+                        }
                     }
                 }
 
@@ -282,7 +313,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
                 float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
                 this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f9, 90.0F);
                 this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
-                this.entity.setMoveForward(this.entity.getAIMoveSpeed() * 8);
+                this.entity.setMoveForward(this.entity.getAIMoveSpeed());
 
                 if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
                     this.entity.getJumpHelper().setJumping();

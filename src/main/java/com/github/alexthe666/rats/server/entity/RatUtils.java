@@ -645,6 +645,17 @@ public class RatUtils {
         }
     }
 
+    public static BlockPos findLowestWater(BlockPos pos, EntityCreature rat) {
+        if (rat.world.getBlockState(pos).getMaterial() == Material.WATER) {
+            return pos;
+        } else {
+            BlockPos blockpos;
+            for (blockpos = pos.down(); blockpos.getY() > 0 && rat.world.getBlockState(blockpos).getMaterial() != Material.WATER; blockpos = blockpos.down()) {
+            }
+            return blockpos;
+        }
+    }
+
 
     public static boolean canRatBreakBlock(World world, BlockPos pos, EntityRat rat) {
         IBlockState blockState = world.getBlockState(pos);

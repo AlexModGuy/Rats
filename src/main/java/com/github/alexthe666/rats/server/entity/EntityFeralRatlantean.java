@@ -173,6 +173,10 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         return RatsSoundRegistry.RAT_DIE;
     }
 
+    protected float getSoundPitch() {
+        return super.getSoundPitch() * 0.4F;
+    }
+
     @Nullable
     protected ResourceLocation getLootTable() {
         return LOOT;

@@ -282,10 +282,6 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         return RatsSoundRegistry.NEORATLANTEAN_DIE;
     }
 
-    protected float getSoundPitch() {
-        return super.getSoundPitch() * 0.8F;
-    }
-
     public int getTalkInterval() {
         return 10;
     }

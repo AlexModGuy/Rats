@@ -11,6 +11,8 @@ import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.Potion;
@@ -156,6 +158,7 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityPiratBoat>create(), event, EntityPiratBoat.class, "pirat_boat", 13);
         registerSpawnable(EntityEntryBuilder.<EntityPirat>create(), event, EntityPirat.class, "pirat", 14, 0X30333E, 0XAF363A);
         registerUnspawnable(EntityEntryBuilder.<EntityCheeseCannonball>create(), event, EntityCheeseCannonball.class, "cheese_cannonball", 15);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityPirat.class, EntityLiving.SpawnPlacementType.IN_WATER);
     }
 
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {

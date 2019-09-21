@@ -1,22 +1,20 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.server.entity.ai.PiratPathNavigate;
+import com.github.alexthe666.rats.server.entity.ai.PiratBoatPathNavigate;
+import com.github.alexthe666.rats.server.entity.ai.RatPathPathNavigateGround;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
@@ -27,12 +25,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
-import net.minecraft.tileentity.BannerPattern;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -40,24 +34,46 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
 public class EntityPiratBoat extends EntityMob implements IRatlantean {
-    private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.<ItemStack>emptyList();
     public static final ItemStack BANNER = generateBanner();
-    private final float[] paddlePositions;
+    private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityPiratBoat.class, DataSerializers.BOOLEAN);
+    private final float[] paddlePositions;
     private boolean prevFire;
     private int fireCooldown = 0;
     private double waterLevel;
+    private EntityBoat.Status status;
+    private EntityBoat.Status previousStatus;
+    private double lastYd;
+    protected int navigatorType;
 
     public EntityPiratBoat(World worldIn) {
         super(worldIn);
         this.paddlePositions = new float[2];
         this.setSize(1.75F, 0.8F);
-        this.navigator = new PiratPathNavigate(this, world);
-        this.moveHelper = new EntityPirat.PiratMoveHelper(this);
+        switchNavigator(0);
+    }
+
+    protected void switchNavigator(int type) {
+        if (type == 1) {//land
+            this.navigator = new PathNavigateGround(this, world);
+            this.navigatorType = 1;
+        } else {//sea
+            this.navigator = new PiratBoatPathNavigate(this, world);
+            this.navigatorType = 0;
+        }
+    }
+    private static ItemStack generateBanner() {
+        NBTTagList patterns = new NBTTagList();
+        NBTTagCompound currentPattern = new NBTTagCompound();
+        currentPattern.setString("Pattern", "rats.rat_and_crossbones");
+        currentPattern.setInteger("Color", 15);
+        patterns.appendTag(currentPattern);
+        return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
 
     public boolean writeToNBTOptional(NBTTagCompound compound) {
@@ -72,7 +88,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     public boolean canPassengerSteer() {
-        return true;
+        return false;
     }
 
     @Override
@@ -87,18 +103,30 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         return null;
     }
 
+    public double getYOffset() {
+        return 0.45D;
+    }
+
+    public void updatePassenger(Entity passenger) {
+        super.updatePassenger(passenger);
+        passenger.setPosition(this.posX, this.posY + 0.45D, this.posZ);
+        if (passenger instanceof EntityLivingBase) {
+            ((EntityLivingBase) passenger).renderYawOffset = this.renderYawOffset;
+        }
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(FIRING, Boolean.valueOf(false));
     }
 
-    public void setFiring(boolean male) {
-        this.dataManager.set(FIRING, Boolean.valueOf(male));
-    }
-
     public boolean isFiring() {
         return this.dataManager.get(FIRING).booleanValue();
+    }
+
+    public void setFiring(boolean male) {
+        this.dataManager.set(FIRING, Boolean.valueOf(male));
     }
 
     protected void onDeathUpdate() {
@@ -134,22 +162,29 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1, new int[0]);
+                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
             }
         }
     }
 
     public void onUpdate() {
+        this.previousStatus = this.status;
+        this.status = this.getBoatStatus();
         super.onUpdate();
+        boolean groundNavigate = !this.isInWater() && this.status != EntityBoat.Status.IN_WATER;
+        if(!world.isRemote) {
+            if (groundNavigate && navigatorType != 1) {
+                switchNavigator(1);
+            }
+            if (!groundNavigate && navigatorType != 0) {
+                switchNavigator(0);
+            }
+        }
         if (this.getRidingEntity() != null) {
             if (!this.getRidingEntity().isRiding()) {
                 this.getRidingEntity().startRiding(this, true);
             }
         }
-        if (this.posY < this.waterLevel && deathTime == 0 && (isOverWater() || inWater)) {
-            this.setPosition(this.posX, this.waterLevel, this.posZ);
-        }
-        checkInWater();
         if (this.prevFire != isFiring()) {
             fireCooldown = 4;
         }
@@ -160,8 +195,38 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
             fireCooldown--;
         }
         prevFire = this.isFiring();
-        if (!this.isBeingRidden()) {
-            this.attackEntityFrom(DamageSource.DROWN, 1000);
+        if (!this.isBeingRidden() && !world.isRemote) {
+             this.attackEntityFrom(DamageSource.DROWN, 1000);
+        }
+        if (this.getControllingPassenger() != null) {
+            this.updateMotion();
+            if (this.getControllingPassenger() instanceof EntityLiving) {
+                EntityLiving riding = (EntityLiving) this.getControllingPassenger();
+                this.moveStrafing = riding.moveStrafing;
+                this.moveForward = riding.moveForward;
+                this.moveRelative(moveStrafing, 0, moveForward, 0.10F);
+                this.rotationYaw = riding.rotationYaw;
+                this.rotationYawHead = riding.rotationYawHead;
+                this.prevRotationYaw = riding.prevRotationYaw;
+            }
+        }
+        this.doBlockCollisions();
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
+
+        if (!list.isEmpty()) {
+            boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof EntityPlayer);
+
+            for (int j = 0; j < list.size(); ++j) {
+                Entity entity = list.get(j);
+
+                if (!entity.isPassenger(this)) {
+                    if (flag && this.getPassengers().size() < 2 && !entity.isRiding() && entity.width < this.width && entity instanceof EntityPirat) {
+                        entity.startRiding(this);
+                    } else {
+                        this.applyEntityCollision(entity);
+                    }
+                }
+            }
         }
     }
 
@@ -171,6 +236,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+        this.getEntityAttribute(SWIM_SPEED).setBaseValue(0.1D);
     }
 
     public void applyEntityCollision(Entity entityIn) {
@@ -184,15 +250,6 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     protected void doWaterSplashEffect() {
-    }
-
-    private static ItemStack generateBanner() {
-        NBTTagList patterns = new NBTTagList();
-        NBTTagCompound currentPattern = new NBTTagCompound();
-        currentPattern.setString("Pattern", "rats.rat_and_crossbones");
-        currentPattern.setInteger("Color", 15);
-        patterns.appendTag(currentPattern);
-        return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
 
     @SideOnly(Side.CLIENT)
@@ -220,6 +277,8 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     public void shoot(EntityPirat pirat) {
+        world.updateEntityWithOptionalForce(this, true);
+
         EntityLivingBase target = pirat.getAttackTarget();
         if (target == null) {
             target = world.getNearestPlayerNotCreative(this, 30);
@@ -258,12 +317,63 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         return true;
     }
 
+    public float getWaterLevelAbove() {
+        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        int i = MathHelper.floor(axisalignedbb.minX);
+        int j = MathHelper.ceil(axisalignedbb.maxX);
+        int k = MathHelper.floor(axisalignedbb.maxY);
+        int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
+        int i1 = MathHelper.floor(axisalignedbb.minZ);
+        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
+        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
+
+        try {
+            label108:
+
+            for (int k1 = k; k1 < l; ++k1) {
+                float f = 0.0F;
+                int l1 = i;
+
+                while (true) {
+                    if (l1 >= j) {
+                        if (f < 1.0F) {
+                            float f2 = (float) blockpos$pooledmutableblockpos.getY() + f;
+                            return f2;
+                        }
+
+                        break;
+                    }
+
+                    for (int i2 = i1; i2 < j1; ++i2) {
+                        blockpos$pooledmutableblockpos.setPos(l1, k1, i2);
+                        IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+
+                        if (iblockstate.getMaterial() == Material.WATER) {
+                            f = Math.max(f, BlockLiquid.getBlockLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos));
+                        }
+
+                        if (f >= 1.0F) {
+                            continue label108;
+                        }
+                    }
+
+                    ++l1;
+                }
+            }
+
+            float f1 = (float) (l + 1);
+            return f1;
+        } finally {
+            blockpos$pooledmutableblockpos.release();
+        }
+    }
+
     private boolean checkInWater() {
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.minY);
-        int l = MathHelper.ceil(axisalignedbb.minY + 0.001D);
+        int k = MathHelper.floor(axisalignedbb.minY - 0.5D);
+        int l = MathHelper.ceil(axisalignedbb.maxY + 0.001D);
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
@@ -289,7 +399,96 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
             blockpos$pooledmutableblockpos.release();
         }
 
-        return flag;
+        return flag || this.isOverWater();
+    }
+
+    private EntityBoat.Status getBoatStatus() {
+        EntityBoat.Status entityboat$status = this.getUnderwaterStatus();
+
+        if (entityboat$status != null) {
+            this.waterLevel = this.getEntityBoundingBox().minY;
+            return entityboat$status;
+        } else if (this.checkInWater()) {
+            return EntityBoat.Status.IN_WATER;
+        } else {
+            return EntityBoat.Status.ON_LAND;
+        }
+    }
+
+    @Nullable
+    private EntityBoat.Status getUnderwaterStatus() {
+        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        double d0 = axisalignedbb.maxY + 0.001D;
+        int i = MathHelper.floor(axisalignedbb.minX);
+        int j = MathHelper.ceil(axisalignedbb.maxX);
+        int k = MathHelper.floor(axisalignedbb.maxY);
+        int l = MathHelper.ceil(d0);
+        int i1 = MathHelper.floor(axisalignedbb.minZ);
+        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
+        boolean flag = false;
+        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
+
+        try {
+            for (int k1 = i; k1 < j; ++k1) {
+                for (int l1 = k; l1 < l; ++l1) {
+                    for (int i2 = i1; i2 < j1; ++i2) {
+                        blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
+                        IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+
+                        if (iblockstate.getMaterial() == Material.WATER && d0 < (double) BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos)) {
+                            if (iblockstate.getValue(BlockLiquid.LEVEL).intValue() != 0) {
+                                EntityBoat.Status entityboat$status = EntityBoat.Status.UNDER_FLOWING_WATER;
+                                return entityboat$status;
+                            }
+
+                            flag = true;
+                        }
+                    }
+                }
+            }
+        } finally {
+            blockpos$pooledmutableblockpos.release();
+        }
+
+        return flag ? EntityBoat.Status.UNDER_WATER : null;
+    }
+
+    private void updateMotion() {
+        double d0 = -0.03999999910593033D;
+        double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
+        double d2 = 0.0D;
+        float momentum = 0.05F;
+        if (this.previousStatus == EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.ON_LAND) {
+            this.waterLevel = this.getEntityBoundingBox().minY + (double) this.height;
+            this.setPosition(this.posX, (double) (this.getWaterLevelAbove() - this.height) + 0.101D, this.posZ);
+            this.motionY = 0.0D;
+            this.lastYd = 0.0D;
+            this.status = EntityBoat.Status.IN_WATER;
+        } else {
+            double up1 = this.waterLevel + 1.5;
+            double up2 = this.getEntityBoundingBox().minY + 0.5;
+            if (this.status == EntityBoat.Status.IN_WATER) {
+                d2 = (up1 - up2) / (double) this.height;
+                momentum = 0.9F;
+            } else if (this.status == EntityBoat.Status.UNDER_FLOWING_WATER) {
+                d2 = (up1 - up2) / (double) this.height;
+                momentum = 0.9F;
+            } else if (this.status == EntityBoat.Status.UNDER_WATER) {
+                d2 = (up1 - up2) / (double) this.height;
+                momentum = 0.45F;
+            } else if (this.status == EntityBoat.Status.IN_AIR) {
+                momentum = 0.9F;
+                this.motionY += d1;
+            } else if (this.status == EntityBoat.Status.ON_LAND) {
+                momentum = 0.0F;
+                this.motionY += d1;
+            }
+
+            if (d2 > 0.0D) {
+                this.motionY += d2 * 0.06153846016296973D;
+                this.motionY *= 0.75D;
+            }
+        }
     }
 
     protected SoundEvent getDeathSound() {
@@ -297,7 +496,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.BLOCK_WOOD_HIT;
+        return SoundEvents.BLOCK_WOOD_BREAK;
     }
 
     public boolean shouldDismountInWater(Entity rider) {
@@ -305,34 +504,15 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     public void travel(float strafe, float vertical, float forward) {
-        if (this.isBeingRidden() && this.canBeSteered()) {
-            EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
-            this.rotationYaw = entitylivingbase.rotationYaw;
-            this.prevRotationYaw = this.rotationYaw;
-            this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-            this.renderYawOffset = this.rotationYaw;
-            this.rotationYawHead = this.renderYawOffset;
-            strafe = entitylivingbase.moveStrafing;
-            forward = entitylivingbase.moveForward;
-            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
-            if (this.canPassengerSteer()) {
-                this.setAIMoveSpeed(this.getAIMoveSpeed());
-                super.travel(strafe, vertical, forward);
-            }
-            this.prevLimbSwingAmount = this.limbSwingAmount;
-            double d1 = this.posX - this.prevPosX;
-            double d0 = this.posZ - this.prevPosZ;
-            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
-
-            if (f2 > 1.0F) {
-                f2 = 1.0F;
-            }
-
-            this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
-            this.limbSwing += this.limbSwingAmount;
+        if (this.isServerWorld() && (this.isInWater() || status == EntityBoat.Status.IN_WATER)) {
+            float forwards = forward;
+            float strafes = strafe * 0.5F;
+            this.moveRelative(forwards, vertical, strafes, 0);
+            this.motionX *= 0.8999999761581421D;
+            this.motionY *= 0.8999999761581421D;
+            this.motionZ *= 0.8999999761581421D;
+            this.move(MoverType.SELF, this.motionX, this.isInWater() ? this.motionY : 0, this.motionZ);
         } else {
-            this.jumpMovementFactor = 0.02F;
             super.travel(strafe, vertical, forward);
         }
     }

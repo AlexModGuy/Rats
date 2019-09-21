@@ -38,7 +38,7 @@ public class BiomeRatlantis extends Biome {
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityParrot.class, 60, 1, 2));
         this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityFeralRatlantean.class, 70, 1, 3));
-        this.spawnableWaterCreatureList.add(new Biome.SpawnListEntry(EntityPirat.class, 60, 1, 2));
+        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityPirat.class, 20, 1, 1));
         this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityRatlanteanSpirit.class, 50, 1, 3));
         addFlower(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState(), 30);
     }
