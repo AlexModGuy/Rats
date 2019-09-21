@@ -94,7 +94,7 @@ public class WorldGenAquaduct extends WorldGenerator {
     }
 
     public static BlockPos getGround(int x, int z, World world){
-        BlockPos skyPos = new BlockPos(x, world.getHeight(), z);
+        BlockPos skyPos = new BlockPos(x, 256, z);
         while ((!world.getBlockState(skyPos).isOpaqueCube() || canHeightSkipBlock(skyPos, world)) && skyPos.getY() > 1){
             skyPos = skyPos.down();
         }
