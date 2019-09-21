@@ -69,10 +69,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
@@ -1855,4 +1852,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return super.isEntityInvulnerable(source);
     }
 
+    protected void setupTamedAI(){
+        Arrays.fill(this.inventoryArmorDropChances, 1.0F);
+        Arrays.fill(this.inventoryHandsDropChances, 1.0F);
+    }
 }
