@@ -144,26 +144,4 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
             }
         }
     }
-
-    public class BlockSorter implements Comparator<BlockPos> {
-        private final Entity entity;
-
-        public BlockSorter(Entity entity) {
-            this.entity = entity;
-        }
-
-        @Override
-        public int compare(BlockPos pos1, BlockPos pos2) {
-            double distance1 = this.getDistance(pos1);
-            double distance2 = this.getDistance(pos2);
-            return Double.compare(distance1, distance2);
-        }
-
-        private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
-            return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -86,7 +87,7 @@ public class EntityGolemBeam extends EntityArrow {
 
     public EntityGolemBeam(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(3.5F);
+        this.setDamage(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonAttack * 0.5F + 0.5F);
     }
 
     public boolean hasNoGravity() {

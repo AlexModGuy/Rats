@@ -9,6 +9,10 @@ public class RatConfig {
     public int piperSpawnRate = 6;
     public float piperHatDropRate = 0.09F;
     public float archeologistHatSpawnRate = 0.12F;
+    public float ratlanteanAutomatonHealth = 600F;
+    public float ratlanteanAutomatonAttack = 6F;
+    public float neoRatlanteanHealth = 300F;
+    public float neoRatlanteanAttack = 8F;
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
     public boolean plagueRats = true;
@@ -39,6 +43,10 @@ public class RatConfig {
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.archeologistHatSpawnRate = config.getFloat("Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
+        this.ratlanteanAutomatonHealth = config.getFloat("Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
+        this.ratlanteanAutomatonAttack = config.getFloat("Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");
+        this.neoRatlanteanHealth = config.getFloat("Neo-Ratlantean Max Health", "all", 300F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Max Health");
+        this.neoRatlanteanAttack = config.getFloat("Neo-Ratlantean Automaton Attack Damage", "all", 8F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Attack Damage");
         this.ratsBreakCrops = config.getBoolean("Rats Raid Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = config.getBoolean("Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
         this.golemsTargetRats = config.getBoolean("Golems Target Rats", "all", true, "True if iron golems will attack wild rats");

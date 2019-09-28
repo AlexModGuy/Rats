@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -129,7 +130,7 @@ public class EntityThrownBlock extends Entity {
             Block block = this.fallTile.getBlock();
             if (result != null && result.getBlockPos() != null) {
                 for(Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0F, 1.0F, 1.0F))){
-                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, 10);
+                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatsMod.CONFIG_OPTIONS.neoRatlanteanAttack);
                 }
                 BlockPos blockpos1 = result.getBlockPos().up();
                 if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, (Entity) null)) {

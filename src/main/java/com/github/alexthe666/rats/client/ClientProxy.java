@@ -15,7 +15,6 @@ import com.github.alexthe666.rats.server.blocks.*;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
-import com.github.alexthe666.rats.server.events.ClientEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
@@ -73,7 +72,6 @@ public class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     public void init(){
-        MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, new RenderRatlateanSpirit());
@@ -318,6 +316,8 @@ public class ClientProxy extends CommonProxy {
         refrencedFacing = facing;
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
     public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
         World world = Minecraft.getMinecraft().world;
         if (world == null) {
