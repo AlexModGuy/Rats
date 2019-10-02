@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:contaminated_food"
+        },
+        "title": {
+            "translate": "advancements.rats.contaminated_food.title"
+        },
+        "description": {
+            "translate": "advancements.rats.contaminated_food.description"
+        }
+    },
+    "parent": "rats:rats/root",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:contaminated_food"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -36,7 +36,7 @@ import java.util.List;
 public class BlockCompressedRat extends BlockHorizontal {
 
      public BlockCompressedRat() {
-        super(Material.IRON);
+        super(Material.CLOTH);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setCreativeTab(RatsMod.TAB);
         this.setSoundType(SoundType.CLOTH);
