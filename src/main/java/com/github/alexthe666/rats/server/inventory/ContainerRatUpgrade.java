@@ -25,7 +25,7 @@ public class ContainerRatUpgrade extends SyncedFieldContainer {
         int i = (numRows - 4) * 18;
         for (int j = 0; j < numRows; ++j) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlotToContainer(new SlotRatListUpgrade(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlotToContainer(new SlotRatListUpgrade(inventory, itemInventory.upgradeStack, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
         for (int l = 0; l < 3; ++l) {

@@ -136,9 +136,8 @@ public class RatAIHarvestMine extends EntityAIBase {
                         breakingTime++;
                         int hardness = (int)(block.getBlockHardness(entity.world, rayPos) * 100);
                         int i = (int) ((float) this.breakingTime / hardness * 10.0F);
-                        if (breakingTime % 10 == 0) {
-                            entity.playSound(soundType.getHitSound(), soundType.volume, soundType.pitch);
-                            entity.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1, 0.5F);
+                        if (breakingTime % 5 == 0) {
+                            entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
                         }
                         if (i != this.previousBreakProgress) {
                             entity.world.sendBlockBreakProgress(entity.getEntityId(), rayPos, i);
