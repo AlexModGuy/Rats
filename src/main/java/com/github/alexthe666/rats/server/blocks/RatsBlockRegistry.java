@@ -114,6 +114,9 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":compressed_rat")
     public static Block COMPRESSED_RAT = new BlockCompressedRat();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":jack_o_ratern")
+    public static Block JACK_O_RATERN = new BlockJackORatern();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_combiner")
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
 

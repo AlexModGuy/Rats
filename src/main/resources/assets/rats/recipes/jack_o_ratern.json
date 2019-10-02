@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "P",
+    "R",
+    "T"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:pumpkin",
+      "data": 0
+    },
+    "R": {
+      "item": "rats:raw_rat",
+      "data": 0
+    },
+    "T": {
+      "item": "minecraft:torch",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:jack_o_ratern"
+  }
+}

@@ -48,6 +48,7 @@ tile.rats.marbled_cheese_grass.name=Marbled Cheese Grass
 tile.rats.marbled_cheese_rat_head.name=Ratlantean Automaton Head
 tile.rats.marbled_cheese_golem_core.name=Ratlantean Automaton Core
 tile.rats.ratlantis_portal.name=Ratlantis Portal
+tile.rats.jack_o_ratern.name=Jack O' Ratern
 tile.rats.compressed_rat.name=Block of Ratglove
 tile.rats.compressed_rat.desc=§o"In times like these we are thankful, but we must temper our thirst for for our pursuit bears wondrous fruit, some ideas must rot where they fall."
 tile.rats.upgrade_combiner.name=Rat Upgrade Combiner
