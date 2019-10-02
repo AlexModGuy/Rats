@@ -43,7 +43,7 @@ public class RatAIFleeMobs extends EntityAIBase {
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
         this.navigation = entityIn.getNavigator();
-        this.setMutexBits(1);
+        this.setMutexBits(0);
     }
 
     public boolean shouldExecute() {
