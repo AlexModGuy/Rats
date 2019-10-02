@@ -84,6 +84,14 @@ dependencies {
     compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.6.465"
 }
 
+minecraft.coreMod = "com.github.alexthe666.rats.server.asm.RatsPlugin"
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': "com.github.alexthe666.rats.server.asm.RatsPlugin", 'FMLCorePluginContainsFMLMod': true
+    }
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.

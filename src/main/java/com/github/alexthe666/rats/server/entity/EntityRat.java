@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageDancingRat;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
@@ -28,11 +29,11 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -77,6 +78,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public static final Animation ANIMATION_EAT = Animation.create(10);
     public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);
     public static final Animation ANIMATION_IDLE_SNIFF = Animation.create(20);
+    public static final Animation ANIMATION_DANCE_0 = Animation.create(35);
+    public static final Animation ANIMATION_DANCE_1 = Animation.create(30);
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "rat"));
     private static final DataParameter<Boolean> IS_MALE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
@@ -84,6 +87,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private static final DataParameter<Boolean> VISUAL_FLAG = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -114,8 +119,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public BlockPos pickupPos;
     public BlockPos tubeTarget = null;
     public int tubeTicks;
-    private int tubeCooldown = 0;
-    private boolean inTube;
     public boolean prevInTube;
     public boolean climbingTube = false;
     public boolean waterBased = false;
@@ -124,6 +127,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public int breedCooldown = 0;
     public float flyingPitch;
     public float prevFlyingPitch;
+    public BlockPos jukeboxPos;
     /*
        0 = tamed navigator
        1 = wild navigator
@@ -131,6 +135,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
        3 = tube navigator
      */
     protected int navigatorType;
+    private int tubeCooldown = 0;
+    private boolean inTube;
     private int animationTick;
     private Animation currentAnimation;
     private RatStatus status = RatStatus.IDLE;
@@ -248,10 +254,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     protected boolean canDespawn() {
-        if(RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters){
+        if (RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters) {
             return !this.isTamed() && !this.isChild();
-        }else{
-          return super.canDespawn();
+        } else {
+            return super.canDespawn();
         }
     }
 
@@ -298,6 +304,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.register(VISUAL_FLAG, Boolean.valueOf(false));
         this.dataManager.register(COMMAND, Integer.valueOf(0));
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
+        this.dataManager.register(DANCING, Boolean.valueOf(false));
+        this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
+
     }
 
     protected void applyEntityAttributes() {
@@ -324,7 +333,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         } else if (type == 3) {//tube
             this.moveHelper = new RatTubeMoveHelper(this);
             RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
-            if(this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null){
+            if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
                 PathPoint point = this.navigator.getPath().getFinalPathPoint();
                 newNav.tryMoveToXYZ(point.x, point.y, point.z, 1.0F);
             }
@@ -349,6 +358,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         compound.setInteger("ColorVariant", this.getColorVariant());
         compound.setBoolean("Plague", this.hasPlague());
         compound.setBoolean("VisualFlag", this.getVisualFlag());
+        compound.setBoolean("Dancing", this.isDancing());
         compound.setBoolean("Toga", this.hasToga());
         compound.setBoolean("IsMale", this.isMale());
         compound.setInteger("WildTrust", wildTrust);
@@ -385,6 +395,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         wildTrust = compound.getInteger("WildTrust");
         this.setCommandInteger(compound.getInteger("Command"));
         this.setPlague(compound.getBoolean("Plague"));
+        this.setDancing(compound.getBoolean("Dancing"));
         this.setVisualFlag(compound.getBoolean("VisualFlag"));
         this.setToga(compound.getBoolean("Toga"));
         this.setMale(compound.getBoolean("IsMale"));
@@ -492,6 +503,21 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.set(VISUAL_FLAG, Boolean.valueOf(flag));
     }
 
+    public boolean isDancing() {
+        return this.dataManager.get(DANCING).booleanValue();
+    }
+
+    public void setDancing(boolean dancing) {
+        this.dataManager.set(DANCING, Boolean.valueOf(dancing));
+    }
+
+    public int getDanceMoves() {
+        return Integer.valueOf(this.dataManager.get(DANCE_MOVES).intValue());
+    }
+
+    public void setDanceMoves(int moves) {
+        this.dataManager.set(DANCE_MOVES, Integer.valueOf(moves));
+    }
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
@@ -543,12 +569,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 //world.setBlockState(endPoint.down(), Blocks.EMERALD_BLOCK.getDefaultState());
             }
         }
-        if(this.inTubeGenerally()){
-            if(tubeCooldown < 40){
+        if (this.inTubeGenerally()) {
+            if (tubeCooldown < 40) {
                 tubeCooldown++;
             }
-        }else{
-            if(tubeCooldown > -20){
+        } else {
+            if (tubeCooldown > -20) {
                 tubeCooldown--;
             }
         }
@@ -634,7 +660,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
-        boolean sitting = isSitting() || this.isRiding() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
+        boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
                 || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER));
@@ -718,7 +744,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                     this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[]{Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE)});
+                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
                     if (rand.nextFloat() < 0.125F) {
                         this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                     }
@@ -893,7 +919,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
                     double extraY = 0.2 + posY;
                     double targetRelativeX = this.getAttackTarget().posX - extraX;
-                    double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height/2 - extraY;
+                    double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height / 2 - extraY;
                     double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
                     this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
                     EntityLaserBeam beam = new EntityLaserBeam(world, this);
@@ -921,12 +947,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         prevUpgrade = this.getUpgradeSlot();
         inTube = inTubeLogic();
-        if(this.inTube){
+        if (this.inTube) {
             tubeTicks++;
-        }else{
+        } else {
             tubeTicks = 0;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
+        if (this.isDancing() && this.getAnimation() != this.getDanceAnimation()) {
+            this.setAnimation(this.getDanceAnimation());
+        }
+        if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distanceSq(this.posX, this.posY, this.posZ) > 15.0D * 15.0D || this.world.getBlockState(this.jukeboxPos).getBlock() != Blocks.JUKEBOX)) {
+            this.setDancing(false);
+        }
     }
 
 
@@ -1257,7 +1289,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_EAT, ANIMATION_IDLE_SCRATCH, ANIMATION_IDLE_SNIFF};
+        return new Animation[]{ANIMATION_EAT, ANIMATION_IDLE_SCRATCH, ANIMATION_IDLE_SNIFF, ANIMATION_DANCE_0, ANIMATION_DANCE_1};
+    }
+
+    public Animation getDanceAnimation() {
+        switch (this.getDanceMoves()) {
+            case 0:
+                return ANIMATION_DANCE_0;
+            default:
+                return NO_ANIMATION;
+        }
     }
 
     public boolean canPhaseThroughBlock(World world, BlockPos pos) {
@@ -1727,7 +1768,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return inTube;
     }
 
-    private boolean inTubeLogic(){
+    private boolean inTubeLogic() {
         BlockPos pos = new BlockPos(this);
         IBlockState state = world.getBlockState(pos);
         boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
@@ -1742,7 +1783,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return false;
     }
 
-    private boolean inTubeGenerally(){
+    private boolean inTubeGenerally() {
         BlockPos pos = new BlockPos(this);
         IBlockState state = world.getBlockState(pos);
         boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
@@ -1865,7 +1906,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {
-        if(potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))){
+        if (potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return false;
         }
         return super.isPotionApplicable(potioneffectIn);
@@ -1887,15 +1928,28 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return super.isEntityInvulnerable(source);
     }
 
-    protected void setupTamedAI(){
+    protected void setupTamedAI() {
         Arrays.fill(this.inventoryArmorDropChances, 1.0F);
         Arrays.fill(this.inventoryHandsDropChances, 1.0F);
     }
 
     public boolean shouldBeSuckedIntoTube() {
-        if(tubeTicks < 15 && !prevInTube && !inTube()) {
+        if (tubeTicks < 15 && !prevInTube && !inTube()) {
             return tubeCooldown < 0;
         }
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setPartying(BlockPos pos, boolean isPartying) {
+        int moves = this.rand.nextInt(4);
+        if (!this.isDancing() && isPartying) {
+            this.setDanceMoves(moves);
+        }
+        this.setDancing(isPartying);
+        this.jukeboxPos = pos;
+        if (world.isRemote) {
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageDancingRat(this.getEntityId(), isPartying, pos.toLong(), moves));
+        }
     }
 }
