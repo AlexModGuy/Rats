@@ -20,6 +20,7 @@ public class RatConfig {
     public boolean ratsDigBlocks = true;
     public boolean ratsBreakCrops = true;
     public boolean ratsStealItems = true;
+    public boolean ratsContaminateFood = true;
     public boolean golemsTargetRats = true;
     public boolean villagePetShops = true;
     public boolean villageGarbageHeaps = true;
@@ -49,6 +50,7 @@ public class RatConfig {
         this.neoRatlanteanAttack = config.getFloat("Neo-Ratlantean Automaton Attack Damage", "all", 8F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Attack Damage");
         this.ratsBreakCrops = config.getBoolean("Rats Raid Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = config.getBoolean("Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
+        this.ratsContaminateFood = config.getBoolean("Rats Contaminate Food", "all", true, "True if wild rats contaminate food when they steal from chests");
         this.golemsTargetRats = config.getBoolean("Golems Target Rats", "all", true, "True if iron golems will attack wild rats");
         this.villagePetShops = config.getBoolean("Village Pet Shops", "all", true, "True if pet shops can spawn in villages");
         this.villageGarbageHeaps = config.getBoolean("Village Garbage Heap", "all", true, "True if garbage heaps can spawn in villages");

@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class ItemGenericFood extends ItemFood {
     public ItemGenericFood(int amount, float saturation, boolean isWolfFood, String name) {
@@ -42,11 +43,11 @@ public class ItemGenericFood extends ItemFood {
                     CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) entityplayer, stack);
                 }
             }
-            if(!(entityLiving instanceof EntityPlayer) || !((EntityPlayer) entityLiving).isCreative()){
+            if (!(entityLiving instanceof EntityPlayer) || !((EntityPlayer) entityLiving).isCreative()) {
                 stack.shrink(1);
             }
             return stack;
-        }else{
+        } else {
             return super.onItemUseFinish(stack, worldIn, entityLiving);
         }
     }
@@ -61,8 +62,41 @@ public class ItemGenericFood extends ItemFood {
         }
     }
 
+    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+        if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD) {
+            Random rand = new Random();
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.POISON, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 2400));
+            }
+            if(rand.nextFloat() < 0.3D){
+                player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2400));
+            }
+            player.addPotionEffect(new PotionEffect(MobEffects.UNLUCK, 2400));
+        }
+    }
+
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(this == RatsItemRegistry.RAT_BURGER)
-        tooltip.add(I18n.format("item.rats.rat_burger.desc"));
+        if (this == RatsItemRegistry.RAT_BURGER) {
+            tooltip.add(I18n.format("item.rats.rat_burger.desc"));
+        }
+        if (this == RatsItemRegistry.CONTAMINATED_FOOD) {
+            tooltip.add(I18n.format("item.rats.contaminated_food.desc0"));
+            tooltip.add(I18n.format("item.rats.contaminated_food.desc1"));
+        }
     }
 }

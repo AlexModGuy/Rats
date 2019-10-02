@@ -39,6 +39,10 @@ public class RatUtils {
         return (stack.getItem() instanceof ItemFood || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
     }
 
+    public static boolean shouldRaidItem(ItemStack stack) {
+        return isRatFood(stack) && stack.getItem() != RatsItemRegistry.CONTAMINATED_FOOD;
+    }
+
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
         if (item instanceof ItemSeeds && item != Items.NETHER_WART) {
@@ -64,12 +68,29 @@ public class RatUtils {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (isRatFood(stack) && rat.canRatPickupItem(stack)) {
+            if (shouldRaidItem(stack) && rat.canRatPickupItem(stack)) {
                 items.add(stack);
             }
         }
         if (items.isEmpty()) {
             return ItemStack.EMPTY;
+        } else if (items.size() == 1) {
+            return items.get(0);
+        } else {
+            return items.get(random.nextInt(items.size() - 1));
+        }
+    }
+
+    public static int getContaminatedSlot(EntityRat rat, IInventory inventory, Random random) {
+        List<Integer> items = new ArrayList<Integer>();
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack.isEmpty() || stack.getItem() == RatsItemRegistry.CONTAMINATED_FOOD) {
+                items.add(i);
+            }
+        }
+        if (items.isEmpty()) {
+            return -1;
         } else if (items.size() == 1) {
             return items.get(0);
         } else {

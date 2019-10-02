@@ -63,6 +63,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":raw_plastic")
     public static Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":contaminated_food")
+    public static Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, "contaminated_food");
+
     public static Item[] RAT_IGLOOS = new Item[16];
 
     static {

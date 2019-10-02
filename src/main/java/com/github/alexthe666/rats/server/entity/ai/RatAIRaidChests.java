@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.entity.Entity;
@@ -114,6 +115,17 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                         }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         stack.shrink(1);
+                        if(RatsMod.CONFIG_OPTIONS.ratsContaminateFood && this.entity.getRNG().nextInt(3) == 0) {
+                            int slotToReplace = RatUtils.getContaminatedSlot(this.entity, feeder, this.entity.world.rand);
+                            if (slotToReplace != -1) {
+                                if (feeder.getStackInSlot(slotToReplace).isEmpty()) {
+                                    ItemStack stack1 = new ItemStack(RatsItemRegistry.CONTAMINATED_FOOD);
+                                    feeder.setInventorySlotContents(slotToReplace, stack1);
+                                } else if (feeder.getStackInSlot(slotToReplace).getItem() == RatsItemRegistry.CONTAMINATED_FOOD) {
+                                    feeder.getStackInSlot(slotToReplace).grow(1);
+                                }
+                            }
+                        }
                         this.destinationBlock = null;
                         this.resetTask();
 
