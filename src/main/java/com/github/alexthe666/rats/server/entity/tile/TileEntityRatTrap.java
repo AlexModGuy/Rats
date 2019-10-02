@@ -31,11 +31,6 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
         if(RatUtils.isRatFood(baitStack.get(0))){
             killRats();
         }
-        if(prevShut != isShut){
-            for(EnumFacing facing :EnumFacing.HORIZONTALS){
-                world.notifyNeighborsOfStateExcept(this.getPos(), this.blockType, facing);
-            }
-        }
     }
 
     private void killRats(){
