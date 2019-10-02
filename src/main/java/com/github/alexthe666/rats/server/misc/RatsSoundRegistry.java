@@ -50,6 +50,10 @@ public class RatsSoundRegistry {
     public static final SoundEvent NEORATLANTEAN_LOOP = createSoundEvent("neoratlantean_loop");
     @GameRegistry.ObjectHolder("neoratlantean_summon")
     public static final SoundEvent NEORATLANTEAN_SUMMON = createSoundEvent("neoratlantean_summon");
+    @GameRegistry.ObjectHolder("mice_on_venus")
+    public static final SoundEvent MICE_ON_VENUS = createSoundEvent("mice_on_venus");
+    @GameRegistry.ObjectHolder("living_mice")
+    public static final SoundEvent LIVING_MICE = createSoundEvent("living_mice");
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(RatsMod.MODID, soundName);

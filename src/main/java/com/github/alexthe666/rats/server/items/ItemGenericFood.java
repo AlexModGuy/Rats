@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,6 +18,9 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemGenericFood extends ItemFood {
     public ItemGenericFood(int amount, float saturation, boolean isWolfFood, String name) {
@@ -54,5 +59,10 @@ public class ItemGenericFood extends ItemFood {
         } else {
             return super.onItemRightClick(worldIn, playerIn, handIn);
         }
+    }
+
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if(this == RatsItemRegistry.RAT_BURGER)
+        tooltip.add(I18n.format("item.rats.rat_burger.desc"));
     }
 }

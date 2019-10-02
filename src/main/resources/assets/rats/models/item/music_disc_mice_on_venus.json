@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "rats:items/music_disc_mice_on_venus"
+  }
+}

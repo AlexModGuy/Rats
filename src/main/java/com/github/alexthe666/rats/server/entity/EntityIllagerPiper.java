@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityIllagerPiper extends AbstractIllager implements IRangedAttackMob {
 
@@ -218,6 +220,20 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
             }
         }
 
+    }
+
+    public void onDeath(DamageSource cause) {
+        super.onDeath(cause);
+        if (this.world.getGameRules().getBoolean("doMobLoot")) {
+            if (cause.getTrueSource() instanceof EntityRat) {
+                if(new Random().nextBoolean()){
+                    this.dropItem(RatsItemRegistry.MUSIC_DISC_MICE_ON_VENUS, 1);
+                }else{
+                    this.dropItem(RatsItemRegistry.MUSIC_DISC_LIVING_MICE, 1);
+
+                }
+            }
+        }
     }
 
     protected SoundEvent getDeathSound() {

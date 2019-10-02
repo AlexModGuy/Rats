@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -49,6 +50,9 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":assorted_vegetables")
     public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, "assorted_vegetables");
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_burger")
+    public static Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, "rat_burger");
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
     public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
@@ -134,6 +138,12 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese_cannonball")
     public static Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":music_disc_mice_on_venus")
+    public static Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", "mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":music_disc_living_mice")
+    public static Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", "living_mice", RatsSoundRegistry.LIVING_MICE);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":idol_of_ratlantis")
     public static Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);

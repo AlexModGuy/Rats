@@ -1,0 +1,43 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:music_disc_mice_on_venus"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_music_disc.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_music_disc.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/piper",
+    "criteria": {
+        "mice_on_venus": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:music_disc_mice_on_venus"
+                    }
+                ]
+            }
+        },
+        "living_mice": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:music_disc_living_mice"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "mice_on_venus",
+            "living_mice"
+        ]
+    ]
+}

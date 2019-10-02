@@ -961,7 +961,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
-
     private boolean shouldSitDuringAnimation() {
         return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER);
     }

@@ -1,4 +1,22 @@
 {
+  "mice_on_venus": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "minecraft:music/game/piano3",
+        "stream": true
+      }
+    ]
+  },
+  "living_mice": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "minecraft:music/game/hal2",
+        "stream": true
+      }
+    ]
+  },
   "rat_laser": {
     "category": "neutral",
     "sounds": [
