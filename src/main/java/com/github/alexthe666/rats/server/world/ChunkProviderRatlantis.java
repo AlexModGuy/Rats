@@ -60,7 +60,9 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
                 for (int y = 0; y < 256; y++) {
                     Block i4 = Blocks.AIR;
                     if (heightBase > 67) {
-                        if (y < heightBase - 3) {
+                        if (y < 2 + rand.nextInt(2)) {
+                            i4 = Blocks.BEDROCK;
+                        }else if (y < heightBase - 3) {
                             i4 = Blocks.STONE;
                         } else if (y < heightBase - 1) {
                             i4 = Blocks.DIRT;
@@ -72,7 +74,9 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
                             }
                         }
                     } else {
-                        if (y < heightBase - 6 + rand.nextInt(3)) {
+                        if (y < 2 + rand.nextInt(2)) {
+                            i4 = Blocks.BEDROCK;
+                        }else if (y < heightBase - 6 + rand.nextInt(3)) {
                             i4 = Blocks.STONE;
                         } else if (y < heightBase - 3) {
                             i4 = Blocks.SANDSTONE;
