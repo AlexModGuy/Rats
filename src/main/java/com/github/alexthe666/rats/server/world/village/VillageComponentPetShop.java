@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.village;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +29,9 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
     }
 
     public static VillageComponentPetShop buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
+        if(RatsMod.CONFIG_OPTIONS.villagePetShops){
+            return null;
+        }
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -1, 18, 9, 18, facing);
         return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new VillageComponentPetShop(startPiece, p5, random, structureboundingbox, facing) : null;
     }
