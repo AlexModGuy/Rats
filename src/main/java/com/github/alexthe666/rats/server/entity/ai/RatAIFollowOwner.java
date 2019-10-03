@@ -2,59 +2,108 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
-public class RatAIFollowOwner extends EntityAIFollowOwner {
-    EntityRat rat;
+public class RatAIFollowOwner extends EntityAIBase {
+    private final EntityRat rat;
+    private final double followSpeed;
+    World world;
+    float maxDist;
+    float minDist;
+    private EntityLivingBase owner;
     private int timeToRecalcPath;
+    private float oldWaterCost;
 
-    public RatAIFollowOwner(EntityRat rat, double speed, float minDist, float maxDist) {
-        super(rat, speed, minDist, maxDist);
-        this.rat = rat;
-        this.setMutexBits(1);
+    public RatAIFollowOwner(EntityRat tameableIn, double followSpeedIn, float minDistIn, float maxDistIn) {
+        this.rat = tameableIn;
+        this.world = tameableIn.world;
+        this.followSpeed = followSpeedIn;
+        this.minDist = minDistIn;
+        this.maxDist = maxDistIn;
+        this.setMutexBits(3);
+    }
+
+    /**
+     * Returns whether the EntityAIBase should begin execution.
+     */
+    public boolean shouldExecute() {
+        if (rat.isTamed() && rat.isFollowing()) {
+            EntityLivingBase entitylivingbase = this.rat.getOwner();
+            if (entitylivingbase == null) {
+                return false;
+            } else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer) entitylivingbase).isSpectator()) {
+                return false;
+            } else if (this.rat.isSitting()) {
+                return false;
+            } else if (this.rat.getDistanceSq(entitylivingbase) < (double) (this.minDist * this.minDist)) {
+                return false;
+            } else {
+                this.owner = entitylivingbase;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean shouldContinueExecuting() {
+        return !this.rat.getNavigator().noPath() && rat.isFollowing() && this.rat.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist);
+    }
+
+    public void startExecuting() {
+        this.timeToRecalcPath = 0;
+        this.oldWaterCost = this.rat.getPathPriority(PathNodeType.WATER);
+        this.rat.setPathPriority(PathNodeType.WATER, 0.0F);
+    }
+
+    public void resetTask() {
+        this.owner = null;
+        this.rat.getNavigator().clearPath();
+        this.rat.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
     }
 
     public void updateTask() {
-        this.rat.getLookHelper().setLookPositionWithEntity(this.rat, 10.0F, (float) this.rat.getVerticalFaceSpeed());
-        EntityLivingBase owner = rat.getOwner();
-        if (!this.rat.isSitting()) {
+        this.rat.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.rat.getVerticalFaceSpeed());
+        if (rat.isFollowing()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
-                boolean shouldTeleport;
-                if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)){
-                    shouldTeleport = rat.getDistance(owner) > 20;
-                    rat.getMoveHelper().setMoveTo((double) owner.posX, (double) owner.posY + 2, (double) owner.posZ, 0.25D);
-                }else{
-                    shouldTeleport = !rat.getNavigator().tryMoveToEntityLiving(owner, 1.33D) || rat.getDistance(owner) > 20;
-                }
-                if (shouldTeleport) {
-                    if (!rat.getLeashed() && !rat.isRiding()) {
-                        if (rat.getDistanceSq(owner) >= 144.0D) {
-                            int i = MathHelper.floor(owner.posX) - 2;
-                            int j = MathHelper.floor(owner.posZ) - 2;
-                            int k = MathHelper.floor(owner.getEntityBoundingBox().minY);
-
-                            for (int l = 0; l <= 4; ++l) {
-                                for (int i1 = 0; i1 <= 4; ++i1) {
-                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isTeleportFriendlyBlock(i, j, k, l, i1)) {
-                                        rat.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k, (double) ((float) (j + i1) + 0.5F), rat.rotationYaw, rat.rotationPitch);
-                                        rat.getNavigator().clearPath();
-                                        timeToRecalcPath = 0;
-                                        return;
-                                    }
+                boolean teleport = false;
+                if (!this.rat.getLeashed() && !this.rat.isRiding()) {
+                    if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
+                        teleport = true;
+                        int i = MathHelper.floor(this.owner.posX) - 2;
+                        int j = MathHelper.floor(this.owner.posZ) - 2;
+                        int k = MathHelper.floor(this.owner.getEntityBoundingBox().minY);
+                        for (int l = 0; l <= 4; ++l) {
+                            for (int i1 = 0; i1 <= 4; ++i1) {
+                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isTeleportFriendlyBlock(i, j, k, l, i1)) {
+                                    this.rat.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k, (double) ((float) (j + i1) + 0.5F), this.rat.rotationYaw, this.rat.rotationPitch);
+                                    this.rat.getNavigator().clearPath();
+                                    return;
                                 }
                             }
                         }
                     }
                 }
+                if (!teleport) {
+                    this.rat.getNavigator().tryMoveToEntityLiving(this.owner, this.followSpeed);
+                }
             }
+
         }
     }
 
-    public boolean shouldExecute() {
-        return !rat.isFleeing && super.shouldExecute() && rat.getCommand() == RatCommand.FOLLOW && !rat.isInCage();
+    protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset) {
+        BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);
+        IBlockState iblockstate = this.world.getBlockState(blockpos);
+        return iblockstate.getBlockFaceShape(this.world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(this.rat) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2));
     }
 }

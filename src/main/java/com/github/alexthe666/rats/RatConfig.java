@@ -12,8 +12,8 @@ public class RatConfig {
     public boolean spawnRats = true;
     public boolean spawnPiper = true;
     public int ratSpawnRate = 80;
-    public int ratSpawnDecrease = 10;
-    public int piperSpawnDecrease = 5;
+    public int ratSpawnDecrease = 5;
+    public int piperSpawnDecrease = 1;
     public int piperSpawnRate = 6;
     public float piperHatDropRate = 0.09F;
     public float archeologistHatSpawnRate = 0.12F;
@@ -47,7 +47,7 @@ public class RatConfig {
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
-        this.ratSpawnDecrease = config.getInt("Rat Spawn Decrease", "all", 10, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
+        this.ratSpawnDecrease = config.getInt("Rat Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.plagueRats = config.getBoolean("Plague Rats", "all", true, "True if plague rats are to spawn naturally");
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
         this.piperSpawnDecrease = config.getInt("Piper Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");

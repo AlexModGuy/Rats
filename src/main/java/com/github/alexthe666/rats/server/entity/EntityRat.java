@@ -279,7 +279,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 double d2 = entity.posZ - this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                if (this.canDespawn() && d3 > 5000.0D) {
+                if (this.canDespawn() && d3 > 4096.0D) {
                     this.setDead();
                 }
                 if (this.idleTime > 300 && this.rand.nextInt(400) == 0 && d3 > 256.0D && this.canDespawn()) {
@@ -561,6 +561,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
+    }
+
+    public boolean isFollowing() {
+        return getCommandInteger() == 2;
     }
 
     public void setCommand(RatCommand command) {
