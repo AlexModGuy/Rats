@@ -181,15 +181,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
-        if (event.getEntity() != null && event.getEntity() instanceof EntityRat) {
-            Iterator<AxisAlignedBB> itr = event.getCollisionBoxesList().iterator();
-            while (itr.hasNext()) {
-                AxisAlignedBB aabb = itr.next();
-                BlockPos pos = new BlockPos(aabb.minX, aabb.minY, aabb.minZ);
-                if (((EntityRat) event.getEntity()).canPhaseThroughBlock(event.getWorld(), pos)) {
-                    itr.remove();
-                }
-            }
+        if (event.getEntity() instanceof EntityRat) {
+            event.getCollisionBoxesList().removeIf(aabb -> ((EntityRat) event.getEntity()).canPhaseThroughBlock(event.getWorld(), new BlockPos(aabb.minX, aabb.minY, aabb.minZ)));
         }
     }
 

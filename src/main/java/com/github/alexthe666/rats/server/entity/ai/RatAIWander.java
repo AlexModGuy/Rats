@@ -30,7 +30,7 @@ public class RatAIWander extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || rat.isDancing()) {
+        if (!rat.canMove() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || rat.isDancing() || rat.isFleeing) {
             return false;
         }
         if (!this.mustUpdate) {

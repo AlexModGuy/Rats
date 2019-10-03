@@ -1,11 +1,19 @@
 package com.github.alexthe666.rats;
 
+import com.google.common.collect.Lists;
 import net.minecraftforge.common.config.Configuration;
+import scala.Int;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RatConfig {
     public boolean spawnRats = true;
     public boolean spawnPiper = true;
     public int ratSpawnRate = 80;
+    public int ratSpawnDecrease = 10;
+    public int piperSpawnDecrease = 5;
     public int piperSpawnRate = 6;
     public float piperHatDropRate = 0.09F;
     public float archeologistHatSpawnRate = 0.12F;
@@ -31,6 +39,7 @@ public class RatConfig {
     public int ratUpdateDelay = 100;
     public int tokenDropRate = 10000;
     public String[] blacklistedRatBlocks = new String[0];
+    public int[] blacklistedRatDimensions = new int[0];
     public boolean disableRatlantis = false;
     public int ratlantisDimensionId = -8;
     public int ratlantisPortalExitDimension = 0;
@@ -38,8 +47,10 @@ public class RatConfig {
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
+        this.ratSpawnDecrease = config.getInt("Rat Spawn Decrease", "all", 10, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.plagueRats = config.getBoolean("Plague Rats", "all", true, "True if plague rats are to spawn naturally");
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
+        this.piperSpawnDecrease = config.getInt("Piper Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
@@ -63,6 +74,7 @@ public class RatConfig {
         this.ratCageCramming = config.getInt("Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
         this.ratUpdateDelay = config.getInt("Rat Upgrade Delay", "all", 100, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests, once every this number of ticks(with added standard deviation for servers)");
         this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
+        this.blacklistedRatDimensions = config.get("all", "Blacklisted Rat Spawn Dimensions", new int[0], "Blacklist for dimensions that rats and pipers cannot spawn in").getIntList();
         this.tokenDropRate = config.getInt("Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
         this.disableRatlantis = config.getBoolean("Disable Ratlantis", "all", false, "True if Ratlantis dimension is disabled - alternative methods of getting resources will be provided. WARNING: Leave the dimension and restart the game before changing this. You must be fun at parties.");
         this.disablePlastic = config.getBoolean("Disable Plastic", "all", false, "True if Plastic item is disabled - alternative methods of getting rat cage deco will be provided. WARNING: Leave the restard the game after changing this. You must be fun at parties.");

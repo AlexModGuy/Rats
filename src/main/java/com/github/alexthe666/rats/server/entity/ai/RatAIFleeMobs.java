@@ -18,14 +18,14 @@ import java.util.List;
 
 public class RatAIFleeMobs extends EntityAIBase {
     private final Predicate<Entity> canBeSeenSelector;
-    protected EntityRat entity;
     private final double farSpeed;
     private final double nearSpeed;
-    protected EntityLivingBase closestLivingEntity;
     private final float avoidDistance;
-    private Path path;
     private final PathNavigate navigation;
     private final Predicate<Entity> avoidTargetSelector;
+    protected EntityRat entity;
+    protected EntityLivingBase closestLivingEntity;
+    private Path path;
 
     public RatAIFleeMobs(EntityRat entityIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
         this(entityIn, Predicates.alwaysTrue(), avoidDistanceIn, farSpeedIn, nearSpeedIn);
@@ -43,53 +43,54 @@ public class RatAIFleeMobs extends EntityAIBase {
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
         this.navigation = entityIn.getNavigator();
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     public boolean shouldExecute() {
-        List<EntityLivingBase> list = this.entity.world.getEntitiesWithinAABB(EntityLivingBase.class, this.entity.getEntityBoundingBox().grow((double) this.avoidDistance, 3.0D, (double) this.avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
-        if (list.isEmpty() || entity.isInCage()) {
+        if(this.entity.isTamed() || this.entity.hasPlague()){
+            return false;
+        }
+        List<EntityLivingBase> list = this.entity.world.getEntitiesWithinAABB(EntityLivingBase.class, this.entity.getEntityBoundingBox().grow((double) this.avoidDistance, 8.0D, (double) this.avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        if (list.isEmpty()) {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
             Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
-
             if (vec3d == null) {
                 return false;
-            } else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.entity) || !shouldFlee(this.closestLivingEntity)) {
+            } else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.entity)) {
                 return false;
             } else {
-                this.path = this.navigation.getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
+                entity.isFleeing = true;
+                this.path = entity.getNavigator().getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
                 return this.path != null;
             }
         }
     }
 
-    private boolean shouldFlee(EntityLivingBase mob){
+    private boolean shouldFlee(EntityLivingBase mob) {
         int trust = entity.wildTrust;
         Vec3d vec3d = mob.getLook(1.0F).normalize();
-        Vec3d vec3d1 = new Vec3d(entity.posX - mob.posX, entity.getEntityBoundingBox().minY + (double)entity.getEyeHeight() - (mob.posY + (double)mob.getEyeHeight()), entity.posZ - mob.posZ);
+        Vec3d vec3d1 = new Vec3d(entity.posX - mob.posX, entity.getEntityBoundingBox().minY + (double) entity.getEyeHeight() - (mob.posY + (double) mob.getEyeHeight()), entity.posZ - mob.posZ);
         double d0 = vec3d1.length();
         vec3d1 = vec3d1.normalize();
         double d1 = vec3d.dotProduct(vec3d1);
-        if(trust < 100 || !(mob instanceof EntityPlayer)){
+        if (trust < 100 || !(mob instanceof EntityPlayer)) {
             return d1 > 0.5 / d0 && mob.canEntityBeSeen(entity);
         }
         return false;
     }
 
     public boolean shouldContinueExecuting() {
-        if(this.closestLivingEntity != null && !shouldFlee(this.closestLivingEntity)){
-            return false;
-        }
-        return !this.navigation.noPath();
+        return !entity.getNavigator().noPath();
     }
 
     public void startExecuting() {
-        this.navigation.setPath(this.path, getRunSpeed());
+        entity.getNavigator().setPath(this.path, farSpeed);
     }
 
     public void resetTask() {
+        entity.isFleeing = false;
         this.closestLivingEntity = null;
     }
 
@@ -97,10 +98,14 @@ public class RatAIFleeMobs extends EntityAIBase {
         this.entity.getNavigator().setSpeed(getRunSpeed());
     }
 
-    public double getRunSpeed(){
-        if(this.closestLivingEntity == null || !(this.closestLivingEntity instanceof EntityPlayer)){
-            return farSpeed;
-        }else{
+    public double getRunSpeed() {
+        if (this.closestLivingEntity == null || !(this.closestLivingEntity instanceof EntityPlayer)) {
+            if (this.entity.getDistanceSq(this.closestLivingEntity) < 49.0D) {
+                return nearSpeed;
+
+            }
+                return farSpeed;
+        } else {
             return 0.6D + ((double) (50 - Math.min(this.entity.wildTrust, 50)) * 0.04D);
         }
     }

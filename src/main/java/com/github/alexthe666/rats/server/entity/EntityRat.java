@@ -128,6 +128,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public float flyingPitch;
     public float prevFlyingPitch;
     public BlockPos jukeboxPos;
+    public boolean isFleeing = false;
     /*
        0 = tamed navigator
        1 = wild navigator
@@ -181,25 +182,25 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         aiHarvest = new RatAIHarvestCrops(this);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
-        this.tasks.addTask(2, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
-        this.tasks.addTask(2, new RatAIWander(this, 1.0D));
-        this.tasks.addTask(2, new RatAIWanderFlight(this));
-        this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
-        this.tasks.addTask(3, this.aiSit = new RatAISit(this));
-        this.tasks.addTask(3, new RatAIFleeMobs(this, new Predicate<Entity>() {
+        this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT && !EntityRat.this.isTamed() && !EntityRat.this.hasPlague() || entity instanceof EntityOcelot);
+                return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
             }
-        }, 32, 1.0D, 1.33D));
-        this.tasks.addTask(4, new RatAIRaidChests(this));
-        this.tasks.addTask(4, new RatAIRaidCrops(this));
-        this.tasks.addTask(4, new RatAIEnterTrap(this));
-        this.tasks.addTask(4, new RatPickupFromInventory(this));
-        this.tasks.addTask(4, new RatDepositInInventory(this));
-        this.tasks.addTask(4, new RatAIFleePosition(this));
-        this.tasks.addTask(4, new RatAIAttackMelee(this, 1.5D, false));
+        }, 20.0F, 0.8D, 1.33D));
+        this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
+        this.tasks.addTask(4, new RatAIWander(this, 1.0D));
+        this.tasks.addTask(4, new RatAIWanderFlight(this));
+        this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
+        this.tasks.addTask(5, this.aiSit = new RatAISit(this));
+        this.tasks.addTask(6, new RatAIRaidChests(this));
+        this.tasks.addTask(6, new RatAIRaidCrops(this));
+        this.tasks.addTask(6, new RatAIEnterTrap(this));
+        this.tasks.addTask(6, new RatPickupFromInventory(this));
+        this.tasks.addTask(6, new RatDepositInInventory(this));
+        this.tasks.addTask(6, new RatAIFleePosition(this));
+        this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new RatAITargetItems(this, false));
         this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
@@ -262,13 +263,23 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean getCanSpawnHere() {
-        if (RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters) {
-            BlockPos pos = new BlockPos(this);
-            IBlockState iblockstate = this.world.getBlockState((pos).down());
-            return this.isValidLightLevel() && 0.5F - this.world.getLightBrightness(pos) >= 0.0F && iblockstate.canEntitySpawn(this);
-        } else {
-            return super.getCanSpawnHere();
+        int spawnRoll = RatsMod.CONFIG_OPTIONS.ratSpawnDecrease;
+        if(RatUtils.canSpawnInDimension(world)) {
+            if (RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters) {
+                if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+                    spawnRoll *= 2;
+                }
+                if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
+                    BlockPos pos = new BlockPos(this);
+                    IBlockState iblockstate = this.world.getBlockState((pos).down());
+                    return this.isValidLightLevel() && 0.5F - this.world.getLightBrightness(pos) >= 0.0F && iblockstate.canEntitySpawn(this);
+                }
+            } else {
+                spawnRoll /= 2;
+                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) && super.getCanSpawnHere();
+            }
         }
+        return false;
     }
 
     protected boolean isValidLightLevel() {
@@ -1219,7 +1230,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (d0 == 0.6D) {
                 this.setSneaking(true);
                 this.setSprinting(false);
-            } else if (d0 >= 1.33D && d0 < 2) {
+            } else if (d0 >= 1.1D && d0 < 2) {
                 this.setSneaking(false);
                 this.setSprinting(true);
             } else {

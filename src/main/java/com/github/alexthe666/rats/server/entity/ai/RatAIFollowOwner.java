@@ -55,6 +55,6 @@ public class RatAIFollowOwner extends EntityAIFollowOwner {
     }
 
     public boolean shouldExecute() {
-        return super.shouldExecute() && rat.getCommand() == RatCommand.FOLLOW && !rat.isInCage();
+        return !rat.isFleeing && super.shouldExecute() && rat.getCommand() == RatCommand.FOLLOW && !rat.isInCage();
     }
 }

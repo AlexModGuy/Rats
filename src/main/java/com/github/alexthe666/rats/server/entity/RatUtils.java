@@ -820,6 +820,17 @@ public class RatUtils {
         return p_191380_1_.world.getBlockState(p_191380_0_).getMaterial() == Material.WATER;
     }
 
+    public static boolean canSpawnInDimension(World world) {
+        if(RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length > 0){
+            for(int i = 0 ; i < RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length; i++){
+                if(RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions[i] == world.provider.getDimension()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static class TubeSorter implements Comparator<EnumFacing> {
         private final EntityRat theEntity;
 

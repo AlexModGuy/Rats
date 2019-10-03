@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -65,6 +67,16 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+    }
+
+    public boolean getCanSpawnHere() {
+        int spawnRoll = RatsMod.CONFIG_OPTIONS.piperSpawnDecrease;
+        if(RatUtils.canSpawnInDimension(world)) {
+            if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
+                return super.getCanSpawnHere();
+            }
+        }
+        return false;
     }
 
     public void setDead() {
