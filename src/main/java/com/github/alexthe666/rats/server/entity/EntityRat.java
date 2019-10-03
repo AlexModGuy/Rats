@@ -186,7 +186,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             public boolean apply(@Nullable Entity entity) {
                 return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
             }
-        }, 20.0F, 0.8D, 1.33D));
+        }, 10.0F, 0.8D, 1.33D));
         this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
         this.tasks.addTask(4, new RatAIWander(this, 1.0D));
         this.tasks.addTask(4, new RatAIWanderFlight(this));
@@ -262,9 +262,38 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
+    protected void despawnEntity() {
+        net.minecraftforge.fml.common.eventhandler.Event.Result result = null;
+        if ((this.idleTime & 0x1F) == 0x1F && (result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this)) != net.minecraftforge.fml.common.eventhandler.Event.Result.DEFAULT) {
+            if (result == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY) {
+                this.idleTime = 0;
+            } else {
+                this.setDead();
+            }
+        } else {
+            Entity entity = this.world.getClosestPlayerToEntity(this, -1.0D);
+
+            if (entity != null) {
+                double d0 = entity.posX - this.posX;
+                double d1 = entity.posY - this.posY;
+                double d2 = entity.posZ - this.posZ;
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+
+                if (this.canDespawn() && d3 > 5000.0D) {
+                    this.setDead();
+                }
+                if (this.idleTime > 300 && this.rand.nextInt(400) == 0 && d3 > 256.0D && this.canDespawn()) {
+                    this.setDead();
+                } else if (d3 < 256.0D) {
+                    this.idleTime = 0;
+                }
+            }
+        }
+    }
+
     public boolean getCanSpawnHere() {
         int spawnRoll = RatsMod.CONFIG_OPTIONS.ratSpawnDecrease;
-        if(RatUtils.canSpawnInDimension(world)) {
+        if (RatUtils.canSpawnInDimension(world)) {
             if (RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters) {
                 if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
                     spawnRoll *= 2;
@@ -543,7 +572,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isHoldingFood() {
-        return RatUtils.isRatFood(this.getHeldItem(EnumHand.MAIN_HAND));
+        return !this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && RatUtils.isRatFood(this.getHeldItem(EnumHand.MAIN_HAND));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {

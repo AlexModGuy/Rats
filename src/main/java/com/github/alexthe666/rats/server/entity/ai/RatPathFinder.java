@@ -52,7 +52,6 @@ public class RatPathFinder extends PathFinder {
 
     @Nullable
     private Path findPath(IBlockAccess worldIn, PathPoint pathFrom, PathPoint pathTo, float maxDistance) {
-        Path vanillaPath = findVanillaPath(pathFrom, pathTo, maxDistance);
         BlockPos startPos = new BlockPos(pathFrom.x, pathFrom.y, pathFrom.z);
         BlockPos endPos = new BlockPos(pathTo.x, pathTo.y, pathTo.z);
         List<BlockPos> openTubes = new ArrayList<>();
@@ -81,7 +80,7 @@ public class RatPathFinder extends PathFinder {
         if (tubePath != null && rat.shouldBeSuckedIntoTube()) {
             return tubePath;
         }
-        return vanillaPath;
+        return findVanillaPath(pathFrom, pathTo, maxDistance);
     }
 
     public Path findTubePath(IBlockAccess worldIn, PathPoint pathFrom, BlockPos tubePos, BlockPos tubeActualPos, float maxDistance) {

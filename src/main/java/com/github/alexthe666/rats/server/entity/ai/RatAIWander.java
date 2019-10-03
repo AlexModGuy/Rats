@@ -18,7 +18,7 @@ public class RatAIWander extends EntityAIBase {
     private boolean mustUpdate;
 
     public RatAIWander(EntityRat creatureIn, double speedIn) {
-        this(creatureIn, speedIn, 20);
+        this(creatureIn, speedIn, 100);
     }
 
     public RatAIWander(EntityRat creatureIn, double speedIn, int chance) {

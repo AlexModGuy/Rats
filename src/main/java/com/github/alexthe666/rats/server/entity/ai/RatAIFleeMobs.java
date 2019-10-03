@@ -7,7 +7,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EntitySelectors;
@@ -50,11 +52,16 @@ public class RatAIFleeMobs extends EntityAIBase {
         if(this.entity.isTamed() || this.entity.hasPlague()){
             return false;
         }
-        List<EntityLivingBase> list = this.entity.world.getEntitiesWithinAABB(EntityLivingBase.class, this.entity.getEntityBoundingBox().grow((double) this.avoidDistance, 8.0D, (double) this.avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
-        if (list.isEmpty()) {
+        List<EntityOcelot> ocelotList = this.entity.world.<EntityOcelot>getEntitiesWithinAABB(EntityOcelot.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        List<EntityPlayer> playerList = this.entity.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        if (ocelotList.isEmpty() && playerList.isEmpty()) {
             return false;
         } else {
-            this.closestLivingEntity = list.get(0);
+            if(!ocelotList.isEmpty()){
+                this.closestLivingEntity = ocelotList.get(0);
+            }else {
+                this.closestLivingEntity = playerList.get(0);
+            }
             Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
             if (vec3d == null) {
                 return false;
