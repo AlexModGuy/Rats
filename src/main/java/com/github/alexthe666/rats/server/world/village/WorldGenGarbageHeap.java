@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
+import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -48,12 +50,11 @@ public class WorldGenGarbageHeap extends WorldGenerator {
         }
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
-        PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE);
+        PlacementSettings settings = new PlacementSettings().setRotation(WorldGenRatRuin.getRotationFromFacing(facing)).setReplacedBlock(Blocks.AIR);
         Template template = templateManager.getTemplate(server, STRUCTURE);
         Biome biome = worldIn.getBiome(position);
-        int xSize = template.getSize().getX() / 2;
-        int zSize = template.getSize().getZ()/ 2;
-        template.addBlocksToWorld(worldIn, position.down(3).offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize), new RatsVillageProcessor(position.up(3), null, settings, biome), settings, 2);
+        BlockPos genPos = position.down(3).offset(facing, template.getSize().getZ()).offset(facing.rotateYCCW(), template.getSize().getX());
+        template.addBlocksToWorld(worldIn, genPos, new RatsVillageProcessor(position.up(3), null, settings, biome), settings, 2);
         return true;
     }
 }

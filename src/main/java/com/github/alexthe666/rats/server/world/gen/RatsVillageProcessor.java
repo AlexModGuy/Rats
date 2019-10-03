@@ -26,15 +26,11 @@ public class RatsVillageProcessor implements ITemplateProcessor {
     private Biome biome;
     private BlockPos blockPos;
     private PlacementSettings settings;
-    private int spawnedOcelots;
-    private int spawnedWolves;
     private WorldGenPetShop petShop;
     public RatsVillageProcessor(BlockPos pos, WorldGenPetShop worldGenPetShop, PlacementSettings settings, Biome biome) {
         this.biome = biome;
         this.blockPos = pos;
         this.settings = settings;
-        this.spawnedOcelots = 0;
-        this.spawnedWolves = 0;
         this.petShop = worldGenPetShop;
     }
 
@@ -49,30 +45,46 @@ public class RatsVillageProcessor implements ITemplateProcessor {
             Template.BlockInfo newInfo = new Template.BlockInfo(pos, Blocks.CHEST.getDefaultState(), tag);
             return newInfo;
         } else if(blockInfoIn.blockState.getBlock() == Blocks.DIAMOND_BLOCK) {//spawn ocelot
-            if(spawnedOcelots == 0 || spawnedOcelots < 2 && worldIn.rand.nextInt(3) == 0){
-                petShop.ocelotPos.add(pos);
-                spawnedOcelots++;
+            if(petShop.wolfPos.size() == 0 || petShop.wolfPos.size() < 2 && worldIn.rand.nextInt(1) == 0){
+                if(!petShop.wolfPos.contains(pos)){
+                    petShop.wolfPos.add(pos);
+                }
             }
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.GOLD_BLOCK) {//spawn rat cage
-            petShop.ratPos.add(pos);
+            if(!petShop.ratPos.contains(pos)) {
+                petShop.ratPos.add(pos);
+            }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.QUARTZ_BLOCK) {//spawn rat or rabbit cage
-            petShop.rabbitPos.add(pos);
+            if(!petShop.rabbitPos.contains(pos)) {
+                petShop.rabbitPos.add(pos);
+            }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.IRON_BLOCK) {//spawn wolf cage
-            if(spawnedWolves == 0 || spawnedWolves < 2 && worldIn.rand.nextInt(3) == 0){
-                petShop.wolfPos.add(pos);
-                spawnedWolves++;
+            if(petShop.ocelotPos.size() == 0 || petShop.ocelotPos.size() < 2 && worldIn.rand.nextInt(3) == 0){
+                if(!petShop.ocelotPos.contains(pos)) {
+                    petShop.ocelotPos.add(pos);
+                }
             }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.EMERALD_BLOCK) {//spawn parrot cage
-            petShop.parrotPos.add(pos);
+            if(!petShop.parrotPos.contains(pos)) {
+                petShop.parrotPos.add(pos);
+            }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
         } else if(blockInfoIn.blockState.getBlock() == Blocks.COAL_BLOCK) {//spawn shopkeeper
-            petShop.villagerPos.add(pos);
+            if(!petShop.villagerPos.contains(pos)) {
+                petShop.villagerPos.add(pos);
+            }
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
-        }else{
+        }else if(blockInfoIn.blockState.getBlock() == Blocks.LAPIS_BLOCK) {//spawn ocelot
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
+        }
+        {
             IBlockState state = getBiomeSpecificBlockState(blockInfoIn.blockState, biome);
             if(state != blockInfoIn.blockState){
                 return new Template.BlockInfo(pos, state, null);

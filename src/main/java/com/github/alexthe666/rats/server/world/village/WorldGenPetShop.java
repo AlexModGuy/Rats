@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.world.village;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
+import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
@@ -23,7 +24,7 @@ import java.util.*;
 
 public class WorldGenPetShop extends WorldGenerator {
 
-    private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_pet_shop");
+    private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_petshop");
     public static final ResourceLocation UPSTAIRS_LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop_upstairs");
     public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop");
     private VillageComponentPetShop component;
@@ -67,20 +68,19 @@ public class WorldGenPetShop extends WorldGenerator {
         rabbitPos.clear();
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
-        PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE).setReplacedBlock(Blocks.AIR);
+        PlacementSettings settings = new PlacementSettings().setRotation(WorldGenRatRuin.getRotationFromFacing(facing)).setReplacedBlock(Blocks.AIR);
         Template template = templateManager.getTemplate(server, STRUCTURE);
         Biome biome = worldIn.getBiome(position);
-        int xSize = template.getSize().getX() / 2;
-        int zSize = template.getSize().getZ() / 2;
         int spawnedVillager = 0;
-        template.addBlocksToWorld(worldIn, position.up(2), new RatsVillageProcessor(position.up(3), this, settings, biome), settings, 2);
+        BlockPos genPos = position.up(2).offset(facing, template.getSize().getZ()).offset(facing.rotateYCCW(), template.getSize().getX());
+        template.addBlocksToWorld(worldIn, genPos, new RatsVillageProcessor(position.up(3), this, settings, biome), settings, 2);
         //.offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize)
         Iterator<BlockPos> ocelotItr = ocelotPos.iterator();
         while(ocelotItr.hasNext()){
             BlockPos pos = ocelotItr.next();
             if(worldIn.rand.nextInt(3) == 0){
                 EntityOcelot ocelot = new EntityOcelot(worldIn);
-                //ocelot.enablePersistence();
+                ocelot.enablePersistence();
                 ocelot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
                 worldIn.spawnEntity(ocelot);
             }
@@ -92,7 +92,7 @@ public class WorldGenPetShop extends WorldGenerator {
             EntityRat rat = new EntityRat(worldIn);
             rat.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
             rat.setPlague(false);
-            //ocelot.enablePersistence();
+            rat.enablePersistence();
             rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
             worldIn.spawnEntity(rat);
             ratItr.remove();
@@ -103,7 +103,7 @@ public class WorldGenPetShop extends WorldGenerator {
             BlockPos pos = rabbitItr.next();
             if(worldIn.rand.nextInt(3) == 0) {
                 EntityAnimal rat = worldIn.rand.nextBoolean() ? new EntityRat(worldIn) : new EntityRabbit(worldIn);
-                //ocelot.enablePersistence();
+                rat.enablePersistence();
                 rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
                 worldIn.spawnEntity(rat);
             }
@@ -115,7 +115,7 @@ public class WorldGenPetShop extends WorldGenerator {
             BlockPos pos = wolfItr.next();
             if(worldIn.rand.nextInt(3) == 0) {
                 EntityWolf wolf = new EntityWolf(worldIn);
-                //ocelot.enablePersistence();
+                wolf.enablePersistence();
                 wolf.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
                 worldIn.spawnEntity(wolf);
             }
@@ -125,12 +125,10 @@ public class WorldGenPetShop extends WorldGenerator {
         Iterator<BlockPos> parrotItr = parrotPos.iterator();
         while(parrotItr.hasNext()){
             BlockPos pos = parrotItr.next();
-            if(worldIn.rand.nextInt(3) == 0) {
-                EntityParrot parrot = new EntityParrot(worldIn);
-                //ocelot.enablePersistence();
-                parrot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-                worldIn.spawnEntity(parrot);
-            }
+            EntityParrot parrot = new EntityParrot(worldIn);
+            parrot.enablePersistence();
+            parrot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
+            worldIn.spawnEntity(parrot);
             parrotItr.remove();
         }
         Iterator<BlockPos> villageItr = villagerPos.iterator();

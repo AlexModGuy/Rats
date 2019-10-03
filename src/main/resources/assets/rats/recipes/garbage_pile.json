@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "rats:contaminated_food",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:garbage_pile"
+  }
+}
