@@ -50,12 +50,12 @@ public class VillageComponentGarbageHeap extends StructureVillagePieces.Village 
         BlockPos blockpos = new BlockPos(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1);
         EnumFacing facing = EnumFacing.SOUTH;
         BlockPos genPos = blockpos;
-        for(int i = this.boundingBox.minX; i < this.boundingBox.maxX; i++){
+        /*for(int i = this.boundingBox.minX; i < this.boundingBox.maxX; i++){
             for(int k = this.boundingBox.minZ; k < this.boundingBox.maxZ; k++){
                 world.setBlockState(new BlockPos(i, boundingBox.maxY, k), Blocks.GOLD_BLOCK.getDefaultState());
             }
-        }
-        world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
+        }*/
+        //world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
         return new WorldGenGarbageHeap(this, facing).generate(world, random, genPos);
     }
 
