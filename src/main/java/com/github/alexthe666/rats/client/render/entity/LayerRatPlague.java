@@ -26,11 +26,14 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             return;
         }
         if (rat.hasPlague()) {
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.enableNormalize();
             GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             this.ratRenderer.bindTexture(TEXTURE);
             this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.disableBlend();
+            GlStateManager.disableNormalize();
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
             GlStateManager.pushMatrix();
