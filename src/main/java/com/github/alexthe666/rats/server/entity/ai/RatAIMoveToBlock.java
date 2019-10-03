@@ -18,9 +18,9 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
      * Block to move to
      */
     protected BlockPos destinationBlock = BlockPos.ORIGIN;
+    protected double distanceCheck = 1.0D;
     private int timeoutCounter;
     private int maxStayTicks;
-    protected double distanceCheck = 1.0D;
     private boolean isAboveDestination;
 
     public RatAIMoveToBlock(EntityCreature creature, double speedIn, int length) {

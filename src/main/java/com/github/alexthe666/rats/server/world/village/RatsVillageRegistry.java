@@ -13,12 +13,12 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 public class RatsVillageRegistry {
     public static final VillagerRegistry.VillagerProfession PET_SHOP_OWNER = new VillagerRegistry.VillagerProfession("rats:pet_shop_owner", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
 
-    public static void register(){
-        if(RatsMod.CONFIG_OPTIONS.villageGarbageHeaps) {
+    public static void register() {
+        if (RatsMod.CONFIG_OPTIONS.villageGarbageHeaps) {
             MapGenStructureIO.registerStructureComponent(VillageComponentGarbageHeap.class, "garbage_heap");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorGarbageHeap());
         }
-        if(RatsMod.CONFIG_OPTIONS.villagePetShops) {
+        if (RatsMod.CONFIG_OPTIONS.villagePetShops) {
             MapGenStructureIO.registerStructureComponent(VillageComponentPetShop.class, "pet_shop");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPetShop());
         }

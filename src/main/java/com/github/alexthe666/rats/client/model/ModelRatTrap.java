@@ -36,7 +36,7 @@ public class ModelRatTrap extends AdvancedModelBase {
 
     public void render(float f5, float shutProgress) {
         this.resetToDefaultPose();
-        this.hingeMain.rotateAngleX += (float)(shutProgress * Math.PI / 6.0F);
+        this.hingeMain.rotateAngleX += (float) (shutProgress * Math.PI / 6.0F);
         this.hingeMain.render(f5);
         this.bottom.render(f5);
 

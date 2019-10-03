@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.entity.Entity;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +17,7 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         this.nodeProcessor.setCanSwim(true);
-        return new RatPathFinder(this.nodeProcessor, (EntityRat)entity);
+        return new RatPathFinder(this.nodeProcessor, (EntityRat) entity);
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {

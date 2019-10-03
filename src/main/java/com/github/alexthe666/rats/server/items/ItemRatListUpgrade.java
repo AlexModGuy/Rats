@@ -1,12 +1,10 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.inventory.ContainerRatUpgrade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -16,12 +14,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 public class ItemRatListUpgrade extends ItemRatUpgrade {
 
@@ -38,14 +33,14 @@ public class ItemRatListUpgrade extends ItemRatUpgrade {
     }
 
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if(stack.getTagCompound() == null){
+        if (stack.getTagCompound() == null) {
             stack.setTagCompound(new NBTTagCompound());
         }
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
         ItemStack itemStackIn = player.getHeldItem(hand);
-        if(!player.isSneaking()){
+        if (!player.isSneaking()) {
             player.openGui(RatsMod.INSTANCE, 3, worldIn, 0, 0, 0);
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
         }
@@ -57,7 +52,7 @@ public class ItemRatListUpgrade extends ItemRatUpgrade {
         NBTTagCompound nbttagcompound1 = stack.getTagCompound();
 
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
             int i = 0;
             int j = 0;

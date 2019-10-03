@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
@@ -18,7 +17,7 @@ public class MessageDancingRat extends AbstractMessage<MessageDancingRat> {
     public long blockPos;
     public int moves;
 
-    public MessageDancingRat(){
+    public MessageDancingRat() {
 
     }
 
@@ -34,7 +33,7 @@ public class MessageDancingRat extends AbstractMessage<MessageDancingRat> {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;
-            if(!rat.isDancing() && message.setDancing){
+            if (!rat.isDancing() && message.setDancing) {
                 rat.setDanceMoves(message.moves);
             }
             rat.setDancing(message.setDancing);
@@ -47,7 +46,7 @@ public class MessageDancingRat extends AbstractMessage<MessageDancingRat> {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;
-            if(!rat.isDancing() && message.setDancing){
+            if (!rat.isDancing() && message.setDancing) {
                 rat.setDanceMoves(message.moves);
             }
             rat.setDancing(message.setDancing);

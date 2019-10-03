@@ -1,17 +1,14 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.entity.ai.PiratBoatPathNavigate;
-import com.github.alexthe666.rats.server.entity.ai.RatPathPathNavigateGround;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -43,19 +40,28 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityPiratBoat.class, DataSerializers.BOOLEAN);
     private final float[] paddlePositions;
+    protected int navigatorType;
     private boolean prevFire;
     private int fireCooldown = 0;
     private double waterLevel;
     private EntityBoat.Status status;
     private EntityBoat.Status previousStatus;
     private double lastYd;
-    protected int navigatorType;
 
     public EntityPiratBoat(World worldIn) {
         super(worldIn);
         this.paddlePositions = new float[2];
         this.setSize(1.75F, 0.8F);
         switchNavigator(0);
+    }
+
+    private static ItemStack generateBanner() {
+        NBTTagList patterns = new NBTTagList();
+        NBTTagCompound currentPattern = new NBTTagCompound();
+        currentPattern.setString("Pattern", "rats.rat_and_crossbones");
+        currentPattern.setInteger("Color", 15);
+        patterns.appendTag(currentPattern);
+        return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
 
     protected void switchNavigator(int type) {
@@ -66,14 +72,6 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
             this.navigator = new PiratBoatPathNavigate(this, world);
             this.navigatorType = 0;
         }
-    }
-    private static ItemStack generateBanner() {
-        NBTTagList patterns = new NBTTagList();
-        NBTTagCompound currentPattern = new NBTTagCompound();
-        currentPattern.setString("Pattern", "rats.rat_and_crossbones");
-        currentPattern.setInteger("Color", 15);
-        patterns.appendTag(currentPattern);
-        return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
 
     public boolean writeToNBTOptional(NBTTagCompound compound) {
@@ -172,7 +170,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         this.status = this.getBoatStatus();
         super.onUpdate();
         boolean groundNavigate = !this.isInWater() && this.status != EntityBoat.Status.IN_WATER;
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             if (groundNavigate && navigatorType != 1) {
                 switchNavigator(1);
             }
@@ -196,7 +194,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         }
         prevFire = this.isFiring();
         if (!this.isBeingRidden() && !world.isRemote) {
-             this.attackEntityFrom(DamageSource.DROWN, 1000);
+            this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
         if (this.getControllingPassenger() != null) {
             this.updateMotion();

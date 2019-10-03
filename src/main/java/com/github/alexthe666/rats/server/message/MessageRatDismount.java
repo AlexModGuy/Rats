@@ -13,7 +13,7 @@ public class MessageRatDismount extends AbstractMessage<MessageRatDismount> {
 
     public int ratId;
 
-    public MessageRatDismount(){
+    public MessageRatDismount() {
 
     }
 

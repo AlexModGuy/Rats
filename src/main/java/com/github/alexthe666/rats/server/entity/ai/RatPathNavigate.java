@@ -28,16 +28,16 @@ public class RatPathNavigate extends PathNavigateGround {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         this.nodeProcessor.setCanSwim(true);
-        return new RatPathFinder(this.nodeProcessor, (EntityRat)entity);
+        return new RatPathFinder(this.nodeProcessor, (EntityRat) entity);
     }
 
     public Path getPathToPos(BlockPos pos) {
         this.targetPosition = pos;
-        if(entity.world.getBlockState(pos) instanceof BlockRatTube){
+        if (entity.world.getBlockState(pos) instanceof BlockRatTube) {
             IBlockState state = entity.world.getBlockState(pos);
-            for(int i = 0; i < EnumFacing.values().length; i++){
+            for (int i = 0; i < EnumFacing.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if(state.getValue(bool) && entity.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]){
+                if (state.getValue(bool) && entity.getHorizontalFacing().getOpposite() != EnumFacing.values()[i]) {
                     return super.getPathToPos(pos.offset(EnumFacing.values()[i]));
                 }
             }
@@ -68,7 +68,7 @@ public class RatPathNavigate extends PathNavigateGround {
 
     public void onUpdateNavigation() {
         ++this.totalTicks;
-        ((EntityRat)this.entity).setTubeTarget(this.targetPosition);
+        ((EntityRat) this.entity).setTubeTarget(this.targetPosition);
 
         if (this.tryUpdatePath) {
             this.updatePath();
@@ -101,7 +101,7 @@ public class RatPathNavigate extends PathNavigateGround {
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {
-        if(this.world.getBlockState(pos).getBlock() instanceof BlockRatTube){
+        if (this.world.getBlockState(pos).getBlock() instanceof BlockRatTube) {
             IBlockState state = this.world.getBlockState(pos);
             return state.getBlock().getMetaFromState(state) > 0;
         }

@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.client.particle;
 
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRedstone;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;

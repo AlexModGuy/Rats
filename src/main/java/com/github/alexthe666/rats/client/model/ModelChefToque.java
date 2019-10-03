@@ -21,7 +21,7 @@ public class ModelChefToque extends ModelBiped {
         this.setRotateAngle(toupe, -0.27314402793711257F, 0.0F, 0.0F);
 
         if (entityIn instanceof EntityArmorStand) {
-            EntityArmorStand entityarmorstand = (EntityArmorStand)entityIn;
+            EntityArmorStand entityarmorstand = (EntityArmorStand) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
             this.bipedHead.rotateAngleY = 0.017453292F * entityarmorstand.getHeadRotation().getY();
             this.bipedHead.rotateAngleZ = 0.017453292F * entityarmorstand.getHeadRotation().getZ();
@@ -44,7 +44,7 @@ public class ModelChefToque extends ModelBiped {
             this.bipedRightLeg.rotateAngleZ = 0.017453292F * entityarmorstand.getRightLegRotation().getZ();
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             copyModelAngles(this.bipedHead, this.bipedHeadwear);
-        }else{
+        } else {
             super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         }
     }

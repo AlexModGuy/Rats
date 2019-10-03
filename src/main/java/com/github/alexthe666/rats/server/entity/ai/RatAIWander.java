@@ -40,23 +40,23 @@ public class RatAIWander extends EntityAIBase {
         }
         Vec3d vec3d = null;
         boolean inCage = rat.isInCage() || rat.inTube();
-        if(inCage){
-            if(rat.inTube()){
+        if (inCage) {
+            if (rat.inTube()) {
                 vec3d = RatUtils.generateRandomCagePos(this.rat, 30, 10, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), rat.waterBased);
-                if(vec3d == null){
+                if (vec3d == null) {
                     vec3d = RatUtils.generateRandomCageOrTubePos(this.rat, 20, 20, null, false);
                 }
-            }else{
+            } else {
                 vec3d = RatUtils.generateRandomTubePos(this.rat, 15, 3, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), rat.waterBased);
-                if(vec3d == null){
+                if (vec3d == null) {
                     vec3d = RatUtils.findRandomCageOrTubeTarget(this.rat, 15, 2);
                 }
             }
         }
-        if(!inCage || vec3d == null){
-            if(rat.waterBased){
-                vec3d = RatUtils.generateRandomWaterPos(this.rat, this.rat.isTamed() ? 5 : 10, 7, null ,true);
-            }else{
+        if (!inCage || vec3d == null) {
+            if (rat.waterBased) {
+                vec3d = RatUtils.generateRandomWaterPos(this.rat, this.rat.isTamed() ? 5 : 10, 7, null, true);
+            } else {
                 vec3d = RandomPositionGenerator.findRandomTarget(this.rat, this.rat.isTamed() ? 5 : 10, 7);
 
             }
@@ -64,7 +64,7 @@ public class RatAIWander extends EntityAIBase {
         if (vec3d == null) {
             return false;
         } else {
-            if(inCage){
+            if (inCage) {
                 vec3d = new Vec3d(RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat));
             }
             this.xPosition = vec3d.x;

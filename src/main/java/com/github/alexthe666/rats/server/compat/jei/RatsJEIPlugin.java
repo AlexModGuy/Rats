@@ -20,7 +20,6 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapperFactory;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -31,9 +30,14 @@ public class RatsJEIPlugin implements IModPlugin {
     public static final String CHEF_RAT_ID = "rats.chef_rat";
     public static final String ARCHEOLOGIST_RAT_ID = "rats.archeologist_rat";
 
+    private static void addDescription(IModRegistry registry, ItemStack stack) {
+        registry.addIngredientInfo(stack, ItemStack.class, stack.getTranslationKey() + ".jei_desc");
+
+    }
+
     @SuppressWarnings("deprecation")
     public void register(IModRegistry registry) {
-        if(RatsMod.CONFIG_OPTIONS.cheesemaking) {
+        if (RatsMod.CONFIG_OPTIONS.cheesemaking) {
             registry.addRecipes(RatsRecipeRegistry.CAULDRON_RECIPES, CAULDRON_ID);
             registry.addRecipeHandlers(new CauldronRecipeHandler());
             registry.handleRecipes(SharedRecipe.class, new CauldronFactory(), CAULDRON_ID);
@@ -63,7 +67,7 @@ public class RatsJEIPlugin implements IModPlugin {
     }
 
     public void registerCategories(IRecipeCategoryRegistration registry) {
-        if(RatsMod.CONFIG_OPTIONS.cheesemaking) {
+        if (RatsMod.CONFIG_OPTIONS.cheesemaking) {
             registry.addRecipeCategories(new CauldronRecipeCategory());
         }
         registry.addRecipeCategories(new ChefRecipeCategory());
@@ -89,10 +93,5 @@ public class RatsJEIPlugin implements IModPlugin {
         public IRecipeWrapper getRecipeWrapper(SharedRecipe recipe) {
             return new ArcheologistRecipeWrapper(recipe);
         }
-    }
-
-    private static void addDescription(IModRegistry registry, ItemStack stack){
-        registry.addIngredientInfo(stack, ItemStack.class, stack.getTranslationKey() + ".jei_desc");
-
     }
 }

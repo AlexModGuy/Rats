@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

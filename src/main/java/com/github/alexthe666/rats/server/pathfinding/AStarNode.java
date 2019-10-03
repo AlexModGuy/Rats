@@ -1,21 +1,18 @@
 package com.github.alexthe666.rats.server.pathfinding;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class AStarNode {
     private static final float H = 1;
-    private AStar aStar;
-
     public AStarNode start;
+    protected double calcCost = -1;
+    private AStar aStar;
     private BlockPos pos;
     private BlockPos end;
     private double baseCost;
-    protected double calcCost = -1;
 
     public AStarNode(AStar aStar, AStarNode start, BlockPos pos, double cost, BlockPos end) {
         this.aStar = aStar;
@@ -40,12 +37,12 @@ public class AStarNode {
             if (AStar.isRatTube(world, offset) || world.getBlockState(offset).getBlock() instanceof BlockRatCage) {
                 travel(offset, baseCost + 1);
                 flag = true;
-            }else if ((offPos = AStar.getConnectedToRatTube(world, offset)) != null) {
+            } else if ((offPos = AStar.getConnectedToRatTube(world, offset)) != null) {
                 travel(offPos, baseCost + 10);
                 flag = true;
             }
         }
-        if(aStar.includeAir) {
+        if (aStar.includeAir) {
             for (int i = -1; i < 1; i++) {
                 for (int j = -1; j < 1; j++) {
                     for (int k = -1; k < 1; k++) {

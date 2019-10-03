@@ -1,14 +1,11 @@
 package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelMarbledCheeseGolem extends AdvancedModelBase {
@@ -156,7 +153,7 @@ public class ModelMarbledCheeseGolem extends AdvancedModelBase {
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityMarbleCheeseGolem rat) {
-        this.blade.rotateAngleX = (float)Math.toRadians(MathHelper.wrapDegrees(f2 * 50));
+        this.blade.rotateAngleX = (float) Math.toRadians(MathHelper.wrapDegrees(f2 * 50));
         float idleSpeed = 0.3F;
         float idleDegree = 0.7F;
         this.bob(body, idleSpeed, idleDegree, -1, 0, false, f2, 1);
@@ -164,20 +161,20 @@ public class ModelMarbledCheeseGolem extends AdvancedModelBase {
         this.bob(ear2, idleSpeed, idleDegree, -1, 0, false, f2, 1);
         this.bob(ear1, idleSpeed, idleDegree, -1, 0, false, f2, 1);
         this.bob(armRight1, idleSpeed, idleDegree, 2, 0, false, f2, 1);
-        this.bob(armRight2, idleSpeed, idleDegree,2, 0,  false, f2, 1);
+        this.bob(armRight2, idleSpeed, idleDegree, 2, 0, false, f2, 1);
         this.bob(armLeft1, idleSpeed, idleDegree, 3, 0, false, f2, 1);
         this.bob(armLeft2, idleSpeed, idleDegree, 3, 0, false, f2, 1);
         this.bob(cannon, idleSpeed, idleDegree, 3, 0, false, f2, 1);
-        this.walk(headBase, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0 , f2, 1);
-        this.swing(ear1, idleSpeed * 0.4F, idleDegree * 0.4F, false, 0, 0 , f2, 1);
-        this.swing(ear2, idleSpeed * 0.4F, idleDegree * 0.4F, true, 0, 0 , f2, 1);
-        this.walk(armRight1, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0 , f2, 1);
-        this.walk(armRight2, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, -0.1F , f2, 1);
-        this.walk(cannon, idleSpeed * 0.4F, idleDegree * -0.2F, false, 1, 0F , f2, 1);
-        this.walk(armLeft1, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0 , f2, 1);
-        this.walk(armLeft2, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, -0.1F , f2, 1);
-        this.walk(body, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, 0.1F , f2, 1);
-        this.walk(thruster, idleSpeed * 0.4F, idleDegree * 0.2F, false, 1, 0.1F , f2, 1);
+        this.walk(headBase, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0, f2, 1);
+        this.swing(ear1, idleSpeed * 0.4F, idleDegree * 0.4F, false, 0, 0, f2, 1);
+        this.swing(ear2, idleSpeed * 0.4F, idleDegree * 0.4F, true, 0, 0, f2, 1);
+        this.walk(armRight1, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0, f2, 1);
+        this.walk(armRight2, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, -0.1F, f2, 1);
+        this.walk(cannon, idleSpeed * 0.4F, idleDegree * -0.2F, false, 1, 0F, f2, 1);
+        this.walk(armLeft1, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0, f2, 1);
+        this.walk(armLeft2, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, -0.1F, f2, 1);
+        this.walk(body, idleSpeed * 0.4F, idleDegree * 0.1F, false, 1, 0.1F, f2, 1);
+        this.walk(thruster, idleSpeed * 0.4F, idleDegree * 0.2F, false, 1, 0.1F, f2, 1);
         this.faceTarget(f3, f4, 1, headBase);
     }
 

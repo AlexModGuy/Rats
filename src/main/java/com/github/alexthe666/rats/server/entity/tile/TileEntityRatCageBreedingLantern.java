@@ -3,15 +3,10 @@ package com.github.alexthe666.rats.server.entity.tile;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
@@ -69,13 +64,13 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
                         }
                     }
                 }
-                if(males.size() > 0 && females.size() > 0){
+                if (males.size() > 0 && females.size() > 0) {
                     EntityRat male = males.get(0);
                     EntityRat female = females.get(0);
-                    if(males.size() > 1){
+                    if (males.size() > 1) {
                         male = males.get(random.nextInt(males.size() - 1));
                     }
-                    if(females.size() > 1){
+                    if (females.size() > 1) {
                         female = females.get(random.nextInt(females.size() - 1));
                     }
                     male.world.setEntityState(male, (byte) 83);
@@ -89,6 +84,6 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
         } else {
             breedingCooldown--;
         }
-        world.spawnParticle(EnumParticleTypes.REDSTONE, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3, new int[0]);
+        world.spawnParticle(EnumParticleTypes.REDSTONE, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3);
     }
 }

@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,8 +13,8 @@ import java.util.List;
 import java.util.Random;
 
 public class VillageComponentGarbageHeap extends StructureVillagePieces.Village {
-    private int averageGroundLevel = -1;
     int villagerCount = 0;
+    private int averageGroundLevel = -1;
 
     public VillageComponentGarbageHeap() {
         super();
@@ -30,7 +28,7 @@ public class VillageComponentGarbageHeap extends StructureVillagePieces.Village 
     }
 
     public static VillageComponentGarbageHeap buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
-        if(!RatsMod.CONFIG_OPTIONS.villageGarbageHeaps){
+        if (!RatsMod.CONFIG_OPTIONS.villageGarbageHeaps) {
             return null;
         }
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 8, 4, 8, facing);

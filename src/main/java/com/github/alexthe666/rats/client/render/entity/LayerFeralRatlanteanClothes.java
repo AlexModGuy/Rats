@@ -1,10 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 

@@ -16,7 +16,7 @@ public class RatAIAttackMelee extends EntityAIAttackMelee {
         //this.attackTick = 0;
     }
 
-    public boolean shouldExecute(){
+    public boolean shouldExecute() {
         return !rat.isInCage() && super.shouldExecute();
     }
 }

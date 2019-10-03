@@ -6,8 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLeashKnot;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -38,7 +36,7 @@ public class RenderLaserPortal extends Render<EntityLaserPortal> {
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));
         }
 
-        float d1 = this.interpolateValue((float)entity.scaleOfPortalPrev, (float)entity.scaleOfPortal, (float)(partialTicks));
+        float d1 = this.interpolateValue(entity.scaleOfPortalPrev, entity.scaleOfPortal, (partialTicks));
         GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.5F * d1, 1.5F * d1, 1.5F * d1);

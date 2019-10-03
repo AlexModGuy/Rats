@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.server.misc;
 import net.ilexiconn.llibrary.server.asm.InsnPredicate;
 import net.ilexiconn.llibrary.server.asm.RuntimePatcher;
 import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.play.client.CPacketVehicleMove;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

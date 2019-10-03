@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -39,7 +38,7 @@ public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEn
         );
         this.setLightLevel(0.5F);
         this.hasTileEntity = true;
-        this.setCreativeTab((CreativeTabs)null);
+        this.setCreativeTab(null);
         GameRegistry.registerTileEntity(TileEntityRatCageBreedingLantern.class, "rats.rat_cage_breeding_lantern");
     }
 
@@ -52,7 +51,7 @@ public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEn
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageBreedingLantern) {
             TileEntityRatCageBreedingLantern te = (TileEntityRatCageBreedingLantern) worldIn.getTileEntity(pos);
-            if(te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)){
+            if (te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)) {
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
                 if (!worldIn.isRemote) {
                     worldIn.spawnEntity(entityItem);

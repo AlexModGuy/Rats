@@ -10,7 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -88,7 +90,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
                     GlStateManager.translate(0.0F, -0.7F, 0.25);
                 }
             }
-        }else{
+        } else {
             float f7 = rat.prevFlyingPitch + (rat.flyingPitch - rat.prevFlyingPitch) * partialTickTime;
             GL11.glRotatef(rat.flyingPitch, 1, 0, 0);
         }
@@ -100,14 +102,14 @@ public class RenderRat extends RenderLiving<EntityRat> {
         if (entity.isChild()) {
             return PINKIE_TEXTURE;
         } else {
-            if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)){
+            if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 return ENDER_UPGRADE_TEXTURE;
             }
-            if(!entity.getCustomNameTag().isEmpty()){
-                if(entity.getCustomNameTag().contains("julian") || entity.getCustomNameTag().contains("Julian")){
+            if (!entity.getCustomNameTag().isEmpty()) {
+                if (entity.getCustomNameTag().contains("julian") || entity.getCustomNameTag().contains("Julian")) {
                     return JULIAN;
                 }
-                if(entity.getCustomNameTag().contains("shizuka") || entity.getCustomNameTag().contains("Shizuka")){
+                if (entity.getCustomNameTag().contains("shizuka") || entity.getCustomNameTag().contains("Shizuka")) {
                     return SHIZUKA;
                 }
             }

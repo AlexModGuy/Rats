@@ -114,8 +114,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.setCombatTask();
     }
 
-    public double getYOffset()
-    {
+    public double getYOffset() {
         return 0.45D;
     }
 

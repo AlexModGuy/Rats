@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -14,7 +13,7 @@ public class BlockMarbledCheeseSlab {
         }
 
         @Override
-        public Item getItem(){
+        public Item getItem() {
             return Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_SLAB);
         }
 
@@ -36,7 +35,7 @@ public class BlockMarbledCheeseSlab {
         }
 
         @Override
-        public Item getItem(){
+        public Item getItem() {
             return Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_SLAB);
         }
 

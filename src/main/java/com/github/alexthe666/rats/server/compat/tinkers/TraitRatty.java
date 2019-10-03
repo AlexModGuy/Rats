@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.compat.tinkers;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -12,7 +11,6 @@ import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
 
 public class TraitRatty extends AbstractTrait {
 
@@ -53,7 +51,7 @@ public class TraitRatty extends AbstractTrait {
         world.spawnEntity(entity);
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(x, y, z)), null);
         entity.setPlague(false);
-        if(target != null){
+        if (target != null) {
             entity.setAttackTarget(target);
         }
         entity.playLivingSound();

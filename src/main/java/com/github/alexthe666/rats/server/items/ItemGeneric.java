@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemGeneric extends Item {
 
     private int textLength = 0;
+
     public ItemGeneric(String name) {
         super();
         this.setCreativeTab(RatsMod.TAB);
@@ -20,14 +21,14 @@ public class ItemGeneric extends Item {
         this.setRegistryName(RatsMod.MODID, name);
     }
 
-    public ItemGeneric(String name, int textLength){
+    public ItemGeneric(String name, int textLength) {
         this(name);
         this.textLength = textLength;
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(textLength > 0){
-            for (int i = 0; i < textLength; i++){
+        if (textLength > 0) {
+            for (int i = 0; i < textLength; i++) {
                 tooltip.add(I18n.format(this.getTranslationKey() + ".desc" + i));
             }
         }

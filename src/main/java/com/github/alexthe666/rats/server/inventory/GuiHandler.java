@@ -23,17 +23,17 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         Entity entity = world.getEntityByID(x);
         TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-        if(ID == 1 && entity != null && entity instanceof EntityRat){
+        if (ID == 1 && entity != null && entity instanceof EntityRat) {
             return new ContainerRat((EntityRat) entity, player);
         }
-        if(ID == 2 && tile != null && tile instanceof TileEntityRatCraftingTable){
+        if (ID == 2 && tile != null && tile instanceof TileEntityRatCraftingTable) {
             return new ContainerRatCraftingTable((TileEntityRatCraftingTable) tile, player);
         }
-        if(ID == 3){
+        if (ID == 3) {
             EnumHand hand = EnumHand.MAIN_HAND;
             return new ContainerRatUpgrade(player, player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
-        if(ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner){
+        if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {
             return new ContainerUpgradeCombiner((TileEntityUpgradeCombiner) tile, player);
         }
         return null;
@@ -44,17 +44,17 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         Entity entity = world.getEntityByID(x);
         TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-        if(ID == 1 && entity != null && entity instanceof EntityRat){
+        if (ID == 1 && entity != null && entity instanceof EntityRat) {
             return new GuiRat((EntityRat) entity);
         }
-        if(ID == 2 && tile != null && tile instanceof TileEntityRatCraftingTable){
+        if (ID == 2 && tile != null && tile instanceof TileEntityRatCraftingTable) {
             return new GuiRatCraftingTable((TileEntityRatCraftingTable) tile, player.inventory);
         }
-        if(ID == 3){
+        if (ID == 3) {
             EnumHand hand = EnumHand.MAIN_HAND;
             return new GuiRatUpgrade(player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
-        if(ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner){
+        if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {
             return new GuiUpgradeCombiner((TileEntityUpgradeCombiner) tile, player.inventory);
         }
         return null;

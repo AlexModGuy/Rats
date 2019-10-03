@@ -30,7 +30,7 @@ public class ItemHat extends ItemArmor {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT){
+        if (stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
             tooltip.add(I18n.format("item.rats.archeologist_hat.desc"));
         }
     }

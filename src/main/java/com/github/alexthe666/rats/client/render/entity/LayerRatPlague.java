@@ -14,15 +14,15 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
     private static final ResourceLocation TEXTURE_TOGA = new ResourceLocation("rats:textures/entity/rat/toga.png");
     private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png");
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
-    private final RenderRat ratRenderer;
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
+    private final RenderRat ratRenderer;
 
     public LayerRatPlague(RenderRat ratRendererIn) {
         this.ratRenderer = ratRendererIn;
     }
 
     public void doRenderLayer(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(!(ratRenderer.getMainModel() instanceof ModelRat)){
+        if (!(ratRenderer.getMainModel() instanceof ModelRat)) {
             return;
         }
         if (rat.hasPlague()) {
@@ -42,7 +42,7 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             this.ratRenderer.bindTexture(TEXTURE_PSYCHIC);
             GlStateManager.matrixMode(5890);
             GlStateManager.loadIdentity();
-            float f = (float)rat.ticksExisted + partialTicks;
+            float f = (float) rat.ticksExisted + partialTicks;
             GlStateManager.translate(f * 0.01F, f * 0.01F, 0.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.enableBlend();

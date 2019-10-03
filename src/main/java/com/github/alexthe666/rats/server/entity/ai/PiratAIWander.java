@@ -1,11 +1,8 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPirat;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -32,11 +29,11 @@ public class PiratAIWander extends EntityAIBase {
     @Override
     public boolean shouldExecute() {
         if (!this.mustUpdate) {
-            if (this.rat.getRNG().nextInt( executionChance) != 0) {
+            if (this.rat.getRNG().nextInt(executionChance) != 0) {
                 return false;
             }
         }
-        Vec3d vec3d = RatUtils.generateRandomWaterPos(this.rat, 10, 5, null ,true);
+        Vec3d vec3d = RatUtils.generateRandomWaterPos(this.rat, 10, 5, null, true);
         if (vec3d == null) {
             return false;
         } else {

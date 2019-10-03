@@ -9,7 +9,7 @@ import net.minecraft.entity.Entity;
 public class ModelPinkie extends AdvancedModelBase {
     public AdvancedModelRenderer body;
 
-        public ModelPinkie() {
+    public ModelPinkie() {
         this.textureWidth = 16;
         this.textureHeight = 16;
         this.body = new AdvancedModelRenderer(this, 0, 0);

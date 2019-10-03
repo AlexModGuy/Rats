@@ -9,7 +9,7 @@ public class ArcheologistRecipeWrapper implements IRecipeWrapper {
 
     private SharedRecipe recipe;
 
-    public ArcheologistRecipeWrapper(SharedRecipe recipe){
+    public ArcheologistRecipeWrapper(SharedRecipe recipe) {
         this.recipe = recipe;
     }
 

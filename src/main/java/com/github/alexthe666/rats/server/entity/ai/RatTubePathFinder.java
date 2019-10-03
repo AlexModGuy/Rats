@@ -1,26 +1,21 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.pathfinding.AStar;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 import java.util.Set;
 
 public class RatTubePathFinder extends PathFinder {
 
     private final PathHeap path = new PathHeap();
-    private final Set<PathPoint> closedSet = Sets.<PathPoint>newHashSet();
+    private final Set<PathPoint> closedSet = Sets.newHashSet();
     private final PathPoint[] pathOptions = new PathPoint[32];
     private final NodeProcessor nodeProcessor;
     private EntityRat rat;
@@ -32,20 +27,17 @@ public class RatTubePathFinder extends PathFinder {
     }
 
     @Nullable
-    public Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, Entity targetEntity, float maxDistance)
-    {
+    public Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, Entity targetEntity, float maxDistance) {
         return this.findPath(worldIn, entitylivingIn, targetEntity.posX, targetEntity.getEntityBoundingBox().minY, targetEntity.posZ, maxDistance);
     }
 
     @Nullable
-    public Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, BlockPos targetPos, float maxDistance)
-    {
-        return this.findPath(worldIn, entitylivingIn, (double)((float)targetPos.getX() + 0.5F), (double)((float)targetPos.getY() + 0.5F), (double)((float)targetPos.getZ() + 0.5F), maxDistance);
+    public Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, BlockPos targetPos, float maxDistance) {
+        return this.findPath(worldIn, entitylivingIn, (double) ((float) targetPos.getX() + 0.5F), (double) ((float) targetPos.getY() + 0.5F), (double) ((float) targetPos.getZ() + 0.5F), maxDistance);
     }
 
     @Nullable
-    private Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, double x, double y, double z, float maxDistance)
-    {
+    private Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, double x, double y, double z, float maxDistance) {
         this.path.clearPath();
         this.nodeProcessor.init(worldIn, entitylivingIn);
         PathPoint pathpoint = this.nodeProcessor.getStart();
@@ -56,15 +48,15 @@ public class RatTubePathFinder extends PathFinder {
     }
 
     @Nullable
-    private Path findPath(IBlockAccess worldIn, PathPoint pathFrom, PathPoint pathTo, float maxDistance){
+    private Path findPath(IBlockAccess worldIn, PathPoint pathFrom, PathPoint pathTo, float maxDistance) {
         BlockPos startPos = new BlockPos(pathFrom.x, pathFrom.y, pathFrom.z);
         BlockPos endPos = new BlockPos(pathTo.x, pathTo.y, pathTo.z);
 
         AStar aStar = new AStar(startPos, endPos, 1000, false);
         BlockPos[] pathBlocks = aStar.getPath(worldIn);
-        PathPoint[] fromPos = new PathPoint[pathBlocks.length-1];
-        for(int i = 1; i < pathBlocks.length; i++){
-            fromPos[i-1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
+        PathPoint[] fromPos = new PathPoint[pathBlocks.length - 1];
+        for (int i = 1; i < pathBlocks.length; i++) {
+            fromPos[i - 1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
         }
         /*
         Random random =     new Random();

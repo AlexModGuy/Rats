@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityThrownBlock;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
@@ -17,7 +15,7 @@ public class MessageSyncThrownBlock extends AbstractMessage<MessageSyncThrownBlo
     public int blockEntityId;
     public long blockPos;
 
-    public MessageSyncThrownBlock(){
+    public MessageSyncThrownBlock() {
 
     }
 

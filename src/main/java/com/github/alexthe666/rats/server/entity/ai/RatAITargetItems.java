@@ -41,8 +41,8 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                if(rat.getCommand() == RatCommand.GATHER || rat.getCommand() == RatCommand.HARVEST){
-                    return item != null  && !item.getItem().isEmpty() && rat.canRatPickupItem(item.getItem());
+                if (rat.getCommand() == RatCommand.GATHER || rat.getCommand() == RatCommand.HARVEST) {
+                    return item != null && !item.getItem().isEmpty() && rat.canRatPickupItem(item.getItem());
                 }
                 return item instanceof EntityItem && !item.getItem().isEmpty() && RatUtils.shouldRaidItem(item.getItem()) && rat.canRatPickupItem(item.getItem());
             }
@@ -93,7 +93,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             ItemStack duplicate = this.targetEntity.getItem().copy();
             duplicate.setCount(1);
             this.targetEntity.getItem().shrink(1);
-            if(!rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !rat.world.isRemote){
+            if (!rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !rat.world.isRemote) {
                 rat.entityDropItem(rat.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
             }
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);

@@ -4,11 +4,12 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.NavigableMap;
+import java.util.Random;
+import java.util.TreeMap;
 
 public enum RatStructure {
     PILLAR("marble_pillar", true, 30),
@@ -29,23 +30,20 @@ public enum RatStructure {
     FORUM("marble_forum", true, 20),
     GIANT_CHEESE("marble_giant_cheese", true, 4);
 
-    public ResourceLocation structureLoc;
-    private boolean gen;
-    private int weight;
-    private static NavigableMap<Float, RatStructure> weightMap = new TreeMap<Float, RatStructure>();
-    private static float totalWeight;
-
-    private RatStructure(String file, boolean gen, int weight) {
-        structureLoc = new ResourceLocation(RatsMod.MODID, file);
-    }
-
     private static final IBlockState MARBLED_CHEESE_TILE = RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState();
     private static final IBlockState MARBLED_CHEESE_BRICK = RatsBlockRegistry.MARBLED_CHEESE_BRICK.getDefaultState();
     private static final IBlockState MARBLED_CHEESE_BRICK_MOSSY = RatsBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.getDefaultState();
     private static final IBlockState MARBLED_CHEESE_BRICK_CRACK = RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.getDefaultState();
-
     private static final IBlockState MARBLED_GRASS = RatsBlockRegistry.MARBLED_CHEESE_GRASS.getDefaultState();
     private static final IBlockState MARBLED_DIRT = RatsBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState();
+    private static NavigableMap<Float, RatStructure> weightMap = new TreeMap<Float, RatStructure>();
+    private static float totalWeight;
+    public ResourceLocation structureLoc;
+    private boolean gen;
+    private int weight;
+    RatStructure(String file, boolean gen, int weight) {
+        structureLoc = new ResourceLocation(RatsMod.MODID, file);
+    }
 
     public static IBlockState getRandomCrackedBlock(@Nullable IBlockState prev, Random random) {
         float rand = random.nextFloat();
@@ -66,7 +64,7 @@ public enum RatStructure {
                 return MARBLED_CHEESE_BRICK;
             } else if (rand < 0.6) {
                 return MARBLED_CHEESE_BRICK_CRACK;
-            }else{
+            } else {
                 return MARBLED_CHEESE_BRICK_MOSSY;
             }
         }

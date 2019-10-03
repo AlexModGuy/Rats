@@ -2,10 +2,8 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.entity.RatStatus;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,10 +28,9 @@ import java.util.Comparator;
 
 public class RatDepositInInventory extends EntityAIBase {
     private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
+    private BlockPos targetBlock = null;
     private int feedingTicks;
     private int breakingTime;
     private int previousBreakProgress;
@@ -50,10 +47,10 @@ public class RatDepositInInventory extends EntityAIBase {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if(this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
+        if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY) {
             return false;
         }
-        if(this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && this.entity.getArcheologyResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY){
+        if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && this.entity.getArcheologyResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY) {
             return false;
         }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -99,7 +96,7 @@ public class RatDepositInInventory extends EntityAIBase {
             //break block if has miner upgrade
             if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
-                if(rayPos != null && !rayPos.equals(targetBlock)) {
+                if (rayPos != null && !rayPos.equals(targetBlock)) {
                     IBlockState block = this.entity.world.getBlockState(rayPos);
                     if (RatUtils.canRatBreakBlock(this.entity.world, rayPos, this.entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                         double distance = this.entity.getDistance(rayPos.getX(), rayPos.getY(), rayPos.getZ());
@@ -139,7 +136,7 @@ public class RatDepositInInventory extends EntityAIBase {
                         }
                     }
                 }
-            }else{
+            } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
                 double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
                 if (distance < 2.5 && distance >= 1.86 && canSeeChest() && te instanceof IInventory) {

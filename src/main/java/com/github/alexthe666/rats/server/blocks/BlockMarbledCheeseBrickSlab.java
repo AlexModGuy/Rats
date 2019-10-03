@@ -4,7 +4,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 
 public class BlockMarbledCheeseBrickSlab {
     public static class Double extends BlockGenericSlab {
@@ -19,7 +18,7 @@ public class BlockMarbledCheeseBrickSlab {
         }
 
         @Override
-        public Item getItem(){
+        public Item getItem() {
             return Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_BRICK_SLAB);
         }
 
@@ -41,7 +40,7 @@ public class BlockMarbledCheeseBrickSlab {
         }
 
         @Override
-        public Item getItem(){
+        public Item getItem() {
             return Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_BRICK_SLAB);
         }
 

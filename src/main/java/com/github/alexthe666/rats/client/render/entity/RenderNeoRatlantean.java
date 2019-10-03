@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.model.ModelFeralRatlantean;
 import com.github.alexthe666.rats.client.model.ModelNeoRatlantean;
-import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -25,22 +23,22 @@ public class RenderNeoRatlantean extends RenderLiving<EntityNeoRatlantean> {
     }
 
     protected void preRenderCallback(EntityNeoRatlantean rat, float partialTickTime) {
-        if(!rat.onGround){
+        if (!rat.onGround) {
             GL11.glTranslatef(0.0F, -0.2F, 0.0F);
         }
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
     protected ResourceLocation getEntityTexture(EntityNeoRatlantean entity) {
-       switch (entity.getColorVariant()){
-           case 1:
-               return BLACK_TEXTURE;
-           case 2:
-               return BROWN_TEXTURE;
-           case 3:
-               return GREEN_TEXTURE;
-               default:
-                   return BLUE_TEXTURE;
-       }
+        switch (entity.getColorVariant()) {
+            case 1:
+                return BLACK_TEXTURE;
+            case 2:
+                return BROWN_TEXTURE;
+            case 3:
+                return GREEN_TEXTURE;
+            default:
+                return BLUE_TEXTURE;
+        }
     }
 }

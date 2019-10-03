@@ -1,12 +1,6 @@
 package com.github.alexthe666.rats;
 
-import com.google.common.collect.Lists;
 import net.minecraftforge.common.config.Configuration;
-import scala.Int;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RatConfig {
     public boolean spawnRats = true;

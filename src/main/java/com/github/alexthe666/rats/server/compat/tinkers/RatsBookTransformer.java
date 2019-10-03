@@ -9,7 +9,7 @@ import slimeknights.tconstruct.library.book.content.ContentListing;
 import slimeknights.tconstruct.library.book.content.ContentModifier;
 import slimeknights.tconstruct.library.modifiers.IModifier;
 
-public class RatsBookTransformer  extends BookTransformer {
+public class RatsBookTransformer extends BookTransformer {
 
     @Override
     public void transform(BookData book) {
@@ -23,7 +23,7 @@ public class RatsBookTransformer  extends BookTransformer {
                 faModifierSection = section;
             }
         }
-        if(modifierSection != null && faModifierSection != null) {
+        if (modifierSection != null && faModifierSection != null) {
             for (PageData page : faModifierSection.pages) {
                 page.parent = modifierSection;
                 modifierSection.pages.add(page);

@@ -22,7 +22,7 @@ public class ItemCreativeCheese extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack){
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 

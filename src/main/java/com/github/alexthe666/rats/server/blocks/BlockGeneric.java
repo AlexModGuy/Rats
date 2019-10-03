@@ -32,9 +32,9 @@ public class BlockGeneric extends Block {
 
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
-        if(this == RatsBlockRegistry.MARBLED_CHEESE_DIRT){
+        if (this == RatsBlockRegistry.MARBLED_CHEESE_DIRT) {
             return BlockRenderLayer.CUTOUT;
-        }else{
+        } else {
             return super.getRenderLayer();
         }
     }

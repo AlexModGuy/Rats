@@ -31,6 +31,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     public float ratRotation;
     public float ratRotationPrev;
     public float tRot;
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
+    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
     private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
     private int furnaceBurnTime;
     private int currentItemBurnTime;
@@ -95,10 +98,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         return 200;
     }
 
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.combinerStacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.combinerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.combinerStacks);
         this.furnaceBurnTime = compound.getInteger("BurnTime");
         this.cookTime = compound.getInteger("CookTime");
@@ -106,12 +108,11 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         this.currentItemBurnTime = getItemBurnTime(this.combinerStacks.get(1));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("BurnTime", (short)this.furnaceBurnTime);
-        compound.setInteger("CookTime", (short)this.cookTime);
-        compound.setInteger("CookTimeTotal", (short)this.totalCookTime);
+        compound.setInteger("BurnTime", (short) this.furnaceBurnTime);
+        compound.setInteger("CookTime", (short) this.cookTime);
+        compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.combinerStacks);
         return compound;
     }
@@ -183,7 +184,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
 
         if (!this.world.isRemote) {
             ItemStack fuel = this.combinerStacks.get(1);
-            if (this.isBurning() || !fuel.isEmpty() && !this.combinerStacks.get(0).isEmpty()  && !this.combinerStacks.get(2).isEmpty()) {
+            if (this.isBurning() || !fuel.isEmpty() && !this.combinerStacks.get(0).isEmpty() && !this.combinerStacks.get(2).isEmpty()) {
                 if (!this.isBurning() && this.canSmelt()) {
                     this.furnaceBurnTime = getItemBurnTime(fuel);
                     this.currentItemBurnTime = this.furnaceBurnTime;
@@ -250,13 +251,13 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
         }
         int addIndex = -1;
-        for(int i = 0; i < nonnulllist.size(); i++){
-            if(nonnulllist.get(i) == ItemStack.EMPTY){
+        for (int i = 0; i < nonnulllist.size(); i++) {
+            if (nonnulllist.get(i) == ItemStack.EMPTY) {
                 addIndex = i;
                 break;
             }
         }
-        if(addIndex == -1){
+        if (addIndex == -1) {
             return combiner.copy();
         }
         nonnulllist.set(addIndex, stack.copy());
@@ -290,7 +291,6 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
             return stack.getItem() instanceof ItemRatCombinedUpgrade;
         }
     }
-
 
     public int getField(int id) {
         switch (id) {
@@ -365,10 +365,6 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     public boolean hasCustomName() {
         return false;
     }
-
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
 
     @Override
     @javax.annotation.Nullable

@@ -1,16 +1,13 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
 import java.util.Map;
 
 public class RatsUpgradeConflictRegistry {
-    private static Map<Item, Item[]> REGISTERED_CONFLICTS = Maps.<Item, Item[]>newHashMap();
+    private static Map<Item, Item[]> REGISTERED_CONFLICTS = Maps.newHashMap();
     private static Item[] HEALTH_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_HEALTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ARMOR_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ATTACK_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_STRENGTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
@@ -45,9 +42,9 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION, new Item[]{RatsItemRegistry.RAT_UPGRADE_ASBESTOS, RatsItemRegistry.RAT_UPGRADE_POISON, RatsItemRegistry.RAT_UPGRADE_UNDERWATER});
     }
 
-    public static boolean doesConflict(Item first, Item second){
+    public static boolean doesConflict(Item first, Item second) {
         Item[] arr = REGISTERED_CONFLICTS.get(first);
-        if(arr != null && arr.length > 0) {
+        if (arr != null && arr.length > 0) {
             for (Item item : arr) {
                 if (item == second) {
                     return true;

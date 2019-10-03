@@ -4,9 +4,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeMesa;
-import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.gen.structure.MapGenStructure;
+import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.structure.StructureVillagePieces;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -27,10 +28,10 @@ public class MapGenRatRoad extends MapGenStructure {
     public MapGenRatRoad(Map<String, String> map) {
         this();
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            if (((String) entry.getKey()).equals("size")) {
-                this.size = MathHelper.getInt((String) entry.getValue(), this.size, 0);
-            } else if (((String) entry.getKey()).equals("distance")) {
-                this.distance = MathHelper.getInt((String) entry.getValue(), this.distance, 9);
+            if (entry.getKey().equals("size")) {
+                this.size = MathHelper.getInt(entry.getValue(), this.size, 0);
+            } else if (entry.getKey().equals("distance")) {
+                this.distance = MathHelper.getInt(entry.getValue(), this.distance, 9);
             }
         }
     }
@@ -70,11 +71,11 @@ public class MapGenRatRoad extends MapGenStructure {
             while (!list1.isEmpty() || !list2.isEmpty()) {
                 if (list1.isEmpty()) {
                     int i = rand.nextInt(list2.size());
-                    StructureComponent structurecomponent = (StructureComponent) list2.remove(i);
+                    StructureComponent structurecomponent = list2.remove(i);
                     structurecomponent.buildComponent(structurevillagepieces$start, this.components, rand);
                 } else {
                     int j = rand.nextInt(list1.size());
-                    StructureComponent structurecomponent2 = (StructureComponent) list1.remove(j);
+                    StructureComponent structurecomponent2 = list1.remove(j);
                     structurecomponent2.buildComponent(structurevillagepieces$start, this.components, rand);
                 }
             }

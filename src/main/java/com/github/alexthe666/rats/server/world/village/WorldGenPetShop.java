@@ -9,7 +9,6 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -20,27 +19,30 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class WorldGenPetShop extends WorldGenerator {
 
-    private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_petshop");
     public static final ResourceLocation UPSTAIRS_LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop_upstairs");
     public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop");
-    private VillageComponentPetShop component;
-    private Rotation rotation;
-    private EnumFacing facing;
+    private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_petshop");
     public List<BlockPos> ocelotPos = new ArrayList<>();
     public List<BlockPos> wolfPos = new ArrayList<>();
     public List<BlockPos> rabbitPos = new ArrayList<>();
     public List<BlockPos> ratPos = new ArrayList<>();
     public List<BlockPos> parrotPos = new ArrayList<>();
     public List<BlockPos> villagerPos = new ArrayList<>();
+    private VillageComponentPetShop component;
+    private Rotation rotation;
+    private EnumFacing facing;
 
-    public WorldGenPetShop(VillageComponentPetShop component, EnumFacing facing){
+    public WorldGenPetShop(VillageComponentPetShop component, EnumFacing facing) {
         this.component = component;
         this.facing = facing;
-        switch(facing){
+        switch (facing) {
             case SOUTH:
                 rotation = Rotation.CLOCKWISE_180;
                 break;
@@ -55,6 +57,7 @@ public class WorldGenPetShop extends WorldGenerator {
                 break;
         }
     }
+
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         if (worldIn == null) {
@@ -76,9 +79,9 @@ public class WorldGenPetShop extends WorldGenerator {
         template.addBlocksToWorld(worldIn, genPos, new RatsVillageProcessor(position.up(3), this, settings, biome), settings, 2);
         //.offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize)
         Iterator<BlockPos> ocelotItr = ocelotPos.iterator();
-        while(ocelotItr.hasNext()){
+        while (ocelotItr.hasNext()) {
             BlockPos pos = ocelotItr.next();
-            if(worldIn.rand.nextInt(3) == 0){
+            if (worldIn.rand.nextInt(3) == 0) {
                 EntityOcelot ocelot = new EntityOcelot(worldIn);
                 ocelot.enablePersistence();
                 ocelot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
@@ -87,7 +90,7 @@ public class WorldGenPetShop extends WorldGenerator {
             ocelotItr.remove();
         }
         Iterator<BlockPos> ratItr = ratPos.iterator();
-        while(ratItr.hasNext()){
+        while (ratItr.hasNext()) {
             BlockPos pos = ratItr.next();
             EntityRat rat = new EntityRat(worldIn);
             rat.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
@@ -99,9 +102,9 @@ public class WorldGenPetShop extends WorldGenerator {
         }
 
         Iterator<BlockPos> rabbitItr = rabbitPos.iterator();
-        while(rabbitItr.hasNext()){
+        while (rabbitItr.hasNext()) {
             BlockPos pos = rabbitItr.next();
-            if(worldIn.rand.nextInt(3) == 0) {
+            if (worldIn.rand.nextInt(3) == 0) {
                 EntityAnimal rat = worldIn.rand.nextBoolean() ? new EntityRat(worldIn) : new EntityRabbit(worldIn);
                 rat.enablePersistence();
                 rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
@@ -111,9 +114,9 @@ public class WorldGenPetShop extends WorldGenerator {
         }
 
         Iterator<BlockPos> wolfItr = wolfPos.iterator();
-        while(wolfItr.hasNext()){
+        while (wolfItr.hasNext()) {
             BlockPos pos = wolfItr.next();
-            if(worldIn.rand.nextInt(3) == 0) {
+            if (worldIn.rand.nextInt(3) == 0) {
                 EntityWolf wolf = new EntityWolf(worldIn);
                 wolf.enablePersistence();
                 wolf.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
@@ -123,7 +126,7 @@ public class WorldGenPetShop extends WorldGenerator {
         }
 
         Iterator<BlockPos> parrotItr = parrotPos.iterator();
-        while(parrotItr.hasNext()){
+        while (parrotItr.hasNext()) {
             BlockPos pos = parrotItr.next();
             EntityParrot parrot = new EntityParrot(worldIn);
             parrot.enablePersistence();
@@ -132,12 +135,12 @@ public class WorldGenPetShop extends WorldGenerator {
             parrotItr.remove();
         }
         Iterator<BlockPos> villageItr = villagerPos.iterator();
-        while(villageItr.hasNext() && spawnedVillager < 1){
+        while (villageItr.hasNext() && spawnedVillager < 1) {
             BlockPos pos = villageItr.next();
             EntityVillager villager = new EntityVillager(worldIn);
             villager.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
             villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
-            villager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(villager)), (IEntityLivingData)null, false);
+            villager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(villager)), null, false);
             villager.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
             worldIn.spawnEntity(villager);
             villageItr.remove();

@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.compat.jei.cauldron;
 
 import com.github.alexthe666.rats.server.compat.jei.RatsJEIPlugin;
-import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

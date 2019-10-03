@@ -2,19 +2,12 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIMoveToBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class RatAIRaidCrops extends RatAIMoveToBlock {
     private final EntityRat entity;

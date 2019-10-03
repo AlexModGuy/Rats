@@ -44,7 +44,6 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -62,16 +61,69 @@ public class ClientProxy extends CommonProxy {
     private static final RatsTEISR TEISR = new RatsTEISR();
     @SideOnly(Side.CLIENT)
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
-    protected static EntityRat refrencedRat;
+    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
     public static BlockPos refrencedPos;
     public static EnumFacing refrencedFacing;
+    protected static EntityRat refrencedRat;
+    private float synesthesiaProgress = 0;
+    private float prevSynesthesiaProgress = 0;
+    private float maxSynesthesiaProgress = 40;
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public static void registerModels(ModelRegistryEvent event) {
+        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TRAP, (new StateMap.Builder()).ignore(BlockRatTrap.FACING).build());
+        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_HOLE, (new StateMap.Builder()).ignore(BlockRatHole.NORTH, BlockRatHole.EAST, BlockRatHole.SOUTH, BlockRatHole.WEST).build());
+        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_DECORATED, (new StateMap.Builder()).ignore(BlockRatCageDecorated.FACING).build());
+        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, (new StateMap.Builder()).ignore(BlockRatCageBreedingLantern.FACING).build());
+
+        for (int i = 0; i < 16; i++) {
+            ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
+            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
+            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
+        }
+        try {
+            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Block && !(obj instanceof ICustomRendered)) {
+                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock((Block) obj), 0, new ModelResourceLocation("rats:" + ((Block) obj).getRegistryName().getPath(), "inventory"));
+                } else if (obj instanceof Block[]) {
+                    for (Block block : (Block[]) obj) {
+                        if (!(block instanceof ICustomRendered)) {
+                            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation("rats:" + block.getRegistryName().getPath(), "inventory"));
+                        }
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Item && !(obj instanceof ICustomRendered)) {
+                    ModelLoader.setCustomModelResourceLocation((Item) obj, 0, new ModelResourceLocation("rats:" + ((Item) obj).getRegistryName().getPath(), "inventory"));
+                } else if (obj instanceof Item[]) {
+                    for (Item item : (Item[]) obj) {
+                        if (!(item instanceof ICustomRendered)) {
+                            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation("rats:" + item.getRegistryName().getPath(), "inventory"));
+                        }
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void preInit() {
         TinkersCompatBridge.loadTinkersClientCompat();
     }
 
     @SideOnly(Side.CLIENT)
-    public void init(){
+    public void init() {
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, new RenderRatlateanSpirit());
@@ -115,8 +167,8 @@ public class ClientProxy extends CommonProxy {
             public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
                 Block block = state.getBlock();
                 int meta = 0;
-                for(int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++){
-                    if(block == RatsBlockRegistry.RAT_TUBE_COLOR[i]){
+                for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
+                    if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
                         meta = i;
                     }
                 }
@@ -129,8 +181,8 @@ public class ClientProxy extends CommonProxy {
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 Block block = Block.getBlockFromItem(stack.getItem());
                 int meta = 0;
-                for(int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++){
-                    if(block == RatsBlockRegistry.RAT_TUBE_COLOR[i]){
+                for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
+                    if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
                         meta = i;
                     }
                 }
@@ -143,8 +195,8 @@ public class ClientProxy extends CommonProxy {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 int meta = 0;
-                for(int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++){
-                    if(stack.getItem() == RatsItemRegistry.RAT_IGLOOS[i]){
+                for (int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++) {
+                    if (stack.getItem() == RatsItemRegistry.RAT_IGLOOS[i]) {
                         meta = i;
                     }
                 }
@@ -156,16 +208,16 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
-                if(tintIndex == 0){
+                if (tintIndex == 0) {
                     int meta = 0;
-                    for(int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++){
-                        if(stack.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]){
+                    for (int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++) {
+                        if (stack.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]) {
                             meta = i;
                         }
                     }
                     EnumDyeColor color = EnumDyeColor.byMetadata(meta);
                     return color.getColorValue();
-                }else{
+                } else {
                     return -1;
                 }
 
@@ -177,65 +229,10 @@ public class ClientProxy extends CommonProxy {
 
     }
 
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void registerModels(ModelRegistryEvent event) {
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TRAP, (new StateMap.Builder()).ignore(BlockRatTrap.FACING).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_HOLE, (new StateMap.Builder()).ignore(BlockRatHole.NORTH, BlockRatHole.EAST, BlockRatHole.SOUTH, BlockRatHole.WEST).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_DECORATED, (new StateMap.Builder()).ignore(BlockRatCageDecorated.FACING).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, (new StateMap.Builder()).ignore(BlockRatCageBreedingLantern.FACING).build());
-
-        for(int i = 0; i < 16; i++){
-            ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
-            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
-            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
-        }
-        try {
-            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Block && !(obj instanceof ICustomRendered)) {
-                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock((Block)obj), 0, new ModelResourceLocation("rats:" + ((Block)obj).getRegistryName().getPath(), "inventory"));
-                } else if (obj instanceof Block[]) {
-                    for (Block block : (Block[]) obj) {
-                        if(!(block instanceof ICustomRendered)){
-                            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation("rats:" + block.getRegistryName().getPath(), "inventory"));
-                        }
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Item && !(obj instanceof ICustomRendered)) {
-                    ModelLoader.setCustomModelResourceLocation((Item)obj, 0, new ModelResourceLocation("rats:" + ((Item)obj).getRegistryName().getPath(), "inventory"));
-                } else if (obj instanceof Item[]) {
-                    for (Item item : (Item[]) obj) {
-                        if(!(item instanceof ICustomRendered)){
-                            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation("rats:" + item.getRegistryName().getPath(), "inventory"));
-                        }
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
-    private float synesthesiaProgress = 0;
-    private float prevSynesthesiaProgress = 0;
-    private float maxSynesthesiaProgress = 40;
-
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if(event.getEntityLiving() == Minecraft.getMinecraft().player) {
+        if (event.getEntityLiving() == Minecraft.getMinecraft().player) {
             EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
             PotionEffect active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
@@ -245,10 +242,10 @@ public class ClientProxy extends CommonProxy {
             if (!synesthesia && renderer.isShaderActive() && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
                 renderer.stopUseShader();
             }
-            if(prevSynesthesiaProgress == 2 && synesthesia){
+            if (prevSynesthesiaProgress == 2 && synesthesia) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_BEGIN, 1.0F));
             }
-            if(prevSynesthesiaProgress == 38 && !synesthesia){
+            if (prevSynesthesiaProgress == 38 && !synesthesia) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_END, 1.0F));
             }
             prevSynesthesiaProgress = synesthesiaProgress;
@@ -263,13 +260,13 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onGetFOVModifier(EntityViewRenderEvent.FOVModifier event) {
-        if(event.getEntity() == Minecraft.getMinecraft().player && prevSynesthesiaProgress > 0){
+        if (event.getEntity() == Minecraft.getMinecraft().player && prevSynesthesiaProgress > 0) {
             float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * LLibrary.PROXY.getPartialTicks());
             float renderProg;
-            if(prevSynesthesiaProgress > synesthesiaProgress){
-                renderProg = (float)Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
-            }else{
-                renderProg = -(float)Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
+            if (prevSynesthesiaProgress > synesthesiaProgress) {
+                renderProg = (float) Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
+            } else {
+                renderProg = -(float) Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
             }
             event.setFOV(event.getFOV() + renderProg);
         }
@@ -281,13 +278,13 @@ public class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     public Object getArmorModel(int index) {
-        if(index == 0){
+        if (index == 0) {
             return new ModelChefToque(1.0F);
-        }else if(index == 1){
+        } else if (index == 1) {
             return new ModelPiperHat(1.0F);
-        }else if(index == 2){
+        } else if (index == 2) {
             return new ModelPiratHat(1.0F);
-        }else{
+        } else {
             return new ModelArcheologistHat(1.0F);
         }
     }
@@ -295,19 +292,19 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     @Override
     public void openCheeseStaffGui() {
-        if(refrencedRat != null){
+        if (refrencedRat != null) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
         }
     }
 
     @Override
-    public void setRefrencedRat(EntityRat rat){
-        refrencedRat = rat;
+    public EntityRat getRefrencedRat() {
+        return refrencedRat;
     }
 
     @Override
-    public EntityRat getRefrencedRat(){
-        return refrencedRat;
+    public void setRefrencedRat(EntityRat rat) {
+        refrencedRat = rat;
     }
 
     @Override
@@ -324,13 +321,13 @@ public class ClientProxy extends CommonProxy {
             return;
         }
         if (name.equals("rat_ghost")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRatGhost(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("rat_lightning")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float)motX, (float)motY, (float)motZ));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("saliva")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSaliva(world, x, y, z));

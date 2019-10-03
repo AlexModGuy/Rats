@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 public class ModelRatWaterBottle extends ModelBase {
     public ModelRenderer waterBottle;

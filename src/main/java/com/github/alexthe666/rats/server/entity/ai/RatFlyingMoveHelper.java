@@ -7,6 +7,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class RatFlyingMoveHelper extends EntityMoveHelper {
     EntityRat rat;
+
     public RatFlyingMoveHelper(EntityRat rat) {
         super(rat);
         this.speed = 4F;
@@ -18,7 +19,7 @@ public class RatFlyingMoveHelper extends EntityMoveHelper {
             if (rat.collidedHorizontally && !rat.onGround) {
                 rat.rotationYaw += 180.0F;
                 int dist = 3;
-                if(!rat.isInCage()){
+                if (!rat.isInCage()) {
                     this.speed = 0.1F;
                     dist = 8;
                 }

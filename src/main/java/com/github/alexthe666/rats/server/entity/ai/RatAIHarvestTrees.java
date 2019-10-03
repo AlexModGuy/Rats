@@ -5,23 +5,14 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import crafttweaker.api.block.IBlock;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -33,10 +24,9 @@ import java.util.List;
 
 public class RatAIHarvestTrees extends EntityAIBase {
     private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
     private final RatAIHarvestTrees.BlockSorter targetSorter;
+    private BlockPos targetBlock = null;
     private int destroyedLeaves;
     private int breakingTime;
     private int previousBreakProgress;
@@ -48,9 +38,24 @@ public class RatAIHarvestTrees extends EntityAIBase {
         this.setMutexBits(0);
     }
 
+    public static final boolean isBlockLog(IBlockState block) {
+        String transKey = block.getBlock().getTranslationKey().toLowerCase();
+        return block.getBlock() instanceof BlockLog
+                || transKey.contains("log")
+                || transKey.contains("tree")
+                || transKey.contains("branch")
+                || transKey.contains("wood");
+    }
+
+    public static final boolean isBlockLeaf(IBlockState block) {
+        String transKey = block.getBlock().getTranslationKey().toLowerCase();
+        return block.getBlock() instanceof BlockLeaves
+                || transKey.contains("leaf") || transKey.contains("leaves");
+    }
+
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !this.entity.hasUpgrade( RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
             return false;
         }
         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -67,10 +72,10 @@ public class RatAIHarvestTrees extends EntityAIBase {
             IBlockState block = world.getBlockState(pos);
             if (isBlockLog(block)) {
                 BlockPos topOfLog = new BlockPos(pos);
-                while(!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()){
+                while (!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()) {
                     topOfLog = topOfLog.up();
                 }
-                if(isBlockLeaf(world.getBlockState(topOfLog))){
+                if (isBlockLeaf(world.getBlockState(topOfLog))) {
                     //definitely a tree, now find the base of the tree
                     BlockPos logPos = getStump(topOfLog);
                     allBlocks.add(logPos);
@@ -84,7 +89,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     private BlockPos getStump(BlockPos log) {
-        if(log.getY() > 0) {
+        if (log.getY() > 0) {
             for (BlockPos pos : BlockPos.getAllInBox(log.add(-4, -4, -4), log.add(4, 0, 4))) {
                 IBlockState state = entity.world.getBlockState(pos.down());
                 if (isBlockLog(state) || isBlockLeaf(state)) {
@@ -94,6 +99,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
         }
         return log;
     }
+
     @Override
     public boolean shouldContinueExecuting() {
         return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
@@ -110,7 +116,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     public void updateTask() {
         if (this.targetBlock != null) {
             IBlockState block = this.entity.world.getBlockState(this.targetBlock);
-            if(!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)){
+            if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
                 RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false);
                 if (rayTrace != null && rayTrace.hitVec != null) {
                     BlockPos pos = rayTrace.getBlockPos().offset(rayTrace.sideHit);
@@ -122,7 +128,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
                 if (distance < 2.5F) {
                     entity.world.setEntityState(entity, (byte) 85);
                     entity.crafting = true;
-                    if(distance < 0.6F){
+                    if (distance < 0.6F) {
                         entity.motionZ *= 0.0D;
                         entity.motionX *= 0.0D;
                         entity.getNavigator().clearPath();
@@ -150,7 +156,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
                         this.resetTask();
                     }
                 }
-            }else{
+            } else {
                 this.entity.fleePos = this.targetBlock;
                 this.targetBlock = null;
                 this.resetTask();
@@ -162,7 +168,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     private void fellTree() {
         World world = entity.world;
         BlockPos base = new BlockPos(this.targetBlock);
-        while(isBlockLog(world.getBlockState(base))){
+        while (isBlockLog(world.getBlockState(base))) {
             destroyedLeaves = 0;
             destroyLeaves(base);
             world.destroyBlock(base, true);
@@ -171,7 +177,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     private void destroyLeaves(BlockPos base) {
-        if(destroyedLeaves < RatsMod.CONFIG_OPTIONS.maxDestroyedLeaves) {
+        if (destroyedLeaves < RatsMod.CONFIG_OPTIONS.maxDestroyedLeaves) {
             for (BlockPos pos : BlockPos.getAllInBox(base.add(-1, -1, -1), base.add(1, 1, 1))) {
                 if (!pos.equals(base)) {
                     if (isBlockLog(entity.world.getBlockState(pos)) || isBlockLeaf(entity.world.getBlockState(pos))) {
@@ -182,21 +188,6 @@ public class RatAIHarvestTrees extends EntityAIBase {
                 }
             }
         }
-    }
-
-    public static final boolean isBlockLog(IBlockState block) {
-        String transKey = block.getBlock().getTranslationKey().toLowerCase();
-        return block.getBlock() instanceof BlockLog
-                || transKey.contains("log")
-                || transKey.contains("tree")
-                || transKey.contains("branch")
-                || transKey.contains("wood");
-    }
-
-    public static final boolean isBlockLeaf(IBlockState block) {
-        String transKey = block.getBlock().getTranslationKey().toLowerCase();
-        return block.getBlock() instanceof BlockLeaves
-                || transKey.contains("leaf") || transKey.contains("leaves");
     }
 
     public class BlockSorter implements Comparator<BlockPos> {
@@ -210,11 +201,11 @@ public class RatAIHarvestTrees extends EntityAIBase {
         public int compare(BlockPos pos1, BlockPos pos2) {
             double yDist1 = Math.abs(pos1.getY() + 0.5 - entity.posY);
             double yDist2 = Math.abs(pos2.getY() + 0.5 - entity.posY);
-            if(yDist1 == yDist2){
+            if (yDist1 == yDist2) {
                 double distance1 = this.getDistance(pos1);
                 double distance2 = this.getDistance(pos2);
                 return Double.compare(distance1, distance2);
-            }else{
+            } else {
                 return Double.compare(yDist1, yDist2);
             }
         }

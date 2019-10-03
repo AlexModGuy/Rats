@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.compat.thaumcraft;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.item.ItemStack;
@@ -13,9 +12,9 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.AspectRegistryEvent;
 
 public class ThaumcraftCompat {
+    private static final Aspect RAT = new Aspect("rattus", 0X3B3E49, new Aspect[]{Aspect.ENTROPY, Aspect.BEAST}, new ResourceLocation("rats:textures/thaumcraft_rat_icon.png"), 1);
     private static boolean registered = false;
     private static ThaumcraftCompat INSTANCE = new ThaumcraftCompat();
-    private static final Aspect RAT = new Aspect("rattus", 0X3B3E49, new Aspect[]{Aspect.ENTROPY, Aspect.BEAST}, new ResourceLocation("rats:textures/thaumcraft_rat_icon.png"), 1);
 
     public static void register() {
         if (!registered) {

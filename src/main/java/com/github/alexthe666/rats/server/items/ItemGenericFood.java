@@ -65,25 +65,25 @@ public class ItemGenericFood extends ItemFood {
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         if (!worldIn.isRemote && this == RatsItemRegistry.CONTAMINATED_FOOD) {
             Random rand = new Random();
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.POISON, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 2400));
             }
-            if(rand.nextFloat() < 0.3D){
+            if (rand.nextFloat() < 0.3D) {
                 player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2400));
             }
             player.addPotionEffect(new PotionEffect(MobEffects.UNLUCK, 2400));

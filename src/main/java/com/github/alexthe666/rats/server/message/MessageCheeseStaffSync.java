@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
@@ -19,7 +18,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     public int facingID;
     public int control;
 
-    public MessageCheeseStaffSync(){
+    public MessageCheeseStaffSync() {
 
     }
 
@@ -33,9 +32,9 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     @Override
     public void onClientReceived(Minecraft client, MessageCheeseStaffSync message, EntityPlayer player, MessageContext messageContext) {
         Entity e = player.world.getEntityByID(message.entityId);
-        if(e instanceof EntityRat){
-            EntityRat rat = (EntityRat)e;
-            switch (message.control){
+        if (e instanceof EntityRat) {
+            EntityRat rat = (EntityRat) e;
+            switch (message.control) {
                 case 0://deposit
                     rat.depositPos = BlockPos.fromLong(message.posLg);
                     rat.depositFacing = EnumFacing.values()[message.facingID];
@@ -56,9 +55,9 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     @Override
     public void onServerReceived(MinecraftServer server, MessageCheeseStaffSync message, EntityPlayer player, MessageContext messageContext) {
         Entity e = player.world.getEntityByID(message.entityId);
-        if(e instanceof EntityRat){
-            EntityRat rat = (EntityRat)e;
-            switch (message.control){
+        if (e instanceof EntityRat) {
+            EntityRat rat = (EntityRat) e;
+            switch (message.control) {
                 case 0://deposit
                     rat.depositPos = BlockPos.fromLong(message.posLg);
                     rat.depositFacing = EnumFacing.values()[message.facingID];

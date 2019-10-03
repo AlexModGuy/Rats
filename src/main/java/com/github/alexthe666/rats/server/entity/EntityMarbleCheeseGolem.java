@@ -1,10 +1,8 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -12,15 +10,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
@@ -38,19 +32,19 @@ import javax.annotation.Nullable;
 
 public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
-    private int blockBreakCounter;
-    private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS));
-    private int animationTick;
-    private boolean useRangedAttack = false;
-    private Animation currentAnimation;
     public static final Animation ANIMATION_MELEE = Animation.create(15);
     public static final Animation ANIMATION_RANGED = Animation.create(15);
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "marbled_cheese_golem"));
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
             return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "marbled_cheese_golem"));
+    private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS));
+    private int blockBreakCounter;
+    private int animationTick;
+    private boolean useRangedAttack = false;
+    private Animation currentAnimation;
 
     public EntityMarbleCheeseGolem(World worldIn) {
         super(worldIn);
@@ -61,6 +55,10 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         this.experienceValue = 50;
         this.stepHeight = 2;
         this.moveHelper = new EntityMarbleCheeseGolem.AIMoveControl(this);
+    }
+
+    public static boolean canDestroyBlock(Block blockIn) {
+        return blockIn != Blocks.BEDROCK && blockIn != Blocks.END_PORTAL && blockIn != Blocks.END_PORTAL_FRAME && blockIn != Blocks.COMMAND_BLOCK && blockIn != Blocks.REPEATING_COMMAND_BLOCK && blockIn != Blocks.CHAIN_COMMAND_BLOCK && blockIn != Blocks.BARRIER && blockIn != Blocks.STRUCTURE_BLOCK && blockIn != Blocks.STRUCTURE_VOID && blockIn != Blocks.PISTON_EXTENSION && blockIn != Blocks.END_GATEWAY;
     }
 
     protected void applyEntityAttributes() {
@@ -80,14 +78,13 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         return false;
     }
 
-
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityMarbleCheeseGolem.AIFollowPrey(this));
         this.tasks.addTask(2, new EntityMarbleCheeseGolem.AIMoveRandom());
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
 
@@ -120,14 +117,10 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
                 }
 
                 if (flag) {
-                    this.world.playEvent((EntityPlayer) null, 1022, new BlockPos(this), 0);
+                    this.world.playEvent(null, 1022, new BlockPos(this), 0);
                 }
             }
         }
-    }
-
-    public static boolean canDestroyBlock(Block blockIn) {
-        return blockIn != Blocks.BEDROCK && blockIn != Blocks.END_PORTAL && blockIn != Blocks.END_PORTAL_FRAME && blockIn != Blocks.COMMAND_BLOCK && blockIn != Blocks.REPEATING_COMMAND_BLOCK && blockIn != Blocks.CHAIN_COMMAND_BLOCK && blockIn != Blocks.BARRIER && blockIn != Blocks.STRUCTURE_BLOCK && blockIn != Blocks.STRUCTURE_VOID && blockIn != Blocks.PISTON_EXTENSION && blockIn != Blocks.END_GATEWAY;
     }
 
     public boolean isNonBoss() {
@@ -135,11 +128,12 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.getAnimation() == NO_ANIMATION){
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(this.useRangedAttack ? ANIMATION_MELEE : ANIMATION_RANGED);
         }
         return true;
     }
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isEntityInvulnerable(source)) {
             return false;
@@ -156,7 +150,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         this.useRangedAttack = true;
-        if(this.getAnimation() == NO_ANIMATION) {
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_RANGED);
         }
     }
@@ -183,27 +177,27 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         if (this.blockBreakCounter <= 0) {
             this.blockBreakCounter = 20;
         }
-        if (this.getAttackTarget() != null){
+        if (this.getAttackTarget() != null) {
             this.useRangedAttack = this.getDistance(this.getAttackTarget()) > 10;
         }
-        if(this.useRangedAttack && this.getAnimation() != ANIMATION_RANGED && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())){
+        if (this.useRangedAttack && this.getAnimation() != ANIMATION_RANGED && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())) {
             this.setAnimation(ANIMATION_RANGED);
             this.faceEntity(this.getAttackTarget(), 360, 80);
 
         }
-        if(!this.useRangedAttack && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
+        if (!this.useRangedAttack && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(ANIMATION_MELEE);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 0.5F + rand.nextFloat() * 0.5F);
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                 this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
-        if(world.isRemote && rand.nextDouble() < 0.5F){
+        if (world.isRemote && rand.nextDouble() < 0.5F) {
             float radius = -0.5F;
             float angle = (0.01745329251F * (this.renderYawOffset));
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
@@ -212,22 +206,22 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
             world.spawnParticle(EnumParticleTypes.END_ROD, extraX + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
-                    0F,  -0.1F, 0F);
+                    0F, -0.1F, 0F);
         }
-        if(this.useRangedAttack && this.getAnimation() == ANIMATION_RANGED && this.getAnimationTick() == 6){
+        if (this.useRangedAttack && this.getAnimation() == ANIMATION_RANGED && this.getAnimationTick() == 6) {
             float radius = -3.8F;
             float angle = (0.01745329251F * (this.renderYawOffset)) - 160F;
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 2.4F + posY;
-            double targetRelativeX = (double)(this.getAttackTarget() == null ? this.getLook(1.0F).x : this.getAttackTarget().posX) - extraX;
-            double targetRelativeY = (double)(this.getAttackTarget() == null ? this.getLook(1.0F).y : this.getAttackTarget().posY) - extraY;
-            double targetRelativeZ = (double)(this.getAttackTarget() == null ? this.getLook(1.0F).z : this.getAttackTarget().posZ) - extraZ;
+            double targetRelativeX = (this.getAttackTarget() == null ? this.getLook(1.0F).x : this.getAttackTarget().posX) - extraX;
+            double targetRelativeY = (this.getAttackTarget() == null ? this.getLook(1.0F).y : this.getAttackTarget().posY) - extraY;
+            double targetRelativeZ = (this.getAttackTarget() == null ? this.getLook(1.0F).z : this.getAttackTarget().posZ) - extraZ;
             EntityGolemBeam beam = new EntityGolemBeam(world, this);
             beam.setPosition(extraX, extraY, extraZ);
             beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
             this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
-            if(!world.isRemote){
+            if (!world.isRemote) {
                 world.spawnEntity(beam);
             }
             this.useRangedAttack = rand.nextBoolean();
@@ -282,6 +276,11 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
     public void removeTrackingPlayer(EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
     }
 
     class AIMoveControl extends EntityMoveHelper {
@@ -367,7 +366,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
             followDist = EntityMarbleCheeseGolem.this.getEntityBoundingBox().getAverageEdgeLength();
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
-            return entitylivingbase!= null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
+            return entitylivingbase != null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
         }
 
         public void startExecuting() {
@@ -380,14 +379,9 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
-            if(entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)){
-                EntityMarbleCheeseGolem.this.moveHelper.setMoveTo((double) entitylivingbase.posX, (double) entitylivingbase.posY + 1, (double) entitylivingbase.posZ, 1D);
+            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+                EntityMarbleCheeseGolem.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY + 1, entitylivingbase.posZ, 1D);
             }
         }
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
     }
 }

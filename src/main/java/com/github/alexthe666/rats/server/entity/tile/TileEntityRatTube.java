@@ -2,33 +2,24 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.RatUtils;
-import com.github.alexthe666.rats.server.pathfinding.AStar;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 
 public class TileEntityRatTube extends TileEntity implements ITickable {
 
+    private static PropertyBool[] allOpenVars = new PropertyBool[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
     public EnumFacing opening = null;
     public boolean isNode = false;
-    private static PropertyBool[] allOpenVars = new PropertyBool[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
 
     @Override
     public void update() {
-        if(isOpen()) {
+        if (isOpen()) {
             float i = this.getPos().getX() + 0.5F;
             float j = this.getPos().getY() + 0.2F;
             float k = this.getPos().getZ() + 0.5F;
@@ -63,9 +54,9 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         }*/
     }
 
-    private boolean isOpen(){
+    private boolean isOpen() {
         IBlockState state = world.getBlockState(this.getPos());
-        if(state.getBlock() instanceof BlockRatTube){
+        if (state.getBlock() instanceof BlockRatTube) {
             for (PropertyBool opened : allOpenVars) {
                 if (state.getValue(opened)) {
                     return true;
@@ -84,19 +75,19 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound compound) {
         isNode = compound.getBoolean("Node");
         int i = compound.getInteger("OpenSide");
-        if(i == -1){
+        if (i == -1) {
             opening = null;
-        }else{
+        } else {
             opening = EnumFacing.values()[MathHelper.clamp(i, 0, EnumFacing.values().length - 1)];
         }
         super.readFromNBT(compound);
     }
 
     public void setEntranceData(EnumFacing side, boolean open) {
-        if(open){
+        if (open) {
             opening = side;
             isNode = true;
-        }else{
+        } else {
             opening = null;
             isNode = false;
         }

@@ -5,7 +5,7 @@ public enum EnumRatCageDecoration {
 
     public boolean colorized;
 
-    EnumRatCageDecoration(boolean color){
+    EnumRatCageDecoration(boolean color) {
         this.colorized = color;
     }
 }

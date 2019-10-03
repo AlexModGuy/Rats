@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.EntityAISit;
-import net.minecraft.entity.passive.EntityTameable;
 
 public class RatAISit extends EntityAISit {
 
@@ -13,8 +12,7 @@ public class RatAISit extends EntityAISit {
         this.rat = rat;
     }
 
-    public boolean shouldExecute()
-    {
+    public boolean shouldExecute() {
         return super.shouldExecute() && !rat.inTube();
     }
 }

@@ -3,17 +3,13 @@ package com.github.alexthe666.rats.server.compat.jei.chef;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChefRecipeWrapper implements IRecipeWrapper {
 
     private SharedRecipe recipe;
 
-    public ChefRecipeWrapper(SharedRecipe recipe){
+    public ChefRecipeWrapper(SharedRecipe recipe) {
         this.recipe = recipe;
     }
 

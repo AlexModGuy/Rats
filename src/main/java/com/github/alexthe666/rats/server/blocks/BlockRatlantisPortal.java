@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
 import com.github.alexthe666.rats.server.world.RatlantisTeleporter;
 import net.minecraft.block.Block;
@@ -13,11 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityEndGateway;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -44,7 +40,7 @@ public class BlockRatlantisPortal extends BlockContainer {
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if(!RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+        if (!RatsMod.CONFIG_OPTIONS.disableRatlantis) {
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
                 if ((entity instanceof EntityPlayerMP)) {
                     EntityPlayerMP thePlayer = (EntityPlayerMP) entity;

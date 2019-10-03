@@ -563,12 +563,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
     }
 
-    public boolean isFollowing() {
-        return getCommandInteger() == 2;
-    }
-
     public void setCommand(RatCommand command) {
         setCommandInteger(command.ordinal());
+    }
+
+    public boolean isFollowing() {
+        return getCommandInteger() == 2;
     }
 
     public EntitySenses getSenses() {

@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,8 +13,8 @@ import java.util.List;
 import java.util.Random;
 
 public class VillageComponentPetShop extends StructureVillagePieces.Village {
-    private int averageGroundLevel = -1;
     int villagerCount = 0;
+    private int averageGroundLevel = -1;
 
     public VillageComponentPetShop() {
         super();
@@ -30,7 +28,7 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
     }
 
     public static VillageComponentPetShop buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
-        if(!RatsMod.CONFIG_OPTIONS.villagePetShops){
+        if (!RatsMod.CONFIG_OPTIONS.villagePetShops) {
             return null;
         }
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -1, 18, 9, 18, facing);
@@ -56,7 +54,7 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
             }
         }
         */
-        if(facing == EnumFacing.WEST || facing == EnumFacing.EAST){
+        if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
             genPos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY + 1, this.boundingBox.maxZ);
         }
         //world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().withProperty(BlockHorizontal.FACING, facing));

@@ -10,19 +10,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,10 +28,10 @@ import javax.annotation.Nullable;
 
 public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity, IRatlantean {
 
-    private int animationTick;
-    private Animation currentAnimation;
     public static final Animation ANIMATION_ATTACK = Animation.create(10);
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "ratlantean_soul"));
+    private int animationTick;
+    private Animation currentAnimation;
 
     public EntityRatlanteanSpirit(World worldIn) {
         super(worldIn);
@@ -50,7 +46,7 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         this.tasks.addTask(8, new EntityRatlanteanSpirit.AIMoveRandom());
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityRatlanteanSpirit.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRatlanteanSpirit.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityGolem.class, false));
         this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
@@ -73,11 +69,11 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         this.noClip = false;
         this.setNoGravity(true);
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if(world.isRemote){
+        if (world.isRemote) {
             RatsMod.PROXY.spawnParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
-                    0.92F,  0.82, 0.0F);
+                    0.92F, 0.82, 0.0F);
         }
     }
 
@@ -115,6 +111,22 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         return new Animation[]{ANIMATION_ATTACK};
     }
 
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
+    }
 
     class AIMoveControl extends EntityMoveHelper {
         public AIMoveControl(EntityRatlanteanSpirit vex) {
@@ -208,9 +220,9 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if(entitylivingbase.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)){
+            if (entitylivingbase.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
 
-                EntityRatlanteanSpirit.this.moveHelper.setMoveTo((double) entitylivingbase.posX, (double) entitylivingbase.posY, (double) entitylivingbase.posZ, 0.5D);
+                EntityRatlanteanSpirit.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 0.5D);
 
             }
             if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
@@ -222,7 +234,7 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
                     double d2 = entitylivingbase.posX - (this.parentEntity.posX);
                     double d3 = entitylivingbase.posY + (double) (entitylivingbase.height) - (this.parentEntity.posY + (double) (this.parentEntity.height / 2.0F));
                     double d4 = entitylivingbase.posZ - (this.parentEntity.posZ);
-                    world.playEvent((EntityPlayer) null, 1016, new BlockPos(this.parentEntity), 0);
+                    world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
                     EntityRatlanteanFlame entitylargefireball = new EntityRatlanteanFlame(world, this.parentEntity, d2, d3, d4);
                     entitylargefireball.posX = this.parentEntity.posX;
                     entitylargefireball.posY = this.parentEntity.posY + (double) (this.parentEntity.height / 2.0F);
@@ -234,23 +246,6 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
                 --this.attackTimer;
             }
         }
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
-    }
-
-    protected SoundEvent getAmbientSound() {
-        return RatsSoundRegistry.RATLANTEAN_SPIRIT_IDLE;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return RatsSoundRegistry.RATLANTEAN_SPIRIT_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
 }

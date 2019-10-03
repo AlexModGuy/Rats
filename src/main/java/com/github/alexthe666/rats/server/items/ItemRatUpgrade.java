@@ -26,25 +26,25 @@ public class ItemRatUpgrade extends ItemGeneric {
     }
 
     public EnumRarity getRarity(ItemStack stack) {
-        if(rarity != 0 && rarity != 4){
+        if (rarity != 0 && rarity != 4) {
             return EnumRarity.values()[rarity];
         }
         return super.getRarity(stack);
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack){
+    public boolean hasEffect(ItemStack stack) {
         return rarity >= 3 || super.hasEffect(stack);
     }
 
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(textLength > 0){
-            for (int i = 0; i < textLength; i++){
+        if (textLength > 0) {
+            for (int i = 0; i < textLength; i++) {
                 tooltip.add(I18n.format(this.getTranslationKey() + i + ".desc"));
 
             }
-        }else{
+        } else {
             tooltip.add(I18n.format(this.getTranslationKey() + ".desc"));
         }
     }

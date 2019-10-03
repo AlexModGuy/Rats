@@ -14,8 +14,8 @@ public class ChangeCommandButton extends GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY, float partial) {
-        if(mc.currentScreen instanceof GuiRatCraftingTable){
-            if(!((GuiRatCraftingTable)mc.currentScreen).shouldRenderButtons()){
+        if (mc.currentScreen instanceof GuiRatCraftingTable) {
+            if (!((GuiRatCraftingTable) mc.currentScreen).shouldRenderButtons()) {
                 return;
             }
         }

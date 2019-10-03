@@ -11,7 +11,6 @@ import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.MathHelper;
 
 public class ModelRat extends AdvancedModelBase {
     public AdvancedModelRenderer body1;
@@ -303,7 +302,7 @@ public class ModelRat extends AdvancedModelBase {
         if (!rat.isRiding()) {
             progressRotation(tail2, rat.sitProgress, 0.20943951023931953F, 0.6108652381980153F, 0.0F, 20F);
             progressRotation(tail1, rat.sitProgress, 1.2F, 0.17453292519943295F, 0.6981317007977318F, 20F);
-        }else if(rat instanceof EntityPirat || rat.isDancing()){
+        } else if (rat instanceof EntityPirat || rat.isDancing()) {
             progressRotation(tail1, rat.sitProgress, 1.1F, 0, 0, 20F);
 
         }
@@ -379,21 +378,21 @@ public class ModelRat extends AdvancedModelBase {
             leftHand.rotateAngleX = 0.9599310885968813F;
             leftHand.rotateAngleY = 0.17453292519943295F;
             leftHand.rotateAngleZ = -0.08726646259971647F;
-       }
+        }
         if ((rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) && rat.crafting) {
             this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
             this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
             this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);
             this.walk(this.leftHand, speedRun, degreeRun * 1F, false, 5, 0.1F, f2, 1);
         }
-        if(rat.isDancing()){
-            if(rat.getDanceMoves() == 1){
-                progressRotation(rightArm, 20, (float)Math.toRadians(-110), 0, (float)Math.toRadians(78), 20F);
+        if (rat.isDancing()) {
+            if (rat.getDanceMoves() == 1) {
+                progressRotation(rightArm, 20, (float) Math.toRadians(-110), 0, (float) Math.toRadians(78), 20F);
                 this.walk(this.body2, speedDance, degreeDance, false, 1, -0.1F, f2, 1);
                 this.swing(this.rightArm, speedDance, degreeDance, false, 2, -0.1F, f2, 1);
                 this.walk(this.neck, speedDance, degreeDance, false, 2, -0.1F, f2, 1);
             }
-            if(rat.getDanceMoves() == 2){
+            if (rat.getDanceMoves() == 2) {
                 this.walk(this.body2, speedDance, degreeDance * 0.25F, false, 1, -0.1F, f2, 1);
                 this.body1.rotateAngleY -= f2 * 0.25F;
                 this.walk(this.rightArm, speedDance, degreeDance, false, 2, -0.1F, f2, 1);
@@ -402,11 +401,11 @@ public class ModelRat extends AdvancedModelBase {
                 this.walk(this.leftThigh, speedDance, degreeDance, true, 2, -0.1F, f2, 1);
                 this.walk(this.neck, speedDance, degreeDance * 0.25F, false, 1, -0.1F, f2, 1);
             }
-            if(rat.getDanceMoves() == 3){
-                progressRotation(rightArm, 20, (float)Math.toRadians(30), (float)Math.toRadians(-98), (float)Math.toRadians(-130), 20F);
-                progressRotation(leftArm, 20, (float)Math.toRadians(30), (float)Math.toRadians(80), (float)Math.toRadians(130), 20F);
-                progressRotation(rightThigh, 20, 0, (float)Math.toRadians(15), (float)Math.toRadians(15), 20F);
-                progressRotation(leftThigh, 20, 0, (float)Math.toRadians(15), (float)Math.toRadians(-15), 20F);
+            if (rat.getDanceMoves() == 3) {
+                progressRotation(rightArm, 20, (float) Math.toRadians(30), (float) Math.toRadians(-98), (float) Math.toRadians(-130), 20F);
+                progressRotation(leftArm, 20, (float) Math.toRadians(30), (float) Math.toRadians(80), (float) Math.toRadians(130), 20F);
+                progressRotation(rightThigh, 20, 0, (float) Math.toRadians(15), (float) Math.toRadians(15), 20F);
+                progressRotation(leftThigh, 20, 0, (float) Math.toRadians(15), (float) Math.toRadians(-15), 20F);
                 this.swing(this.rightArm, speedDance, degreeDance, false, 2, -0.1F, f2, 1);
                 this.swing(this.leftArm, speedDance, degreeDance, true, 2, -0.1F, f2, 1);
                 this.walk(this.neck, speedDance, degreeDance * 0.25F, false, 2, -0.1F, f2, 1);

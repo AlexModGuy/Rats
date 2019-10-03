@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -63,14 +63,14 @@ public class BlockRatHole extends BlockContainer {
         GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
     }
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-        if(worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatHole){
-            TileEntityRatHole te = (TileEntityRatHole)worldIn.getTileEntity(pos);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatHole) {
+            TileEntityRatHole te = (TileEntityRatHole) worldIn.getTileEntity(pos);
             NonNullList<ItemStack> ret = NonNullList.create();
             te.getImmitatedBlockState().getBlock().getDrops(ret, worldIn, pos, te.getImmitatedBlockState(), 1);
-            for(ItemStack stack : ret){
+            for (ItemStack stack : ret) {
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
-                if(!worldIn.isRemote){
+                if (!worldIn.isRemote) {
                     worldIn.spawnEntity(entityItem);
                 }
             }
@@ -151,8 +151,8 @@ public class BlockRatHole extends BlockContainer {
         return false;
     }
 
-    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity){
-        if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
             TileEntityRatHole te = (TileEntityRatHole) world.getTileEntity(pos);
             return te.getImmitatedBlockState().getBlock().getSoundType();
         }

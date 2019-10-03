@@ -18,10 +18,9 @@ import java.util.List;
 
 public class RatAIHarvestCrops extends EntityAIBase {
     private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
+    private BlockPos targetBlock = null;
     private int feedingTicks;
 
     public RatAIHarvestCrops(EntityRat entity) {

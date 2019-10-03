@@ -34,16 +34,6 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber
 public class CommonProxy {
 
-    public void preInit() {
-    }
-
-    public void init() {
-
-    }
-
-    public void postInit() {
-    }
-
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
         event.getRegistry().registerAll(RatsMod.CONFIT_BYALDI_POTION, RatsMod.PLAGUE_POTION);
@@ -56,17 +46,9 @@ public class CommonProxy {
                 RatsSoundRegistry.PIPER_LOOP);
     }
 
-
     @SubscribeEvent
     public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
         event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
-    }
-
-    @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equalsIgnoreCase(RatsMod.MODID)) {
-            RatsMod.syncConfig();
-        }
     }
 
     @SubscribeEvent
@@ -121,7 +103,7 @@ public class CommonProxy {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item) {
-                    if((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatsMod.CONFIG_OPTIONS.disablePlastic){
+                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatsMod.CONFIG_OPTIONS.disablePlastic) {
                         event.getRegistry().register((Item) obj);
                     }
                 } else if (obj instanceof Item[]) {
@@ -141,6 +123,7 @@ public class CommonProxy {
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
     }
+
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
         registerSpawnable(EntityEntryBuilder.<EntityRat>create(), event, EntityRat.class, "rat", 1, 0X30333E, 0XDAABA1);
@@ -178,6 +161,23 @@ public class CommonProxy {
         event.getRegistry().register(builder.build());
     }
 
+    public void preInit() {
+    }
+
+    public void init() {
+
+    }
+
+    public void postInit() {
+    }
+
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equalsIgnoreCase(RatsMod.MODID)) {
+            RatsMod.syncConfig();
+        }
+    }
+
     public Object getArmorModel(int index) {
         return null;
     }
@@ -189,11 +189,11 @@ public class CommonProxy {
     public void openCheeseStaffGui() {
     }
 
-    public void setRefrencedRat(EntityRat rat) {
-    }
-
     public EntityRat getRefrencedRat() {
         return null;
+    }
+
+    public void setRefrencedRat(EntityRat rat) {
     }
 
     public void setCheeseStaffContext(BlockPos pos, EnumFacing facing) {

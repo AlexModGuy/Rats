@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
@@ -21,8 +18,10 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-public class StructureRatRoadPieces
-{
+import java.util.List;
+import java.util.Random;
+
+public class StructureRatRoadPieces {
 
     public static void registerVillagePieces() {
         MapGenStructureIO.registerStructure(MapGenRatRoad.Start.class, "RatRoadStart");
@@ -33,7 +32,7 @@ public class StructureRatRoadPieces
     }
 
     public static List<StructureRatRoadPieces.PieceWeight> getStructureVillageWeightedPieceList(Random random, int size) {
-        List<StructureRatRoadPieces.PieceWeight> list = Lists.<PieceWeight>newArrayList();
+        List<StructureRatRoadPieces.PieceWeight> list = Lists.newArrayList();
         list.add(new PieceWeight(Road.class, 100, 30));
         return list;
     }
@@ -156,10 +155,12 @@ public class StructureRatRoadPieces
             }
             return null;
         }
+
         protected void writeStructureToNBT(NBTTagCompound tagCompound) {
             super.writeStructureToNBT(tagCompound);
             tagCompound.setInteger("Length", this.length);
         }
+
         protected void readStructureFromNBT(NBTTagCompound tagCompound) {
             super.readStructureFromNBT(tagCompound);
             this.length = tagCompound.getInteger("Length");
@@ -275,15 +276,15 @@ public class StructureRatRoadPieces
         public int terrainType;
         public PieceWeight structVillagePieceWeight;
         public List<StructureRatRoadPieces.PieceWeight> structureVillageWeightedPieceList;
-        public List<StructureComponent> pendingHouses = Lists.<StructureComponent>newArrayList();
-        public List<StructureComponent> pendingRoads = Lists.<StructureComponent>newArrayList();
+        public List<StructureComponent> pendingHouses = Lists.newArrayList();
+        public List<StructureComponent> pendingRoads = Lists.newArrayList();
         public Biome biome;
 
         public Start() {
         }
 
         public Start(BiomeProvider chunkManagerIn, int p_i2104_2_, Random rand, int p_i2104_4_, int p_i2104_5_, List<StructureRatRoadPieces.PieceWeight> p_i2104_6_, int p_i2104_7_) {
-            super((Start) null, 0, rand, p_i2104_4_, p_i2104_5_);
+            super(null, 0, rand, p_i2104_4_, p_i2104_5_);
             this.worldChunkMngr = chunkManagerIn;
             this.structureVillageWeightedPieceList = p_i2104_6_;
             this.terrainType = p_i2104_7_;

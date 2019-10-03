@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -25,10 +24,11 @@ public class WorldGenGarbageHeap extends WorldGenerator {
     private VillageComponentGarbageHeap component;
     private Rotation rotation;
     private EnumFacing facing;
-    public WorldGenGarbageHeap(VillageComponentGarbageHeap component, EnumFacing facing){
+
+    public WorldGenGarbageHeap(VillageComponentGarbageHeap component, EnumFacing facing) {
         this.component = component;
         this.facing = facing;
-        switch(facing){
+        switch (facing) {
             case SOUTH:
                 rotation = Rotation.CLOCKWISE_180;
                 break;
@@ -43,6 +43,7 @@ public class WorldGenGarbageHeap extends WorldGenerator {
                 break;
         }
     }
+
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         if (worldIn == null) {

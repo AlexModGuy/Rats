@@ -29,11 +29,16 @@ public class EntityGolemBeam extends EntityArrow {
         this.setDamage(8F);
     }
 
+    public EntityGolemBeam(World worldIn, EntityLivingBase shooter) {
+        super(worldIn, shooter);
+        this.setDamage(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonAttack * 0.5F + 0.5F);
+    }
+
     public void onUpdate() {
         float sqrt = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         if (sqrt < 0.2F || this.inGround || this.collidedHorizontally) {
             this.setDead();
-            Explosion explosion = world.createExplosion(this.shootingEntity, this.posX, this.posY, this.posZ, 0.0F,  net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, shootingEntity));
+            Explosion explosion = world.createExplosion(this.shootingEntity, this.posX, this.posY, this.posZ, 0.0F, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, shootingEntity));
             explosion.doExplosionA();
             explosion.doExplosionB(true);
         }
@@ -42,14 +47,13 @@ public class EntityGolemBeam extends EntityArrow {
 
     public void playSound(SoundEvent soundIn, float volume, float pitch) {
         if (!this.isSilent() && soundIn != SoundEvents.ENTITY_ARROW_HIT && soundIn != SoundEvents.ENTITY_ARROW_HIT_PLAYER) {
-            this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
+            this.world.playSound(null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
         }
     }
 
-
     protected void onHit(RayTraceResult raytraceResultIn) {
         if (raytraceResultIn.entityHit != null && raytraceResultIn.entityHit instanceof EntityPlayer) {
-            this.damageShield((EntityPlayer)raytraceResultIn.entityHit, (float)this.getDamage());
+            this.damageShield((EntityPlayer) raytraceResultIn.entityHit, (float) this.getDamage());
         }
         super.onHit(raytraceResultIn);
     }
@@ -82,12 +86,6 @@ public class EntityGolemBeam extends EntityArrow {
 
     public float getBrightness() {
         return 1.0F;
-    }
-
-
-    public EntityGolemBeam(World worldIn, EntityLivingBase shooter) {
-        super(worldIn, shooter);
-        this.setDamage(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonAttack * 0.5F + 0.5F);
     }
 
     public boolean hasNoGravity() {

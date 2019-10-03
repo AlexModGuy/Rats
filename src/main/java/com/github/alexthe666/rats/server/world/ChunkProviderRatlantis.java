@@ -14,10 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.MapGenCaves;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenStronghold;
@@ -25,22 +28,23 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ChunkProviderRatlantis implements IChunkGenerator {
+    protected static final NoiseGeneratorPerlin PATH_PERLIN = new NoiseGeneratorPerlin(new Random(2345L), 1);
+    public double width;
+    public int height;
+    public PerlinNoise perlin1;
+    public PerlinNoise perlin2;
     private Random rand;
     private World world;
     private Biome[] biomesForGeneration;
     private MapGenBase caveGenerator = new MapGenCaves();
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
     private MapGenRatRoad ratRoadGenerator = new MapGenRatRoad();
-    public double width;
-    public int height;
-    public PerlinNoise perlin1;
-    public PerlinNoise perlin2;
-    protected static final NoiseGeneratorPerlin PATH_PERLIN = new NoiseGeneratorPerlin(new Random(2345L), 1);
+    private int drawnPaths = 0;
+
     public ChunkProviderRatlantis(World par1World, long par2) {
         world = par1World;
         rand = new Random(par2);
@@ -62,21 +66,21 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
                     if (heightBase > 67) {
                         if (y < 2 + rand.nextInt(2)) {
                             i4 = Blocks.BEDROCK;
-                        }else if (y < heightBase - 3) {
+                        } else if (y < heightBase - 3) {
                             i4 = Blocks.STONE;
                         } else if (y < heightBase - 1) {
                             i4 = Blocks.DIRT;
                         } else if (y < heightBase) {
-                            if(isPath(i, k)){
+                            if (isPath(i, k)) {
                                 i4 = RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED;
-                            }else{
+                            } else {
                                 i4 = Blocks.GRASS;
                             }
                         }
                     } else {
                         if (y < 2 + rand.nextInt(2)) {
                             i4 = Blocks.BEDROCK;
-                        }else if (y < heightBase - 6 + rand.nextInt(3)) {
+                        } else if (y < heightBase - 6 + rand.nextInt(3)) {
                             i4 = Blocks.STONE;
                         } else if (y < heightBase - 3) {
                             i4 = Blocks.SANDSTONE;
@@ -164,12 +168,11 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
         BlockFalling.fallInstantly = false;
     }
 
-    private int drawnPaths = 0;
     private void addStructures(World world, Random rand, BlockPos blockpos) {
-        if(rand.nextInt(4) == 0 && world.getBlockState(world.getHeight(blockpos).down()).isOpaqueCube()){
+        if (rand.nextInt(4) == 0 && world.getBlockState(world.getHeight(blockpos).down()).isOpaqueCube()) {
             new WorldGenRatRuin(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
-        if(rand.nextInt(40) == 0 && world.getBlockState(world.getHeight(blockpos).down()).getBlock() instanceof BlockLiquid){
+        if (rand.nextInt(40) == 0 && world.getBlockState(world.getHeight(blockpos).down()).getBlock() instanceof BlockLiquid) {
             new WorldGenAquaduct(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
     }

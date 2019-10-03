@@ -1,16 +1,11 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 
 public class LayerCheeseGolemGlow implements LayerRenderer<EntityMarbleCheeseGolem> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/marble_cheese_golem_glow.png");

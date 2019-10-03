@@ -1,16 +1,11 @@
 package com.github.alexthe666.rats.client.model;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
 import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelNeoRatlantean extends AdvancedModelBase {
@@ -192,10 +187,11 @@ public class ModelNeoRatlantean extends AdvancedModelBase {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
         this.body1.render(f5);
-        if(!entity.onGround){
+        if (!entity.onGround) {
             this.floatyPivot.render(f5);
         }
     }
+
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
         EntityNeoRatlantean neoRatlantean = (EntityNeoRatlantean) entity;
@@ -230,7 +226,7 @@ public class ModelNeoRatlantean extends AdvancedModelBase {
         this.walk(this.rightArm, speedIdle * 0.5F, degreeIdle * 0.5F, false, 1, 0, f2, 1);
         this.walk(this.rightHand, speedIdle * 0.5F, degreeIdle * 0.5F, false, 0, -0.1F, f2, 1);
         this.walk(this.leftHand, speedIdle * 0.5F, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
-        float f12 = (float)f1;
+        float f12 = f1;
         float maxTailRotation = (float) Math.toRadians(15);
         if (f12 > maxTailRotation) {
             f12 = maxTailRotation;
@@ -245,7 +241,7 @@ public class ModelNeoRatlantean extends AdvancedModelBase {
         this.walk(this.tail1_1, speedRun, degreeRun * 0.5F, false, -2, 0.1F, f, f1);
         this.faceTarget(f3, f4, 2, neck, head);
         this.faceTarget(f3, f4, 2, floatyPivot);
-        if(rat.onGround){
+        if (rat.onGround) {
             this.walk(this.rightThigh, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
             this.walk(this.rightFoot, speedWalk, degreeWalk * 2F, false, 3.5F, -0.1F, f, f1);
             this.walk(this.leftThigh, speedWalk, degreeWalk * 4F, true, 1, 0, f, f1);

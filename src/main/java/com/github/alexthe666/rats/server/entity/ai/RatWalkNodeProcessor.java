@@ -7,16 +7,10 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import java.util.EnumSet;
 
@@ -32,12 +26,12 @@ public class RatWalkNodeProcessor extends WalkNodeProcessor {
                     PathNodeType pathnodetype = this.getPathNodeType(world, l, i1, j1);
                     Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
                     boolean flag = false;
-                    if(entity != null){
-                        if(entity instanceof EntityRat && ((EntityRat) entity).isInCage()){
+                    if (entity != null) {
+                        if (entity instanceof EntityRat && ((EntityRat) entity).isInCage()) {
                             flag = block instanceof BlockRatTube;
                         }
                     }
-                    if(block instanceof BlockRatHole || block instanceof BlockRatTrap || block instanceof BlockRatCage || RatUtils.isOpenRatTube(world, ((EntityRat) entity), new BlockPos(x, y, z)) || flag){
+                    if (block instanceof BlockRatHole || block instanceof BlockRatTrap || block instanceof BlockRatCage || RatUtils.isOpenRatTube(world, ((EntityRat) entity), new BlockPos(x, y, z)) || flag) {
                         pathnodetype = PathNodeType.WALKABLE;
                     }
                     if (pathnodetype == PathNodeType.DOOR_WOOD_CLOSED && canOpenDoorsIn && canEnterDoorsIn) {

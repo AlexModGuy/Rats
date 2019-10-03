@@ -1,15 +1,11 @@
 package com.github.alexthe666.rats.client.model;
 
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 public class ModelRatlanteanSpirit extends AdvancedModelBase {

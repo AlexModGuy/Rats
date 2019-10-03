@@ -1,7 +1,5 @@
 package com.github.alexthe666.rats.server.compat;
 
-import com.github.alexthe666.rats.server.compat.thaumcraft.ThaumcraftCompat;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 public class ChiselCompatBridge {

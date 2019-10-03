@@ -6,12 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 
 public class RenderThrownBlock extends Render<EntityThrownBlock> {
     private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
@@ -24,7 +20,7 @@ public class RenderThrownBlock extends Render<EntityThrownBlock> {
 
     public void doRender(EntityThrownBlock entity, double x, double y, double z, float entityYaw, float partialTicks) {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        if(entity.fallTile != null) {
+        if (entity.fallTile != null) {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
             this.bindEntityTexture(entity);

@@ -18,18 +18,19 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class EntityLaserPortal extends Entity {
-    @Nullable
-    private EntityLivingBase creator;
-    @Nullable
-    private Entity facingTarget;
-    private UUID ownerUniqueId;
-    public float scaleOfPortal;
-    public float scaleOfPortalPrev;
     public static final Predicate<Entity> MONSTER_NOT_RAT = new Predicate<Entity>() {
         public boolean apply(@Nullable Entity entity) {
             return entity != null && !(entity instanceof EntityRat) && entity instanceof IMob;
         }
     };
+    public float scaleOfPortal;
+    public float scaleOfPortalPrev;
+    @Nullable
+    private EntityLivingBase creator;
+    @Nullable
+    private Entity facingTarget;
+    private UUID ownerUniqueId;
+
     public EntityLaserPortal(World worldIn) {
         super(worldIn);
         this.setSize(0.9F, 1.5F);
@@ -51,39 +52,34 @@ public class EntityLaserPortal extends Entity {
         this.isImmuneToFire = true;
     }
 
-    public void setCreator(@Nullable EntityLivingBase ownerIn) {
-        this.creator = ownerIn;
-        this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUniqueID();
-    }
-
     public void onUpdate() {
         super.onUpdate();
-        if(ticksExisted > 300){
+        if (ticksExisted > 300) {
             this.setDead();
         }
-        if(ticksExisted < 250 && scaleOfPortal < 1.0F){
+        if (ticksExisted < 250 && scaleOfPortal < 1.0F) {
             scaleOfPortal += 0.05F;
         }
-        if(ticksExisted > 250 && scaleOfPortal > 0.0F){
+        if (ticksExisted > 250 && scaleOfPortal > 0.0F) {
             scaleOfPortal -= 0.05F;
         }
-        if(ticksExisted % 50 == 0){
+        if (ticksExisted % 50 == 0) {
             this.tryFiring();
-        }else{
+        } else {
             faceTarget();
         }
-        if(world.isRemote && scaleOfPortal >= 0.5F){
+        if (world.isRemote && scaleOfPortal >= 0.5F) {
             RatsMod.PROXY.spawnParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
-                    0.0F,  0.0F, 0.0F);
+                    0.0F, 0.0F, 0.0F);
         }
         scaleOfPortalPrev = scaleOfPortal;
     }
 
-    private void faceTarget(){
-        if(facingTarget == null ||this.getCreator() != null && !facingTarget.isEntityEqual(((EntityLiving) this.getCreator()).getAttackTarget())){
-            if(this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
+    private void faceTarget() {
+        if (facingTarget == null || this.getCreator() != null && !facingTarget.isEntityEqual(((EntityLiving) this.getCreator()).getAttackTarget())) {
+            if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
                 EntityLivingBase target = ((EntityLiving) this.getCreator()).getAttackTarget();
                 if (target == null && this.getCreator() instanceof EntityMob) {
                     target = world.getNearestPlayerNotCreative(this, 30);
@@ -98,36 +94,37 @@ public class EntityLaserPortal extends Entity {
             this.rotationYaw = f % 360;
         }
     }
+
     private void tryFiring() {
-        if(this.getCreator() != null && this.getCreator() instanceof EntityLiving){
+        if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
             EntityLivingBase target = ((EntityLiving) this.getCreator()).getAttackTarget();
-            if(target == null && this.getCreator() instanceof EntityMob){
+            if (target == null && this.getCreator() instanceof EntityMob) {
                 target = world.getNearestPlayerNotCreative(this, 30);
             }
-            if(target == null && this.getCreator() instanceof EntityRat && ((EntityRat) this.getCreator()).isTamed()){
+            if (target == null && this.getCreator() instanceof EntityRat && ((EntityRat) this.getCreator()).isTamed()) {
                 EntityLivingBase closest = null;
-                for(Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getEntityBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)){
-                    if(entity instanceof EntityLivingBase && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))){
-                        closest = (EntityLivingBase)entity;
+                for (Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getEntityBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)) {
+                    if (entity instanceof EntityLivingBase && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))) {
+                        closest = (EntityLivingBase) entity;
                     }
                 }
                 target = closest;
             }
-            if(target != null){
+            if (target != null) {
                 double d0 = this.posX - target.posX;
                 double d1 = this.posY - (target.posY);
                 double d2 = this.posZ - target.posZ;
                 double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-                float f = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
+                float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.rotationYaw = f % 360;
                 double targetRelativeX = target.posX - this.posX;
-                double targetRelativeY = target.posY + target.height/2 - this.posY - 1.0F;
+                double targetRelativeY = target.posY + target.height / 2 - this.posY - 1.0F;
                 double targetRelativeZ = target.posZ - this.posZ;
                 EntityLaserBeam beam = new EntityLaserBeam(world, this.getCreator());
                 this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
                 beam.setPosition(this.posX, this.posY + 1.0F, this.posZ);
                 beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
-                if(!world.isRemote){
+                if (!world.isRemote) {
                     world.spawnEntity(beam);
                 }
             }
@@ -145,6 +142,11 @@ public class EntityLaserPortal extends Entity {
         }
 
         return this.creator;
+    }
+
+    public void setCreator(@Nullable EntityLivingBase ownerIn) {
+        this.creator = ownerIn;
+        this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUniqueID();
     }
 
     protected void readEntityFromNBT(NBTTagCompound compound) {

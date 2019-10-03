@@ -10,15 +10,16 @@ public enum RatCommand {
     TRANSPORT(true);
 
     public boolean freeMove;
-    RatCommand(boolean freeMove){
-      this.freeMove = freeMove;
+
+    RatCommand(boolean freeMove) {
+        this.freeMove = freeMove;
     }
 
-    public String getTranslateName(){
+    public String getTranslateName() {
         return "entity.rat.command." + this.name().toLowerCase();
     }
 
-    public String getTranslateDescription(){
+    public String getTranslateDescription() {
         return "entity.rat.command." + this.name().toLowerCase() + ".desc";
     }
 

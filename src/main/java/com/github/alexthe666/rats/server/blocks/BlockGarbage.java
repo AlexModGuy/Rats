@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -40,13 +39,12 @@ public class BlockGarbage extends BlockFalling {
     }
 
     @SideOnly(Side.CLIENT)
-    public int getDustColor(IBlockState state)
-    {
+    public int getDustColor(IBlockState state) {
         return 0X79695B;
     }
 
     @Deprecated
-    public boolean canEntitySpawn(IBlockState state, Entity entityIn){
+    public boolean canEntitySpawn(IBlockState state, Entity entityIn) {
         return entityIn instanceof EntityRat;
     }
 

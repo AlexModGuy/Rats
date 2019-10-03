@@ -28,7 +28,7 @@ public class PotionConfitByaldi extends Potion {
         if (entityLivingBaseIn.getHealth() < entityLivingBaseIn.getMaxHealth()) {
             entityLivingBaseIn.heal(1.0F);
         }
-        if(entityLivingBaseIn instanceof EntityPlayer){
+        if (entityLivingBaseIn instanceof EntityPlayer) {
             ((EntityPlayer) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
         }
     }
@@ -39,14 +39,14 @@ public class PotionConfitByaldi extends Potion {
 
     public void removeAttributesModifiersFromEntity(EntityLivingBase entityLivingBaseIn, AbstractAttributeMap attributeMapIn, int amplifier) {
         super.removeAttributesModifiersFromEntity(entityLivingBaseIn, attributeMapIn, amplifier);
-        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() - (float)(20 * (amplifier + 1)));
+        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() - (float) (20 * (amplifier + 1)));
         if (entityLivingBaseIn.getHealth() > entityLivingBaseIn.getMaxHealth()) {
             entityLivingBaseIn.setHealth(entityLivingBaseIn.getMaxHealth());
         }
     }
 
-    public void applyAttributesModifiersToEntity(EntityLivingBase entityLivingBaseIn, AbstractAttributeMap attributeMapIn, int amplifier){
-        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() + (float)(20 * (amplifier + 1)));
+    public void applyAttributesModifiersToEntity(EntityLivingBase entityLivingBaseIn, AbstractAttributeMap attributeMapIn, int amplifier) {
+        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() + (float) (20 * (amplifier + 1)));
         super.applyAttributesModifiersToEntity(entityLivingBaseIn, attributeMapIn, amplifier);
     }
 

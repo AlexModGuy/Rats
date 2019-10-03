@@ -23,10 +23,9 @@ import java.util.Comparator;
 
 public class RatPickupFromInventory extends EntityAIBase {
     private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
+    private BlockPos targetBlock = null;
     private int feedingTicks;
 
     public RatPickupFromInventory(EntityRat entity) {
@@ -41,7 +40,7 @@ public class RatPickupFromInventory extends EntityAIBase {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT || entity.getAttackTarget() != null) {
             return false;
         }
-        if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()){
+        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             return false;
         }
         resetTarget();
@@ -57,12 +56,12 @@ public class RatPickupFromInventory extends EntityAIBase {
         return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
     }
 
-    public void resetTask(){
+    public void resetTask() {
         this.entity.getNavigator().clearPath();
         resetTarget();
     }
 
-    public boolean canSeeChest(){
+    public boolean canSeeChest() {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false);
         if (rayTrace != null && rayTrace.hitVec != null) {
             BlockPos sidePos = rayTrace.getBlockPos();
@@ -71,38 +70,39 @@ public class RatPickupFromInventory extends EntityAIBase {
         }
         return true;
     }
+
     @Override
     public void updateTask() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
             double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-            if(distance < 2.5 && distance >= 1.65 && canSeeChest() && entity instanceof IInventory){
-                toggleChest((IInventory)entity, true);
+            if (distance < 2.5 && distance >= 1.65 && canSeeChest() && entity instanceof IInventory) {
+                toggleChest((IInventory) entity, true);
             }
             if (distance < 1.65 && canSeeChest()) {
-                if(entity instanceof IInventory){
-                    toggleChest((IInventory)entity, false);
+                if (entity instanceof IInventory) {
+                    toggleChest((IInventory) entity, false);
                 }
                 IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                if(handler == null){
+                if (handler == null) {
                     return;
                 }
                 int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler, this.entity.world.rand);
                 int extractSize = this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
-                try{
+                try {
                     stack = handler.extractItem(slot, extractSize, false);
-                }catch(Exception e){
+                } catch (Exception e) {
                     RatsMod.logger.error("Rat tried to extract item that didnt exist");
                     e.printStackTrace();
                 }
-                if(slot == -1 || stack == ItemStack.EMPTY){
+                if (slot == -1 || stack == ItemStack.EMPTY) {
                     this.targetBlock = null;
                     this.resetTask();
-                }else{
+                } else {
                     ItemStack duplicate = stack.copy();
-                    if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                    if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
                         this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
                     }
                     this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
@@ -115,14 +115,14 @@ public class RatPickupFromInventory extends EntityAIBase {
         }
     }
 
-    public void toggleChest(IInventory te, boolean open){
-        if(te instanceof TileEntityChest){
+    public void toggleChest(IInventory te, boolean open) {
+        if (te instanceof TileEntityChest) {
             TileEntityChest chest = (TileEntityChest) te;
-            if(open){
+            if (open) {
                 chest.numPlayersUsing++;
                 this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
-            }else{
-                if(chest.numPlayersUsing > 0){
+            } else {
+                if (chest.numPlayersUsing > 0) {
                     chest.numPlayersUsing = 0;
                     this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
                 }

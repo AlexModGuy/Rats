@@ -19,7 +19,7 @@ public class ItemStringCheese extends ItemFood {
         this.setRegistryName(RatsMod.MODID, "string_cheese");
     }
 
-    public int getMaxItemUseDuration(ItemStack stack){
+    public int getMaxItemUseDuration(ItemStack stack) {
         return 1;
     }
 

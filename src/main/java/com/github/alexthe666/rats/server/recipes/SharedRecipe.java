@@ -7,7 +7,7 @@ public class SharedRecipe {
     private ItemStack input;
     private ItemStack output;
 
-    public SharedRecipe(ItemStack input, ItemStack output){
+    public SharedRecipe(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
     }

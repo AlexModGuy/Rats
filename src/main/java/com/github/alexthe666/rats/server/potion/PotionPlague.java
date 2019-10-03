@@ -5,10 +5,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -62,7 +58,7 @@ public class PotionPlague extends Potion {
         tessellator.draw();
     }
 
-    public java.util.List<ItemStack> getCurativeItems(){
+    public java.util.List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
     }
 }

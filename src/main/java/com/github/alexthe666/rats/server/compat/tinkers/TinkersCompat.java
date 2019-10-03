@@ -13,14 +13,13 @@ import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.shared.TinkerFluids;
 import slimeknights.tconstruct.tools.TinkerMaterials;
 import slimeknights.tconstruct.tools.TinkerTraits;
-import slimeknights.tconstruct.tools.traits.TraitTasty;
 
 public class TinkersCompat {
     public static final Material CHEESE_MATERIAL = new Material("cheese", 0XF2C132);
     public static final Material STRING_CHEESE = new Material("string_cheese", 0XF2C132);
-    private static boolean registered = false;
-    private static final TinkersCompat INSTANCE = new TinkersCompat();
     public static final AbstractTrait RAT_TRAIT = new TraitRatty();
+    private static final TinkersCompat INSTANCE = new TinkersCompat();
+    private static boolean registered = false;
 
     public static void register() {
         if (!registered) {

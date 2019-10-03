@@ -4,20 +4,14 @@ import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBow;
-import net.minecraft.util.EnumHand;
 
 public class PiperAIStrife extends EntityAIBase {
 
     private final EntityIllagerPiper entity;
     private final double moveSpeedAmp;
-    private int attackCooldown;
     private final float maxAttackDistance;
+    private int attackCooldown;
     private int attackTime = -1;
     private int seeTime;
     private boolean strafingClockwise;
@@ -40,7 +34,7 @@ public class PiperAIStrife extends EntityAIBase {
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute() {
-        return this.entity.getAttackTarget() == null ? false : this.isPipeInMainhand();
+        return this.entity.getAttackTarget() != null && this.isPipeInMainhand();
     }
 
     protected boolean isPipeInMainhand() {

@@ -10,10 +10,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelPiratBoat extends ModelBase implements IMultipassModel {
+    private final int patchList = GLAllocation.generateDisplayLists(1);
     public ModelRenderer[] boatSides = new ModelRenderer[5];
     public ModelRenderer[] paddles = new ModelRenderer[2];
     public ModelRenderer noWater;
-    private final int patchList = GLAllocation.generateDisplayLists(1);
 
     public ModelPiratBoat() {
         this.boatSides[0] = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);

@@ -809,7 +809,6 @@ public class RatUtils {
             BlockPos blockpos;
 
             for (blockpos = p_191378_0_.up(); blockpos.getY() < p_191378_1_.world.getHeight() && p_191378_1_.world.getBlockState(blockpos).getMaterial().isSolid(); blockpos = blockpos.up()) {
-                ;
             }
 
             return blockpos;
@@ -821,9 +820,9 @@ public class RatUtils {
     }
 
     public static boolean canSpawnInDimension(World world) {
-        if(RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length > 0){
-            for(int i = 0 ; i < RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length; i++){
-                if(RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions[i] == world.provider.getDimension()){
+        if (RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length > 0) {
+            for (int i = 0; i < RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length; i++) {
+                if (RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions[i] == world.provider.getDimension()) {
                     return false;
                 }
             }

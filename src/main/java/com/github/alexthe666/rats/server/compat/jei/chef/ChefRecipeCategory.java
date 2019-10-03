@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.compat.jei.chef;
 
 import com.github.alexthe666.rats.server.compat.jei.RatsJEIPlugin;
-import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronDrawable;
-import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeWrapper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -14,9 +12,10 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipeWrapper> {
 
     public ChefDrawable drawable;
 
-    public ChefRecipeCategory(){
+    public ChefRecipeCategory() {
         drawable = new ChefDrawable();
     }
+
     @Override
     public String getUid() {
         return RatsJEIPlugin.CHEF_RAT_ID;

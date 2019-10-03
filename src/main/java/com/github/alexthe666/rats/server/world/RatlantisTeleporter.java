@@ -1,4 +1,5 @@
 package com.github.alexthe666.rats.server.world;
+
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockRotatedPillar;
@@ -26,11 +27,11 @@ public class RatlantisTeleporter extends Teleporter {
         if (worldServerInstance.provider.getDimension() == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
             this.placeInPortal(entity);
             entity.setPositionAndRotation(0, 110, 0, 0, 0);
-        }else{
-            if(entity instanceof EntityPlayer && ((EntityPlayer) entity).getBedLocation() != null){
+        } else {
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getBedLocation() != null) {
                 BlockPos bedPos = ((EntityPlayer) entity).getBedLocation();
                 entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
-            }else{
+            } else {
                 BlockPos height = entity.world.getHeight(entity.getPosition());
                 entity.setLocationAndAngles(height.getX() + 0.5D, height.getY() + 0.5D, height.getZ() + 0.5D, entity.rotationYaw, 0.0F);
             }
@@ -41,11 +42,11 @@ public class RatlantisTeleporter extends Teleporter {
     public void placeInPortal(Entity entity) {
         entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         BlockPos portalBottom = new BlockPos(1, 111, 1);
-        for(BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2))){
+        for (BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2))) {
             worldServerInstance.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
             worldServerInstance.setBlockState(pos.up(4), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
         }
-        for(int i = 1; i < 4; i++){
+        for (int i = 1; i < 4; i++) {
             worldServerInstance.setBlockState(portalBottom.add(2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
             worldServerInstance.setBlockState(portalBottom.add(2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
             worldServerInstance.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));

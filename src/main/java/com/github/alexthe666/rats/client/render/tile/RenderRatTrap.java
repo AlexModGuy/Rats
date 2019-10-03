@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderRatTrap extends TileEntitySpecialRenderer<TileEntityRatTrap> {
     private static final ModelRatTrap MODEL_RAT_TRAP = new ModelRatTrap();
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/rat_trap.png");
+
     @Override
     public void render(TileEntityRatTrap entity, double x, double y, double z, float f, int f1, float alpha) {
         float rotation = 0;
@@ -40,7 +41,7 @@ public class RenderRatTrap extends TileEntitySpecialRenderer<TileEntityRatTrap> 
         GL11.glPushMatrix();
         Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
         MODEL_RAT_TRAP.render(0.0625F, shutProgress);
-        if(!bait.isEmpty()){
+        if (!bait.isEmpty()) {
             GL11.glScalef(0.4F, 0.4F, 0.4F);
             GL11.glTranslated(0, 3.4F, -0.5F);
             GL11.glRotatef(90, 1F, 0, 0);

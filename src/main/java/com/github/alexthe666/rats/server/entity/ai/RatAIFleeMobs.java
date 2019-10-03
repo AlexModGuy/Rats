@@ -9,7 +9,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EntitySelectors;
@@ -49,17 +48,17 @@ public class RatAIFleeMobs extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if(this.entity.isTamed() || this.entity.hasPlague()){
+        if (this.entity.isTamed() || this.entity.hasPlague()) {
             return false;
         }
-        List<EntityOcelot> ocelotList = this.entity.world.<EntityOcelot>getEntitiesWithinAABB(EntityOcelot.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
-        List<EntityPlayer> playerList = this.entity.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        List<EntityOcelot> ocelotList = this.entity.world.getEntitiesWithinAABB(EntityOcelot.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        List<EntityPlayer> playerList = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
         if (ocelotList.isEmpty() && playerList.isEmpty()) {
             return false;
         } else {
-            if(!ocelotList.isEmpty()){
+            if (!ocelotList.isEmpty()) {
                 this.closestLivingEntity = ocelotList.get(0);
-            }else {
+            } else {
                 this.closestLivingEntity = playerList.get(0);
             }
             Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
@@ -111,7 +110,7 @@ public class RatAIFleeMobs extends EntityAIBase {
                 return nearSpeed;
 
             }
-                return farSpeed;
+            return farSpeed;
         } else {
             return 0.6D + ((double) (50 - Math.min(this.entity.wildTrust, 50)) * 0.04D);
         }

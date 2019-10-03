@@ -10,10 +10,10 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerPiratBoatSail implements LayerRenderer<EntityPiratBoat> {
-    private final RenderPiratBoat ratRenderer;
     protected static final ModelPiratCannon MODEL_PIRAT_CANNON = new ModelPiratCannon();
     protected static final ResourceLocation TEXTURE_PIRATE_CANNON = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon.png");
     protected static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = new ResourceLocation("rats:textures/entity/ratlantis/pirat_cannon_fire.png");
+    private final RenderPiratBoat ratRenderer;
 
     public LayerPiratBoatSail(RenderPiratBoat ratRendererIn) {
         this.ratRenderer = ratRendererIn;
@@ -36,7 +36,7 @@ public class LayerPiratBoatSail implements LayerRenderer<EntityPiratBoat> {
         MODEL_PIRAT_CANNON.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.popMatrix();
 
-        if(rat.isFiring()){
+        if (rat.isFiring()) {
             GlStateManager.pushMatrix();
             GlStateManager.rotate(-90F, 0F, 1F, 0F);
             GlStateManager.translate(0, 0.1F, -0.6F);

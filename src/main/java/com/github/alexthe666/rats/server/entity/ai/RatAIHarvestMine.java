@@ -2,11 +2,8 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.entity.RatStatus;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import javafx.util.Pair;
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,7 +13,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
@@ -30,13 +26,13 @@ import java.util.List;
 
 public class RatAIHarvestMine extends EntityAIBase {
     private static final int RADIUS = 16;
-
-    private BlockPos targetBlock = null;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
+    private BlockPos targetBlock = null;
     private int breakingTime;
     private int previousBreakProgress;
     private IBlockState prevMiningState = null;
+
     public RatAIHarvestMine(EntityRat entity) {
         super();
         this.entity = entity;
@@ -60,7 +56,7 @@ public class RatAIHarvestMine extends EntityAIBase {
         List<BlockPos> allBlocks = new ArrayList<>();
         NonNullList<ItemStack> mining = getMiningList();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            if(doesListContainBlock(entity.world, mining, pos)){
+            if (doesListContainBlock(entity.world, mining, pos)) {
                 allBlocks.add(pos);
             }
         }
@@ -70,20 +66,20 @@ public class RatAIHarvestMine extends EntityAIBase {
         }
     }
 
-    private NonNullList<ItemStack> getMiningList(){
+    private NonNullList<ItemStack> getMiningList() {
         NBTTagCompound nbttagcompound1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTagCompound();
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
         }
         return nonnulllist;
     }
 
-    private boolean doesListContainBlock(World world, NonNullList<ItemStack> list, BlockPos pos){
+    private boolean doesListContainBlock(World world, NonNullList<ItemStack> list, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         ItemStack getStack = state.getBlock().getItem(world, pos, state);
-        for(ItemStack stack : list){
-            if(stack.isItemEqual(getStack)){
+        for (ItemStack stack : list) {
+            if (stack.isItemEqual(getStack)) {
                 return true;
             }
         }
@@ -104,15 +100,15 @@ public class RatAIHarvestMine extends EntityAIBase {
     public void updateTask() {
         if (this.targetBlock != null) {
             BlockPos rayPos = entity.rayTraceBlockPos(this.targetBlock);
-            if(rayPos == null){
+            if (rayPos == null) {
                 rayPos = this.targetBlock;
             }
-            if(this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)){
+            if (this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
                 rayPos = this.targetBlock;
-            }else{
+            } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1D);
             }
-            if(!entity.getMoveHelper().isUpdating() && entity.onGround){
+            if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
                 IBlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
@@ -120,21 +116,21 @@ public class RatAIHarvestMine extends EntityAIBase {
                     if (distance < 2.5F) {
                         entity.world.setEntityState(entity, (byte) 85);
                         entity.crafting = true;
-                        if(block == prevMiningState){
+                        if (block == prevMiningState) {
                             entity.world.setEntityState(entity, (byte) 85);
                             entity.crafting = true;
-                        }else{
+                        } else {
                             entity.world.setEntityState(entity, (byte) 86);
                             entity.crafting = false;
                         }
-                        if(distance < 0.6F){
+                        if (distance < 0.6F) {
                             entity.motionZ *= 0.0D;
                             entity.motionX *= 0.0D;
                             entity.getNavigator().clearPath();
                             entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                         }
                         breakingTime++;
-                        int hardness = (int)(block.getBlockHardness(entity.world, rayPos) * 100);
+                        int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);
                         int i = (int) ((float) this.breakingTime / hardness * 10.0F);
                         if (breakingTime % 5 == 0) {
                             entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
@@ -163,7 +159,7 @@ public class RatAIHarvestMine extends EntityAIBase {
         }
     }
 
-    private void destroyBlock(BlockPos pos, IBlockState state){
+    private void destroyBlock(BlockPos pos, IBlockState state) {
         NonNullList<ItemStack> drops = NonNullList.create();
         state.getBlock().getDrops(drops, this.entity.world, pos, state, 0);
         if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
@@ -183,6 +179,7 @@ public class RatAIHarvestMine extends EntityAIBase {
             this.entity.fleePos = pos;
         }
     }
+
     public class BlockSorter implements Comparator<BlockPos> {
         private final Entity entity;
 

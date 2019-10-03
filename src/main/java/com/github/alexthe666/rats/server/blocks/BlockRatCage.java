@@ -10,8 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -20,10 +18,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -148,10 +144,10 @@ public class BlockRatCage extends Block {
         if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
             if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
                 EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
-                if(!worldIn.isRemote){
-                    BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP)playerIn, playerIn);
+                if (!worldIn.isRemote) {
+                    BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP) playerIn, playerIn);
                 }
-                if(playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN){
+                if (playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
                     worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
                     TileEntityRatCageBreedingLantern decorated = new TileEntityRatCageBreedingLantern();
                     ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
@@ -160,7 +156,7 @@ public class BlockRatCage extends Block {
                     if (!playerIn.isCreative()) {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
-                }else{
+                } else {
                     worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
                     TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
                     ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
@@ -178,10 +174,7 @@ public class BlockRatCage extends Block {
             ItemStack stack = this.getContainedItem(worldIn, pos);
             boolean clearIt = true;
             if (stack != ItemStack.EMPTY) {
-                clearIt = false;
-                if (playerIn.isSneaking()) {
-                    clearIt = true;
-                }
+                clearIt = playerIn.isSneaking();
             }
             if (clearIt) {
                 worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState());

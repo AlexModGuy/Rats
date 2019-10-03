@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
@@ -28,19 +27,19 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
         } else if (!isShut && shutProgress > 0.0F) {
             shutProgress -= 1.5F;
         }
-        if(RatUtils.isRatFood(baitStack.get(0))){
+        if (RatUtils.isRatFood(baitStack.get(0))) {
             killRats();
         }
     }
 
-    private void killRats(){
-        if(!isShut){
+    private void killRats() {
+        if (!isShut) {
             float i = this.getPos().getX() + 0.5F;
             float j = this.getPos().getY() + 0.5F;
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.65F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                if(!rat.isDead) {
+                if (!rat.isDead) {
                     rat.setKilledInTrap();
                     isShut = true;
                     world.playSound(null, this.getPos(), SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1F, 1F);
@@ -85,7 +84,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
         super.readFromNBT(compound);
     }
 
-    public void setBaitStack(ItemStack stack){
+    public void setBaitStack(ItemStack stack) {
         baitStack.set(0, stack);
     }
 
@@ -94,13 +93,13 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
     }
 
     public int calculateRedstone() {
-        if(this.isShut){
+        if (this.isShut) {
             return 15;
         }
         return 0;
     }
 
-    public void onRedstonePulse(){
+    public void onRedstonePulse() {
         this.isShut = true;
     }
 

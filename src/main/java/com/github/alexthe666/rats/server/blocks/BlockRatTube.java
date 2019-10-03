@@ -12,7 +12,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -27,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.openal.AL;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -54,13 +52,6 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     private static final AxisAlignedBB UP_AABB_CONNECT_2 = new AxisAlignedBB(0.2F, 0.8F, 0.2F, 0.2F, 1F, 0.8F);
     private static final AxisAlignedBB UP_AABB_CONNECT_3 = new AxisAlignedBB(0.8F, 0.8F, 0.2F, 0.8F, 1F, 0.8F);
     private static final AxisAlignedBB UP_AABB_CONNECT_4 = new AxisAlignedBB(0.2F, 0.8F, 0.8F, 0.8F, 1F, 0.8F);
-    //AABB maps to stop mem leaks
-    private static Map<EnumFacing, AxisAlignedBB> AABB_MAP = new HashMap<>();
-    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_1_MAP = new HashMap<>();
-    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_2_MAP = new HashMap<>();
-    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_3_MAP = new HashMap<>();
-    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_4_MAP = new HashMap<>();
-
     private static final AxisAlignedBB INTERACT_AABB_CENTER = new AxisAlignedBB(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
     private static final AxisAlignedBB INTERACT_AABB_UP = new AxisAlignedBB(0.2F, 0.8F, 0.2F, 0.8F, 1F, 0.8F);
     private static final AxisAlignedBB INTERACT_AABB_DOWN = new AxisAlignedBB(0.2F, 0F, 0.2F, 0.8F, 0.2F, 0.8F);
@@ -68,6 +59,12 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     private static final AxisAlignedBB INTERACT_AABB_NORTH = new AxisAlignedBB(0.2F, 0.2F, 0F, 0.8F, 0.8F, 0.2F);
     private static final AxisAlignedBB INTERACT_AABB_WEST = new AxisAlignedBB(0F, 0.2F, 0.2F, 0.2F, 0.8F, 0.8F);
     private static final AxisAlignedBB INTERACT_AABB_EAST = new AxisAlignedBB(0.8F, 0.2F, 0.2F, 1F, 0.8F, 0.8F);
+    //AABB maps to stop mem leaks
+    private static Map<EnumFacing, AxisAlignedBB> AABB_MAP = new HashMap<>();
+    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_1_MAP = new HashMap<>();
+    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_2_MAP = new HashMap<>();
+    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_3_MAP = new HashMap<>();
+    private static Map<EnumFacing, AxisAlignedBB> AABB_CONNECTOR_4_MAP = new HashMap<>();
 
     public BlockRatTube(String name) {
         super(Material.GLASS);
@@ -94,7 +91,25 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
         GameRegistry.registerTileEntity(TileEntityRatTube.class, "rat_tube");
     }
 
-    public List<AxisAlignedBB> compileAABBList(IBlockAccess worldIn, BlockPos pos, IBlockState state){
+    public static AxisAlignedBB rotateAABB(AxisAlignedBB aabb, EnumFacing facing) {
+        switch (facing) {
+            case UP:
+                return aabb;
+            case DOWN:
+                return new AxisAlignedBB(aabb.minX, 1D - aabb.maxY, aabb.minZ, aabb.maxX, 1D - aabb.minY, aabb.maxZ);
+            case NORTH:
+                return new AxisAlignedBB(aabb.minX, aabb.minZ, 1D - aabb.maxY, aabb.maxX, aabb.maxZ, 1D - aabb.minY);
+            case SOUTH:
+                return new AxisAlignedBB(aabb.minX, aabb.minZ, aabb.minY, aabb.maxX, aabb.maxZ, aabb.maxY);
+            case EAST:
+                return new AxisAlignedBB(aabb.minY, aabb.minX, aabb.minZ, aabb.maxY, aabb.maxX, aabb.maxZ);
+            case WEST:
+                return new AxisAlignedBB(1D - aabb.maxY, aabb.minX, aabb.minZ, 1D - aabb.minY, aabb.maxX, aabb.maxZ);
+        }
+        return aabb;
+    }
+
+    public List<AxisAlignedBB> compileAABBList(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
         List<AxisAlignedBB> aabbs = new ArrayList<>();
         aabbs.add(INTERACT_AABB_CENTER);
         if (state.getBlock() instanceof BlockRatTube) {
@@ -121,7 +136,6 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
         return aabbs;
     }
 
-
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         if (state.getBlock() instanceof BlockRatTube) {
             IBlockState actualState = getActualState(state, worldIn, pos);
@@ -144,84 +158,63 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB, EnumFacing.WEST, AABB_MAP));
             }
 
-        if (actualState.getValue(UP)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.UP, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.UP, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.UP, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.UP, AABB_CONNECTOR_4_MAP));
-        }
-        if (actualState.getValue(DOWN)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.DOWN, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.DOWN, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.DOWN, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.DOWN, AABB_CONNECTOR_4_MAP));
-        }
-        if (actualState.getValue(NORTH)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.NORTH, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.NORTH, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.NORTH, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.NORTH, AABB_CONNECTOR_4_MAP));
-        }
-        if (actualState.getValue(SOUTH)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.SOUTH, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.SOUTH, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.SOUTH, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.SOUTH, AABB_CONNECTOR_4_MAP));
-        }
-        if (actualState.getValue(EAST)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.EAST, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.EAST, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.EAST, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.EAST, AABB_CONNECTOR_4_MAP));
-        }
-        if (actualState.getValue(WEST)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.WEST, AABB_CONNECTOR_1_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.WEST, AABB_CONNECTOR_2_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.WEST, AABB_CONNECTOR_3_MAP));
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.WEST, AABB_CONNECTOR_4_MAP));
-        }
+            if (actualState.getValue(UP)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.UP, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.UP, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.UP, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.UP, AABB_CONNECTOR_4_MAP));
+            }
+            if (actualState.getValue(DOWN)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.DOWN, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.DOWN, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.DOWN, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.DOWN, AABB_CONNECTOR_4_MAP));
+            }
+            if (actualState.getValue(NORTH)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.NORTH, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.NORTH, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.NORTH, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.NORTH, AABB_CONNECTOR_4_MAP));
+            }
+            if (actualState.getValue(SOUTH)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.SOUTH, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.SOUTH, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.SOUTH, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.SOUTH, AABB_CONNECTOR_4_MAP));
+            }
+            if (actualState.getValue(EAST)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.EAST, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.EAST, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.EAST, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.EAST, AABB_CONNECTOR_4_MAP));
+            }
+            if (actualState.getValue(WEST)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_1, EnumFacing.WEST, AABB_CONNECTOR_1_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_2, EnumFacing.WEST, AABB_CONNECTOR_2_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_3, EnumFacing.WEST, AABB_CONNECTOR_3_MAP));
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, rotateWithMap(UP_AABB_CONNECT_4, EnumFacing.WEST, AABB_CONNECTOR_4_MAP));
+            }
         }
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         List<AxisAlignedBB> aabbs = compileAABBList(source, pos, state);
         AxisAlignedBB bb = new AxisAlignedBB(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
-        for(AxisAlignedBB box : aabbs){
+        for (AxisAlignedBB box : aabbs) {
             bb = bb.union(box);
         }
         return bb;
     }
-
 
     public AxisAlignedBB rotateWithMap(AxisAlignedBB aabb, EnumFacing facing, Map<EnumFacing, AxisAlignedBB> checkMap) {
         if (checkMap.get(facing) == null) {
             AxisAlignedBB newAABB = rotateAABB(aabb, facing);
             checkMap.put(facing, newAABB);
             return newAABB;
-        }else{
+        } else {
             return checkMap.get(facing);
         }
     }
-
-
-    public static AxisAlignedBB rotateAABB(AxisAlignedBB aabb, EnumFacing facing) {
-        switch (facing) {
-            case UP:
-                return aabb;
-            case DOWN:
-                return new AxisAlignedBB(aabb.minX, 1D - aabb.maxY, aabb.minZ, aabb.maxX, 1D - aabb.minY, aabb.maxZ);
-            case NORTH:
-                return new AxisAlignedBB(aabb.minX, aabb.minZ, 1D - aabb.maxY, aabb.maxX, aabb.maxZ, 1D - aabb.minY);
-            case SOUTH:
-                return new AxisAlignedBB(aabb.minX, aabb.minZ, aabb.minY, aabb.maxX, aabb.maxZ, aabb.maxY);
-            case EAST:
-                return new AxisAlignedBB(aabb.minY, aabb.minX, aabb.minZ, aabb.maxY, aabb.maxX, aabb.maxZ);
-            case WEST:
-                return new AxisAlignedBB(1D - aabb.maxY, aabb.minX, aabb.minZ, 1D - aabb.minY, aabb.maxX, aabb.maxZ);
-        }
-        return aabb;
-    }
-
 
     @Deprecated
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
@@ -285,7 +278,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
                 .withProperty(EAST, canFenceConnectTo(worldIn, pos, EnumFacing.EAST))
                 .withProperty(WEST, canFenceConnectTo(worldIn, pos, EnumFacing.WEST))
                 .withProperty(UP, canFenceConnectTo(worldIn, pos, EnumFacing.UP))
-                .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN)) ;
+                .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN));
     }
 
     private boolean canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
@@ -302,7 +295,7 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     }
 
     public IBlockState getStateFromMeta(int meta) {
-        if(meta > 0){
+        if (meta > 0) {
             PropertyBool openSide = ALL_OPEN_PROPS[MathHelper.clamp(meta - 1, 0, ALL_OPEN_PROPS.length - 1)];
             return this.getDefaultState().withProperty(openSide, true);
         }
@@ -311,8 +304,8 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
 
 
     public int getMetaFromState(IBlockState state) {
-        for(int i = 0; i < ALL_OPEN_PROPS.length; i++){
-            if(state.getValue(ALL_OPEN_PROPS[i])){
+        for (int i = 0; i < ALL_OPEN_PROPS.length; i++) {
+            if (state.getValue(ALL_OPEN_PROPS[i])) {
                 return i + 1;
             }
         }

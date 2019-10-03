@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity;
 
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -10,7 +9,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -33,11 +31,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityThrownBlock extends Entity {
     public EntityLivingBase shootingEntity;
-    private int ticksAlive;
-    private int ticksInAir;
     public IBlockState fallTile;
     public boolean dropBlock = true;
     public NBTTagCompound tileEntityData;
+    private int ticksAlive;
+    private int ticksInAir;
 
     public EntityThrownBlock(World worldIn) {
         super(worldIn);
@@ -51,6 +49,8 @@ public class EntityThrownBlock extends Entity {
         this.shootingEntity = entityNeoRatlantean;
     }
 
+    public static void registerFixesFireball(DataFixer fixer, String name) {
+    }
 
     protected void entityInit() {
     }
@@ -72,13 +72,13 @@ public class EntityThrownBlock extends Entity {
             super.onUpdate();
 
             ++this.ticksInAir;
-            if(ticksInAir > 25) {
+            if (ticksInAir > 25) {
                 this.noClip = true;
                 RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, true, this.ticksInAir >= 25, this.shootingEntity);
                 if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                     this.onImpact(raytraceresult);
                 }
-            }else{
+            } else {
                 this.noClip = false;
             }
             this.posX += this.motionX;
@@ -129,12 +129,12 @@ public class EntityThrownBlock extends Entity {
         if (fallTile != null) {
             Block block = this.fallTile.getBlock();
             if (result != null && result.getBlockPos() != null) {
-                for(Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0F, 1.0F, 1.0F))){
+                for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
                     hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatsMod.CONFIG_OPTIONS.neoRatlanteanAttack);
                 }
                 BlockPos blockpos1 = result.getBlockPos().up();
-                if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, (Entity) null)) {
-                    if(dropBlock){
+                if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, null)) {
+                    if (dropBlock) {
                         this.world.setBlockState(blockpos1, this.fallTile);
                     }
                     if (block instanceof BlockFalling) {
@@ -160,7 +160,7 @@ public class EntityThrownBlock extends Entity {
                     }
                     this.setDead();
                 } else if (this.world.getGameRules().getBoolean("doEntityDrops")) {
-                    if(!world.isRemote && dropBlock){
+                    if (!world.isRemote && dropBlock) {
                         this.entityDropItem(new ItemStack(block, 1, block.damageDropped(this.fallTile)), 0.0F);
                     }
                     this.setDead();
@@ -169,14 +169,11 @@ public class EntityThrownBlock extends Entity {
         }
     }
 
-    public static void registerFixesFireball(DataFixer fixer, String name) {
-    }
-
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     public void writeEntityToNBT(NBTTagCompound compound) {
-        compound.setTag("direction", this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
+        compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
         compound.setInteger("life", this.ticksAlive);
         Block block = this.fallTile != null ? this.fallTile.getBlock() : Blocks.AIR;
         ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);

@@ -6,17 +6,17 @@ import net.minecraft.block.state.IBlockState;
 
 public class BlockGenericStairs extends BlockStairs {
 
-	protected BlockGenericStairs(IBlockState modelState, String name) {
-		super(modelState);
-		this.setLightOpacity(0);
-		this.setCreativeTab(RatsMod.TAB);
-		this.setTranslationKey("rats." + name);
-		this.setRegistryName(name);
-	}
+    protected BlockGenericStairs(IBlockState modelState, String name) {
+        super(modelState);
+        this.setLightOpacity(0);
+        this.setCreativeTab(RatsMod.TAB);
+        this.setTranslationKey("rats." + name);
+        this.setRegistryName(name);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 }

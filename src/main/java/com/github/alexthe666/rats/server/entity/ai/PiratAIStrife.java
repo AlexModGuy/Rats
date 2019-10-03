@@ -1,20 +1,16 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPirat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.item.ItemBow;
-import net.minecraft.util.EnumHand;
 
 public class PiratAIStrife extends EntityAIBase {
 
     private final EntityPirat entity;
     private final double moveSpeedAmp;
-    private int attackCooldown;
     private final float maxAttackDistance;
+    private int attackCooldown;
     private int attackTime = -1;
     private int seeTime;
     private boolean strafingClockwise;

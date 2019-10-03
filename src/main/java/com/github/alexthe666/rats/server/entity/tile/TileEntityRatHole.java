@@ -15,11 +15,11 @@ import net.minecraft.util.NonNullList;
 public class TileEntityRatHole extends TileEntity {
     private NonNullList<ItemStack> immitationStack = NonNullList.withSize(1, ItemStack.EMPTY);
 
-    public TileEntityRatHole(){
+    public TileEntityRatHole() {
         setImmitatedBlockState(Blocks.PLANKS.getDefaultState());
     }
 
-    public TileEntityRatHole(IBlockState state){
+    public TileEntityRatHole(IBlockState state) {
         setImmitatedBlockState(state);
     }
 
@@ -51,16 +51,16 @@ public class TileEntityRatHole extends TileEntity {
         super.readFromNBT(compound);
     }
 
-    public IBlockState getImmitatedBlockState(){
+    public IBlockState getImmitatedBlockState() {
         IBlockState defState = Blocks.PLANKS.getDefaultState();
-        if(!immitationStack.get(0).isEmpty() && immitationStack.get(0).getItem() instanceof ItemBlock){
-            Block block = ((ItemBlock)immitationStack.get(0).getItem()).getBlock();
+        if (!immitationStack.get(0).isEmpty() && immitationStack.get(0).getItem() instanceof ItemBlock) {
+            Block block = ((ItemBlock) immitationStack.get(0).getItem()).getBlock();
             return block.getStateFromMeta(immitationStack.get(0).getItemDamage());
         }
         return defState;
     }
 
-    public void setImmitatedBlockState(IBlockState state){
+    public void setImmitatedBlockState(IBlockState state) {
         ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
         immitationStack.set(0, stack);
     }

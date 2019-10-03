@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.compat.crafttweaker;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import crafttweaker.CraftTweakerAPI;
@@ -10,13 +9,10 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 @ZenClass("mods.rats.recipes")
 public class CraftTweakerCompat {
 
-    public static void preInit(){
+    public static void preInit() {
         CraftTweakerAPI.registerClass(CraftTweakerCompat.class);
     }
 

@@ -31,14 +31,14 @@ public class RatsGuiFactory implements IModGuiFactory {
         return null;
     }
 
-    private class GuiRatConfig  extends GuiConfig {
+    private class GuiRatConfig extends GuiConfig {
         public GuiRatConfig(GuiScreen parent) {
             super(parent, new ConfigElement(RatsMod.config.getCategory("all")).getChildElements(), RatsMod.MODID, false, false, "Rats Confg");
             titleLine2 = RatsMod.config.getConfigFile().getAbsolutePath();
         }
 
         @Override
-        public void onGuiClosed(){
+        public void onGuiClosed() {
             super.onGuiClosed();
         }
     }

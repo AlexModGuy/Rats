@@ -1,12 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -17,7 +11,8 @@ import net.minecraft.util.NonNullList;
 public class TileEntityRatCageDecorated extends TileEntity {
     private NonNullList<ItemStack> containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
 
-    public TileEntityRatCageDecorated(){ }
+    public TileEntityRatCageDecorated() {
+    }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
@@ -47,11 +42,11 @@ public class TileEntityRatCageDecorated extends TileEntity {
         super.readFromNBT(compound);
     }
 
-    public ItemStack getContainedItem(){
+    public ItemStack getContainedItem() {
         return containedDeco.get(0);
     }
 
-    public void setContainedItem(ItemStack stack){
+    public void setContainedItem(ItemStack stack) {
         containedDeco.set(0, stack);
     }
 

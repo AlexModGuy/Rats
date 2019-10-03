@@ -5,10 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -70,11 +67,11 @@ public class EntityRatlanteanFlame extends EntityFireball {
 
     public void onUpdate() {
         super.onUpdate();
-        if(world.isRemote){
+        if (world.isRemote) {
             RatsMod.PROXY.spawnParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
-                    0.92F,  0.82, 0.0F);
+                    0.92F, 0.82, 0.0F);
         }
     }
 

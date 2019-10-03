@@ -3,9 +3,7 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.server.blocks.BlockRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.blocks.BlockRatCageDecorated;
-import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import com.github.alexthe666.rats.server.items.ItemRatHammock;
 import com.github.alexthe666.rats.server.items.ItemRatIgloo;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -36,7 +34,7 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
         float shutProgress = 0;
         ItemStack containedItem = ItemStack.EMPTY;
         if (entity != null && entity.getWorld() != null && entity instanceof TileEntityRatCageDecorated) {
-            if(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageDecorated){
+            if (entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageDecorated) {
                 if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == EnumFacing.NORTH) {
                     rotation = 180;
                 }
@@ -47,7 +45,7 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
                     rotation = 90;
                 }
             }
-            if(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageBreedingLantern){
+            if (entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageBreedingLantern) {
                 if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == EnumFacing.NORTH) {
                     rotation = 180;
                 }
@@ -66,19 +64,19 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(rotation, 0, 1F, 0);
         GL11.glPushMatrix();
-        if(containedItem.getItem() instanceof ItemRatIgloo){
+        if (containedItem.getItem() instanceof ItemRatIgloo) {
             GlStateManager.enableBlend();
             GlStateManager.disableCull();
             GlStateManager.enableAlpha();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            EnumDyeColor color = ((ItemRatIgloo)containedItem.getItem()).color;
+            EnumDyeColor color = ((ItemRatIgloo) containedItem.getItem()).color;
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_RAT_IGLOO);
             GlStateManager.color(color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2]);
             MODEL_RAT_IGLOO.render(null, 0, 0, 0, 0, 0, 0.0625F);
             GlStateManager.enableCull();
             GlStateManager.disableBlend();
         }
-        if(containedItem.getItem() instanceof ItemRatHammock){
+        if (containedItem.getItem() instanceof ItemRatHammock) {
             GL11.glPushMatrix();
             GlStateManager.disableCull();
             Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("rats:textures/model/rat_hammock_0.png"));
@@ -86,7 +84,7 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
             GlStateManager.enableCull();
             GL11.glPopMatrix();
             GL11.glPushMatrix();
-            EnumDyeColor color = ((ItemRatHammock)containedItem.getItem()).color;
+            EnumDyeColor color = ((ItemRatHammock) containedItem.getItem()).color;
             GlStateManager.enableColorMaterial();
             GlStateManager.color(color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2]);
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_RAT_HAMMOCK);
@@ -96,15 +94,15 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
 
 
         }
-        if(containedItem.getItem() == RatsItemRegistry.RAT_WATER_BOTTLE){
+        if (containedItem.getItem() == RatsItemRegistry.RAT_WATER_BOTTLE) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_RAT_WATER_BOTTLE);
             MODEL_RAT_WATER_BOTTLE.render(0.0625F);
         }
-        if(containedItem.getItem() == RatsItemRegistry.RAT_SEED_BOWL){
+        if (containedItem.getItem() == RatsItemRegistry.RAT_SEED_BOWL) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_RAT_SEED_BOWL);
             MODEL_RAT_SEED_BOWL.render(0.0625F);
         }
-        if(containedItem.getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN){
+        if (containedItem.getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_RAT_BREEDING_LANTERN);
             MODEL_RAT_BREEDING_LANTERN.render(0.0625F);
         }

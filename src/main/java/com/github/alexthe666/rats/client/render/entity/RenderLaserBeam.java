@@ -1,12 +1,10 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.server.entity.EntityLaserBeam;
-import com.github.alexthe666.rats.server.entity.EntityLaserPortal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -26,7 +24,7 @@ public class RenderLaserBeam extends RenderArrow {
 
     public void doRender(EntityArrow entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.bindEntityTexture(entity);
-        EntityLaserBeam beam = (EntityLaserBeam)entity;
+        EntityLaserBeam beam = (EntityLaserBeam) entity;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();

@@ -1,12 +1,9 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +14,7 @@ public class MessageIncreaseRatRecipe extends AbstractMessage<MessageIncreaseRat
     public long blockPos;
     public boolean increase;
 
-    public MessageIncreaseRatRecipe(){
+    public MessageIncreaseRatRecipe() {
 
     }
 
@@ -34,11 +31,11 @@ public class MessageIncreaseRatRecipe extends AbstractMessage<MessageIncreaseRat
     @Override
     public void onServerReceived(MinecraftServer server, MessageIncreaseRatRecipe message, EntityPlayer player, MessageContext messageContext) {
         BlockPos pos = BlockPos.fromLong(message.blockPos);
-        if(player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable){
-            TileEntityRatCraftingTable table = (TileEntityRatCraftingTable)player.world.getTileEntity(pos);
-            if(message.increase){
+        if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
+            TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);
+            if (message.increase) {
                 table.increaseRecipe();
-            }else{
+            } else {
                 table.decreaseRecipe();
             }
         }

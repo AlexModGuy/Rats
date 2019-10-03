@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.model.ModelNeoRatlantean;
 import com.github.alexthe666.rats.client.model.ModelPiratBoat;
-import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -26,6 +24,6 @@ public class RenderPiratBoat extends RenderLiving<EntityPiratBoat> {
     }
 
     protected ResourceLocation getEntityTexture(EntityPiratBoat entity) {
-       return TEXTURE;
+        return TEXTURE;
     }
 }

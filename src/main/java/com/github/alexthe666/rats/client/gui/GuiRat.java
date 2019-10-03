@@ -24,44 +24,16 @@ import java.util.Arrays;
 public class GuiRat extends GuiContainer {
     protected static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/rat_inventory.png");
     private static final ResourceLocation TEXTURE_BACKDROP = new ResourceLocation("rats:textures/gui/rat_inventory_backdrop.png");
+    public ChangeCommandButton previousCommand;
+    public ChangeCommandButton nextCommand;
     private EntityRat rat;
     private float mousePosx;
     private float mousePosY;
-    public ChangeCommandButton previousCommand;
-    public ChangeCommandButton nextCommand;
 
     public GuiRat(EntityRat rat) {
         super(new ContainerRat(rat, Minecraft.getMinecraft().player));
         this.rat = rat;
         this.allowUserInput = false;
-    }
-
-    public void initGui() {
-        super.initGui();
-        this.buttonList.clear();
-        int i = (this.width - 248) / 2;
-        int j = (this.height - 166) / 2;
-        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 115, j + 29, false));
-        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 29, true));
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton button) {
-        if (button.id == 1) {
-            int currentRatCommand = rat.getCommand().ordinal();
-            currentRatCommand--;
-            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
-            rat.setCommand(RatCommand.values()[currentRatCommand]);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
-        }
-        if (button.id == 2) {
-            int currentRatCommand = rat.getCommand().ordinal();
-            currentRatCommand++;
-            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
-            rat.setCommand(RatCommand.values()[currentRatCommand]);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
-        }
-
     }
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityRat entity) {
@@ -103,6 +75,34 @@ public class GuiRat extends GuiContainer {
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
+    public void initGui() {
+        super.initGui();
+        this.buttonList.clear();
+        int i = (this.width - 248) / 2;
+        int j = (this.height - 166) / 2;
+        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 115, j + 29, false));
+        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 29, true));
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (button.id == 1) {
+            int currentRatCommand = rat.getCommand().ordinal();
+            currentRatCommand--;
+            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
+            rat.setCommand(RatCommand.values()[currentRatCommand]);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
+        }
+        if (button.id == 2) {
+            int currentRatCommand = rat.getCommand().ordinal();
+            currentRatCommand++;
+            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
+            rat.setCommand(RatCommand.values()[currentRatCommand]);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
+        }
+
+    }
+
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = rat.getCustomNameTag().length() == 0 ? I18n.format("entity.rat.name") : rat.getCustomNameTag();
@@ -121,7 +121,7 @@ public class GuiRat extends GuiContainer {
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2 + 36, 56, 0XFFFFFF, true);
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        if(mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45){
+        if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
             String commandText = I18n.format(rat.getCommand().getTranslateDescription());
             net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, width, height, 120, fontRenderer);
         }

@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.inventory;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -14,9 +13,9 @@ import net.minecraft.util.text.ITextComponent;
 
 public class InventoryRatUpgrade implements ISidedInventory {
     public ItemStack upgradeStack;
-    private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+    private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
 
-    public InventoryRatUpgrade(ItemStack upgradeStack){
+    public InventoryRatUpgrade(ItemStack upgradeStack) {
         this.upgradeStack = upgradeStack;
         if (!upgradeStack.hasTagCompound()) {
             upgradeStack.setTagCompound(new NBTTagCompound());
@@ -25,7 +24,7 @@ public class InventoryRatUpgrade implements ISidedInventory {
     }
 
     private void readFromNBT(NBTTagCompound tagCompound) {
-        this.items = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(tagCompound, this.items);
     }
 
@@ -101,7 +100,7 @@ public class InventoryRatUpgrade implements ISidedInventory {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        if(upgradeStack.getItem() instanceof ItemRatCombinedUpgrade){
+        if (upgradeStack.getItem() instanceof ItemRatCombinedUpgrade) {
             return ItemRatCombinedUpgrade.canCombineWithUpgrade(upgradeStack, stack);
         }
         return !(stack.getItem() instanceof ItemRatListUpgrade);

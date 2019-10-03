@@ -2,21 +2,16 @@ package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.ClientProxy;
-import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.inventory.ContainerEmpty;
-import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffSync;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import org.lwjgl.input.Mouse;
 
 @SideOnly(Side.CLIENT)
 public class GuiCheeseStaff extends GuiScreen {
@@ -35,82 +29,6 @@ public class GuiCheeseStaff extends GuiScreen {
     public GuiCheeseStaff(EntityRat rat) {
         super();
         this.rat = rat;
-        initGui();
-    }
-
-    public void initGui() {
-        super.initGui();
-        this.buttonList.clear();
-        int i = (this.width) / 2;
-        int j = (this.height - 166) / 2;
-        String topText = I18n.format("entity.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
-        int maxLength = Math.max(150, Minecraft.getMinecraft().fontRenderer.getStringWidth(topText) + 20);
-        this.buttonList.add(new GuiButton(0, i - maxLength / 2, j + 60, maxLength, 20, topText));
-        this.buttonList.add(new GuiButton(1, i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rat.staff.mark_block_pickup", getPosName())));
-        this.buttonList.add(new GuiButton(2, i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rat.staff.set_home_point", getPosName())));
-        this.buttonList.add(new GuiButton(3, i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rat.staff.un_set_home_point")));
-        this.buttonList.get(0).enabled = !isNoInventoryAtPos();
-        this.buttonList.get(1).enabled = !isNoInventoryAtPos();
-        this.buttonList.get(2).enabled = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.hasHome();
-        this.buttonList.get(3).enabled = rat.hasHome();
-    }
-
-    private String getPosName(){
-        if(ClientProxy.refrencedPos != null){
-            return rat.world.getBlockState(ClientProxy.refrencedPos).getBlock().getLocalizedName();
-        }
-        return "";
-    }
-
-    private boolean isNoInventoryAtPos(){
-        BlockPos pos = ClientProxy.refrencedPos;
-        if(pos != null){
-            World worldIn = rat.world;
-            return worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ClientProxy.refrencedFacing) == null;
-        }
-        return true;
-   }
-
-
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        int i = (this.width - 248) / 2 + 10;
-        int j = (this.height - 166) / 2 + 8;
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0, 0, 10F);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
-        GlStateManager.popMatrix();
-    }
-
-    public boolean doesGuiPauseGame() {
-        return false;
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton button) {
-        if(button.enabled && button.id == 0){//deposit
-            BlockPos pos = ClientProxy.refrencedPos;
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
-            Minecraft.getMinecraft().displayGuiScreen(null);
-        }
-        if(button.enabled && button.id == 1){//pickup
-            BlockPos pos = ClientProxy.refrencedPos;
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 1));
-            Minecraft.getMinecraft().displayGuiScreen(null);
-        }
-        if(button.enabled && button.id == 2){//homepoint
-            BlockPos pos = ClientProxy.refrencedPos;
-            rat.setHomePosAndDistance(pos, 32);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 2));
-        }
-        if(button.enabled && button.id == 3){//unset homepoint
-            BlockPos pos = ClientProxy.refrencedPos;
-            rat.detachHome();
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 3));
-        }
         initGui();
     }
 
@@ -151,6 +69,81 @@ public class GuiCheeseStaff extends GuiScreen {
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+    }
+
+    public void initGui() {
+        super.initGui();
+        this.buttonList.clear();
+        int i = (this.width) / 2;
+        int j = (this.height - 166) / 2;
+        String topText = I18n.format("entity.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
+        int maxLength = Math.max(150, Minecraft.getMinecraft().fontRenderer.getStringWidth(topText) + 20);
+        this.buttonList.add(new GuiButton(0, i - maxLength / 2, j + 60, maxLength, 20, topText));
+        this.buttonList.add(new GuiButton(1, i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rat.staff.mark_block_pickup", getPosName())));
+        this.buttonList.add(new GuiButton(2, i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rat.staff.set_home_point", getPosName())));
+        this.buttonList.add(new GuiButton(3, i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rat.staff.un_set_home_point")));
+        this.buttonList.get(0).enabled = !isNoInventoryAtPos();
+        this.buttonList.get(1).enabled = !isNoInventoryAtPos();
+        this.buttonList.get(2).enabled = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.hasHome();
+        this.buttonList.get(3).enabled = rat.hasHome();
+    }
+
+    private String getPosName() {
+        if (ClientProxy.refrencedPos != null) {
+            return rat.world.getBlockState(ClientProxy.refrencedPos).getBlock().getLocalizedName();
+        }
+        return "";
+    }
+
+    private boolean isNoInventoryAtPos() {
+        BlockPos pos = ClientProxy.refrencedPos;
+        if (pos != null) {
+            World worldIn = rat.world;
+            return worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ClientProxy.refrencedFacing) == null;
+        }
+        return true;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        int i = (this.width - 248) / 2 + 10;
+        int j = (this.height - 166) / 2 + 8;
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, 10F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
+        GlStateManager.popMatrix();
+    }
+
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (button.enabled && button.id == 0) {//deposit
+            BlockPos pos = ClientProxy.refrencedPos;
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
+            Minecraft.getMinecraft().displayGuiScreen(null);
+        }
+        if (button.enabled && button.id == 1) {//pickup
+            BlockPos pos = ClientProxy.refrencedPos;
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 1));
+            Minecraft.getMinecraft().displayGuiScreen(null);
+        }
+        if (button.enabled && button.id == 2) {//homepoint
+            BlockPos pos = ClientProxy.refrencedPos;
+            rat.setHomePosAndDistance(pos, 32);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 2));
+        }
+        if (button.enabled && button.id == 3) {//unset homepoint
+            BlockPos pos = ClientProxy.refrencedPos;
+            rat.detachHome();
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 3));
+        }
+        initGui();
     }
 
 

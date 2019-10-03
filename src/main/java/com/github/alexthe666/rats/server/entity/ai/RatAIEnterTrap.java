@@ -1,15 +1,10 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIMoveToBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -18,10 +13,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 public class RatAIEnterTrap extends RatAIMoveToBlock {
     private final EntityRat entity;
 
@@ -29,6 +20,15 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
         super(entity, 1.0F, 20);
         this.entity = entity;
         this.distanceCheck = 2.5D;
+    }
+
+    public static boolean isTrap(World world, BlockPos pos) {
+        IBlockState block = world.getBlockState(pos.up());
+        if (block.getBlock() == RatsBlockRegistry.RAT_TRAP) {
+            TileEntity entity = world.getTileEntity(pos.up());
+            return entity != null && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty();
+        }
+        return false;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
                 if (distance < 0.5F && canSeeChest()) {
                     ItemStack duplicate = ((TileEntityRatTrap) entity).getBait().copy();
                     duplicate.setCount(1);
-                    if(!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote){
+                    if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
                         this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
                     }
                     this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
@@ -91,16 +91,5 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
     @Override
     protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
         return isTrap(worldIn, pos);
-    }
-
-    public static boolean isTrap(World world, BlockPos pos) {
-        IBlockState block = world.getBlockState(pos.up());
-        if (block.getBlock() == RatsBlockRegistry.RAT_TRAP) {
-            TileEntity entity = world.getTileEntity(pos.up());
-            if (entity != null && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

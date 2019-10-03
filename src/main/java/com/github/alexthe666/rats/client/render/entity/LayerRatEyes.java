@@ -24,7 +24,7 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
     }
 
     public void doRenderLayer(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(!(ratRenderer.getMainModel() instanceof ModelRat)){
+        if (!(ratRenderer.getMainModel() instanceof ModelRat)) {
             return;
         }
         long roundedTime = rat.world.getWorldTime() % 24000;
@@ -33,21 +33,21 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
         int i = rat.world.getLightFor(EnumSkyBlock.SKY, ratPos);
         int j = rat.world.getLightFor(EnumSkyBlock.BLOCK, ratPos);
         int brightness;
-        if(night){
+        if (night) {
             brightness = j;
-        }else{
+        } else {
             brightness = Math.max(i, j);
         }
         if (brightness < 7 || rat.shouldEyesGlow()) {
-            if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)){
+            if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
                 this.ratRenderer.bindTexture(TEXTURE_NONBELIEVER);
-            }else if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)){
+            } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 this.ratRenderer.bindTexture(TEXTURE_ENDER);
-            }else if(rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)){
+            } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
                 this.ratRenderer.bindTexture(TEXTURE_RATINATOR);
-            }else if(rat.hasPlague()){
+            } else if (rat.hasPlague()) {
                 this.ratRenderer.bindTexture(TEXTURE_PLAGUE);
-            }else{
+            } else {
                 this.ratRenderer.bindTexture(TEXTURE);
             }
             GlStateManager.enableBlend();

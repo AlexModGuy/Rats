@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -18,7 +17,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
@@ -26,23 +24,24 @@ import javax.annotation.Nullable;
 
 public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity, IRatlantean {
 
-    private int animationTick;
-    private Animation currentAnimation;
-    private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
     public static final Animation ANIMATION_BITE = Animation.create(15);
     public static final Animation ANIMATION_SLASH = Animation.create(25);
     public static final Animation ANIMATION_SNIFF = Animation.create(20);
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "feral_ratlantean"));
+    private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
     private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
             return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
+    private int animationTick;
+    private Animation currentAnimation;
+
     public EntityFeralRatlantean(World worldIn) {
         super(worldIn);
         this.setSize(1.85F, 1.2F);
     }
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "feral_ratlantean"));
 
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
@@ -50,7 +49,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
 
@@ -64,7 +63,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.getAnimation() == NO_ANIMATION){
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(rand.nextBoolean() ? ANIMATION_SLASH : ANIMATION_BITE);
         }
         return true;
@@ -80,32 +79,31 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
     public void onLivingUpdate() {
         super.onLivingUpdate();
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if(this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
+        if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(rand.nextBoolean() ? ANIMATION_BITE : ANIMATION_SLASH);
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                 this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
             }
-            if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 ||this.getAnimationTick() == 16)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+            if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                 this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
             }
         }
-        if(!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION){
+        if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_SNIFF);
         }
     }
 
+    public int getColorVariant() {
+        return Integer.valueOf(this.dataManager.get(COLOR_VARIANT).intValue());
+    }
 
     public void setColorVariant(int color) {
         this.dataManager.set(COLOR_VARIANT, Integer.valueOf(color));
-    }
-
-    public int getColorVariant() {
-        return Integer.valueOf(this.dataManager.get(COLOR_VARIANT).intValue());
     }
 
     public void setToga(boolean plague) {

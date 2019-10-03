@@ -12,9 +12,10 @@ public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistR
 
     public ArcheologistDrawable drawable;
 
-    public ArcheologistRecipeCategory(){
+    public ArcheologistRecipeCategory() {
         drawable = new ArcheologistDrawable();
     }
+
     @Override
     public String getUid() {
         return RatsJEIPlugin.ARCHEOLOGIST_RAT_ID;

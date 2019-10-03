@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
 import com.github.alexthe666.rats.server.items.ItemPiperHat;
-import com.github.alexthe666.rats.server.items.ItemHat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;

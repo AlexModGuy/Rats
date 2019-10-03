@@ -7,8 +7,7 @@ import net.minecraft.entity.Entity;
 public class ModelCube extends ModelBase {
     public ModelRenderer head;
 
-    public ModelCube()
-    {
+    public ModelCube() {
         this(0.0F);
     }
 

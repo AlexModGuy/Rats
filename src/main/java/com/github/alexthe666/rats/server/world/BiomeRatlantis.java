@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.world;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityPirat;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import com.github.alexthe666.rats.server.world.gen.WorldGenMarblePile;
 import net.minecraft.block.*;
@@ -13,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeHills;
 import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -53,7 +51,7 @@ public class BiomeRatlantis extends Biome {
         } else if (rand.nextInt(2) == 0) {
             return new WorldGenShrub(JUNGLE_LOG, OAK_LEAF);
         } else {
-            return (WorldGenAbstractTree) (rand.nextInt(3) == 0 ? new WorldGenMegaJungle(false, 10, 20, JUNGLE_LOG, JUNGLE_LEAF) : new WorldGenTrees(false, 4 + rand.nextInt(7), JUNGLE_LOG, JUNGLE_LEAF, true));
+            return (rand.nextInt(3) == 0 ? new WorldGenMegaJungle(false, 10, 20, JUNGLE_LOG, JUNGLE_LEAF) : new WorldGenTrees(false, 4 + rand.nextInt(7), JUNGLE_LOG, JUNGLE_LEAF, true));
         }
     }
 

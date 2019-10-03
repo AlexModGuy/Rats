@@ -32,10 +32,10 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
         NBTTagCompound nbttagcompound1 = combiner.getTagCompound();
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
-            for(ItemStack contained : nonnulllist){
-                if(!(stack.getItem() instanceof ItemRatUpgrade) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())){
+            for (ItemStack contained : nonnulllist) {
+                if (!(stack.getItem() instanceof ItemRatUpgrade) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())) {
                     return false;
                 }
             }
@@ -50,14 +50,14 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE){
+        if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             tooltip.add(net.minecraft.client.resources.I18n.format("item.rats.rat_upgrade_combined_creative.desc"));
         }
         tooltip.add(net.minecraft.client.resources.I18n.format("item.rats.rat_upgrade_combined.desc"));
         NBTTagCompound nbttagcompound1 = stack.getTagCompound();
 
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
             int i = 0;
             int j = 0;
@@ -78,13 +78,13 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
 
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
-        if(stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE){
+        if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             return true;
         }
         NBTTagCompound nbttagcompound1 = stack.getTagCompound();
         boolean flag = false;
         if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
             flag = !nonnulllist.isEmpty();
         }
@@ -92,14 +92,14 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
-        if(this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
+        if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             ItemStack itemStackIn = player.getHeldItem(hand);
             if (!player.isSneaking()) {
                 player.openGui(RatsMod.INSTANCE, 3, worldIn, 0, 0, 0);
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
             }
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-        }else {
+        } else {
             return super.onItemRightClick(worldIn, player, hand);
         }
     }

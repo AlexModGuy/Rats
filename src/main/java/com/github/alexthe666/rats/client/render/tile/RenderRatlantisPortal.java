@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
 
 import java.nio.FloatBuffer;
@@ -74,13 +72,13 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
             GlStateManager.translate(0.5F, 0.5F, 0.0F);
             GlStateManager.scale(0.5F, 0.5F, 1.0F);
             float f2 = (float) (j + 1);
-            float time = ( Minecraft.getMinecraft().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
-            if(te == null){
-                time = ( Sys.getTime() - 1 + (1 * partialTicks)) % 80000.0F / 80000.0F;
+            float time = (Minecraft.getMinecraft().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
+            if (te == null) {
+                time = (Sys.getTime() - 1 + (1 * partialTicks)) % 80000.0F / 80000.0F;
             }
             GlStateManager.translate(17.0F / f2 * time * RANDOM.nextGaussian(), (2.0F + f2 / 1.5F) * time, 0.0F);
             GlStateManager.rotate(180, 0.0F, 0.0F, 1.0F);
-            float scal = 4.5F - f2 / 4.0F ;
+            float scal = 4.5F - f2 / 4.0F;
             GlStateManager.scale(scal, scal, 1.0F);
             GlStateManager.multMatrix(PROJECTION);
             GlStateManager.multMatrix(MODELVIEW);

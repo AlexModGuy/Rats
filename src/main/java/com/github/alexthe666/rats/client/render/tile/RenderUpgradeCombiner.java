@@ -21,7 +21,6 @@ public class RenderUpgradeCombiner extends TileEntitySpecialRenderer<TileEntityU
         float f1;
 
         for (f1 = te.ratRotation - te.ratRotationPrev; f1 >= (float) Math.PI; f1 -= ((float) Math.PI * 2F)) {
-            ;
         }
 
         while (f1 < -(float) Math.PI) {
@@ -34,7 +33,7 @@ public class RenderUpgradeCombiner extends TileEntitySpecialRenderer<TileEntityU
         this.bindTexture(TEXTURE);
         GlStateManager.disableCull();
         GlStateManager.scale(1.7F, 1.7F, 1.7F);
-        MODEL_SPIRIT.render((Entity) null, 0, 0.0F, f, 0.0F, 0.0F, 0.0625F);
+        MODEL_SPIRIT.render(null, 0, 0.0F, f, 0.0F, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
     }
 }

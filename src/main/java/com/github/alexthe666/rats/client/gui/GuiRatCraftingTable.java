@@ -1,27 +1,21 @@
 package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
-import com.github.alexthe666.rats.server.message.MessageRatCommand;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -54,7 +48,7 @@ public class GuiRatCraftingTable extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable)tileFurnace;
+        TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) tileFurnace;
         if (button.id == 1) {
             ratTable.decreaseRecipe();
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) tileFurnace).getPos().toLong(), false));
@@ -89,13 +83,13 @@ public class GuiRatCraftingTable extends GuiContainer {
                     Ingredient ingredient = recipe.getIngredients().get(i);
                     ItemStack[] matches = ingredient.getMatchingStacks();
                     int index = 0;
-                    if(matches.length > 1){
+                    if (matches.length > 1) {
                         index = playerInventory.player.ticksExisted / 20 % matches.length;
                     }
-                    if(matches.length > 0) {
+                    if (matches.length > 0) {
                         ItemStack drawn = matches[index].copy();
                         int count = 0;
-                        if(!doesListContainStack(drawnIngredients, drawn)) {
+                        if (!doesListContainStack(drawnIngredients, drawn)) {
                             if (!drawn.isEmpty() && drawn.getItem() != Items.AIR) {
                                 for (int j = 0; j < recipe.getIngredients().size(); j++) {
                                     if (doesArrayContainStack(recipe.getIngredients().get(j).getMatchingStacks(), drawn)) {
@@ -116,28 +110,28 @@ public class GuiRatCraftingTable extends GuiContainer {
                 }
             }
         }
-        if(mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24){
+        if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             String ratDesc = I18n.format("container.rat_crafting_table.rat_desc");
             net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, fontRenderer);
         }
-        if(mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()){
+        if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             String ratDesc = I18n.format("container.rat_crafting_table.input_desc");
             net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, fontRenderer);
         }
     }
 
-    private boolean doesListContainStack(List<ItemStack> list, ItemStack stack){
-        for(ItemStack currentItem : list){
-            if(OreDictionary.itemMatches(stack, currentItem, false)){
+    private boolean doesListContainStack(List<ItemStack> list, ItemStack stack) {
+        for (ItemStack currentItem : list) {
+            if (OreDictionary.itemMatches(stack, currentItem, false)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean doesArrayContainStack(ItemStack[] list, ItemStack stack){
-        for(ItemStack currentItem : list){
-            if(OreDictionary.itemMatches(stack, currentItem, false)){
+    private boolean doesArrayContainStack(ItemStack[] list, ItemStack stack) {
+        for (ItemStack currentItem : list) {
+            if (OreDictionary.itemMatches(stack, currentItem, false)) {
                 return true;
             }
         }
@@ -161,9 +155,9 @@ public class GuiRatCraftingTable extends GuiContainer {
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         int l = this.getCookProgressScaled(64);
         this.drawTexturedModalRect(i + 54, j + 21, 0, 211, l, 16);
-        if(((TileEntityRatCraftingTable)tileFurnace).hasRat){
+        if (((TileEntityRatCraftingTable) tileFurnace).hasRat) {
             this.drawTexturedModalRect(i + 9, j, 176, 0, 21, 21);
-        }else{
+        } else {
             this.drawTexturedModalRect(i + 8, j + 15, 198, 0, 21, 21);
         }
     }
@@ -175,6 +169,6 @@ public class GuiRatCraftingTable extends GuiContainer {
     }
 
     public boolean shouldRenderButtons() {
-        return ((TileEntityRatCraftingTable)tileFurnace).hasMultipleRecipes();
+        return ((TileEntityRatCraftingTable) tileFurnace).hasMultipleRecipes();
     }
 }

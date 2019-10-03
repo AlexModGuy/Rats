@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.client.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFlame;
-import net.minecraft.client.particle.ParticleRedstone;
-import net.minecraft.client.particle.ParticleSmokeLarge;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -49,7 +47,7 @@ public class ParticleLightning extends ParticleFlame {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.depthMask(false);
-        float f8 = (float)Math.PI / 2 + this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
+        float f8 = (float) Math.PI / 2 + this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
         float f9 = MathHelper.cos(f8 * 0.5F);
         float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
         float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
@@ -59,9 +57,9 @@ public class ParticleLightning extends ParticleFlame {
         for (int l = 0; l < 4; ++l) {
             avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double) (2.0F * f9)));
         }
-        if(type){
+        if (type) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_0);
-        }else{
+        } else {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_1);
         }
         GlStateManager.disableLighting();
@@ -72,16 +70,17 @@ public class ParticleLightning extends ParticleFlame {
         float alpha = particleAlpha;
         GL11.glPushMatrix();
         buffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-        buffer.pos((double)f3 + avec3d[0].x, (double)f4 + avec3d[0].y, (double)f5 + avec3d[0].z).tex(0, 1).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f3 + avec3d[1].x, (double)f4 + avec3d[1].y, (double)f5 + avec3d[1].z).tex(1, 1).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f3 + avec3d[2].x, (double)f4 + avec3d[2].y, (double)f5 + avec3d[2].z).tex(1, 0).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f3 + avec3d[3].x, (double)f4 + avec3d[3].y, (double)f5 + avec3d[3].z).tex(0, 0).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
+        buffer.pos((double) f3 + avec3d[0].x, (double) f4 + avec3d[0].y, (double) f5 + avec3d[0].z).tex(0, 1).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
+        buffer.pos((double) f3 + avec3d[1].x, (double) f4 + avec3d[1].y, (double) f5 + avec3d[1].z).tex(1, 1).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
+        buffer.pos((double) f3 + avec3d[2].x, (double) f4 + avec3d[2].y, (double) f5 + avec3d[2].z).tex(1, 0).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
+        buffer.pos((double) f3 + avec3d[3].x, (double) f4 + avec3d[3].y, (double) f5 + avec3d[3].z).tex(0, 0).color(1, 1, 1, alpha).lightmap(j, k).endVertex();
         Tessellator.getInstance().draw();
         GL11.glPopMatrix();
         GlStateManager.disableBlend();
     }
 
-    public void setParticleTextureIndex(int particleTextureIndex){}
+    public void setParticleTextureIndex(int particleTextureIndex) {
+    }
 
     public int getBrightnessForRender(float partialTick) {
         return 240;

@@ -17,7 +17,6 @@ import net.minecraft.block.state.pattern.BlockStateMatcher;
 import net.minecraft.block.state.pattern.FactoryBlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
@@ -33,10 +32,7 @@ import java.util.List;
 
 public class BlockMarbledCheeseRatHead extends BlockHorizontal {
 
-    private BlockPattern golemBasePattern;
-    private BlockPattern golemPattern;
     private static final AxisAlignedBB HALF_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.5F, 1F);
-
     private static final Predicate<IBlockState> IS_MARBLE = new Predicate<IBlockState>() {
         public boolean apply(@Nullable IBlockState p_apply_1_) {
             return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW
@@ -51,6 +47,8 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
             );
         }
     };
+    private BlockPattern golemBasePattern;
+    private BlockPattern golemPattern;
 
     public BlockMarbledCheeseRatHead() {
         super(Material.ROCK);
@@ -126,11 +124,11 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -142,11 +140,11 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
     }
 
     public int getMetaFromState(IBlockState state) {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
 

@@ -15,7 +15,7 @@ public class MessageRatCommand extends AbstractMessage<MessageRatCommand> {
     public int ratId;
     public int newCommand;
 
-    public MessageRatCommand(){
+    public MessageRatCommand() {
 
     }
 

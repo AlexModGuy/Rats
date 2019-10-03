@@ -8,7 +8,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBanner;
-import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRat extends Container {

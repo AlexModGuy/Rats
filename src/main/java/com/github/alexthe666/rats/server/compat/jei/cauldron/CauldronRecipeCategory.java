@@ -4,21 +4,18 @@ import com.github.alexthe666.rats.server.compat.jei.RatsJEIPlugin;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
-
-import java.util.List;
 
 public class CauldronRecipeCategory implements IRecipeCategory<CauldronRecipeWrapper> {
 
     public CauldronDrawable drawable;
 
-    public CauldronRecipeCategory(){
+    public CauldronRecipeCategory() {
         drawable = new CauldronDrawable();
     }
+
     @Override
     public String getUid() {
         return RatsJEIPlugin.CAULDRON_ID;

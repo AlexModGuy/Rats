@@ -6,16 +6,17 @@ public enum RatStatus {
     EATING(1);
 
     public int precedence;
-    RatStatus(int precedence){
+
+    RatStatus(int precedence) {
         this.precedence = precedence;
     }
 
-    public String getTranslateName(){
+    public String getTranslateName() {
         return "entity.rat.status." + this.name().toLowerCase();
     }
 
-    public boolean canBeOverriden(EntityRat rat){
-        if(this == MOVING && rat.isMoving()){
+    public boolean canBeOverriden(EntityRat rat) {
+        if (this == MOVING && rat.isMoving()) {
             return false;
         }
         return this != EATING || !rat.isHoldingFood();

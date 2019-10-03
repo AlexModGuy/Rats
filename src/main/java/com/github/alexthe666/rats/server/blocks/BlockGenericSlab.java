@@ -58,6 +58,7 @@ public abstract class BlockGenericSlab extends BlockSlab {
     }
 
     public abstract ItemBlock getItemBlock();
+
     public abstract Item getItem();
 
     @SuppressWarnings("deprecation")
@@ -99,9 +100,10 @@ public abstract class BlockGenericSlab extends BlockSlab {
         return super.getTranslationKey();
     }
 
-    public String getTranslationKey(int meta){
+    public String getTranslationKey(int meta) {
         return super.getTranslationKey();
     }
+
     @Override
     public IProperty<?> getVariantProperty() {
         return null;
@@ -223,7 +225,7 @@ public abstract class BlockGenericSlab extends BlockSlab {
         }
 
         @Override
-        public String getTranslationKey(ItemStack stack){
+        public String getTranslationKey(ItemStack stack) {
             return this.singleSlab.getTranslationKey();
         }
 

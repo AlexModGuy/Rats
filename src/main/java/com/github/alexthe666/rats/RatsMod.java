@@ -57,6 +57,26 @@ public class RatsMod {
     public static Potion PLAGUE_POTION = new PotionPlague();
     public static Configuration config;
     public static RatConfig CONFIG_OPTIONS = new RatConfig();
+
+    public static void loadConfig() {
+        File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+            } catch (Exception e) {
+                logger.warn("Could not create a new Rats config file.");
+                logger.warn(e.getLocalizedMessage());
+            }
+        }
+        config = new Configuration(configFile);
+        config.load();
+    }
+
+    public static void syncConfig() {
+        CONFIG_OPTIONS.init(config);
+        config.save();
+    }
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         loadConfig();
@@ -71,7 +91,7 @@ public class RatsMod {
                 return new ItemStack(RatsItemRegistry.CHEESE);
             }
         };
-        if(RatsMod.CONFIG_OPTIONS.spawnRats) {
+        if (RatsMod.CONFIG_OPTIONS.spawnRats) {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters ? biome.getSpawnableList(EnumCreatureType.MONSTER) : biome.getSpawnableList(EnumCreatureType.CREATURE);
@@ -79,14 +99,14 @@ public class RatsMod {
                 }
             }
         }
-        if(RatsMod.CONFIG_OPTIONS.spawnPiper) {
+        if (RatsMod.CONFIG_OPTIONS.spawnPiper) {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawnableList(EnumCreatureType.MONSTER);
-                    if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)){
+                    if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
                         //3 times as likely to spawn in dark forests
                         spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate * 3, 1, 1));
-                    }else{
+                    } else {
                         spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate, 1, 1));
                     }
                 }
@@ -113,25 +133,6 @@ public class RatsMod {
     public void postInit(FMLPostInitializationEvent event) {
         PROXY.postInit();
         TinkersCompatBridge.loadTinkersPostInitCompat();
-    }
-
-    public static void loadConfig() {
-        File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (Exception e) {
-                logger.warn("Could not create a new Rats config file.");
-                logger.warn(e.getLocalizedMessage());
-            }
-        }
-        config = new Configuration(configFile);
-        config.load();
-    }
-
-    public static void syncConfig(){
-        CONFIG_OPTIONS.init(config);
-        config.save();
     }
 
 }
