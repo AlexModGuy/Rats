@@ -92,10 +92,11 @@ public class RatPickupFromInventory extends EntityAIBase {
                 int extractSize = this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
                 try {
-                    stack = handler.extractItem(slot, extractSize, false);
+                    if(handler.extractItem(slot, extractSize, true) != ItemStack.EMPTY){
+                        stack = handler.extractItem(slot, extractSize, false);
+                    }
                 } catch (Exception e) {
                     RatsMod.logger.error("Rat tried to extract item that didnt exist");
-                    e.printStackTrace();
                 }
                 if (slot == -1 || stack == ItemStack.EMPTY) {
                     this.targetBlock = null;
