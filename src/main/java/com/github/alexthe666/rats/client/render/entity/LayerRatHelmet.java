@@ -129,7 +129,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 }
                 if (itemstack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
                     GlStateManager.rotate(-5, 1, 0, 0);
-                    GlStateManager.translate(0, 0.3, 0);
+                    GlStateManager.translate(0, 0.45, 0);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.FARMER_HAT) {
