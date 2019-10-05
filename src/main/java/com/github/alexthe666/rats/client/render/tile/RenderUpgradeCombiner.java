@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.client.model.ModelRatlanteanSpirit;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 

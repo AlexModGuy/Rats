@@ -41,6 +41,7 @@ public enum RatStructure {
     public ResourceLocation structureLoc;
     private boolean gen;
     private int weight;
+
     RatStructure(String file, boolean gen, int weight) {
         structureLoc = new ResourceLocation(RatsMod.MODID, file);
     }

@@ -66,7 +66,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
     @Override
     public void updateTask() {
         if (this.targetBlock != null) {
-            if(holdingSeeds()){
+            if (holdingSeeds()) {
                 IBlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 if (block.getBlock().isFertile(entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
@@ -88,7 +88,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
                     this.resetTask();
                 }
             }
-            if(holdingBonemeal()){
+            if (holdingBonemeal()) {
                 IBlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 if (canPlantBeBonemealed(targetBlock, block)) {
@@ -151,7 +151,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
             IGrowable igrowable = (IGrowable) iblockstate.getBlock();
             if (igrowable.canGrow(entity.world, pos, iblockstate, entity.world.isRemote)) {
                 if (!entity.world.isRemote) {
-                      //  igrowable.grow(worldIn, worldIn.rand, target, iblockstate);
+                    //  igrowable.grow(worldIn, worldIn.rand, target, iblockstate);
                     return igrowable.canUseBonemeal(entity.world, entity.world.rand, pos, iblockstate);
                 }
             }

@@ -51,9 +51,10 @@ public class RatPickupFromInventory extends EntityAIBase {
         this.targetBlock = entity.pickupPos;
     }
 
-    private boolean canPickUp(){
+    private boolean canPickUp() {
         return this.entity.getCommand() == RatCommand.TRANSPORT || this.entity.getCommand() == RatCommand.HARVEST && this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER);
     }
+
     @Override
     public boolean shouldContinueExecuting() {
         return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
@@ -95,7 +96,7 @@ public class RatPickupFromInventory extends EntityAIBase {
                 int extractSize = this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
                 try {
-                    if(handler.extractItem(slot, extractSize, true) != ItemStack.EMPTY){
+                    if (handler.extractItem(slot, extractSize, true) != ItemStack.EMPTY) {
                         stack = handler.extractItem(slot, extractSize, false);
                     }
                 } catch (Exception e) {

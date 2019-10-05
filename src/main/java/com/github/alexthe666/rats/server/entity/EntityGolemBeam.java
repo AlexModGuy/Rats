@@ -23,10 +23,6 @@ public class EntityGolemBeam extends EntityArrow {
         this.setDamage(8F);
     }
 
-    public boolean isInWater() {
-        return false;
-    }
-
     public EntityGolemBeam(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
@@ -36,6 +32,10 @@ public class EntityGolemBeam extends EntityArrow {
     public EntityGolemBeam(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
         this.setDamage(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonAttack * 0.5F + 0.5F);
+    }
+
+    public boolean isInWater() {
+        return false;
     }
 
     public void onUpdate() {

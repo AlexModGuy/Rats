@@ -710,7 +710,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
-                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER));
+                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER));
         if (sitting && sitProgress < 20.0F) {
             sitProgress += sitInc;
         } else if (!sitting && sitProgress > 0.0F) {
@@ -1488,6 +1488,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (!super.processInteract(player, hand)) {
             if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
                 if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
+                    RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.getTagCompound().setUniqueId("RatUUID", this.getPersistentID());
                     player.swingArm(hand);
                     player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.bind", this.getName()), true);
