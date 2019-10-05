@@ -27,6 +27,7 @@ public class RatConfig {
     public boolean villagePetShops = true;
     public boolean villageGarbageHeaps = true;
     public boolean disablePlastic = false;
+    public boolean ratsBreakBlockOnHarvest = true;
     public float ratStrengthThreshold = 4.0F;
     public int ratFluteDistance = 2;
     public int ratCageCramming = 4;
@@ -61,6 +62,7 @@ public class RatConfig {
         this.villageGarbageHeaps = config.getBoolean("Village Garbage Heap", "all", true, "True if garbage heaps can spawn in villages");
         this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
+        this.ratsBreakBlockOnHarvest = config.getBoolean("Rats Break Crops on Harvest", "all", true, "True if tamed rats will destroy crops when they harvest them");
         this.cheesemaking = config.getBoolean("Cheesemaking", "all", true, "True if cheese can be created in cauldrons");
         this.milkCauldronTime = config.getInt("Milk Curdling Time", "all", 150, 20, 1000000, "The time in ticks(20 per second) it takes for milk to turn into cheese in a cauldron");
         this.ratStrengthThreshold = config.getFloat("Rat Dig Strength", "all", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
