@@ -20,6 +20,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
     private static ItemStack IRON_AXE_STACK = new ItemStack(Items.IRON_AXE);
+    private static ItemStack IRON_HOE_STACK = new ItemStack(Items.IRON_HOE);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     RenderRat renderer;
 
@@ -44,7 +45,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             }
             Minecraft minecraft = Minecraft.getMinecraft();
             if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0
-                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
+                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)
+                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -65,7 +67,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
 
                     }
                 }
-                if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
+                if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
                     GlStateManager.translate(0.15F, -0.075F, 0);
                 }
             }
@@ -146,6 +148,16 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             minecraft.getItemRenderer().renderItem(entity, new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-15.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, IRON_HOE_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {

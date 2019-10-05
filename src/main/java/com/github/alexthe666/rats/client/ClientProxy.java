@@ -284,8 +284,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelPiperHat(1.0F);
         } else if (index == 2) {
             return new ModelPiratHat(1.0F);
-        } else {
+        } else if (index == 3) {
             return new ModelArcheologistHat(1.0F);
+        } else {
+            return new ModelFarmerHat(1.0F);
         }
     }
 

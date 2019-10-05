@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
@@ -52,7 +53,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage()) {
+        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.getCommand() == RatCommand.HARVEST && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);

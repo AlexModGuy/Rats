@@ -230,6 +230,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !(aiHarvest instanceof RatAIHarvestMine)) {
             aiHarvest = new RatAIHarvestMine(this);
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !(aiHarvest instanceof RatAIHarvestFarmer)) {
+            aiHarvest = new RatAIHarvestFarmer(this);
+        }
         this.tasks.addTask(4, this.aiHarvest);
     }
 
@@ -707,7 +710,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
-                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER));
+                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER));
         if (sitting && sitProgress < 20.0F) {
             sitProgress += sitInc;
         } else if (!sitting && sitProgress > 0.0F) {
@@ -1006,7 +1009,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private boolean shouldSitDuringAnimation() {
-        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER);
+        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER);
     }
 
     public void createBabiesFrom(EntityRat mother, EntityRat father) {

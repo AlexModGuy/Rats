@@ -11,6 +11,7 @@ public class RatsUpgradeConflictRegistry {
     private static Item[] HEALTH_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_HEALTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ARMOR_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ATTACK_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_STRENGTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
+    private static Item[] HARVEST_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, RatsItemRegistry.RAT_UPGRADE_MINER, RatsItemRegistry.RAT_UPGRADE_FARMER};
 
     public static void init() {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC, new Item[0]);
@@ -28,8 +29,9 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_WHITELIST, new Item[]{RatsItemRegistry.RAT_UPGRADE_BLACKLIST});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FLIGHT, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ENDER, new Item[0]);
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, new Item[]{RatsItemRegistry.RAT_UPGRADE_MINER});
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_MINER, new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, HARVEST_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_MINER, HARVEST_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FARMER, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED});

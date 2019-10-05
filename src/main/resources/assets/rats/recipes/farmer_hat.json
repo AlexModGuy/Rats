@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " H ",
+    "WWW"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:hay_block",
+      "data": 0
+    },
+    "W": {
+      "item": "minecraft:wheat",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:farmer_hat"
+  }
+}
