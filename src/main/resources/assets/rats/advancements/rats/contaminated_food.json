@@ -12,8 +12,8 @@
     },
     "parent": "rats:rats/root",
     "criteria": {
-        "iron_pickaxe": {
-            "trigger": "minecraft:consume_item",
+        "contaminated_food": {
+            "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
