@@ -7,6 +7,7 @@ import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -108,8 +109,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
                             BlockPos blockpos = new BlockPos(i3, k, l);
                             IBlockState iblockstate = this.world.getBlockState(blockpos);
                             Block block = iblockstate.getBlock();
-
-                            if (!block.isAir(iblockstate, this.world, blockpos) && block.canEntityDestroy(iblockstate, world, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, iblockstate)) {
+                            if (!(block instanceof BlockLiquid) && canDestroyBlock(block) && !block.isAir(iblockstate, this.world, blockpos) && block.canEntityDestroy(iblockstate, world, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, iblockstate)) {
                                 flag = this.world.destroyBlock(blockpos, true) || flag;
                             }
                         }

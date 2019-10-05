@@ -23,6 +23,10 @@ public class EntityGolemBeam extends EntityArrow {
         this.setDamage(8F);
     }
 
+    public boolean isInWater() {
+        return false;
+    }
+
     public EntityGolemBeam(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
