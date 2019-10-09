@@ -11,8 +11,10 @@ import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.AbstractSkeleton;
@@ -36,7 +38,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
@@ -140,9 +144,28 @@ public class ServerEvents {
                 }
             }
         }
+        if(event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatsMod.CONFIG_OPTIONS.plagueSpread){
+            if(event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)){
+                ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
+            }
+        }
     }
 
     @SubscribeEvent
+    public void onHitEntity(LivingAttackEvent event) {
+        if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatsMod.CONFIG_OPTIONS.plagueSpread){
+            EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
+            if(attacker.isPotionActive(RatsMod.PLAGUE_POTION)){
+                if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
+                    event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                    event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
+                }
+            }
+        }
+    }
+
+        @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof EntityIronGolem && RatsMod.CONFIG_OPTIONS.golemsTargetRats) {
             EntityIronGolem golem = (EntityIronGolem) event.getEntity();
@@ -198,6 +221,27 @@ public class ServerEvents {
         if (event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
             PotionEffect effect = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (event.getEntityLiving().world.isRemote && (event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION) || event.getEntityLiving() instanceof EntityRat && ((EntityRat) event.getEntityLiving()).hasPlague())) {
+            Random rand = event.getEntityLiving().getRNG();
+            if(rand.nextInt(4) == 0) {
+                int entitySize = 1;
+                if (event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength() > 0) {
+                    entitySize = Math.min(1, (int) event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength());
+                }
+                for (int i = 0; i < entitySize; i++) {
+                    float motionX = rand.nextFloat() * 0.2F - 0.1F;
+                    float motionZ = rand.nextFloat() * 0.2F - 0.1F;
+                    RatsMod.PROXY.spawnParticle("flea", event.getEntityLiving().posX + (double) (rand.nextFloat() * event.getEntityLiving().width * 2F) - (double) event.getEntityLiving().width,
+                            event.getEntityLiving().posY + (double) (rand.nextFloat() * event.getEntityLiving().height),
+                            event.getEntityLiving().posZ + (double) (rand.nextFloat() * event.getEntityLiving().width * 2F) - (double) event.getEntityLiving().width,
+                            motionX, 0.0F, motionZ);
+                }
+            }
         }
     }
 }

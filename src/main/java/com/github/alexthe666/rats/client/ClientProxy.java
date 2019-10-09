@@ -1,13 +1,11 @@
 package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.event.ClientEvents;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.*;
-import com.github.alexthe666.rats.client.particle.ParticleLightning;
-import com.github.alexthe666.rats.client.particle.ParticleRatGhost;
-import com.github.alexthe666.rats.client.particle.ParticleSaliva;
-import com.github.alexthe666.rats.client.particle.ParticleUpgradeCombiner;
+import com.github.alexthe666.rats.client.particle.*;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
@@ -44,6 +42,7 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -61,13 +60,9 @@ public class ClientProxy extends CommonProxy {
     private static final RatsTEISR TEISR = new RatsTEISR();
     @SideOnly(Side.CLIENT)
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
-    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
     public static BlockPos refrencedPos;
     public static EnumFacing refrencedFacing;
     protected static EntityRat refrencedRat;
-    private float synesthesiaProgress = 0;
-    private float prevSynesthesiaProgress = 0;
-    private float maxSynesthesiaProgress = 40;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -223,53 +218,11 @@ public class ClientProxy extends CommonProxy {
 
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
+        MinecraftForge.EVENT_BUS.register(new ClientEvents());
     }
 
     public void postInit() {
-
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() == Minecraft.getMinecraft().player) {
-            EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
-            PotionEffect active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
-            boolean synesthesia = active != null;
-            if (synesthesia && !renderer.isShaderActive()) {
-                renderer.loadShader(SYNESTHESIA);
-            }
-            if (!synesthesia && renderer.isShaderActive() && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
-                renderer.stopUseShader();
-            }
-            if (prevSynesthesiaProgress == 2 && synesthesia) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_BEGIN, 1.0F));
-            }
-            if (prevSynesthesiaProgress == 38 && !synesthesia) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_END, 1.0F));
-            }
-            prevSynesthesiaProgress = synesthesiaProgress;
-            if (synesthesia && synesthesiaProgress < maxSynesthesiaProgress) {
-                synesthesiaProgress += 2F;
-            } else if (!synesthesia && synesthesiaProgress > 0.0F) {
-                synesthesiaProgress -= 2F;
-            }
-        }
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onGetFOVModifier(EntityViewRenderEvent.FOVModifier event) {
-        if (event.getEntity() == Minecraft.getMinecraft().player && prevSynesthesiaProgress > 0) {
-            float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * LLibrary.PROXY.getPartialTicks());
-            float renderProg;
-            if (prevSynesthesiaProgress > synesthesiaProgress) {
-                renderProg = (float) Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
-            } else {
-                renderProg = -(float) Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;
-            }
-            event.setFOV(event.getFOV() + renderProg);
-        }
+        ClientEvents.initializePlagueLayer();
     }
 
     public boolean shouldRenderNameplates() {
@@ -327,6 +280,9 @@ public class ClientProxy extends CommonProxy {
         }
         if (name.equals("rat_lightning")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+        }
+        if (name.equals("flea")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));

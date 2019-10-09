@@ -109,6 +109,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public float sitProgress;
     public float holdProgress;
     public float deadInTrapProgress;
+    public float sleepProgress;
     public boolean isDeadInTrap;
     public BlockPos fleePos;
     public boolean holdInMouth = true;
@@ -1204,8 +1205,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (entityIn instanceof EntityRat && !((EntityRat) entityIn).isTamed()) {
                 ((EntityRat) entityIn).setPlague(true);
             } else if (entityIn instanceof EntityLivingBase) {
-                if (((EntityLivingBase) entityIn).getActivePotionEffect(MobEffects.POISON) != null) {
-                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 100));
+                if (((EntityLivingBase) entityIn).getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
+                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                 }
             }
         }

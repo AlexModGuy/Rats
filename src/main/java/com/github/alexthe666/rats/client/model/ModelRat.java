@@ -304,11 +304,35 @@ public class ModelRat extends AdvancedModelBase {
             progressRotation(tail1, rat.sitProgress, 1.2F, 0.17453292519943295F, 0.6981317007977318F, 20F);
         } else if (rat instanceof EntityPirat || rat.isDancing()) {
             progressRotation(tail1, rat.sitProgress, 1.1F, 0, 0, 20F);
-
         }
         progressPosition(body1, rat.sitProgress, 0, 16F, 0, 20F);
         progressPosition(leftThigh, rat.sitProgress, 2.5F, 0, 4.5F, 20F);
         progressPosition(rightThigh, rat.sitProgress, -2.5F, 0, 4.5F, 20F);
+
+        progressRotation(rightFoot, rat.sleepProgress, 1.5707963267948966F, 0.0F, 0.0F, 20F);
+        progressRotation(leftThigh, rat.sleepProgress, -1.5707963267948966F, -0.3701843343479973F, 0.0F, 20F);
+        progressRotation(leftArm, rat.sleepProgress, -1.5707963267948966F, -0.36425021489121656F, 0.0F, 20F);
+        progressRotation(head, rat.sleepProgress, 0.18656417346763232F, 0.0F, 0.0F, 20F);
+        progressRotation(body1, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(tail1, rat.sleepProgress, -0.11927082124560143F, 1.3203415791337103F, 0.0F, 20F);
+        progressRotation(leftFoot, rat.sleepProgress, 1.5707963267948966F, 0.0F, 0.0F, 20F);
+        progressRotation(wisker2, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(rightEar, rat.sleepProgress, 0.0F, 0.7853981633974483F, 0.0F, 20F);
+        progressRotation(tail2, rat.sleepProgress, 0.0F, 1.5635243700937593F, 0.0F, 20F);
+        progressRotation(rightEye, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(wisker1, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(nose, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(rightArm, rat.sleepProgress, -1.5707963267948966F, 0.0F, 0.0F, 20F);
+        progressRotation(snout, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(leftEar, rat.sleepProgress, 0.0F, -0.6269985541154942F, 0.0F, 20F);
+        progressRotation(rightHand, rat.sleepProgress, 1.5707963267948966F, 0.0F, 0.0F, 20F);
+        progressRotation(neck, rat.sleepProgress, 0.0F, -0.7054040181353239F, 0.0F, 20F);
+        progressRotation(body2, rat.sleepProgress, 0.0F, -0.4290601759792177F, 0.0F, 20F);
+        progressRotation(rightThigh, rat.sleepProgress, -1.5707963267948966F, 0.0F, 0.0F, 20F);
+        progressRotation(leftEye, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
+        progressRotation(leftHand, rat.sleepProgress, 1.6470628053380598F, 0.0F, 0.0F, 20F);
+
+
         if (rat.getAnimation() == EntityRat.ANIMATION_EAT) {
             this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, f2, 1);
             this.walk(this.head, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.2F, f2, 1);
