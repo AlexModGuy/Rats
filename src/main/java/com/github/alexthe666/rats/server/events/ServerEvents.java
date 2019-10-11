@@ -144,7 +144,7 @@ public class ServerEvents {
                 }
             }
         }
-        if(event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatsMod.CONFIG_OPTIONS.plagueSpread){
+        if(event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatsMod.CONFIG_OPTIONS.plagueSpread && !(event.getTarget() instanceof EntityRat)){
             if(event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)){
                 ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
@@ -156,7 +156,7 @@ public class ServerEvents {
     public void onHitEntity(LivingAttackEvent event) {
         if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatsMod.CONFIG_OPTIONS.plagueSpread){
             EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
-            if(attacker.isPotionActive(RatsMod.PLAGUE_POTION)){
+            if(attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)){
                 if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
                     event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                     event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
@@ -231,7 +231,7 @@ public class ServerEvents {
             if(rand.nextInt(4) == 0) {
                 int entitySize = 1;
                 if (event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength() > 0) {
-                    entitySize = Math.min(1, (int) event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength());
+                    entitySize = Math.max(1, (int) event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength());
                 }
                 for (int i = 0; i < entitySize; i++) {
                     float motionX = rand.nextFloat() * 0.2F - 0.1F;
