@@ -66,6 +66,21 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":contaminated_food")
     public static Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, "contaminated_food");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":purifying_liquid")
+    public static Item PURIFYING_LIQUID = new ItemPurifyingLiquid();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":herb_bundle")
+    public static Item HERB_BUNDLE = new ItemPlagueHealer(1, 0.1F, "herb_bundle", 0.1F);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":treacle")
+    public static Item TREACLE = new ItemPlagueHealer(2, 0.6F, "treacle", 0.25F);
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_leech")
+    public static Item PLAGUE_LEECH = new ItemPlagueLeech();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_stew")
+    public static Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
+    
     public static Item[] RAT_IGLOOS = new Item[16];
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_water_bottle")
     public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
@@ -86,6 +101,8 @@ public class RatsItemRegistry {
     public static Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":farmer_hat")
     public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
+    public static Item PLAGUE_DOCTOR_MASK = new ItemHat("plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
     public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_petals")

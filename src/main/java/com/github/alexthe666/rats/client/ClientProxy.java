@@ -134,6 +134,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPiratBoat.class, new RenderPiratBoat());
         RenderingRegistry.registerEntityRenderingHandler(EntityCheeseCannonball.class, new RenderSnowball<EntityCheeseCannonball>(Minecraft.getMinecraft().getRenderManager(), RatsItemRegistry.CHEESE_CANNONBALL, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityPirat.class, new RenderPirat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueDoctor.class, new RenderPlagueDoctor());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPurifyingLiquid.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -239,8 +241,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelPiratHat(1.0F);
         } else if (index == 3) {
             return new ModelArcheologistHat(1.0F);
-        } else {
+        } else if (index == 4){
             return new ModelFarmerHat(1.0F);
+        } else {
+            return new ModelPlagueDoctorMask(1.01F);
         }
     }
 

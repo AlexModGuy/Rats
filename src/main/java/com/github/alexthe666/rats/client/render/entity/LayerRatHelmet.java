@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.client.model.ModelPlagueDoctorMask;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
@@ -136,6 +137,12 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     GlStateManager.rotate(-5, 1, 0, 0);
                     GlStateManager.translate(0, 0.4, 0);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
+                }
+                if (itemstack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK) {
+                    GlStateManager.rotate(-15, 1, 0, 0);
+                    GlStateManager.translate(0, 0.25F, 0);
+                    GlStateManager.scale(1.5F, 1.5F, 1.5F);
+
                 }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));
                 {

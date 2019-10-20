@@ -1957,6 +1957,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return false;
         }
+        if(potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION){
+            return false;
+        }
         return super.isPotionApplicable(potioneffectIn);
     }
 

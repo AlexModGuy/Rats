@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 public class RatsVillageRegistry {
     public static final VillagerRegistry.VillagerProfession PET_SHOP_OWNER = new VillagerRegistry.VillagerProfession("rats:pet_shop_owner", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
+    public static final VillagerRegistry.VillagerProfession PLAGUE_DOCTOR = new VillagerRegistry.VillagerProfession("rats:plague_doctor", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
 
     public static void register() {
         if (RatsMod.CONFIG_OPTIONS.villageGarbageHeaps) {
@@ -41,6 +43,17 @@ public class RatsVillageRegistry {
         career.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_HAMMOCKS[0], new EntityVillager.PriceInfo(5, 1)));
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_IGLOOS[0], new EntityVillager.PriceInfo(6, 1)));
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_UPGRADE_BASIC, new EntityVillager.PriceInfo(25, 1)));
-
+        VillagerRegistry.VillagerCareer doctor = new VillagerRegistry.VillagerCareer(PLAGUE_DOCTOR, "plague_doctor");
+        doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.BONE, new EntityVillager.PriceInfo(25, 1)));
+        doctor.addTrade(1, new EntityVillager.ListItemForEmeralds(Items.ROTTEN_FLESH, new EntityVillager.PriceInfo(17, 3)));
+        doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.POISONOUS_POTATO, new EntityVillager.PriceInfo(4, 2)));
+        doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.POISONOUS_POTATO, new EntityVillager.PriceInfo(4, 2)));
+        doctor.addTrade(1, new EntityVillager.ItemAndEmeraldToItem(Item.getItemFromBlock(Blocks.RED_FLOWER), new EntityVillager.PriceInfo(1, 2), RatsItemRegistry.HERB_BUNDLE, new EntityVillager.PriceInfo(5, 1)));
+        doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.TREACLE, new EntityVillager.PriceInfo(1, 4)));
+        doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegistry.GARBAGE_PILE), new EntityVillager.PriceInfo(1, 2)));
+        doctor.addTrade(3, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_LEECH, new EntityVillager.PriceInfo(3, 3)));
+        doctor.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_STEW, new EntityVillager.PriceInfo(8, 1)));
+        doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_DOCTOR_MASK, new EntityVillager.PriceInfo(15, 1)));
+        doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PURIFYING_LIQUID, new EntityVillager.PriceInfo(12, 1)));
     }
 }
