@@ -49,7 +49,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Item.getItemFromBlock(Blocks.RED_FLOWER));
     private static final com.google.common.base.Predicate<Entity> PLAGUE_PREDICATE = new com.google.common.base.Predicate<Entity>() {
         public boolean apply(@Nullable Entity entity) {
-            return entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(RatsMod.PLAGUE_POTION) || entity instanceof EntityRat && ((EntityRat) entity).hasPlague();
+            return entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(RatsMod.PLAGUE_POTION) || entity instanceof EntityRat && ((EntityRat) entity).hasPlague() || entity instanceof IPlagueLegion;
         }
     };
     private final InventoryBasic villagerInventory;
@@ -115,7 +115,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
                 if (((EntityZombieVillager) this.getAttackTarget()).isConverting()) {
                     this.setAttackTarget(null);
                 }
-            } else if (!this.getAttackTarget().isPotionActive(RatsMod.PLAGUE_POTION)) {
+            } else if (!this.getAttackTarget().isPotionActive(RatsMod.PLAGUE_POTION) && !(this.getAttackTarget() instanceof IPlagueLegion)) {
                 this.setAttackTarget(null);
             }
         }

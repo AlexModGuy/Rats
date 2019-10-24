@@ -143,6 +143,10 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityCheeseCannonball>create(), event, EntityCheeseCannonball.class, "cheese_cannonball", 15);
         registerSpawnable(EntityEntryBuilder.<EntityPlagueDoctor>create(), event, EntityPlagueDoctor.class, "plague_doctor", 16, 0X2A292A, 0X515359);
         registerUnspawnable(EntityEntryBuilder.<EntityPurifyingLiquid>create(), event, EntityPurifyingLiquid.class, "purifying_liquid", 17);
+        registerSpawnable(EntityEntryBuilder.<EntityBlackDeath>create(), event, EntityBlackDeath.class, "black_death", 18, 0X000000, 0X000000);
+        registerSpawnable(EntityEntryBuilder.<EntityPlagueCloud>create(), event, EntityPlagueCloud.class, "plague_cloud", 19, 0X000000, 0X52574D);
+        registerSpawnable(EntityEntryBuilder.<EntityPlagueCloud>create(), event, EntityPlagueBeast.class, "plague_beast", 20, 0X000000, 0XECECEC);
+        registerUnspawnable(EntityEntryBuilder.<EntityPlagueShot>create(), event, EntityPlagueShot.class, "plague_shot", 21);
         EntitySpawnPlacementRegistry.setPlacementType(EntityPirat.class, EntityLiving.SpawnPlacementType.IN_WATER);
     }
 

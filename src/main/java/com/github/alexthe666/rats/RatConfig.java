@@ -40,6 +40,8 @@ public class RatConfig {
     public int ratlantisDimensionId = -8;
     public int ratlantisPortalExitDimension = 0;
     public int maxDestroyedLeaves = 10000;
+    public float blackDeathHealth = 400F;
+    public float blackDeathAttack = 4F;
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -79,5 +81,7 @@ public class RatConfig {
         this.ratlantisDimensionId = config.getInt("Ratlantis Dimension ID", "all", -8, Integer.MIN_VALUE, Integer.MAX_VALUE, "Ratlantis Dimension ID");
         this.ratlantisPortalExitDimension = config.getInt("Ratlantis Portal Exit Dimension ID", "all", 0, Integer.MIN_VALUE, Integer.MAX_VALUE, "What Dimension ID you are teleported to upon leaving Ratlantis");
         this.maxDestroyedLeaves = config.getInt("Rat Upgrade Lumberjack: Max Tree Blocks", "all", 10000, 0, Integer.MAX_VALUE, "How many blocks the Lumberjack Rat is able to destroy when felling a tree. Be careful when changing this to a large number.");
+        this.blackDeathHealth = config.getFloat("Black Death Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Black Death Max Health");
+        this.blackDeathAttack = config.getFloat("Black Death Automaton Attack Damage", "all", 4F, 0F, Float.MAX_VALUE, "Black Death Attack Damage");
     }
 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
@@ -69,10 +70,10 @@ public class ModelRatlanteanSpirit extends AdvancedModelBase {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
+        animate(entity, f, f1, f2, f3, f4, f5);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.7F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, entity instanceof EntityPlagueCloud ? 0.3F : 0.7F);
         GlStateManager.disableLighting();
         this.head.render(f5);
         GlStateManager.enableLighting();
@@ -80,12 +81,12 @@ public class ModelRatlanteanSpirit extends AdvancedModelBase {
         GlStateManager.disableBlend();
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void animate(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5, (EntityRatlanteanSpirit) entity);
+        setRotationAngles(f, f1, f2, f3, f4, f5,entity);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityRatlanteanSpirit rat) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity rat) {
         float speedIdle = 0.35F;
         float degreeIdle = 0.15F;
         this.faceTarget(f3, f4, 1, head);

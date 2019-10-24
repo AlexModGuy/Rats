@@ -75,7 +75,7 @@ public class RatAIFollowOwner extends EntityAIBase {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 boolean teleport = false;
-                if (!this.rat.getLeashed() && !this.rat.isRiding()) {
+                if (!this.rat.getLeashed() && !this.rat.isRiding() && this.rat.getOwner() instanceof EntityPlayer) {
                     if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
                         teleport = true;
                         int i = MathHelper.floor(this.owner.posX) - 2;

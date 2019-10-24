@@ -27,7 +27,7 @@ public class ItemPlagueLeech extends Item {
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn){
-        if(playerIn.isCreative()){
+        if(!playerIn.isCreative()){
             playerIn.getHeldItem(handIn).shrink(1);
             playerIn.attackEntityFrom(DamageSource.CACTUS, 2);
             if(playerIn.isPotionActive(RatsMod.PLAGUE_POTION) && worldIn.rand.nextBoolean()){

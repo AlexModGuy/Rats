@@ -45,7 +45,7 @@ public class RatsVillageRegistry {
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_UPGRADE_BASIC, new EntityVillager.PriceInfo(25, 1)));
         VillagerRegistry.VillagerCareer doctor = new VillagerRegistry.VillagerCareer(PLAGUE_DOCTOR, "plague_doctor");
         doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.BONE, new EntityVillager.PriceInfo(25, 1)));
-        doctor.addTrade(1, new EntityVillager.ListItemForEmeralds(Items.ROTTEN_FLESH, new EntityVillager.PriceInfo(17, 3)));
+        doctor.addTrade(1, new EntityVillager.ListItemForEmeralds(Items.ROTTEN_FLESH, new EntityVillager.PriceInfo(3, 17)));
         doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.POISONOUS_POTATO, new EntityVillager.PriceInfo(4, 2)));
         doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.POISONOUS_POTATO, new EntityVillager.PriceInfo(4, 2)));
         doctor.addTrade(1, new EntityVillager.ItemAndEmeraldToItem(Item.getItemFromBlock(Blocks.RED_FLOWER), new EntityVillager.PriceInfo(1, 2), RatsItemRegistry.HERB_BUNDLE, new EntityVillager.PriceInfo(5, 1)));

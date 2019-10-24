@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -41,7 +42,6 @@ public class EntityPurifyingLiquid extends EntityPotion {
             PotionType potiontype = PotionUtils.getPotionFromItem(itemstack);
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
             List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-
             if (!list.isEmpty()) {
                 for (EntityLivingBase entitylivingbase : list) {
                     if (entitylivingbase.canBeHitWithPotion()) {
@@ -57,10 +57,15 @@ public class EntityPurifyingLiquid extends EntityPotion {
                                 EntityRat rat = (EntityRat)entitylivingbase;
                                 if(rat.hasPlague()){
                                     rat.setPlague(false);
+                                    rat.setTamed(false);
+                                    rat.setOwnerId(null);
                                 }
                             }
                             if(entitylivingbase.isPotionActive(RatsMod.PLAGUE_POTION)){
                                 entitylivingbase.removePotionEffect(RatsMod.PLAGUE_POTION);
+                            }
+                            if(entitylivingbase instanceof IPlagueLegion){
+                                entitylivingbase.attackEntityFrom(DamageSource.MAGIC, 10);
                             }
                             if(entitylivingbase instanceof EntityZombieVillager && !((EntityZombieVillager) entitylivingbase).isConverting()){
                                 NBTTagCompound tag = entitylivingbase.writeToNBT(new NBTTagCompound());
@@ -71,11 +76,10 @@ public class EntityPurifyingLiquid extends EntityPotion {
                         }
                     }
                 }
-
-                int i = potiontype.hasInstantEffect() ? 2007 : 2002;
-                this.world.playEvent(i, new BlockPos(this), 0XBFDFE2);
-                this.setDead();
             }
+            int i = potiontype.hasInstantEffect() ? 2007 : 2002;
+            this.world.playEvent(i, new BlockPos(this), 0XBFDFE2);
+            this.setDead();
         }
     }
 }

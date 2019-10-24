@@ -88,6 +88,9 @@ public class ItemGenericFood extends ItemFood {
             }
             player.addPotionEffect(new PotionEffect(MobEffects.UNLUCK, 2400));
         }
+        if (!worldIn.isRemote && this == RatsItemRegistry.CONFIT_BYALDI) {
+            player.addPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 2400));
+        }
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

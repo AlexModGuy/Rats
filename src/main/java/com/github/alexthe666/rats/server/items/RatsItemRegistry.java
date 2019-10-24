@@ -17,6 +17,7 @@ public class RatsItemRegistry {
     public static ItemArmor.ArmorMaterial HAT_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PiratHat", "rats:pirat_hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static Item.ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
     public static Item.ToolMaterial BAGHNAKHS_MATERIAL = EnumHelper.addToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
+    public static Item.ToolMaterial PLAGUE_SCYTHE_MATERIAL = EnumHelper.addToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese")
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, "cheese");
@@ -80,7 +81,10 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_stew")
     public static Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
-    
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_scythe")
+    public static Item PLAGUE_SCYTHE = new ItemPlagueScythe();
+
     public static Item[] RAT_IGLOOS = new Item[16];
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_water_bottle")
     public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
@@ -103,6 +107,8 @@ public class RatsItemRegistry {
     public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
     public static Item PLAGUE_DOCTOR_MASK = new ItemHat("plague_doctor_mask", 5);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")
+    public static Item BLACK_DEATH_MASK = new ItemHat("black_death_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
     public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_petals")

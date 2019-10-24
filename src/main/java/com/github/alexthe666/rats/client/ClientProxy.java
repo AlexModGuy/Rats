@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.*;
+import com.github.alexthe666.rats.client.render.RenderNothing;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
@@ -136,6 +137,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPirat.class, new RenderPirat());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlagueDoctor.class, new RenderPlagueDoctor());
         RenderingRegistry.registerEntityRenderingHandler(EntityPurifyingLiquid.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBlackDeath.class, new RenderBlackDeath());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueCloud.class, new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueBeast.class, new RenderPlagueBeast());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueShot.class, new RenderPlagueShot());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -293,6 +298,9 @@ public class ClientProxy extends CommonProxy {
         }
         if (name.equals("saliva")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSaliva(world, x, y, z));
+        }
+        if (name.equals("black_death")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleBlackDeath(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
     }
 }

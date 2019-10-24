@@ -138,7 +138,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     GlStateManager.translate(0, 0.4, 0);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
-                if (itemstack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK) {
+                if (itemstack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || itemstack.getItem() == RatsItemRegistry.BLACK_DEATH_MASK) {
                     GlStateManager.rotate(-15, 1, 0, 0);
                     GlStateManager.translate(0, 0.25F, 0);
                     GlStateManager.scale(1.5F, 1.5F, 1.5F);
