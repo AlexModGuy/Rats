@@ -26,6 +26,7 @@ public class RatConfig {
     public boolean golemsTargetRats = true;
     public boolean villagePetShops = true;
     public boolean villageGarbageHeaps = true;
+    public boolean villagePlagueDoctors = true;
     public boolean disablePlastic = false;
     public boolean ratsBreakBlockOnHarvest = true;
     public boolean plagueSpread = true;
@@ -63,6 +64,7 @@ public class RatConfig {
         this.golemsTargetRats = config.getBoolean("Golems Target Rats", "all", true, "True if iron golems will attack wild rats");
         this.villagePetShops = config.getBoolean("Village Pet Shops", "all", true, "True if pet shops can spawn in villages");
         this.villageGarbageHeaps = config.getBoolean("Village Garbage Heap", "all", true, "True if garbage heaps can spawn in villages");
+        this.villagePlagueDoctors = config.getBoolean("Village Plague Doctors", "all", true, "True if plague doctor huts can spawn in villages");
         this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
         this.ratsBreakBlockOnHarvest = config.getBoolean("Rats Break Crops on Harvest", "all", true, "True if tamed rats will destroy crops when they harvest them");

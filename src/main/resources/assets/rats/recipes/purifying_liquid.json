@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:golden_apple",
+      "data": 0
+    },
+    {
+      "item": "minecraft:diamond",
+      "data": 0
+    },
+    {
+      "item": "minecraft:glass_bottle",
+      "data": 0
+    },
+    {
+      "item": "rats:plague_essence",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "rats:purifying_liquid",
+    "data": 0
+  }
+}

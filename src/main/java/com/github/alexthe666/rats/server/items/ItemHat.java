@@ -29,6 +29,15 @@ public class ItemHat extends ItemArmor {
         this.name = name;
     }
 
+    public ItemHat(ArmorMaterial mat, String name, int modelIndex) {
+        super(mat, 0, EntityEquipmentSlot.HEAD);
+        this.setCreativeTab(RatsMod.TAB);
+        this.setTranslationKey("rats." + name);
+        this.setRegistryName(RatsMod.MODID, name);
+        this.modelIndex = modelIndex;
+        this.name = name;
+    }
+
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
             tooltip.add(I18n.format("item.rats.archeologist_hat.desc"));

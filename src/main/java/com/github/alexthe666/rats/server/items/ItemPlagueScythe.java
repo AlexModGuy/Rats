@@ -41,15 +41,17 @@ public class ItemPlagueScythe extends ItemSword {
     }
 
     public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack){
-        Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-        double totalDmg = 0;
-        for(AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())){
-            totalDmg += modifier.getAmount();
-        }
-        EntityPlagueShot shot = new EntityPlagueShot(entityLiving.world, entityLiving, totalDmg);
-        shot.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 0.8F, 1.0F);
-        if(!entityLiving.world.isRemote){
-            entityLiving.world.spawnEntity(shot);
+        if(entityLiving.swingProgress == 0) {
+            Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+            double totalDmg = 0;
+            for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+                totalDmg += modifier.getAmount();
+            }
+            EntityPlagueShot shot = new EntityPlagueShot(entityLiving.world, entityLiving, totalDmg * 0.5F);
+            shot.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 0.8F, 1.0F);
+            if (!entityLiving.world.isRemote) {
+                entityLiving.world.spawnEntity(shot);
+            }
         }
         return false;
     }

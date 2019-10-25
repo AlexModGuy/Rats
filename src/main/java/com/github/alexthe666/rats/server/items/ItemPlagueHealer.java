@@ -3,7 +3,9 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -30,14 +32,19 @@ public class ItemPlagueHealer extends ItemGenericFood {
         }
     }
 
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+        if(stack.getItem() == RatsItemRegistry.PLAGUE_STEW) {
+            super.onItemUseFinish(stack, worldIn, entityLiving);
+            return new ItemStack(Items.BOWL);
+        }else {
+            return super.onItemUseFinish(stack, worldIn, entityLiving);
+        }
+    }
+
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        if (playerIn.canEat(true)) {
-            playerIn.setActiveHand(handIn);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
-        } else {
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
-        }
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

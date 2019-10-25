@@ -70,6 +70,8 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("listAllseed", Items.PUMPKIN_SEEDS);
         OreDictionary.registerOre("listAllseed", Items.BEETROOT_SEEDS);
         OreDictionary.registerOre("listAllseed", Items.MELON_SEEDS);
+        OreDictionary.registerOre("flower", new ItemStack(Blocks.RED_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("flower", new ItemStack(Blocks.YELLOW_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
         if (RatsMod.CONFIG_OPTIONS.disableRatlantis) {
             OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.CHUNKY_CHEESE_TOKEN);
         } else {
@@ -102,6 +104,8 @@ public class RatsRecipeRegistry {
         RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairItem(new ItemStack(Items.LEATHER));
         RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairItem(new ItemStack(Items.IRON_INGOT));
         RatsItemRegistry.BAGHNAKHS_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW));
+        RatsItemRegistry.PLAGUE_SCYTHE_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE));
+        RatsItemRegistry.PLAGUE_MASK_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE));
     }
 
 

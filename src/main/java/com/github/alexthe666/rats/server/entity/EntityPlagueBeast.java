@@ -16,15 +16,18 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueLegion {
 
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "plague_beast"));
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueBeast.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
     public EntityPlagueBeast(World worldIn) {
@@ -167,4 +170,8 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         return null;
     }
 
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
+    }
 }

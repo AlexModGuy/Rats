@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FFF",
+    "FVF",
+    "FFF"
+  ],
+  "key": {
+    "V": {
+      "item": "rats:assorted_vegetables",
+      "data": 0
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "flower"
+    }
+  },
+  "result": {
+    "item": "rats:herb_bundle",
+    "count": 3
+  }
+}

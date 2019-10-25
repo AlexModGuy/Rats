@@ -10,8 +10,10 @@ import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -46,6 +48,7 @@ import java.util.Set;
 
 public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMob, INpc, IMerchant {
 
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "plague_doctor"));
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Item.getItemFromBlock(Blocks.RED_FLOWER));
     private static final com.google.common.base.Predicate<Entity> PLAGUE_PREDICATE = new com.google.common.base.Predicate<Entity>() {
         public boolean apply(@Nullable Entity entity) {
@@ -264,11 +267,6 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_VILLAGER_DEATH;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LootTableList.ENTITIES_VILLAGER;
     }
 
     public boolean isMating() {
@@ -639,8 +637,28 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         this.world.spawnEntity(entitypotion);
     }
 
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
+    }
+
     @Override
     public void setSwingingArms(boolean swingingArms) {
 
+    }
+
+    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
+        if (!this.world.isRemote && !this.isDead) {
+            EntityBlackDeath entitywitch = new EntityBlackDeath(this.world);
+            entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), null);
+            entitywitch.setNoAI(this.isAIDisabled());
+            if (this.hasCustomName()) {
+                entitywitch.setCustomNameTag(this.getCustomNameTag());
+                entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
+            }
+            this.world.spawnEntity(entitywitch);
+            this.setDead();
+        }
     }
 }

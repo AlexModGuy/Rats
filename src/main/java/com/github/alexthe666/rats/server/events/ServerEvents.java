@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.events;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
+import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -23,6 +24,7 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -141,6 +143,28 @@ public class ServerEvents {
                     for (int i = 0; i < 3; i++) {
                         event.getWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
+                }
+            }
+        }
+        if(event.getTarget() instanceof EntityVillager){
+            ItemStack heldItem = event.getEntityPlayer().getHeldItem(event.getHand());
+            if(heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((EntityVillager) event.getTarget()).isChild()){
+                EntityVillager villager = (EntityVillager)event.getTarget();
+                EntityPlagueDoctor doctor = new EntityPlagueDoctor(event.getWorld());
+                doctor.copyLocationAndAnglesFrom(villager);
+                villager.setDead();
+                doctor.onInitialSpawn(event.getWorld().getDifficultyForLocation(event.getPos()), null);
+                if(!event.getWorld().isRemote){
+                    event.getWorld().spawnEntity(doctor);
+                }
+                doctor.setNoAI(villager.isAIDisabled());
+                if (villager.hasCustomName()) {
+                    doctor.setCustomNameTag(villager.getCustomNameTag());
+                    doctor.setAlwaysRenderNameTag(villager.getAlwaysRenderNameTag());
+                }
+                event.getEntityPlayer().swingArm(event.getHand());
+                if(!event.getEntityPlayer().isCreative()){
+                    heldItem.shrink(1);
                 }
             }
         }

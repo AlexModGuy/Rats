@@ -24,6 +24,10 @@ public class RatsVillageRegistry {
             MapGenStructureIO.registerStructureComponent(VillageComponentPetShop.class, "pet_shop");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPetShop());
         }
+        if (RatsMod.CONFIG_OPTIONS.villagePlagueDoctors) {
+            MapGenStructureIO.registerStructureComponent(VillageComponentPlagueDoctor.class, "plague_doctor_hut");
+            VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPlagueDoctor());
+        }
         VillagerRegistry.VillagerCareer career = new VillagerRegistry.VillagerCareer(PET_SHOP_OWNER, "pet_shop_owner");
         career.addTrade(1, new EntityVillager.ListItemForEmeralds(Items.BONE, new EntityVillager.PriceInfo(7, 1)));
         career.addTrade(1, new EntityVillager.EmeraldForItems(Items.FISH, new EntityVillager.PriceInfo(1, 7)));

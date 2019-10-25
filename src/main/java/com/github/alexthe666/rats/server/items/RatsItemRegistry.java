@@ -15,6 +15,7 @@ public class RatsItemRegistry {
 
     public static ItemArmor.ArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("ChefToque", "rats:cheftoque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static ItemArmor.ArmorMaterial HAT_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PiratHat", "rats:pirat_hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static ItemArmor.ArmorMaterial PLAGUE_MASK_MATERIAL = EnumHelper.addArmorMaterial("PlagueMask", "rats:plague_mask", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
     public static Item.ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
     public static Item.ToolMaterial BAGHNAKHS_MATERIAL = EnumHelper.addToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
     public static Item.ToolMaterial PLAGUE_SCYTHE_MATERIAL = EnumHelper.addToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
@@ -106,9 +107,13 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":farmer_hat")
     public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
-    public static Item PLAGUE_DOCTOR_MASK = new ItemHat("plague_doctor_mask", 5);
+    public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")
-    public static Item BLACK_DEATH_MASK = new ItemHat("black_death_mask", 5);
+    public static Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_essence")
+    public static Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctorate")
+    public static Item PLAGUE_DOCTORATE = new ItemGeneric("plague_doctorate", 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_toga")
     public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_petals")

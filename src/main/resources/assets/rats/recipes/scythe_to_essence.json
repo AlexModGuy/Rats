@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:plague_scythe",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "rats:plague_essence",
+    "data": 0,
+    "count": 5
+  }
+}

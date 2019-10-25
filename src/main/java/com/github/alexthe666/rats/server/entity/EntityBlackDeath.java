@@ -22,6 +22,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -29,11 +30,13 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
 public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRangedAttackMob {
 
+    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "black_death"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_SUMMONING = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
@@ -298,4 +301,8 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         return ientitylivingdata;
     }
 
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return LOOT;
+    }
 }

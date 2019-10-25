@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:herb_bundle"
+    },
+    {
+      "item": "rats:plague_leech"
+    },
+    {
+      "item": "rats:treacle"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "item": "rats:plague_stew",
+    "data": 0,
+    "count": 1
+  }
+}
