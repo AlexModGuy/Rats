@@ -308,7 +308,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
                     BlockPos pos = new BlockPos(this);
                     IBlockState iblockstate = this.world.getBlockState((pos).down());
-                    return this.isValidLightLevel() && 0.5F - this.world.getLightBrightness(pos) >= 0.0F && iblockstate.canEntitySpawn(this);
+                    return this.isValidLightLevel() && iblockstate.canEntitySpawn(this);
                 }
             } else {
                 spawnRoll /= 2;

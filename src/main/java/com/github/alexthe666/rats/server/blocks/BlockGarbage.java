@@ -12,10 +12,13 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +31,22 @@ public class BlockGarbage extends BlockFalling {
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats.garbage_pile");
         this.setRegistryName(RatsMod.MODID, "garbage_pile");
+        this.setTickRandomly(true);
+    }
+
+    @Override
+    public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
+        super.updateTick(world, pos, state, rand);
+        if(rand.nextFloat() <= 0.5){
+            EntityRat rat = new EntityRat(world);
+            rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
+            if(rat.getCanSpawnHere()){
+                rat.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+                if(!world.isRemote){
+                    world.spawnEntity(rat);
+                }
+            }
+        }
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

@@ -77,7 +77,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
     protected boolean canDespawn() {
         return false;
     }
-    
+
     @Override
     protected void entityInit() {
         super.entityInit();
