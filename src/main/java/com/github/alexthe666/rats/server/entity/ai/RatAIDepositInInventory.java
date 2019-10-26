@@ -26,7 +26,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Comparator;
 
-public class RatDepositInInventory extends EntityAIBase {
+public class RatAIDepositInInventory extends EntityAIBase {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -35,7 +35,7 @@ public class RatDepositInInventory extends EntityAIBase {
     private int breakingTime;
     private int previousBreakProgress;
 
-    public RatDepositInInventory(EntityRat entity) {
+    public RatAIDepositInInventory(EntityRat entity) {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);

@@ -21,14 +21,14 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.Comparator;
 
-public class RatPickupFromInventory extends EntityAIBase {
+public class RatAIPickupFromInventory extends EntityAIBase {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
     private BlockPos targetBlock = null;
     private int feedingTicks;
 
-    public RatPickupFromInventory(EntityRat entity) {
+    public RatAIPickupFromInventory(EntityRat entity) {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);

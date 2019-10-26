@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.google.common.collect.Lists;
+import gnu.trove.set.hash.THashSet;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
@@ -18,9 +20,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class RatAIHarvestTrees extends EntityAIBase {
     private static final int RADIUS = 16;
@@ -168,25 +168,24 @@ public class RatAIHarvestTrees extends EntityAIBase {
     private void fellTree() {
         World world = entity.world;
         BlockPos base = new BlockPos(this.targetBlock);
+        Queue<BlockPos> queue = new LinkedList<BlockPos>();
         while (isBlockLog(world.getBlockState(base))) {
-            destroyedLeaves = 0;
-            destroyLeaves(base);
-            world.destroyBlock(base, true);
-            base = base.up();
-        }
-    }
-
-    private void destroyLeaves(BlockPos base) {
-        if (destroyedLeaves < RatsMod.CONFIG_OPTIONS.maxDestroyedLeaves) {
-            for (BlockPos pos : BlockPos.getAllInBox(base.add(-1, -1, -1), base.add(1, 1, 1))) {
-                if (!pos.equals(base)) {
-                    if (isBlockLog(entity.world.getBlockState(pos)) || isBlockLeaf(entity.world.getBlockState(pos))) {
-                        entity.world.destroyBlock(pos, true);
-                        destroyedLeaves++;
-                        destroyLeaves(pos);
+            if(!queue.contains(base)){
+                queue.add(base);
+            }
+            for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8))) {
+                if(isBlockLog(world.getBlockState(pos)) && !queue.contains(pos)){
+                    if(isBlockLog(world.getBlockState(pos.up())) && !isBlockLog(world.getBlockState(base.up()))){
+                        base = pos;
                     }
+                    queue.add(pos);
                 }
             }
+            base = base.up();
+        }
+        while(!queue.isEmpty()){
+            BlockPos pop = queue.remove();
+            world.destroyBlock(pop, true);
         }
     }
 

@@ -69,7 +69,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -197,8 +196,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(6, new RatAIRaidChests(this));
         this.tasks.addTask(6, new RatAIRaidCrops(this));
         this.tasks.addTask(6, new RatAIEnterTrap(this));
-        this.tasks.addTask(6, new RatPickupFromInventory(this));
-        this.tasks.addTask(6, new RatDepositInInventory(this));
+        this.tasks.addTask(6, new RatAIPickupFromInventory(this));
+        this.tasks.addTask(6, new RatAIDepositInInventory(this));
         this.tasks.addTask(6, new RatAIFleePosition(this));
         this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
@@ -1253,7 +1252,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.getNavigator() instanceof RatPathPathNavigateGround) {
             if (((RatPathPathNavigateGround) this.getNavigator()).targetPosition != null) {
                 BlockPos target = ((RatPathPathNavigateGround) this.getNavigator()).targetPosition.down();
-                System.out.println(world.getBlockState(target));
                 if (world.getTileEntity(target) != null) {
                     finalDigPathPoint = target;
                 }
