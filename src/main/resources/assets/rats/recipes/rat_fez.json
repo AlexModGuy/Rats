@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " S ",
+    "WWW",
+    "W W"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:wool",
+      "data": 14
+    },
+    "S": {
+      "item": "rats:string_cheese",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_fez"
+  }
+}

@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -44,7 +45,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
     }
 
     private boolean holdingSeeds() {
-        return !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSeeds;
+        return !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSeeds || this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSeedFood);
     }
 
     private boolean holdingBonemeal() {
@@ -78,6 +79,9 @@ public class RatAIHarvestFarmer extends EntityAIBase {
                             this.entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
                             if (seedStack.getItem() instanceof ItemSeeds) {
                                 entity.world.setBlockState(targetBlock.up(), ((ItemSeeds) seedStack.getItem()).getPlant(entity.world, targetBlock.up()));
+                            }
+                            if (seedStack.getItem() instanceof ItemSeedFood) {
+                                entity.world.setBlockState(targetBlock.up(), ((ItemSeedFood) seedStack.getItem()).getPlant(entity.world, targetBlock.up()));
                             }
                         }
                         this.targetBlock = null;

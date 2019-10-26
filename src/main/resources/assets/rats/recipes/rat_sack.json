@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "L L",
+    "LCL",
+    "LLL"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
+    },
+    "L": {
+      "item": "minecraft:leather",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_sack"
+  }
+}

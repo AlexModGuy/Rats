@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import slimeknights.tconstruct.library.TinkerRegistry;
@@ -84,6 +85,7 @@ public class TinkersCompat {
             float totalDmg = ToolHelper.getActualDamage(stack, swinger);
             EntityPlagueShot shot = new EntityPlagueShot(swinger.world, swinger, totalDmg * 0.5F);
             shot.shoot(swinger, swinger.rotationPitch, swinger.rotationYaw, 0.0F, 0.8F, 1.0F);
+            swinger.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
             if (!swinger.world.isRemote) {
                 swinger.world.spawnEntity(shot);
             }

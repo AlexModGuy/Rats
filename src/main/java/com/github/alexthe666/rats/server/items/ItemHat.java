@@ -49,6 +49,10 @@ public class ItemHat extends ItemArmor {
             tooltip.add(I18n.format("item.rats.plague_doctor_mask.desc"));
             tooltip.add(I18n.format("item.rats.black_death_mask.desc"));
         }
+        if (stack.getItem() == RatsItemRegistry.RAT_FEZ) {
+            tooltip.add(I18n.format("item.rats.rat_fez.desc0"));
+            tooltip.add(I18n.format("item.rats.rat_fez.desc1"));
+        }
     }
 
     @SideOnly(Side.CLIENT)

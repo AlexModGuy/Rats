@@ -8,6 +8,32 @@
       }
     ]
   },
+  "black_death_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:black_death_die_0",
+      "rats:black_death_die_1"
+    ]
+  },
+  "black_death_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:black_death_hurt_0",
+      "rats:black_death_hurt_1",
+      "rats:black_death_hurt_2",
+      "rats:black_death_hurt_3"
+    ]
+  },
+  "black_death_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:black_death_idle_0",
+      "rats:black_death_idle_1",
+      "rats:black_death_idle_2",
+      "rats:black_death_idle_3",
+      "rats:black_death_idle_4"
+    ]
+  },
   "living_mice": {
     "category": "record",
     "sounds": [

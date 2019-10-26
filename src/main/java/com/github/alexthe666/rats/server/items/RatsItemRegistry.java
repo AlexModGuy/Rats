@@ -56,6 +56,12 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_burger")
     public static Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, "rat_burger");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_sack")
+    public static Item RAT_SACK = new ItemRatSack();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_capture_net")
+    public static Item RAT_CAPTURE_NET = new ItemRatCaptureNet();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
     public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
 
@@ -108,6 +114,8 @@ public class RatsItemRegistry {
     public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":fisherman_hat")
     public static Item FISHERMAN_HAT = new ItemHat("fisherman_hat", 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_fez")
+    public static Item RAT_FEZ = new ItemHat("rat_fez", 6);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
     public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")

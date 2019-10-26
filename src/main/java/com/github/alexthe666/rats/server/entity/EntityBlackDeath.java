@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAIStrife;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -21,8 +22,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -77,6 +80,22 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
             return false;
         }
         return super.isPotionApplicable(potioneffectIn);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return RatsSoundRegistry.BLACK_DEATH_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return RatsSoundRegistry.BLACK_DEATH_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.BLACK_DEATH_DIE;
+    }
+
+    public int getTalkInterval() {
+        return 10;
     }
 
     protected boolean canDespawn() {

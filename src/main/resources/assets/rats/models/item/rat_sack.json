@@ -1,0 +1,26 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "rats:items/sack"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "rat_count": 1
+      },
+      "model": "rats:item/rat_sack_1"
+    },
+    {
+      "predicate": {
+        "rat_count": 2
+      },
+      "model": "rats:item/rat_sack_2"
+    },
+    {
+      "predicate": {
+        "rat_count": 3
+      },
+      "model": "rats:item/rat_sack_3"
+    }
+  ]
+}

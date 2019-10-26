@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatSack;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageDancingRat;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
@@ -590,7 +591,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
-            if (this.hasPlague() && entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase)entityIn)) {
+            if (this.hasPlague() && entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
@@ -898,16 +899,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (death.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
                 this.setAttackTarget(death.getAttackTarget());
             }
-            if(this.getAttackTarget() == null || this.getAttackTarget().isDead){
-                float radius = (float)5 - (float)Math.sin(death.ticksExisted * 0.4D) * 0.5F;
+            if (this.getAttackTarget() == null || this.getAttackTarget().isDead) {
+                float radius = (float) 5 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.5F;
                 int maxRatStuff = 360 / Math.max(death.getRatsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getRatsSummoned(), 1);
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX ;
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX;
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
                 BlockPos runToPos = new BlockPos(extraX, death.posY, extraZ);
                 int steps = 0;
-                while(world.getBlockState(runToPos).isOpaqueCube() && steps < 10){
+                while (world.getBlockState(runToPos).isOpaqueCube() && steps < 10) {
                     runToPos = runToPos.up();
                     steps++;
                 }
@@ -1236,9 +1237,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
-    private boolean rollForPlague(EntityLivingBase target){
+    private boolean rollForPlague(EntityLivingBase target) {
         boolean mask = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.BLACK_DEATH_MASK;
-        if(mask){
+        if (mask) {
             return rand.nextFloat() < 0.3F;
         }
         return true;
@@ -1404,7 +1405,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 if (rand.nextInt(RatsMod.CONFIG_OPTIONS.tokenDropRate) == 0) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
                 }
-                if(this.hasPlague() && rand.nextFloat() <= RatsMod.CONFIG_OPTIONS.plagueEssenceDropRate){
+                if (this.hasPlague() && rand.nextFloat() <= RatsMod.CONFIG_OPTIONS.plagueEssenceDropRate) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE), 0.0F);
                 }
                 if (this.hasToga()) {
@@ -1527,13 +1528,27 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (!super.processInteract(player, hand)) {
             if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
-                if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
+                if (itemstack.getItem() == RatsItemRegistry.RAT_SACK) {
+                    NBTTagCompound compound = itemstack.getTagCompound();
+                    if (compound == null) {
+                        compound = new NBTTagCompound();
+                        itemstack.setTagCompound(compound);
+                    }
+                    NBTTagCompound ratTag = new NBTTagCompound();
+                    this.writeEntityToNBT(ratTag);
+                    int currentRat = ItemRatSack.getRatsInStack(itemstack) + 1;
+                    compound.setTag("Rat_" + currentRat, ratTag);
+                    this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1, 1);
+                    this.setDead();
+                    player.swingArm(hand);
+                    return true;
+                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
                     RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.getTagCompound().setUniqueId("RatUUID", this.getPersistentID());
                     player.swingArm(hand);
                     player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.bind", this.getName()), true);
                     return true;
-                } else if (!player.isSneaking()) {
+                } else if (!player.isSneaking() && this.canBeTamed()) {
                     openGUI(player);
                     return true;
                 } else {
@@ -1547,6 +1562,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         return false;
     }
+
+    public int getTalkInterval() {
+        if (this.hasPlague() && this.isTamed()) {
+            return 200;
+        }
+        return super.getTalkInterval();
+    }
+
 
     public boolean canBeTamed() {
         return !this.hasPlague();
@@ -1623,7 +1646,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             this.crafting = true;
         } else if (id == 86) {
             this.crafting = false;
-        } else if(id == 101){
+        } else if (id == 101) {
             this.playEffect(3);
         } else {
             super.handleStatusUpdate(id);
@@ -1642,7 +1665,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
                 world.spawnParticle(EnumParticleTypes.WATER_SPLASH, d3, d4, d5, (double) f, (double) f1, (double) f2);
             }
-        }else if (type == 2) {
+        } else if (type == 2) {
             for (int j = 0; j < 5; ++j) {
                 double d6 = (double) (j) / 5D;
                 float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
@@ -1920,7 +1943,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
-    public boolean holdsItemInHandUpgrade(){
+    public boolean holdsItemInHandUpgrade() {
         return this.holdInMouth && this.getAnimation() != EntityRat.ANIMATION_EAT && this.cookingProgress <= 0
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER);
@@ -2004,7 +2027,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return false;
         }
-        if(potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION){
+        if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
             return false;
         }
         return super.isPotionApplicable(potioneffectIn);

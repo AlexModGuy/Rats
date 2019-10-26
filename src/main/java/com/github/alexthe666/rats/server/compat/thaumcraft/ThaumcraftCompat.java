@@ -62,7 +62,18 @@ public class ThaumcraftCompat {
         evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL), new AspectList().add(RAT, 5).add(Aspect.WATER, 5).add(Aspect.DEATH, 6));
         evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.MUSIC_DISC_LIVING_MICE), new AspectList().add(RAT, 5).add(Aspect.MAN, 5).add(Aspect.SENSES, 6));
         evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.MUSIC_DISC_MICE_ON_VENUS), new AspectList().add(RAT, 5).add(Aspect.MAN, 5).add(Aspect.SENSES, 6));
-        //blocks
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PURIFYING_LIQUID), new AspectList().add(RAT, 5).add(Aspect.WATER, 5).add(Aspect.DESIRE, 5).add(Aspect.ALCHEMY, 10));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.TREACLE), new AspectList().add(RAT, 5).add(Aspect.PLANT, 5).add(Aspect.FLUX, 5).add(Aspect.ALCHEMY, 5));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_LEECH), new AspectList().add(RAT, 5).add(Aspect.BEAST, 15).add(Aspect.FLUX, 5).add(Aspect.TRAP, 5));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_STEW), new AspectList().add(RAT, 5).add(Aspect.ALCHEMY, 15).add(Aspect.LIFE, 5));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_SCYTHE), new AspectList().add(RAT, 15).add(Aspect.DEATH, 15).add(Aspect.AVERSION, 10));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE), new AspectList().add(RAT, 10).add(Aspect.DEATH, 5).add(Aspect.ENTROPY, 10));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_DOCTOR_MASK), new AspectList().add(RAT, 5).add(Aspect.DEATH, 5).add(Aspect.ORDER, 5));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.PLAGUE_DOCTORATE), new AspectList().add(RAT, 5).add(Aspect.MAN, 5).add(Aspect.MIND, 5).add(Aspect.ORDER, 15));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.BLACK_DEATH_MASK), new AspectList().add(RAT, 5).add(Aspect.DEATH, 25).add(Aspect.ENTROPY, 15));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.RAT_SACK), new AspectList().add(RAT, 25).add(Aspect.BEAST, 5).add(Aspect.ORDER, 5));
+        evt.register.registerObjectTag(new ItemStack(RatsItemRegistry.RAT_FEZ), new AspectList().add(RAT, 10).add(Aspect.ELDRITCH, 5).add(Aspect.ORDER, 5));
+        //block
         evt.register.registerObjectTag(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), new AspectList().add(Aspect.LIFE, 15).add(Aspect.EARTH, 5).add(Aspect.CRAFT, 15).add(RAT, 15));
         evt.register.registerObjectTag(new ItemStack(RatsBlockRegistry.MILK_CAULDRON), new AspectList().add(Aspect.LIFE, 5).add(Aspect.METAL, 5).add(Aspect.CRAFT, 5).add(RAT, 5));
         evt.register.registerObjectTag(new ItemStack(RatsBlockRegistry.CHEESE_CAULDRON), new AspectList().add(Aspect.LIFE, 5).add(Aspect.METAL, 5).add(Aspect.CRAFT, 5).add(RAT, 5));
@@ -89,7 +100,10 @@ public class ThaumcraftCompat {
         ThaumcraftApi.registerEntityTag("pirat", new AspectList().add(RAT, 30).add(Aspect.WATER, 20).add(Aspect.ENTROPY, 5));
         ThaumcraftApi.registerEntityTag("pirat_boat", new AspectList().add(RAT, 5).add(Aspect.WATER, 20).add(Aspect.ENTROPY, 5));
         ThaumcraftApi.registerEntityTag("neo_ratlantean", new AspectList().add(RAT, 55).add(Aspect.MIND, 50).add(Aspect.ELDRITCH, 45));
-
+        ThaumcraftApi.registerEntityTag("plague_doctor", new AspectList().add(RAT, 10).add(Aspect.MAN, 10).add(Aspect.DEATH, 10));
+        ThaumcraftApi.registerEntityTag("black_death", new AspectList().add(RAT, 20).add(Aspect.MAN, 5).add(Aspect.DEATH, 40).add(Aspect.ELDRITCH, 15));
+        ThaumcraftApi.registerEntityTag("plague_beast", new AspectList().add(RAT, 25).add(Aspect.BEAST, 15).add(Aspect.DEATH, 5));
+        ThaumcraftApi.registerEntityTag("plague_cloud", new AspectList().add(RAT, 5).add(Aspect.DEATH, 5));
     }
 
 }

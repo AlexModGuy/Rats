@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "IWI",
+    "WSW",
+    "IWI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "nuggetIron"
+    },
+    "W": {
+      "item": "minecraft:web",
+      "data": 0
+    },
+    "S": {
+      "item": "rats:rat_sack",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_capture_net"
+  }
+}

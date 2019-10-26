@@ -61,11 +61,9 @@ public class EntityVialOfSentience extends EntityPotion {
                         }
                     }
                 }
-
-                int i = potiontype.hasInstantEffect() ? 2007 : 2002;
-                this.world.playEvent(i, new BlockPos(this), 0XFEFE7E);
                 this.setDead();
             }
         }
+        this.world.playEvent(2002, new BlockPos(this), 0XFEFE7E);
     }
 }

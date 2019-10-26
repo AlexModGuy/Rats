@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,13 +15,16 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PreYggdrasilConverter;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -43,6 +47,14 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
             return false;
         }
         return super.isPotionApplicable(potioneffectIn);
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_ZOMBIE_INFECT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
     public void onLivingUpdate(){

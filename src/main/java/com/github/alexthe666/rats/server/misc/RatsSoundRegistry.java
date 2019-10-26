@@ -54,6 +54,13 @@ public class RatsSoundRegistry {
     public static final SoundEvent MICE_ON_VENUS = createSoundEvent("mice_on_venus");
     @GameRegistry.ObjectHolder("living_mice")
     public static final SoundEvent LIVING_MICE = createSoundEvent("living_mice");
+    @GameRegistry.ObjectHolder("black_death_idle")
+    public static final SoundEvent BLACK_DEATH_IDLE = createSoundEvent("black_death_idle");
+    @GameRegistry.ObjectHolder("black_death_hurt")
+    public static final SoundEvent BLACK_DEATH_HURT = createSoundEvent("black_death_hurt");
+    @GameRegistry.ObjectHolder("black_death_die")
+    public static final SoundEvent BLACK_DEATH_DIE = createSoundEvent("black_death_die");
+
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(RatsMod.MODID, soundName);

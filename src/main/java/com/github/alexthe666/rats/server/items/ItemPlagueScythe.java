@@ -10,6 +10,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,6 +48,7 @@ public class ItemPlagueScythe extends ItemSword {
             for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
                 totalDmg += modifier.getAmount();
             }
+            entityLiving.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
             EntityPlagueShot shot = new EntityPlagueShot(entityLiving.world, entityLiving, totalDmg * 0.5F);
             shot.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 0.8F, 1.0F);
             if (!entityLiving.world.isRemote) {

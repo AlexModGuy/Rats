@@ -22,6 +22,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -141,6 +142,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPlagueCloud.class, new RenderRatlateanSpirit());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlagueBeast.class, new RenderPlagueBeast());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlagueShot.class, new RenderPlagueShot());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatCaptureNet.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
@@ -225,6 +227,7 @@ public class ClientProxy extends CommonProxy {
 
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
+        ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
     }
 
@@ -248,8 +251,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelArcheologistHat(1.0F);
         } else if (index == 4){
             return new ModelFarmerHat(1.0F);
+        } else if (index == 5){
+            return new ModelPlagueDoctorMask(1.0F);
         } else {
-            return new ModelPlagueDoctorMask(1.01F);
+            return new ModelRatFez(1.01F);
         }
     }
 
