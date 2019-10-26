@@ -1,6 +1,9 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.advancements.PlagueDoctorTrigger;
+import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
+import com.github.alexthe666.rats.server.blocks.BlockRatCageDecorated;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIFollowGolem;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAILookAtTradePlayer;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAITradePlayer;
@@ -8,6 +11,7 @@ import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIVillagerInterac
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -18,6 +22,7 @@ import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -45,6 +50,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Set;
+
+import static com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry.PLAGUE_DOCTOR_TRIGGER;
 
 public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMob, INpc, IMerchant {
 
@@ -178,7 +185,9 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
-
+        if (!world.isRemote) {
+            PLAGUE_DOCTOR_TRIGGER.trigger((EntityPlayerMP) player, this);
+        }
         if (flag) {
             itemstack.interactWithEntity(player, this, hand);
             return true;

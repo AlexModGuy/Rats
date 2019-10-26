@@ -2,12 +2,14 @@ package com.github.alexthe666.rats.server.events;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
+import com.github.alexthe666.rats.server.message.MessageSwingArm;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockCauldron;
@@ -44,6 +46,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fluids.FluidStack;
@@ -189,7 +192,13 @@ public class ServerEvents {
         }
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
+    public void onPlayerPunch(AttackEntityEvent event) {
+        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+        TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
+    }
+
+    @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof EntityIronGolem && RatsMod.CONFIG_OPTIONS.golemsTargetRats) {
             EntityIronGolem golem = (EntityIronGolem) event.getEntity();
@@ -215,6 +224,10 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+        if(TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack)){
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
+        }
         if (event.getEntityPlayer().isSneaking() && !event.getEntityPlayer().getPassengers().isEmpty()) {
             for (Entity passenger : event.getEntityPlayer().getPassengers()) {
                 if (passenger instanceof EntityRat) {
@@ -224,6 +237,12 @@ public class ServerEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+        TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
     }
 
     @SubscribeEvent

@@ -1,22 +1,22 @@
 {
     "display": {
         "icon": {
-            "item": "rats:feral_rat_claw"
+            "item": "rats:black_death_mask"
         },
         "title": {
-            "translate": "advancements.rats.feral_ratlantean.title"
+            "translate": "advancements.rats.black_death.title"
         },
         "description": {
-            "translate": "advancements.rats.feral_ratlantean.description"
+            "translate": "advancements.rats.black_death.description"
         }
     },
-    "parent": "rats:rats/ratlantis",
+    "parent": "rats:rats/plaguedoctor",
     "criteria": {
         "killed": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
                 "entity": {
-                    "type": "rats:feral_ratlantean"
+                    "type": "rats:black_death"
                 }
             }
         },
@@ -24,7 +24,7 @@
             "trigger": "minecraft:player_hurt_entity",
             "conditions": {
                 "entity": {
-                    "type": "rats:feral_ratlantean"
+                    "type": "rats:black_death"
                 }
             }
         }

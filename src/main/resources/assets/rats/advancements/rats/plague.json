@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:plague_essence"
+        },
+        "title": {
+            "translate": "advancements.rats.plague.title"
+        },
+        "description": {
+            "translate": "advancements.rats.plague.description"
+        }
+    },
+    "parent": "rats:rats/root",
+    "criteria": {
+        "all_effects": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "rats:plague": {}
+                }
+            }
+        }
+    }
+}

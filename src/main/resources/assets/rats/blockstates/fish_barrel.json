@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "rats:fish_barrel"
+    },
+    "axis=z": {
+      "model": "rats:fish_barrel",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "rats:fish_barrel",
+      "x": 90,
+      "y": 90
+    },
+    "axis=none": {
+      "model": "rats:fish_barrel"
+    }
+  }
+}

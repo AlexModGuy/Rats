@@ -106,6 +106,8 @@ public class RatsItemRegistry {
     public static Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":farmer_hat")
     public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":fisherman_hat")
+    public static Item FISHERMAN_HAT = new ItemHat("fisherman_hat", 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
     public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")
@@ -178,6 +180,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_farmer")
     public static Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_fisherman")
+    public static Item RAT_UPGRADE_FISHERMAN = new ItemRatUpgrade("rat_upgrade_fisherman", 1, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_asbestos")
     public static Item RAT_UPGRADE_ASBESTOS = new ItemRatUpgrade("rat_upgrade_asbestos", 0, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_underwater")

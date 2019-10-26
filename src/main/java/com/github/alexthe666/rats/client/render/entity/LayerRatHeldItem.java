@@ -21,6 +21,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
     private static ItemStack IRON_AXE_STACK = new ItemStack(Items.IRON_AXE);
     private static ItemStack IRON_HOE_STACK = new ItemStack(Items.IRON_HOE);
+    private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     RenderRat renderer;
 
@@ -44,9 +45,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getMinecraft();
-            if (entity.holdInMouth && entity.getAnimation() != EntityRat.ANIMATION_EAT && entity.cookingProgress <= 0
-                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)
-                    && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+            if (entity.holdsItemInHandUpgrade()) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -158,6 +157,17 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(-15.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             minecraft.getItemRenderer().renderItem(entity, IRON_HOE_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-180F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(0, 1.0F, 0.0F, 0.0F);
+            GlStateManager.translate(0.2F, 0, -0.05F);
+            minecraft.getItemRenderer().renderItem(entity, FISHING_ROD_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {

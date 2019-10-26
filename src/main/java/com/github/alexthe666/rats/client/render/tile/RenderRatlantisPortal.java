@@ -24,9 +24,10 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
     private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
     public void render(TileEntityRatlantisPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        GlStateManager.pushMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
         RANDOM.setSeed(31100L);
-        GlStateManager.pushMatrix();
         GlStateManager.getFloat(2982, MODELVIEW);
         GlStateManager.getFloat(2983, PROJECTION);
         double d0 = x * x + y * y + z * z;
@@ -74,7 +75,7 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
             float f2 = (float) (j + 1);
             float time = (Minecraft.getMinecraft().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
             if (te == null) {
-                time = (Sys.getTime() - 1 + (1 * partialTicks)) % 80000.0F / 80000.0F;
+                time = (Minecraft.getMinecraft().frameTimer.getIndex() - 1 + (1 * partialTicks)) % 3200F / 3200F;
             }
             GlStateManager.translate(17.0F / f2 * time * RANDOM.nextGaussian(), (2.0F + f2 / 1.5F) * time, 0.0F);
             GlStateManager.rotate(180, 0.0F, 0.0F, 1.0F);
@@ -135,7 +136,9 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5888);
             Minecraft.getMinecraft().getTextureManager().bindTexture(END_SKY_TEXTURE);
+
         }
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         GlStateManager.disableBlend();
         GlStateManager.disableTexGenCoord(GlStateManager.TexGen.S);
@@ -146,6 +149,7 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
         if (flag) {
             Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
         }
+        GlStateManager.popMatrix();
     }
 
     protected int getPasses(double p_191286_1_) {

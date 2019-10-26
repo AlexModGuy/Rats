@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.server.CommonProxy;
+import com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry;
 import com.github.alexthe666.rats.server.compat.ChiselCompatBridge;
 import com.github.alexthe666.rats.server.compat.CraftTweakerCompatBridge;
 import com.github.alexthe666.rats.server.compat.ThaumcraftCompatBridge;
@@ -50,7 +51,7 @@ public class RatsMod {
     public static RatsMod INSTANCE;
     @SidedProxy(clientSide = "com.github.alexthe666.rats.client.ClientProxy", serverSide = "com.github.alexthe666.rats.server.CommonProxy")
     public static CommonProxy PROXY;
-    @NetworkWrapper({MessageRatCommand.class, MessageRatDismount.class, MessageIncreaseRatRecipe.class, MessageCheeseStaffRat.class, MessageCheeseStaffSync.class, MessageSyncThrownBlock.class, MessageDancingRat.class})
+    @NetworkWrapper({MessageRatCommand.class, MessageRatDismount.class, MessageIncreaseRatRecipe.class, MessageCheeseStaffRat.class, MessageCheeseStaffSync.class, MessageSyncThrownBlock.class, MessageDancingRat.class, MessageSwingArm.class})
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
     public static Logger logger;
     public static Potion CONFIT_BYALDI_POTION = new PotionConfitByaldi();
@@ -112,6 +113,7 @@ public class RatsMod {
                 }
             }
         }
+        RatsAdvancementRegistry.INSTANCE.init();
         RatsRecipeRegistry.preRegister();
         CraftTweakerCompatBridge.loadTweakerCompat();
         TinkersCompatBridge.loadTinkersCompat();

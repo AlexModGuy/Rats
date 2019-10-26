@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FFF",
+    "FBF",
+    "FFF"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "fish"
+    }
+  },
+  "result": {
+    "item": "rats:fish_barrel"
+  }
+}

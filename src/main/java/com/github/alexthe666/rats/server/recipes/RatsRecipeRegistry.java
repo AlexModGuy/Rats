@@ -72,6 +72,7 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("listAllseed", Items.MELON_SEEDS);
         OreDictionary.registerOre("flower", new ItemStack(Blocks.RED_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("flower", new ItemStack(Blocks.YELLOW_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("fish", new ItemStack(Items.FISH, 1, OreDictionary.WILDCARD_VALUE));
         if (RatsMod.CONFIG_OPTIONS.disableRatlantis) {
             OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.CHUNKY_CHEESE_TOKEN);
         } else {
