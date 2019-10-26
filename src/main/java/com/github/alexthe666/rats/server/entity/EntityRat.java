@@ -69,6 +69,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -1249,11 +1250,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private void findDigTarget() {
-        if (this.getNavigator() instanceof RatPathNavigate) {
-            if (((RatPathNavigate) this.getNavigator()).targetPosition != null) {
-                BlockPos target = ((RatPathNavigate) this.getNavigator()).targetPosition;
+        if (this.getNavigator() instanceof RatPathPathNavigateGround) {
+            if (((RatPathPathNavigateGround) this.getNavigator()).targetPosition != null) {
+                BlockPos target = ((RatPathPathNavigateGround) this.getNavigator()).targetPosition.down();
+                System.out.println(world.getBlockState(target));
                 if (world.getTileEntity(target) != null) {
-                    finalDigPathPoint = ((RatPathNavigate) this.getNavigator()).targetPosition;
+                    finalDigPathPoint = target;
                 }
             }
             if (!this.collidedHorizontally || !this.getNavigator().noPath()) {
