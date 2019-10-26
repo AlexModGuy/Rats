@@ -98,6 +98,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
+            GlStateManager.pushMatrix();
             if (this.renderer.getMainModel().isChild) {
                 GlStateManager.translate(0.0F, 0.625F, 0.0F);
                 GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
@@ -112,6 +113,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.translate(-0.155F, -0.225, 0.2F);
             GlStateManager.scale(2F, 2F, 2F);
             minecraft.getItemRenderer().renderItem(entity, PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
             Minecraft minecraft = Minecraft.getMinecraft();
