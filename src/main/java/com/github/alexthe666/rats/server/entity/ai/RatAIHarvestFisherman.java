@@ -54,7 +54,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.isShore(entity.getPosition().down(), entity.world);
+        return targetBlock != null && entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
     }
 
     public void resetTask() {
@@ -74,14 +74,16 @@ public class RatAIHarvestFisherman extends EntityAIBase {
                 }
                 if (isShore(this.targetBlock, entity.world)) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F && !hasReachedWater) {
+                    if (distance < 1.5F) {
                         // this.targetBlock = null;
                         //  this.resetTask();
                         if(throwCooldown == 0){
                             entity.playSound(SoundEvents.ENTITY_BOBBER_THROW, 1, 0.5F);
-                            throwCooldown = 5;
+                            throwCooldown = 20;
                         }
                         hasReachedWater = true;
+                    }else{
+                        hasReachedWater = false;
                     }
                 } else {
                     this.targetBlock = null;
