@@ -279,19 +279,19 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         } else {
             Entity entity = this.world.getClosestPlayerToEntity(this, -1.0D);
-
             if (entity != null) {
                 double d0 = entity.posX - this.posX;
                 double d1 = entity.posY - this.posY;
                 double d2 = entity.posZ - this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                if (this.canDespawn() && d3 > 4096.0D) {
+                if (this.canDespawn() && d3 > (RatsMod.CONFIG_OPTIONS.ratDespawnFarDistance * RatsMod.CONFIG_OPTIONS.ratDespawnFarDistance)) {
                     this.setDead();
                 }
-                if (this.idleTime > 300 && this.rand.nextInt(400) == 0 && d3 > 256.0D && this.canDespawn()) {
+                double closeDist = RatsMod.CONFIG_OPTIONS.ratDespawnCloseDistance * RatsMod.CONFIG_OPTIONS.ratDespawnCloseDistance;
+                if (this.idleTime > 300 && this.rand.nextInt(RatsMod.CONFIG_OPTIONS.ratDespawnRandomChance) == 0 && d3 > closeDist && this.canDespawn()) {
                     this.setDead();
-                } else if (d3 < 256.0D) {
+                } else if (d3 < closeDist) {
                     this.idleTime = 0;
                 }
             }
