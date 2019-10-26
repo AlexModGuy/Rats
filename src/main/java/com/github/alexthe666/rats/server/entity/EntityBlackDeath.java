@@ -79,6 +79,10 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         return super.isPotionApplicable(potioneffectIn);
     }
 
+    protected boolean canDespawn() {
+        return false;
+    }
+
     public void setDead() {
         if (!isDead) {
             double dist = 20F;

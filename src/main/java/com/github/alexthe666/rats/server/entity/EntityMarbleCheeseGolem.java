@@ -58,6 +58,10 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         this.moveHelper = new EntityMarbleCheeseGolem.AIMoveControl(this);
     }
 
+    protected boolean canDespawn() {
+        return false;
+    }
+
     public static boolean canDestroyBlock(Block blockIn) {
         return blockIn != Blocks.BEDROCK && blockIn != Blocks.END_PORTAL && blockIn != Blocks.END_PORTAL_FRAME && blockIn != Blocks.COMMAND_BLOCK && blockIn != Blocks.REPEATING_COMMAND_BLOCK && blockIn != Blocks.CHAIN_COMMAND_BLOCK && blockIn != Blocks.BARRIER && blockIn != Blocks.STRUCTURE_BLOCK && blockIn != Blocks.STRUCTURE_VOID && blockIn != Blocks.PISTON_EXTENSION && blockIn != Blocks.END_GATEWAY;
     }
