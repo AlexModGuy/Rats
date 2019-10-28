@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-@Mod.EventBusSubscriber
 public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
     private int updateCounter = 0;
@@ -57,6 +56,7 @@ public class ClientEvents {
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onPlayerInteract(RenderGameOverlayEvent.Pre event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getMinecraft().player.isPotionActive(RatsMod.PLAGUE_POTION)) {
             return;
@@ -163,66 +163,6 @@ public class ClientEvents {
     private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(PLAGUE_HEART_TEXTURE);
         Minecraft.getMinecraft().ingameGUI.drawTexturedModalRect(x, y, textureX, textureY, width, height);
-    }
-
-    public static void initializePlagueLayer() {
-        for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
-            Render render = entry.getValue();
-            if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
-                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
-            }
-        }
-        for(Map.Entry<String, RenderPlayer> entry :  Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet()){
-            RenderPlayer render = entry.getValue();
-            render.addLayer(new LayerPlague(render));
-        }
-        Field renderingRegistryField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "INSTANCE", "INSTANCE"));
-        Field entityRendersField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderers", "entityRenderers"));
-        Field entityRendersOldField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderersOld", "entityRenderersOld"));
-        RenderingRegistry registry = null;
-        try {
-            Field modifier = Field.class.getDeclaredField("modifiers");
-            modifier.setAccessible(true);
-            registry = (RenderingRegistry) renderingRegistryField.get(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (registry != null) {
-            Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenders = null;
-            Map<Class<? extends Entity>, Render<? extends Entity>> entityRendersOld = null;
-            try {
-                Field modifier1 = Field.class.getDeclaredField("modifiers");
-                modifier1.setAccessible(true);
-                entityRenders = (Map<Class<? extends Entity>, IRenderFactory<? extends Entity>>) entityRendersField.get(registry);
-                entityRendersOld = (Map<Class<? extends Entity>, Render<? extends Entity>>) entityRendersOldField.get(registry);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (entityRenders != null) {
-                for (Map.Entry<Class<? extends Entity>, IRenderFactory<? extends Entity>> entry : entityRenders.entrySet()) {
-                    if (entry.getValue() != null) {
-                        try {
-                            Render render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
-                            if (render != null && render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
-                                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase)render));
-                            }
-                        } catch (NullPointerException exp) {
-                            RatsMod.logger.warn("Rats: Could not apply plague render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
-                        }
-                    }
-
-                }
-            }
-            if (entityRendersOld != null) {
-                for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
-                    Render render = entry.getValue();
-                    if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
-                        ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase)render));
-                    }
-                }
-            }
-        }
-
     }
 
     @SubscribeEvent

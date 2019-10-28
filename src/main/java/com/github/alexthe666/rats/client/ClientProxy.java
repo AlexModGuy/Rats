@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.event.ClientEvents;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.*;
@@ -27,8 +26,9 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.entity.RenderPotion;
-import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -47,14 +47,18 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 @Mod.EventBusSubscriber
 public class ClientProxy extends CommonProxy {
@@ -120,7 +124,9 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void init() {
+        MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, new RenderRatlateanSpirit());
@@ -228,11 +234,66 @@ public class ClientProxy extends CommonProxy {
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
         ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
-        MinecraftForge.EVENT_BUS.register(new ClientEvents());
     }
 
+    @SideOnly(Side.CLIENT)
     public void postInit() {
-        ClientEvents.initializePlagueLayer();
+        for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
+            Render render = entry.getValue();
+            if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
+            }
+        }
+        for(Map.Entry<String, RenderPlayer> entry :  Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet()){
+            RenderPlayer render = entry.getValue();
+            render.addLayer(new LayerPlague(render));
+        }
+        Field renderingRegistryField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "INSTANCE", "INSTANCE"));
+        Field entityRendersField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderers", "entityRenderers"));
+        Field entityRendersOldField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderersOld", "entityRenderersOld"));
+        RenderingRegistry registry = null;
+        try {
+            Field modifier = Field.class.getDeclaredField("modifiers");
+            modifier.setAccessible(true);
+            registry = (RenderingRegistry) renderingRegistryField.get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (registry != null) {
+            Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenders = null;
+            Map<Class<? extends Entity>, Render<? extends Entity>> entityRendersOld = null;
+            try {
+                Field modifier1 = Field.class.getDeclaredField("modifiers");
+                modifier1.setAccessible(true);
+                entityRenders = (Map<Class<? extends Entity>, IRenderFactory<? extends Entity>>) entityRendersField.get(registry);
+                entityRendersOld = (Map<Class<? extends Entity>, Render<? extends Entity>>) entityRendersOldField.get(registry);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (entityRenders != null) {
+                for (Map.Entry<Class<? extends Entity>, IRenderFactory<? extends Entity>> entry : entityRenders.entrySet()) {
+                    if (entry.getValue() != null) {
+                        try {
+                            Render render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
+                            if (render != null && render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+                                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase)render));
+                            }
+                        } catch (NullPointerException exp) {
+                            RatsMod.logger.warn("Rats: Could not apply plague render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
+                        }
+                    }
+
+                }
+            }
+            if (entityRendersOld != null) {
+                for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
+                    Render render = entry.getValue();
+                    if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+                        ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase)render));
+                    }
+                }
+            }
+        }
     }
 
     public boolean shouldRenderNameplates() {
