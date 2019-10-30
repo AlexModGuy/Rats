@@ -58,8 +58,10 @@ public class RatsSoundRegistry {
     public static final SoundEvent BLACK_DEATH_IDLE = createSoundEvent("black_death_idle");
     @GameRegistry.ObjectHolder("black_death_hurt")
     public static final SoundEvent BLACK_DEATH_HURT = createSoundEvent("black_death_hurt");
-    @GameRegistry.ObjectHolder("black_death_die")
+      @GameRegistry.ObjectHolder("black_death_die")
     public static final SoundEvent BLACK_DEATH_DIE = createSoundEvent("black_death_die");
+    @GameRegistry.ObjectHolder("rat_fart")
+    public static final SoundEvent RAT_FART = createSoundEvent("rat_fart");
 
 
     private static SoundEvent createSoundEvent(final String soundName) {

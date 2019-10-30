@@ -47,10 +47,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.entity.getCookingResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY) {
-            return false;
-        }
-        if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && this.entity.getArcheologyResultFor(entity.getHeldItemMainhand()) != ItemStack.EMPTY) {
+        if(!this.entity.shouldDepositItem(entity.getHeldItemMainhand())){
             return false;
         }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -66,7 +63,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return targetBlock != null && !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.entity.shouldDepositItem(entity.getHeldItemMainhand());
     }
 
     public void resetTask() {

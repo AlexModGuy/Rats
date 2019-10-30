@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.*;
+import com.github.alexthe666.rats.client.render.NuggetColorRegister;
 import com.github.alexthe666.rats.client.render.RenderNothing;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
@@ -43,7 +44,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelDynBucket;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -69,6 +72,7 @@ public class ClientProxy extends CommonProxy {
     public static BlockPos refrencedPos;
     public static EnumFacing refrencedFacing;
     protected static EntityRat refrencedRat;
+    public static final ModelResourceLocation RAT_NUGGET_MODEL = new ModelResourceLocation(new ResourceLocation(RatsMod.MODID, "rat_nugget_ore"), "inventory");
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -84,6 +88,8 @@ public class ClientProxy extends CommonProxy {
             ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
             ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
         }
+        ModelLoader.setCustomMeshDefinition(RatsItemRegistry.RAT_NUGGET_ORE, stack -> RAT_NUGGET_MODEL);
+        ModelBakery.registerItemVariants(RatsItemRegistry.RAT_NUGGET_ORE, RAT_NUGGET_MODEL);
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -233,6 +239,17 @@ public class ClientProxy extends CommonProxy {
 
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
+
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            @Override
+            public int colorMultiplier(ItemStack stack, int tintIndex) {
+                if (tintIndex == 1) {
+                    return NuggetColorRegister.getNuggetColor(stack);
+                } else {
+                    return -1;
+                }
+            }
+        }, RatsItemRegistry.RAT_NUGGET_ORE);
         ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
     }
 

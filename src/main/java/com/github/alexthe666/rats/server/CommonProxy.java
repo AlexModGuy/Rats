@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockGenericSlab;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
+import com.github.alexthe666.rats.server.items.RatsNuggetRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsUpgradeConflictRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;

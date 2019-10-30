@@ -11,6 +11,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.events.ServerEvents;
 import com.github.alexthe666.rats.server.inventory.GuiHandler;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.items.RatsNuggetRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
@@ -134,6 +135,7 @@ public class RatsMod {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         PROXY.postInit();
+        RatsNuggetRegistry.init();
         TinkersCompatBridge.loadTinkersPostInitCompat();
     }
 

@@ -1,0 +1,33 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "PDP",
+    "CUC",
+    "PIP"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "blockCoal"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "ratPoop"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_ore_doubling"
+  }
+}

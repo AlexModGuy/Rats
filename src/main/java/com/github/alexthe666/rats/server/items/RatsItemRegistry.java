@@ -198,6 +198,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_damage_protection")
     public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ore_doubling")
+    public static Item RAT_UPGRADE_ORE_DOUBLING = new ItemRatUpgradeOreDoubling();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
@@ -216,7 +218,10 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_combined_creative")
     public static Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
-
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_nugget")
+    public static Item RAT_NUGGET = new ItemGeneric("rat_nugget");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_nugget_ore")
+    public static Item RAT_NUGGET_ORE = new ItemRatNuggetOre();
     static {
         for (int i = 0; i < 16; i++) {
             RAT_IGLOOS[i] = new ItemRatIgloo(EnumDyeColor.byMetadata(i));

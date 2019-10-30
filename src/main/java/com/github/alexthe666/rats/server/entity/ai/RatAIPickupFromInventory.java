@@ -81,10 +81,10 @@ public class RatAIPickupFromInventory extends EntityAIBase {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
             double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-            if (distance < 2.5 && distance >= 1.65 && canSeeChest() && entity instanceof IInventory) {
+            if (distance < 2.5 && distance > 1.65 && canSeeChest() && entity instanceof IInventory) {
                 toggleChest((IInventory) entity, true);
             }
-            if (distance < 1.65 && canSeeChest()) {
+            if (distance <= 1.7 && canSeeChest()) {
                 if (entity instanceof IInventory) {
                     toggleChest((IInventory) entity, false);
                 }
@@ -114,7 +114,6 @@ public class RatAIPickupFromInventory extends EntityAIBase {
                     this.targetBlock = null;
                     this.resetTask();
                 }
-                this.entity.fleePos = this.targetBlock;
             }
 
         }

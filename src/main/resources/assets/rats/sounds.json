@@ -1,4 +1,12 @@
 {
+  "rat_fart": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_fart_0",
+      "rats:rat_fart_1",
+      "rats:rat_fart_2"
+    ]
+  },
   "mice_on_venus": {
     "category": "record",
     "sounds": [

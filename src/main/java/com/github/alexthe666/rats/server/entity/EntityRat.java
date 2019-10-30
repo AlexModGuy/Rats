@@ -8,9 +8,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
-import com.github.alexthe666.rats.server.items.ItemRatSack;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.items.*;
 import com.github.alexthe666.rats.server.message.MessageDancingRat;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -150,11 +148,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private int digCooldown = 0;
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
+    private int eatenItems = 0;
     private EntityAIBase aiHarvest;
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
     private int rangedAttackCooldownPsychic = 0;
     private int visualCooldown = 0;
+    private int poopCooldown = 0;
 
     public EntityRat(World worldIn) {
         super(worldIn);
@@ -423,6 +423,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
             compound.setTag("Items", nbttaglist);
         }
+        compound.setInteger("EatenItems", eatenItems);
         if (pickupPos != null) {
             compound.setInteger("PickupPosX", pickupPos.getX());
             compound.setInteger("PickupPosY", pickupPos.getY());
@@ -441,6 +442,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
         wildTrust = compound.getInteger("WildTrust");
+        eatenItems = compound.getInteger("EatenItems");
         this.setCommandInteger(compound.getInteger("Command"));
         this.setPlague(compound.getBoolean("Plague"));
         this.setDancing(compound.getBoolean("Dancing"));
@@ -584,7 +586,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isHoldingFood() {
-        return !this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && RatUtils.isRatFood(this.getHeldItem(EnumHand.MAIN_HAND));
+        return !this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (RatUtils.isRatFood(this.getHeldItem(EnumHand.MAIN_HAND)) || hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -746,6 +748,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             eatingTicks++;
             eatItem(this.getHeldItem(EnumHand.MAIN_HAND), 3);
             if (eatingTicks == 40) {
+                ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
+                if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(EnumHand.MAIN_HAND))){
+                    pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(EnumHand.MAIN_HAND)));
+                    NBTTagCompound poopTag = new NBTTagCompound();
+                    NBTTagCompound oreTag = new NBTTagCompound();
+                    ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(oreTag);
+                    NBTTagCompound ingotTag = new NBTTagCompound();
+                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(ingotTag);
+                    poopTag.setTag("OreItem", oreTag);
+                    poopTag.setTag("IngotItem", ingotTag);
+                    pooStack.setTagCompound(poopTag);
+                }
+                if(!world.isRemote && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F)){
+                    this.playSound(RatsSoundRegistry.RAT_FART, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
+                    this.entityDropItem(pooStack, 0.0F);
+                }
                 this.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
                 int healAmount = 1;
                 if (this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemFood) {
@@ -755,7 +773,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST) {
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
             if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
@@ -1025,6 +1043,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         } else {
             tubeTicks = 0;
         }
+        if(poopCooldown > 0){
+            poopCooldown--;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (this.isDancing() && this.getAnimation() != this.getDanceAnimation()) {
             this.setAnimation(this.getDanceAnimation());
@@ -1152,7 +1173,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (stack.getItemUseAction() == EnumAction.DRINK) {
                 this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
-            if (RatUtils.isRatFood(stack)) {
+            if (RatUtils.isRatFood(stack) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING)) {
                 for (int i = 0; i < eatingParticleCount; ++i) {
                     Vec3d vec3d = new Vec3d(((double) this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
                     vec3d = vec3d.rotatePitch(-this.rotationPitch * 0.017453292F);
@@ -2072,5 +2093,18 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (world.isRemote) {
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageDancingRat(this.getEntityId(), isPartying, pos.toLong(), moves));
         }
+    }
+
+    public boolean shouldDepositItem(ItemStack item) {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.getCookingResultFor(item).isEmpty()) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && !this.getArcheologyResultFor(item).isEmpty()) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(item)) {
+            return false;
+        }
+        return true;
     }
 }

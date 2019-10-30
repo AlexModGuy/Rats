@@ -93,6 +93,7 @@ public class RatsRecipeRegistry {
             OreDictionary.registerOre("wool" + woolColor, new ItemStack(Blocks.WOOL, 1, color.getMetadata()));
         }
         OreDictionary.registerOre("woolLightBlue", new ItemStack(Blocks.WOOL, 1, 3));
+        OreDictionary.registerOre("ratPoop", RatsItemRegistry.RAT_NUGGET);
 
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
