@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,13 @@ public class RatsNuggetRegistry {
 
     public static void init() {
         for(String oreName : OreDictionary.getOreNames()){
-            if(oreName.contains("ore")){
-                ItemStack stack = OreDictionary.getOres(oreName).get(0);
+            if(oreName.contains("ore") && !OreDictionary.getOres(oreName).isEmpty()){
+                ItemStack stack = ItemStack.EMPTY;
+                try{
+                    stack = OreDictionary.getOres(oreName).get(0);
+                }catch (Exception e){
+                    RatsMod.logger.warn("Could not make rat nugget for " + oreName);
+                }
                 ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
                 if(!burntItem.isEmpty()){
                     ORE_TO_INGOTS.put(stack, burntItem);

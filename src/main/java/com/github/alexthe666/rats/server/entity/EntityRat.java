@@ -245,6 +245,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !(aiHarvest instanceof RatAIHarvestFisherman)) {
             aiHarvest = new RatAIHarvestFisherman(this);
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER) && !(aiHarvest instanceof RatAIHarvestMilk)) {
+            aiHarvest = new RatAIHarvestMilk(this);
+        }
         if(this.getMBTransferRate() > 0){
             aiDeposit = new RatAIPickupFluid(this);
             aiPickup = new RatAIDepositFluid(this);
@@ -758,7 +761,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
-                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET));
+                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.getMBTransferRate() > 0);
         if (sitting && sitProgress < 20.0F) {
             sitProgress += sitInc;
         } else if (!sitting && sitProgress > 0.0F) {
@@ -2176,6 +2179,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public int getMBTransferRate(){
         if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET)){
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BUCKET);
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)){
+            return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_MILKER);
         }
         if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)){
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET);

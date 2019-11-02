@@ -1,0 +1,27 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " B ",
+    " B ",
+    "CRC"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "woolBlack"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "woolRed"
+    },
+    "C": {
+      "item": "minecraft:carpet",
+      "data": 15
+    }
+  },
+  "result": {
+    "item": "rats:top_hat",
+    "count": 1
+
+  }
+}

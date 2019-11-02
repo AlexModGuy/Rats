@@ -11,6 +11,9 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -828,6 +831,14 @@ public class RatUtils {
             }
         }
         return true;
+    }
+
+    public static boolean isCow(Entity entity) {
+        String s = EntityList.getEntityString(entity);
+        if (s == null) {
+            s = "generic";
+        }
+        return entity instanceof EntityCow || s.contains("cow");
     }
 
     public static class TubeSorter implements Comparator<EnumFacing> {

@@ -1,10 +1,17 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RatsBlockRegistry {
@@ -90,6 +97,12 @@ public class RatsBlockRegistry {
     public static Block JACK_O_RATERN = new BlockJackORatern();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_combiner")
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
+    public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
+        @Override
+        public String getLocalizedName(FluidStack fs) {
+            return I18n.translateToLocal("tile.rats.milk.name");
+        }
+    }.setUnlocalizedName("rats.milk");
 
     static {
         for (int i = 0; i < 16; i++) {
@@ -97,4 +110,9 @@ public class RatsBlockRegistry {
         }
     }
 
+    static {
+        if (!Loader.isModLoaded(TinkersCompatBridge.TC_MOD_ID)) {
+            FluidRegistry.registerFluid(MILK_FLUID);
+        }
+    }
 }

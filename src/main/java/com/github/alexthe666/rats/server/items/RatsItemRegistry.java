@@ -217,6 +217,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_bucket", 0, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_big_bucket")
     public static Item RAT_UPGRADE_BIG_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_big_bucket", 2, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_milker")
+    public static Item RAT_UPGRADE_MILKER = new ItemRatUpgradeBucket("rat_upgrade_milker", 0, 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_aristocrat")
     public static Item RAT_UPGRADE_ARISTOCRAT = new ItemRatUpgrade("rat_upgrade_aristocrat", 1, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")

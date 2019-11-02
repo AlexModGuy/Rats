@@ -7,15 +7,14 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "item": "minecraft:beef"
     },
     "B": {
-      "item": "minecraft:bucket",
+      "item": "minecraft:leather",
       "data": 0
     },
     "S": {
-      "item": "minecraft:slime",
+      "item": "minecraft:milk_bucket",
       "data": 0
     },
     "U": {
@@ -24,6 +23,6 @@
     }
   },
   "result": {
-    "item": "rats:rat_upgrade_big_bucket"
+    "item": "rats:rat_upgrade_milker"
   }
 }

@@ -116,7 +116,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
-        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)) {
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)) {
             GlStateManager.pushMatrix();
             if (this.renderer.getMainModel().isChild) {
                 GlStateManager.translate(0.0F, 0.625F, 0.0F);

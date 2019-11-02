@@ -149,7 +149,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 }
                 if (itemstack.getItem() == RatsItemRegistry.TOP_HAT) {
                     GlStateManager.rotate(-5, 1, 0, 0);
-                    GlStateManager.translate(0, 0.38, 0);
+                    GlStateManager.translate(0, 0.38, -0.1F);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));

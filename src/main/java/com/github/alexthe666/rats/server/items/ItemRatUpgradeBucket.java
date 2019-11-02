@@ -42,7 +42,7 @@ public class ItemRatUpgradeBucket extends ItemRatUpgrade {
     }
 
     public static int getMbTransferRate(Item item){
-        if(item == RatsItemRegistry.RAT_UPGRADE_BUCKET){
+        if(item == RatsItemRegistry.RAT_UPGRADE_BUCKET || item == RatsItemRegistry.RAT_UPGRADE_MILKER){
             return Fluid.BUCKET_VOLUME;
         }
         if(item == RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET){

@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
 public class TinkersCompatBridge {
-    private static final String TC_MOD_ID = "tconstruct";
+    public static final String TC_MOD_ID = "tconstruct";
 
     public static void loadTinkersCompat() {
         if (Loader.isModLoaded(TC_MOD_ID)) {
