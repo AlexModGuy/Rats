@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -113,6 +114,24 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.translate(-0.155F, -0.225, 0.2F);
             GlStateManager.scale(2F, 2F, 2F);
             minecraft.getItemRenderer().renderItem(entity, PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)) {
+            GlStateManager.pushMatrix();
+            if (this.renderer.getMainModel().isChild) {
+                GlStateManager.translate(0.0F, 0.625F, 0.0F);
+                GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
+                float f = 0.5F;
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            }
+            Minecraft minecraft = Minecraft.getMinecraft();
+            translateToHand(true);
+            GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-40.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.translate(-0.155F, -0.225, 0.1F);
+            GlStateManager.scale(1.75F, 1.75F, 1.75F);
+            minecraft.getItemRenderer().renderItem(entity, ItemRatUpgradeBucket.getBucketFromFluid(entity.transportingFluid), ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {

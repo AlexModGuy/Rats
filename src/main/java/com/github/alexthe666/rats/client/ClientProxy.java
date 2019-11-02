@@ -329,10 +329,12 @@ public class ClientProxy extends CommonProxy {
             return new ModelArcheologistHat(1.0F);
         } else if (index == 4){
             return new ModelFarmerHat(1.0F);
-        } else if (index == 5){
+       } else if (index == 5){
             return new ModelPlagueDoctorMask(1.0F);
-        } else {
-            return new ModelRatFez(1.01F);
+        } else if (index == 6) {
+            return new ModelRatFez(1.0F);
+        }else {
+            return new ModelTopHat(1.0F);
         }
     }
 

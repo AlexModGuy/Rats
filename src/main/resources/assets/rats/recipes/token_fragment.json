@@ -1,0 +1,37 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    },
+    {
+      "item": "rats:tiny_coin"
+    }
+  ],
+  "result": {
+    "item": "rats:token_fragment",
+    "data": 0,
+    "count": 1
+  }
+}

@@ -47,6 +47,11 @@ public class RatConfig {
     public double ratDespawnFarDistance = 96F;
     public double ratDespawnCloseDistance = 20F;
     public int ratDespawnRandomChance = 400;
+    public boolean ratFartNoises = true;
+    public int ratRFTransferBasic = 100;
+    public int ratRFTransferAdvanced = 500;
+    public int ratRFTransferElite = 1000;
+    public int ratRFTransferExtreme = 100000;
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -73,6 +78,7 @@ public class RatConfig {
         this.ratsDigBlocks = config.getBoolean("Rats Dig Holes", "all", true, "True if rats can dig holes");
         this.ratsSpawnLikeMonsters = config.getBoolean("Rats Spawn Like Monsters", "all", true, "True if rats should spawn like monsters. False if they should only spawn once per world, like pigs and sheep.");
         this.ratsBreakBlockOnHarvest = config.getBoolean("Rats Break Crops on Harvest", "all", true, "True if tamed rats will destroy crops when they harvest them");
+        this.ratFartNoises = config.getBoolean("Rat Fart Noises", "all", true, "True if rats should rarely make a funny noise when creating rats nuggets.");
         this.plagueSpread = config.getBoolean("Other Mobs can spread Plague", "all", true, "True if infected mobs with plague can spread it by interacting or attacking.");
         this.cheesemaking = config.getBoolean("Cheesemaking", "all", true, "True if cheese can be created in cauldrons");
         this.milkCauldronTime = config.getInt("Milk Curdling Time", "all", 150, 20, 1000000, "The time in ticks(20 per second) it takes for milk to turn into cheese in a cauldron");
@@ -93,5 +99,9 @@ public class RatConfig {
         this.ratDespawnFarDistance = config.getFloat("Rat Immediate Despawn Distance", "all", 96F, 0F, Float.MAX_VALUE, "Distance that untamed rats will immediately despawn. For Vanilla mobs, this is 128 blocks.");
         this.ratDespawnCloseDistance = config.getFloat("Rat Potential Despawn Distance", "all", 20F, 0F, Float.MAX_VALUE, "Distance that untamed rats could possibly despawn. For Vanilla mobs, this is 32 blocks.");
         this.ratDespawnRandomChance = config.getInt("Rat Potential Despawn Chance", "all", 400, 1, Integer.MAX_VALUE, "When a rat is farther than its potential despawn distance, a random roll is taken to see if it despawns. Lower this number will make rats more likely to despawn.");
+        this.ratRFTransferBasic = config.getInt("Rat RF Transfer Rate Basic (kRF)", "all", 100, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with a basic energy transfer upgrade can transport at a time.");
+        this.ratRFTransferAdvanced = config.getInt("Rat RF Transfer Rate Advanced (kRF)", "all", 500, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an advanced energy transfer upgrade can transport at a time.");
+        this.ratRFTransferElite = config.getInt("Rat RF Transfer Rate Elite (kRF)", "all", 1000, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an elite energy transfer upgrade can transport at a time.");
+        this.ratRFTransferExtreme = config.getInt("Rat RF Transfer Rate Extreme (kRF)", "all", 100000, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an extreme energy transfer upgrade can transport at a time.");
     }
 }

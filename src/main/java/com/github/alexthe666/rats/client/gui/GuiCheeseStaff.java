@@ -99,7 +99,7 @@ public class GuiCheeseStaff extends GuiScreen {
         BlockPos pos = ClientProxy.refrencedPos;
         if (pos != null) {
             World worldIn = rat.world;
-            return worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ClientProxy.refrencedFacing) == null;
+            return worldIn.getTileEntity(pos) == null;
         }
         return true;
     }

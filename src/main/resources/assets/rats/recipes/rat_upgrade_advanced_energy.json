@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DDD",
+    "GUG",
+    "RRR"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "blockRedstone"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_energy",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_advanced_energy"
+  }
+}

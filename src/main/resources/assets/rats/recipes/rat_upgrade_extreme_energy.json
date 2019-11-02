@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ERE",
+    "RUR",
+    "ERE"
+  ],
+  "key": {
+    "R": {
+      "item": "rats:charged_creeper_chunk",
+      "data": 0
+    },
+    "E": {
+      "item": "minecraft:chorus_fruit_popped",
+      "data": 0
+    },
+    "U": {
+      "item": "rats:rat_upgrade_elite_energy",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_extreme_energy"
+  }
+}

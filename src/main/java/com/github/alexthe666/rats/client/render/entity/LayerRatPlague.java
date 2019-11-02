@@ -35,7 +35,8 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             GlStateManager.disableBlend();
             GlStateManager.disableNormalize();
         }
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) && rat.getHeldRF() > 0){//rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+            float alpha = rat.getHeldRF() / Math.max(1, (float)rat.getRFTransferRate());
             GlStateManager.pushMatrix();
             boolean flag = true;
             GlStateManager.depthMask(!flag);
@@ -46,7 +47,7 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             GlStateManager.translate(f * 0.01F, f * 0.01F, 0.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.enableBlend();
-            GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
+            GlStateManager.color(0.5F, 0.5F, 0.5F, alpha);
             GlStateManager.disableLighting();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
             Minecraft.getMinecraft().entityRenderer.setupFogColor(true);

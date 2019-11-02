@@ -1,0 +1,30 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DHD",
+    "GUG",
+    "DED"
+  ],
+  "key": {
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "H": {
+      "item": "rats:top_hat"
+    },
+    "D": {
+      "item": "rats:token_fragment"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_aristocrat"
+  }
+}

@@ -147,6 +147,11 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     GlStateManager.translate(-0.2F, 0.46, -0.1F);
                     GlStateManager.scale(1.425F, 1.425F, 1.425F);
                 }
+                if (itemstack.getItem() == RatsItemRegistry.TOP_HAT) {
+                    GlStateManager.rotate(-5, 1, 0, 0);
+                    GlStateManager.translate(0, 0.38, 0);
+                    GlStateManager.scale(1.425F, 1.425F, 1.425F);
+                }
                 this.renderer.bindTexture(this.getArmorResource(entityLivingBaseIn, itemstack, EntityEquipmentSlot.HEAD, null));
                 {
                     if (itemarmor.hasOverlay(itemstack)) // Allow this for anything, not only cloth

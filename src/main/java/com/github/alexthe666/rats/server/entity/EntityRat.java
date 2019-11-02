@@ -63,6 +63,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -88,6 +89,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -148,8 +150,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private int digCooldown = 0;
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
+    public FluidStack transportingFluid = null;
     private int eatenItems = 0;
     private EntityAIBase aiHarvest;
+    private EntityAIBase aiPickup;
+    private EntityAIBase aiDeposit;
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
     private int rangedAttackCooldownPsychic = 0;
@@ -182,6 +187,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     protected void initEntityAI() {
         aiHarvest = new RatAIHarvestCrops(this);
+        aiPickup = new RatAIPickupFromInventory(this);
+        aiDeposit = new RatAIDepositInInventory(this);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
         this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
@@ -197,8 +204,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(6, new RatAIRaidChests(this));
         this.tasks.addTask(6, new RatAIRaidCrops(this));
         this.tasks.addTask(6, new RatAIEnterTrap(this));
-        this.tasks.addTask(6, new RatAIPickupFromInventory(this));
-        this.tasks.addTask(6, new RatAIDepositInInventory(this));
         this.tasks.addTask(6, new RatAIFleePosition(this));
         this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
@@ -221,8 +226,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false));
     }
 
-    protected void setupHarvestAI() {
+    protected void setupDynamicAI() {
         this.tasks.removeTask(this.aiHarvest);
+        this.tasks.removeTask(this.aiDeposit);
+        this.tasks.removeTask(this.aiPickup);
         if (this.aiHarvest == null) {
             aiHarvest = new RatAIHarvestCrops(this);
         }
@@ -238,7 +245,19 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !(aiHarvest instanceof RatAIHarvestFisherman)) {
             aiHarvest = new RatAIHarvestFisherman(this);
         }
+        if(this.getMBTransferRate() > 0){
+            aiDeposit = new RatAIPickupFluid(this);
+            aiPickup = new RatAIDepositFluid(this);
+        }else if(this.getRFTransferRate() > 0){
+            aiDeposit = new RatAIPickupEnergy(this);
+            aiPickup = new RatAIDepositEnergy(this);
+        }else {
+            aiDeposit = new RatAIDepositInInventory(this);
+            aiPickup = new RatAIPickupFromInventory(this);
+        }
         this.tasks.addTask(4, this.aiHarvest);
+        this.tasks.addTask(6, this.aiDeposit);
+        this.tasks.addTask(6, this.aiPickup);
     }
 
     @Nullable
@@ -354,6 +373,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
         this.dataManager.register(DANCING, Boolean.valueOf(false));
         this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
+        this.dataManager.register(HELD_RF, Integer.valueOf(0));
 
     }
 
@@ -402,6 +422,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         super.writeEntityToNBT(compound);
         compound.setInteger("DigCooldown", digCooldown);
         compound.setInteger("BreedCooldown", breedCooldown);
+        compound.setInteger("TransportingRF", this.getHeldRF());
         compound.setInteger("Command", this.getCommandInteger());
         compound.setInteger("ColorVariant", this.getColorVariant());
         compound.setBoolean("Plague", this.hasPlague());
@@ -435,6 +456,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             compound.setInteger("DepositPosZ", depositPos.getZ());
             compound.setInteger("DepositFacing", depositFacing.ordinal());
         }
+        if(transportingFluid != null){
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            transportingFluid.writeToNBT(fluidTag);
+            compound.setTag("TransportingFluid", fluidTag);
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
@@ -443,6 +469,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         breedCooldown = compound.getInteger("BreedCooldown");
         wildTrust = compound.getInteger("WildTrust");
         eatenItems = compound.getInteger("EatenItems");
+        this.setHeldRF(compound.getInteger("TransportingRF"));
         this.setCommandInteger(compound.getInteger("Command"));
         this.setPlague(compound.getBoolean("Plague"));
         this.setDancing(compound.getBoolean("Dancing"));
@@ -478,7 +505,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 depositFacing = EnumFacing.values()[compound.getInteger("DepositFacing")];
             }
         }
-
+        if(compound.hasKey("TransportingFluid")){
+            NBTTagCompound fluidTag = compound.getCompoundTag("TransportingFluid");
+            if(!fluidTag.isEmpty()){
+                transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
+            }
+        }
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -568,6 +600,15 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public void setDanceMoves(int moves) {
         this.dataManager.set(DANCE_MOVES, Integer.valueOf(moves));
     }
+
+    public int getHeldRF() {
+        return Integer.valueOf(this.dataManager.get(HELD_RF).intValue());
+    }
+
+    public void setHeldRF(int rf) {
+        this.dataManager.set(HELD_RF, Integer.valueOf(rf));
+    }
+
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
@@ -717,7 +758,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
-                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN));
+                || this.getAnimation() == ANIMATION_EAT || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET));
         if (sitting && sitProgress < 20.0F) {
             sitProgress += sitInc;
         } else if (!sitting && sitProgress > 0.0F) {
@@ -761,7 +802,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     pooStack.setTagCompound(poopTag);
                 }
                 if(!world.isRemote && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F)){
-                    this.playSound(RatsSoundRegistry.RAT_FART, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
+                    if(RatsMod.CONFIG_OPTIONS.ratFartNoises){
+                        this.playSound(RatsSoundRegistry.RAT_FART, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
+                    }
                     this.entityDropItem(pooStack, 0.0F);
                 }
                 this.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
@@ -903,7 +946,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
-        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0) {
+        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.holdsItemInHandUpgrade()) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
         if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper) {
@@ -1045,6 +1088,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if(poopCooldown > 0){
             poopCooldown--;
+        }
+        if(this.getHeldRF() > 0 && rand.nextFloat() < 0.1F){
+            this.playSound(RatsSoundRegistry.NEORATLANTEAN_IDLE, this.getSoundVolume(), 0.75F + rand.nextFloat() * 0.5F);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (this.isDancing() && this.getAnimation() != this.getDanceAnimation()) {
@@ -1630,7 +1676,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
-        setupHarvestAI();
+        setupDynamicAI();
     }
 
     public void fall(float distance, float damageMultiplier) {
@@ -1971,7 +2017,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private void onUpgradeChanged() {
-        setupHarvestAI();
+        setupDynamicAI();
         boolean flagHealth = false;
         boolean flagArmor = false;
         boolean flagAttack = false;
@@ -2033,6 +2079,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (!flagSpeed) {
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        }
+        if(this.getHeldRF() > this.getRFTransferRate()){
+            this.setHeldRF(0);
         }
         this.heal(this.getMaxHealth());
     }
@@ -2106,5 +2155,31 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return false;
         }
         return true;
+    }
+
+    public int getRFTransferRate(){
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY)){
+            return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY) * 1000;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY)){
+            return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY) * 1000;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY)){
+            return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY) * 1000;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY)){
+            return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) * 1000;
+        }
+        return 0;
+    }
+
+    public int getMBTransferRate(){
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET)){
+            return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BUCKET);
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)){
+            return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET);
+        }
+        return 0;
     }
 }

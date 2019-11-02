@@ -91,7 +91,8 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_scythe")
     public static Item PLAGUE_SCYTHE = new ItemPlagueScythe();
-
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":charged_creeper_chunk")
+    public static Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
     public static Item[] RAT_IGLOOS = new Item[16];
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_water_bottle")
     public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
@@ -102,6 +103,8 @@ public class RatsItemRegistry {
     public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":tiny_coin")
+    public static Item TINY_COIN = new ItemGeneric("tiny_coin");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":token_fragment")
     public static Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":token_piece")
@@ -116,6 +119,8 @@ public class RatsItemRegistry {
     public static Item FISHERMAN_HAT = new ItemHat("fisherman_hat", 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_fez")
     public static Item RAT_FEZ = new ItemHat("rat_fez", 6);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":top_hat")
+    public static Item TOP_HAT = new ItemHat("top_hat", 7);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
     public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")
@@ -200,6 +205,20 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ore_doubling")
     public static Item RAT_UPGRADE_ORE_DOUBLING = new ItemRatUpgradeOreDoubling();
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_energy")
+    public static Item RAT_UPGRADE_BASIC_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_basic_energy", 0, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_advanced_energy")
+    public static Item RAT_UPGRADE_ADVANCED_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_advanced_energy", 1, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_elite_energy")
+    public static Item RAT_UPGRADE_ELITE_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_elite_energy", 2, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_extreme_energy")
+    public static Item RAT_UPGRADE_EXTREME_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_extreme_energy", 3, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_bucket")
+    public static Item RAT_UPGRADE_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_bucket", 0, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_big_bucket")
+    public static Item RAT_UPGRADE_BIG_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_big_bucket", 2, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_aristocrat")
+    public static Item RAT_UPGRADE_ARISTOCRAT = new ItemRatUpgrade("rat_upgrade_aristocrat", 1, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
