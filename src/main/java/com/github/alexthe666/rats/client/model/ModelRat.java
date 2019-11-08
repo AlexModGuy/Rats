@@ -268,7 +268,7 @@ public class ModelRat extends AdvancedModelBase {
         progressRotation(rightThigh, rat.holdProgress, (float) Math.toRadians(70F), 0, 0, 5.0F);
         progressRotation(leftArm, rat.holdProgress, (float) Math.toRadians(60F), 0, 0, 5.0F);
         progressRotation(rightArm, rat.holdProgress, (float) Math.toRadians(60F), 0, 0, 5.0F);
-        if (!rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
+        if (!rat.holdsItemInHandUpgrade()) {
             progressRotation(leftHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(40F), 0, 5.0F);
             progressRotation(rightHand, rat.holdProgress, (float) Math.toRadians(10F), (float) Math.toRadians(-40F), 0, 5.0F);
         }

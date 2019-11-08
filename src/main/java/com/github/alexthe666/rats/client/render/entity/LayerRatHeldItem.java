@@ -22,6 +22,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
     private static ItemStack IRON_AXE_STACK = new ItemStack(Items.IRON_AXE);
     private static ItemStack IRON_HOE_STACK = new ItemStack(Items.IRON_HOE);
+    private static ItemStack SHEARS_STACK = new ItemStack(Items.SHEARS);
+    private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     RenderRat renderer;
@@ -46,7 +48,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getMinecraft();
-            if (entity.holdsItemInHandUpgrade()) {
+            if (entity.shouldNotIdleAnimation()) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -67,7 +69,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
 
                     }
                 }
-                if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+                if (entity.holdsItemInHandUpgrade()) {
                     GlStateManager.translate(0.15F, -0.075F, 0);
                 }
             }
@@ -180,14 +182,24 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             minecraft.getItemRenderer().renderItem(entity, IRON_HOE_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHand(false);
+            GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(15.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.translate(0.1F, 0.0, 0.0F);
+            minecraft.getItemRenderer().renderItem(entity, SHEARS_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-180F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(0, 1.0F, 0.0F, 0.0F);
-            GlStateManager.translate(0.2F, 0, -0.05F);
+            GlStateManager.rotate(90F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.2F, 0, 0.0F);
             minecraft.getItemRenderer().renderItem(entity, FISHING_ROD_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
@@ -215,6 +227,16 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
             minecraft.getItemRenderer().renderItem(entity, WING_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0F, 0.1F, 0.1F);
+            GlStateManager.rotate(180, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(2, 2, 2);
+            minecraft.getItemRenderer().renderItem(entity, TNT_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
     }

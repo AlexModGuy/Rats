@@ -219,8 +219,16 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_BIG_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_big_bucket", 2, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_milker")
     public static Item RAT_UPGRADE_MILKER = new ItemRatUpgradeBucket("rat_upgrade_milker", 0, 3);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_shears")
+    public static Item RAT_UPGRADE_SHEARS = new ItemRatUpgradeBucket("rat_upgrade_shears", 0, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_aristocrat")
     public static Item RAT_UPGRADE_ARISTOCRAT = new ItemRatUpgrade("rat_upgrade_aristocrat", 1, 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_tnt")
+    public static Item RAT_UPGRADE_TNT = new ItemRatUpgrade("rat_upgrade_tnt", 1, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_tnt_survivor")
+    public static Item RAT_UPGRADE_TNT_SURVIVOR = new ItemRatUpgrade("rat_upgrade_tnt_survivor", 2, 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_placer")
+    public static Item RAT_UPGRADE_PLACER = new ItemRatUpgrade("rat_upgrade_placer", 2, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")

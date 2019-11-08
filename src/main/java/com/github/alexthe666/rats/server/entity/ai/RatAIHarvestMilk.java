@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class RatAIHarvestMilk  extends EntityAIBase {
+public class RatAIHarvestMilk extends EntityAIBase {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetCow = null;
@@ -102,7 +102,6 @@ public class RatAIHarvestMilk  extends EntityAIBase {
     }
 
     private void resetTarget() {
-        List<BlockPos> allBlocks = new ArrayList<>();
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) COW_PREDICATE);
         EntityLivingBase closestCow = null;
         for(EntityLivingBase base : list) {
