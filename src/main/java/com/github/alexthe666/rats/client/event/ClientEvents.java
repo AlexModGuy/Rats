@@ -58,7 +58,7 @@ public class ClientEvents {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onPlayerInteract(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getMinecraft().player.isPotionActive(RatsMod.PLAGUE_POTION)) {
+        if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getMinecraft().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatsMod.CONFIG_OPTIONS.plagueHearts) {
             return;
         }
         left_height = 39;
