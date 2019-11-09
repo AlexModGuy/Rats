@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockStem;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -47,7 +49,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
         List<BlockPos> allBlocks = new ArrayList<>();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
             IBlockState block = this.entity.world.getBlockState(pos);
-            if (block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush) {
+            if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
                 allBlocks.add(pos);
             }
         }
@@ -59,7 +61,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.entity.world.getBlockState(targetBlock).getBlock() instanceof BlockBush;
+        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (this.entity.world.getBlockState(targetBlock).getBlock() instanceof BlockBush || this.entity.world.getBlockState(targetBlock).getMaterial() == Material.GOURD);
     }
 
     public void resetTask() {
@@ -72,7 +74,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
         if (this.targetBlock != null) {
             IBlockState block = this.entity.world.getBlockState(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-            if (block.getBlock() instanceof BlockBush) {
+            if (block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) {
                 if (block.getBlock() instanceof BlockCrops && !((BlockCrops) block.getBlock()).isMaxAge(block)) {
                     this.targetBlock = null;
                     this.resetTask();
