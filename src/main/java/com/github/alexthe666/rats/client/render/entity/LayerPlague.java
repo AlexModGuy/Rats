@@ -40,15 +40,6 @@ public class LayerPlague implements LayerRenderer<EntityLivingBase> {
             GlStateManager.matrixMode(5888);
             if(this.renderer.getMainModel() instanceof ModelBiped){
                 ModelBiped biped = (ModelBiped)this.renderer.getMainModel();
-                biped.bipedHeadwear.isHidden = true;
-                if(this.renderer.getMainModel() instanceof ModelPlayer) {
-                    ModelPlayer player = (ModelPlayer)this.renderer.getMainModel();
-                    player.bipedBodyWear.isHidden = true;
-                    player.bipedLeftArmwear.isHidden = true;
-                    player.bipedLeftLegwear.isHidden = true;
-                    player.bipedRightArmwear.isHidden = true;
-                    player.bipedRightLegwear.isHidden = true;
-                }
             }
             this.renderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.matrixMode(5890);
