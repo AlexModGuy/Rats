@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class WorldGenPlagueDoctor extends WorldGenerator {
 
-    public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop");
+    public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "plague_doctor_house");
     private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_plague_doctor_house");
     private VillageComponentPlagueDoctor component;
     public BlockPos villagerPos;
