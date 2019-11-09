@@ -40,7 +40,7 @@ public class BlockGarbage extends BlockFalling {
         if(rand.nextFloat() <= 0.5){
             EntityRat rat = new EntityRat(world);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
-            if(rat.getCanSpawnHere()){
+            if(rat.getCanSpawnHere() && !rat.isEntityInsideOpaqueBlock()){
                 rat.onInitialSpawn(world.getDifficultyForLocation(pos), null);
                 if(!world.isRemote){
                     world.spawnEntity(rat);
