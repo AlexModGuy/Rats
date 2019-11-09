@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -37,13 +37,13 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public String getItemStackDisplayName(ItemStack stack) {
         String oreName = getIngot(stack, IRON_INGOT).getDisplayName();
-        String removedString = I18n.format("item.rats.rat_nugget_remove_tag.name");
+        String removedString = net.minecraft.util.text.translation.I18n.translateToLocal("item.rats.rat_nugget_remove_tag.name");
         if (oreName.contains(removedString)) {
             oreName = oreName.replace(removedString, "");
         } else {
             oreName += " ";
         }
-        return I18n.format(this.getUnlocalizedNameInefficiently(stack) + ".name", oreName).trim();
+        return I18n.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", oreName).trim();
     }
 
     @Override
