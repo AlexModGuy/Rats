@@ -78,6 +78,7 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TRAP, (new StateMap.Builder()).ignore(BlockRatTrap.FACING).build());
+        ModelLoader.setCustomStateMapper(RatsBlockRegistry.AUTO_CURDLER, (new StateMap.Builder()).ignore(BlockAutoCurdler.FACING).build());
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_HOLE, (new StateMap.Builder()).ignore(BlockRatHole.NORTH, BlockRatHole.EAST, BlockRatHole.SOUTH, BlockRatHole.WEST).build());
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_DECORATED, (new StateMap.Builder()).ignore(BlockRatCageDecorated.FACING).build());
         ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, (new StateMap.Builder()).ignore(BlockRatCageBreedingLantern.FACING).build());
@@ -157,12 +158,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityRatCaptureNet.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAutoCurdler.class, new RenderAutoCurdler());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlantisPortal.class, new RenderRatlantisPortal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageDecorated.class, new RenderRatCageDecorated());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageBreedingLantern.class, new RenderRatCageDecorated());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeCombiner.class, new RenderUpgradeCombiner());
         Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileEntityItemStackRenderer(TEISR);
+        Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_COMBINER).setTileEntityItemStackRenderer(TEISR);
         Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {

@@ -11,6 +11,7 @@ public class RatsTEISR extends TileEntityItemStackRenderer {
 
     private RenderRatHole renderRatHole = new RenderRatHole();
     private RenderRatTrap renderRatTrap = new RenderRatTrap();
+    private RenderAutoCurdler renderAutoCurdler = new RenderAutoCurdler();
     private RenderRatlantisPortal renderRatlantisPortal = new RenderRatlantisPortal();
     private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
     private TileEntityUpgradeCombiner dummyCombiner = new TileEntityUpgradeCombiner();
@@ -25,6 +26,9 @@ public class RatsTEISR extends TileEntityItemStackRenderer {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP)) {
             GL11.glScalef(1.2F, 1.2F, 1.2F);
             renderRatTrap.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+        }
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER)) {
+            renderAutoCurdler.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL)) {
             renderRatlantisPortal.render(null, 0, 0, 0, 0.0F, 0, 0.0F);

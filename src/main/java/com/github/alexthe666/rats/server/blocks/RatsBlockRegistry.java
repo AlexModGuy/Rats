@@ -46,6 +46,9 @@ public class RatsBlockRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":auto_curdler")
+    public static Block AUTO_CURDLER = new BlockAutoCurdler();
+
     public static Block[] RAT_TUBE_COLOR = new Block[16];
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":garbage_pile")
     public static Block GARBAGE_PILE = new BlockGarbage();

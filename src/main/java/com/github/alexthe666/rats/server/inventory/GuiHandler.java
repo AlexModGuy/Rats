@@ -1,10 +1,8 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.client.gui.GuiRat;
-import com.github.alexthe666.rats.client.gui.GuiRatCraftingTable;
-import com.github.alexthe666.rats.client.gui.GuiRatUpgrade;
-import com.github.alexthe666.rats.client.gui.GuiUpgradeCombiner;
+import com.github.alexthe666.rats.client.gui.*;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.entity.Entity;
@@ -36,6 +34,9 @@ public class GuiHandler implements IGuiHandler {
         if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {
             return new ContainerUpgradeCombiner((TileEntityUpgradeCombiner) tile, player);
         }
+        if (ID == 5 && tile != null && tile instanceof TileEntityAutoCurdler) {
+            return new ContainerAutoCurdler((TileEntityAutoCurdler) tile, player);
+        }
         return null;
     }
 
@@ -56,6 +57,9 @@ public class GuiHandler implements IGuiHandler {
         }
         if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {
             return new GuiUpgradeCombiner((TileEntityUpgradeCombiner) tile, player.inventory);
+        }
+        if (ID == 5 && tile != null && tile instanceof TileEntityAutoCurdler) {
+            return new GuiAutoCurdler((TileEntityAutoCurdler) tile, player.inventory);
         }
         return null;
     }
