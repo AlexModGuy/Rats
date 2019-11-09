@@ -19,7 +19,7 @@ buildscript {
   }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-version = "3.1.0"
+version = "3.2.0"
 group= "rats"
 archivesBaseName = "rats"
 sourceCompatibility = targetCompatibility = "1.8"
