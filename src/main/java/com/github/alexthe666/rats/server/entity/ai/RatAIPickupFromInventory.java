@@ -52,7 +52,7 @@ public class RatAIPickupFromInventory extends EntityAIBase {
     }
 
     private boolean canPickUp() {
-        return this.entity.getCommand() == RatCommand.TRANSPORT || this.entity.getCommand() == RatCommand.HARVEST &&( this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER));
+        return this.entity.getCommand() == RatCommand.TRANSPORT || this.entity.getCommand() == RatCommand.HARVEST &&( this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER));
     }
 
     @Override

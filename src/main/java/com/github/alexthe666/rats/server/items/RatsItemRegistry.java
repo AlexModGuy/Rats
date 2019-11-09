@@ -199,6 +199,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_farmer")
     public static Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_breeder")
+    public static Item RAT_UPGRADE_BREEDER = new ItemRatUpgrade("rat_upgrade_breeder", 1, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_fisherman")
     public static Item RAT_UPGRADE_FISHERMAN = new ItemRatUpgrade("rat_upgrade_fisherman", 1, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_asbestos")
@@ -239,6 +241,10 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_VOODOO = new ItemRatUpgrade("rat_upgrade_voodoo", 2, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_gemcutter")
     public static Item RAT_UPGRADE_GEMCUTTER = new ItemRatUpgrade("rat_upgrade_gemcutter", 1, 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_enchanter")
+    public static Item RAT_UPGRADE_ENCHANTER = new ItemRatUpgrade("rat_upgrade_enchanter", 1, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_disenchanter")
+    public static Item RAT_UPGRADE_DISENCHANTER = new ItemRatUpgrade("rat_upgrade_disenchanter", 1, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")

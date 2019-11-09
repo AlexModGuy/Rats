@@ -1,0 +1,31 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SHS",
+    "CUC",
+    "WEW"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    },
+    "C": {
+      "item": "minecraft:carrot"
+    },
+    "W": {
+      "item": "minecraft:wheat"
+    },
+    "H": {
+      "item": "rats:farmer_hat"
+    },
+    "E": {
+      "item": "minecraft:egg"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_breeder"
+  }
+}

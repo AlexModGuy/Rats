@@ -57,6 +57,8 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_TNT, EXPLOSION_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR, EXPLOSION_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BUCCANEER, EXPLOSION_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_DISENCHANTER});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_ENCHANTER});
     }
 
     public static boolean doesConflict(Item first, Item second) {

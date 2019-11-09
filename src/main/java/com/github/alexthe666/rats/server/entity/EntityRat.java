@@ -23,6 +23,7 @@ import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -128,6 +129,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public float prevFlyingPitch;
     public BlockPos jukeboxPos;
     public boolean isFleeing = false;
+    public FluidStack transportingFluid = null;
     /*
        0 = tamed navigator
        1 = wild navigator
@@ -148,7 +150,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private int digCooldown = 0;
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
-    public FluidStack transportingFluid = null;
     private int eatenItems = 0;
     private EntityAIBase aiHarvest;
     private EntityAIBase aiPickup;
@@ -272,13 +273,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) && !(aiHarvest instanceof RatAIHarvestPlacer)) {
             aiHarvest = new RatAIHarvestPlacer(this);
         }
-        if(this.getMBTransferRate() > 0){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER) && !(aiHarvest instanceof RatAIHarvestBreeder)) {
+            aiHarvest = new RatAIHarvestBreeder(this);
+        }
+        if (this.getMBTransferRate() > 0) {
             aiDeposit = new RatAIPickupFluid(this);
             aiPickup = new RatAIDepositFluid(this);
-        }else if(this.getRFTransferRate() > 0){
+        } else if (this.getRFTransferRate() > 0) {
             aiDeposit = new RatAIPickupEnergy(this);
             aiPickup = new RatAIDepositEnergy(this);
-        }else {
+        } else {
             aiDeposit = new RatAIDepositInInventory(this);
             aiPickup = new RatAIPickupFromInventory(this);
         }
@@ -493,7 +497,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             compound.setInteger("DepositPosZ", depositPos.getZ());
             compound.setInteger("DepositFacing", depositFacing.ordinal());
         }
-        if(transportingFluid != null){
+        if (transportingFluid != null) {
             NBTTagCompound fluidTag = new NBTTagCompound();
             transportingFluid.writeToNBT(fluidTag);
             compound.setTag("TransportingFluid", fluidTag);
@@ -542,9 +546,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 depositFacing = EnumFacing.values()[compound.getInteger("DepositFacing")];
             }
         }
-        if(compound.hasKey("TransportingFluid")){
+        if (compound.hasKey("TransportingFluid")) {
             NBTTagCompound fluidTag = compound.getCompoundTag("TransportingFluid");
-            if(!fluidTag.isEmpty()){
+            if (!fluidTag.isEmpty()) {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
         }
@@ -679,13 +683,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
                 ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
             }
-            if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)){
-                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
+                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
-            if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)){
-                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
+                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double) (this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
@@ -779,7 +783,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
                 if (this.flyingPitch > 2F) {
                     this.flyingPitch -= 1F;
-
                 } else if (this.flyingPitch < -2F) {
                     this.flyingPitch += 1F;
                 }
@@ -869,7 +872,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             eatItem(this.getHeldItem(EnumHand.MAIN_HAND), 3);
             if (eatingTicks == 40) {
                 ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
-                if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(EnumHand.MAIN_HAND))){
+                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(EnumHand.MAIN_HAND))) {
                     pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(EnumHand.MAIN_HAND)));
                     NBTTagCompound poopTag = new NBTTagCompound();
                     NBTTagCompound oreTag = new NBTTagCompound();
@@ -880,8 +883,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     poopTag.setTag("IngotItem", ingotTag);
                     pooStack.setTagCompound(poopTag);
                 }
-                if(!world.isRemote && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F)){
-                    if(RatsMod.CONFIG_OPTIONS.ratFartNoises){
+                if (!world.isRemote && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F)) {
+                    if (RatsMod.CONFIG_OPTIONS.ratFartNoises) {
                         this.playSound(RatsSoundRegistry.RAT_FART, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
                     }
                     this.entityDropItem(pooStack, 0.0F);
@@ -955,6 +958,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                 } else {
                     this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
+                }
+            }
+        }
+        if ((this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENCHANTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER)) && !this.getHeldItemMainhand().isEmpty()) {
+            this.tryEnchanting(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER));
+            if (cookingProgress > 0) {
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                if (cookingProgress == 999) {
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                } else {
+                    this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                 }
             }
         }
@@ -1182,10 +1201,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         } else {
             tubeTicks = 0;
         }
-        if(poopCooldown > 0){
+        if (poopCooldown > 0) {
             poopCooldown--;
         }
-        if(this.getHeldRF() > 0 && rand.nextFloat() < 0.1F && this.getRFTransferRate() > 0){
+        if (this.getHeldRF() > 0 && rand.nextFloat() < 0.1F && this.getRFTransferRate() > 0) {
             this.playSound(RatsSoundRegistry.NEORATLANTEAN_IDLE, this.getSoundVolume(), 0.75F + rand.nextFloat() * 0.5F);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -1327,6 +1346,64 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
+    private void tryEnchanting(boolean disenchant) {
+        ItemStack heldItem = this.getHeldItemMainhand();
+        ItemStack burntItem = ItemStack.EMPTY;
+        if(heldItem.getItem() == Items.BOOK && !disenchant){
+            burntItem = heldItem.copy();
+        }
+        if(heldItem.getItem() == Items.ENCHANTED_BOOK && disenchant){
+            burntItem = new ItemStack(Items.BOOK, heldItem.getCount(), heldItem.getMetadata());
+        }
+        if (heldItem.isItemEnchantable() && !disenchant && !heldItem.isItemEnchanted()) {
+            burntItem = heldItem.copy();
+        }
+        if (disenchant && heldItem.isItemEnchanted()) {
+            burntItem = heldItem.copy();
+            if (burntItem.getTagCompound() != null && burntItem.getTagCompound().hasKey("ench", 9)) {
+                if (!burntItem.getTagCompound().getTagList("ench", 10).isEmpty()) {
+                    burntItem.getTagCompound().setTag("ench", new NBTTagCompound());
+                }
+            }
+        }
+        if (burntItem.isEmpty()) {
+            cookingProgress = 0;
+        } else {
+            cookingProgress++;
+            if (cookingProgress == 1000) {
+                heldItem.shrink(1);
+                if (!disenchant) {
+                    float power = 0;
+                    BlockPos position = this.getPosition();
+                    for (int j = -1; j <= 1; ++j) {
+                        for (int k = -1; k <= 1; ++k) {
+                            if ((j != 0 || k != 0) && this.world.isAirBlock(position.add(k, 0, j)) && this.world.isAirBlock(position.add(k, 1, j))) {
+                                power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 0, j * 2));
+                                power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 1, j * 2));
+                                if (k != 0 && j != 0) {
+                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 0, j));
+                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 1, j));
+                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k, 0, j * 2));
+                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k, 1, j * 2));
+                                }
+                            }
+                        }
+                    }
+                    burntItem = EnchantmentHelper.addRandomEnchantment(this.getRNG(), burntItem, (int) (2.0F + (float) this.getRNG().nextInt(2) + power), false);
+                }
+                if (heldItem.isEmpty()) {
+                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                } else {
+                    if (!this.tryDepositItemInContainers(burntItem)) {
+                        if (!world.isRemote) {
+                            this.entityDropItem(burntItem, 0.25F);
+                        }
+                    }
+                }
+                cookingProgress = 0;
+            }
+        }
+    }
 
     private boolean tryDepositItemInContainers(ItemStack burntItem) {
         if (world.getTileEntity(new BlockPos(this)) != null) {
@@ -2142,11 +2219,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS);
     }
 
-    public boolean shouldNotIdleAnimation(){
+    public boolean shouldNotIdleAnimation() {
         return this.holdInMouth && this.getAnimation() != EntityRat.ANIMATION_EAT && this.cookingProgress <= 0
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)
-                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)  && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS);
+                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS);
     }
+
     private void onUpgradeChanged() {
         setupDynamicAI();
         boolean flagHealth = false;
@@ -2215,7 +2293,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (!flagSpeed) {
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         }
-        if(this.getHeldRF() > this.getRFTransferRate()){
+        if (this.getHeldRF() > this.getRFTransferRate()) {
             this.setHeldRF(0);
         }
         this.heal(this.getMaxHealth());
@@ -2292,36 +2370,33 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER) && !this.getGemcutterResultFor(item).isEmpty()) {
             return false;
         }
-        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(item)) {
-            return false;
-        }
-        return true;
+        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || !ItemRatUpgradeOreDoubling.isProcessable(item);
     }
 
-    public int getRFTransferRate(){
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY)){
+    public int getRFTransferRate() {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY)) {
             return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY) * 1000;
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY)){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY)) {
             return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY) * 1000;
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY)){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY)) {
             return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY) * 1000;
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY)){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY)) {
             return ItemRatUpgradeEnergy.getRFTransferRate(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) * 1000;
         }
         return 0;
     }
 
-    public int getMBTransferRate(){
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET)){
+    public int getMBTransferRate() {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET)) {
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BUCKET);
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)) {
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_MILKER);
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET)) {
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET);
         }
         return 0;

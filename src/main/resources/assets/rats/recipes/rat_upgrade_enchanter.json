@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DHD",
+    "GUG",
+    "DED"
+  ],
+  "key": {
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    },
+    "G": {
+      "item": "minecraft:bookshelf"
+    },
+    "H": {
+      "item": "minecraft:enchanting_table"
+    },
+    "D": {
+      "item": "minecraft:book"
+    },
+    "E": {
+      "item": "minecraft:experience_bottle"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_enchanter"
+  }
+}
