@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffSync;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiCheeseStaff extends GuiScreen {
@@ -90,7 +95,16 @@ public class GuiCheeseStaff extends GuiScreen {
 
     private String getPosName() {
         if (ClientProxy.refrencedPos != null) {
-            return rat.world.getBlockState(ClientProxy.refrencedPos).getBlock().getLocalizedName();
+            IBlockState state = rat.world.getBlockState(ClientProxy.refrencedPos);
+            List<String> namelist = null;
+            ItemStack pick = state.getBlock().getItem(Minecraft.getMinecraft().world, ClientProxy.refrencedPos, state);
+            try {
+                namelist = pick.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL);
+            } catch (Throwable ignored) {
+            }
+            if(namelist != null && !namelist.isEmpty()){
+                return namelist.get(0);
+            }
         }
         return "";
     }
