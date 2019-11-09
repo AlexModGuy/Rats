@@ -48,6 +48,7 @@ public class RatsMod {
     public static final String VERSION = "3.1.0";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static CreativeTabs TAB;
+    public static CreativeTabs TAB_UPGRADES;
     @Mod.Instance(value = MODID)
     public static RatsMod INSTANCE;
     @SidedProxy(clientSide = "com.github.alexthe666.rats.client.ClientProxy", serverSide = "com.github.alexthe666.rats.server.CommonProxy")
@@ -91,6 +92,12 @@ public class RatsMod {
             @Override
             public ItemStack createIcon() {
                 return new ItemStack(RatsItemRegistry.CHEESE);
+            }
+        };
+        TAB_UPGRADES = new CreativeTabs("rats.upgrades") {
+            @Override
+            public ItemStack createIcon() {
+                return new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC);
             }
         };
         if (RatsMod.CONFIG_OPTIONS.spawnRats) {

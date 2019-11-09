@@ -11,7 +11,7 @@ public class RatsUpgradeConflictRegistry {
     private static Item[] HEALTH_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_HEALTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ARMOR_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
     private static Item[] ATTACK_INCREASES = new Item[]{RatsItemRegistry.RAT_UPGRADE_STRENGTH, RatsItemRegistry.RAT_UPGRADE_WARRIOR, RatsItemRegistry.RAT_UPGRADE_GOD, RatsItemRegistry.RAT_UPGRADE_NONBELIEVER};
-    private static Item[] HARVEST_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, RatsItemRegistry.RAT_UPGRADE_MINER, RatsItemRegistry.RAT_UPGRADE_FARMER, RatsItemRegistry.RAT_UPGRADE_FISHERMAN, RatsItemRegistry.RAT_UPGRADE_MILKER};
+    private static Item[] HARVEST_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, RatsItemRegistry.RAT_UPGRADE_MINER, RatsItemRegistry.RAT_UPGRADE_FARMER, RatsItemRegistry.RAT_UPGRADE_FISHERMAN, RatsItemRegistry.RAT_UPGRADE_MILKER, RatsItemRegistry.RAT_UPGRADE_SHEARS, RatsItemRegistry.RAT_UPGRADE_PLACER};
     private static Item[] TRANSPORT_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY, RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY, RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY, RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY, RatsItemRegistry.RAT_UPGRADE_BUCKET, RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET};
     private static Item[] EXPLOSION_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_TNT, RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR, RatsItemRegistry.RAT_UPGRADE_BUCCANEER};
 
@@ -36,6 +36,8 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FARMER, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FISHERMAN, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_MILKER, HARVEST_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_SHEARS, HARVEST_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PLACER, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED});

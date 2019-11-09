@@ -40,4 +40,16 @@ public class CraftTweakerCompat {
         RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES.removeIf(recipe -> recipe.getOutput().copy().isItemEqual(output));
     }
 
+    @ZenMethod
+    public static void addGemcutterRatRecipe(IItemStack iinput, IItemStack ioutput) {
+        RatsRecipeRegistry.RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ioutput)));
+    }
+
+    @ZenMethod
+    public static void removeGemcutterRatRecipe(IItemStack ioutput) {
+        ItemStack output = CraftTweakerMC.getItemStack(ioutput).copy();
+        output.setCount(1);
+        RatsRecipeRegistry.RAT_GEMCUTTER_RECIPES.removeIf(recipe -> recipe.getOutput().copy().isItemEqual(output));
+    }
+
 }

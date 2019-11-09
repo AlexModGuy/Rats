@@ -1,0 +1,27 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FEF",
+    "DUD",
+    "FEF"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "gemEmerald"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_gemcutter"
+  }
+}

@@ -32,17 +32,16 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
@@ -54,6 +53,8 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Mod.EventBusSubscriber
@@ -269,6 +270,32 @@ public class ServerEvents {
             event.setCanceled(true);
         }
     }
+
+    @SubscribeEvent
+    public void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            AxisAlignedBB axisalignedbb = event.getEntityLiving().getEntityBoundingBox().grow(RatsMod.CONFIG_OPTIONS.ratVoodooDistance, RatsMod.CONFIG_OPTIONS.ratVoodooDistance, RatsMod.CONFIG_OPTIONS.ratVoodooDistance);
+            List<EntityRat> list = event.getEntityLiving().world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
+            List<EntityRat> voodooRats = new ArrayList<>();
+            int capturedRat = 0;
+            if (!list.isEmpty()) {
+                for (EntityRat rat : list) {
+                    if (rat.isTamed() && (rat.isOwner(event.getEntityLiving())) && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_VOODOO)) {
+                        voodooRats.add(rat);
+                    }
+                }
+                if(!voodooRats.isEmpty()){
+                    float damage = event.getAmount() / Math.max(1, voodooRats.size());
+                    event.setCanceled(true);
+                    for(EntityRat rat : voodooRats){
+                        rat.attackEntityFrom(event.getSource(), damage);
+                    }
+                }
+
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {

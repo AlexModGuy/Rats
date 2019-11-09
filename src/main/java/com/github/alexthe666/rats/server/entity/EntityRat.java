@@ -880,6 +880,21 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER) && !this.getHeldItemMainhand().isEmpty()) {
+            this.tryGemcutter();
+            if (cookingProgress > 0) {
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                if (cookingProgress == 99) {
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                } else {
+                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
+                }
+            }
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
             if (!world.isRemote) {
                 if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isRiding()) {
@@ -997,10 +1012,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 this.heal(1.0F);
             }
         }
-        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_VOODOO) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
             if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 30 == 0) {
                 this.heal(1.0F);
             }
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
             if (rangedAttackCooldownPsychic == 0 && this.getAttackTarget() != null) {
                 if (rand.nextBoolean()) {
                     rangedAttackCooldownPsychic = 50;
@@ -1170,6 +1187,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return ItemStack.EMPTY;
     }
 
+    public ItemStack getGemcutterResultFor(ItemStack stack) {
+        SharedRecipe recipe = RatsRecipeRegistry.getGemcutterRecipe(stack);
+        if (recipe != null) {
+            return recipe.getOutput().copy();
+        }
+        return ItemStack.EMPTY;
+    }
+
     private void tryArcheology() {
         ItemStack heldItem = this.getHeldItemMainhand();
         ItemStack burntItem = getArcheologyResultFor(heldItem);
@@ -1215,6 +1240,30 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }
     }
+
+    private void tryGemcutter() {
+        ItemStack heldItem = this.getHeldItemMainhand();
+        ItemStack burntItem = getGemcutterResultFor(heldItem);
+        if (burntItem.isEmpty()) {
+            cookingProgress = 0;
+        } else {
+            cookingProgress++;
+            if (cookingProgress == 100) {
+                heldItem.shrink(1);
+                if (heldItem.isEmpty()) {
+                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                } else {
+                    if (!this.tryDepositItemInContainers(burntItem)) {
+                        if (!world.isRemote) {
+                            this.entityDropItem(burntItem, 0.25F);
+                        }
+                    }
+                }
+                cookingProgress = 0;
+            }
+        }
+    }
+
 
     private boolean tryDepositItemInContainers(ItemStack burntItem) {
         if (world.getTileEntity(new BlockPos(this)) != null) {
@@ -2073,6 +2122,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 5D);
             flagAttack = true;
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_VOODOO)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 100D);
+            flagHealth = true;
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
             tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 30D);
             tryIncreaseStat(SharedMonsterAttributes.ARMOR, 80D);
@@ -2171,6 +2224,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return false;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST) && !this.getArcheologyResultFor(item).isEmpty()) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER) && !this.getGemcutterResultFor(item).isEmpty()) {
             return false;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(item)) {

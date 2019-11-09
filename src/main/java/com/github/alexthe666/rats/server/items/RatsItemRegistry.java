@@ -141,6 +141,8 @@ public class RatsItemRegistry {
     public static Item GEM_OF_RATLANTIS = new ItemGeneric("gem_of_ratlantis");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":arcane_technology")
     public static Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ancient_sawblade")
+    public static Item ANCIENT_SAWBLADE = new ItemGeneric("ancient_sawblade");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantean_flame")
     public static Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":vial_of_sentience")
@@ -153,6 +155,8 @@ public class RatsItemRegistry {
     public static Item PIRAT_CUTLASS = new ItemPiratCutlass();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese_cannonball")
     public static Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_diamond")
+    public static Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":music_disc_mice_on_venus")
     public static Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", "mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":music_disc_living_mice")
@@ -229,6 +233,10 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_TNT_SURVIVOR = new ItemRatUpgrade("rat_upgrade_tnt_survivor", 2, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_placer")
     public static Item RAT_UPGRADE_PLACER = new ItemRatUpgrade("rat_upgrade_placer", 2, 2);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_voodoo")
+    public static Item RAT_UPGRADE_VOODOO = new ItemRatUpgrade("rat_upgrade_voodoo", 2, 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_gemcutter")
+    public static Item RAT_UPGRADE_GEMCUTTER = new ItemRatUpgrade("rat_upgrade_gemcutter", 1, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")

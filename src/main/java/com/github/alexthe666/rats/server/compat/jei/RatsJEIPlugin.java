@@ -11,6 +11,9 @@ import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeWrapp
 import com.github.alexthe666.rats.server.compat.jei.chef.ChefRecipeCategory;
 import com.github.alexthe666.rats.server.compat.jei.chef.ChefRecipeHandler;
 import com.github.alexthe666.rats.server.compat.jei.chef.ChefRecipeWrapper;
+import com.github.alexthe666.rats.server.compat.jei.gemcutter.GemcutterRecipeCategory;
+import com.github.alexthe666.rats.server.compat.jei.gemcutter.GemcutterRecipeHandler;
+import com.github.alexthe666.rats.server.compat.jei.gemcutter.GemcutterRecipeWrapper;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
@@ -29,6 +32,7 @@ public class RatsJEIPlugin implements IModPlugin {
     public static final String CAULDRON_ID = "rats.cauldron";
     public static final String CHEF_RAT_ID = "rats.chef_rat";
     public static final String ARCHEOLOGIST_RAT_ID = "rats.archeologist_rat";
+    public static final String GEMCUTTER_RAT_ID = "rats.gemcutter_rat";
 
     private static void addDescription(IModRegistry registry, ItemStack stack) {
         registry.addIngredientInfo(stack, ItemStack.class, stack.getTranslationKey() + ".jei_desc");
@@ -52,6 +56,11 @@ public class RatsJEIPlugin implements IModPlugin {
         registry.addRecipeHandlers(new ArcheologistRecipeHandler());
         registry.handleRecipes(SharedRecipe.class, new ArcheologistRatFactory(), ARCHEOLOGIST_RAT_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST), ARCHEOLOGIST_RAT_ID);
+
+        registry.addRecipes(RatsRecipeRegistry.RAT_GEMCUTTER_RECIPES, GEMCUTTER_RAT_ID);
+        registry.addRecipeHandlers(new GemcutterRecipeHandler());
+        registry.handleRecipes(SharedRecipe.class, new GemcutterRatFactory(), GEMCUTTER_RAT_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER), GEMCUTTER_RAT_ID);
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE));
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE_STICK));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_FLUTE));
@@ -72,6 +81,7 @@ public class RatsJEIPlugin implements IModPlugin {
         }
         registry.addRecipeCategories(new ChefRecipeCategory());
         registry.addRecipeCategories(new ArcheologistRecipeCategory());
+        registry.addRecipeCategories(new GemcutterRecipeCategory());
     }
 
     public class CauldronFactory implements IRecipeWrapperFactory<SharedRecipe> {
@@ -92,6 +102,13 @@ public class RatsJEIPlugin implements IModPlugin {
         @Override
         public IRecipeWrapper getRecipeWrapper(SharedRecipe recipe) {
             return new ArcheologistRecipeWrapper(recipe);
+        }
+    }
+
+    public class GemcutterRatFactory implements IRecipeWrapperFactory<SharedRecipe> {
+        @Override
+        public IRecipeWrapper getRecipeWrapper(SharedRecipe recipe) {
+            return new GemcutterRecipeWrapper(recipe);
         }
     }
 }

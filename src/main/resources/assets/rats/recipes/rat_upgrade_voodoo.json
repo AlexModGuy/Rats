@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BHB",
+    "DUD",
+    "BDB"
+  ],
+  "key": {
+    "H": {
+      "item": "rats:top_hat"
+    },
+    "B": {
+      "item": "rats:plague_essence"
+    },
+    "D": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_health"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_voodoo"
+  }
+}

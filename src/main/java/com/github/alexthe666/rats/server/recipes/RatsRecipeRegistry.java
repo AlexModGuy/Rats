@@ -22,6 +22,7 @@ public class RatsRecipeRegistry {
     public static List<SharedRecipe> CAULDRON_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_CHEF_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_ARCHEOLOGIST_RECIPES = new ArrayList<>();
+    public static List<SharedRecipe> RAT_GEMCUTTER_RECIPES = new ArrayList<>();
 
     public static void preRegister() {
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
@@ -39,6 +40,7 @@ public class RatsRecipeRegistry {
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
         }
+        RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(Items.DIAMOND), new ItemStack(RatsItemRegistry.RAT_DIAMOND, 4)));
     }
 
     public static void register() {
@@ -128,6 +130,15 @@ public class RatsRecipeRegistry {
 
     public static SharedRecipe getArcheologistRecipe(ItemStack stack) {
         for (SharedRecipe recipe : RAT_ARCHEOLOGIST_RECIPES) {
+            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    public static SharedRecipe getGemcutterRecipe(ItemStack stack) {
+        for (SharedRecipe recipe : RAT_GEMCUTTER_RECIPES) {
             if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
                 return recipe;
             }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumRarity;
@@ -17,12 +18,14 @@ public class ItemRatUpgrade extends ItemGeneric {
 
     public ItemRatUpgrade(String name) {
         super(name);
+        this.setCreativeTab(RatsMod.TAB_UPGRADES);
     }
 
     public ItemRatUpgrade(String name, int rarity, int textLength) {
         this(name);
         this.rarity = rarity;
         this.textLength = textLength;
+        this.setCreativeTab(RatsMod.TAB_UPGRADES);
     }
 
     public EnumRarity getRarity(ItemStack stack) {

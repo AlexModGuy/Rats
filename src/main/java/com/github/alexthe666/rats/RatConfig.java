@@ -52,6 +52,7 @@ public class RatConfig {
     public int ratRFTransferAdvanced = 500;
     public int ratRFTransferElite = 1000;
     public int ratRFTransferExtreme = 100000;
+    public double ratVoodooDistance = 32;
 
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -103,5 +104,6 @@ public class RatConfig {
         this.ratRFTransferAdvanced = config.getInt("Rat RF Transfer Rate Advanced (kRF)", "all", 500, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an advanced energy transfer upgrade can transport at a time.");
         this.ratRFTransferElite = config.getInt("Rat RF Transfer Rate Elite (kRF)", "all", 1000, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an elite energy transfer upgrade can transport at a time.");
         this.ratRFTransferExtreme = config.getInt("Rat RF Transfer Rate Extreme (kRF)", "all", 100000, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an extreme energy transfer upgrade can transport at a time.");
+        this.ratVoodooDistance = config.getFloat("Voodoo Doll Rat distance", "all", 32F, 0F, Float.MAX_VALUE, "How far away from players the Rat Upgrade: Voodoo Doll is effective.");
     }
 }
