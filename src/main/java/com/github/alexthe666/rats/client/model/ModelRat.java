@@ -358,6 +358,11 @@ public class ModelRat extends AdvancedModelBase {
             this.walk(this.wisker1, speedIdle, degreeIdle, false, 2, 0, f2, 1);
             this.nose.setScale(ulatingScale, ulatingScale, ulatingScale);
         }
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) && rat.isInWater()) {
+            AdvancedModelRenderer[] body = new AdvancedModelRenderer[]{this.body1, this.tail1, this.tail2};
+            this.chainSwing(body, speedRun * 0.3F, degreeRun, -2, f, f1);
+            this.bob(this.body1, speedRun * 0.6F, degreeRun * 6, false, f, f1);
+        }
         if (running) {
             this.bob(this.body1, speedRun, degreeRun * 5F, false, f, f1);
             this.walk(this.body1, speedRun, degreeRun, false, 0, 0, f, f1);
@@ -375,6 +380,7 @@ public class ModelRat extends AdvancedModelBase {
                 this.walk(this.rightHand, speedRun, degreeRun * 2F, true, 5, -0.1F, f, f1);
                 this.walk(this.leftHand, speedRun, degreeRun * 2F, true, 5, -0.1F, f, f1);
             }
+
         } else {
             this.walk(this.body1, speedWalk, degreeWalk * 0.25F, false, 0, 0, f, f1);
             this.walk(this.body2, speedWalk, degreeWalk * 0.25F, false, 1, 0.1F, f, f1);
@@ -403,7 +409,7 @@ public class ModelRat extends AdvancedModelBase {
             leftHand.rotateAngleY = 0.17453292519943295F;
             leftHand.rotateAngleZ = -0.08726646259971647F;
         }
-        if ((rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)  || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) && rat.crafting) {
+        if ((rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) && rat.crafting) {
             this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
             this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
             this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);

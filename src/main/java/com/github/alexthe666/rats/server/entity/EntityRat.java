@@ -133,6 +133,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
        1 = wild navigator
        2 = flight navigator
        3 = tube navigator
+       4 = aquatic navigator
      */
     protected int navigatorType;
     private int tubeCooldown = 0;
@@ -182,11 +183,30 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
+    public static BlockPos getPositionRelativetoWater(EntityRat rat, World world, double x, double z, Random rng) {
+        BlockPos pos;
+        BlockPos topY = new BlockPos(x, rat.posY, z);
+        BlockPos bottomY = new BlockPos(x, rat.posY, z);
+        while (world.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < world.getHeight()) {
+            topY = topY.up();
+        }
+        while (world.getBlockState(bottomY).getMaterial() == Material.WATER && bottomY.getY() > 0) {
+            bottomY = bottomY.down();
+        }
+        for (int tries = 0; tries < 5; tries++) {
+            pos = new BlockPos(x, bottomY.getY() + 1 + rng.nextInt(Math.max(1, topY.getY() - bottomY.getY() - 2)), z);
+            if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+                return pos;
+            }
+        }
+        return rat.getPosition();
+    }
+
     protected void initEntityAI() {
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
-        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(1, new RatAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
         this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
@@ -196,6 +216,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
         this.tasks.addTask(4, new RatAIWander(this, 1.0D));
         this.tasks.addTask(4, new RatAIWanderFlight(this));
+        this.tasks.addTask(4, new RatAIWanderAquatic(this));
         this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(5, this.aiSit = new RatAISit(this));
         this.tasks.addTask(6, new RatAIRaidChests(this));
@@ -344,6 +365,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return false;
     }
 
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
+    }
+
     protected boolean isValidLightLevel() {
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
         if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
@@ -413,6 +440,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
             this.navigator = newNav;
             this.navigatorType = 3;
+        } else if (type == 4) {//aquatic
+            this.moveHelper = new RatAquaticMoveHelper(this);
+            this.navigator = new AquaticRatPathNavigate(this, world);
+            this.navigatorType = 4;
         }
     }
 
@@ -723,9 +754,41 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (this.flyingPitch < 1F && flyingPitch > -1F && onGround) {
                 this.flyingPitch = 0;
             }
-        } else if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
+        } else if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && !this.isInWater()) {
             if (navigatorType != 2) {
                 switchNavigator(2);
+            }
+            if (canMove()) {
+                if (this.getMoveHelper().getY() > this.posY) {
+                    this.motionY += 0.08F;
+                }
+            } else if (!onGround) {
+                this.motionY -= 0.08F;
+            }
+            if (!this.onGround) {
+                double ydist = prevPosY - this.posY;//down 0.4 up -0.38
+                double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+                this.flyingPitch += (float) (ydist) * 20;
+                this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
+                float plateau = 2;
+                if (this.flyingPitch > plateau) {
+                    this.flyingPitch -= planeDist * Math.abs(this.flyingPitch) / 90;
+                }
+                if (this.flyingPitch < -plateau) {
+                    this.flyingPitch += planeDist * Math.abs(this.flyingPitch) / 90;
+                }
+                if (this.flyingPitch > 2F) {
+                    this.flyingPitch -= 1F;
+
+                } else if (this.flyingPitch < -2F) {
+                    this.flyingPitch += 1F;
+                }
+            } else {
+                this.flyingPitch = 0;
+            }
+        } else if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) && this.isInWater()) {
+            if (navigatorType != 4) {
+                switchNavigator(4);
             }
             if (canMove()) {
                 if (this.getMoveHelper().getY() > this.posY) {
@@ -1872,7 +1935,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean shouldEyesGlow() {
-        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER);
+        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
     }
 
     @Nullable

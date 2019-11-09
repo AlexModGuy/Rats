@@ -189,6 +189,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_flight")
     public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_aquatic")
+    public static Item RAT_UPGRADE_AQUATIC = new ItemRatUpgrade("rat_upgrade_aquatic", 0, 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ender")
     public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_lumberjack")

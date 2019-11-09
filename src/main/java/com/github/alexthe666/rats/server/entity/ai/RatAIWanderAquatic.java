@@ -3,26 +3,27 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAIWanderFlight extends EntityAIBase {
+public class RatAIWanderAquatic extends EntityAIBase {
     BlockPos target;
     EntityRat rat;
 
-    public RatAIWanderFlight(EntityRat rat) {
+    public RatAIWanderAquatic(EntityRat rat) {
         this.setMutexBits(1);
         this.rat = rat;
     }
 
     public boolean shouldExecute() {
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && rat.canMove() && !rat.isInWater()) {
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) && rat.canMove() && rat.isInWater()) {
             int dist = 8;
             if (rat.isInCage()) {
                 dist = 3;
             }
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+            target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
             if (!rat.getMoveHelper().isUpdating()) {
                 return rat.isDirectPathBetweenPoints(new Vec3d(target));
             }
@@ -40,9 +41,9 @@ public class RatAIWanderFlight extends EntityAIBase {
             if (rat.isInCage()) {
                 dist = 3;
             }
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+            target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
         }
-        if (rat.world.isAirBlock(target) || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
+        if (rat.world.getBlockState(target).getMaterial() == Material.WATER || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
             rat.getMoveHelper().setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);
             if (rat.getAttackTarget() == null) {
                 rat.getLookHelper().setLookPosition((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 180.0F, 20.0F);
