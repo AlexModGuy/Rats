@@ -59,7 +59,7 @@ public class WorldGenPlagueDoctor extends WorldGenerator {
         PlacementSettings settings = new PlacementSettings().setRotation(WorldGenRatRuin.getRotationFromFacing(facing)).setReplacedBlock(Blocks.AIR);
         Template template = templateManager.getTemplate(server, STRUCTURE);
         Biome biome = worldIn.getBiome(position);
-        BlockPos genPos = position.offset(facing, template.getSize().getZ()).offset(facing.rotateYCCW(), template.getSize().getX());
+        BlockPos genPos = position.offset(facing, template.getSize().getZ()/2).offset(facing.rotateYCCW(), template.getSize().getX()/2);
         template.addBlocksToWorld(worldIn, genPos, new RatsPlagueHutProcessor(position.up(2), this, settings, biome), settings, 2);
         if(villagerPos != null){
             EntityPlagueDoctor doctor = new EntityPlagueDoctor(worldIn);

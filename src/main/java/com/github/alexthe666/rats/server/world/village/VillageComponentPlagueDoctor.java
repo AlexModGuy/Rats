@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -47,17 +49,9 @@ public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village
         }
         BlockPos blockpos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ);
         EnumFacing facing = this.getCoordBaseMode().getOpposite();
-        BlockPos genPos = blockpos;
-        /*
-        for(int i = this.boundingBox.minX; i < this.boundingBox.maxX; i++){
-            for(int k = this.boundingBox.minZ; k < this.boundingBox.maxZ; k++){
-                world.setBlockState(new BlockPos(i, boundingBox.maxY, k), Blocks.GOLD_BLOCK.getDefaultState());
-            }
-        }
-        */
-        if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
-            genPos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ);
-        }
+        int xSize = this.boundingBox.maxX - this.boundingBox.minX;
+        int zSize = this.boundingBox.maxZ - this.boundingBox.minZ;
+        BlockPos genPos = blockpos.add(xSize/2, 0, zSize/2);
         return new WorldGenPlagueDoctor(this, facing).generate(world, random, genPos);
     }
 
