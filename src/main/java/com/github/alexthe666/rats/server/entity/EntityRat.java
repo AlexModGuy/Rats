@@ -1349,10 +1349,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private void tryEnchanting(boolean disenchant) {
         ItemStack heldItem = this.getHeldItemMainhand();
         ItemStack burntItem = ItemStack.EMPTY;
-        if(heldItem.getItem() == Items.BOOK && !disenchant){
+        if (heldItem.getItem() == Items.BOOK && !disenchant) {
             burntItem = heldItem.copy();
         }
-        if(heldItem.getItem() == Items.ENCHANTED_BOOK && disenchant){
+        if (heldItem.getItem() == Items.ENCHANTED_BOOK && disenchant) {
             burntItem = new ItemStack(Items.BOOK, heldItem.getCount(), heldItem.getMetadata());
         }
         if (heldItem.isItemEnchantable() && !disenchant && !heldItem.isItemEnchanted()) {
@@ -1978,6 +1978,20 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (this.dimension == RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
             this.setToga(true);
+        }
+        if (this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
+            Calendar calendar = this.world.getCurrentDate();
+            if (calendar.get(2) + 1 == 10 && calendar.get(5) > 10 && this.rand.nextFloat() <= 0.25F) {
+                this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Blocks.PUMPKIN));
+                this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 1.0F;
+            }
+        }
+        if (this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
+            Calendar calendar = this.world.getCurrentDate();
+            if ((calendar.get(2) + 1 == 11 && calendar.get(5) > 10 || calendar.get(2) + 1 == 12) && this.rand.nextFloat() <= 0.25F) {
+                this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT));
+                this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 1.0F;
+            }
         }
         return livingdata;
     }

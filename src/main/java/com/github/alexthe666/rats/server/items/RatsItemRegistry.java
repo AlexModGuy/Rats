@@ -103,6 +103,16 @@ public class RatsItemRegistry {
     public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":confit_byaldi")
     public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":potato_pancake")
+    public static Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, "potato_pancake");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":little_black_squash_balls")
+    public static Item LITTLE_BLACK_SQUASH_BALLS = new ItemGeneric("little_black_squash_balls");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":little_black_worm")
+    public static Item LITTLE_BLACK_WORM = new ItemGeneric("little_black_worm");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":centipede")
+    public static Item CENTIPEDE = new ItemGeneric("centipede");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":potato_kinishes")
+    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, "potato_kinishes").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":tiny_coin")
     public static Item TINY_COIN = new ItemGeneric("tiny_coin");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":token_fragment")
@@ -121,6 +131,8 @@ public class RatsItemRegistry {
     public static Item RAT_FEZ = new ItemHat("rat_fez", 6);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":top_hat")
     public static Item TOP_HAT = new ItemHat("top_hat", 7);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":santa_hat")
+    public static Item SANTA_HAT = new ItemHat("santa_hat", 8);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_doctor_mask")
     public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":black_death_mask")

@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:baked_potato"
+    }
+  },
+  "result": {
+    "item": "rats:potato_pancake"
+  }
+}
