@@ -1,4 +1,11 @@
 {
+  "rat_santa": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_santa_0",
+      "rats:rat_santa_1"
+    ]
+  },
   "rat_fart": {
     "category": "neutral",
     "sounds": [

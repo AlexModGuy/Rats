@@ -26,6 +26,8 @@ public class GuiRat extends GuiContainer {
     private static final ResourceLocation TEXTURE_BACKDROP = new ResourceLocation("rats:textures/gui/rat_inventory_backdrop.png");
     public ChangeCommandButton previousCommand;
     public ChangeCommandButton nextCommand;
+    public CommandPressButton pressButton;
+    private int currentDisplayCommand = 0;
     private EntityRat rat;
     private float mousePosx;
     private float mousePosY;
@@ -80,27 +82,29 @@ public class GuiRat extends GuiContainer {
         this.buttonList.clear();
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 115, j + 29, false));
-        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 29, true));
+        this.buttonList.add(this.previousCommand = new ChangeCommandButton(1, i + 115, j + 54, false));
+        this.buttonList.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 54, true));
+        this.buttonList.add(this.pressButton = new CommandPressButton(3, i + 122, j + 52));
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 1) {
-            int currentRatCommand = rat.getCommand().ordinal();
-            currentRatCommand--;
-            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
-            rat.setCommand(RatCommand.values()[currentRatCommand]);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
+            currentDisplayCommand--;
+            currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
+            //rat.setCommand(RatCommand.values()[currentDisplayCommand]);
+            //RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
         }
         if (button.id == 2) {
-            int currentRatCommand = rat.getCommand().ordinal();
-            currentRatCommand++;
-            currentRatCommand = RatUtils.wrapCommand(currentRatCommand).ordinal();
-            rat.setCommand(RatCommand.values()[currentRatCommand]);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
+            currentDisplayCommand++;
+            currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
+            //rat.setCommand(RatCommand.values()[currentRatCommand]);
+            //RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentRatCommand));
         }
-
+        if (button.id == 3) {
+            rat.setCommand(RatCommand.values()[currentDisplayCommand]);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentDisplayCommand));
+        }
     }
 
     @Override
@@ -114,15 +118,19 @@ public class GuiRat extends GuiContainer {
         String command = I18n.format(rat.getCommand().getTranslateName());
         this.fontRenderer.drawString(command, this.xSize / 2 - this.fontRenderer.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF, true);
 
-        String statusDesc = I18n.format("entity.rat.status.current");
+        String statusDesc = I18n.format("entity.rat.command.set");
         this.fontRenderer.drawString(statusDesc, this.xSize / 2 - this.fontRenderer.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
-
-        String status = I18n.format(rat.getRatStatus().getTranslateName());
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2 + 36, 56, 0XFFFFFF, true);
+        RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
+        String command2 = I18n.format(command1.getTranslateName());
+        this.fontRenderer.drawString(command2, this.xSize / 2 - this.fontRenderer.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF, true);
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
             String commandText = I18n.format(rat.getCommand().getTranslateDescription());
+            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, width, height, 120, fontRenderer);
+        }
+        if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
+            String commandText = I18n.format(command1.getTranslateDescription());
             net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, width, height, 120, fontRenderer);
         }
     }

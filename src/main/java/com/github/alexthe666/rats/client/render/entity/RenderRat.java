@@ -35,6 +35,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ResourceLocation AQUATIC_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_aquatic_upgrade.png");
     private static final ResourceLocation JULIAN = new ResourceLocation("rats:textures/entity/rat/patreon/rat_julian.png");
     private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
+    private static final ResourceLocation SHARVA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_sharva.png");
 
     public RenderRat() {
         super(Minecraft.getMinecraft().getRenderManager(), RAT_MODEL, 0.15F);
@@ -115,6 +116,9 @@ public class RenderRat extends RenderLiving<EntityRat> {
                 }
                 if (entity.getCustomNameTag().contains("shizuka") || entity.getCustomNameTag().contains("Shizuka")) {
                     return SHIZUKA;
+                }
+                if (entity.getCustomNameTag().contains("sharva") || entity.getCustomNameTag().contains("Sharva")) {
+                    return SHARVA;
                 }
             }
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);

@@ -2087,7 +2087,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasPlague() && this.getAttackTarget() != null) {
             return RatsSoundRegistry.RAT_PLAGUE;
         }
-        if (!this.hasPlague() && this.getHealth() < this.getMaxHealth() / 2D || this.isChild()) {
+        if (!this.hasPlague() && this.isTamed() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
+            return RatsSoundRegistry.RAT_SANTA;
+        }
+        if (!this.hasPlague() && this.getHealth() <= this.getMaxHealth() / 2D || this.isChild()) {
             return RatsSoundRegistry.RAT_IDLE;
         }
         return super.getAmbientSound();
