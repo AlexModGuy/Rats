@@ -240,7 +240,7 @@ public class ModelRat extends AdvancedModelBase {
         float degreeDance = 0.4F;
         boolean running = rat.isSprinting() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT);
         boolean holdingInHands = !rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT ||
-                rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.getMBTransferRate() > 0;
+                rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || rat.getMBTransferRate() > 0;
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
@@ -336,7 +336,7 @@ public class ModelRat extends AdvancedModelBase {
         if (rat.getAnimation() == EntityRat.ANIMATION_EAT) {
             this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, f2, 1);
             this.walk(this.head, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.2F, f2, 1);
-            if (!rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
+            if (!rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
                 this.walk(this.leftArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
                 this.walk(this.rightArm, speedIdle, degreeIdle * 0.5F, true, 1, 0, f2, 1);
                 this.walk(this.rightHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
@@ -399,7 +399,7 @@ public class ModelRat extends AdvancedModelBase {
             this.walk(this.neck, speedWalk, degreeWalk * 0.25F, false, 2, 0, f, f1);
 
         }
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.getMBTransferRate() > 0) {
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || rat.getMBTransferRate() > 0) {
             leftArm.rotateAngleX = 1.3089969389957472F;
             rightArm.rotateAngleX = 1.3089969389957472F;
             rightHand.rotateAngleX = 0.9599310885968813F;

@@ -60,6 +60,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.*;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -79,6 +80,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public static final Animation ANIMATION_DANCE_0 = Animation.create(35);
     public static final Animation ANIMATION_DANCE_1 = Animation.create(30);
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "rat"));
+    public static final ResourceLocation CHRISTMAS_LOOT = LootTableList.register(new ResourceLocation("rats", "christmas_rat_gifts"));
     private static final DataParameter<Boolean> IS_MALE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
@@ -898,7 +900,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF)  && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
             if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
@@ -974,6 +976,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 } else {
                     this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
                     this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                }
+            }
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
+            this.tryGiftgiving();
+            if (cookingProgress > 0) {
+                if (cookingProgress == 71999) {
+                    this.world.setEntityState(this, (byte)126);
                 }
             }
         }
@@ -1217,7 +1227,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private boolean shouldSitDuringAnimation() {
-        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN);
+        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS);
     }
 
     public void createBabiesFrom(EntityRat mother, EntityRat father) {
@@ -1401,6 +1411,39 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     }
                 }
                 cookingProgress = 0;
+            }
+        }
+    }
+
+    private void tryGiftgiving() {
+        ItemStack heldItem = this.getHeldItemMainhand();
+        boolean held = false;
+        int luck = 1;
+        List<ItemStack> result = new ArrayList<>();
+        if(!world.isRemote) {
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((net.minecraft.world.WorldServer) this.world);
+            lootcontext$builder.withLuck((float) luck).withLootedEntity(this); // Forge: add player & looted entity to LootContext
+            result = this.world.getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generateLootForPools(this.getRNG(), lootcontext$builder.build());
+            if (result.isEmpty()) {
+                cookingProgress = 0;
+            } else {
+                cookingProgress++;
+                if (cookingProgress == 72000) {
+                    for(ItemStack stack : result){
+                        if (heldItem.isEmpty() && !held) {
+                            this.setHeldItem(EnumHand.MAIN_HAND, stack.copy());
+                            held = true;
+                        } else {
+                            if (!this.tryDepositItemInContainers(stack.copy())) {
+                                if (!world.isRemote) {
+                                    this.entityDropItem(stack.copy(), 0.25F);
+                                }
+                            }
+                        }
+                    }
+
+                    cookingProgress = 0;
+                }
             }
         }
     }
@@ -1920,6 +1963,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             this.crafting = false;
         } else if (id == 101) {
             this.playEffect(3);
+        } else if (id == 125) {
+            //snowflake
+        } else if (id == 126) {
+            this.playEffect(5);
         } else {
             super.handleStatusUpdate(id);
         }
@@ -1954,7 +2001,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (type == 1) {
                 enumparticletypes = EnumParticleTypes.HEART;
             }
-
+            if (type == 5) {
+                enumparticletypes = EnumParticleTypes.SNOW_SHOVEL;
+            }
             for (int i = 0; i < 9; ++i) {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
@@ -2230,7 +2279,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean holdsItemInHandUpgrade() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS);
     }
 
     public boolean shouldNotIdleAnimation() {

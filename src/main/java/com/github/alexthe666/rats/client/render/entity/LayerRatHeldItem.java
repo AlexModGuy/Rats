@@ -1,19 +1,23 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.client.model.ModelPiratCannon;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityChestRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
@@ -26,6 +30,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
+    private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
+    protected static final ModelChest MODEL_CHEST = new ModelChest();
     RenderRat renderer;
 
     public LayerRatHeldItem(RenderRat renderer) {
@@ -97,6 +103,27 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 GlStateManager.enableLighting();
                 GlStateManager.popMatrix();
             }
+            GlStateManager.popMatrix();
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
+            GlStateManager.pushMatrix();
+            if (this.renderer.getMainModel().isChild) {
+                GlStateManager.translate(0.0F, 0.625F, 0.0F);
+                GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
+                float f = 0.5F;
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            }
+            Minecraft minecraft = Minecraft.getMinecraft();
+            translateToHand(false);
+            GlStateManager.rotate(-80.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(10.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.15F, -0.4, -0.5F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(-0.175F, 0.25F, 0.2F);
+            GlStateManager.scale(0.35F, 0.35F, 0.35F);
+            this.renderer.bindTexture(TEXTURE_CHRISTMAS_CHEST);
+            MODEL_CHEST.renderAll();
             GlStateManager.popMatrix();
             GlStateManager.popMatrix();
         }

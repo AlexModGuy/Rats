@@ -14,6 +14,7 @@ public class RatsUpgradeConflictRegistry {
     private static Item[] HARVEST_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, RatsItemRegistry.RAT_UPGRADE_MINER, RatsItemRegistry.RAT_UPGRADE_FARMER, RatsItemRegistry.RAT_UPGRADE_FISHERMAN, RatsItemRegistry.RAT_UPGRADE_MILKER, RatsItemRegistry.RAT_UPGRADE_SHEARS, RatsItemRegistry.RAT_UPGRADE_PLACER,  RatsItemRegistry.RAT_UPGRADE_BREEDER};
     private static Item[] TRANSPORT_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY, RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY, RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY, RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY, RatsItemRegistry.RAT_UPGRADE_BUCKET, RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET};
     private static Item[] EXPLOSION_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_TNT, RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR, RatsItemRegistry.RAT_UPGRADE_BUCCANEER};
+    private static Item[] PROCESSING_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_CHEF, RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST, RatsItemRegistry.RAT_UPGRADE_GEMCUTTER, RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, RatsItemRegistry.RAT_UPGRADE_ENCHANTER, RatsItemRegistry.RAT_UPGRADE_DISENCHANTER};
 
     public static void init() {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC, new Item[0]);
@@ -60,6 +61,7 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BUCCANEER, EXPLOSION_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_DISENCHANTER});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_ENCHANTER});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, PROCESSING_CONFLICTS);
     }
 
     public static boolean doesConflict(Item first, Item second) {
