@@ -15,6 +15,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityUpgradeSeparator extends TileEntity implements ITickable {
     public float ratRotation;
@@ -52,5 +54,10 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickable 
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
+        return new net.minecraft.util.math.AxisAlignedBB(pos, pos.add(1, 2, 1));
     }
 }

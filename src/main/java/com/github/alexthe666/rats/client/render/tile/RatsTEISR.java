@@ -23,9 +23,9 @@ public class RatsTEISR extends TileEntityItemStackRenderer {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_COMBINER)) {
             renderUpgradeCombiner.render(dummyCombiner, 0, 0, 0, 0.0F, 0, 0.0F);
         }
-        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_SEPARATOR)) {
-            renderUpgradeSeparator.render(dummySeparator, 0, 0, 0, 0.0F, 0, 0.0F);
-        }
+        //if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_SEPARATOR)) {
+        //    renderUpgradeSeparator.render(dummySeparator, 0, 0, 0, 0.0F, 0, 0.0F);
+        //}
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE)) {
             renderRatHole.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
         }
