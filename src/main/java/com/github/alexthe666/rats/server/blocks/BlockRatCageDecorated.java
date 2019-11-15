@@ -54,7 +54,7 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
             TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
             if (te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)) {
                 EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
-                if (!worldIn.isRemote) {
+                if (!worldIn.isRemote && worldIn.getBlockState(pos).getBlock() == RatsBlockRegistry.RAT_CAGE) {
                     worldIn.spawnEntity(entityItem);
                 }
                 te.setContainedItem(ItemStack.EMPTY);

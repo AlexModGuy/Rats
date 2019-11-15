@@ -148,7 +148,7 @@ public class BlockRatCage extends Block {
                     BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP) playerIn, playerIn);
                 }
                 if (playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
-                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing), 2);
                     TileEntityRatCageBreedingLantern decorated = new TileEntityRatCageBreedingLantern();
                     ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
                     decorated.setContainedItem(added);
@@ -157,7 +157,7 @@ public class BlockRatCage extends Block {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
                 } else {
-                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing));
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing), 2);
                     TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
                     ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
                     decorated.setContainedItem(added);

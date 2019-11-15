@@ -298,6 +298,7 @@ item.rats.token_fragment.name=Mysterious Token Fragment
 item.rats.token_piece.name=Mysterious Token Chunk
 item.rats.chunky_cheese_token.name=Chunky Cheese Token
 item.rats.chunky_cheese_token.desc0=1 in %s drop rate from rat
+item.rats.chunky_cheese_token.desc1=Right click anywhere to open a portal to Ratlantis
 item.rats.rat_sack.name=Rat Sack
 item.rats.rat_sack.name=Rat Sack
 item.rats.rat_sack.contains=Contains %s rat(s)
