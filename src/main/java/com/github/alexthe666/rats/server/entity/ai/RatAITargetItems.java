@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -101,15 +102,27 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
                 EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-                if (!rat.isTamed() && targetPlayer != null && rat.canBeTamed() && RatUtils.isCheese(duplicate)) {
-                    rat.wildTrust += 10;
-                    rat.world.setEntityState(rat, (byte) 82);
-                    if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0) {
-                        rat.world.setEntityState(rat, (byte) 83);
-                        rat.setTamed(true);
-                        rat.setOwnerId(targetPlayer.getUniqueID());
-                        rat.setCommand(RatCommand.FOLLOW);
+                if (targetPlayer != null && RatUtils.isCheese(duplicate)) {
+                    if(!rat.isTamed() && rat.canBeTamed()){
+                        rat.wildTrust += 10;
+                        rat.cheeseFeedings++;
+                        rat.world.setEntityState(rat, (byte) 82);
+                        if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0 || rat.cheeseFeedings >= 15) {
+                            rat.world.setEntityState(rat, (byte) 83);
+                            rat.setTamed(true);
+                            rat.setOwnerId(targetPlayer.getUniqueID());
+                            rat.setCommand(RatCommand.FOLLOW);
+                        }
+                    }else {
+                        String untameableText = "entity.rat.untameable";
+                        if(rat.getOwner() != null && !rat.getOwnerId().equals(targetPlayer.getUniqueID())){
+                            untameableText = "entity.rat.tamed_by_other";
+                        }
+                        if(!rat.isOwner(targetPlayer)){
+                            targetPlayer.sendStatusMessage(new TextComponentTranslation(untameableText), true);
+                        }
                     }
+
                 }
             }
             resetTask();

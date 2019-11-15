@@ -4,40 +4,33 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAIWander extends EntityAIBase {
+import javax.annotation.Nullable;
+
+public class RatAIWander extends EntityAIWanderAvoidWater {
     private EntityRat rat;
-    private double xPosition;
-    private double yPosition;
-    private double zPosition;
-    private double speed;
-    private int executionChance;
-    private boolean mustUpdate;
 
     public RatAIWander(EntityRat creatureIn, double speedIn) {
-        this(creatureIn, speedIn, 120);
-    }
-
-    public RatAIWander(EntityRat creatureIn, double speedIn, int chance) {
+        super(creatureIn, speedIn);
         this.rat = creatureIn;
-        this.speed = speedIn;
-        this.executionChance = chance;
         this.setMutexBits(1);
     }
 
-    @Override
-    public boolean shouldExecute() {
-        if (!rat.canMove() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || rat.isDancing() || rat.isFleeing) {
-            return false;
+    @Nullable
+    protected Vec3d getPosition() {
+        if (this.entity.isInWater()) {
+            Vec3d vec3d = RandomPositionGenerator.getLandPos(this.entity, 15, 7);
+            return vec3d == null ? generateRatPosition() : vec3d;
+        } else {
+            return this.entity.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.entity, 10, 7) : generateRatPosition();
         }
-        if (!this.mustUpdate) {
-            if (this.rat.getRNG().nextInt(rat.isInCage() || rat.inTube() ? 3 : executionChance) != 0) {
-                return false;
-            }
-        }
+    }
+
+    private Vec3d generateRatPosition() {
         Vec3d vec3d = null;
         boolean inCage = rat.isInCage() || rat.inTube();
         if (inCage) {
@@ -52,6 +45,9 @@ public class RatAIWander extends EntityAIBase {
                     vec3d = RatUtils.findRandomCageOrTubeTarget(this.rat, 15, 2);
                 }
             }
+            if(vec3d != null){
+                vec3d = new Vec3d(RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat));
+            }
         }
         if (!inCage || vec3d == null) {
             if (rat.waterBased) {
@@ -61,35 +57,15 @@ public class RatAIWander extends EntityAIBase {
 
             }
         }
-        if (vec3d == null) {
-            return false;
-        } else {
-            if (inCage) {
-                vec3d = new Vec3d(RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat));
-            }
-            this.xPosition = vec3d.x;
-            this.yPosition = vec3d.y;
-            this.zPosition = vec3d.z;
-            this.mustUpdate = false;
-            return true;
-        }
+        return vec3d == null ? super.getPosition() : vec3d;
     }
 
-    @Override
-    public boolean shouldContinueExecuting() {
-        return !this.rat.getNavigator().noPath();
+    public boolean shouldExecute() {
+        return shouldRatAIExecute() && super.shouldExecute();
     }
 
-    @Override
-    public void startExecuting() {
-        this.rat.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+    private boolean shouldRatAIExecute() {
+        return rat.canMove() && !rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && !rat.isDancing() && !rat.isFleeing;
     }
 
-    public void makeUpdate() {
-        this.mustUpdate = true;
-    }
-
-    public void setExecutionChance(int newchance) {
-        this.executionChance = newchance;
-    }
 }
