@@ -43,8 +43,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
         return block.getBlock() instanceof BlockLog
                 || transKey.contains("log")
                 || transKey.contains("tree")
-                || transKey.contains("branch")
-                || transKey.contains("wood");
+                || transKey.contains("branch");
     }
 
     public static final boolean isBlockLeaf(IBlockState block) {
