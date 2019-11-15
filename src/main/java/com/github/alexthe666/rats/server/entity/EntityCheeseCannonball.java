@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,11 +47,11 @@ public class EntityCheeseCannonball extends EntityThrowable {
     }
 
     protected void onImpact(RayTraceResult result) {
-        if (result.entityHit != null && (thrower == null || !result.entityHit.isOnSameTeam(thrower))) {
-            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
-        }
-        if (this.ticksExisted > 2) {
-            RatExplosion explosion = new RatExplosion(world, thrower == null ? this : thrower, this.posX, this.posY, this.posZ, 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, thrower == null ? this : thrower));
+        if (!this.world.isRemote) {
+            if (result.entityHit != null && (thrower == null || !result.entityHit.isOnSameTeam(thrower))) {
+                result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
+            }
+            Explosion explosion = new RatNukeExplosion(world, thrower == null ? this : thrower, this.posX, this.posY, this.posZ, 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, thrower == null ? this : thrower));
             explosion.doExplosionA();
             explosion.doExplosionB(true);
             this.setDead();
