@@ -669,6 +669,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return getCommandInteger() == 2;
     }
 
+    public boolean isTargetCommand() {
+        return getCommandInteger() == 4 || getCommandInteger() == 5;
+    }
+
     public EntitySenses getSenses() {
         return this.getEntitySenses();
     }

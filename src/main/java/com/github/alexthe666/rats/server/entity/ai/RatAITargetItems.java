@@ -45,7 +45,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             @Override
             public boolean apply(@Nullable EntityItem item) {
                 ItemStack stack = item.getItem();
-                if (rat.getCommand() == RatCommand.GATHER || rat.getCommand() == RatCommand.HARVEST) {
+                if (rat.isTargetCommand()) {
                     return item != null && !stack.isEmpty() && rat.canRatPickupItem(stack);
                 }
                 return !stack.isEmpty() && RatUtils.shouldRaidItem(stack) && rat.canRatPickupItem(stack);
@@ -56,10 +56,10 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.getCommand() == RatCommand.HARVEST && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
-        if (!this.mustUpdate ) {
+        if (!this.mustUpdate) {
             long worldTime = this.taskOwner.world.getWorldTime() % 10;
             if (this.rat.getIdleTime() >= 100 && worldTime != 0) {
                 return false;
@@ -80,7 +80,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     }
 
     protected double getTargetDistance() {
-        return 32D;
+        return 16D;
     }
 
 
