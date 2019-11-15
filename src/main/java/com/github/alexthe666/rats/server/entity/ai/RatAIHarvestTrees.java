@@ -38,18 +38,14 @@ public class RatAIHarvestTrees extends EntityAIBase {
         this.setMutexBits(0);
     }
 
-    public static final boolean isBlockLog(IBlockState block) {
-        String transKey = block.getBlock().getTranslationKey().toLowerCase();
-        return block.getBlock() instanceof BlockLog
-                || transKey.contains("log")
-                || transKey.contains("tree")
-                || transKey.contains("branch");
+    public static final boolean isBlockLog(World world, BlockPos pos) {
+        return world.getBlockState(pos).getBlock().isWood(world, pos);
     }
 
-    public static final boolean isBlockLeaf(IBlockState block) {
-        String transKey = block.getBlock().getTranslationKey().toLowerCase();
-        return block.getBlock() instanceof BlockLeaves
-                || transKey.contains("leaf") || transKey.contains("leaves");
+    public static final boolean isBlockLeaf(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock().isLeaves(state, world, pos);
+
     }
 
     @Override
@@ -67,14 +63,13 @@ public class RatAIHarvestTrees extends EntityAIBase {
     private void resetTarget() {
         World world = entity.world;
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            IBlockState block = world.getBlockState(pos);
-            if (isBlockLog(block)) {
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS / 2, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS / 2, RADIUS))) {
+            if (isBlockLog(world, pos)) {
                 BlockPos topOfLog = new BlockPos(pos);
                 while (!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()) {
                     topOfLog = topOfLog.up();
                 }
-                if (isBlockLeaf(world.getBlockState(topOfLog))) {
+                if (isBlockLeaf(world, topOfLog)) {
                     //definitely a tree, now find the base of the tree
                     BlockPos logPos = getStump(topOfLog);
                     allBlocks.add(logPos);
@@ -90,8 +85,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     private BlockPos getStump(BlockPos log) {
         if (log.getY() > 0) {
             for (BlockPos pos : BlockPos.getAllInBox(log.add(-4, -4, -4), log.add(4, 0, 4))) {
-                IBlockState state = entity.world.getBlockState(pos.down());
-                if (isBlockLog(state) || isBlockLeaf(state)) {
+                if (isBlockLog(entity.world, pos.down()) || isBlockLeaf(entity.world, pos.down())) {
                     return getStump(pos.down());
                 }
             }
@@ -114,7 +108,6 @@ public class RatAIHarvestTrees extends EntityAIBase {
     @Override
     public void updateTask() {
         if (this.targetBlock != null) {
-            IBlockState block = this.entity.world.getBlockState(this.targetBlock);
             if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
                 RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false);
                 if (rayTrace != null && rayTrace.hitVec != null) {
@@ -122,7 +115,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
                     this.entity.getNavigator().tryMoveToXYZ(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 1D);
                 }
             }
-            if (isBlockLog(block)) {
+            if (isBlockLog(this.entity.world, this.targetBlock)) {
                 double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 2.5F) {
                     entity.world.setEntityState(entity, (byte) 85);
@@ -168,13 +161,13 @@ public class RatAIHarvestTrees extends EntityAIBase {
         World world = entity.world;
         BlockPos base = new BlockPos(this.targetBlock);
         Queue<BlockPos> queue = new LinkedList<BlockPos>();
-        while (isBlockLog(world.getBlockState(base))) {
+        while (isBlockLog(world, base)) {
             if(!queue.contains(base)){
                 queue.add(base);
             }
             for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8))) {
-                if(isBlockLog(world.getBlockState(pos)) && !queue.contains(pos)){
-                    if(isBlockLog(world.getBlockState(pos.up())) && !isBlockLog(world.getBlockState(base.up()))){
+                if(isBlockLog(world, pos) && !queue.contains(pos)){
+                    if(isBlockLog(world, pos.up()) && !isBlockLog(world, base.up())){
                         base = pos;
                     }
                     queue.add(pos);
