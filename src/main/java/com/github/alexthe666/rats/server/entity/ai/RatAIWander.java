@@ -17,6 +17,7 @@ public class RatAIWander extends EntityAIWanderAvoidWater {
     public RatAIWander(EntityRat creatureIn, double speedIn) {
         super(creatureIn, speedIn);
         this.rat = creatureIn;
+        this.executionChance = 200;
         this.setMutexBits(1);
     }
 
