@@ -100,6 +100,10 @@ public class RatsBlockRegistry {
     public static Block JACK_O_RATERN = new BlockJackORatern();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_combiner")
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_separator")
+    public static Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
+
+
     public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
         @Override
         public String getLocalizedName(FluidStack fs) {
