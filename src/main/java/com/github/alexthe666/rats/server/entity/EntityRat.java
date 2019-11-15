@@ -235,7 +235,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 if (EntityRat.this.hasPlague()) {
-                    return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK;
+                    return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
                 } else {
                     if (entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
                         return false;
