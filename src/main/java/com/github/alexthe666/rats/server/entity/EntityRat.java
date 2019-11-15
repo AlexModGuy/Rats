@@ -1259,7 +1259,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean canBeCollidedWith() {
-        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer)) && !this.inTube();
+        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer));
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {

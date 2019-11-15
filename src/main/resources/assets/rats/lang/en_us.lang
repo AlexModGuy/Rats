@@ -282,6 +282,7 @@ item.rats.rat_upgrade_enchanter0.desc=Rat will enchant any held item
 item.rats.rat_upgrade_enchanter1.desc=Nearby bookshelves help improve level
 item.rats.rat_upgrade_disenchanter.name=Rat Upgrade: Enchanter
 item.rats.rat_upgrade_disenchanter0.desc=Rat will disenchant any enchanted held item
+item.rats.rat_flute.name=Rat Flute
 item.rats.rat_flute.desc0=Commands all tamed rats within the local area
 item.rats.rat_flute.desc1=Sneak and use to change command
 item.rats.rat_flute.comand_changed=Changed command to:
