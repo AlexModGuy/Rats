@@ -35,6 +35,7 @@ public class BlockRatlantisPortal extends BlockContainer {
         this.setTranslationKey("rats.ratlantis_portal");
         this.setRegistryName(RatsMod.MODID, "ratlantis_portal");
         this.setTickRandomly(true);
+        this.setBlockUnbreakable();
         GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
     }
 
