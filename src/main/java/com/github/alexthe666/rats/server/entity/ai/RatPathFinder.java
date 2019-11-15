@@ -64,11 +64,21 @@ public class RatPathFinder extends PathFinder {
                 }
             }
             for (BlockPos pos : openTubes) {
-                BlockPos tubeOffset = RatUtils.offsetTubeEntrance(worldIn, pos);
+                BlockPos tubeOffset = pos;
+                boolean inside = true;
+                if(rat.getDistanceSqToCenter(pos) > 0.6F){
+                    inside = false;
+                    tubeOffset = RatUtils.offsetTubeEntrance(worldIn, pos);
+                }
                 AStar aStar = new AStar(pos, endPos, 1000, true);
                 BlockPos[] pathBlocks = aStar.getPath(worldIn);
                 if (pathBlocks.length > 1) {
-                    Path path = findTubePath(worldIn, pathFrom, tubeOffset, pos, maxDistance);
+                    Path path;
+                    if(inside){
+                        path = findAlreadyTubePath(worldIn, pathFrom, pos, maxDistance);
+                    }else{
+                        path = findTubePath(worldIn, pathFrom, tubeOffset, pos, maxDistance);
+                    }
                     if (path != null && path.getFinalPathPoint() != null) {
                         tubePath = path;
                         tubePathEnd = new PathPoint(pathBlocks[pathBlocks.length - 1].getX(), pathBlocks[pathBlocks.length - 1].getY(), pathBlocks[pathBlocks.length - 1].getZ());
@@ -77,7 +87,7 @@ public class RatPathFinder extends PathFinder {
                 }
             }
         }
-        if (tubePath != null && rat.shouldBeSuckedIntoTube()) {
+        if (tubePath != null) {
             return tubePath;
         }
         return findVanillaPath(pathFrom, pathTo, maxDistance);
@@ -90,6 +100,15 @@ public class RatPathFinder extends PathFinder {
         pathFrom.distanceToNext = pathFrom.distanceManhattan(pathTube);
         pathFrom.distanceToTarget = pathFrom.distanceToNext;
         Path path = new Path(new PathPoint[]{pathFrom, pathTube, pathInTube});
+        return path;
+    }
+
+    public Path findAlreadyTubePath(IBlockAccess worldIn, PathPoint pathFrom, BlockPos tubeActualPos, float maxDistance) {
+        PathPoint pathInTube = new PathPoint(tubeActualPos.getX(), tubeActualPos.getY(), tubeActualPos.getZ());
+        pathFrom.totalPathDistance = 0.0F;
+        pathFrom.distanceToNext = pathFrom.distanceManhattan(pathInTube);
+        pathFrom.distanceToTarget = pathFrom.distanceToNext;
+        Path path = new Path(new PathPoint[]{pathFrom, pathInTube});
         return path;
     }
 

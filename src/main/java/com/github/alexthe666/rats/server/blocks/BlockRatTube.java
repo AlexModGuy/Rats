@@ -10,9 +10,12 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -388,4 +391,11 @@ public class BlockRatTube extends BlockContainer implements ICustomRendered {
     public boolean isOpenAtAll(IBlockState state) {
         return getMetaFromState(state) > 0;
     }
+
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(I18n.format("tile.rats.rat_tube.desc0"));
+        tooltip.add(I18n.format("tile.rats.rat_tube.desc1"));
+        tooltip.add(I18n.format("tile.rats.rat_tube.desc2"));
+    }
+
 }

@@ -121,7 +121,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public BlockPos pickupPos;
     public BlockPos tubeTarget = null;
     public int tubeTicks;
-    public boolean prevInTube;
+    public boolean justEnteredTube;
     public boolean climbingTube = false;
     public boolean waterBased = false;
     public boolean crafting = false;
@@ -709,7 +709,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     @Override
     public void onLivingUpdate() {
-        prevInTube = inTube;
+        //prevInTube = inTube;
         this.setRatStatus(RatStatus.IDLE);
         if (!this.inTube() && this.getNavigator().getPath() != null) {
             if (this.getNavigator().getPath().getFinalPathPoint() != null) {
@@ -717,8 +717,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 //world.setBlockState(endPoint.down(), Blocks.EMERALD_BLOCK.getDefaultState());
             }
         }
-        if (this.inTubeGenerally()) {
-            if (tubeCooldown < 40) {
+        if (this.inTubeFast()) {
+            if (tubeCooldown < 10) {
                 tubeCooldown++;
             }
         } else {
@@ -900,7 +900,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF)  && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
             if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
@@ -983,7 +983,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             this.tryGiftgiving();
             if (cookingProgress > 0) {
                 if (cookingProgress == 71999) {
-                    this.world.setEntityState(this, (byte)126);
+                    this.world.setEntityState(this, (byte) 126);
                 }
             }
         }
@@ -1420,7 +1420,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean held = false;
         int luck = 1;
         List<ItemStack> result = new ArrayList<>();
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             LootContext.Builder lootcontext$builder = new LootContext.Builder((net.minecraft.world.WorldServer) this.world);
             lootcontext$builder.withLuck((float) luck).withLootedEntity(this); // Forge: add player & looted entity to LootContext
             result = this.world.getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generateLootForPools(this.getRNG(), lootcontext$builder.build());
@@ -1429,7 +1429,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             } else {
                 cookingProgress++;
                 if (cookingProgress == 72000) {
-                    for(ItemStack stack : result){
+                    for (ItemStack stack : result) {
                         if (heldItem.isEmpty() && !held) {
                             this.setHeldItem(EnumHand.MAIN_HAND, stack.copy());
                             held = true;
@@ -2219,25 +2219,29 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private boolean inTubeLogic() {
-        BlockPos pos = new BlockPos(this);
-        IBlockState state = world.getBlockState(pos);
-        boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
-        if (state.getBlock() instanceof BlockRatTube) {
-            List<AxisAlignedBB> aabbs = ((BlockRatTube) state.getBlock()).compileAABBList(world, pos, state);
-            for (AxisAlignedBB box : aabbs) {
-                if (box.offset(pos).contains(this.getPositionVector().add(0, this.height / 2, 0)) || box.offset(pos).contains(this.getPositionVector().add(0, 0, 0)) && above) {
-                    return true;
+        if (this.isTamed()) {
+            BlockPos pos = new BlockPos(this);
+            IBlockState state = world.getBlockState(pos);
+            boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
+            if (state.getBlock() instanceof BlockRatTube) {
+                List<AxisAlignedBB> aabbs = ((BlockRatTube) state.getBlock()).compileAABBList(world, pos, state);
+                AxisAlignedBB bb = new AxisAlignedBB(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
+                for (AxisAlignedBB box : aabbs) {
+                    bb = bb.union(box);
                 }
+                bb = bb.grow(0.05F, 0, 0.05F).offset(pos);
+                boolean b = bb.contains(this.getPositionVector().add(0, this.height / 2, 0)) || bb.contains(this.getPositionVector()) && above;
+                if(b && !inTube){
+                    justEnteredTube = false;
+                }
+                return b;
             }
         }
         return false;
     }
 
-    private boolean inTubeGenerally() {
-        BlockPos pos = new BlockPos(this);
-        IBlockState state = world.getBlockState(pos);
-        boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
-        return state.getBlock() instanceof BlockRatTube || above;
+    private boolean inTubeFast() {
+        return inTube;
     }
 
 
@@ -2282,7 +2286,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean holdsItemInHandUpgrade() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS);
     }
 
     public boolean shouldNotIdleAnimation() {
@@ -2407,8 +2411,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean shouldBeSuckedIntoTube() {
-        if (tubeTicks < 15 && !prevInTube && !inTube()) {
-            return tubeCooldown < 0;
+        if (!inTube()) {
+            return tubeCooldown <= 0;
         }
         return false;
     }

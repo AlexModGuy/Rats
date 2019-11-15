@@ -9,7 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class TileEntityRatTube extends TileEntity implements ITickable {
 
@@ -23,14 +25,43 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
             float i = this.getPos().getX() + 0.5F;
             float j = this.getPos().getY() + 0.2F;
             float k = this.getPos().getZ() + 0.5F;
-            float d0 = 0.65F;
+            float d0 = 0.4F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
                 if (rat.shouldBeSuckedIntoTube()) {
-                    rat.setPosition(i, j, k);
+                    rat.justEnteredTube = true;
+                    Vec3d offsetPos = offsetTubePos();
+                    rat.setPosition(i + offsetPos.x, j + offsetPos.y, k + offsetPos.z);
                 }
                 this.updateRat(rat);
             }
         }
+    }
+
+    private Vec3d offsetTubePos(){
+        if(this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockRatTube) {
+            IBlockState actualState = this.getBlockType().getActualState(this.getWorld().getBlockState(this.pos), this.getWorld(), this.pos);
+            BlockPos pos = new BlockPos(0, 0, 0);
+            if (actualState.getValue(BlockRatTube.UP)) {
+                pos = pos.offset(EnumFacing.UP);
+            }
+            if (actualState.getValue(BlockRatTube.DOWN)) {
+                pos = pos.offset(EnumFacing.DOWN);
+            }
+            if (actualState.getValue(BlockRatTube.EAST)) {
+                pos = pos.offset(EnumFacing.EAST);
+            }
+            if (actualState.getValue(BlockRatTube.WEST)) {
+                pos = pos.offset(EnumFacing.WEST);
+            }
+            if (actualState.getValue(BlockRatTube.NORTH)) {
+                pos = pos.offset(EnumFacing.NORTH);
+            }
+            if (actualState.getValue(BlockRatTube.SOUTH)) {
+                pos = pos.offset(EnumFacing.SOUTH);
+            }
+            return new Vec3d(pos.getX() * 0.25D, pos.getY() * 0.25D, pos.getZ() * 0.25D);
+        }
+        return Vec3d.ZERO;
     }
 
     private void updateRat(EntityRat rat) {
