@@ -32,12 +32,23 @@
                     }
                 ]
             }
+        },
+        "knishes": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:potato_kinishes"
+                    }
+                ]
+            }
         }
     },
     "requirements": [
         [
             "confit_byaldi",
-            "string_cheese"
+            "string_cheese",
+            "knishes"
         ]
     ]
 }

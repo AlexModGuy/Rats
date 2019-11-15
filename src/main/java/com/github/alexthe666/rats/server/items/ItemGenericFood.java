@@ -32,7 +32,7 @@ public class ItemGenericFood extends ItemFood {
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        if (this == RatsItemRegistry.CONFIT_BYALDI) {
+        if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
             if (entityLiving instanceof EntityPlayer) {
                 EntityPlayer entityplayer = (EntityPlayer) entityLiving;
                 entityplayer.getFoodStats().addStats(this, stack);
@@ -53,7 +53,7 @@ public class ItemGenericFood extends ItemFood {
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if (this == RatsItemRegistry.CONFIT_BYALDI) {
+        if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
             ItemStack itemstack = playerIn.getHeldItem(handIn);
             playerIn.setActiveHand(handIn);
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
@@ -88,8 +88,8 @@ public class ItemGenericFood extends ItemFood {
             }
             player.addPotionEffect(new PotionEffect(MobEffects.UNLUCK, 2400));
         }
-        if (!worldIn.isRemote && this == RatsItemRegistry.CONFIT_BYALDI) {
-            player.addPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 2400));
+        if (!worldIn.isRemote && (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES)) {
+            player.addPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, this == RatsItemRegistry.POTATO_KNISHES ? 1200 : 2400));
         }
     }
 
