@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.Potion;
@@ -42,9 +43,20 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
-        event.getRegistry().registerAll(RatsSoundRegistry.POTION_EFFECT_BEGIN, RatsSoundRegistry.POTION_EFFECT_END, RatsSoundRegistry.RAT_IDLE,
-                RatsSoundRegistry.RAT_HURT, RatsSoundRegistry.RAT_DIE, RatsSoundRegistry.RAT_DIG, RatsSoundRegistry.RAT_PLAGUE, RatsSoundRegistry.RAT_FLUTE,
-                RatsSoundRegistry.PIPER_LOOP);
+        try {
+            for (Field f : RatsSoundRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof SoundEvent) {
+                    event.getRegistry().register((SoundEvent) obj);
+                } else if (obj instanceof SoundEvent[]) {
+                    for (SoundEvent sound : (SoundEvent[]) obj) {
+                        event.getRegistry().register(sound);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SubscribeEvent
