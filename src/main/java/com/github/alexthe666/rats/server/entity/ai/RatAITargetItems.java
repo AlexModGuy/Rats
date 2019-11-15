@@ -22,7 +22,8 @@ import java.util.List;
 public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final RatAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super EntityItem> targetEntitySelector;
-    private final int targetChance;
+    protected int executionChance;
+    protected boolean mustUpdate;
     protected EntityItem targetEntity;
     private EntityRat rat;
 
@@ -32,21 +33,22 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     }
 
     public RatAITargetItems(EntityRat creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 0, checkSight, onlyNearby, null);
+        this(creature, 10, checkSight, onlyNearby, null);
     }
 
     public RatAITargetItems(EntityRat creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
         super(creature, checkSight, onlyNearby);
-        this.targetChance = chance;
+        this.executionChance = chance;
         this.rat = creature;
         this.theNearestAttackableTargetSorter = new RatAITargetItems.Sorter(creature);
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
+                ItemStack stack = item.getItem();
                 if (rat.getCommand() == RatCommand.GATHER || rat.getCommand() == RatCommand.HARVEST) {
-                    return item != null && !item.getItem().isEmpty() && rat.canRatPickupItem(item.getItem());
+                    return item != null && !stack.isEmpty() && rat.canRatPickupItem(stack);
                 }
-                return item instanceof EntityItem && !item.getItem().isEmpty() && RatUtils.shouldRaidItem(item.getItem()) && rat.canRatPickupItem(item.getItem());
+                return !stack.isEmpty() && RatUtils.shouldRaidItem(stack) && rat.canRatPickupItem(stack);
             }
         };
         this.setMutexBits(0);
@@ -57,13 +59,22 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.getCommand() == RatCommand.HARVEST && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
+        if (!this.mustUpdate ) {
+            long worldTime = this.taskOwner.world.getWorldTime() % 10;
+            if (this.rat.getIdleTime() >= 100 && worldTime != 0) {
+                return false;
+            }
+            if (this.rat.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                return false;
+            }
+        }
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
-
         if (list.isEmpty()) {
             return false;
         } else {
             Collections.sort(list, this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
+            this.mustUpdate = false;
             return true;
         }
     }
@@ -103,7 +114,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             if (this.targetEntity.getThrower() != null) {
                 EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
                 if (targetPlayer != null && RatUtils.isCheese(duplicate)) {
-                    if(!rat.isTamed() && rat.canBeTamed()){
+                    if (!rat.isTamed() && rat.canBeTamed()) {
                         rat.wildTrust += 10;
                         rat.cheeseFeedings++;
                         rat.world.setEntityState(rat, (byte) 82);
@@ -113,12 +124,12 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
                             rat.setOwnerId(targetPlayer.getUniqueID());
                             rat.setCommand(RatCommand.FOLLOW);
                         }
-                    }else {
+                    } else {
                         String untameableText = "entity.rat.untameable";
-                        if(rat.getOwner() != null && !rat.getOwnerId().equals(targetPlayer.getUniqueID())){
+                        if (rat.getOwner() != null && !rat.getOwnerId().equals(targetPlayer.getUniqueID())) {
                             untameableText = "entity.rat.tamed_by_other";
                         }
-                        if(!rat.isOwner(targetPlayer)){
+                        if (!rat.isOwner(targetPlayer)) {
                             targetPlayer.sendStatusMessage(new TextComponentTranslation(untameableText), true);
                         }
                     }
@@ -127,6 +138,10 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             }
             resetTask();
         }
+    }
+
+    public void makeUpdate() {
+        this.mustUpdate = true;
     }
 
     @Override
