@@ -709,15 +709,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     @Override
     public void onLivingUpdate() {
-        //prevInTube = inTube;
         this.setRatStatus(RatStatus.IDLE);
-        if (!this.inTube() && this.getNavigator().getPath() != null) {
-            if (this.getNavigator().getPath().getFinalPathPoint() != null) {
-                BlockPos endPoint = new BlockPos(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
-                //world.setBlockState(endPoint.down(), Blocks.EMERALD_BLOCK.getDefaultState());
-            }
-        }
-        if (this.inTubeFast()) {
+        if (inTube()) {
             if (tubeCooldown < 10) {
                 tubeCooldown++;
             }
@@ -1033,9 +1026,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (this.getAttackTarget() != null) {
                 this.setAttackTarget(null);
             }
-            /*if (this.getCommand() != RatCommand.SIT && this.getCommand() != RatCommand.WANDER) {
-                this.setCommand(RatCommand.WANDER);
-            }*/
         }
         if (this.isTamed() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
             TileEntity te = world.getTileEntity(new BlockPos(this).down());
@@ -1231,7 +1221,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public void createBabiesFrom(EntityRat mother, EntityRat father) {
-        for (int i = 0; i < 1; i++) {//change later
+        for (int i = 0; i < 1; i++) {
             EntityRat baby = new EntityRat(this.world);
             baby.setMale(this.rand.nextBoolean());
             int babyColor = 0;
@@ -1878,6 +1868,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return false;
     }
 
+    public void setTamed(boolean tamed) {
+        if(tamed){
+            Arrays.fill(this.inventoryArmorDropChances, 1.0F);
+            Arrays.fill(this.inventoryHandsDropChances, 1.0F);
+        }
+        super.setTamed(tamed);
+    }
+
     public int getTalkInterval() {
         if (this.hasPlague() && this.isTamed()) {
             return 200;
@@ -2043,11 +2041,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }
         return livingdata;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public String[] getVariantTexturePaths() {
-        return RAT_TEXTURES;
     }
 
     @SideOnly(Side.CLIENT)
@@ -2403,11 +2396,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return true;
         }
         return super.isEntityInvulnerable(source);
-    }
-
-    protected void setupTamedAI() {
-        Arrays.fill(this.inventoryArmorDropChances, 1.0F);
-        Arrays.fill(this.inventoryHandsDropChances, 1.0F);
     }
 
     public boolean shouldBeSuckedIntoTube() {
