@@ -30,7 +30,7 @@ public class RatAIPickupFluid extends EntityAIBase {
     public RatAIPickupFluid(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

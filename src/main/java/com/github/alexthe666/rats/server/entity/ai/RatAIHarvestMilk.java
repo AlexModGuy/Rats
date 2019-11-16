@@ -52,7 +52,7 @@ public class RatAIHarvestMilk extends EntityAIBase {
     public RatAIHarvestMilk(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

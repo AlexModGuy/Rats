@@ -40,7 +40,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new RatAIHarvestFisherman.BlockSorter(entity);
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

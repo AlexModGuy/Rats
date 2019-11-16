@@ -41,7 +41,7 @@ public class RatAIHarvestShears extends EntityAIBase {
     public RatAIHarvestShears(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

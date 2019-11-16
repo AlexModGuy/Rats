@@ -22,7 +22,7 @@ public class RatAIPickupEnergy extends EntityAIBase {
     public RatAIPickupEnergy(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

@@ -12,6 +12,7 @@ public class RatAIFleePosition extends EntityAIBase {
 
     public RatAIFleePosition(EntityRat rat) {
         this.rat = rat;
+        this.setMutexBits(1);
     }
 
     @Override

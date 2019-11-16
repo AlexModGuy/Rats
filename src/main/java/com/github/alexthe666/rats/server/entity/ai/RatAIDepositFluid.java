@@ -38,7 +38,7 @@ public class RatAIDepositFluid extends EntityAIBase {
     public RatAIDepositFluid(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

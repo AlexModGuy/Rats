@@ -29,7 +29,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
         this(creature, checkSight, false);
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     public RatAITargetItems(EntityRat creature, boolean checkSight, boolean onlyNearby) {

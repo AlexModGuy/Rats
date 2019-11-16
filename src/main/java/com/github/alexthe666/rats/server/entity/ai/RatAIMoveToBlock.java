@@ -28,7 +28,7 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
         this.movementSpeed = speedIn;
         this.searchLength = length;
         this.distanceCheck = 1.0D;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     /**

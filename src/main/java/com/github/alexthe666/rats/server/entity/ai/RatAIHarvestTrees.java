@@ -35,7 +35,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new RatAIHarvestTrees.BlockSorter(entity);
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     public static final boolean isBlockLog(World world, BlockPos pos) {

@@ -41,7 +41,7 @@ public class RatAIDepositEnergy extends EntityAIBase {
     public RatAIDepositEnergy(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override

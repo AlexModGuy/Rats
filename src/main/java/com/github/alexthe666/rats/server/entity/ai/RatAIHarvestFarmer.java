@@ -32,7 +32,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(0);
+        this.setMutexBits(1);
     }
 
     @Override
