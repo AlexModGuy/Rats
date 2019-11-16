@@ -39,7 +39,12 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.conditions.RandomChance;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -317,4 +322,37 @@ public class ServerEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onChestGenerated(LootTableLoadEvent event) {
+        if(RatsMod.CONFIG_OPTIONS.addLoot) {
+            if (event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)
+                    || event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)
+                    || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)
+                    || event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST) || event.getName().equals(LootTableList.CHESTS_WOODLAND_MANSION)
+                    || event.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
+                LootCondition chance = new RandomChance(0.4f);
+                LootEntryItem item = new LootEntryItem(RatsItemRegistry.CONTAMINATED_FOOD, 20, 1, new LootFunction[0], new LootCondition[0], "rats:contaminated_food");
+                LootPool pool = new LootPool(new LootEntry[]{item}, new LootCondition[]{chance}, new RandomValueRange(1, 5), new RandomValueRange(0, 3), "rats:contaminated_food");
+                event.getTable().addPool(pool);
+            }
+            if (event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)
+                    || event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)
+                    || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)) {
+                LootCondition chance = new RandomChance(0.2f);
+                LootEntryItem item = new LootEntryItem(RatsItemRegistry.TOKEN_FRAGMENT, 8, 10, new LootFunction[0], new LootCondition[0], "rats:token_fragment");
+                LootPool pool = new LootPool(new LootEntry[]{item}, new LootCondition[]{chance}, new RandomValueRange(1, 1), new RandomValueRange(0, 1), "token_fragment");
+                event.getTable().addPool(pool);
+            }
+            if (event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)
+                    || event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)
+                    || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)) {
+                LootCondition chance = new RandomChance(0.05f);
+                LootEntryItem item = new LootEntryItem(RatsItemRegistry.RAT_UPGRADE_BASIC, 3, 8, new LootFunction[0], new LootCondition[0], "rats:rat_upgrade_basic");
+                LootPool pool = new LootPool(new LootEntry[]{item}, new LootCondition[]{chance}, new RandomValueRange(1, 1), new RandomValueRange(0, 0), "rat_upgrade_basic");
+                event.getTable().addPool(pool);
+            }
+        }
+    }
+
 }
