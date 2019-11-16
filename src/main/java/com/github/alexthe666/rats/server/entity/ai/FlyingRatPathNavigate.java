@@ -17,7 +17,7 @@ public class FlyingRatPathNavigate extends PathNavigateFlying {
     }
 
     public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
+        if (rat.hasFlight()) {
             rat.getMoveHelper().setMoveTo(entityIn.posX, entityIn.posY + entityIn.height, entityIn.posZ, 0.25D);
         }
         Path path = this.getPathToEntityLiving(entityIn);
@@ -25,7 +25,7 @@ public class FlyingRatPathNavigate extends PathNavigateFlying {
     }
 
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
+        if (rat.hasFlight()) {
             rat.getMoveHelper().setMoveTo(x, y, z, 0.25D);
         }
         return this.setPath(this.getPathToXYZ(x, y, z), speedIn);

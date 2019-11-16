@@ -33,6 +33,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/baby.png");
     private static final ResourceLocation ENDER_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_ender_upgrade.png");
     private static final ResourceLocation AQUATIC_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_aquatic_upgrade.png");
+    private static final ResourceLocation DRAGON_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_dragon_upgrade.png");
     private static final ResourceLocation JULIAN = new ResourceLocation("rats:textures/entity/rat/patreon/rat_julian.png");
     private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
     private static final ResourceLocation SHARVA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_sharva.png");
@@ -104,6 +105,9 @@ public class RenderRat extends RenderLiving<EntityRat> {
         if (entity.isChild()) {
             return PINKIE_TEXTURE;
         } else {
+            if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+                return DRAGON_UPGRADE_TEXTURE;
+            }
             if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 return ENDER_UPGRADE_TEXTURE;
             }

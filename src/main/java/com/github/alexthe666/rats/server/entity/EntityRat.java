@@ -162,6 +162,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
     private int rangedAttackCooldownPsychic = 0;
+    private int rangedAttackCooldownDragon = 0;
     private int visualCooldown = 0;
     private int poopCooldown = 0;
 
@@ -764,7 +765,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (this.flyingPitch < 1F && flyingPitch > -1F && onGround) {
                 this.flyingPitch = 0;
             }
-        } else if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && !this.isInWater()) {
+        } else if (this.hasFlight() && !this.isInWater()) {
             if (navigatorType != 2) {
                 switchNavigator(2);
             }
@@ -1183,6 +1184,29 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            if (this.getVisualFlag() && visualCooldown == 0) {
+                this.setVisualFlag(false);
+            }
+            if (rangedAttackCooldownDragon == 0 && this.getAttackTarget() != null) {
+                rangedAttackCooldownDragon = 5;
+                float radius = 0.3F;
+                float angle = (0.01745329251F * (this.renderYawOffset));
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
+                double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
+                double extraY = 0.2 + posY;
+                double targetRelativeX = this.getAttackTarget().posX - extraX;
+                double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height / 2 - extraY;
+                double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
+                this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.25F + rand.nextFloat() * 0.5F);
+                EntityRatDragonFire beam = new EntityRatDragonFire(world, this, targetRelativeX, targetRelativeY, targetRelativeZ);
+                beam.setPosition(extraX, extraY, extraZ);
+                if (!world.isRemote) {
+                    world.spawnEntity(beam);
+                }
+            }
+            this.extinguish();
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
             if (rangedAttackCooldownLaser == 0 && this.getAttackTarget() != null) {
                 rangedAttackCooldownLaser = 10;
@@ -1215,6 +1239,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (rangedAttackCooldownPsychic > 0) {
             rangedAttackCooldownPsychic--;
+        }
+        if (rangedAttackCooldownDragon > 0) {
+            rangedAttackCooldownDragon--;
         }
         if (visualCooldown > 0) {
             visualCooldown--;
@@ -1963,13 +1990,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public void fall(float distance, float damageMultiplier) {
-        if (!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube()) {
+        if (!this.hasFlight() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube()) {
             super.fall(distance, damageMultiplier);
         }
     }
 
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
-        if (!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) && !this.inTube()) {
+        if (!this.hasFlight() && !this.inTube()) {
             super.updateFallState(y, onGroundIn, state, pos);
         }
     }
@@ -2105,7 +2132,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean shouldEyesGlow() {
-        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
+        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
     }
 
     @Nullable
@@ -2376,6 +2403,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             flagHealth = true;
             flagArmor = true;
         }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 50D);
+            tryIncreaseStat(SharedMonsterAttributes.ARMOR, 15D);
+            tryIncreaseStat(SharedMonsterAttributes.ATTACK_DAMAGE, 8D);
+            flagHealth = true;
+            flagArmor = true;
+            flagAttack = true;
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
             tryIncreaseStat(SharedMonsterAttributes.MAX_HEALTH, 1000D);
             tryIncreaseStat(SharedMonsterAttributes.ARMOR, 100D);
@@ -2420,7 +2455,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isEntityInvulnerable(DamageSource source) {
-        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
             return true;
         }
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
@@ -2498,5 +2533,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return ItemRatUpgradeBucket.getMbTransferRate(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET);
         }
         return 0;
+    }
+
+    public boolean hasFlight(){
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) ||this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
     }
 }

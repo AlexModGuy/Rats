@@ -65,6 +65,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
     public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":dragon_wing")
+    public static Item DRAGON_WING = new ItemGeneric("dragon_wing");
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plastic_waste")
     public static Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
 
@@ -201,6 +204,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_flight")
     public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_dragon")
+    public static Item RAT_UPGRADE_DRAGON = new ItemRatUpgrade("rat_upgrade_dragon", 1, 5);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_aquatic")
     public static Item RAT_UPGRADE_AQUATIC = new ItemRatUpgrade("rat_upgrade_aquatic", 0, 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ender")

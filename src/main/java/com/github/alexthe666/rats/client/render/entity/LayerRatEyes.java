@@ -17,6 +17,7 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
     private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png");
     private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png");
     private static final ResourceLocation TEXTURE_NONBELIEVER = new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png");
+    private static final ResourceLocation TEXTURE_DRAGON = new ResourceLocation("rats:textures/entity/rat/rat_eye_dragon_upgrade.png");
     private final RenderRat ratRenderer;
 
     public LayerRatEyes(RenderRat ratRendererIn) {
@@ -39,7 +40,9 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
             brightness = Math.max(i, j);
         }
         if (brightness < 7 || rat.shouldEyesGlow()) {
-            if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+                this.ratRenderer.bindTexture(TEXTURE_DRAGON);
+            }else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
                 this.ratRenderer.bindTexture(TEXTURE_NONBELIEVER);
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 this.ratRenderer.bindTexture(TEXTURE_ENDER);

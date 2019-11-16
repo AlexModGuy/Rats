@@ -1,0 +1,27 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BBB",
+    "LLB",
+    "  L"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "boneDragon"
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "fireDragonScaleBlock"
+    }
+  },
+  "result": {
+    "item": "rats:dragon_wing"
+  }
+}

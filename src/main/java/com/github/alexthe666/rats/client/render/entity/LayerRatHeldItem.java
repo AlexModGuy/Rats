@@ -30,6 +30,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
+    private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
     private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
     protected static final ModelChest MODEL_CHEST = new ModelChest();
     RenderRat renderer;
@@ -254,6 +255,32 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
             minecraft.getItemRenderer().renderItem(entity, WING_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
+            float wingFold = entity.onGround ? -45 : 0;
+            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
+            ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0F, -0.1F, 0F);
+            GlStateManager.rotate(wingAngle, 0.0F, 0.0F, -1.0F);
+            GlStateManager.rotate(wingFold, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.55F, 0, 0.2F);
+            GlStateManager.rotate(-90F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(entity, DRAGON_WING_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0F, -0.1F, 0F);
+            GlStateManager.rotate(wingAngle, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(wingFold, 0.0F, -1.0F, 0.0F);
+            GlStateManager.translate(-0.55F, 0F, 0.2F);
+            GlStateManager.rotate(-90F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(entity, DRAGON_WING_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {

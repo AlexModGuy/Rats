@@ -1,0 +1,39 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "iceandfire"
+    }
+  ],
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CAC",
+    "DFD",
+    "CWC"
+  ],
+  "key": {
+    "D": {
+      "item": "rats:dragon_wing",
+      "data": 0
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "fireDragonScaleBlock"
+    },
+    "W": {
+      "item": "rats:rat_upgrade_warrior",
+      "data": 0
+    },
+    "A": {
+      "item": "rats:rat_upgrade_asbestos",
+      "data": 0
+    },
+    "F": {
+      "item": "rats:rat_upgrade_flight",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_dragon"
+  }
+}

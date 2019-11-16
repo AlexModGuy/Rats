@@ -1,0 +1,5 @@
+{
+  "conditions": {
+    "iceandfire_not_loaded": "com.github.alexthe666.rats.server.recipes.IceAndFireConditionFactory"
+  }
+}
