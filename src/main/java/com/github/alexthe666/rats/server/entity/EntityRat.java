@@ -1662,7 +1662,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             vertical = 0;
             forward = 0;
             this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
-            this.getNavigator().clearPath();
+            if(this.getNavigator().getPath() != null){
+                this.getNavigator().clearPath();
+            }
         }
         super.travel(strafe, vertical, forward);
     }
@@ -2133,7 +2135,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean onHearFlute(EntityPlayer player, RatCommand ratCommand) {
-        if (this.isTamed() && this.isOwner(player) && !this.isChild()) {
+        if (this.isTamed() && this.isOwner(player) && !this.isChild() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE)) {
             this.setCommand(ratCommand);
             return true;
         }

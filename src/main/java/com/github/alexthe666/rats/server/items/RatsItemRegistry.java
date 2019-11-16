@@ -259,6 +259,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_DISENCHANTER = new ItemRatUpgrade("rat_upgrade_disenchanter", 1, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_christmas")
     public static Item RAT_UPGRADE_CHRISTMAS = new ItemRatUpgrade("rat_upgrade_christmas", 2, 3);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_no_flute")
+    public static Item RAT_UPGRADE_NO_FLUTE = new ItemRatUpgrade("rat_upgrade_no_flute", 0, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_archeologist")
     public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_ratlantean")
