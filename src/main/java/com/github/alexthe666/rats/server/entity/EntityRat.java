@@ -127,6 +127,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public boolean waterBased = false;
     public boolean crafting = false;
     public int cookingProgress = 0;
+    public int coinCooldown = 0;
     public int breedCooldown = 0;
     public float flyingPitch;
     public float prevFlyingPitch;
@@ -467,6 +468,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         super.writeEntityToNBT(compound);
         compound.setInteger("DigCooldown", digCooldown);
         compound.setInteger("BreedCooldown", breedCooldown);
+        compound.setInteger("CoinCooldown", coinCooldown);
         compound.setInteger("CheeseFeedings", cheeseFeedings);
         compound.setInteger("TransportingRF", this.getHeldRF());
         compound.setInteger("Command", this.getCommandInteger());
@@ -513,6 +515,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         super.readEntityFromNBT(compound);
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
+        coinCooldown = compound.getInteger("CoinCooldown");
         wildTrust = compound.getInteger("WildTrust");
         eatenItems = compound.getInteger("EatenItems");
         cheeseFeedings = compound.getInteger("CheeseFeedings");
@@ -989,6 +992,17 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 if (cookingProgress == 71999) {
                     this.world.setEntityState(this, (byte) 126);
                 }
+            }
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)){
+            if(this.coinCooldown <= 0){
+                this.coinCooldown = this.rand.nextInt(6000) + 6000;
+                if(!world.isRemote){
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.TINY_COIN, 1 + rand.nextInt(2)), 0.0F);
+                }
+                this.playSound(SoundEvents.ENTITY_CHICKEN_EGG,  this.getSoundVolume(), this.getSoundPitch());
+            }else{
+                coinCooldown--;
             }
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
@@ -2315,6 +2329,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean flagArmor = false;
         boolean flagAttack = false;
         boolean flagSpeed = false;
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT) && this.coinCooldown == 0){
+            this.coinCooldown = this.rand.nextInt(6000) + 6000;
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SPEED)) {
             tryIncreaseStat(SharedMonsterAttributes.MOVEMENT_SPEED, 0.5D);
             flagSpeed = true;
