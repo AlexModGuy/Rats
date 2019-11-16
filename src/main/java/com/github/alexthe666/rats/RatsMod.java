@@ -70,6 +70,7 @@ public class RatsMod {
     public static Potion PLAGUE_POTION = new PotionPlague();
     public static Configuration config;
     public static RatConfig CONFIG_OPTIONS = new RatConfig();
+    public static boolean iafLoaded;
 
     public static void loadConfig() {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
@@ -124,6 +125,7 @@ public class RatsMod {
         CraftTweakerCompatBridge.loadTweakerCompat();
         TinkersCompatBridge.loadTinkersCompat();
         ThaumcraftCompatBridge.loadThaumcraftCompat();
+        iafLoaded = Loader.isModLoaded("iceandfire");
     }
 
     @EventHandler

@@ -180,6 +180,8 @@ public class RatsItemRegistry {
     public static Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic")
     public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_creative")
+    public static Item RAT_UPGRADE_CREATIVE = new ItemRatUpgrade("rat_upgrade_creative", 3, 0);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_speed")
     public static Item RAT_UPGRADE_SPEED = new ItemRatUpgrade("rat_upgrade_speed");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_platter")

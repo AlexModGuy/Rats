@@ -510,6 +510,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             transportingFluid.writeToNBT(fluidTag);
             compound.setTag("TransportingFluid", fluidTag);
         }
+        if (this.hasCustomName()) {
+            compound.setString("CustomName", this.getCustomNameTag());
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
@@ -562,6 +565,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
         }
+        if (compound.hasKey("CustomName", 8)) {
+            this.setCustomNameTag(compound.getString("CustomName"));
+        }
+
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -995,14 +1002,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)){
-            if(this.coinCooldown <= 0){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)) {
+            if (this.coinCooldown <= 0) {
                 this.coinCooldown = this.rand.nextInt(6000) + 6000;
-                if(!world.isRemote){
+                if (!world.isRemote) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.TINY_COIN, 1 + rand.nextInt(2)), 0.0F);
                 }
-                this.playSound(SoundEvents.ENTITY_CHICKEN_EGG,  this.getSoundVolume(), this.getSoundPitch());
-            }else{
+                this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, this.getSoundVolume(), this.getSoundPitch());
+            } else {
                 coinCooldown--;
             }
         }
@@ -1247,8 +1254,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             visualCooldown--;
         }
         prevUpgrade = this.getUpgradeSlot();
-        if(!world.isRemote){
-            if(this.isTamed()){
+        if (!world.isRemote) {
+            if (this.isTamed()) {
                 inTube = inTubeLogic();
             }
             inCage = inCageLogic();
@@ -1689,7 +1696,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             vertical = 0;
             forward = 0;
             this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
-            if(this.getNavigator().getPath() != null){
+            if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
         }
@@ -2150,14 +2157,32 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (!this.hasPlague() && this.getHealth() <= this.getMaxHealth() / 2D || this.isChild()) {
             return RatsSoundRegistry.RAT_IDLE;
         }
+        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_idle"));
+            if (possibleDragonSound != null) {
+                return possibleDragonSound;
+            }
+        }
         return super.getAmbientSound();
     }
 
     protected SoundEvent getDeathSound() {
+        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_death"));
+            if (possibleDragonSound != null) {
+                return possibleDragonSound;
+            }
+        }
         return RatsSoundRegistry.RAT_DIE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_hurt"));
+            if (possibleDragonSound != null) {
+                return possibleDragonSound;
+            }
+        }
         return RatsSoundRegistry.RAT_HURT;
     }
 
@@ -2358,7 +2383,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         boolean flagArmor = false;
         boolean flagAttack = false;
         boolean flagSpeed = false;
-        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT) && this.coinCooldown == 0){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT) && this.coinCooldown == 0) {
             this.coinCooldown = this.rand.nextInt(6000) + 6000;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SPEED)) {
@@ -2455,7 +2480,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isEntityInvulnerable(DamageSource source) {
-        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION)  || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
+        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
             return true;
         }
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
@@ -2469,6 +2494,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (source.isExplosion() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
             return true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CREATIVE)) {
+            return source.getTrueSource() == null || source.getTrueSource() instanceof EntityLivingBase && !isOwner((EntityLivingBase) source.getTrueSource());
         }
         return super.isEntityInvulnerable(source);
     }
@@ -2535,7 +2563,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return 0;
     }
 
-    public boolean hasFlight(){
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) ||this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
+    public boolean hasFlight() {
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
     }
 }
