@@ -28,7 +28,7 @@ public class RenderBlackDeath extends RenderLiving<EntityBlackDeath> {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelBlackDeath) this.livingEntityRenderer.getMainModel()).getArm(p_191361_1_).postRender(0.0625F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.translate(0.1F, 0.1F, 0);
+                GlStateManager.translate( p_191361_1_ == EnumHandSide.LEFT ? -0.1F : 0.1F, 0.1F, 0);
             }
         });
     }
