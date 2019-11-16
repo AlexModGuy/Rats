@@ -59,7 +59,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.tasks.addTask(5, new RatAIEnterTrap(this));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 5, true, false, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 return !(entity instanceof IRatlantean) && entity instanceof EntityLivingBase && !entity.isOnSameTeam(EntityPirat.this);
             }

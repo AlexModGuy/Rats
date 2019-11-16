@@ -2120,7 +2120,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean shouldHunt() {
-        return this.getCommand() == RatCommand.HUNT && this.getHealth() >= this.getMaxHealth() / 2F || !this.isTamed() && this.hasPlague();
+        return this.getCommandInteger() == 3 && this.getHealth() >= this.getMaxHealth() / 2F || !this.isTamed() && this.hasPlague();
     }
 
     public String getName() {
