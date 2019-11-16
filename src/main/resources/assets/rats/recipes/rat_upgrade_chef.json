@@ -1,9 +1,9 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "ATA",
-    "AUA",
-    "ACA"
+    "CTC",
+    "CUC",
+    "CAC"
   ],
   "key": {
     "C": {
