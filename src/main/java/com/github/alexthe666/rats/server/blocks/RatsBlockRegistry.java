@@ -41,7 +41,7 @@ public class RatsBlockRegistry {
     public static Block RAT_CAGE_BREEDING_LANTERN = new BlockRatCageBreedingLantern();
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":fish_barrel")
-    public static Block FISH_BARREL = new BlockGenericPillar("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
+    public static Block FISH_BARREL = new BlockGenericFacing("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
