@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "rats:psionic_rat_brain"
+
+    }
+  },
+  "result": {
+    "item": "rats:brain_block"
+  }
+}

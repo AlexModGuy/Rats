@@ -96,6 +96,8 @@ public class RatsBlockRegistry {
     public static Block RATLANTIS_PORTAL = new BlockRatlantisPortal();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":compressed_rat")
     public static Block COMPRESSED_RAT = new BlockCompressedRat();
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":brain_block")
+    public static Block BRAIN_BLOCK = new BlockBrain();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":jack_o_ratern")
     public static Block JACK_O_RATERN = new BlockJackORatern();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_combiner")

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelPiratCannon;
 import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -21,6 +22,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
+    protected static final ModelChest MODEL_CHEST = new ModelChest();
+    private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
@@ -31,8 +34,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
-    private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
-    protected static final ModelChest MODEL_CHEST = new ModelChest();
+    private static  ItemStack BRAIN_STACK = new ItemStack(RatsBlockRegistry.BRAIN_BLOCK);
     RenderRat renderer;
 
     public LayerRatHeldItem(RenderRat renderer) {
@@ -232,6 +234,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
+            GlStateManager.pushMatrix();
             Minecraft minecraft = Minecraft.getMinecraft();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
@@ -255,9 +258,11 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
             minecraft.getItemRenderer().renderItem(entity, WING_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            GlStateManager.pushMatrix();
             Minecraft minecraft = Minecraft.getMinecraft();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
@@ -281,6 +286,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(2, 2, 1);
             minecraft.getItemRenderer().renderItem(entity, DRAGON_WING_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
@@ -291,6 +297,17 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.rotate(180, 1.0F, 0.0F, 0.0F);
             GlStateManager.scale(2, 2, 2);
             minecraft.getItemRenderer().renderItem(entity, TNT_STACK, ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+            Minecraft minecraft = Minecraft.getMinecraft();
+            GlStateManager.pushMatrix();
+            translateToHead();
+            GlStateManager.translate(0F, 0.1F, 0.035F);
+            GlStateManager.rotate(180, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
+            GlStateManager.scale(0.9F, 0.9F, 0.9F);
+            minecraft.getItemRenderer().renderItem(entity, BRAIN_STACK, ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
     }
