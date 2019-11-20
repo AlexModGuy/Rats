@@ -59,6 +59,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_sack")
     public static Item RAT_SACK = new ItemRatSack();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_arrow")
+    public static Item RAT_ARROW = new ItemRatArrow();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_capture_net")
     public static Item RAT_CAPTURE_NET = new ItemRatCaptureNet();
 

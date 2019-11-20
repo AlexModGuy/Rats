@@ -1924,6 +1924,24 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     player.swingArm(hand);
                     player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.bind", this.getName()), true);
                     return true;
+                } else if (itemstack.getItem() == Items.ARROW) {
+                    RatsMod.PROXY.setRefrencedRat(this);
+                    itemstack.shrink(1);
+                    ItemStack ratArrowStack = new ItemStack(RatsItemRegistry.RAT_ARROW);
+                    NBTTagCompound compound = new NBTTagCompound();
+                    NBTTagCompound ratTag = new NBTTagCompound();
+                    this.writeEntityToNBT(ratTag);
+                    compound.setTag("Rat", ratTag);
+                    ratArrowStack.setTagCompound(compound);
+                    if (itemstack.isEmpty()) {
+                        player.setHeldItem(hand, ratArrowStack);
+                    } else if (!player.inventory.addItemStackToInventory(ratArrowStack)) {
+                        player.dropItem(ratArrowStack, false);
+                    }
+                    this.playSound(RatsSoundRegistry.RAT_HURT, 1, 1);
+                    player.swingArm(hand);
+                    this.setDead();
+                    return true;
                 } else if (!player.isSneaking() && this.canBeTamed()) {
                     openGUI(player);
                     return true;
@@ -2565,5 +2583,15 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public boolean hasFlight() {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
+    }
+
+    public boolean isOnSameTeam(Entity entityIn){
+        if(entityIn instanceof EntityTameable){
+            EntityTameable tameable = (EntityTameable)entityIn;
+            if(tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())){
+                return true;
+            }
+        }
+        return super.isOnSameTeam(entityIn);
     }
 }

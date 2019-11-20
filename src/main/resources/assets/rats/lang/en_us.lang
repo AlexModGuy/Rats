@@ -84,6 +84,7 @@ item.rats.contaminated_food.desc0=A wild rodent has touched this food.
 item.rats.contaminated_food.desc1=Not a good idea to eat this.
 item.rats.rat_nugget.name=Rat §o"Nugget"
 item.rats.rat_nugget_ore.name=%s§o"Nugget"
+item.rats.rat_arrow.name=Rat on Arrow
 item.rats.rat_nugget_remove_tag.name=Ingot
 item.rats.cheese_stick.desc0=Use on a rat to bind it
 item.rats.cheese_stick.desc1=Interact with an block to allow the rat to deposit or pick up items in it
