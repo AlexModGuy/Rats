@@ -220,7 +220,7 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_miner")
     public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_farmer")
-    public static Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 2);
+    public static Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 3);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_breeder")
     public static Item RAT_UPGRADE_BREEDER = new ItemRatUpgrade("rat_upgrade_breeder", 1, 2);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_fisherman")
