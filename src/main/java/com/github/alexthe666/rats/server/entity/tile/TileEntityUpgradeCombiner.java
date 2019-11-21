@@ -44,7 +44,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     public static int getItemBurnTime(ItemStack stack) {
-        return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS ? 300 : 0;
+        return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS ? 150 : 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -95,7 +95,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     public int getCookTime(ItemStack stack) {
-        return 200;
+        return 300;
     }
 
     public void readFromNBT(NBTTagCompound compound) {
@@ -131,7 +131,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     public void update() {
-        this.totalCookTime = 1000;
+        this.totalCookTime = 300;
         this.ratRotationPrev = this.ratRotation;
         ticksExisted++;
         boolean flag = this.isBurning();

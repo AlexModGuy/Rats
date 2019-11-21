@@ -51,6 +51,10 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickable 
                 if(spawnedItem > 0){
                     entityItem.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
                     entityItem.setDead();
+                    EntityItem splitEntity = new EntityItem(this.getWorld(), entityItem.posX, entityItem.posY, entityItem.posZ, new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS, spawnedItem));
+                    if (!world.isRemote) {
+                        world.spawnEntity(splitEntity);
+                    }
                 }
             }
         }
