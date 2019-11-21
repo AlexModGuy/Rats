@@ -27,11 +27,8 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.4F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                if (rat.shouldBeSuckedIntoTube()) {
-                    rat.justEnteredTube = true;
-                    Vec3d offsetPos = offsetTubePos();
-                    rat.setPosition(i + offsetPos.x, j + offsetPos.y, k + offsetPos.z);
-                }
+                rat.motionX *= 1.75F;
+                rat.motionZ *= 1.75F;
                 this.updateRat(rat);
             }
         }

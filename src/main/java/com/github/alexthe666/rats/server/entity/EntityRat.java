@@ -120,9 +120,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public EnumFacing depositFacing = EnumFacing.UP;
     public BlockPos pickupPos;
     public BlockPos tubeTarget = null;
-    public int tubeTicks;
     public int cheeseFeedings = 0;
-    public boolean justEnteredTube;
     public boolean climbingTube = false;
     public boolean waterBased = false;
     public boolean crafting = false;
@@ -142,7 +140,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
        4 = aquatic navigator
      */
     protected int navigatorType;
-    private int tubeCooldown = 0;
     private boolean inTube;
     private boolean inCage;
     private int animationTick;
@@ -221,16 +218,16 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }, 10.0F, 0.8D, 1.33D));
         this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
-        this.tasks.addTask(4, new RatAIWander(this, 1.0D));
-        this.tasks.addTask(4, new RatAIWanderFlight(this));
-        this.tasks.addTask(4, new RatAIWanderAquatic(this));
-        this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
+         this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(5, this.aiSit = new RatAISit(this));
-        this.tasks.addTask(6, new RatAIRaidChests(this));
-        this.tasks.addTask(6, new RatAIRaidCrops(this));
-        this.tasks.addTask(6, new RatAIEnterTrap(this));
-        this.tasks.addTask(6, new RatAIFleePosition(this));
-        this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
+        this.tasks.addTask(6, new RatAIWander(this, 1.0D));
+        this.tasks.addTask(6, new RatAIWanderFlight(this));
+        this.tasks.addTask(6, new RatAIWanderAquatic(this));
+        this.tasks.addTask(7, new RatAIRaidChests(this));
+        this.tasks.addTask(7, new RatAIRaidCrops(this));
+        this.tasks.addTask(7, new RatAIEnterTrap(this));
+        this.tasks.addTask(7, new RatAIFleePosition(this));
+            this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new RatAITargetItems(this, false));
@@ -293,8 +290,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             aiPickup = new RatAIPickupFromInventory(this);
         }
         this.tasks.addTask(4, this.aiHarvest);
-        this.tasks.addTask(6, this.aiDeposit);
-        this.tasks.addTask(6, this.aiPickup);
+        this.tasks.addTask(4, this.aiDeposit);
+        this.tasks.addTask(4, this.aiPickup);
     }
 
     @Nullable
@@ -729,15 +726,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     @Override
     public void onLivingUpdate() {
         this.setRatStatus(RatStatus.IDLE);
-        if (inTube()) {
-            if (tubeCooldown < 10) {
-                tubeCooldown++;
-            }
-        } else {
-            if (tubeCooldown > -20) {
-                tubeCooldown--;
-            }
-        }
         if (this.getUpgradeSlot() != prevUpgrade) {
             this.onUpgradeChanged();
         }
@@ -836,7 +824,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 this.flyingPitch = 0;
             }
         } else {
-            this.flyingPitch = 0;
+            if(!this.inTube()){
+                this.flyingPitch = 0;
+            }
             boolean wildNavigate = !this.isTamed() || this.isInCage();
             if (wildNavigate && navigatorType != 1) {
                 switchNavigator(1);
@@ -1255,16 +1245,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         prevUpgrade = this.getUpgradeSlot();
         if (!world.isRemote) {
-            if (this.isTamed()) {
-                inTube = inTubeLogic();
-            }
             inCage = inCageLogic();
         }
-
-        if (this.inTube) {
-            tubeTicks++;
-        } else {
-            tubeTicks = 0;
+        if (this.isTamed()) {
+            inTube = inTubeLogic();
         }
         if (poopCooldown > 0) {
             poopCooldown--;
@@ -2330,11 +2314,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     bb = bb.union(box);
                 }
                 bb = bb.grow(0.05F, 0, 0.05F).offset(pos);
-                boolean b = bb.contains(this.getPositionVector().add(0, this.height / 2, 0)) || bb.contains(this.getPositionVector()) && above;
-                if (b && !inTube) {
-                    justEnteredTube = false;
-                }
-                return b;
+                return bb.contains(this.getPositionVector().add(0, this.height / 2, 0)) || bb.contains(this.getPositionVector()) && above;
             }
         }
         return false;
@@ -2517,13 +2497,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return source.getTrueSource() == null || source.getTrueSource() instanceof EntityLivingBase && !isOwner((EntityLivingBase) source.getTrueSource());
         }
         return super.isEntityInvulnerable(source);
-    }
-
-    public boolean shouldBeSuckedIntoTube() {
-        if (!inTube()) {
-            return tubeCooldown <= 0;
-        }
-        return false;
     }
 
     @SideOnly(Side.CLIENT)

@@ -67,18 +67,19 @@ public class ItemRatArrow extends ItemArrow {
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if (stack.getTagCompound() != null && !stack.getTagCompound().getCompoundTag("Rat").isEmpty()) {
-            NBTTagCompound ratTag = stack.getTagCompound().getCompoundTag("Rat");
-            EntityRat rat = new EntityRat(worldIn);
-            BlockPos offset = pos.offset(facing);
-            rat.readEntityFromNBT(ratTag);
-            rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
-            if (!worldIn.isRemote) {
-                worldIn.spawnEntity(rat);
-            }
-            stack.shrink(1);
-            player.setHeldItem(hand, new ItemStack(Items.ARROW));
+        NBTTagCompound ratTag = new NBTTagCompound();
+        if(stack.getTagCompound() != null && stack.getTagCompound().getCompoundTag("Rat") != null){
+            ratTag = stack.getTagCompound().getCompoundTag("Rat");
         }
+        EntityRat rat = new EntityRat(worldIn);
+        BlockPos offset = pos.offset(facing);
+        rat.readEntityFromNBT(ratTag);
+        rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
+        if (!worldIn.isRemote) {
+            worldIn.spawnEntity(rat);
+        }
+        stack.shrink(1);
+        player.setHeldItem(hand, new ItemStack(Items.ARROW));
         player.swingArm(hand);
         return EnumActionResult.SUCCESS;
     }

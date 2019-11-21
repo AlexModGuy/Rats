@@ -66,18 +66,21 @@ public class RatPathFinder extends PathFinder {
             for (BlockPos pos : openTubes) {
                 BlockPos tubeOffset = pos;
                 boolean inside = true;
-                if(rat.getDistanceSqToCenter(pos) > 0.6F){
+                if (rat.getDistanceSqToCenter(pos) > 0.6F) {
                     inside = false;
                     tubeOffset = RatUtils.offsetTubeEntrance(worldIn, pos);
                 }
                 AStar aStar = new AStar(pos, endPos, 1000, true);
                 BlockPos[] pathBlocks = aStar.getPath(worldIn);
                 if (pathBlocks.length > 1) {
-                    Path path;
-                    if(inside){
-                        path = findAlreadyTubePath(worldIn, pathFrom, pos, maxDistance);
-                    }else{
-                        path = findTubePath(worldIn, pathFrom, tubeOffset, pos, maxDistance);
+                    Path path = null;
+                    BlockPos finalAStarPath = pathBlocks[pathBlocks.length - 1];
+                    if (finalAStarPath != null && finalAStarPath.distanceSq(endPos) < rat.getDistanceSq(endPos)) {
+                        if (inside) {
+                            path = findAlreadyTubePath(worldIn, pathFrom, pos, maxDistance);
+                        } else {
+                            path = findTubePath(worldIn, pathFrom, tubeOffset, pos, maxDistance);
+                        }
                     }
                     if (path != null && path.getFinalPathPoint() != null) {
                         tubePath = path;
