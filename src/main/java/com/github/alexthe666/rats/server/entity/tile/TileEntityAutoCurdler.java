@@ -26,6 +26,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
+import javax.annotation.Nullable;
+
 public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISidedInventory {
 
     private static final int[] SLOTS_TOP = new int[]{0};
@@ -40,6 +42,14 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     private int prevFluid = 0;
 
     public TileEntityAutoCurdler() {
+    }
+
+    public static boolean isMilk(ItemStack stack) {
+        if (stack.getItem() == Items.MILK_BUCKET) {
+            return true;
+        }
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+        return fluidStack != null && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"));
     }
 
     public int getSizeInventory() {
@@ -82,7 +92,6 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         }
     }
 
-
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         tank.readFromNBT(compound);
@@ -115,8 +124,8 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     public void update() {
-        if(!world.isRemote){
-            if(prevFluid != tank.getFluidAmount()){
+        if (!world.isRemote) {
+            if (prevFluid != tank.getFluidAmount()) {
                 RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
                 prevFluid = tank.getFluidAmount();
             }
@@ -156,7 +165,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
             FluidStack fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
             if (fluidStack != null) {
                 IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(curdlerStacks.get(0));
-                if(fluidHandler.drain(Integer.MAX_VALUE, false) != null && fluidHandler.drain(Integer.MAX_VALUE, false).amount > 0){
+                if (fluidHandler.drain(Integer.MAX_VALUE, false) != null && fluidHandler.drain(Integer.MAX_VALUE, false).amount > 0) {
                     if (tank.fill(fluidStack.copy(), false) != 0) {
                         tank.fill(fluidStack.copy(), true);
                         fluidHandler.drain(Integer.MAX_VALUE, true);
@@ -177,7 +186,6 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
             tank.drain(1000, true);
         }
     }
-
 
     public boolean canSmelt() {
         if (tank.getFluidAmount() < 1000) {
@@ -204,13 +212,13 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     public void openInventory(EntityPlayer player) {
-        if(!world.isRemote){
+        if (!world.isRemote) {
             RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }
     }
 
     public void closeInventory(EntityPlayer player) {
-        if(!world.isRemote){
+        if (!world.isRemote) {
             RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }
     }
@@ -222,14 +230,6 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         } else {
             return isMilk(stack);
         }
-    }
-
-    public static boolean isMilk(ItemStack stack) {
-        if (stack.getItem() == Items.MILK_BUCKET) {
-            return true;
-        }
-        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack != null && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"));
     }
 
     private boolean isMilkFluid(FluidStack fluid) {
@@ -303,6 +303,11 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     @Override
     public boolean hasCustomName() {
         return false;
+    }
+
+    @Override
+    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+        return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
