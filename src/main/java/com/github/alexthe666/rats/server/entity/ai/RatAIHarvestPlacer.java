@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -66,7 +67,7 @@ public class RatAIHarvestPlacer extends EntityAIBase {
                 IBlockState block = this.entity.world.getBlockState(this.targetBlock);
                 BlockPos moveToPos = this.targetBlock;
                 this.entity.getNavigator().tryMoveToXYZ(moveToPos.getX() + 0.5D, moveToPos.getY(), moveToPos.getZ() + 0.5D, 1D);
-                if (blockItem.getBlock().canPlaceBlockAt(entity.world, targetBlock)) {
+                if (blockItem.getBlock().canPlaceBlockAt(entity.world, targetBlock) && entity.world.mayPlace(blockItem.getBlock(), this.targetBlock, false, EnumFacing.UP, (Entity)null)) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 1.5F) {
                         ItemStack seedStack = this.entity.getHeldItem(EnumHand.MAIN_HAND).copy();
