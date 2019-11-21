@@ -6,6 +6,26 @@
             "entries": [
                 {
                     "type": "item",
+                    "name": "rats:token_piece",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "black_death",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
                     "name": "rats:herb_bundle",
                     "weight": 1,
                     "functions": [
