@@ -210,6 +210,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
+        this.tasks.addTask(0, new RatAIAttackMelee(this, 1.45D, true));
         this.tasks.addTask(1, new RatAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
         this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
@@ -227,7 +228,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(7, new RatAIRaidCrops(this));
         this.tasks.addTask(7, new RatAIEnterTrap(this));
         this.tasks.addTask(7, new RatAIFleePosition(this));
-            this.tasks.addTask(6, new RatAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new RatAITargetItems(this, false));

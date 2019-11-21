@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 
 public class RatAIAttackMelee extends EntityAIAttackMelee {
@@ -18,5 +19,9 @@ public class RatAIAttackMelee extends EntityAIAttackMelee {
 
     public boolean shouldExecute() {
         return !rat.isInCage() && super.shouldExecute();
+    }
+
+    protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+        return 1.5F;
     }
 }
