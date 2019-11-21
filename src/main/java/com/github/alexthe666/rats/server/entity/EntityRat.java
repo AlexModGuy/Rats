@@ -289,7 +289,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             aiDeposit = new RatAIDepositInInventory(this);
             aiPickup = new RatAIPickupFromInventory(this);
         }
-        this.tasks.addTask(4, this.aiHarvest);
+        this.tasks.addTask(3, this.aiHarvest);
         this.tasks.addTask(4, this.aiDeposit);
         this.tasks.addTask(4, this.aiPickup);
     }

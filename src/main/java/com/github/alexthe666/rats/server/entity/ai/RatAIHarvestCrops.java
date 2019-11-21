@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -50,7 +51,11 @@ public class RatAIHarvestCrops extends EntityAIBase {
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
             IBlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
-                allBlocks.add(pos);
+                Item item = block.getBlock().getItemDropped(block, entity.getRNG(), 0);
+                if(entity.canRatPickupItem(new ItemStack(item))){
+                    allBlocks.add(pos);
+
+                }
             }
         }
         if (!allBlocks.isEmpty()) {
