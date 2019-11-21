@@ -120,7 +120,13 @@ public class GuiCheeseStaff extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
+        if(mc != null){
+            try{
+                this.drawDefaultBackground();
+            }catch (Exception e){
+
+            }
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
         int i = (this.width - 248) / 2 + 10;
         int j = (this.height - 166) / 2 + 8;
