@@ -464,6 +464,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        compound.setInteger("CookingProgress", cookingProgress);
         compound.setInteger("DigCooldown", digCooldown);
         compound.setInteger("BreedCooldown", breedCooldown);
         compound.setInteger("CoinCooldown", coinCooldown);
@@ -514,6 +515,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+        cookingProgress = compound.getInteger("CookingProgress");
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
         coinCooldown = compound.getInteger("CoinCooldown");
