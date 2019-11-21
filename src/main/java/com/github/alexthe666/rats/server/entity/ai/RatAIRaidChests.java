@@ -121,11 +121,11 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                                 }
                             }
                         }
+                        this.entity.fleePos = this.destinationBlock;
                         this.destinationBlock = null;
                         this.resetTask();
 
                     }
-                    this.entity.fleePos = this.destinationBlock;
                 }
             }
 

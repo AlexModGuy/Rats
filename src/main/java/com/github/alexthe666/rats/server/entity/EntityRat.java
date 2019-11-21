@@ -1537,7 +1537,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             ++this.breakingTime;
             int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
             this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
-            this.getNavigator().clearPath();
+            if(this.getNavigator().getPath() != null){
+                this.getNavigator().clearPath();
+            }
             this.motionZ *= 0.0D;
             this.motionX *= 0.0D;
             if (breakingTime % 40 == 0) {

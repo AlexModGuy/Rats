@@ -64,12 +64,30 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
         }
     }
 
-    public boolean tryMoveToXYZ(double x, double y, double z, double speedIn)
-    {
+    public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         boolean supe = super.tryMoveToXYZ(x, y, z, speedIn);
         this.targetPosition = new BlockPos(x, y, z);
-        return supe ;
+        return supe;
     }
+
+    public void onUpdateNavigation() {
+        if(!((EntityRat) entity).isTamed()) {
+            if (!this.noPath()) {
+                super.onUpdateNavigation();
+            } else {
+                if (this.targetPosition != null) {
+                    double d0 = (double) (this.entity.width * this.entity.width);
+
+                    if (this.entity.getDistanceSqToCenter(this.targetPosition) >= d0 && (this.entity.posY <= (double) this.targetPosition.getY() || this.entity.getDistanceSqToCenter(new BlockPos(this.targetPosition.getX(), MathHelper.floor(this.entity.posY), this.targetPosition.getZ())) >= d0)) {
+                        this.entity.getMoveHelper().setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
+                    } else {
+                        this.targetPosition = null;
+                    }
+                }
+            }
+        }
+    }
+
 
     public void clearPath() {
         super.clearPath();
