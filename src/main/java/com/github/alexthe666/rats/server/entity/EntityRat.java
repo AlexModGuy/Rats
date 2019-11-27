@@ -1099,7 +1099,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 this.setAttackTarget(death.getAttackTarget());
             }
             if (this.getAttackTarget() == null || this.getAttackTarget().isDead) {
-                float radius = (float) 5 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.5F;
+                float radius = (float)5 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.5F;
                 int maxRatStuff = 360 / Math.max(death.getRatsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getRatsSummoned(), 1);
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
