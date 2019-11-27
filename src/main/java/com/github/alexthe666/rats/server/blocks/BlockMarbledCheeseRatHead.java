@@ -9,7 +9,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.BlockWorldState;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.pattern.BlockMaterialMatcher;
 import net.minecraft.block.state.pattern.BlockPattern;
 import net.minecraft.block.state.pattern.BlockStateMatcher;
@@ -31,9 +31,9 @@ import java.util.List;
 
 public class BlockMarbledCheeseRatHead extends BlockHorizontal {
 
-    private static final AxisAlignedBB HALF_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.5F, 1F);
-    private static final Predicate<IBlockState> IS_MARBLE = new Predicate<IBlockState>() {
-        public boolean apply(@Nullable IBlockState p_apply_1_) {
+    private static final AxisAlignedBB HALF_AABB = Block.makeCuboidShape(0F, 0F, 0F, 1F, 0.5F, 1F);
+    private static final Predicate<BlockState> IS_MARBLE = new Predicate<BlockState>() {
+        public boolean apply(@Nullable BlockState p_apply_1_) {
             return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW
                     || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE
                     || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_PILLAR
@@ -51,7 +51,7 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
 
     public BlockMarbledCheeseRatHead() {
         super(Material.ROCK);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         this.setTickRandomly(true);
         this.setCreativeTab(RatsMod.TAB);
         this.setSoundType(SoundType.STONE);
@@ -65,23 +65,23 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
         return BlockRenderLayer.CUTOUT;
     }
 
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         return HALF_AABB;
     }
 
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, HALF_AABB);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         this.trySpawnGolem(worldIn, pos);
     }
@@ -103,7 +103,7 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
             BlockPos blockpos = blockpattern$patternhelper.translateOffset(1, 2, 0).getPos();
             EntityMarbleCheeseGolem entityirongolem = new EntityMarbleCheeseGolem(worldIn);
             entityirongolem.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
-            worldIn.spawnEntity(entityirongolem);
+            worldIn.addEntity(entityirongolem);
 
             for (EntityPlayerMP entityplayermp1 : worldIn.getEntitiesWithinAABB(EntityPlayerMP.class, entityirongolem.getEntityBoundingBox().grow(5.0D))) {
                 CriteriaTriggers.SUMMONED_ENTITY.trigger(entityplayermp1, entityirongolem);
@@ -122,23 +122,23 @@ public class BlockMarbledCheeseRatHead extends BlockHorizontal {
         }
     }
 
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+    public BlockState withRotation(BlockState state, Rotation rot) {
+        return state.with(FACING, rot.rotate(state.getValue(FACING)));
     }
 
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    public BlockState withMirror(BlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+    public BlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().with(FACING, Direction.byHorizontalIndex(meta));
     }
 
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return state.getValue(FACING).getHorizontalIndex();
     }
 

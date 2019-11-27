@@ -1,29 +1,23 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 
-public class BlockRatgloveFlower extends BlockBush {
+public class BlockRatgloveFlower extends BushBlock {
 
     public BlockRatgloveFlower() {
-        super(Material.CLOTH);
-        this.setHardness(0.0F);
-        this.setSoundType(SoundType.PLANT);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.ratglove_flower");
+        super(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).hardnessAndResistance(0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "ratglove_flower");
     }
 
-    protected boolean canSustainBush(IBlockState state) {
+    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT;
     }
 
-    public Block.EnumOffsetType getOffsetType() {
-        return Block.EnumOffsetType.XZ;
+    public Block.OffsetType getOffsetType() {
+        return Block.OffsetType.XZ;
     }
 }

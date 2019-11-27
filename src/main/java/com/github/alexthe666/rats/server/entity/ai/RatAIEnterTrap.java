@@ -4,10 +4,8 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -23,7 +21,7 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
     }
 
     public static boolean isTrap(World world, BlockPos pos) {
-        IBlockState block = world.getBlockState(pos.up());
+        BlockState block = world.getBlockState(pos.up());
         if (block.getBlock() == RatsBlockRegistry.RAT_TRAP) {
             TileEntity entity = world.getTileEntity(pos.up());
             return entity != null && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty();

@@ -7,7 +7,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -31,7 +31,7 @@ public class RatAIHarvestMine extends EntityAIBase {
     private BlockPos targetBlock = null;
     private int breakingTime;
     private int previousBreakProgress;
-    private IBlockState prevMiningState = null;
+    private BlockState prevMiningState = null;
 
     public RatAIHarvestMine(EntityRat entity) {
         super();
@@ -76,7 +76,7 @@ public class RatAIHarvestMine extends EntityAIBase {
     }
 
     private boolean doesListContainBlock(World world, NonNullList<ItemStack> list, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         ItemStack getStack = state.getBlock().getItem(world, pos, state);
         for (ItemStack stack : list) {
             if (stack.isItemEqual(getStack)) {
@@ -109,7 +109,7 @@ public class RatAIHarvestMine extends EntityAIBase {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1D);
             }
             if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
-                IBlockState block = this.entity.world.getBlockState(rayPos);
+                BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                     double distance = this.entity.getDistance(rayPos.getX(), rayPos.getY(), rayPos.getZ());
@@ -159,7 +159,7 @@ public class RatAIHarvestMine extends EntityAIBase {
         }
     }
 
-    private void destroyBlock(BlockPos pos, IBlockState state) {
+    private void destroyBlock(BlockPos pos, BlockState state) {
         NonNullList<ItemStack> drops = NonNullList.create();
         state.getBlock().getDrops(drops, this.entity.world, pos, state, 0);
         if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {

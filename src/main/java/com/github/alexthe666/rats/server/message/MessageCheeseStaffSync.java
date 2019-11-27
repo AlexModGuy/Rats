@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -22,7 +22,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
 
     }
 
-    public MessageCheeseStaffSync(int entityId, BlockPos pos, EnumFacing facing, int control) {
+    public MessageCheeseStaffSync(int entityId, BlockPos pos, Direction facing, int control) {
         this.entityId = entityId;
         this.posLg = pos.toLong();
         this.facingID = facing.ordinal();
@@ -37,7 +37,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
             switch (message.control) {
                 case 0://deposit
                     rat.depositPos = BlockPos.fromLong(message.posLg);
-                    rat.depositFacing = EnumFacing.values()[message.facingID];
+                    rat.depositFacing = Direction.values()[message.facingID];
                     break;
                 case 1://pickup
                     rat.pickupPos = BlockPos.fromLong(message.posLg);
@@ -60,7 +60,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
             switch (message.control) {
                 case 0://deposit
                     rat.depositPos = BlockPos.fromLong(message.posLg);
-                    rat.depositFacing = EnumFacing.values()[message.facingID];
+                    rat.depositFacing = Direction.values()[message.facingID];
                     break;
                 case 1://pickup
                     rat.pickupPos = BlockPos.fromLong(message.posLg);

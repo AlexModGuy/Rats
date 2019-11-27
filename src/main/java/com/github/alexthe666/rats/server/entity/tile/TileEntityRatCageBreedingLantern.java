@@ -52,7 +52,7 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
         if (breedingCooldown <= 0) {
             double d0 = 1.5F;
             List<EntityRat> rats = world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0));
-            if (rats.size() < RatsMod.CONFIG_OPTIONS.ratCageCramming && rats.size() > 0) {
+            if (rats.size() < RatConfig.ratCageCramming && rats.size() > 0) {
                 List<EntityRat> males = new ArrayList<>();
                 List<EntityRat> females = new ArrayList<>();
                 for (EntityRat rat : rats) {

@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -35,24 +35,24 @@ public class RenderRatCageDecorated extends TileEntitySpecialRenderer<TileEntity
         ItemStack containedItem = ItemStack.EMPTY;
         if (entity != null && entity.getWorld() != null && entity instanceof TileEntityRatCageDecorated) {
             if (entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageDecorated) {
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == EnumFacing.NORTH) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == Direction.NORTH) {
                     rotation = 180;
                 }
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == EnumFacing.EAST) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == Direction.EAST) {
                     rotation = -90;
                 }
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == EnumFacing.WEST) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageDecorated.FACING) == Direction.WEST) {
                     rotation = 90;
                 }
             }
             if (entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatCageBreedingLantern) {
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == EnumFacing.NORTH) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == Direction.NORTH) {
                     rotation = 180;
                 }
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == EnumFacing.EAST) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == Direction.EAST) {
                     rotation = -90;
                 }
-                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == EnumFacing.WEST) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatCageBreedingLantern.FACING) == Direction.WEST) {
                     rotation = 90;
                 }
             }

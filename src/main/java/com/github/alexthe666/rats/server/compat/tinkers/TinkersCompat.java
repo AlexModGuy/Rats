@@ -77,7 +77,7 @@ public class TinkersCompat {
     }
 
     public static void post() {
-        TinkerRegistry.registerBasinCasting(new CastingRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), TinkerFluids.milk, 1000, RatsMod.CONFIG_OPTIONS.milkCauldronTime));
+        TinkerRegistry.registerBasinCasting(new CastingRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), TinkerFluids.milk, 1000, RatConfig.milkCauldronTime));
     }
 
     public static boolean onPlayerSwing(EntityLivingBase swinger, ItemStack stack){
@@ -87,7 +87,7 @@ public class TinkersCompat {
             shot.shoot(swinger, swinger.rotationPitch, swinger.rotationYaw, 0.0F, 0.8F, 1.0F);
             swinger.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
             if (!swinger.world.isRemote) {
-                swinger.world.spawnEntity(shot);
+                swinger.world.addEntity(shot);
             }
             return true;
         }

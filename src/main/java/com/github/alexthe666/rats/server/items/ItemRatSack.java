@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -99,7 +99,7 @@ public class ItemRatSack extends Item {
         }
     }
 
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         if (stack.getItem() == RatsItemRegistry.RAT_SACK && getRatsInStack(stack) > 0) {
             int ratCount = 0;
@@ -113,7 +113,7 @@ public class ItemRatSack extends Item {
                         rat.readEntityFromNBT(ratTag);
                         rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
                         if (!worldIn.isRemote) {
-                            worldIn.spawnEntity(rat);
+                            worldIn.addEntity(rat);
                         }
                     }
                 }

@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityEndPortal;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,7 +62,7 @@ public class TileEntityRatlantisPortal extends TileEntityEndPortal implements IT
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean shouldRenderFace(EnumFacing p_184313_1_) {
+    public boolean shouldRenderFace(Direction p_184313_1_) {
         return this.getBlockType().getDefaultState().shouldSideBeRendered(this.world, this.getPos(), p_184313_1_);
     }
 }

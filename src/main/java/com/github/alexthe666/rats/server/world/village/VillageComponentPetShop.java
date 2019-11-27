@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,15 +20,15 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
         super();
     }
 
-    public VillageComponentPetShop(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, EnumFacing facing) {
+    public VillageComponentPetShop(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, Direction facing) {
         super();
         this.villagerCount = 0;
         this.setCoordBaseMode(facing);
         this.boundingBox = structureBox;
     }
 
-    public static VillageComponentPetShop buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
-        if (!RatsMod.CONFIG_OPTIONS.villagePetShops) {
+    public static VillageComponentPetShop buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, Direction facing, int p5) {
+        if (!RatConfig.villagePetShops) {
             return null;
         }
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -1, 18, 9, 18, facing);
@@ -45,7 +45,7 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4, 0);
         }
         BlockPos blockpos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY + 1, this.boundingBox.minZ);
-        EnumFacing facing = this.getCoordBaseMode().getOpposite();
+        Direction facing = this.getCoordBaseMode().getOpposite();
         BlockPos genPos = blockpos;
         /*
         for(int i = this.boundingBox.minX; i < this.boundingBox.maxX; i++){
@@ -54,14 +54,14 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
             }
         }
         */
-        if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
+        if (facing == Direction.WEST || facing == Direction.EAST) {
             genPos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY + 1, this.boundingBox.maxZ);
         }
-        //world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
+        //world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().with(BlockHorizontal.FACING, facing));
         return new WorldGenPetShop(this, facing).generate(world, random, genPos);
     }
 
-    public IBlockState getBiomeBlock(IBlockState state) {
+    public BlockState getBiomeBlock(BlockState state) {
         return getBiomeSpecificBlockState(state);
     }
 }

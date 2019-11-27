@@ -3,10 +3,10 @@ package com.github.alexthe666.rats.server.world.gen;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,16 +19,16 @@ import java.util.Random;
 
 public class WorldGenAquaduct extends WorldGenerator {
 
-    public EnumFacing facing;
+    public Direction facing;
     int aquaDist = 0;
 
-    public WorldGenAquaduct(EnumFacing facing) {
+    public WorldGenAquaduct(Direction facing) {
         super(false);
         this.facing = facing;
 
     }
 
-    public static Rotation getRotationFromFacing(EnumFacing facing) {
+    public static Rotation getRotationFromFacing(Direction facing) {
         switch (facing) {
             case EAST:
                 return Rotation.CLOCKWISE_90;
@@ -54,7 +54,7 @@ public class WorldGenAquaduct extends WorldGenerator {
     }
 
     private static boolean canHeightSkipBlock(BlockPos pos, World world) {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         return state.getBlock() instanceof BlockLog || state.getBlock() instanceof BlockLiquid;
     }
 
@@ -67,9 +67,9 @@ public class WorldGenAquaduct extends WorldGenerator {
         return true;
     }
 
-    private void generateAquaduct(World worldIn, EnumFacing facing, BlockPos height) {
+    private void generateAquaduct(World worldIn, Direction facing, BlockPos height) {
         MinecraftServer server = worldIn.getMinecraftServer();
-        IBlockState dirt = worldIn.getBlockState(height.down(2));
+        BlockState dirt = worldIn.getBlockState(height.down(2));
         if (!dirt.isFullBlock()) {
             dirt = Blocks.SAND.getDefaultState();
         }
@@ -94,11 +94,11 @@ public class WorldGenAquaduct extends WorldGenerator {
                 height.up(template.getSize().getY()).offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2)
         )) {
             if (worldIn.getBlockState(vinePos).isOpaqueCube()) {
-                for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
-                    if (!worldIn.getBlockState(vinePos.offset(enumfacing)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
-                        EnumFacing opposFacing = enumfacing.getOpposite();
-                        IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, Boolean.valueOf(opposFacing == EnumFacing.NORTH)).withProperty(BlockVine.EAST, Boolean.valueOf(opposFacing == EnumFacing.EAST)).withProperty(BlockVine.SOUTH, Boolean.valueOf(opposFacing == EnumFacing.SOUTH)).withProperty(BlockVine.WEST, Boolean.valueOf(opposFacing == EnumFacing.WEST));
-                        worldIn.setBlockState(vinePos.offset(enumfacing), iblockstate, 2);
+                for (Direction Direction : Direction.Plane.HORIZONTAL.facings()) {
+                    if (!worldIn.getBlockState(vinePos.offset(Direction)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
+                        Direction opposFacing = Direction.getOpposite();
+                        BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(opposFacing == Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(opposFacing == Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(opposFacing == Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(opposFacing == Direction.WEST));
+                        worldIn.setBlockState(vinePos.offset(Direction), BlockState, 2);
                     }
                 }
             }

@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -83,13 +83,13 @@ public class RenderRatHole extends TileEntitySpecialRenderer<TileEntityRatHole> 
 
     @Override
     public void render(TileEntityRatHole entity, double x, double y, double z, float f, int f1, float alpha) {
-        IBlockState state = Blocks.PLANKS.getDefaultState();
+        BlockState state = Blocks.PLANKS.getDefaultState();
         boolean connectedNorth = false;
         boolean connectedEast = false;
         boolean connectedSouth = false;
         boolean connectedWest = false;
         if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatHole) {
-            IBlockState actualState = RatsBlockRegistry.RAT_HOLE.getActualState(entity.getWorld().getBlockState(entity.getPos()), entity.getWorld(), entity.getPos());
+            BlockState actualState = RatsBlockRegistry.RAT_HOLE.getActualState(entity.getWorld().getBlockState(entity.getPos()), entity.getWorld(), entity.getPos());
             connectedNorth = actualState.getValue(BlockRatHole.NORTH);
             connectedEast = actualState.getValue(BlockRatHole.EAST);
             connectedSouth = actualState.getValue(BlockRatHole.SOUTH);

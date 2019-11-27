@@ -50,7 +50,7 @@ public class EntityRatArrow extends EntityArrow {
         }
         rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
         if(!world.isRemote){
-            world.spawnEntity(rat);
+            world.addEntity(rat);
         }
         if (entity != null && entity instanceof EntityLivingBase && !rat.isOnSameTeam(entity)) {
             rat.setAttackTarget((EntityLivingBase)entity);

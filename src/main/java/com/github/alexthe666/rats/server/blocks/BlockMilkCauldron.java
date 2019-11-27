@@ -2,28 +2,25 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityMilkCauldron;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -31,71 +28,44 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMilkCauldron extends BlockContainer {
-    protected static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D);
-    protected static final AxisAlignedBB AABB_WALL_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
-    protected static final AxisAlignedBB AABB_WALL_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB AABB_WALL_EAST = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB AABB_WALL_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
+public class BlockMilkCauldron extends ContainerBlock {
+    private static final VoxelShape INSIDE = makeCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+    protected static final VoxelShape SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.or(makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE), IBooleanFunction.ONLY_FIRST);
 
     public BlockMilkCauldron() {
-        super(Material.IRON, MapColor.STONE);
-        this.setHardness(2.0F);
-        this.setSoundType(SoundType.WOOD);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.cauldron_milk");
+        super(Block.Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(2.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "cauldron_milk");
-        GameRegistry.registerTileEntity(TileEntityMilkCauldron.class, "rats.cauldron_milk");
+        //GameRegistry.registerTileEntity(TileEntityMilkCauldron.class, "rats.cauldron_milk");
     }
 
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_LEGS);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_WEST);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_NORTH);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_EAST);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH);
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return FULL_BLOCK_AABB;
-    }
-
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isSolid(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return INSIDE;
+    }
+
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public boolean isFullCube(BlockState state) {
+        return false;
+    }
+
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         float f = (float) pos.getY() + (6.0F + 3) / 16.0F;
-        if (!worldIn.isRemote && entityIn.isBurning() && entityIn.getEntityBoundingBox().minY <= (double) f) {
+        if (!worldIn.isRemote && entityIn.isBurning() && entityIn.getBoundingBox().minY <= (double) f) {
             entityIn.extinguish();
         }
     }
 
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Items.CAULDRON;
-    }
-
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(Items.CAULDRON);
-    }
-
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
-        return true;
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.UP) {
-            return BlockFaceShape.BOWL;
-        } else {
-            return face == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
-        }
-    }
-
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         if (itemstack.isEmpty()) {
             return true;
@@ -105,7 +75,7 @@ public class BlockMilkCauldron extends BlockContainer {
 
             if (item == Items.BUCKET) {
                 if (!worldIn.isRemote) {
-                    if (!playerIn.capabilities.isCreativeMode) {
+                    if (!playerIn.isCreative()) {
                         itemstack.shrink(1);
                         if (itemstack.isEmpty()) {
                             playerIn.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
@@ -113,7 +83,6 @@ public class BlockMilkCauldron extends BlockContainer {
                             playerIn.dropItem(new ItemStack(Items.MILK_BUCKET), false);
                         }
                     }
-                    playerIn.addStat(StatList.CAULDRON_USED);
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                     worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
@@ -123,14 +92,14 @@ public class BlockMilkCauldron extends BlockContainer {
         return false;
     }
 
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
 
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityMilkCauldron();
     }
 }

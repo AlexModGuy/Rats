@@ -2,76 +2,76 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockRatHole extends BlockContainer {
+public class BlockRatHole extends ContainerBlock {
 
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final BooleanProperty NORTH = BooleanProperty.create("north");
+    public static final BooleanProperty EAST = BooleanProperty.create("east");
+    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+    public static final BooleanProperty WEST = BooleanProperty.create("west");
 
-    private static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0F, 0.5F, 0F, 1F, 1F, 1F);
-    private static final AxisAlignedBB NS_LEFT_AABB = new AxisAlignedBB(0F, 0F, 0F, 0.25F, 0.5F, 1F);
-    private static final AxisAlignedBB NS_RIGHT_AABB = new AxisAlignedBB(0.75F, 0F, 0F, 1F, 0.5F, 1F);
-    private static final AxisAlignedBB EW_LEFT_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.5F, 0.25F);
-    private static final AxisAlignedBB EW_RIGHT_AABB = new AxisAlignedBB(0, 0F, 0.75F, 1F, 0.5F, 1F);
-
-    private static final AxisAlignedBB NORTH_CORNER_AABB = new AxisAlignedBB(0F, 0F, 0F, 0.25F, 0.5F, 0.25F);
-    private static final AxisAlignedBB EAST_CORNER_AABB = new AxisAlignedBB(0.75F, 0F, 0F, 1F, 0.5F, 0.25F);
-    private static final AxisAlignedBB SOUTH_CORNER_AABB = new AxisAlignedBB(0F, 01F, 0.75F, 0.25, 0.5F, 1F);
-    private static final AxisAlignedBB WEST_CORNER_AABB = new AxisAlignedBB(0.75F, 0F, 0.75F, 1F, 0.5F, 1F);
+    private static final VoxelShape TOP_AABB = Block.makeCuboidShape(0, 8, 0, 16, 16, 16);
+    private static final VoxelShape NS_LEFT_AABB = Block.makeCuboidShape(0, 0, 0, 4, 8, 16);
+    private static final VoxelShape NS_RIGHT_AABB = Block.makeCuboidShape(12, 0, 0, 16, 8, 16);
+    private static final VoxelShape EW_LEFT_AABB = Block.makeCuboidShape(0, 0, 0, 16, 8, 4);
+    private static final VoxelShape EW_RIGHT_AABB = Block.makeCuboidShape(0, 0, 0, 12, 8, 16);
+    private static final VoxelShape NORTH_CORNER_AABB = Block.makeCuboidShape(0, 0, 0, 4, 8, 4);
+    private static final VoxelShape EAST_CORNER_AABB = Block.makeCuboidShape(12, 0, 0, 16, 8, 4);
+    private static final VoxelShape SOUTH_CORNER_AABB = Block.makeCuboidShape(0, 0, 12, 4, 8, 16);
+    private static final VoxelShape WEST_CORNER_AABB = Block.makeCuboidShape(12, 0, 12, 16, 8, 16);
+    private VoxelShape shape;
 
     protected BlockRatHole() {
-        super(Material.WOOD);
-        this.setHardness(1.3F);
-        this.setSoundType(SoundType.WOOD);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.rat_hole");
-        this.setRegistryName(RatsMod.MODID, "rat_hole");
-        this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(NORTH, Boolean.valueOf(false))
-                .withProperty(EAST, Boolean.valueOf(false))
-                .withProperty(SOUTH, Boolean.valueOf(false))
-                .withProperty(WEST, Boolean.valueOf(false))
+        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.3F, 0.0F));
+        setDefaultState(this.stateContainer.getBaseState()
+                .with(NORTH, Boolean.valueOf(false))
+                .with(EAST, Boolean.valueOf(false))
+                .with(SOUTH, Boolean.valueOf(false))
+                .with(WEST, Boolean.valueOf(false))
         );
-        GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
+        shape = VoxelShapes.combineAndSimplify(TOP_AABB, NORTH_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, SOUTH_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, EAST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, WEST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        //GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
     }
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatHole) {
             TileEntityRatHole te = (TileEntityRatHole) worldIn.getTileEntity(pos);
             NonNullList<ItemStack> ret = NonNullList.create();
-            te.getImmitatedBlockState().getBlock().getDrops(ret, worldIn, pos, te.getImmitatedBlockState(), 1);
-            for (ItemStack stack : ret) {
-                EntityItem entityItem = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
-                if (!worldIn.isRemote) {
-                    worldIn.spawnEntity(entityItem);
+            if (!worldIn.isRemote && worldIn instanceof ServerWorld) {
+                te.getImmitatedBlockState().getBlock().getDrops(te.getImmitatedBlockState(), (ServerWorld)worldIn, pos, null);
+                for (ItemStack stack : ret) {
+                    ItemEntity ItemEntity = new ItemEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
+                    worldIn.addEntity(ItemEntity);
                 }
             }
         }
@@ -79,90 +79,72 @@ public class BlockRatHole extends BlockContainer {
     }
 
 
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return state.withProperty(NORTH, canFenceConnectTo(worldIn, pos, EnumFacing.NORTH))
-                .withProperty(SOUTH, canFenceConnectTo(worldIn, pos, EnumFacing.SOUTH))
-                .withProperty(EAST, canFenceConnectTo(worldIn, pos, EnumFacing.EAST))
-                .withProperty(WEST, canFenceConnectTo(worldIn, pos, EnumFacing.WEST));
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        IBlockReader iblockreader = context.getWorld();
+        BlockPos blockpos = context.getPos();
+        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+        BlockPos blockpos1 = blockpos.north();
+        BlockPos blockpos2 = blockpos.east();
+        BlockPos blockpos3 = blockpos.south();
+        BlockPos blockpos4 = blockpos.west();
+        BlockState blockstate = iblockreader.getBlockState(blockpos1);
+        BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
+        BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
+        BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
+        return super.getStateForPlacement(context).with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_CORNER_AABB);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_CORNER_AABB);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_CORNER_AABB);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_CORNER_AABB);
+    private VoxelShape getShape(BlockState state) {
+        VoxelShape shape1 = shape;
         if (state.getBlock() instanceof BlockRatHole) {
-            IBlockState actualState = getActualState(state, worldIn, pos);
-            if (actualState.getValue(NORTH)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EW_LEFT_AABB);
+            if (state.get(NORTH)) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_LEFT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(SOUTH)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EW_RIGHT_AABB);
+            if (state.get(SOUTH)) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_RIGHT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(WEST)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NS_LEFT_AABB);
+            if (state.get(WEST)) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_LEFT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(EAST)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NS_RIGHT_AABB);
+            if (state.get(EAST)) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_RIGHT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
         }
+        return shape1;
     }
 
 
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST);
-    }
-
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Items.AIR;
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, EAST, WEST, SOUTH);
     }
 
 
-    private boolean canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        BlockPos other = pos.offset(facing);
-        return world.getBlockState(other).isOpaqueCube();
+    private boolean canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
+        Block block = p_220111_1_.getBlock();
+        boolean flag = p_220111_1_.getMaterial() == this.material;
+        return !cannotAttach(block) && p_220111_2_;
     }
 
-    public int getMetaFromState(IBlockState state) {
-        return 0;
-    }
-
-
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return FULL_BLOCK_AABB;
-    }
-
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean addDestroyEffects(World world, BlockPos pos, net.minecraft.client.particle.ParticleManager manager) {
-        return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, net.minecraft.client.particle.ParticleManager manager) {
-        return false;
-    }
-
-    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
+    public SoundType getSoundType(BlockState state) {
+        /*if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
             TileEntityRatHole te = (TileEntityRatHole) world.getTileEntity(pos);
             return te.getImmitatedBlockState().getBlock().getSoundType();
-        }
+        }*/
         return SoundType.WOOD;
     }
 
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityRatHole();
     }
 }

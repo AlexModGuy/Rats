@@ -239,7 +239,7 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
                     entitylargefireball.posX = this.parentEntity.posX;
                     entitylargefireball.posY = this.parentEntity.posY + (double) (this.parentEntity.height / 2.0F);
                     entitylargefireball.posZ = this.parentEntity.posZ;
-                    world.spawnEntity(entitylargefireball);
+                    world.addEntity(entitylargefireball);
                     this.attackTimer = -10;
                 }
             } else if (this.attackTimer > 0) {

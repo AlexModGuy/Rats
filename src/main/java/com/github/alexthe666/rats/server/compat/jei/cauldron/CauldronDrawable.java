@@ -29,7 +29,7 @@ public class CauldronDrawable implements IDrawable {
         this.drawTexturedModalRect(xOffset, yOffset, 3, 4, 170, 79);
         int scaledProgress = (minecraft.player.ticksExisted % 100) * 24 / 100;
         this.drawTexturedModalRect(95, 31, 176, 0, scaledProgress + 1, 16);
-        String time_string = RatsMod.CONFIG_OPTIONS.milkCauldronTime / 20 + " s";
+        String time_string = RatConfig.milkCauldronTime / 20 + " s";
         minecraft.fontRenderer.drawString(time_string, 107 - minecraft.fontRenderer.getStringWidth(time_string) / 2, 20, 0X8B8B8B);
 
     }

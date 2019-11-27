@@ -38,7 +38,7 @@ public class ItemRatlanteanFlame extends Item {
             Vec3d vec3d = playerIn.getLook(1.0F);
             EntityRatlanteanFlame entityegg = new EntityRatlanteanFlame(worldIn, playerIn, vec3d.x, vec3d.y, vec3d.z);
             entityegg.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 0F);
-            worldIn.spawnEntity(entityegg);
+            worldIn.addEntity(entityegg);
         }
         playerIn.addStat(StatList.getObjectUseStats(this));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);

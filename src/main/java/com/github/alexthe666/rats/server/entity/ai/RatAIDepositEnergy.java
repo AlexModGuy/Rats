@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -15,7 +15,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -93,7 +93,7 @@ public class RatAIDepositEnergy extends EntityAIBase {
             if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
-                    IBlockState block = this.entity.world.getBlockState(rayPos);
+                    BlockState block = this.entity.world.getBlockState(rayPos);
                     if (RatUtils.canRatBreakBlock(this.entity.world, rayPos, this.entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                         double distance = this.entity.getDistance(rayPos.getX(), rayPos.getY(), rayPos.getZ());
                         SoundType soundType = block.getBlock().getSoundType(block, this.entity.world, rayPos, null);
@@ -165,7 +165,7 @@ public class RatAIDepositEnergy extends EntityAIBase {
         }
     }
 
-    private void destroyBlock(BlockPos pos, IBlockState state) {
+    private void destroyBlock(BlockPos pos, BlockState state) {
         NonNullList<ItemStack> drops = NonNullList.create();
         state.getBlock().getDrops(drops, this.entity.world, pos, state, 0);
         if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {

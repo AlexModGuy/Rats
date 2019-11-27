@@ -4,117 +4,91 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockRatTrap extends BlockContainer {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    private static final AxisAlignedBB NS_AABB = new AxisAlignedBB(0.1875F, 0F, 0F, 0.8125F, 0.15F, 1F);
-    private static final AxisAlignedBB EW_AABB = new AxisAlignedBB(0F, 0F, 0.1875, 1, 0.15F, 0.8125F);
+public class BlockRatTrap extends ContainerBlock {
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    private static final VoxelShape NS_AABB = Block.makeCuboidShape(3, 0, 0, 13, 4, 16);
+    private static final VoxelShape EW_AABB = Block.makeCuboidShape(0, 0, 3, 16, 4, 13);
 
     protected BlockRatTrap() {
-        super(Material.WOOD);
-        this.setHardness(1.0F);
-        this.setTickRandomly(true);
-        this.setSoundType(SoundType.WOOD);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.rat_trap");
-        this.setRegistryName(RatsMod.MODID, "rattrap");
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        GameRegistry.registerTileEntity(TileEntityRatTrap.class, "rats.rat_trap");
+        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0.0F));this.setRegistryName(RatsMod.MODID, "rattrap");
+        setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
+        //GameRegistry.registerTileEntity(TileEntityRatTrap.class, "rats.rat_trap");
     }
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof TileEntityRatTrap) {
             if (!worldIn.isRemote && !((TileEntityRatTrap) tileentity).getBait().isEmpty()) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ((TileEntityRatTrap) tileentity).getBait()));
+                worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ((TileEntityRatTrap) tileentity).getBait()));
             }
             worldIn.updateComparatorOutputLevel(pos, this);
         }
-        super.breakBlock(worldIn, pos, state);
     }
 
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        if (entityIn != null && entityIn instanceof EntityRat) {
-            return;
-        } else {
-            super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
-        }
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return state.get(FACING).getAxis() == Direction.Axis.X ? NS_AABB : EW_AABB;
     }
 
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        IBlockState actualState = getActualState(state, source, pos);
-        if (actualState.getBlock() instanceof BlockRatTrap) {
-            if (actualState.getValue(FACING).getAxis() == EnumFacing.Axis.X) {
-                return EW_AABB;
-            } else {
-                return NS_AABB;
-            }
-        }
-        return NS_AABB;
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        BlockPos blockpos = pos.down();
+        return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.isSideSolid(pos.down(), EnumFacing.UP);
+    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return state.isOpaqueCube(worldIn, pos);
     }
 
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.with(FACING, rot.rotate(state.get(FACING)));
     }
 
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
     }
 
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
-
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityRatTrap) {
@@ -136,7 +110,7 @@ public class BlockRatTrap extends BlockContainer {
 
                 }
                 if (!worldIn.isRemote) {
-                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ratTrap.getBait()));
+                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ratTrap.getBait()));
                 }
                 ratTrap.setBaitStack(ItemStack.EMPTY);
                 return true;
@@ -146,11 +120,11 @@ public class BlockRatTrap extends BlockContainer {
         return false;
     }
 
-    public boolean hasComparatorInputOverride(IBlockState state) {
+    public boolean hasComparatorInputOverride(BlockState state) {
         return true;
     }
 
-    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
         TileEntity tile = blockAccess.getTileEntity(pos);
         if (tile instanceof TileEntityRatTrap) {
             TileEntityRatTrap ratTrap = (TileEntityRatTrap) tile;
@@ -160,17 +134,17 @@ public class BlockRatTrap extends BlockContainer {
     }
 
     @Deprecated
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
         return getWeakPower(blockState, blockAccess, pos, side);
     }
 
     @Deprecated
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(BlockState state) {
         return true;
     }
 
 
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityRatTrap) {
             TileEntityRatTrap ratTrap = (TileEntityRatTrap) tile;
@@ -179,7 +153,7 @@ public class BlockRatTrap extends BlockContainer {
         return 0;
     }
 
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (worldIn.isBlockPowered(pos)) {
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileEntityRatTrap) {
@@ -189,13 +163,9 @@ public class BlockRatTrap extends BlockContainer {
         }
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
-    }
-
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityRatTrap();
     }
 }

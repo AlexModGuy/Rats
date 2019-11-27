@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -19,13 +19,13 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
     }
 
     public static boolean isCrops(World world, BlockPos pos) {
-        IBlockState block = world.getBlockState(pos.up());
+        BlockState block = world.getBlockState(pos.up());
         return block.getBlock() instanceof BlockCrops;
     }
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatsMod.CONFIG_OPTIONS.ratsBreakCrops) {
+        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatConfig.ratsBreakCrops) {
             return false;
         }
 
@@ -51,7 +51,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
 
         if (this.getIsAboveDestination() && this.destinationBlock != null) {
             BlockPos cropsPos = this.destinationBlock.up();
-            IBlockState block = this.entity.world.getBlockState(cropsPos);
+            BlockState block = this.entity.world.getBlockState(cropsPos);
             if (block.getBlock() instanceof BlockCrops) {
                 double distance = this.entity.getDistance(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
                 if (distance < 1.5F) {

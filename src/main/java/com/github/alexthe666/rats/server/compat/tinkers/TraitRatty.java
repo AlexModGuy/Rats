@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.compat.tinkers;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +32,7 @@ public class TraitRatty extends AbstractTrait {
     }
 
     @Override
-    public void afterBlockBreak(ItemStack tool, World world, IBlockState state, BlockPos pos, EntityLivingBase player, boolean wasEffective) {
+    public void afterBlockBreak(ItemStack tool, World world, BlockState state, BlockPos pos, EntityLivingBase player, boolean wasEffective) {
         if (wasEffective && !world.isRemote && random.nextFloat() < chance) {
             spawnRat(player, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world, null);
         }
@@ -48,7 +48,7 @@ public class TraitRatty extends AbstractTrait {
     protected void spawnRat(EntityLivingBase player, double x, double y, double z, World world, @Nullable EntityLivingBase target) {
         EntityRat entity = new EntityRat(world);
         entity.setPosition(x, y, z);
-        world.spawnEntity(entity);
+        world.addEntity(entity);
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(x, y, z)), null);
         entity.setPlague(false);
         if (target != null) {

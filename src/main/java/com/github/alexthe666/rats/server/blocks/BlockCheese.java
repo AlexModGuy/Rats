@@ -7,11 +7,7 @@ import net.minecraft.block.material.Material;
 
 public class BlockCheese extends Block {
     public BlockCheese() {
-        super(Material.CLOTH);
-        this.setHardness(2.0F);
-        this.setSoundType(SoundType.SLIME);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.block_of_cheese");
+        super(Block.Properties.create(Material.WOOL).sound(SoundType.SLIME).hardnessAndResistance(2.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "block_of_cheese");
     }
 }

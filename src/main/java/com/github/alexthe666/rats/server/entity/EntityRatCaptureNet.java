@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.ItemRatSack;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
@@ -62,10 +62,10 @@ public class EntityRatCaptureNet extends EntityPotion {
             this.setDead();
         }
         sack.setTagCompound(tag);
-        EntityItem itemEntity = new EntityItem(world, this.posX, this.posY, this.posZ, sack);
+        ItemEntity itemEntity = new ItemEntity(world, this.posX, this.posY, this.posZ, sack);
         itemEntity.setEntityInvulnerable(true);
         if(!world.isRemote){
-            world.spawnEntity(itemEntity);
+            world.addEntity(itemEntity);
         }
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -41,7 +41,7 @@ public class ItemCheeseStick extends Item {
         }
     }
 
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
         RatsMod.PROXY.setCheeseStaffContext(pos, facing);
         Entity rat = null;
         ItemStack stack = player.getHeldItem(hand);
@@ -81,7 +81,7 @@ public class ItemCheeseStick extends Item {
                 } else {
                     if (boundRat.depositPos != null) {
                         boundRat.depositPos = null;
-                        boundRat.depositFacing = EnumFacing.UP;
+                        boundRat.depositFacing = Direction.UP;
                         player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_deposit_items", rat.getName(), blockName), true);
                         return EnumActionResult.SUCCESS;
                     } else {

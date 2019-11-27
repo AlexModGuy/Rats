@@ -4,8 +4,8 @@ import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -36,13 +36,13 @@ public class AStar {
     }
 
     public static BlockPos getConnectedToRatTube(IBlockAccess world, BlockPos pos) {
-        for (EnumFacing facing : EnumFacing.values()) {
+        for (Direction facing : Direction.values()) {
             BlockPos statePos = pos.offset(facing);
-            IBlockState state = world.getBlockState(statePos);
+            BlockState state = world.getBlockState(statePos);
             if (state.getBlock() instanceof BlockRatTube && state.getBlock().getMetaFromState(state) > 0) {
-                for (int i = 0; i < EnumFacing.values().length; i++) {
+                for (int i = 0; i < Direction.values().length; i++) {
                     PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                    BlockPos offsetInPos = statePos.offset(EnumFacing.values()[i]);
+                    BlockPos offsetInPos = statePos.offset(Direction.values()[i]);
                     if (state.getValue(bool) && (world.isAirBlock(offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)) {
                         return offsetInPos;
                     }

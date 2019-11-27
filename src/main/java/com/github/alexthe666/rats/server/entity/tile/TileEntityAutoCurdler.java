@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
@@ -34,8 +34,8 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     private static final int[] SLOTS_BOTTOM = new int[]{1};
     public int ticksExisted;
     public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME * 5);
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.UP);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.DOWN);
     private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
     private int cookTime;
     private int totalCookTime;
@@ -131,7 +131,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
             }
 
         }
-        this.totalCookTime = RatsMod.CONFIG_OPTIONS.milkCauldronTime;
+        this.totalCookTime = RatConfig.milkCauldronTime;
         ticksExisted++;
         boolean flag = this.isBurning();
         boolean flag1 = false;
@@ -143,7 +143,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
 
                     if (this.cookTime == this.totalCookTime) {
                         this.cookTime = 0;
-                        this.totalCookTime = RatsMod.CONFIG_OPTIONS.milkCauldronTime;
+                        this.totalCookTime = RatConfig.milkCauldronTime;
                         this.smeltItem();
                         flag1 = true;
                     }
@@ -273,8 +273,8 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        if (side == EnumFacing.DOWN) {
+    public int[] getSlotsForFace(Direction side) {
+        if (side == Direction.DOWN) {
             return SLOTS_BOTTOM;
         } else {
             return SLOTS_TOP;
@@ -282,13 +282,13 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        if (direction == EnumFacing.DOWN && index == 1) {
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+        if (direction == Direction.DOWN && index == 1) {
             Item item = stack.getItem();
             return true;
         }
@@ -306,15 +306,15 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     @Override
-    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.Direction facing) {
         return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
     @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
         if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == EnumFacing.DOWN)
+            if (facing == Direction.DOWN)
                 return (T) handlerBottom;
             else
                 return (T) handlerTop;

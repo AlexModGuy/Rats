@@ -67,7 +67,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
     }
 
     public boolean getCanSpawnHere() {
-        int spawnRoll = RatsMod.CONFIG_OPTIONS.piperSpawnDecrease;
+        int spawnRoll = RatConfig.piperSpawnDecrease;
         if (RatUtils.canSpawnInDimension(world)) {
             if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
                 return super.getCanSpawnHere();
@@ -172,7 +172,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
             rat.copyLocationAndAnglesFrom(this);
             rat.setPlague(false);
             if (!world.isRemote) {
-                world.spawnEntity(rat);
+                world.addEntity(rat);
             }
             rat.setTamed(true);
             rat.setOwnerId(this.getUniqueID());

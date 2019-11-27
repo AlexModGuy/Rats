@@ -2,9 +2,9 @@ package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.BlockFurnace;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -23,14 +23,14 @@ public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village
         super();
     }
 
-    public VillageComponentPlagueDoctor(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, EnumFacing facing) {
+    public VillageComponentPlagueDoctor(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, Direction facing) {
         super();
         this.villagerCount = 0;
         this.setCoordBaseMode(facing);
         this.boundingBox = structureBox;
     }
 
-    public static VillageComponentPlagueDoctor buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
+    public static VillageComponentPlagueDoctor buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, Direction facing, int p5) {
         if (!RatsMod.CONFIG_OPTIONS.villagePlagueDoctors) {
             return null;
         }
@@ -48,14 +48,14 @@ public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 5, 0);
         }
         BlockPos blockpos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ);
-        EnumFacing facing = this.getCoordBaseMode().getOpposite();
+        Direction facing = this.getCoordBaseMode().getOpposite();
         int xSize = this.boundingBox.maxX - this.boundingBox.minX;
         int zSize = this.boundingBox.maxZ - this.boundingBox.minZ;
         BlockPos genPos = blockpos.add(xSize/2, 0, zSize/2);
         return new WorldGenPlagueDoctor(this, facing).generate(world, random, genPos);
     }
 
-    public IBlockState getBiomeBlock(IBlockState state) {
+    public BlockState getBiomeBlock(BlockState state) {
         return getBiomeSpecificBlockState(state);
     }
 }

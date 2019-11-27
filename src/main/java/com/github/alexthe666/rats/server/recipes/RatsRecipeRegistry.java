@@ -37,7 +37,7 @@ public class RatsRecipeRegistry {
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.FIRE_CHARGE), new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.IRON_SWORD), new ItemStack(RatsItemRegistry.PIRAT_CUTLASS)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.RABBIT_HIDE), new ItemStack(RatsItemRegistry.RAT_PELT)));
-        if (RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+        if (RatConfig.disableRatlantis) {
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
         }
@@ -61,7 +61,7 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("foodVegetable", Items.CARROT);
         OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
         OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
-        if (RatsMod.CONFIG_OPTIONS.disablePlastic) {
+        if (RatConfig.disablePlastic) {
             OreDictionary.registerOre("plasticOrGlass", Blocks.GLASS_PANE);
             OreDictionary.registerOre("plasticOrBottle", Items.GLASS_BOTTLE);
         } else {
@@ -78,7 +78,7 @@ public class RatsRecipeRegistry {
         OreDictionary.registerOre("flower", new ItemStack(Blocks.RED_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("flower", new ItemStack(Blocks.YELLOW_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("fish", new ItemStack(Items.FISH, 1, OreDictionary.WILDCARD_VALUE));
-        if (RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+        if (RatConfig.disableRatlantis) {
             OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.CHUNKY_CHEESE_TOKEN);
         } else {
             OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.IDOL_OF_RATLANTIS);

@@ -28,16 +28,16 @@ public class ItemRatUpgradeEnergy extends ItemRatUpgrade {
 
     public static int getRFTransferRate(Item item){
         if(item == RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY){
-            return RatsMod.CONFIG_OPTIONS.ratRFTransferBasic;
+            return RatConfig.ratRFTransferBasic;
         }
         if(item == RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY){
-            return RatsMod.CONFIG_OPTIONS.ratRFTransferAdvanced;
+            return RatConfig.ratRFTransferAdvanced;
         }
         if(item == RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY){
-            return RatsMod.CONFIG_OPTIONS.ratRFTransferElite;
+            return RatConfig.ratRFTransferElite;
         }
         if(item == RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY){
-            return RatsMod.CONFIG_OPTIONS.ratRFTransferExtreme;
+            return RatConfig.ratRFTransferExtreme;
         }
         return 0;
     }

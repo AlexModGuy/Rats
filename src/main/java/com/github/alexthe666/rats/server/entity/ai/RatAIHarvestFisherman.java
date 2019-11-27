@@ -6,13 +6,13 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -126,7 +126,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
     }
 
     private boolean isShore(BlockPos pos, World world) {
-        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+        for (Direction facing : Direction.HORIZONTALS) {
             if (world.getBlockState(pos.offset(facing)).getMaterial() == Material.WATER && world.getBlockState(pos).isOpaqueCube() && world.isAirBlock(pos.up())) {
                 return true;
             }
@@ -142,9 +142,9 @@ public class RatAIHarvestFisherman extends EntityAIBase {
         List<ItemStack> result = this.entity.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.entity.getRNG(), lootcontext$builder.build());
 
         for (ItemStack itemstack : result) {
-            EntityItem entityitem = new EntityItem(this.entity.world, this.entity.posX, this.entity.posY, this.entity.posZ, itemstack);
+            ItemEntity ItemEntity = new ItemEntity(this.entity.world, this.entity.posX, this.entity.posY, this.entity.posZ, itemstack);
             if(!this.entity.world.isRemote){
-                this.entity.world.spawnEntity(entityitem);
+                this.entity.world.addEntity(ItemEntity);
             }
         }
     }

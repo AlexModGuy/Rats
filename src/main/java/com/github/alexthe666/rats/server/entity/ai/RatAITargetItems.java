@@ -7,7 +7,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
+public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
     protected final RatAITargetItems.Sorter theNearestAttackableTargetSorter;
-    protected final Predicate<? super EntityItem> targetEntitySelector;
+    protected final Predicate<? super ItemEntity> targetEntitySelector;
     protected int executionChance;
     protected boolean mustUpdate;
-    protected EntityItem targetEntity;
+    protected ItemEntity targetEntity;
     private EntityRat rat;
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
@@ -41,9 +41,9 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         this.executionChance = chance;
         this.rat = creature;
         this.theNearestAttackableTargetSorter = new RatAITargetItems.Sorter(creature);
-        this.targetEntitySelector = new Predicate<EntityItem>() {
+        this.targetEntitySelector = new Predicate<ItemEntity>() {
             @Override
-            public boolean apply(@Nullable EntityItem item) {
+            public boolean apply(@Nullable ItemEntity item) {
                 ItemStack stack = item.getItem();
                 if (rat.isTargetCommand()) {
                     return item != null && !stack.isEmpty() && rat.canRatPickupItem(stack);
@@ -68,7 +68,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
                 return false;
             }
         }
-        List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+        List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
         if (list.isEmpty()) {
             return false;
         } else {

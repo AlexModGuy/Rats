@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.Sys;
 
@@ -90,42 +90,42 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
             float f4 = 0.98F;//(RANDOM.nextFloat() * 0.5F + 0.4F) * f1;
             float f5 = 0.79F;//(RANDOM.nextFloat() * 0.5F + 0.5F) * f1;
             float alpha2 = 0.7F;
-            if (te == null || te.shouldRenderFace(EnumFacing.SOUTH)) {
+            if (te == null || te.shouldRenderFace(Direction.SOUTH)) {
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(EnumFacing.NORTH)) {
+            if (te == null || te.shouldRenderFace(Direction.NORTH)) {
                 bufferbuilder.pos(x, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(EnumFacing.EAST)) {
+            if (te == null || te.shouldRenderFace(Direction.EAST)) {
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(EnumFacing.WEST)) {
+            if (te == null || te.shouldRenderFace(Direction.WEST)) {
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(EnumFacing.DOWN)) {
+            if (te == null || te.shouldRenderFace(Direction.DOWN)) {
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(EnumFacing.UP)) {
+            if (te == null || te.shouldRenderFace(Direction.UP)) {
                 bufferbuilder.pos(x, y + (double) f, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + (double) f, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + (double) f, z).color(f3, f4, f5, alpha2).endVertex();

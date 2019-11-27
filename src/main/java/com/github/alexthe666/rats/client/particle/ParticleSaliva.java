@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.particle;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -67,14 +67,14 @@ public class ParticleSaliva extends Particle {
         }
 
         BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
-        IBlockState iblockstate = this.world.getBlockState(blockpos);
-        Material material = iblockstate.getMaterial();
+        BlockState BlockState = this.world.getBlockState(blockpos);
+        Material material = BlockState.getMaterial();
 
         if (material.isLiquid() || material.isSolid()) {
             double d0 = 0.0D;
 
-            if (iblockstate.getBlock() instanceof BlockLiquid) {
-                d0 = (double) BlockLiquid.getLiquidHeightPercent(iblockstate.getValue(BlockLiquid.LEVEL).intValue());
+            if (BlockState.getBlock() instanceof BlockLiquid) {
+                d0 = (double) BlockLiquid.getLiquidHeightPercent(BlockState.getValue(BlockLiquid.LEVEL).intValue());
             }
 
             double d1 = (double) (MathHelper.floor(this.posY) + 1) - d0;

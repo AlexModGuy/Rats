@@ -2,12 +2,12 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -102,7 +102,7 @@ public class RatAIFollowOwner extends EntityAIBase {
 
     protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset) {
         BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);
-        IBlockState iblockstate = this.world.getBlockState(blockpos);
-        return iblockstate.getBlockFaceShape(this.world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(this.rat) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2));
+        BlockState BlockState = this.world.getBlockState(blockpos);
+        return BlockState.getBlockFaceShape(this.world, blockpos, Direction.DOWN) == BlockFaceShape.SOLID && BlockState.canEntitySpawn(this.rat) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2));
     }
 }

@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.ai.PiratBoatPathNavigate;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -138,7 +138,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
                 while (i > 0) {
                     int j = EntityXPOrb.getXPSplit(i);
                     i -= j;
-                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
             if (!this.world.isRemote) {
@@ -305,7 +305,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
             cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0.4F);
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
-                this.world.spawnEntity(cannonball);
+                this.world.addEntity(cannonball);
             }
             this.setFiring(true);
         }
@@ -344,10 +344,10 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
 
                     for (int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(l1, k1, i2);
-                        IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
-                        if (iblockstate.getMaterial() == Material.WATER) {
-                            f = Math.max(f, BlockLiquid.getBlockLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos));
+                        if (BlockState.getMaterial() == Material.WATER) {
+                            f = Math.max(f, BlockLiquid.getBlockLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos));
                         }
 
                         if (f >= 1.0F) {
@@ -383,10 +383,10 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
                 for (int l1 = k; l1 < l; ++l1) {
                     for (int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
-                        if (iblockstate.getMaterial() == Material.WATER) {
-                            float f = BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos);
+                        if (BlockState.getMaterial() == Material.WATER) {
+                            float f = BlockLiquid.getLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos);
                             this.waterLevel = Math.max((double) f, this.waterLevel);
                             flag |= axisalignedbb.minY < (double) f;
                         }
@@ -431,10 +431,10 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
                 for (int l1 = k; l1 < l; ++l1) {
                     for (int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
-                        if (iblockstate.getMaterial() == Material.WATER && d0 < (double) BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos)) {
-                            if (iblockstate.getValue(BlockLiquid.LEVEL).intValue() != 0) {
+                        if (BlockState.getMaterial() == Material.WATER && d0 < (double) BlockLiquid.getLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos)) {
+                            if (BlockState.getValue(BlockLiquid.LEVEL).intValue() != 0) {
                                 EntityBoat.Status entityboat$status = EntityBoat.Status.UNDER_FLOWING_WATER;
                                 return entityboat$status;
                             }

@@ -8,7 +8,7 @@ import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
@@ -68,9 +68,9 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.ratlanteanAutomatonHealth);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.8D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatsMod.CONFIG_OPTIONS.ratlanteanAutomatonAttack);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.ratlanteanAutomatonAttack);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
     }
@@ -111,9 +111,9 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
                             int k = i1 + j;
                             int l = i2 + l2;
                             BlockPos blockpos = new BlockPos(i3, k, l);
-                            IBlockState iblockstate = this.world.getBlockState(blockpos);
-                            Block block = iblockstate.getBlock();
-                            if (!(block instanceof BlockLiquid) && canDestroyBlock(block) && !block.isAir(iblockstate, this.world, blockpos) && block.canEntityDestroy(iblockstate, world, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, iblockstate)) {
+                            BlockState BlockState = this.world.getBlockState(blockpos);
+                            Block block = BlockState.getBlock();
+                            if (!(block instanceof BlockLiquid) && canDestroyBlock(block) && !block.isAir(BlockState, this.world, blockpos) && block.canEntityDestroy(BlockState, world, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, BlockState)) {
                                 flag = this.world.destroyBlock(blockpos, true) || flag;
                             }
                         }
@@ -226,7 +226,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
             beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
             this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
             if (!world.isRemote) {
-                world.spawnEntity(beam);
+                world.addEntity(beam);
             }
             this.useRangedAttack = rand.nextBoolean();
         }

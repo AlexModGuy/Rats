@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -21,13 +21,13 @@ public class RenderRatTrap extends TileEntitySpecialRenderer<TileEntityRatTrap> 
         float shutProgress = 0;
         ItemStack bait = ItemStack.EMPTY;
         if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatTrap && entity instanceof TileEntityRatTrap) {
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.NORTH) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.NORTH) {
                 rotation = 180;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.EAST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.EAST) {
                 rotation = -90;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.WEST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.WEST) {
                 rotation = 90;
             }
             shutProgress = entity.shutProgress;

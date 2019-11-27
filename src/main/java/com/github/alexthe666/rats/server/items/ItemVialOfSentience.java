@@ -47,7 +47,7 @@ public class ItemVialOfSentience extends Item {
         if (!worldIn.isRemote) {
             EntityVialOfSentience entitypotion = new EntityVialOfSentience(worldIn, playerIn, itemstack1);
             entitypotion.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
-            worldIn.spawnEntity(entitypotion);
+            worldIn.addEntity(entitypotion);
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));

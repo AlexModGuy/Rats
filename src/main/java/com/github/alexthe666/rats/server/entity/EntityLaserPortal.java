@@ -125,7 +125,7 @@ public class EntityLaserPortal extends Entity {
                 beam.setPosition(this.posX, this.posY + 1.0F, this.posZ);
                 beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
                 if (!world.isRemote) {
-                    world.spawnEntity(beam);
+                    world.addEntity(beam);
                 }
             }
         }

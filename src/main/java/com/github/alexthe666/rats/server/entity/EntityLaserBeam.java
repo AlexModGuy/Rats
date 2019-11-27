@@ -39,7 +39,7 @@ public class EntityLaserBeam extends EntityArrow {
 
     public EntityLaserBeam(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(RatsMod.CONFIG_OPTIONS.neoRatlanteanAttack);
+        this.setDamage(RatConfig.neoRatlanteanAttack);
     }
 
     public boolean isInWater() {

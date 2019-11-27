@@ -26,7 +26,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
     }
 
     public static boolean isChestRaidable(World world, BlockPos pos) {
-        String[] blacklist = RatsMod.CONFIG_OPTIONS.blacklistedRatBlocks;
+        String[] blacklist = RatConfig.blacklistedRatBlocks;
         if (world.getBlockState(pos).getBlock() instanceof BlockContainer) {
             Block block = world.getBlockState(pos).getBlock();
             boolean listed = false;
@@ -56,7 +56,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatsMod.CONFIG_OPTIONS.ratsStealItems) {
+        if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatConfig.ratsStealItems) {
             return false;
         }
         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
@@ -110,7 +110,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                         }
                         this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
                         stack.shrink(1);
-                        if (RatsMod.CONFIG_OPTIONS.ratsContaminateFood && this.entity.getRNG().nextInt(3) == 0) {
+                        if (RatConfig.ratsContaminateFood && this.entity.getRNG().nextInt(3) == 0) {
                             int slotToReplace = RatUtils.getContaminatedSlot(this.entity, feeder, this.entity.world.rand);
                             if (slotToReplace != -1) {
                                 if (feeder.getStackInSlot(slotToReplace).isEmpty()) {

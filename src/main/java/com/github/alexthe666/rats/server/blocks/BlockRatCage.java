@@ -6,33 +6,34 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLa
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,33 +41,42 @@ import java.util.Random;
 
 public class BlockRatCage extends Block {
 
-    public static final PropertyInteger NORTH = PropertyInteger.create("north", 0, 2);
-    public static final PropertyInteger EAST = PropertyInteger.create("east", 0, 2);
-    public static final PropertyInteger SOUTH = PropertyInteger.create("south", 0, 2);
-    public static final PropertyInteger WEST = PropertyInteger.create("west", 0, 2);
-    public static final PropertyInteger UP = PropertyInteger.create("up", 0, 2);
-    public static final PropertyInteger DOWN = PropertyInteger.create("down", 0, 2);
+    public static final IntegerProperty NORTH = IntegerProperty.create("north", 0, 2);
+    public static final IntegerProperty EAST = IntegerProperty.create("east", 0, 2);
+    public static final IntegerProperty SOUTH = IntegerProperty.create("south", 0, 2);
+    public static final IntegerProperty WEST = IntegerProperty.create("west", 0, 2);
+    public static final IntegerProperty UP = IntegerProperty.create("up", 0, 2);
+    public static final IntegerProperty DOWN = IntegerProperty.create("down", 0, 2);
 
-    private static final AxisAlignedBB BOTTOM_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.125F, 1F);
-    private static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0F, 1F, 0F, 1F, 1F, 1F);
-    private static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 0F);
-    private static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0F, 0F, 1F, 1F, 1F, 1F);
-    private static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(1F, 0F, 0F, 1F, 1F, 1F);
-    private static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0F, 0F, 0F, 0F, 1F, 1F);
+    private static final VoxelShape BOTTOM_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16F, 2F, 16F);
+    private static final VoxelShape TOP_AABB = Block.makeCuboidShape(0F, 16F, 0F, 16F, 16F, 16F);
+    private static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16F, 16F, 0F);
+    private static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0F, 0F, 16F, 16F, 16F, 16F);
+    private static final VoxelShape EAST_AABB = Block.makeCuboidShape(1F, 0F, 0F, 16F, 16F, 16F);
+    private static final VoxelShape WEST_AABB = Block.makeCuboidShape(0F, 0F, 0F, 0F, 16F, 16F);
 
     public BlockRatCage(String name) {
-        super(Material.IRON, MapColor.STONE);
-        this.setHardness(2.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
-        this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(NORTH, Integer.valueOf(0))
-                .withProperty(EAST, Integer.valueOf(0))
-                .withProperty(SOUTH, Integer.valueOf(0))
-                .withProperty(WEST, Integer.valueOf(0))
-                .withProperty(UP, Integer.valueOf(0))
-                .withProperty(DOWN, Integer.valueOf(0))
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0F, 0.0F));
+        this.setDefaultState(this.stateContainer.getBaseState()
+                .with(NORTH, Integer.valueOf(0))
+                .with(EAST, Integer.valueOf(0))
+                .with(SOUTH, Integer.valueOf(0))
+                .with(WEST, Integer.valueOf(0))
+                .with(UP, Integer.valueOf(0))
+                .with(DOWN, Integer.valueOf(0))
+        );
+        this.setRegistryName(RatsMod.MODID, name);
+    }
+
+    public BlockRatCage(String name, Block.Properties props) {
+        super(props);
+        this.setDefaultState(this.stateContainer.getBaseState()
+                .with(NORTH, Integer.valueOf(0))
+                .with(EAST, Integer.valueOf(0))
+                .with(SOUTH, Integer.valueOf(0))
+                .with(WEST, Integer.valueOf(0))
+                .with(UP, Integer.valueOf(0))
+                .with(DOWN, Integer.valueOf(0))
         );
         this.setRegistryName(RatsMod.MODID, name);
     }
@@ -76,90 +86,90 @@ public class BlockRatCage extends Block {
         tooltip.add(I18n.format("tile.rats.rat_cage.desc1"));
     }
 
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
 
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST, UP, DOWN);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, EAST, WEST, SOUTH, DOWN, UP);
     }
 
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return state.withProperty(NORTH, canFenceConnectTo(worldIn, pos, EnumFacing.NORTH))
-                .withProperty(SOUTH, canFenceConnectTo(worldIn, pos, EnumFacing.SOUTH))
-                .withProperty(EAST, canFenceConnectTo(worldIn, pos, EnumFacing.EAST))
-                .withProperty(WEST, canFenceConnectTo(worldIn, pos, EnumFacing.WEST))
-                .withProperty(UP, canFenceConnectTo(worldIn, pos, EnumFacing.UP))
-                .withProperty(DOWN, canFenceConnectTo(worldIn, pos, EnumFacing.DOWN));
+
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        IBlockReader iblockreader = context.getWorld();
+        BlockPos blockpos = context.getPos();
+        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+        BlockPos blockpos1 = blockpos.north();
+        BlockPos blockpos2 = blockpos.east();
+        BlockPos blockpos3 = blockpos.south();
+        BlockPos blockpos4 = blockpos.west();
+        BlockState blockstate = iblockreader.getBlockState(blockpos1);
+        BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
+        BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
+        BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
+        return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
-    public int canFenceConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        BlockPos other = pos.offset(facing);
-        if (world.getBlockState(other).getBlock() instanceof BlockRatTube) {
+    public int canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
+        if (p_220111_1_.getBlock() instanceof BlockRatTube) {
             return 2;
         }
-        return world.getBlockState(other).getBlock() instanceof BlockRatCage ? 1 : 0;
+        return p_220111_1_.getBlock() instanceof BlockRatCage ? 1 : 0;
     }
 
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(BlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(RatsBlockRegistry.RAT_CAGE);
     }
 
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    public ItemStack getItem(World worldIn, BlockPos pos, BlockState state) {
         return new ItemStack(RatsBlockRegistry.RAT_CAGE);
     }
-
-
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return FULL_BLOCK_AABB;
-    }
-
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        if (state.getBlock() instanceof BlockRatCage) {
-            IBlockState actualState = getActualState(state, worldIn, pos);
-            if (actualState.getValue(UP) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
+    private VoxelShape getShape(BlockState state) {
+        VoxelShape shape1 = Block.makeCuboidShape(0, 0, 0, 0, 0, 0);
+        if (state.getBlock() instanceof BlockRatHole) {
+            if (state.get(UP) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, TOP_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(DOWN) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BOTTOM_AABB);
+            if (state.get(DOWN) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, BOTTOM_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(NORTH) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+            if (state.get(NORTH) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, NORTH_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(SOUTH) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+            if (state.get(SOUTH) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, SOUTH_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(EAST) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+            if (state.get(WEST) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, WEST_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
-            if (actualState.getValue(WEST) == 0) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+            if (state.get(EAST) == 0) {
+                shape1 = VoxelShapes.combineAndSimplify(shape1, EAST_AABB, IBooleanFunction.ONLY_FIRST).simplify();
             }
         }
+        return shape1;
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
             if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
-                EnumFacing limitedFacing = playerIn.getHorizontalFacing().getOpposite();
+                Direction limitedFacing = playerIn.getHorizontalFacing().getOpposite();
                 if (!worldIn.isRemote) {
-                    BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP) playerIn, playerIn);
+                  //  BlockRatCageDecorated.DECO_TRIGGER.trigger((EntityPlayerMP) playerIn, playerIn);
                 }
                 if (playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
-                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing), 2);
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.getDefaultState().with(BlockRatCageDecorated.FACING, limitedFacing), 2);
                     TileEntityRatCageBreedingLantern decorated = new TileEntityRatCageBreedingLantern();
-                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
+                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1);
                     decorated.setContainedItem(added);
                     worldIn.setTileEntity(pos, decorated);
                     if (!playerIn.isCreative()) {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
                 } else {
-                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().withProperty(BlockRatCageDecorated.FACING, limitedFacing), 2);
+                    worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE_DECORATED.getDefaultState().with(BlockRatCageDecorated.FACING, limitedFacing), 2);
                     TileEntityRatCageDecorated decorated = new TileEntityRatCageDecorated();
-                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1, playerIn.getHeldItem(hand).getMetadata());
+                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1);
                     decorated.setContainedItem(added);
                     worldIn.setTileEntity(pos, decorated);
                     if (!playerIn.isCreative()) {
@@ -195,14 +205,14 @@ public class BlockRatCage extends Block {
                 for (Entity entity : playerIn.getPassengers()) {
                     if (entity instanceof EntityRat && !((EntityRat) entity).isChild()) {
                         EntityRat rat = (EntityRat) entity;
-                        rat.dismountRidingEntity();
+                        rat.stopRiding();
                         rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                         rat.getNavigator().clearPath();
-                        rat.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                        //rat.getMoveHelper().action = MovementController.Action.WAIT;
                         ratCount++;
                     }
                 }
-                playerIn.sendStatusMessage(new TextComponentTranslation("entity.rat.cage.deposit", ratCount), true);
+                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rat.cage.deposit", ratCount), true);
                 return true;
             } else {
                 int ratCount = 0;
@@ -213,22 +223,22 @@ public class BlockRatCage extends Block {
                     }
                     ratCount++;
                 }
-                playerIn.sendStatusMessage(new TextComponentTranslation("entity.rat.cage.withdrawal", ratCount), true);
+                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rat.cage.withdrawal", ratCount), true);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return 0;
     }
 
@@ -240,7 +250,4 @@ public class BlockRatCage extends Block {
         return ItemStack.EMPTY;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.SOLID;
-    }
 }

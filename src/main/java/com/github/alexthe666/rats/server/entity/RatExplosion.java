@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -106,14 +106,14 @@ public class RatExplosion extends Explosion {
 
                         for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
-                            IBlockState iblockstate = this.world.getBlockState(blockpos);
+                            BlockState BlockState = this.world.getBlockState(blockpos);
 
-                            if (iblockstate.getMaterial() != Material.AIR) {
-                                float f2 = this.exploder != null ? this.exploder.getExplosionResistance(this, this.world, blockpos, iblockstate) : iblockstate.getBlock().getExplosionResistance(world, blockpos, null, this);
+                            if (BlockState.getMaterial() != Material.AIR) {
+                                float f2 = this.exploder != null ? this.exploder.getExplosionResistance(this, this.world, blockpos, BlockState) : BlockState.getBlock().getExplosionResistance(world, blockpos, null, this);
                                 f -= (f2 + 0.3F) * 0.3F;
                             }
 
-                            if (f > 0.0F && (this.exploder == null || this.exploder.canExplosionDestroyBlock(this, this.world, blockpos, iblockstate, f))) {
+                            if (f > 0.0F && (this.exploder == null || this.exploder.canExplosionDestroyBlock(this, this.world, blockpos, BlockState, f))) {
                                 set.add(blockpos);
                             }
 
@@ -194,8 +194,8 @@ public class RatExplosion extends Explosion {
 
         if (this.damagesTerrain) {
             for (BlockPos blockpos : this.affectedBlockPositions) {
-                IBlockState iblockstate = this.world.getBlockState(blockpos);
-                Block block = iblockstate.getBlock();
+                BlockState BlockState = this.world.getBlockState(blockpos);
+                Block block = BlockState.getBlock();
 
                 if (spawnParticles) {
                     double d0 = (double) ((float) blockpos.getX() + this.world.rand.nextFloat());
@@ -217,7 +217,7 @@ public class RatExplosion extends Explosion {
                     this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
                 }
 
-                if (iblockstate.getMaterial() != Material.AIR) {
+                if (BlockState.getMaterial() != Material.AIR) {
                     if (block.canDropFromExplosion(this)) {
                         block.dropBlockAsItemWithChance(this.world, blockpos, this.world.getBlockState(blockpos), 1.0F / this.size, 0);
                     }

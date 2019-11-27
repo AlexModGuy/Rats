@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityThrownBlock extends Entity {
     public EntityLivingBase shootingEntity;
-    public IBlockState fallTile;
+    public BlockState fallTile;
     public boolean dropBlock = true;
     public NBTTagCompound tileEntityData;
     private int ticksAlive;
@@ -42,7 +42,7 @@ public class EntityThrownBlock extends Entity {
         this.setSize(0.98F, 0.98F);
     }
 
-    public EntityThrownBlock(World worldIn, IBlockState blockState, EntityLivingBase entityNeoRatlantean) {
+    public EntityThrownBlock(World worldIn, BlockState blockState, EntityLivingBase entityNeoRatlantean) {
         super(worldIn);
         this.setSize(0.98F, 0.98F);
         this.fallTile = blockState;
@@ -130,10 +130,10 @@ public class EntityThrownBlock extends Entity {
             Block block = this.fallTile.getBlock();
             if (result != null && result.getBlockPos() != null) {
                 for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
-                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatsMod.CONFIG_OPTIONS.neoRatlanteanAttack);
+                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatConfig.neoRatlanteanAttack);
                 }
                 BlockPos blockpos1 = result.getBlockPos().up();
-                if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, null)) {
+                if (this.world.mayPlace(block, blockpos1, true, Direction.UP, null)) {
                     if (dropBlock) {
                         this.world.setBlockState(blockpos1, this.fallTile);
                     }

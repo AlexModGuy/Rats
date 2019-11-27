@@ -120,9 +120,9 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatsMod.CONFIG_OPTIONS.blackDeathHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.blackDeathHealth);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatsMod.CONFIG_OPTIONS.blackDeathAttack);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.blackDeathAttack);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
     }
@@ -226,7 +226,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
                 rat.copyLocationAndAnglesFrom(this);
                 rat.setPlague(true);
                 if (!world.isRemote) {
-                    world.spawnEntity(rat);
+                    world.addEntity(rat);
                 }
                 rat.setTamed(true);
                 rat.setOwnerId(this.getUniqueID());
@@ -241,7 +241,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
                 cloud.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
                 cloud.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
-                    world.spawnEntity(cloud);
+                    world.addEntity(cloud);
                 }
                 cloud.setOwnerId(this.getUniqueID());
                 if (this.getAttackTarget() != null) {
@@ -254,7 +254,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
                 beast.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
                 beast.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
-                    world.spawnEntity(beast);
+                    world.addEntity(beast);
                 }
                 beast.setOwnerId(this.getUniqueID());
                 if (this.getAttackTarget() != null) {

@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,13 +29,13 @@ public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoC
     public void render(TileEntityAutoCurdler entity, double x, double y, double z, float f, int f1, float alpha) {
         float rotation = 0;
         if (entity != null && entity.getWorld() != null && entity instanceof TileEntityAutoCurdler) {
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.NORTH) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.NORTH) {
                 rotation = 180;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.EAST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.EAST) {
                 rotation = -90;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.WEST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.WEST) {
                 rotation = 90;
             }
             if (entity.tank.getFluidAmount() > 0) {

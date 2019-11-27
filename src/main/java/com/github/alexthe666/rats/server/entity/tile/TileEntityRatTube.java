@@ -3,10 +3,10 @@ package com.github.alexthe666.rats.server.entity.tile;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
 public class TileEntityRatTube extends TileEntity implements ITickable {
 
     private static PropertyBool[] allOpenVars = new PropertyBool[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
-    public EnumFacing opening = null;
+    public Direction opening = null;
     public boolean isNode = false;
 
     @Override
@@ -36,25 +36,25 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
 
     private Vec3d offsetTubePos(){
         if(this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockRatTube) {
-            IBlockState actualState = this.getBlockType().getActualState(this.getWorld().getBlockState(this.pos), this.getWorld(), this.pos);
+            BlockState actualState = this.getBlockType().getActualState(this.getWorld().getBlockState(this.pos), this.getWorld(), this.pos);
             BlockPos pos = new BlockPos(0, 0, 0);
             if (actualState.getValue(BlockRatTube.UP)) {
-                pos = pos.offset(EnumFacing.UP);
+                pos = pos.offset(Direction.UP);
             }
             if (actualState.getValue(BlockRatTube.DOWN)) {
-                pos = pos.offset(EnumFacing.DOWN);
+                pos = pos.offset(Direction.DOWN);
             }
             if (actualState.getValue(BlockRatTube.EAST)) {
-                pos = pos.offset(EnumFacing.EAST);
+                pos = pos.offset(Direction.EAST);
             }
             if (actualState.getValue(BlockRatTube.WEST)) {
-                pos = pos.offset(EnumFacing.WEST);
+                pos = pos.offset(Direction.WEST);
             }
             if (actualState.getValue(BlockRatTube.NORTH)) {
-                pos = pos.offset(EnumFacing.NORTH);
+                pos = pos.offset(Direction.NORTH);
             }
             if (actualState.getValue(BlockRatTube.SOUTH)) {
-                pos = pos.offset(EnumFacing.SOUTH);
+                pos = pos.offset(Direction.SOUTH);
             }
             return new Vec3d(pos.getX() * 0.25D, pos.getY() * 0.25D, pos.getZ() * 0.25D);
         }
@@ -83,7 +83,7 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
     }
 
     private boolean isOpen() {
-        IBlockState state = world.getBlockState(this.getPos());
+        BlockState state = world.getBlockState(this.getPos());
         if (state.getBlock() instanceof BlockRatTube) {
             for (PropertyBool opened : allOpenVars) {
                 if (state.getValue(opened)) {
@@ -106,12 +106,12 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         if (i == -1) {
             opening = null;
         } else {
-            opening = EnumFacing.values()[MathHelper.clamp(i, 0, EnumFacing.values().length - 1)];
+            opening = Direction.values()[MathHelper.clamp(i, 0, Direction.values().length - 1)];
         }
         super.readFromNBT(compound);
     }
 
-    public void setEntranceData(EnumFacing side, boolean open) {
+    public void setEntranceData(Direction side, boolean open) {
         if (open) {
             opening = side;
             isNode = true;

@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.compat.tinkers;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

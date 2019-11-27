@@ -4,10 +4,10 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,16 +20,16 @@ import java.util.Random;
 
 public class WorldGenRatRuin extends WorldGenerator {
 
-    public EnumFacing facing;
+    public Direction facing;
 
-    public WorldGenRatRuin(EnumFacing facing) {
+    public WorldGenRatRuin(Direction facing) {
         super(false);
 
         this.facing = facing;
 
     }
 
-    public static boolean isPartOfRuin(IBlockState state) {
+    public static boolean isPartOfRuin(BlockState state) {
         return state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_PILLAR
                 || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_CHISELED || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_STAIRS || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_SLAB
                 || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_DOUBLESLAB || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED
@@ -37,7 +37,7 @@ public class WorldGenRatRuin extends WorldGenerator {
                 || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_SLAB || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_DOUBLESLAB || state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_TILE;
     }
 
-    public static Rotation getRotationFromFacing(EnumFacing facing) {
+    public static Rotation getRotationFromFacing(Direction facing) {
         switch (facing) {
             case EAST:
                 return Rotation.CLOCKWISE_90;
@@ -63,7 +63,7 @@ public class WorldGenRatRuin extends WorldGenerator {
     }
 
     private static boolean canHeightSkipBlock(BlockPos pos, World world) {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         return state.getBlock() instanceof BlockLog || state.getBlock() instanceof BlockLiquid;
     }
 
@@ -132,7 +132,7 @@ public class WorldGenRatRuin extends WorldGenerator {
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         MinecraftServer server = worldIn.getMinecraftServer();
         BlockPos height = getGround(position, worldIn);
-        IBlockState dirt = worldIn.getBlockState(height.down(2));
+        BlockState dirt = worldIn.getBlockState(height.down(2));
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
         Template template = templateManager.getTemplate(server, model.structureLoc);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));
@@ -156,11 +156,11 @@ public class WorldGenRatRuin extends WorldGenerator {
                     height.up(template.getSize().getY()).offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2)
             )) {
                 if (worldIn.getBlockState(vinePos).isOpaqueCube()) {
-                    for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
-                        if (!worldIn.getBlockState(vinePos.offset(enumfacing)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
-                            EnumFacing opposFacing = enumfacing.getOpposite();
-                            IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, Boolean.valueOf(opposFacing == EnumFacing.NORTH)).withProperty(BlockVine.EAST, Boolean.valueOf(opposFacing == EnumFacing.EAST)).withProperty(BlockVine.SOUTH, Boolean.valueOf(opposFacing == EnumFacing.SOUTH)).withProperty(BlockVine.WEST, Boolean.valueOf(opposFacing == EnumFacing.WEST));
-                            worldIn.setBlockState(vinePos.offset(enumfacing), iblockstate, 2);
+                    for (Direction Direction : Direction.Plane.HORIZONTAL.facings()) {
+                        if (!worldIn.getBlockState(vinePos.offset(Direction)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
+                            Direction opposFacing = Direction.getOpposite();
+                            BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(opposFacing == Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(opposFacing == Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(opposFacing == Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(opposFacing == Direction.WEST));
+                            worldIn.setBlockState(vinePos.offset(Direction), BlockState, 2);
                         }
                     }
                 }
@@ -169,7 +169,7 @@ public class WorldGenRatRuin extends WorldGenerator {
         return true;
     }
 
-    public boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z, EnumFacing facing) {
+    public boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z, Direction facing) {
         return !isPartOfRuin(world.getBlockState(middle.offset(facing, z / 2))) && !isPartOfRuin(world.getBlockState(middle.offset(facing.getOpposite(), z / 2))) &&
                 !isPartOfRuin(world.getBlockState(middle.offset(facing.rotateY(), x / 2))) && !isPartOfRuin(world.getBlockState(middle.offset(facing.rotateYCCW(), x / 2)));
     }

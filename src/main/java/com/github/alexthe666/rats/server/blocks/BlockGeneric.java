@@ -5,32 +5,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockGeneric extends Block {
     public BlockGeneric(String name, Material mat, float hardness, float resistance, SoundType sound) {
-        super(mat);
-        this.setHardness(hardness);
-        this.setResistance(resistance);
-        this.setSoundType(sound);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
+        super(Block.Properties.create(mat).sound(sound).hardnessAndResistance(hardness, resistance));
         this.setRegistryName(RatsMod.MODID, name);
     }
 
-    public BlockGeneric(String name, Material mat, float hardness, float resistance, SoundType sound, float light) {
-        super(mat);
-        this.setHardness(hardness);
-        this.setResistance(resistance);
-        this.setSoundType(sound);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
+    public BlockGeneric(String name, Material mat, float hardness, float resistance, SoundType sound, int light) {
+        super(Block.Properties.create(mat).sound(sound).hardnessAndResistance(hardness, resistance).lightValue(light));
         this.setRegistryName(RatsMod.MODID, name);
-        this.setLightLevel(light);
     }
 
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         if (this == RatsBlockRegistry.MARBLED_CHEESE_DIRT) {
             return BlockRenderLayer.CUTOUT;

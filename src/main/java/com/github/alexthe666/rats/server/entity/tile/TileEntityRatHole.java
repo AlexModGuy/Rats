@@ -1,14 +1,14 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 
@@ -16,52 +16,52 @@ public class TileEntityRatHole extends TileEntity {
     private NonNullList<ItemStack> immitationStack = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityRatHole() {
-        setImmitatedBlockState(Blocks.PLANKS.getDefaultState());
+        setImmitatedBlockState(Blocks.OAK_PLANKS.getDefaultState());
     }
 
-    public TileEntityRatHole(IBlockState state) {
+    public TileEntityRatHole(BlockState state) {
         setImmitatedBlockState(state);
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(tag);
-        return new SPacketUpdateTileEntity(pos, 1, tag);
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT tag = new CompoundNBT();
+        this.write(tag);
+        return new SUpdateTileEntityPacket(pos, 1, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        readFromNBT(packet.getNbtCompound());
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        read(packet.getNbtCompound());
     }
 
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
 
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT write(CompoundNBT compound) {
         ItemStackHelper.saveAllItems(compound, this.immitationStack);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void read(CompoundNBT compound) {
         immitationStack = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, immitationStack);
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
-    public IBlockState getImmitatedBlockState() {
-        IBlockState defState = Blocks.PLANKS.getDefaultState();
-        if (!immitationStack.get(0).isEmpty() && immitationStack.get(0).getItem() instanceof ItemBlock) {
-            Block block = ((ItemBlock) immitationStack.get(0).getItem()).getBlock();
-            return block.getStateFromMeta(immitationStack.get(0).getItemDamage());
+    public BlockState getImmitatedBlockState() {
+        BlockState defState = Blocks.OAK_PLANKS.getDefaultState();
+        if (!immitationStack.get(0).isEmpty() && immitationStack.get(0).getItem() instanceof BlockItem) {
+            Block block = ((BlockItem) immitationStack.get(0).getItem()).getBlock();
+            return block.getDefaultState();
         }
         return defState;
     }
 
-    public void setImmitatedBlockState(IBlockState state) {
-        ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+    public void setImmitatedBlockState(BlockState state) {
+        ItemStack stack = new ItemStack(state.getBlock(), 1);
         immitationStack.set(0, stack);
     }
 

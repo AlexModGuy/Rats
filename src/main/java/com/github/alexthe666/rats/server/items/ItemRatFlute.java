@@ -68,7 +68,7 @@ public class ItemRatFlute extends Item {
                 player.sendStatusMessage(new TextComponentTranslation("item.rats.rat_flute.comand_changed").appendText(" ").appendSibling(new TextComponentTranslation(ratCommand.getTranslateName())), true);
             } else {
                 player.getCooldownTracker().setCooldown(this, 60);
-                float chunksize = 16 * RatsMod.CONFIG_OPTIONS.ratFluteDistance;
+                float chunksize = 16 * RatConfig.ratFluteDistance;
                 List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, (new AxisAlignedBB(player.posX, player.posY, player.posZ, player.posX + 1.0D, player.posY + 1.0D, player.posZ + 1.0D)).grow(chunksize, 256, chunksize));
                 Iterator<Entity> itr = list.iterator();
                 int ratCount = 0;

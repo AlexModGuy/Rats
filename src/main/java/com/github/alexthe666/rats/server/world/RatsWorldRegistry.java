@@ -12,9 +12,9 @@ public class RatsWorldRegistry {
     public static Biome RATLANTIS_BIOME = new BiomeRatlantis();
 
     public static void register() {
-        if (!RatsMod.CONFIG_OPTIONS.disableRatlantis) {
-            RATLANTIS_DIM = DimensionType.register("Ratlantis", "_ratlantis", RatsMod.CONFIG_OPTIONS.ratlantisDimensionId, WorldProviderRatlantis.class, false);
-            DimensionManager.registerDimension(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId, RATLANTIS_DIM);
+        if (!RatConfig.disableRatlantis) {
+            RATLANTIS_DIM = DimensionType.register("Ratlantis", "_ratlantis", RatConfig.ratlantisDimensionId, WorldProviderRatlantis.class, false);
+            DimensionManager.registerDimension(RatConfig.ratlantisDimensionId, RATLANTIS_DIM);
         }
         StructureRatRoadPieces.registerVillagePieces();
     }

@@ -8,13 +8,13 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,28 +40,28 @@ public class BlockRatlantisPortal extends BlockContainer {
     }
 
     @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if (!RatsMod.CONFIG_OPTIONS.disableRatlantis) {
+    public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+        if (!RatConfig.disableRatlantis) {
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
                 if ((entity instanceof EntityPlayerMP)) {
                     EntityPlayerMP thePlayer = (EntityPlayerMP) entity;
                     if (thePlayer.timeUntilPortal > 0) {
                         thePlayer.timeUntilPortal = 10;
-                    } else if (thePlayer.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
+                    } else if (thePlayer.dimension != RatConfig.ratlantisDimensionId) {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisDimensionId, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId)));
+                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatConfig.ratlantisDimensionId, new RatlantisTeleporter(thePlayer.server.getWorld(RatConfig.ratlantisDimensionId)));
                     } else {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension, new RatlantisTeleporter(thePlayer.server.getWorld(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension)));
+                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatConfig.ratlantisPortalExitDimension, new RatlantisTeleporter(thePlayer.server.getWorld(RatConfig.ratlantisPortalExitDimension)));
                     }
                 }
                 if (!(entity instanceof EntityPlayer)) {
-                    if (entity.dimension != RatsMod.CONFIG_OPTIONS.ratlantisDimensionId) {
+                    if (entity.dimension != RatConfig.ratlantisDimensionId) {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisDimensionId);
+                        entity.changeDimension(RatConfig.ratlantisDimensionId);
                     } else {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatsMod.CONFIG_OPTIONS.ratlantisPortalExitDimension);
+                        entity.changeDimension(RatConfig.ratlantisPortalExitDimension);
                     }
                 }
             }
@@ -69,13 +69,13 @@ public class BlockRatlantisPortal extends BlockContainer {
     }
 
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!this.canSurviveAt(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);
         }
     }
 
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!this.canSurviveAt(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);
         }
@@ -91,22 +91,22 @@ public class BlockRatlantisPortal extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-        Block block = iblockstate.getBlock();
-        return !iblockstate.isOpaqueCube() && block != RatsBlockRegistry.RATLANTIS_PORTAL;
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
+        BlockState BlockState = blockAccess.getBlockState(pos.offset(side));
+        Block block = BlockState.getBlock();
+        return !BlockState.isOpaqueCube() && block != RatsBlockRegistry.RATLANTIS_PORTAL;
     }
 
     @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return NULL_AABB;
     }
 
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
@@ -115,7 +115,7 @@ public class BlockRatlantisPortal extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityRatlantisPortal) {
@@ -133,15 +133,15 @@ public class BlockRatlantisPortal extends BlockContainer {
         }
     }
 
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    public ItemStack getItem(World worldIn, BlockPos pos, BlockState state) {
         return ItemStack.EMPTY;
     }
 
-    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    public MapColor getMapColor(BlockState state, IBlockAccess worldIn, BlockPos pos) {
         return MapColor.YELLOW;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
         return BlockFaceShape.UNDEFINED;
     }
 }

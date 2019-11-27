@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server;
 
+import com.github.alexthe666.rats.ConfigHolder;
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockGenericSlab;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
@@ -14,26 +16,32 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(RatsMod.MODID)
 public class CommonProxy {
 
     @SubscribeEvent
@@ -60,54 +68,8 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
+    public static void registerVillagers(RegistryEvent.Register<VillagerProfession> event) {
         event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
-    }
-
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        try {
-            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Block) {
-                    event.getRegistry().register((Block) obj);
-                } else if (obj instanceof Block[]) {
-                    for (Block block : (Block[]) obj) {
-                        event.getRegistry().register(block);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SubscribeEvent
-    public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
-        try {
-            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Block) {
-                    ItemBlock itemBlock = new ItemBlock((Block) obj);
-                    if (obj instanceof BlockGenericSlab) {
-                        itemBlock = ((BlockGenericSlab) obj).getItemBlock();
-                    }
-                    itemBlock.setRegistryName(((Block) obj).getRegistryName());
-                    event.getRegistry().register(itemBlock);
-                } else if (obj instanceof Block[]) {
-                    for (Block block : (Block[]) obj) {
-                        ItemBlock itemBlock = new ItemBlock(block);
-                        if (block instanceof BlockGenericSlab) {
-                            itemBlock = ((BlockGenericSlab) obj).getItemBlock();
-                        }
-                        itemBlock.setRegistryName(block.getRegistryName());
-                        event.getRegistry().register(itemBlock);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @SubscribeEvent
@@ -116,7 +78,7 @@ public class CommonProxy {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item) {
-                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatsMod.CONFIG_OPTIONS.disablePlastic) {
+                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatConfig.disablePlastic) {
                         event.getRegistry().register((Item) obj);
                     }
                 } else if (obj instanceof Item[]) {
@@ -183,6 +145,17 @@ public class CommonProxy {
         event.getRegistry().register(builder.build());
     }
 
+    @SubscribeEvent
+    public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+        final ModConfig config = event.getConfig();
+        // Rebake the configs when they change
+        if (config.getSpec() == ConfigHolder.CLIENT_SPEC) {
+            RatConfig.bakeClient(config);
+        } else if (config.getSpec() == ConfigHolder.SERVER_SPEC) {
+            RatConfig.bakeServer(config);
+        }
+    }
+
     public void preInit() {
     }
 
@@ -191,13 +164,6 @@ public class CommonProxy {
     }
 
     public void postInit() {
-    }
-
-    @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equalsIgnoreCase(RatsMod.MODID)) {
-            RatsMod.syncConfig();
-        }
     }
 
     public Object getArmorModel(int index) {
@@ -218,7 +184,7 @@ public class CommonProxy {
     public void setRefrencedRat(EntityRat rat) {
     }
 
-    public void setCheeseStaffContext(BlockPos pos, EnumFacing facing) {
+    public void setCheeseStaffContext(BlockPos pos, Direction facing) {
     }
 
     public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {

@@ -4,13 +4,13 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
@@ -69,7 +69,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
     public void updateTask() {
         if (this.targetBlock != null) {
             if (holdingSeeds()) {
-                IBlockState block = this.entity.world.getBlockState(this.targetBlock);
+                BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 if (block.getBlock().isFertile(entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
@@ -94,7 +94,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
                 }
             }
             if (holdingBonemeal()) {
-                IBlockState block = this.entity.world.getBlockState(this.targetBlock);
+                BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 if (canPlantBeBonemealed(targetBlock, block)) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
@@ -121,17 +121,17 @@ public class RatAIHarvestFarmer extends EntityAIBase {
             } else if (holdingBlock()) {
                 ItemBlock itemBlock = ((ItemBlock)entity.getHeldItem(EnumHand.MAIN_HAND).getItem());
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-                if (entity.world.mayPlace(itemBlock.getBlock(), this.targetBlock, false, EnumFacing.UP, (Entity)null)) {
+                if (entity.world.mayPlace(itemBlock.getBlock(), this.targetBlock, false, Direction.UP, (Entity)null)) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 1.5F) {
                         if (holdingBlock()) {
-                            IBlockState iblockstate1 = itemBlock.getBlock().getStateForPlacement(entity.world, targetBlock, entity.getHorizontalFacing(), 0, 0, 0, entity.getHeldItem(EnumHand.MAIN_HAND).getMetadata(), entity, EnumHand.MAIN_HAND);
+                            BlockState BlockState1 = itemBlock.getBlock().getStateForPlacement(entity.world, targetBlock, entity.getHorizontalFacing(), 0, 0, 0, entity.getHeldItem(EnumHand.MAIN_HAND).getMetadata(), entity, EnumHand.MAIN_HAND);
                             this.entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-                            entity.world.setBlockState(targetBlock,  iblockstate1);
+                            entity.world.setBlockState(targetBlock,  BlockState1);
                             if(entity.isEntityInsideOpaqueBlock()){
                                 entity.setPosition(entity.posX, entity.posY + 1, entity.posZ);
                             }
-                            SoundType placeSound =  iblockstate1.getBlock().getSoundType(iblockstate1, entity.world, targetBlock, entity);
+                            SoundType placeSound =  BlockState1.getBlock().getSoundType(BlockState1, entity.world, targetBlock, entity);
                             entity.playSound(placeSound.getPlaceSound(), (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
                         }
                          this.targetBlock = null;
@@ -176,7 +176,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
                 block = ((ItemBlock)this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem()).getBlock();
             }
             for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-                if (entity.world.mayPlace(block, pos, false, EnumFacing.UP, (Entity)null) && entity.world.isAirBlock(pos.up())) {
+                if (entity.world.mayPlace(block, pos, false, Direction.UP, (Entity)null) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }
             }
@@ -188,13 +188,13 @@ public class RatAIHarvestFarmer extends EntityAIBase {
 
     }
 
-    private boolean canPlantBeBonemealed(BlockPos pos, IBlockState iblockstate) {
-        if (iblockstate.getBlock() instanceof IGrowable && !(iblockstate.getBlock() instanceof BlockTallGrass) && !(iblockstate.getBlock() instanceof BlockGrass)) {
-            IGrowable igrowable = (IGrowable) iblockstate.getBlock();
-            if (igrowable.canGrow(entity.world, pos, iblockstate, entity.world.isRemote)) {
+    private boolean canPlantBeBonemealed(BlockPos pos, BlockState BlockState) {
+        if (BlockState.getBlock() instanceof IGrowable && !(BlockState.getBlock() instanceof BlockTallGrass) && !(BlockState.getBlock() instanceof BlockGrass)) {
+            IGrowable igrowable = (IGrowable) BlockState.getBlock();
+            if (igrowable.canGrow(entity.world, pos, BlockState, entity.world.isRemote)) {
                 if (!entity.world.isRemote) {
-                    //  igrowable.grow(worldIn, worldIn.rand, target, iblockstate);
-                    return igrowable.canUseBonemeal(entity.world, entity.world.rand, pos, iblockstate);
+                    //  igrowable.grow(worldIn, worldIn.rand, target, BlockState);
+                    return igrowable.canUseBonemeal(entity.world, entity.world.rand, pos, BlockState);
                 }
             }
         }

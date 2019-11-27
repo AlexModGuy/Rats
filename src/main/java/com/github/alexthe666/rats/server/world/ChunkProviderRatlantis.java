@@ -9,7 +9,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -170,10 +170,10 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
 
     private void addStructures(World world, Random rand, BlockPos blockpos) {
         if (rand.nextInt(4) == 0 && world.getBlockState(world.getHeight(blockpos).down()).isOpaqueCube()) {
-            new WorldGenRatRuin(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
+            new WorldGenRatRuin(Direction.HORIZONTALS[rand.nextInt(Direction.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
         if (rand.nextInt(40) == 0 && world.getBlockState(world.getHeight(blockpos).down()).getBlock() instanceof BlockLiquid) {
-            new WorldGenAquaduct(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
+            new WorldGenAquaduct(Direction.HORIZONTALS[rand.nextInt(Direction.HORIZONTALS.length - 1)]).generate(world, rand, blockpos);
         }
     }
 

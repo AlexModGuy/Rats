@@ -13,7 +13,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -37,8 +37,8 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     private static List<IRecipe> EMPTY_LIST = new ArrayList<>();
     public int prevCookTime;
     public boolean hasRat;
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.UP);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.DOWN);
     private NonNullList<ItemStack> inventory = NonNullList.withSize(11, ItemStack.EMPTY);
     private int cookTime;
     private int totalCookTime = 200;
@@ -202,8 +202,8 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        if (side == EnumFacing.DOWN) {
+    public int[] getSlotsForFace(Direction side) {
+        if (side == Direction.DOWN) {
             return new int[]{1};
         } else {
             return SLOTS_TOP;
@@ -211,12 +211,12 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
         return true;
     }
 
@@ -428,9 +428,9 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
 
     @Override
     @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
         if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == EnumFacing.DOWN)
+            if (facing == Direction.DOWN)
                 return (T) handlerBottom;
             else
                 return (T) handlerTop;

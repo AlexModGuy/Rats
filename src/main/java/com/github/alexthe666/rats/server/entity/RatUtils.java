@@ -8,7 +8,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -22,7 +22,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
@@ -143,8 +143,8 @@ public class RatUtils {
         for (int l3 = j2; l3 < k2; ++l3) {
             for (int i4 = l2; i4 < i3; ++i4) {
                 for (int j4 = j3; j4 < k3; ++j4) {
-                    IBlockState iblockstate1 = world.getBlockState(blockpos$pooledmutableblockpos.setPos(l3, i4, j4));
-                    if (iblockstate1.getBlock() == RatsBlockRegistry.RAT_HOLE || iblockstate1.getBlock() == RatsBlockRegistry.RAT_CAGE) {
+                    BlockState BlockState1 = world.getBlockState(blockpos$pooledmutableblockpos.setPos(l3, i4, j4));
+                    if (BlockState1.getBlock() == RatsBlockRegistry.RAT_HOLE || BlockState1.getBlock() == RatsBlockRegistry.RAT_CAGE) {
                         blockpos$pooledmutableblockpos.release();
                         return true;
                     }
@@ -172,11 +172,11 @@ public class RatUtils {
                 int i1 = MathHelper.floor(vec31.y);
                 int j1 = MathHelper.floor(vec31.z);
                 BlockPos blockpos = new BlockPos(l, i1, j1);
-                IBlockState iblockstate = world.getBlockState(blockpos);
-                Block block = iblockstate.getBlock();
+                BlockState BlockState = world.getBlockState(blockpos);
+                Block block = BlockState.getBlock();
 
-                if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE && block != RatsBlockRegistry.RAT_CAGE) {
-                    RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, vec31, vec32);
+                if ((!ignoreBlockWithoutBoundingBox || BlockState.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(BlockState, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE && block != RatsBlockRegistry.RAT_CAGE) {
+                    RayTraceResult raytraceresult = BlockState.collisionRayTrace(world, blockpos, vec31, vec32);
 
                     if (raytraceresult != null) {
                         return raytraceresult;
@@ -257,35 +257,35 @@ public class RatUtils {
                         d5 = -1.0E-4D;
                     }
 
-                    EnumFacing enumfacing;
+                    Direction Direction;
 
                     if (d3 < d4 && d3 < d5) {
-                        enumfacing = i > l ? EnumFacing.WEST : EnumFacing.EAST;
+                        Direction = i > l ? Direction.WEST : Direction.EAST;
                         vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
                     } else if (d4 < d5) {
-                        enumfacing = j > i1 ? EnumFacing.DOWN : EnumFacing.UP;
+                        Direction = j > i1 ? Direction.DOWN : Direction.UP;
                         vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
                     } else {
-                        enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
+                        Direction = k > j1 ? Direction.NORTH : Direction.SOUTH;
                         vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
                     }
 
-                    l = MathHelper.floor(vec31.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-                    i1 = MathHelper.floor(vec31.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
-                    j1 = MathHelper.floor(vec31.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+                    l = MathHelper.floor(vec31.x) - (Direction == Direction.EAST ? 1 : 0);
+                    i1 = MathHelper.floor(vec31.y) - (Direction == Direction.UP ? 1 : 0);
+                    j1 = MathHelper.floor(vec31.z) - (Direction == Direction.SOUTH ? 1 : 0);
                     blockpos = new BlockPos(l, i1, j1);
-                    IBlockState iblockstate1 = world.getBlockState(blockpos);
-                    Block block1 = iblockstate1.getBlock();
+                    BlockState BlockState1 = world.getBlockState(blockpos);
+                    Block block1 = BlockState1.getBlock();
 
-                    if ((!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE && block1 != RatsBlockRegistry.RAT_CAGE) {
-                        if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
-                            RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, vec31, vec32);
+                    if ((!ignoreBlockWithoutBoundingBox || BlockState1.getMaterial() == Material.PORTAL || BlockState1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE && block1 != RatsBlockRegistry.RAT_CAGE) {
+                        if (block1.canCollideCheck(BlockState1, stopOnLiquid)) {
+                            RayTraceResult raytraceresult1 = BlockState1.collisionRayTrace(world, blockpos, vec31, vec32);
 
                             if (raytraceresult1 != null) {
                                 return raytraceresult1;
                             }
                         } else {
-                            raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, enumfacing, blockpos);
+                            raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, Direction, blockpos);
                         }
                     }
                 }
@@ -310,11 +310,11 @@ public class RatUtils {
                 int i1 = MathHelper.floor(vec31.y);
                 int j1 = MathHelper.floor(vec31.z);
                 BlockPos blockpos = new BlockPos(l, i1, j1);
-                IBlockState iblockstate = world.getBlockState(blockpos);
-                Block block = iblockstate.getBlock();
+                BlockState BlockState = world.getBlockState(blockpos);
+                Block block = BlockState.getBlock();
 
-                if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid) && !(block instanceof BlockRatTube)) {
-                    RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, vec31, vec32);
+                if ((!ignoreBlockWithoutBoundingBox || BlockState.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(BlockState, stopOnLiquid) && !(block instanceof BlockRatTube)) {
+                    RayTraceResult raytraceresult = BlockState.collisionRayTrace(world, blockpos, vec31, vec32);
                     if (raytraceresult != null) {
                         return raytraceresult;
                     }
@@ -394,35 +394,35 @@ public class RatUtils {
                         d5 = -1.0E-4D;
                     }
 
-                    EnumFacing enumfacing;
+                    Direction Direction;
 
                     if (d3 < d4 && d3 < d5) {
-                        enumfacing = i > l ? EnumFacing.WEST : EnumFacing.EAST;
+                        Direction = i > l ? Direction.WEST : Direction.EAST;
                         vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
                     } else if (d4 < d5) {
-                        enumfacing = j > i1 ? EnumFacing.DOWN : EnumFacing.UP;
+                        Direction = j > i1 ? Direction.DOWN : Direction.UP;
                         vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
                     } else {
-                        enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
+                        Direction = k > j1 ? Direction.NORTH : Direction.SOUTH;
                         vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
                     }
 
-                    l = MathHelper.floor(vec31.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-                    i1 = MathHelper.floor(vec31.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
-                    j1 = MathHelper.floor(vec31.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+                    l = MathHelper.floor(vec31.x) - (Direction == Direction.EAST ? 1 : 0);
+                    i1 = MathHelper.floor(vec31.y) - (Direction == Direction.UP ? 1 : 0);
+                    j1 = MathHelper.floor(vec31.z) - (Direction == Direction.SOUTH ? 1 : 0);
                     blockpos = new BlockPos(l, i1, j1);
-                    IBlockState iblockstate1 = world.getBlockState(blockpos);
-                    Block block1 = iblockstate1.getBlock();
+                    BlockState BlockState1 = world.getBlockState(blockpos);
+                    Block block1 = BlockState1.getBlock();
 
-                    if ((!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB)) {
-                        if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
-                            RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, vec31, vec32);
+                    if ((!ignoreBlockWithoutBoundingBox || BlockState1.getMaterial() == Material.PORTAL || BlockState1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB)) {
+                        if (block1.canCollideCheck(BlockState1, stopOnLiquid)) {
+                            RayTraceResult raytraceresult1 = BlockState1.collisionRayTrace(world, blockpos, vec31, vec32);
 
                             if (raytraceresult1 != null) {
                                 return raytraceresult1;
                             }
                         } else {
-                            raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, enumfacing, blockpos);
+                            raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, Direction, blockpos);
                         }
                     }
                 }
@@ -682,9 +682,9 @@ public class RatUtils {
 
 
     public static boolean canRatBreakBlock(World world, BlockPos pos, EntityRat rat) {
-        IBlockState blockState = world.getBlockState(pos);
+        BlockState blockState = world.getBlockState(pos);
         float hardness = blockState.getBlockHardness(world, pos);
-        return hardness != -1.0F && hardness <= RatsMod.CONFIG_OPTIONS.ratStrengthThreshold
+        return hardness != -1.0F && hardness <= RatConfig.ratStrengthThreshold
                 && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && net.minecraft.entity.boss.EntityWither.canDestroyBlock(blockState.getBlock());
     }
 
@@ -694,7 +694,7 @@ public class RatUtils {
 
     public static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
         if (world.isAirBlock(pos)) {
-            for (EnumFacing facing : EnumFacing.values()) {
+            for (Direction facing : Direction.values()) {
                 if (isRatTube(world, pos.offset(facing))) {
                     return true;
                 }
@@ -704,9 +704,9 @@ public class RatUtils {
     }
 
     public static boolean isOpenRatTube(IBlockAccess world, EntityRat rat, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockRatTube) {
-            for (int i = 0; i < EnumFacing.values().length; i++) {
+            for (int i = 0; i < Direction.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
                 if (state.getValue(bool) && rat != null) {
                     return true;
@@ -721,12 +721,12 @@ public class RatUtils {
     }
 
     public static BlockPos offsetTubeEntrance(IBlockAccess worldIn, BlockPos pos) {
-        IBlockState state = worldIn.getBlockState(pos);
+        BlockState state = worldIn.getBlockState(pos);
         if (state.getBlock() instanceof BlockRatTube) {
-            for (int i = 0; i < EnumFacing.values().length; i++) {
+            for (int i = 0; i < Direction.values().length; i++) {
                 PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
                 if (state.getValue(bool)) {
-                    return pos.offset(EnumFacing.values()[i]);
+                    return pos.offset(Direction.values()[i]);
                 }
             }
         }
@@ -823,9 +823,9 @@ public class RatUtils {
     }
 
     public static boolean canSpawnInDimension(World world) {
-        if (RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length > 0) {
-            for (int i = 0; i < RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions.length; i++) {
-                if (RatsMod.CONFIG_OPTIONS.blacklistedRatDimensions[i] == world.provider.getDimension()) {
+        if (RatConfig.blacklistedRatDimensions.length > 0) {
+            for (int i = 0; i < RatConfig.blacklistedRatDimensions.length; i++) {
+                if (RatConfig.blacklistedRatDimensions[i] == world.provider.getDimension()) {
                     return false;
                 }
             }
@@ -841,14 +841,14 @@ public class RatUtils {
         return entity instanceof EntityCow || s.contains("cow");
     }
 
-    public static class TubeSorter implements Comparator<EnumFacing> {
+    public static class TubeSorter implements Comparator<Direction> {
         private final EntityRat theEntity;
 
         public TubeSorter(EntityRat theEntityIn) {
             this.theEntity = theEntityIn;
         }
 
-        public int compare(EnumFacing p_compare_1_, EnumFacing p_compare_2_) {
+        public int compare(Direction p_compare_1_, Direction p_compare_2_) {
             BlockPos pos1 = new BlockPos(theEntity).offset(p_compare_1_);
             BlockPos pos2 = new BlockPos(theEntity).offset(p_compare_2_);
             double d0 = this.theEntity.tubeTarget.getDistance(pos1.getX(), pos1.getY(), pos1.getZ());

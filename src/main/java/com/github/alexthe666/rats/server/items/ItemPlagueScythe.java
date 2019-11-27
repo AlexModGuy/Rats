@@ -52,7 +52,7 @@ public class ItemPlagueScythe extends ItemSword {
             EntityPlagueShot shot = new EntityPlagueShot(entityLiving.world, entityLiving, totalDmg * 0.5F);
             shot.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 0.8F, 1.0F);
             if (!entityLiving.world.isRemote) {
-                entityLiving.world.spawnEntity(shot);
+                entityLiving.world.addEntity(shot);
             }
         }
         return false;

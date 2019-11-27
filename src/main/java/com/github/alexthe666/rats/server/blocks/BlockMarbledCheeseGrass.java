@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
@@ -26,7 +26,7 @@ public class BlockMarbledCheeseGrass extends Block implements IGrowable {
     }
 
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (!worldIn.isAreaLoaded(pos, 3)) return;
             if (worldIn.getLightFromNeighbors(pos.up()) < 4 && worldIn.getBlockState(pos.up()).getLightOpacity(worldIn, pos.up()) > 2) {
@@ -40,10 +40,10 @@ public class BlockMarbledCheeseGrass extends Block implements IGrowable {
                             return;
                         }
 
-                        IBlockState iblockstate = worldIn.getBlockState(blockpos.up());
-                        IBlockState iblockstate1 = worldIn.getBlockState(blockpos);
+                        BlockState BlockState = worldIn.getBlockState(blockpos.up());
+                        BlockState BlockState1 = worldIn.getBlockState(blockpos);
 
-                        if (iblockstate1.getBlock() == Blocks.DIRT && iblockstate1.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT && worldIn.getLightFromNeighbors(blockpos.up()) >= 4 && iblockstate.getLightOpacity(worldIn, pos.up()) <= 2) {
+                        if (BlockState1.getBlock() == Blocks.DIRT && BlockState1.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT && worldIn.getLightFromNeighbors(blockpos.up()) >= 4 && BlockState.getLightOpacity(worldIn, pos.up()) <= 2) {
                             worldIn.setBlockState(blockpos, Blocks.GRASS.getDefaultState());
                         }
                     }
@@ -52,19 +52,19 @@ public class BlockMarbledCheeseGrass extends Block implements IGrowable {
         }
     }
 
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT), rand, fortune);
+    public Item getItemDropped(BlockState state, Random rand, int fortune) {
+        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState().with(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT), rand, fortune);
     }
 
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+    public boolean canGrow(World worldIn, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+    public void grow(World worldIn, Random rand, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.up();
 
         for (int i = 0; i < 128; ++i) {
@@ -77,10 +77,10 @@ public class BlockMarbledCheeseGrass extends Block implements IGrowable {
                         if (rand.nextInt(8) == 0) {
                             worldIn.getBiome(blockpos1).plantFlower(worldIn, rand, blockpos1);
                         } else {
-                            IBlockState iblockstate1 = Blocks.TALLGRASS.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.GRASS);
+                            BlockState BlockState1 = Blocks.TALLGRASS.getDefaultState().with(BlockTallGrass.TYPE, BlockTallGrass.EnumType.GRASS);
 
-                            if (Blocks.TALLGRASS.canBlockStay(worldIn, blockpos1, iblockstate1)) {
-                                worldIn.setBlockState(blockpos1, iblockstate1, 3);
+                            if (Blocks.TALLGRASS.canBlockStay(worldIn, blockpos1, BlockState1)) {
+                                worldIn.setBlockState(blockpos1, BlockState1, 3);
                             }
                         }
                     }

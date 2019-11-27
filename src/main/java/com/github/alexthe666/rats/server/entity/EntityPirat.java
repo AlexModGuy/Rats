@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.IMob;
@@ -130,7 +130,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
             EntityPiratBoat boat = new EntityPiratBoat(world);
             boat.copyLocationAndAnglesFrom(this);
             if (!world.isRemote) {
-                world.spawnEntity(boat);
+                world.addEntity(boat);
             }
             this.startRiding(boat, true);
         }
@@ -140,8 +140,8 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this);
-        IBlockState iblockstate = this.world.getBlockState(pos.down());
-        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && iblockstate.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
+        BlockState BlockState = this.world.getBlockState(pos.down());
+        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && BlockState.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
     }
 
     protected boolean isValidLightLevel() {

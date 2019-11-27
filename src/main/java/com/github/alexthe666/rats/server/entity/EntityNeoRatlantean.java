@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.boss.EntityWither;
@@ -156,7 +156,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
                 int bounds = 5;
                 for (int i = 0; i < rand.nextInt(3) + 3; i++) {
                     EntityLaserPortal laserPortal = new EntityLaserPortal(world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, this);
-                    world.spawnEntity(laserPortal);
+                    world.addEntity(laserPortal);
                 }
                 resetAttacks();
             }
@@ -174,7 +174,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
                 BlockPos ourPos = new BlockPos(this);
                 List<BlockPos> listOfAll = new ArrayList<>();
                 for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange))) {
-                    IBlockState state = world.getBlockState(pos);
+                    BlockState state = world.getBlockState(pos);
                     if (!world.isAirBlock(pos) && canPickupBlock(state)) {
                         listOfAll.add(pos);
                     }
@@ -185,7 +185,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
                     EntityThrownBlock thrownBlock = new EntityThrownBlock(world, world.getBlockState(pos), this);
                     thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                     if (!world.isRemote) {
-                        world.spawnEntity(thrownBlock);
+                        world.addEntity(thrownBlock);
                     }
                     RatsMod.NETWORK_WRAPPER.sendToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
                     world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -207,7 +207,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         attackSelection = rand.nextInt(4);
     }
 
-    public boolean canPickupBlock(IBlockState state) {
+    public boolean canPickupBlock(BlockState state) {
         return EntityWither.canDestroyBlock(state.getBlock());
     }
 
@@ -223,9 +223,9 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatsMod.CONFIG_OPTIONS.neoRatlanteanHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.neoRatlanteanHealth);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatsMod.CONFIG_OPTIONS.neoRatlanteanAttack);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.neoRatlanteanAttack);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
     }
@@ -234,7 +234,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
 
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
 
     }
 

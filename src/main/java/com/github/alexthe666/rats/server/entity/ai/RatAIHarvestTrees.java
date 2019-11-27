@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -43,7 +43,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     public static final boolean isBlockLeaf(World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         return state.getBlock().isLeaves(state, world, pos);
 
     }

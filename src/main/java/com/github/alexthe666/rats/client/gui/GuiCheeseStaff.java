@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffSync;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -95,7 +95,7 @@ public class GuiCheeseStaff extends GuiScreen {
 
     private String getPosName() {
         if (ClientProxy.refrencedPos != null) {
-            IBlockState state = rat.world.getBlockState(ClientProxy.refrencedPos);
+            BlockState state = rat.world.getBlockState(ClientProxy.refrencedPos);
             List<String> namelist = null;
             ItemStack pick = state.getBlock().getItem(Minecraft.getMinecraft().world, ClientProxy.refrencedPos, state);
             try {
@@ -150,18 +150,18 @@ public class GuiCheeseStaff extends GuiScreen {
         }
         if (button.enabled && button.id == 1) {//pickup
             BlockPos pos = ClientProxy.refrencedPos;
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 1));
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 1));
             Minecraft.getMinecraft().displayGuiScreen(null);
         }
         if (button.enabled && button.id == 2) {//homepoint
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setHomePosAndDistance(pos, 32);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 2));
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 2));
         }
         if (button.enabled && button.id == 3) {//unset homepoint
             BlockPos pos = ClientProxy.refrencedPos;
             rat.detachHome();
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 3));
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 3));
         }
         initGui();
     }

@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.world.village;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -12,19 +14,19 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 public class RatsVillageRegistry {
-    public static final VillagerRegistry.VillagerProfession PET_SHOP_OWNER = new VillagerRegistry.VillagerProfession("rats:pet_shop_owner", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
-    public static final VillagerRegistry.VillagerProfession PLAGUE_DOCTOR = new VillagerRegistry.VillagerProfession("rats:plague_doctor", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
+    public static final VillagerProfession PET_SHOP_OWNER = new VillagerProfession("rats:pet_shop_owner", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
+    public static final VillagerProfession PLAGUE_DOCTOR = new VillagerProfession("rats:plague_doctor", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
 
     public static void register() {
-        if (RatsMod.CONFIG_OPTIONS.villageGarbageHeaps) {
+        if (RatConfig.villageGarbageHeaps) {
             MapGenStructureIO.registerStructureComponent(VillageComponentGarbageHeap.class, "garbage_heap");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorGarbageHeap());
         }
-        if (RatsMod.CONFIG_OPTIONS.villagePetShops) {
+        if (RatConfig.villagePetShops) {
             MapGenStructureIO.registerStructureComponent(VillageComponentPetShop.class, "pet_shop");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPetShop());
         }
-        if (RatsMod.CONFIG_OPTIONS.villagePlagueDoctors) {
+        if (RatConfig.villagePlagueDoctors) {
             MapGenStructureIO.registerStructureComponent(VillageComponentPlagueDoctor.class, "plague_doctor_hut");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPlagueDoctor());
         }

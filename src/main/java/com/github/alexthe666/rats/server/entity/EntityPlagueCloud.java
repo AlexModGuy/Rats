@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Optional;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -134,7 +134,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         return flag;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos){
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos){
     }
 
     public void fall(float distance, float damageMultiplier){

@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
@@ -87,15 +87,15 @@ public class PlagueDoctorAIVillagerInteract  extends EntityAIWatchClosest2
                     if (!itemstack1.isEmpty())
                     {
                         double d0 = this.villager.posY - 0.30000001192092896D + (double)this.villager.getEyeHeight();
-                        EntityItem entityitem = new EntityItem(this.villager.world, this.villager.posX, d0, this.villager.posZ, itemstack1);
+                        ItemEntity ItemEntity = new ItemEntity(this.villager.world, this.villager.posX, d0, this.villager.posZ, itemstack1);
                         float f = 0.3F;
                         float f1 = this.villager.rotationYawHead;
                         float f2 = this.villager.rotationPitch;
-                        entityitem.motionX = (double)(-MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
-                        entityitem.motionZ = (double)(MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
-                        entityitem.motionY = (double)(-MathHelper.sin(f2 * 0.017453292F) * 0.3F + 0.1F);
-                        entityitem.setDefaultPickupDelay();
-                        this.villager.world.spawnEntity(entityitem);
+                        ItemEntity.motionX = (double)(-MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
+                        ItemEntity.motionZ = (double)(MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
+                        ItemEntity.motionY = (double)(-MathHelper.sin(f2 * 0.017453292F) * 0.3F + 0.1F);
+                        ItemEntity.setDefaultPickupDelay();
+                        this.villager.world.addEntity(ItemEntity);
                         break;
                     }
                 }

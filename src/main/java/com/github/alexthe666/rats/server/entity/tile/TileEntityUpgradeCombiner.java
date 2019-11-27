@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
@@ -31,9 +31,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     public float ratRotation;
     public float ratRotationPrev;
     public float tRot;
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.UP);
+    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, Direction.NORTH);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.DOWN);
     private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
     private int furnaceBurnTime;
     private int currentItemBurnTime;
@@ -332,10 +332,10 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        if (side == EnumFacing.DOWN) {
+    public int[] getSlotsForFace(Direction side) {
+        if (side == Direction.DOWN) {
             return SLOTS_BOTTOM;
-        } else if (side == EnumFacing.UP) {
+        } else if (side == Direction.UP) {
             return SLOTS_TOP;
         } else {
             return SLOTS_SIDE;
@@ -343,13 +343,13 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        if (direction == EnumFacing.DOWN && index == 1) {
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+        if (direction == Direction.DOWN && index == 1) {
             Item item = stack.getItem();
             return true;
         }
@@ -368,11 +368,11 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
 
     @Override
     @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
         if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == EnumFacing.DOWN)
+            if (facing == Direction.DOWN)
                 return (T) handlerBottom;
-            else if (facing == EnumFacing.UP)
+            else if (facing == Direction.UP)
                 return (T) handlerTop;
             else
                 return (T) handlerSide;

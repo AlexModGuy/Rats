@@ -55,7 +55,7 @@ public class EntityVialOfSentience extends EntityPotion {
                                 ratlantean.copyLocationAndAnglesFrom(entitylivingbase);
                                 entitylivingbase.setDead();
                                 if (!world.isRemote) {
-                                    world.spawnEntity(ratlantean);
+                                    world.addEntity(ratlantean);
                                 }
                             }
                         }

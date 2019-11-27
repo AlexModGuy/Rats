@@ -14,7 +14,7 @@ public class TileEntityMilkCauldron extends TileEntity implements ITickable {
     @Override
     public void update() {
         ticksExisted++;
-        if (RatsMod.CONFIG_OPTIONS.cheesemaking && ticksExisted >= RatsMod.CONFIG_OPTIONS.milkCauldronTime) {
+        if (RatConfig.cheesemaking && ticksExisted >= RatConfig.milkCauldronTime) {
             world.setBlockState(this.getPos(), RatsBlockRegistry.CHEESE_CAULDRON.getDefaultState());
             world.playSound(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), SoundEvents.BLOCK_BREWING_STAND_BREW, SoundCategory.BLOCKS, 1, 1, false);
         }

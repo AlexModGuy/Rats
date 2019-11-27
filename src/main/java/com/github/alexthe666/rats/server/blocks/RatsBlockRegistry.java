@@ -5,104 +5,79 @@ import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
+import java.lang.reflect.Field;
+
+
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(RatsMod.MODID)
 public class RatsBlockRegistry {
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":block_of_cheese")
     public static Block BLOCK_OF_CHEESE = new BlockCheese();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":milk_cauldron")
     public static Block MILK_CAULDRON = new BlockMilkCauldron();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese_cauldron")
     public static Block CHEESE_CAULDRON = new BlockCheeseCauldron();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_hole")
     public static Block RAT_HOLE = new BlockRatHole();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_trap")
     public static Block RAT_TRAP = new BlockRatTrap();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_cage")
     public static Block RAT_CAGE = new BlockRatCage("rat_cage");
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_cage_decorated")
     public static Block RAT_CAGE_DECORATED = new BlockRatCageDecorated();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_cage_breeding_lantern")
     public static Block RAT_CAGE_BREEDING_LANTERN = new BlockRatCageBreedingLantern();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":fish_barrel")
     public static Block FISH_BARREL = new BlockGenericFacing("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_crafting_table")
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
 
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":auto_curdler")
     public static Block AUTO_CURDLER = new BlockAutoCurdler();
 
     public static Block[] RAT_TUBE_COLOR = new Block[16];
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":garbage_pile")
+
     public static Block GARBAGE_PILE = new BlockGarbage();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratglove_flower")
     public static Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_raw")
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese")
     public static Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_slab")
     public static Block MARBLED_CHEESE_SLAB = new BlockMarbledCheeseSlab.Half("marbled_cheese_slab", 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_slab_double")
     public static Block MARBLED_CHEESE_DOUBLESLAB = new BlockMarbledCheeseSlab.Double("marbled_cheese_slab", 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_stairs")
     public static Block MARBLED_CHEESE_STAIRS = new BlockGenericStairs(MARBLED_CHEESE.getDefaultState(), "marbled_cheese_stairs");
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_tile")
     public static Block MARBLED_CHEESE_TILE = new BlockGeneric("marbled_cheese_tile", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_chiseled")
     public static Block MARBLED_CHEESE_CHISELED = new BlockGeneric("marbled_cheese_chiseled", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_pillar")
     public static Block MARBLED_CHEESE_PILLAR = new BlockGenericPillar("marbled_cheese_pillar", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick")
     public static Block MARBLED_CHEESE_BRICK = new BlockGeneric("marbled_cheese_brick", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_slab")
     public static Block MARBLED_CHEESE_BRICK_SLAB = new BlockMarbledCheeseBrickSlab.Half("marbled_cheese_brick_slab", 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_slab_double")
     public static Block MARBLED_CHEESE_BRICK_DOUBLESLAB = new BlockMarbledCheeseBrickSlab.Double("marbled_cheese_brick_slab", 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_stairs")
     public static Block MARBLED_CHEESE_BRICK_STAIRS = new BlockGenericStairs(MARBLED_CHEESE_BRICK.getDefaultState(), "marbled_cheese_brick_stairs");
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_chiseled")
     public static Block MARBLED_CHEESE_BRICK_CHISELED = new BlockGeneric("marbled_cheese_brick_chiseled", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_cracked")
     public static Block MARBLED_CHEESE_BRICK_CRACKED = new BlockGeneric("marbled_cheese_brick_cracked", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_brick_mossy")
     public static Block MARBLED_CHEESE_BRICK_MOSSY = new BlockGeneric("marbled_cheese_brick_mossy", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_dirt")
     public static Block MARBLED_CHEESE_DIRT = new BlockGeneric("marbled_cheese_dirt", Material.GROUND, 0.5F, 0F, SoundType.GROUND);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_grass")
     public static Block MARBLED_CHEESE_GRASS = new BlockMarbledCheeseGrass();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_rat_head")
     public static Block MARBLED_CHEESE_RAT_HEAD = new BlockMarbledCheeseRatHead();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":marbled_cheese_golem_core")
-    public static Block MARBLED_CHEESE_GOLEM_CORE = new BlockGeneric("marbled_cheese_golem_core", Material.ROCK, 5.0F, 30.0F, SoundType.STONE, 0.7F);
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":ratlantis_portal")
+    public static Block MARBLED_CHEESE_GOLEM_CORE = new BlockGeneric("marbled_cheese_golem_core", Material.ROCK, 5.0F, 30.0F, SoundType.STONE, 6);
     public static Block RATLANTIS_PORTAL = new BlockRatlantisPortal();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":compressed_rat")
     public static Block COMPRESSED_RAT = new BlockCompressedRat();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":brain_block")
     public static Block BRAIN_BLOCK = new BlockBrain();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":jack_o_ratern")
     public static Block JACK_O_RATERN = new BlockJackORatern();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_combiner")
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
-    @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_separator")
     public static Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
 
 
@@ -115,13 +90,58 @@ public class RatsBlockRegistry {
 
     static {
         for (int i = 0; i < 16; i++) {
-            RAT_TUBE_COLOR[i] = new BlockRatTube(EnumDyeColor.byMetadata(i).getName());
+            RAT_TUBE_COLOR[i] = new BlockRatTube(DyeColor.byId(i).getName());
         }
     }
 
     static {
-        if (!Loader.isModLoaded(TinkersCompatBridge.TC_MOD_ID)) {
-            FluidRegistry.registerFluid(MILK_FLUID);
+        FluidRegistry.registerFluid(MILK_FLUID);
+    }
+
+
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        try {
+            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Block) {
+                    event.getRegistry().register((Block) obj);
+                } else if (obj instanceof Block[]) {
+                    for (Block block : (Block[]) obj) {
+                        event.getRegistry().register(block);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerBlockItems(RegistryEvent.Register<Item> event) {
+        try {
+            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Block) {
+                    BlockItem blockItem = new BlockItem((Block) obj, new Item.Properties().group(RatsMod.TAB));
+                    if (obj instanceof BlockGenericSlab) {
+                        blockItem = ((BlockGenericSlab) obj).getItemBlock();
+                    }
+                    blockItem.setRegistryName(((Block) obj).getRegistryName());
+                    event.getRegistry().register(blockItem);
+                } else if (obj instanceof Block[]) {
+                    for (Block block : (Block[]) obj) {
+                        BlockItem blockItem = new BlockItem(block, new Item.Properties().group(RatsMod.TAB));
+                        if (block instanceof BlockGenericSlab) {
+                            blockItem = ((BlockGenericSlab) obj).getItemBlock();
+                        }
+                        blockItem.setRegistryName(block.getRegistryName());
+                        event.getRegistry().register(blockItem);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 }

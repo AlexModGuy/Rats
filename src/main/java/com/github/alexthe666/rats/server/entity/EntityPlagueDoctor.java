@@ -15,7 +15,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombieVillager;
@@ -412,7 +412,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         }
 
         if (recipe.getRewardsExp()) {
-            this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
+            this.world.addEntity(new EntityXPOrb(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
         }
 
     }
@@ -548,7 +548,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         return this.villagerInventory;
     }
 
-    protected void updateEquipmentIfNeeded(EntityItem itemEntity) {
+    protected void updateEquipmentIfNeeded(ItemEntity itemEntity) {
         ItemStack itemstack = itemEntity.getItem();
         Item item = itemstack.getItem();
 
@@ -643,7 +643,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         entitypotion.rotationPitch -= -20.0F;
         entitypotion.shoot(d1, d2 + (double) (f * 0.2F), d3, 0.75F, 8.0F);
         this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
-        this.world.spawnEntity(entitypotion);
+        this.world.addEntity(entitypotion);
     }
 
     @Nullable
@@ -666,7 +666,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
                 entitywitch.setCustomNameTag(this.getCustomNameTag());
                 entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
             }
-            this.world.spawnEntity(entitywitch);
+            this.world.addEntity(entitywitch);
             this.setDead();
         }
     }

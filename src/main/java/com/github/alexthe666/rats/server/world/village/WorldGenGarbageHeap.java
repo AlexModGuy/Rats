@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
 import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -23,9 +23,9 @@ public class WorldGenGarbageHeap extends WorldGenerator {
     private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_garbage_heap");
     private VillageComponentGarbageHeap component;
     private Rotation rotation;
-    private EnumFacing facing;
+    private Direction facing;
 
-    public WorldGenGarbageHeap(VillageComponentGarbageHeap component, EnumFacing facing) {
+    public WorldGenGarbageHeap(VillageComponentGarbageHeap component, Direction facing) {
         this.component = component;
         this.facing = facing;
         switch (facing) {

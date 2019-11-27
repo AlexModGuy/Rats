@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import com.google.common.collect.Maps;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +19,7 @@ public class StateMapperGeneric extends StateMapperBase {
         this.loc = loc;
     }
 
-    protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+    protected ModelResourceLocation getModelResourceLocation(BlockState state) {
         Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(state.getProperties());
         String s = String.format("rats:" + loc);
         return new ModelResourceLocation(s, this.getPropertyString(map));

@@ -7,7 +7,7 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.Item;
@@ -49,7 +49,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-            IBlockState block = this.entity.world.getBlockState(pos);
+            BlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
                 Item item = block.getBlock().getItemDropped(block, entity.getRNG(), 0);
                 if(entity.canRatPickupItem(new ItemStack(item))){
@@ -77,7 +77,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
     @Override
     public void updateTask() {
         if (this.targetBlock != null) {
-            IBlockState block = this.entity.world.getBlockState(this.targetBlock);
+            BlockState block = this.entity.world.getBlockState(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
             if (block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) {
                 if (block.getBlock() instanceof BlockCrops && !((BlockCrops) block.getBlock()).isMaxAge(block)) {
@@ -100,7 +100,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
                             this.entity.entityDropItem(drop, 0);
                         }
                         this.entity.world.destroyBlock(targetBlock, false);
-                        if (!RatsMod.CONFIG_OPTIONS.ratsBreakBlockOnHarvest && block.getBlock() instanceof BlockCrops) {
+                        if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof BlockCrops) {
                             this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
                         }
                         this.entity.fleePos = this.targetBlock;

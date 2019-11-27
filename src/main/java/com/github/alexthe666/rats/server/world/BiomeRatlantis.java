@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import com.github.alexthe666.rats.server.world.gen.WorldGenMarblePile;
 import net.minecraft.block.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.passive.EntityParrot;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -20,9 +20,9 @@ import java.util.Random;
 
 public class BiomeRatlantis extends Biome {
 
-    private static final IBlockState JUNGLE_LOG = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-    private static final IBlockState JUNGLE_LEAF = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-    private static final IBlockState OAK_LEAF = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+    private static final BlockState JUNGLE_LOG = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+    private static final BlockState JUNGLE_LEAF = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+    private static final BlockState OAK_LEAF = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
     private final WorldGenerator cheeseOre = new WorldGenMinable(RatsBlockRegistry.BLOCK_OF_CHEESE.getDefaultState(), 9);
     private final WorldGenerator cheeseMarbleOre = new WorldGenMinable(RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState(), 25);
 
@@ -96,7 +96,7 @@ public class BiomeRatlantis extends Biome {
             for (int i = 0; i < count; i++) {
                 int offset = net.minecraftforge.common.ForgeModContainer.fixVanillaCascading ? 8 : 0; // MC-114332
                 BlockPos blockpos = pos.add(rand.nextInt(16) + offset, rand.nextInt(28) + 4, rand.nextInt(16) + offset);
-                net.minecraft.block.state.IBlockState state = worldIn.getBlockState(blockpos);
+                net.minecraft.block.state.BlockState state = worldIn.getBlockState(blockpos);
                 if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, net.minecraft.block.state.pattern.BlockMatcher.forBlock(Blocks.STONE))) {
                     worldIn.setBlockState(blockpos, Blocks.EMERALD_ORE.getDefaultState(), 16 | 2);
                 }

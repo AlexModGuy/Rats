@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -12,10 +12,10 @@ import java.util.Random;
 
 public class WorldGenBetterVine extends WorldGenerator {
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
-            if (Blocks.VINE.canPlaceBlockOnSide(worldIn, position, enumfacing)) {
-                IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, Boolean.valueOf(enumfacing == EnumFacing.NORTH)).withProperty(BlockVine.EAST, Boolean.valueOf(enumfacing == EnumFacing.EAST)).withProperty(BlockVine.SOUTH, Boolean.valueOf(enumfacing == EnumFacing.SOUTH)).withProperty(BlockVine.WEST, Boolean.valueOf(enumfacing == EnumFacing.WEST));
-                worldIn.setBlockState(position, iblockstate, 2);
+        for (Direction Direction : Direction.Plane.HORIZONTAL.facings()) {
+            if (Blocks.VINE.canPlaceBlockOnSide(worldIn, position, Direction)) {
+                BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(Direction == Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(Direction == Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(Direction == Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(Direction == Direction.WEST));
+                worldIn.setBlockState(position, BlockState, 2);
                 break;
             }
         }

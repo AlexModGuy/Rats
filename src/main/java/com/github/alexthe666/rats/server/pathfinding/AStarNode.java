@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.pathfinding;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -31,7 +31,7 @@ public class AStarNode {
 
     public void generateReachablePos(IBlockAccess world) {
         boolean flag = false;
-        for (EnumFacing facing : EnumFacing.values()) {
+        for (Direction facing : Direction.values()) {
             BlockPos offset = pos.offset(facing);
             BlockPos offPos;
             if (AStar.isRatTube(world, offset) || world.getBlockState(offset).getBlock() instanceof BlockRatCage) {
@@ -47,7 +47,7 @@ public class AStarNode {
                 for (int j = -1; j < 1; j++) {
                     for (int k = -1; k < 1; k++) {
                         BlockPos offset = pos.add(i, j, k);
-                        if (world.isAirBlock(offset) && world.isSideSolid(offset.down(), EnumFacing.UP, false)) {
+                        if (world.isAirBlock(offset) && world.isSideSolid(offset.down(), Direction.UP, false)) {
                             travel(offset, baseCost + 50);
                         }
                     }

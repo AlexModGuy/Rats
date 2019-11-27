@@ -17,7 +17,7 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -65,7 +65,7 @@ public class ItemRatArrow extends ItemArrow {
     }
 
 
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         NBTTagCompound ratTag = new NBTTagCompound();
         if(stack.getTagCompound() != null && stack.getTagCompound().getCompoundTag("Rat") != null){
@@ -76,7 +76,7 @@ public class ItemRatArrow extends ItemArrow {
         rat.readEntityFromNBT(ratTag);
         rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
         if (!worldIn.isRemote) {
-            worldIn.spawnEntity(rat);
+            worldIn.addEntity(rat);
         }
         stack.shrink(1);
         player.setHeldItem(hand, new ItemStack(Items.ARROW));

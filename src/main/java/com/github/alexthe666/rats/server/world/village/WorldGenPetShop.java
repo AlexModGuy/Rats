@@ -7,7 +7,7 @@ import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -36,9 +36,9 @@ public class WorldGenPetShop extends WorldGenerator {
     public List<BlockPos> villagerPos = new ArrayList<>();
     private VillageComponentPetShop component;
     private Rotation rotation;
-    private EnumFacing facing;
+    private Direction facing;
 
-    public WorldGenPetShop(VillageComponentPetShop component, EnumFacing facing) {
+    public WorldGenPetShop(VillageComponentPetShop component, Direction facing) {
         this.component = component;
         this.facing = facing;
         switch (facing) {
@@ -76,7 +76,7 @@ public class WorldGenPetShop extends WorldGenerator {
         int spawnedVillager = 0;
         BlockPos genPos = position.up(2).offset(facing, template.getSize().getZ()).offset(facing.rotateYCCW(), template.getSize().getX());
         template.addBlocksToWorld(worldIn, genPos, new RatsVillageProcessor(position.up(3), this, settings, biome), settings, 2);
-        //.offset(EnumFacing.NORTH, xSize).offset(EnumFacing.SOUTH, zSize)
+        //.offset(Direction.NORTH, xSize).offset(Direction.SOUTH, zSize)
         Iterator<BlockPos> ocelotItr = ocelotPos.iterator();
         while (ocelotItr.hasNext()) {
             BlockPos pos = ocelotItr.next();
@@ -84,7 +84,7 @@ public class WorldGenPetShop extends WorldGenerator {
                 EntityOcelot ocelot = new EntityOcelot(worldIn);
                 ocelot.enablePersistence();
                 ocelot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-                worldIn.spawnEntity(ocelot);
+                worldIn.addEntity(ocelot);
             }
             ocelotItr.remove();
         }
@@ -96,7 +96,7 @@ public class WorldGenPetShop extends WorldGenerator {
             rat.setPlague(false);
             rat.enablePersistence();
             rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(rat);
+            worldIn.addEntity(rat);
             ratItr.remove();
         }
 
@@ -107,7 +107,7 @@ public class WorldGenPetShop extends WorldGenerator {
                 EntityAnimal rat = worldIn.rand.nextBoolean() ? new EntityRat(worldIn) : new EntityRabbit(worldIn);
                 rat.enablePersistence();
                 rat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-                worldIn.spawnEntity(rat);
+                worldIn.addEntity(rat);
             }
             rabbitItr.remove();
         }
@@ -119,7 +119,7 @@ public class WorldGenPetShop extends WorldGenerator {
                 EntityWolf wolf = new EntityWolf(worldIn);
                 wolf.enablePersistence();
                 wolf.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-                worldIn.spawnEntity(wolf);
+                worldIn.addEntity(wolf);
             }
             wolfItr.remove();
         }
@@ -130,7 +130,7 @@ public class WorldGenPetShop extends WorldGenerator {
             EntityParrot parrot = new EntityParrot(worldIn);
             parrot.enablePersistence();
             parrot.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(parrot);
+            worldIn.addEntity(parrot);
             parrotItr.remove();
         }
         Iterator<BlockPos> villageItr = villagerPos.iterator();
@@ -141,7 +141,7 @@ public class WorldGenPetShop extends WorldGenerator {
             villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
             villager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(villager)), null, false);
             villager.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
-            worldIn.spawnEntity(villager);
+            worldIn.addEntity(villager);
             villageItr.remove();
             spawnedVillager++;
         }
