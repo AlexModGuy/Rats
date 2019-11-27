@@ -7,10 +7,10 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
@@ -57,14 +57,14 @@ public class RatCageDecoTrigger implements ICriterionTrigger<RatCageDecoTrigger.
         return new RatCageDecoTrigger.Instance(entitypredicate);
     }
 
-    public void trigger(EntityPlayerMP player, Entity entity) {
+    public void trigger(ServerPlayerEntity player, Entity entity) {
         RatCageDecoTrigger.Listeners ratCageDecoTrigger$listeners = this.listeners.get(player.getAdvancements());
         if (ratCageDecoTrigger$listeners != null) {
             ratCageDecoTrigger$listeners.trigger(player, entity);
         }
     }
 
-    public static class Instance extends AbstractCriterionInstance {
+    public static class Instance extends CriterionInstance {
         private final EntityPredicate entity;
 
         public Instance(EntityPredicate entity) {
@@ -72,7 +72,7 @@ public class RatCageDecoTrigger implements ICriterionTrigger<RatCageDecoTrigger.
             this.entity = entity;
         }
 
-        public boolean test(EntityPlayerMP player, Entity entity) {
+        public boolean test(ServerPlayerEntity player, Entity entity) {
             return this.entity.test(player, entity);
         }
     }
@@ -97,7 +97,7 @@ public class RatCageDecoTrigger implements ICriterionTrigger<RatCageDecoTrigger.
             this.listeners.remove(listener);
         }
 
-        public void trigger(EntityPlayerMP player, Entity entity) {
+        public void trigger(ServerPlayerEntity player, Entity entity) {
             List<Listener<RatCageDecoTrigger.Instance>> list = null;
 
             for (ICriterionTrigger.Listener<RatCageDecoTrigger.Instance> listener : this.listeners) {

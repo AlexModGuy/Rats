@@ -5,6 +5,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -15,9 +17,7 @@ public class ItemGeneric extends Item {
     private int textLength = 0;
 
     public ItemGeneric(String name) {
-        super();
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
+        super(new Item.Properties().group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, name);
     }
 
@@ -26,10 +26,10 @@ public class ItemGeneric extends Item {
         this.textLength = textLength;
     }
 
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(I18n.format(this.getTranslationKey() + ".desc" + i));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc" + i));
             }
         }
     }

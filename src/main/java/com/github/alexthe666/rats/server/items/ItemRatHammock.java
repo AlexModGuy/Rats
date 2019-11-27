@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ItemRatHammock extends Item implements ICustomRendered, IRatCageDecoration {
     public EnumDyeColor color;
 
-    public ItemRatHammock(EnumDyeColor color) {
+    public ItemRatHammock(DyeColor color) {
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats.rat_hammock_" + color.getName());
         this.setRegistryName(RatsMod.MODID, "rat_hammock_" + color.getName());

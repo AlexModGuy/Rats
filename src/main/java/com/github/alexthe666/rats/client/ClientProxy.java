@@ -11,7 +11,6 @@ import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.blocks.*;
-import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;

@@ -1,11 +1,8 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -16,10 +13,8 @@ import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
@@ -30,29 +25,17 @@ import java.lang.reflect.Field;
 public class RatsBlockRegistry {
 
     public static Block BLOCK_OF_CHEESE = new BlockCheese();
-
     public static Block MILK_CAULDRON = new BlockMilkCauldron();
-
     public static Block CHEESE_CAULDRON = new BlockCheeseCauldron();
-
     public static Block RAT_HOLE = new BlockRatHole();
-
     public static Block RAT_TRAP = new BlockRatTrap();
-
     public static Block RAT_CAGE = new BlockRatCage("rat_cage");
-
     public static Block RAT_CAGE_DECORATED = new BlockRatCageDecorated();
-
     public static Block RAT_CAGE_BREEDING_LANTERN = new BlockRatCageBreedingLantern();
-
     public static Block FISH_BARREL = new BlockGenericFacing("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
-
     public static Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
-
     public static Block AUTO_CURDLER = new BlockAutoCurdler();
-
     public static Block[] RAT_TUBE_COLOR = new Block[16];
-
     public static Block GARBAGE_PILE = new BlockGarbage();
     public static Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);

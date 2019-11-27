@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,9 +17,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemRatIgloo extends Item implements ICustomRendered, IRatCageDecoration {
-    public EnumDyeColor color;
+    public DyeColor color;
 
-    public ItemRatIgloo(EnumDyeColor color) {
+    public ItemRatIgloo(DyeColor color) {
         this.setCreativeTab(RatsMod.TAB);
         this.setTranslationKey("rats.rat_igloo_" + color.getName());
         this.setRegistryName(RatsMod.MODID, "rat_igloo_" + color.getName());

@@ -1,11 +1,8 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;

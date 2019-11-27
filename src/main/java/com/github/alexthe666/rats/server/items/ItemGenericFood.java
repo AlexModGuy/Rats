@@ -9,8 +9,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Food;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -23,12 +26,29 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class ItemGenericFood extends ItemFood {
-    public ItemGenericFood(int amount, float saturation, boolean isWolfFood, String name) {
-        super(amount, saturation, isWolfFood);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
+public class ItemGenericFood extends Item {
+    public ItemGenericFood(int amount, float saturation, boolean isWolfFood, boolean eatFast, boolean alwaysEdible, String name) {
+        super(new Item.Properties().food(createFood(amount, saturation, isWolfFood, eatFast, alwaysEdible, null)).group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, name);
+    }
+
+    private static final Food createFood(int amount, float saturation, boolean isWolfFood, boolean eatFast, boolean alwaysEdible, EffectInstance potion){
+        Food.Builder builder = new Food.Builder();
+        builder.hunger(amount);
+        builder.saturation(saturation);
+        if(isWolfFood){
+            builder.meat();
+        }
+        if(eatFast){
+            builder.fastToEat();
+        }
+        if(alwaysEdible){
+            builder.setAlwaysEdible();
+        }
+        if(potion != null){
+            builder.effect(potion, 1.0F);
+        }
+        return builder.build();
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
