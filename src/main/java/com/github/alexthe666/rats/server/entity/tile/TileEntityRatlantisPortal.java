@@ -1,18 +1,21 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.EndPortalTileEntity;
 import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class TileEntityRatlantisPortal extends TileEntityEndPortal implements ITickable {
+public class TileEntityRatlantisPortal extends EndPortalTileEntity implements ITickable {
     private long age;
     private BlockPos exitPortal;
     private boolean exactTeleport;

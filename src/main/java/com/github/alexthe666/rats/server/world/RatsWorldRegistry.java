@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.world.gen.StructureRatRoadPieces;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class RatsWorldRegistry {

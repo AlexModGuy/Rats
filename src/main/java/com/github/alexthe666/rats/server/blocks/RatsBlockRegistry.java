@@ -3,20 +3,21 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
 import net.minecraft.block.Block;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -56,20 +57,18 @@ public class RatsBlockRegistry {
     public static Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
     public static Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_SLAB = new BlockMarbledCheeseSlab.Half("marbled_cheese_slab", 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_DOUBLESLAB = new BlockMarbledCheeseSlab.Double("marbled_cheese_slab", 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_STAIRS = new BlockGenericStairs(MARBLED_CHEESE.getDefaultState(), "marbled_cheese_stairs");
+    public static Block MARBLED_CHEESE_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_slab");
+    public static Block MARBLED_CHEESE_STAIRS = new BlockGenericStairs(MARBLED_CHEESE.getDefaultState(), Block.Properties.from(MARBLED_CHEESE), "marbled_cheese_stairs");
     public static Block MARBLED_CHEESE_TILE = new BlockGeneric("marbled_cheese_tile", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE_CHISELED = new BlockGeneric("marbled_cheese_chiseled", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE_PILLAR = new BlockGenericPillar("marbled_cheese_pillar", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE_BRICK = new BlockGeneric("marbled_cheese_brick", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_BRICK_SLAB = new BlockMarbledCheeseBrickSlab.Half("marbled_cheese_brick_slab", 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_BRICK_DOUBLESLAB = new BlockMarbledCheeseBrickSlab.Double("marbled_cheese_brick_slab", 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_BRICK_STAIRS = new BlockGenericStairs(MARBLED_CHEESE_BRICK.getDefaultState(), "marbled_cheese_brick_stairs");
+    public static Block MARBLED_CHEESE_BRICK_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_brick_slab");
+    public static Block MARBLED_CHEESE_BRICK_STAIRS = new BlockGenericStairs(MARBLED_CHEESE_BRICK.getDefaultState(), Block.Properties.from(MARBLED_CHEESE_BRICK), "marbled_cheese_brick_stairs");
     public static Block MARBLED_CHEESE_BRICK_CHISELED = new BlockGeneric("marbled_cheese_brick_chiseled", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE_BRICK_CRACKED = new BlockGeneric("marbled_cheese_brick_cracked", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static Block MARBLED_CHEESE_BRICK_MOSSY = new BlockGeneric("marbled_cheese_brick_mossy", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
-    public static Block MARBLED_CHEESE_DIRT = new BlockGeneric("marbled_cheese_dirt", Material.GROUND, 0.5F, 0F, SoundType.GROUND);
+    public static Block MARBLED_CHEESE_DIRT = new BlockGeneric("marbled_cheese_dirt", Material.ORGANIC, 0.5F, 0F, SoundType.GROUND);
     public static Block MARBLED_CHEESE_GRASS = new BlockMarbledCheeseGrass();
     public static Block MARBLED_CHEESE_RAT_HEAD = new BlockMarbledCheeseRatHead();
     public static Block MARBLED_CHEESE_GOLEM_CORE = new BlockGeneric("marbled_cheese_golem_core", Material.ROCK, 5.0F, 30.0F, SoundType.STONE, 6);
@@ -79,12 +78,10 @@ public class RatsBlockRegistry {
     public static Block JACK_O_RATERN = new BlockJackORatern();
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
-
-
     public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
         @Override
         public String getLocalizedName(FluidStack fs) {
-            return I18n.translateToLocal("tile.rats.milk.name");
+            return LanguageMap.getInstance().translateKey("tile.rats.milk.name");
         }
     }.setUnlocalizedName("rats.milk");
 
@@ -95,7 +92,7 @@ public class RatsBlockRegistry {
     }
 
     static {
-        FluidRegistry.registerFluid(MILK_FLUID);
+        //FluidRegistry.registerFluid(MILK_FLUID);
     }
 
 
@@ -124,17 +121,11 @@ public class RatsBlockRegistry {
                 Object obj = f.get(null);
                 if (obj instanceof Block) {
                     BlockItem blockItem = new BlockItem((Block) obj, new Item.Properties().group(RatsMod.TAB));
-                    if (obj instanceof BlockGenericSlab) {
-                        blockItem = ((BlockGenericSlab) obj).getItemBlock();
-                    }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
                         BlockItem blockItem = new BlockItem(block, new Item.Properties().group(RatsMod.TAB));
-                        if (block instanceof BlockGenericSlab) {
-                            blockItem = ((BlockGenericSlab) obj).getItemBlock();
-                        }
                         blockItem.setRegistryName(block.getRegistryName());
                         event.getRegistry().register(blockItem);
                     }

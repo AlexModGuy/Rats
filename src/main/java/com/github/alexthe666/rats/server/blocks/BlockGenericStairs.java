@@ -1,22 +1,15 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.StairsBlock;
 
-public class BlockGenericStairs extends BlockStairs {
+public class BlockGenericStairs extends StairsBlock {
 
-    protected BlockGenericStairs(BlockState modelState, String name) {
-        super(modelState);
-        this.setLightOpacity(0);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
-        this.setRegistryName(name);
+    protected BlockGenericStairs(BlockState modelState, Block.Properties properties, String name) {
+        super(modelState, properties);
+        this.setRegistryName(RatsMod.MODID, name);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(BlockState state) {
-        return false;
-    }
 }

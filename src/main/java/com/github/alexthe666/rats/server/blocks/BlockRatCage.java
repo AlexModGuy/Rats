@@ -125,6 +125,7 @@ public class BlockRatCage extends Block {
     public ItemStack getItem(World worldIn, BlockPos pos, BlockState state) {
         return new ItemStack(RatsBlockRegistry.RAT_CAGE);
     }
+
     private VoxelShape getShape(BlockState state) {
         VoxelShape shape1 = Block.makeCuboidShape(0, 0, 0, 0, 0, 0);
         if (state.getBlock() instanceof BlockRatHole) {

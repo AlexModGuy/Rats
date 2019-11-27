@@ -1,52 +1,31 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockJackORatern extends BlockHorizontal {
+public class BlockJackORatern extends HorizontalBlock {
 
     public BlockJackORatern() {
-        super(Material.GOURD);
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
-        this.setCreativeTab(RatsMod.TAB);
-        this.setSoundType(SoundType.WOOD);
-        this.setHardness(1.0F);
-        this.setLightLevel(1);
-        this.setTranslationKey("rats.jack_o_ratern");
+        super(Block.Properties.create(Material.GOURD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0).lightValue(15));
         this.setRegistryName(RatsMod.MODID, "jack_o_ratern");
     }
 
-    public BlockState withRotation(BlockState state, Rotation rot) {
-        return state.with(FACING, rot.rotate(state.getValue(FACING)));
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
-    public BlockState withMirror(BlockState state, Mirror mirrorIn) {
-        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
-    }
-
-    public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-
-    public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().with(FACING, Direction.byHorizontalIndex(meta));
-    }
-
-    public int getMetaFromState(BlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(HORIZONTAL_FACING);
     }
 }

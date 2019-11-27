@@ -1,19 +1,15 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.Block;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class BlockGenericPillar extends BlockRotatedPillar {
+public class BlockGenericPillar extends RotatedPillarBlock {
 
     public BlockGenericPillar(String name, Material mat, float hardness, float resistance, SoundType sound) {
-        super(mat);
-        this.setHardness(hardness);
-        this.setResistance(resistance);
-        this.setSoundType(sound);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats." + name);
+        super(Block.Properties.create(mat).sound(sound).hardnessAndResistance(hardness, resistance));
         this.setRegistryName(RatsMod.MODID, name);
     }
 }

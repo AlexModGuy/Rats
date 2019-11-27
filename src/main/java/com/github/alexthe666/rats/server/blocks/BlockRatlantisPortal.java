@@ -1,67 +1,65 @@
 package com.github.alexthe666.rats.server.blocks;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
 import com.github.alexthe666.rats.server.world.RatlantisTeleporter;
+import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockRatlantisPortal extends BlockContainer {
+public class BlockRatlantisPortal extends ContainerBlock {
 
     protected BlockRatlantisPortal() {
-        super(Material.PORTAL);
-        this.setLightLevel(1.0F);
-        this.setTranslationKey("rats.ratlantis_portal");
+        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).lightValue(15));
         this.setRegistryName(RatsMod.MODID, "ratlantis_portal");
-        this.setTickRandomly(true);
-        this.setBlockUnbreakable();
-        GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
+        //GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
     }
 
     @Override
-    public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
         if (!RatConfig.disableRatlantis) {
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
-                if ((entity instanceof EntityPlayerMP)) {
-                    EntityPlayerMP thePlayer = (EntityPlayerMP) entity;
+                if ((entity instanceof ServerPlayerEntity)) {
+                    ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
                     if (thePlayer.timeUntilPortal > 0) {
                         thePlayer.timeUntilPortal = 10;
-                    } else if (thePlayer.dimension != RatConfig.ratlantisDimensionId) {
+                    } else if (thePlayer.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatConfig.ratlantisDimensionId, new RatlantisTeleporter(thePlayer.server.getWorld(RatConfig.ratlantisDimensionId)));
+                        thePlayer.changeDimension(RatsWorldRegistry.RATLANTIS_DIM);
                     } else {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.server.getPlayerList().transferPlayerToDimension(thePlayer, RatConfig.ratlantisPortalExitDimension, new RatlantisTeleporter(thePlayer.server.getWorld(RatConfig.ratlantisPortalExitDimension)));
+                        thePlayer.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
                     }
                 }
-                if (!(entity instanceof EntityPlayer)) {
-                    if (entity.dimension != RatConfig.ratlantisDimensionId) {
+                if (!(entity instanceof PlayerEntity)) {
+                    if (entity.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatConfig.ratlantisDimensionId);
+                        entity.changeDimension(RatsWorldRegistry.RATLANTIS_DIM);
                     } else {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatConfig.ratlantisPortalExitDimension);
+                        entity.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
                     }
                 }
             }
@@ -75,7 +73,7 @@ public class BlockRatlantisPortal extends BlockContainer {
         }
     }
 
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (!this.canSurviveAt(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);
         }
@@ -86,20 +84,9 @@ public class BlockRatlantisPortal extends BlockContainer {
                 (world.getBlockState(pos.down()).getBlock() == RatsBlockRegistry.RATLANTIS_PORTAL || world.getBlockState(pos.down()).getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW);
     }
 
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityRatlantisPortal();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
-        BlockState BlockState = blockAccess.getBlockState(pos.offset(side));
-        Block block = BlockState.getBlock();
-        return !BlockState.isOpaqueCube() && block != RatsBlockRegistry.RATLANTIS_PORTAL;
-    }
-
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return NULL_AABB;
+    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+        Block block = adjacentBlockState.getBlock();
+        return block != RatsBlockRegistry.RATLANTIS_PORTAL;
     }
 
     public boolean isOpaqueCube(BlockState state) {
@@ -110,12 +97,8 @@ public class BlockRatlantisPortal extends BlockContainer {
         return false;
     }
 
-    public int quantityDropped(Random random) {
-        return 0;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+    @OnlyIn(Dist.CLIENT)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityRatlantisPortal) {
@@ -128,7 +111,7 @@ public class BlockRatlantisPortal extends BlockContainer {
                 double d4 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
                 double d5 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
                 int k = rand.nextInt(2) * 2 - 1;
-                worldIn.spawnParticle(EnumParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
+                worldIn.addParticle(ParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
             }
         }
     }
@@ -137,11 +120,9 @@ public class BlockRatlantisPortal extends BlockContainer {
         return ItemStack.EMPTY;
     }
 
-    public MapColor getMapColor(BlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return MapColor.YELLOW;
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-        return BlockFaceShape.UNDEFINED;
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityRatlantisPortal();
     }
 }

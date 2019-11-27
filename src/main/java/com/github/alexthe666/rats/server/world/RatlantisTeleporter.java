@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.entity.Entity;
@@ -9,6 +8,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class RatlantisTeleporter extends Teleporter {
     private final WorldServer worldServerInstance;
     private final Random random;
 
-    public RatlantisTeleporter(WorldServer worldserver) {
+    public RatlantisTeleporter(ServerWorld worldserver) {
         super(worldserver);
         this.worldServerInstance = worldserver;
         this.random = new Random(worldserver.getSeed());

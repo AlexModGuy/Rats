@@ -31,7 +31,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
+public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
     public static final Animation ANIMATION_MELEE = Animation.create(15);
     public static final Animation ANIMATION_RANGED = Animation.create(15);
