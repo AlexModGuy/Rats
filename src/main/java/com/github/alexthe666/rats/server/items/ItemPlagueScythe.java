@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
 import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -12,7 +11,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
@@ -41,8 +39,8 @@ public class ItemPlagueScythe extends ItemSword {
         return multimap;
     }
 
-    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack){
-        if(entityLiving.swingProgress == 0) {
+    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+        if (entityLiving.swingProgress == 0) {
             Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
             double totalDmg = 0;
             for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {

@@ -24,20 +24,20 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.ItemStackHelper;
@@ -46,7 +46,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -60,7 +60,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.*;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fluids.FluidStack;
@@ -216,11 +218,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
         this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isEntityAlive() && (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
+                return entity.isEntityAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
             }
         }, 10.0F, 0.8D, 1.33D));
         this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
-         this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
+        this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(5, this.aiSit = new RatAISit(this));
         this.tasks.addTask(6, new RatAIWander(this, 1.0D));
         this.tasks.addTask(6, new RatAIWanderFlight(this));
@@ -235,12 +237,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 if (EntityRat.this.hasPlague()) {
-                    return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
+                    return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
                 } else {
                     if (entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
                         return false;
                     }
-                    return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof EntityPlayer) || EntityRat.this.hasPlague()) && !entity.isChild();
+                    return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof PlayerEntity) || EntityRat.this.hasPlague()) && !entity.isChild();
                 }
             }
         }));
@@ -463,49 +465,49 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("CookingProgress", cookingProgress);
-        compound.setInteger("DigCooldown", digCooldown);
-        compound.setInteger("BreedCooldown", breedCooldown);
-        compound.setInteger("CoinCooldown", coinCooldown);
-        compound.setInteger("CheeseFeedings", cheeseFeedings);
-        compound.setInteger("TransportingRF", this.getHeldRF());
-        compound.setInteger("Command", this.getCommandInteger());
-        compound.setInteger("ColorVariant", this.getColorVariant());
+        compound.setInt("CookingProgress", cookingProgress);
+        compound.setInt("DigCooldown", digCooldown);
+        compound.setInt("BreedCooldown", breedCooldown);
+        compound.setInt("CoinCooldown", coinCooldown);
+        compound.setInt("CheeseFeedings", cheeseFeedings);
+        compound.setInt("TransportingRF", this.getHeldRF());
+        compound.setInt("Command", this.getCommandInteger());
+        compound.setInt("ColorVariant", this.getColorVariant());
         compound.setBoolean("Plague", this.hasPlague());
         compound.setBoolean("VisualFlag", this.getVisualFlag());
         compound.setBoolean("Dancing", this.isDancing());
         compound.setBoolean("Toga", this.hasToga());
         compound.setBoolean("IsMale", this.isMale());
-        compound.setInteger("WildTrust", wildTrust);
+        compound.setInt("WildTrust", wildTrust);
         if (ratInventory != null) {
             NBTTagList nbttaglist = new NBTTagList();
             for (int i = 0; i < ratInventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = ratInventory.getStackInSlot(i);
                 if (!itemstack.isEmpty()) {
-                    NBTTagCompound nbttagcompound = new NBTTagCompound();
-                    nbttagcompound.setByte("Slot", (byte) i);
-                    itemstack.writeToNBT(nbttagcompound);
-                    nbttaglist.appendTag(nbttagcompound);
+                    CompoundNBT CompoundNBT = new CompoundNBT();
+                    CompoundNBT.setByte("Slot", (byte) i);
+                    itemstack.writeToNBT(CompoundNBT);
+                    nbttaglist.appendTag(CompoundNBT);
                 }
             }
             compound.setTag("Items", nbttaglist);
         }
-        compound.setInteger("EatenItems", eatenItems);
+        compound.setInt("EatenItems", eatenItems);
         if (pickupPos != null) {
-            compound.setInteger("PickupPosX", pickupPos.getX());
-            compound.setInteger("PickupPosY", pickupPos.getY());
-            compound.setInteger("PickupPosZ", pickupPos.getZ());
+            compound.setInt("PickupPosX", pickupPos.getX());
+            compound.setInt("PickupPosY", pickupPos.getY());
+            compound.setInt("PickupPosZ", pickupPos.getZ());
         }
         if (depositPos != null) {
-            compound.setInteger("DepositPosX", depositPos.getX());
-            compound.setInteger("DepositPosY", depositPos.getY());
-            compound.setInteger("DepositPosZ", depositPos.getZ());
-            compound.setInteger("DepositFacing", depositFacing.ordinal());
+            compound.setInt("DepositPosX", depositPos.getX());
+            compound.setInt("DepositPosY", depositPos.getY());
+            compound.setInt("DepositPosZ", depositPos.getZ());
+            compound.setInt("DepositFacing", depositFacing.ordinal());
         }
         if (transportingFluid != null) {
-            NBTTagCompound fluidTag = new NBTTagCompound();
+            CompoundNBT fluidTag = new CompoundNBT();
             transportingFluid.writeToNBT(fluidTag);
             compound.setTag("TransportingFluid", fluidTag);
         }
@@ -514,53 +516,53 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
-        cookingProgress = compound.getInteger("CookingProgress");
-        digCooldown = compound.getInteger("DigCooldown");
-        breedCooldown = compound.getInteger("BreedCooldown");
-        coinCooldown = compound.getInteger("CoinCooldown");
-        wildTrust = compound.getInteger("WildTrust");
-        eatenItems = compound.getInteger("EatenItems");
-        cheeseFeedings = compound.getInteger("CheeseFeedings");
-        this.setHeldRF(compound.getInteger("TransportingRF"));
-        this.setCommandInteger(compound.getInteger("Command"));
+        cookingProgress = compound.getInt("CookingProgress");
+        digCooldown = compound.getInt("DigCooldown");
+        breedCooldown = compound.getInt("BreedCooldown");
+        coinCooldown = compound.getInt("CoinCooldown");
+        wildTrust = compound.getInt("WildTrust");
+        eatenItems = compound.getInt("EatenItems");
+        cheeseFeedings = compound.getInt("CheeseFeedings");
+        this.setHeldRF(compound.getInt("TransportingRF"));
+        this.setCommandInteger(compound.getInt("Command"));
         this.setPlague(compound.getBoolean("Plague"));
         this.setDancing(compound.getBoolean("Dancing"));
         this.setVisualFlag(compound.getBoolean("VisualFlag"));
         this.setToga(compound.getBoolean("Toga"));
         this.setMale(compound.getBoolean("IsMale"));
-        this.setColorVariant(compound.getInteger("ColorVariant"));
+        this.setColorVariant(compound.getInt("ColorVariant"));
         if (ratInventory != null) {
             NBTTagList nbttaglist = compound.getTagList("Items", 10);
             this.initInventory();
             for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
-                int j = nbttagcompound.getByte("Slot") & 255;
+                CompoundNBT CompoundNBT = nbttaglist.getCompoundTagAt(i);
+                int j = CompoundNBT.getByte("Slot") & 255;
                 if (j <= 4) {
-                    ratInventory.setInventorySlotContents(j, new ItemStack(nbttagcompound));
+                    ratInventory.setInventorySlotContents(j, new ItemStack(CompoundNBT));
                 }
             }
         } else {
             NBTTagList nbttaglist = compound.getTagList("Items", 10);
             this.initInventory();
             for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
-                int j = nbttagcompound.getByte("Slot") & 255;
-                ratInventory.setInventorySlotContents(j, new ItemStack(nbttagcompound));
+                CompoundNBT CompoundNBT = nbttaglist.getCompoundTagAt(i);
+                int j = CompoundNBT.getByte("Slot") & 255;
+                ratInventory.setInventorySlotContents(j, new ItemStack(CompoundNBT));
             }
         }
         if (compound.hasKey("PickupPosX") && compound.hasKey("PickupPosY") && compound.hasKey("PickupPosZ")) {
-            pickupPos = new BlockPos(compound.getInteger("PickupPosX"), compound.getInteger("PickupPosY"), compound.getInteger("PickupPosZ"));
+            pickupPos = new BlockPos(compound.getInt("PickupPosX"), compound.getInt("PickupPosY"), compound.getInt("PickupPosZ"));
         }
         if (compound.hasKey("DepositPosX") && compound.hasKey("DepositPosY") && compound.hasKey("DepositPosZ")) {
-            depositPos = new BlockPos(compound.getInteger("DepositPosX"), compound.getInteger("DepositPosY"), compound.getInteger("DepositPosZ"));
+            depositPos = new BlockPos(compound.getInt("DepositPosX"), compound.getInt("DepositPosY"), compound.getInt("DepositPosZ"));
             if (compound.hasKey("DepositFacing")) {
-                depositFacing = Direction.values()[compound.getInteger("DepositFacing")];
+                depositFacing = Direction.values()[compound.getInt("DepositFacing")];
             }
         }
         if (compound.hasKey("TransportingFluid")) {
-            NBTTagCompound fluidTag = compound.getCompoundTag("TransportingFluid");
+            CompoundNBT fluidTag = compound.getCompoundTag("TransportingFluid");
             if (!fluidTag.isEmpty()) {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
@@ -582,7 +584,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.aiSit.setSitting(false);
             }
 
-            if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof EntityArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
@@ -827,7 +829,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.flyingPitch = 0;
             }
         } else {
-            if(!this.inTube()){
+            if (!this.inTube()) {
                 this.flyingPitch = 0;
             }
             boolean wildNavigate = !this.isTamed() || this.isInCage();
@@ -881,14 +883,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(EnumHand.MAIN_HAND))) {
                     pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(EnumHand.MAIN_HAND)));
-                    NBTTagCompound poopTag = new NBTTagCompound();
-                    NBTTagCompound oreTag = new NBTTagCompound();
+                    CompoundNBT poopTag = new CompoundNBT();
+                    CompoundNBT oreTag = new CompoundNBT();
                     ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(oreTag);
-                    NBTTagCompound ingotTag = new NBTTagCompound();
+                    CompoundNBT ingotTag = new CompoundNBT();
                     ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(ingotTag);
                     poopTag.setTag("OreItem", oreTag);
                     poopTag.setTag("IngotItem", ingotTag);
-                    pooStack.setTagCompound(poopTag);
+                    pooStack.setTag(poopTag);
                 }
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {
                     if (RatConfig.ratFartNoises) {
@@ -1305,7 +1307,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean canBeCollidedWith() {
-        return (!this.isRiding() || !(this.getRidingEntity() instanceof EntityPlayer));
+        return (!this.isRiding() || !(this.getRidingEntity() instanceof PlayerEntity));
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {
@@ -1416,9 +1418,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (disenchant && heldItem.isItemEnchanted()) {
             burntItem = heldItem.copy();
-            if (burntItem.getTagCompound() != null && burntItem.getTagCompound().hasKey("ench", 9)) {
-                if (!burntItem.getTagCompound().getTagList("ench", 10).isEmpty()) {
-                    burntItem.getTagCompound().setTag("ench", new NBTTagCompound());
+            if (burntItem.getTag() != null && burntItem.getTag().hasKey("ench", 9)) {
+                if (!burntItem.getTag().getTagList("ench", 10).isEmpty()) {
+                    burntItem.getTag().setTag("ench", new CompoundNBT());
                 }
             }
         }
@@ -1540,7 +1542,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             ++this.breakingTime;
             int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
             this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
-            if(this.getNavigator().getPath() != null){
+            if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
             this.motionZ *= 0.0D;
@@ -1692,7 +1694,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         super.travel(strafe, vertical, forward);
     }
 
-    public void openGUI(EntityPlayer playerEntity) {
+    public void openGUI(PlayerEntity playerEntity) {
         if (!this.world.isRemote && (!this.isBeingRidden() || this.isPassenger(playerEntity))) {
             playerEntity.openGui(RatsMod.INSTANCE, 1, this.world, this.getEntityId(), 0, 0);
         }
@@ -1838,7 +1840,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public boolean writeToNBTOptional(NBTTagCompound compound) {
+    public boolean writeToNBTOptional(CompoundNBT compound) {
         String s = this.getEntityString();
         compound.setString("id", s);
         this.writeToNBT(compound);
@@ -1850,24 +1852,24 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public void updateRiding(Entity riding) {
-        if (riding != null && riding.isPassenger(this) && riding instanceof EntityPlayer) {
+        if (riding != null && riding.isPassenger(this) && riding instanceof PlayerEntity) {
             int i = riding.getPassengers().indexOf(this);
-            float radius = (i == 0 ? 0F : 0.4F) + (((EntityPlayer) riding).isElytraFlying() ? 2 : 0);
-            float angle = (0.01745329251F * ((EntityPlayer) riding).renderYawOffset) + (i == 2 ? -92.5F : i == 1 ? 92.5F : 0);
+            float radius = (i == 0 ? 0F : 0.4F) + (((PlayerEntity) riding).isElytraFlying() ? 2 : 0);
+            float angle = (0.01745329251F * ((PlayerEntity) riding).renderYawOffset) + (i == 2 ? -92.5F : i == 1 ? 92.5F : 0);
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
             double extraZ = (double) (radius * MathHelper.cos(angle));
             double extraY = (riding.isSneaking() ? 1.1D : 1.4D);
-            this.rotationYaw = ((EntityPlayer) riding).rotationYawHead;
-            this.rotationYawHead = ((EntityPlayer) riding).rotationYawHead;
-            this.prevRotationYaw = ((EntityPlayer) riding).rotationYawHead;
+            this.rotationYaw = ((PlayerEntity) riding).rotationYawHead;
+            this.rotationYawHead = ((PlayerEntity) riding).rotationYawHead;
+            this.prevRotationYaw = ((PlayerEntity) riding).rotationYawHead;
             this.setPosition(riding.posX + extraX, riding.posY + extraY, riding.posZ + extraZ);
-            if (((EntityPlayer) riding).isElytraFlying()) {
+            if (((PlayerEntity) riding).isElytraFlying()) {
                 this.dismountRidingEntity();
             }
         }
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == RatsItemRegistry.RAT_TOGA) {
             if (!this.hasToga()) {
@@ -1894,12 +1896,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!super.processInteract(player, hand)) {
             if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
                 if (itemstack.getItem() == RatsItemRegistry.RAT_SACK) {
-                    NBTTagCompound compound = itemstack.getTagCompound();
+                    CompoundNBT compound = itemstack.getTag();
                     if (compound == null) {
-                        compound = new NBTTagCompound();
-                        itemstack.setTagCompound(compound);
+                        compound = new CompoundNBT();
+                        itemstack.setTag(compound);
                     }
-                    NBTTagCompound ratTag = new NBTTagCompound();
+                    CompoundNBT ratTag = new CompoundNBT();
                     this.writeEntityToNBT(ratTag);
                     int currentRat = ItemRatSack.getRatsInStack(itemstack) + 1;
                     compound.setTag("Rat_" + currentRat, ratTag);
@@ -1909,7 +1911,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     return true;
                 } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
                     RatsMod.PROXY.setRefrencedRat(this);
-                    itemstack.getTagCompound().setUniqueId("RatUUID", this.getPersistentID());
+                    itemstack.getTag().setUniqueId("RatUUID", this.getPersistentID());
                     player.swingArm(hand);
                     player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.bind", this.getName()), true);
                     return true;
@@ -1917,11 +1919,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.shrink(1);
                     ItemStack ratArrowStack = new ItemStack(RatsItemRegistry.RAT_ARROW);
-                    NBTTagCompound compound = new NBTTagCompound();
-                    NBTTagCompound ratTag = new NBTTagCompound();
+                    CompoundNBT compound = new CompoundNBT();
+                    CompoundNBT ratTag = new CompoundNBT();
                     this.writeEntityToNBT(ratTag);
                     compound.setTag("Rat", ratTag);
-                    ratArrowStack.setTagCompound(compound);
+                    ratArrowStack.setTag(compound);
                     if (itemstack.isEmpty()) {
                         player.setHeldItem(hand, ratArrowStack);
                     } else if (!player.inventory.addItemStackToInventory(ratArrowStack)) {
@@ -2055,9 +2057,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
                 double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.height;
-                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
                 world.spawnParticle(EnumParticleTypes.WATER_SPLASH, d3, d4, d5, (double) f, (double) f1, (double) f2);
             }
         } else if (type == 2) {
@@ -2066,9 +2068,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
                 double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.height;
-                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * (double) this.width * 2.0D;
+                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
                 world.spawnParticle(EnumParticleTypes.PORTAL, d3, d4, d5, (double) f, (double) f1, (double) f2);
             }
         } else {
@@ -2084,7 +2086,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
             }
         }
     }
@@ -2193,7 +2195,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return RatsSoundRegistry.RAT_HURT;
     }
 
-    public boolean onHearFlute(EntityPlayer player, RatCommand ratCommand) {
+    public boolean onHearFlute(PlayerEntity player, RatCommand ratCommand) {
         if (this.isTamed() && this.isOwner(player) && !this.isChild() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE)) {
             this.setCommand(ratCommand);
             return true;
@@ -2203,15 +2205,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean canRatPickupItem(ItemStack stack) {
         if ((this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST)) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
-            NBTTagCompound nbttagcompound1;
+            CompoundNBT CompoundNBT1;
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
-                nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST).getTagCompound();
+                CompoundNBT1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST).getTag();
             } else {
-                nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTagCompound();
+                CompoundNBT1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTag();
             }
-            if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+            if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
                     for (ItemStack itemstack : nonnulllist) {
                         if (itemstack.isItemEqual(stack)) {
@@ -2348,10 +2350,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return stack;
         }
         if (stack.getItem() instanceof ItemRatCombinedUpgrade) {
-            NBTTagCompound nbttagcompound1 = stack.getTagCompound();
-            if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+            CompoundNBT CompoundNBT1 = stack.getTag();
+            if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                 for (ItemStack stack1 : nonnulllist) {
                     if (stack1.getItem() == item) {
                         return stack1;
@@ -2563,10 +2565,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
     }
 
-    public boolean isOnSameTeam(Entity entityIn){
-        if(entityIn instanceof EntityTameable){
-            EntityTameable tameable = (EntityTameable)entityIn;
-            if(tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())){
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (entityIn instanceof EntityTameable) {
+            EntityTameable tameable = (EntityTameable) entityIn;
+            if (tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())) {
                 return true;
             }
         }

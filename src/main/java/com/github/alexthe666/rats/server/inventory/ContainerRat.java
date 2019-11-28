@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.inventory;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
@@ -14,7 +14,7 @@ public class ContainerRat extends Container {
     private IInventory ratInventory;
     private EntityRat rat;
 
-    public ContainerRat(final EntityRat rat, EntityPlayer player) {
+    public ContainerRat(final EntityRat rat, PlayerEntity player) {
         this.ratInventory = rat.ratInventory;
         this.rat = rat;
         byte b0 = 3;
@@ -62,12 +62,12 @@ public class ContainerRat extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return this.ratInventory.isUsableByPlayer(playerIn) && this.rat.isEntityAlive() && this.rat.getDistance(playerIn) < 8.0F;
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
@@ -104,7 +104,7 @@ public class ContainerRat extends Container {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer playerIn) {
+    public void onContainerClosed(PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
         this.ratInventory.closeInventory(playerIn);
     }

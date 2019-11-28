@@ -1,25 +1,19 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockUpgradeCombiner extends ContainerBlock {
     protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
@@ -47,12 +41,7 @@ public class BlockUpgradeCombiner extends ContainerBlock {
 
 
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isSneaking()) {
-            return false;
-        } else {
-            //playerIn.openGui(RatsMod.INSTANCE, 4, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
+        return !playerIn.isSneaking();
     }
 
     @Nullable

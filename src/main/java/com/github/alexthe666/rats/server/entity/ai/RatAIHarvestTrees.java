@@ -1,14 +1,9 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.google.common.collect.Lists;
-import gnu.trove.set.hash.THashSet;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -162,12 +157,12 @@ public class RatAIHarvestTrees extends EntityAIBase {
         BlockPos base = new BlockPos(this.targetBlock);
         Queue<BlockPos> queue = new LinkedList<BlockPos>();
         while (isBlockLog(world, base)) {
-            if(!queue.contains(base)){
+            if (!queue.contains(base)) {
                 queue.add(base);
             }
             for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8))) {
-                if(isBlockLog(world, pos) && !queue.contains(pos)){
-                    if(isBlockLog(world, pos.up()) && !isBlockLog(world, base.up())){
+                if (isBlockLog(world, pos) && !queue.contains(pos)) {
+                    if (isBlockLog(world, pos.up()) && !isBlockLog(world, base.up())) {
                         base = pos;
                     }
                     queue.add(pos);
@@ -175,7 +170,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
             }
             base = base.up();
         }
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             BlockPos pop = queue.remove();
             world.destroyBlock(pop, true);
         }

@@ -3,10 +3,10 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -30,10 +30,10 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
-        NBTTagCompound nbttagcompound1 = combiner.getTagCompound();
-        if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+        CompoundNBT CompoundNBT1 = combiner.getTag();
+        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
             for (ItemStack contained : nonnulllist) {
                 if (!(stack.getItem() instanceof ItemRatUpgrade) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())) {
                     return false;
@@ -44,8 +44,8 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (stack.getTagCompound() == null) {
-            stack.setTagCompound(new NBTTagCompound());
+        if (stack.getTag() == null) {
+            stack.setTag(new CompoundNBT());
         }
     }
 
@@ -54,11 +54,11 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
             tooltip.add(net.minecraft.client.resources.I18n.format("item.rats.rat_upgrade_combined_creative.desc"));
         }
         tooltip.add(net.minecraft.client.resources.I18n.format("item.rats.rat_upgrade_combined.desc"));
-        NBTTagCompound nbttagcompound1 = stack.getTagCompound();
+        CompoundNBT CompoundNBT1 = stack.getTag();
 
-        if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
             int i = 0;
             int j = 0;
             for (ItemStack itemstack : nonnulllist) {
@@ -81,17 +81,17 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
         if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             return true;
         }
-        NBTTagCompound nbttagcompound1 = stack.getTagCompound();
+        CompoundNBT CompoundNBT1 = stack.getTag();
         boolean flag = false;
-        if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
             flag = !nonnulllist.isEmpty();
         }
         return flag;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand hand) {
         if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             ItemStack itemStackIn = player.getHeldItem(hand);
             if (!player.isSneaking()) {

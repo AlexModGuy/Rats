@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -22,7 +22,7 @@ public class MessageRatDismount extends AbstractMessage<MessageRatDismount> {
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageRatDismount message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageRatDismount message, PlayerEntity player, MessageContext messageContext) {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;
@@ -31,7 +31,7 @@ public class MessageRatDismount extends AbstractMessage<MessageRatDismount> {
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageRatDismount message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageRatDismount message, PlayerEntity player, MessageContext messageContext) {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;

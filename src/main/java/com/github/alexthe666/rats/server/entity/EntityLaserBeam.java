@@ -1,13 +1,12 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -64,14 +63,14 @@ public class EntityLaserBeam extends EntityArrow {
         this.dataManager.set(B, newB);
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
         compound.setFloat("ColorR", getRGB()[0]);
         compound.setFloat("ColorG", getRGB()[1]);
         compound.setFloat("ColorB", getRGB()[2]);
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
         setRGB(compound.getFloat("ColorR"), compound.getFloat("ColorG"), compound.getFloat("ColorB"));
     }
@@ -94,13 +93,13 @@ public class EntityLaserBeam extends EntityArrow {
     }
 
     protected void onHit(RayTraceResult raytraceResultIn) {
-        if (raytraceResultIn.entityHit != null && raytraceResultIn.entityHit instanceof EntityPlayer) {
-            this.damageShield((EntityPlayer) raytraceResultIn.entityHit, (float) this.getDamage());
+        if (raytraceResultIn.entityHit != null && raytraceResultIn.entityHit instanceof PlayerEntity) {
+            this.damageShield((PlayerEntity) raytraceResultIn.entityHit, (float) this.getDamage());
         }
         super.onHit(raytraceResultIn);
     }
 
-    protected void damageShield(EntityPlayer player, float damage) {
+    protected void damageShield(PlayerEntity player, float damage) {
         if (damage >= 3.0F && player.getActiveItemStack().getItem().isShield(player.getActiveItemStack(), player)) {
             ItemStack copyBeforeUse = player.getActiveItemStack().copy();
             int i = 1 + MathHelper.floor(damage);

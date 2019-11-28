@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -13,7 +12,7 @@ import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -33,7 +32,7 @@ public class EntityThrownBlock extends Entity {
     public EntityLivingBase shootingEntity;
     public BlockState fallTile;
     public boolean dropBlock = true;
-    public NBTTagCompound tileEntityData;
+    public CompoundNBT tileEntityData;
     private int ticksAlive;
     private int ticksInAir;
 
@@ -144,17 +143,17 @@ public class EntityThrownBlock extends Entity {
                         TileEntity tileentity = this.world.getTileEntity(blockpos1);
 
                         if (tileentity != null) {
-                            NBTTagCompound nbttagcompound = tileentity.writeToNBT(new NBTTagCompound());
+                            CompoundNBT CompoundNBT = tileentity.writeToNBT(new CompoundNBT());
 
                             for (String s : this.tileEntityData.getKeySet()) {
                                 NBTBase nbtbase = this.tileEntityData.getTag(s);
 
                                 if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s)) {
-                                    nbttagcompound.setTag(s, nbtbase.copy());
+                                    CompoundNBT.setTag(s, nbtbase.copy());
                                 }
                             }
 
-                            tileentity.readFromNBT(nbttagcompound);
+                            tileentity.readFromNBT(CompoundNBT);
                             tileentity.markDirty();
                         }
                     }
@@ -172,9 +171,9 @@ public class EntityThrownBlock extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
-        compound.setInteger("life", this.ticksAlive);
+        compound.setInt("life", this.ticksAlive);
         Block block = this.fallTile != null ? this.fallTile.getBlock() : Blocks.AIR;
         ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
         compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
@@ -187,12 +186,12 @@ public class EntityThrownBlock extends Entity {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         if (compound.hasKey("power", 9)) {
             NBTTagList nbttaglist = compound.getTagList("power", 6);
         }
 
-        this.ticksAlive = compound.getInteger("life");
+        this.ticksAlive = compound.getInt("life");
 
         if (compound.hasKey("direction", 9) && compound.getTagList("direction", 6).tagCount() == 3) {
             NBTTagList nbttaglist1 = compound.getTagList("direction", 6);
@@ -207,7 +206,7 @@ public class EntityThrownBlock extends Entity {
         if (compound.hasKey("Block", 8)) {
             this.fallTile = Block.getBlockFromName(compound.getString("Block")).getStateFromMeta(i);
         } else if (compound.hasKey("TileID", 99)) {
-            this.fallTile = Block.getBlockById(compound.getInteger("TileID")).getStateFromMeta(i);
+            this.fallTile = Block.getBlockById(compound.getInt("TileID")).getStateFromMeta(i);
         } else {
             this.fallTile = Block.getBlockById(compound.getByte("Tile") & 255).getStateFromMeta(i);
         }

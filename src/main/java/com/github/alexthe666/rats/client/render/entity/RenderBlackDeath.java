@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelBlackDeath;
 import com.github.alexthe666.rats.server.entity.EntityBlackDeath;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelIllager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
@@ -28,7 +27,7 @@ public class RenderBlackDeath extends RenderLiving<EntityBlackDeath> {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelBlackDeath) this.livingEntityRenderer.getMainModel()).getArm(p_191361_1_).postRender(0.0625F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.translate( p_191361_1_ == EnumHandSide.LEFT ? -0.1F : 0.1F, 0.1F, 0);
+                GlStateManager.translate(p_191361_1_ == EnumHandSide.LEFT ? -0.1F : 0.1F, 0.1F, 0);
             }
         });
     }

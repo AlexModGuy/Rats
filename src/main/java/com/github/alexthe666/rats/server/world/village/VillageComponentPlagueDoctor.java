@@ -1,16 +1,13 @@
 package com.github.alexthe666.rats.server.world.village;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.util.List;
 import java.util.Random;
@@ -51,7 +48,7 @@ public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village
         Direction facing = this.getCoordBaseMode().getOpposite();
         int xSize = this.boundingBox.maxX - this.boundingBox.minX;
         int zSize = this.boundingBox.maxZ - this.boundingBox.minZ;
-        BlockPos genPos = blockpos.add(xSize/2, 0, zSize/2);
+        BlockPos genPos = blockpos.add(xSize / 2, 0, zSize / 2);
         return new WorldGenPlagueDoctor(this, facing).generate(world, random, genPos);
     }
 

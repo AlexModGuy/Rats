@@ -14,14 +14,11 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -138,7 +135,7 @@ public class RatAIDepositFluid extends EntityAIBase {
                     if (handler == null) {
                         return;
                     }
-                    if(this.entity.transportingFluid != null) {
+                    if (this.entity.transportingFluid != null) {
                         int minusAmount = 0;
                         try {
                             if (handler.getTankProperties().length > 0) {
@@ -166,12 +163,12 @@ public class RatAIDepositFluid extends EntityAIBase {
                             this.resetTask();
                         } else {
                             int total = copiedFluid.amount - minusAmount;
-                            if(total <= 0){
+                            if (total <= 0) {
                                 this.entity.transportingFluid = null;
-                            }else{
+                            } else {
                                 this.entity.transportingFluid.amount = total;
                             }
-                            if(!this.entity.world.isRemote){
+                            if (!this.entity.world.isRemote) {
                                 RatsMod.NETWORK_WRAPPER.sendToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                             }
                             SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_EMPTY : this.entity.transportingFluid.getFluid().getEmptySound();
@@ -180,7 +177,7 @@ public class RatAIDepositFluid extends EntityAIBase {
                             this.resetTask();
                         }
                     }
-                    if(handler == null) {
+                    if (handler == null) {
                         this.targetBlock = null;
                         this.resetTask();
                         return;

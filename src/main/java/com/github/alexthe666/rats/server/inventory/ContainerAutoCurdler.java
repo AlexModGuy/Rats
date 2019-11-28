@@ -1,22 +1,17 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
-import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
-import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
-import net.minecraft.item.ItemStack;
 
 public class ContainerAutoCurdler extends SyncedFieldContainer {
 
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
-    public ContainerAutoCurdler(IInventory inv, EntityPlayer player) {
+    public ContainerAutoCurdler(IInventory inv, PlayerEntity player) {
         super(inv);
         this.tileRatCraftingTable = inv;
         this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 8, 35));
@@ -52,7 +47,7 @@ public class ContainerAutoCurdler extends SyncedFieldContainer {
     }
 
 
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return this.tileRatCraftingTable.isUsableByPlayer(playerIn);
     }
 }

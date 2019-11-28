@@ -1,10 +1,9 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,13 +28,13 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
     public void setContainedItem(ItemStack stack) {
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("BreedingCooldown", breedingCooldown);
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
+        compound.setInt("BreedingCooldown", breedingCooldown);
         return super.writeToNBT(compound);
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
-        breedingCooldown = compound.getInteger("BreedingCooldown");
+    public void readFromNBT(CompoundNBT compound) {
+        breedingCooldown = compound.getInt("BreedingCooldown");
         super.readFromNBT(compound);
     }
 

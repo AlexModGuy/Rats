@@ -33,7 +33,7 @@ public class BlockMarbledCheeseGrass extends GrassBlock implements IGrowable {
                         BlockState BlockState = worldIn.getBlockState(blockpos.up());
                         BlockState BlockState1 = worldIn.getBlockState(blockpos);
 
-                        if (BlockState1.getBlock() == Blocks.DIRT  && worldIn.getLight(blockpos.up()) >= 4 && BlockState.getOpacity(worldIn, pos.up()) <= 2) {
+                        if (BlockState1.getBlock() == Blocks.DIRT && worldIn.getLight(blockpos.up()) >= 4 && BlockState.getOpacity(worldIn, pos.up()) <= 2) {
                             worldIn.setBlockState(blockpos, Blocks.GRASS.getDefaultState());
                         }
                     }

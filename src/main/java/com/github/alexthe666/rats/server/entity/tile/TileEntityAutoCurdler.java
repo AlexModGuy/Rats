@@ -3,14 +3,13 @@ package com.github.alexthe666.rats.server.entity.tile;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
-import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
@@ -92,20 +91,20 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         }
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         super.readFromNBT(compound);
         tank.readFromNBT(compound);
         this.curdlerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.curdlerStacks);
-        this.cookTime = compound.getInteger("CookTime");
-        this.totalCookTime = compound.getInteger("CookTimeTotal");
+        this.cookTime = compound.getInt("CookTime");
+        this.totalCookTime = compound.getInt("CookTimeTotal");
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
         super.writeToNBT(compound);
         tank.writeToNBT(compound);
-        compound.setInteger("CookTime", (short) this.cookTime);
-        compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
+        compound.setInt("CookTime", (short) this.cookTime);
+        compound.setInt("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.curdlerStacks);
         return compound;
     }
@@ -115,7 +114,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         return true;
     }
 
@@ -211,13 +210,13 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         }
     }
 
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(PlayerEntity player) {
         if (!world.isRemote) {
             RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }
     }
 
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(PlayerEntity player) {
         if (!world.isRemote) {
             RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }

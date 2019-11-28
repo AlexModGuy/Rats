@@ -2,11 +2,11 @@ package com.github.alexthe666.rats.server.inventory;
 
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
@@ -18,17 +18,17 @@ public class InventoryRatUpgrade implements ISidedInventory {
     public InventoryRatUpgrade(ItemStack upgradeStack) {
         this.upgradeStack = upgradeStack;
         if (!upgradeStack.hasTagCompound()) {
-            upgradeStack.setTagCompound(new NBTTagCompound());
+            upgradeStack.setTag(new CompoundNBT());
         }
-        readFromNBT(upgradeStack.getTagCompound());
+        readFromNBT(upgradeStack.getTag());
     }
 
-    private void readFromNBT(NBTTagCompound tagCompound) {
+    private void readFromNBT(CompoundNBT tagCompound) {
         this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(tagCompound, this.items);
     }
 
-    private void writeToNBT(NBTTagCompound tagCompound) {
+    private void writeToNBT(CompoundNBT tagCompound) {
         ItemStackHelper.saveAllItems(tagCompound, this.items);
     }
 
@@ -78,24 +78,24 @@ public class InventoryRatUpgrade implements ISidedInventory {
 
     @Override
     public void markDirty() {
-        writeToNBT(upgradeStack.getTagCompound());
+        writeToNBT(upgradeStack.getTag());
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         return true;
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(PlayerEntity player) {
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(PlayerEntity player) {
         if (!upgradeStack.hasTagCompound()) {
-            upgradeStack.setTagCompound(new NBTTagCompound());
+            upgradeStack.setTag(new CompoundNBT());
         }
-        writeToNBT(upgradeStack.getTagCompound());
+        writeToNBT(upgradeStack.getTag());
     }
 
     @Override

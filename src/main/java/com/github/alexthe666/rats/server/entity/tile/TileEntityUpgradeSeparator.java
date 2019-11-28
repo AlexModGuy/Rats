@@ -1,20 +1,16 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,11 +29,11 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickable 
         for (ItemEntity ItemEntity : world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
             ItemStack item = ItemEntity.getItem();
             if (item.getItem() instanceof ItemRatCombinedUpgrade) {
-                NBTTagCompound nbttagcompound1 = item.getTagCompound();
+                CompoundNBT CompoundNBT1 = item.getTag();
                 int spawnedItem = 0;
-                if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
+                if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
                     NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                     for (ItemStack itemstack : nonnulllist) {
                         if (!itemstack.isEmpty()) {
                             ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.posX, ItemEntity.posY, ItemEntity.posZ, itemstack.copy());
@@ -48,7 +44,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickable 
                         }
                     }
                 }
-                if(spawnedItem > 0){
+                if (spawnedItem > 0) {
                     ItemEntity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
                     ItemEntity.setDead();
                     ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.posX, ItemEntity.posY, ItemEntity.posZ, new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS, spawnedItem));

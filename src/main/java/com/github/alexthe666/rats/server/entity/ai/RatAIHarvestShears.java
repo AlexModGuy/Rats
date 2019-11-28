@@ -1,36 +1,29 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
 public class RatAIHarvestShears extends EntityAIBase {
     private static final int RADIUS = 16;
+    private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
     private final EntityRat entity;
     private Entity targetSheep = null;
     private boolean reachedSheep = false;
     private int fishingCooldown = 1000;
     private int throwCooldown = 0;
-    private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
     private Random rand = new Random();
     private Predicate<EntityLivingBase> SHEAR_PREDICATE = new com.google.common.base.Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
@@ -72,16 +65,16 @@ public class RatAIHarvestShears extends EntityAIBase {
         if (this.targetSheep != null && !this.targetSheep.isDead && this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1D);
             if (entity.getDistance(targetSheep) < 1.5D) {
-                if(targetSheep instanceof IShearable){
+                if (targetSheep instanceof IShearable) {
                     java.util.List<ItemStack> drops = ((IShearable) targetSheep).onSheared(new ItemStack(Items.SHEARS), this.entity.world, targetSheep.getPosition(), 0);
-                    for(ItemStack stack : drops){
+                    for (ItemStack stack : drops) {
                         targetSheep.entityDropItem(stack, 0.0F);
                     }
                 }
                 this.targetSheep = null;
                 this.resetTask();
             }
-        }else{
+        } else {
             this.resetTask();
         }
     }
@@ -89,8 +82,8 @@ public class RatAIHarvestShears extends EntityAIBase {
     private void resetTarget() {
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) SHEAR_PREDICATE);
         EntityLivingBase closestSheep = null;
-        for(EntityLivingBase base : list) {
-            if(closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)){
+        for (EntityLivingBase base : list) {
+            if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {
                 closestSheep = base;
             }
         }

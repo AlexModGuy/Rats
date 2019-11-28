@@ -4,11 +4,11 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -27,8 +27,8 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
     }
 
     public static ItemStack getIngot(ItemStack poopItem, ItemStack fallback) {
-        if (poopItem.getTagCompound() != null) {
-            NBTTagCompound poopTag = poopItem.getTagCompound().getCompoundTag("IngotItem");
+        if (poopItem.getTag() != null) {
+            CompoundNBT poopTag = poopItem.getTag().getCompoundTag("IngotItem");
             ItemStack oreItem = new ItemStack(poopTag);
             return oreItem.isEmpty() ? fallback : oreItem;
         }
@@ -47,14 +47,14 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
     }
 
     @Override
-    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-        itemStack.setTagCompound(new NBTTagCompound());
+    public void onCreated(ItemStack itemStack, World world, PlayerEntity player) {
+        itemStack.setTag(new CompoundNBT());
     }
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int f, boolean f1) {
-        if (stack.getTagCompound() == null) {
-            stack.setTagCompound(new NBTTagCompound());
+        if (stack.getTag() == null) {
+            stack.setTag(new CompoundNBT());
         }
     }
 
@@ -64,17 +64,17 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
                 ItemStack oreStack = entry.getKey();
                 ItemStack ingotStack = entry.getValue();
                 ItemStack stack = new ItemStack(this);
-                NBTTagCompound poopTag = new NBTTagCompound();
-                NBTTagCompound oreTag = new NBTTagCompound();
+                CompoundNBT poopTag = new CompoundNBT();
+                CompoundNBT oreTag = new CompoundNBT();
                 oreStack.writeToNBT(oreTag);
-                NBTTagCompound ingotTag = new NBTTagCompound();
+                CompoundNBT ingotTag = new CompoundNBT();
                 ingotStack.writeToNBT(ingotTag);
                 poopTag.setTag("OreItem", oreTag);
                 poopTag.setTag("IngotItem", ingotTag);
-                stack.setTagCompound(poopTag);
+                stack.setTag(poopTag);
                 stack.setItemDamage(RatsNuggetRegistry.getNuggetMeta(ingotStack));
                 ItemStack poopyStack = new ItemStack(this, 1, stack.getItemDamage());
-                poopyStack.setTagCompound(poopTag);
+                poopyStack.setTag(poopTag);
                 items.add(poopyStack);
             }
         }

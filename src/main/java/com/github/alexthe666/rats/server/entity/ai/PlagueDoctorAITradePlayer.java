@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class PlagueDoctorAITradePlayer extends EntityAIBase {
     private final EntityPlagueDoctor villager;
@@ -22,14 +22,14 @@ public class PlagueDoctorAITradePlayer extends EntityAIBase {
         } else if (this.villager.velocityChanged) {
             return false;
         } else {
-            EntityPlayer entityplayer = this.villager.getCustomer();
+            PlayerEntity PlayerEntity = this.villager.getCustomer();
 
-            if (entityplayer == null) {
+            if (PlayerEntity == null) {
                 return false;
-            } else if (this.villager.getDistanceSq(entityplayer) > 16.0D) {
+            } else if (this.villager.getDistanceSq(PlayerEntity) > 16.0D) {
                 return false;
             } else {
-                return entityplayer.openContainer != null;
+                return PlayerEntity.openContainer != null;
             }
         }
     }

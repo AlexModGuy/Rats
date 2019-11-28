@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
@@ -19,7 +17,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -62,6 +59,7 @@ public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEn
             }
         }
     }
+
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }

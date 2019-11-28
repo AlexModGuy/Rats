@@ -35,8 +35,8 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             GlStateManager.disableBlend();
             GlStateManager.disableNormalize();
         }
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) && rat.getHeldRF() > 0){//rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
-            float alpha = rat.getHeldRF() / Math.max(1, (float)rat.getRFTransferRate());
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) && rat.getHeldRF() > 0) {//rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+            float alpha = rat.getHeldRF() / Math.max(1, (float) rat.getRFTransferRate());
             GlStateManager.pushMatrix();
             boolean flag = true;
             GlStateManager.depthMask(!flag);

@@ -6,7 +6,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
@@ -18,14 +17,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -37,7 +34,7 @@ public class BlockAutoCurdler extends ContainerBlock {
 
     public BlockAutoCurdler() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0F, 0.0F));
-         this.setRegistryName(RatsMod.MODID, "auto_curdler");
+        this.setRegistryName(RatsMod.MODID, "auto_curdler");
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         //GameRegistry.registerTileEntity(TileEntityAutoCurdler.class, "rats.auto_curdler");
     }
@@ -62,12 +59,7 @@ public class BlockAutoCurdler extends ContainerBlock {
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isSneaking()) {
-            return false;
-        } else {
-            //playerIn.openGui(RatsMod.INSTANCE, 5, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
+        return !playerIn.isSneaking();
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {

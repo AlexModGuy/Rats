@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;

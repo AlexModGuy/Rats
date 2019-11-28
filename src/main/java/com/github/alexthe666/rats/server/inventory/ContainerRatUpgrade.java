@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -12,7 +12,7 @@ public class ContainerRatUpgrade extends SyncedFieldContainer {
     private IInventory inventory;
     private IInventory inventoryPlayer;
 
-    public ContainerRatUpgrade(EntityPlayer player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
+    public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
         super(itemInventory);
         int numRows = itemInventory.getSizeInventory() / 9;
         this.inventory = itemInventory;
@@ -36,12 +36,12 @@ public class ContainerRatUpgrade extends SyncedFieldContainer {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return true;
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer playerIn) {
+    public void onContainerClosed(PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
         this.inventory.closeInventory(playerIn);
     }

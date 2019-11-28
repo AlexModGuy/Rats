@@ -2,13 +2,13 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class PlagueDoctorAILookAtTradePlayer extends EntityAIWatchClosest {
     private final EntityPlagueDoctor villager;
 
     public PlagueDoctorAILookAtTradePlayer(EntityPlagueDoctor villagerIn) {
-        super(villagerIn, EntityPlayer.class, 8.0F);
+        super(villagerIn, PlayerEntity.class, 8.0F);
         this.villager = villagerIn;
     }
 

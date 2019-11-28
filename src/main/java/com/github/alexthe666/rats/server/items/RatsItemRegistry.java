@@ -6,12 +6,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RatsItemRegistry {
 
@@ -22,11 +19,11 @@ public class RatsItemRegistry {
     public static Item.ToolMaterial BAGHNAKHS_MATERIAL = EnumHelper.addToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
     public static Item.ToolMaterial PLAGUE_SCYTHE_MATERIAL = EnumHelper.addToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
-    public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false,"cheese");
+    public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
-    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false,"raw_rat").setPotionEffect(new PotionEffect(MobEffects.HUNGER, 200, 0), 1);
+    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat").setPotionEffect(new PotionEffect(MobEffects.HUNGER, 200, 0), 1);
 
-    public static Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false,"cooked_rat");
+    public static Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false, "cooked_rat");
 
     public static Item RAT_PELT = new ItemGeneric("rat_pelt");
 
@@ -42,9 +39,9 @@ public class RatsItemRegistry {
 
     public static Item CREATIVE_CHEESE = new ItemCreativeCheese();
 
-    public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, false, false,"assorted_vegetables");
+    public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, false, false, "assorted_vegetables");
 
-    public static Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, false, false,"rat_burger");
+    public static Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, false, false, "rat_burger");
 
     public static Item RAT_SACK = new ItemRatSack();
 
@@ -60,7 +57,7 @@ public class RatsItemRegistry {
 
     public static Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
 
-    public static Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, false, false,"contaminated_food");
+    public static Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, false, false, "contaminated_food");
 
     public static Item PURIFYING_LIQUID = new ItemPurifyingLiquid();
 
@@ -86,9 +83,9 @@ public class RatsItemRegistry {
 
     public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
 
-    public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true,"confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 
-    public static Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true,"potato_pancake");
+    public static Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true, "potato_pancake");
 
     public static Item LITTLE_BLACK_SQUASH_BALLS = new ItemGeneric("little_black_squash_balls");
 
@@ -96,7 +93,7 @@ public class RatsItemRegistry {
 
     public static Item CENTIPEDE = new ItemGeneric("centipede");
 
-    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true,"potato_kinishes").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
 
     public static Item TINY_COIN = new ItemGeneric("tiny_coin");
 
@@ -271,6 +268,7 @@ public class RatsItemRegistry {
     public static Item RAT_NUGGET = new ItemGeneric("rat_nugget");
 
     public static Item RAT_NUGGET_ORE = new ItemRatNuggetOre();
+
     static {
         for (int i = 0; i < 16; i++) {
             RAT_IGLOOS[i] = new ItemRatIgloo(DyeColor.byId(i));

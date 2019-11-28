@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.message;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -15,12 +15,12 @@ public class MessageSwingArm extends AbstractMessage<MessageSwingArm> {
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageSwingArm message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageSwingArm message, PlayerEntity player, MessageContext messageContext) {
 
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageSwingArm message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageSwingArm message, PlayerEntity player, MessageContext messageContext) {
         TinkersCompatBridge.onPlayerSwing(player, player.getHeldItem(EnumHand.MAIN_HAND));
     }
 

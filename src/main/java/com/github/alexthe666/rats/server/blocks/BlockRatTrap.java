@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import net.minecraft.block.*;
@@ -14,7 +13,6 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -22,8 +20,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockRatTrap extends ContainerBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
@@ -31,7 +29,8 @@ public class BlockRatTrap extends ContainerBlock {
     private static final VoxelShape EW_AABB = Block.makeCuboidShape(0, 0, 3, 16, 4, 13);
 
     protected BlockRatTrap() {
-        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0.0F));this.setRegistryName(RatsMod.MODID, "rattrap");
+        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0.0F));
+        this.setRegistryName(RatsMod.MODID, "rattrap");
         setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         //GameRegistry.registerTileEntity(TileEntityRatTrap.class, "rats.rat_trap");
     }

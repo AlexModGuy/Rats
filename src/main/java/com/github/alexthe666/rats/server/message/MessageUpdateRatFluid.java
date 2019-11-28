@@ -5,10 +5,9 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -28,7 +27,7 @@ public class MessageUpdateRatFluid extends AbstractMessage<MessageUpdateRatFluid
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageUpdateRatFluid message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageUpdateRatFluid message, PlayerEntity player, MessageContext messageContext) {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;
@@ -37,7 +36,7 @@ public class MessageUpdateRatFluid extends AbstractMessage<MessageUpdateRatFluid
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageUpdateRatFluid message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageUpdateRatFluid message, PlayerEntity player, MessageContext messageContext) {
         Entity entity = player.world.getEntityByID(message.ratId);
         if (entity instanceof EntityRat) {
             EntityRat rat = (EntityRat) entity;
@@ -55,8 +54,8 @@ public class MessageUpdateRatFluid extends AbstractMessage<MessageUpdateRatFluid
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(ratId);
-        NBTTagCompound fluidTag = new NBTTagCompound();
-        if(fluid != null){
+        CompoundNBT fluidTag = new CompoundNBT();
+        if (fluid != null) {
             fluid.writeToNBT(fluidTag);
         }
         ByteBufUtils.writeTag(buf, fluidTag);

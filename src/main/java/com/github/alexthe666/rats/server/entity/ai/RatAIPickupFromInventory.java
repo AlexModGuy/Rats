@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -52,7 +51,7 @@ public class RatAIPickupFromInventory extends EntityAIBase {
     }
 
     private boolean canPickUp() {
-        return this.entity.getCommand() == RatCommand.TRANSPORT || this.entity.getCommand() == RatCommand.HARVEST &&( this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER));
+        return this.entity.getCommand() == RatCommand.TRANSPORT || this.entity.getCommand() == RatCommand.HARVEST && (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER));
     }
 
     @Override

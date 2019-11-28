@@ -7,15 +7,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -77,12 +73,12 @@ public class RatAIHarvestFisherman extends EntityAIBase {
                     if (distance < 1.5F) {
                         // this.targetBlock = null;
                         //  this.resetTask();
-                        if(throwCooldown == 0){
+                        if (throwCooldown == 0) {
                             entity.playSound(SoundEvents.ENTITY_BOBBER_THROW, 1, 0.5F);
                             throwCooldown = 20;
                         }
                         hasReachedWater = true;
-                    }else{
+                    } else {
                         hasReachedWater = false;
                     }
                 } else {
@@ -95,10 +91,10 @@ public class RatAIHarvestFisherman extends EntityAIBase {
             //spawnFishingLoot();
             entity.world.setEntityState(entity, (byte) 85);
             entity.crafting = true;
-            if(fishingCooldown > 0){
+            if (fishingCooldown > 0) {
                 fishingCooldown--;
             }
-            if(fishingCooldown == 0){
+            if (fishingCooldown == 0) {
                 spawnFishingLoot();
                 entity.world.setEntityState(entity, (byte) 101);
                 entity.playSound(SoundEvents.ENTITY_BOBBER_SPLASH, 1, 1);
@@ -107,7 +103,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
             entity.world.setEntityState(entity, (byte) 86);
             entity.crafting = false;
         }
-        if(throwCooldown > 0){
+        if (throwCooldown > 0) {
             throwCooldown--;
         }
     }
@@ -143,7 +139,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
 
         for (ItemStack itemstack : result) {
             ItemEntity ItemEntity = new ItemEntity(this.entity.world, this.entity.posX, this.entity.posY, this.entity.posZ, itemstack);
-            if(!this.entity.world.isRemote){
+            if (!this.entity.world.isRemote) {
                 this.entity.world.addEntity(ItemEntity);
             }
         }

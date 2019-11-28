@@ -159,7 +159,7 @@ public class WorldGenRatRuin extends WorldGenerator {
                     for (Direction Direction : Direction.Plane.HORIZONTAL.facings()) {
                         if (!worldIn.getBlockState(vinePos.offset(Direction)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
                             Direction opposFacing = Direction.getOpposite();
-                            BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(opposFacing == Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(opposFacing == Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(opposFacing == Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(opposFacing == Direction.WEST));
+                            BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.WEST));
                             worldIn.setBlockState(vinePos.offset(Direction), BlockState, 2);
                         }
                     }

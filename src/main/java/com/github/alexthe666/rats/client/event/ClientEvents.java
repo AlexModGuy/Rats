@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client.event;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.render.entity.LayerPlague;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
 import net.minecraft.client.Minecraft;
@@ -9,16 +8,9 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -26,34 +18,26 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
+    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
+    public static int left_height = 39;
+    public static int right_height = 39;
     private int updateCounter = 0;
     private int playerHealth = 0;
     private int lastPlayerHealth = 0;
     private long healthUpdateCounter = 0;
     private long lastSystemTime = 0;
     private Random rand = new Random();
-    public static int left_height = 39;
-    public static int right_height = 39;
     private float synesthesiaProgress = 0;
     private float prevSynesthesiaProgress = 0;
     private float maxSynesthesiaProgress = 40;
-    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -66,23 +50,19 @@ public class ClientEvents {
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
         GlStateManager.enableBlend();
-        EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().getRenderViewEntity();
+        PlayerEntity player = (PlayerEntity) Minecraft.getMinecraft().getRenderViewEntity();
         int health = MathHelper.ceil(player.getHealth());
-        boolean highlight = healthUpdateCounter > (long)updateCounter && (healthUpdateCounter - (long)updateCounter) / 3L %2L == 1L;
+        boolean highlight = healthUpdateCounter > (long) updateCounter && (healthUpdateCounter - (long) updateCounter) / 3L % 2L == 1L;
 
-        if (health < this.playerHealth && player.hurtResistantTime > 0)
-        {
+        if (health < this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Minecraft.getSystemTime();
-            this.healthUpdateCounter = (long)(this.updateCounter + 20);
-        }
-        else if (health > this.playerHealth && player.hurtResistantTime > 0)
-        {
+            this.healthUpdateCounter = (long) (this.updateCounter + 20);
+        } else if (health > this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Minecraft.getSystemTime();
-            this.healthUpdateCounter = (long)(this.updateCounter + 10);
+            this.healthUpdateCounter = (long) (this.updateCounter + 10);
         }
 
-        if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L)
-        {
+        if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L) {
             this.playerHealth = health;
             this.lastPlayerHealth = health;
             this.lastSystemTime = Minecraft.getSystemTime();
@@ -92,13 +72,13 @@ public class ClientEvents {
         int healthLast = this.lastPlayerHealth;
 
         IAttributeInstance attrMaxHealth = player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
-        float healthMax = (float)attrMaxHealth.getAttributeValue();
+        float healthMax = (float) attrMaxHealth.getAttributeValue();
         float absorb = MathHelper.ceil(player.getAbsorptionAmount());
 
         int healthRows = MathHelper.ceil((healthMax + absorb) / 2.0F / 10.0F);
         int rowHeight = Math.max(10 - (healthRows - 2), 3);
 
-        this.rand.setSeed((long)(updateCounter * 312871));
+        this.rand.setSeed((long) (updateCounter * 312871));
 
         int left = width / 2 - 91;
         int top = height - left_height;
@@ -106,8 +86,7 @@ public class ClientEvents {
         if (rowHeight != 10) left_height += 10 - rowHeight;
 
         int regen = -1;
-        if (player.isPotionActive(MobEffects.REGENERATION))
-        {
+        if (player.isPotionActive(MobEffects.REGENERATION)) {
             regen = updateCounter % 25;
         }
 
@@ -116,39 +95,31 @@ public class ClientEvents {
         int BACKGROUND = 9;
         float absorbRemaining = absorb;
 
-        for (int i = MathHelper.ceil((healthMax + absorb) / 2.0F) - 1; i >= 0; --i)
-        {
+        for (int i = MathHelper.ceil((healthMax + absorb) / 2.0F) - 1; i >= 0; --i) {
             //int b0 = (highlight ? 1 : 0);
-            int row = MathHelper.ceil((float)(i + 1) / 10.0F) - 1;
+            int row = MathHelper.ceil((float) (i + 1) / 10.0F) - 1;
             int x = left + i % 10 * 8;
             int y = top - row * rowHeight;
 
             if (health <= 4) y += rand.nextInt(2);
             if (i == regen) y -= 2;
             drawTexturedModalRect(x, y, MARGIN, BACKGROUND, 9, 9);
-            if (highlight)
-            {
+            if (highlight) {
                 if (i * 2 + 1 < healthLast)
                     drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //6
                 else if (i * 2 + 1 == healthLast)
                     drawTexturedModalRect(x, y, MARGIN + 9, TOP, 9, 9); //7
             }
 
-            if (absorbRemaining > 0.0F)
-            {
-                if (absorbRemaining == absorb && absorb % 2.0F == 1.0F)
-                {
+            if (absorbRemaining > 0.0F) {
+                if (absorbRemaining == absorb && absorb % 2.0F == 1.0F) {
                     drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //17
                     absorbRemaining -= 1.0F;
-                }
-                else
-                {
+                } else {
                     drawTexturedModalRect(x, y, MARGIN + 9, TOP, 9, 9); //16
                     absorbRemaining -= 2.0F;
                 }
-            }
-            else
-            {
+            } else {
                 if (i * 2 + 1 < health)
                     drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //4
                 else if (i * 2 + 1 == health)

@@ -1,8 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -56,13 +55,13 @@ public class EntityGolemBeam extends EntityArrow {
     }
 
     protected void onHit(RayTraceResult raytraceResultIn) {
-        if (raytraceResultIn.entityHit != null && raytraceResultIn.entityHit instanceof EntityPlayer) {
-            this.damageShield((EntityPlayer) raytraceResultIn.entityHit, (float) this.getDamage());
+        if (raytraceResultIn.entityHit != null && raytraceResultIn.entityHit instanceof PlayerEntity) {
+            this.damageShield((PlayerEntity) raytraceResultIn.entityHit, (float) this.getDamage());
         }
         super.onHit(raytraceResultIn);
     }
 
-    protected void damageShield(EntityPlayer player, float damage) {
+    protected void damageShield(PlayerEntity player, float damage) {
         if (damage >= 3.0F && player.getActiveItemStack().getItem().isShield(player.getActiveItemStack(), player)) {
             ItemStack copyBeforeUse = player.getActiveItemStack().copy();
             int i = 1 + MathHelper.floor(damage);

@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.advancements.PlagueDoctorTrigger;
-import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
-import com.github.alexthe666.rats.server.blocks.BlockRatCageDecorated;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIFollowGolem;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAILookAtTradePlayer;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAITradePlayer;
@@ -11,31 +8,32 @@ import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIVillagerInterac
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.MerchantRecipe;
@@ -67,7 +65,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     private boolean isMating;
     private boolean isPlaying;
     @Nullable
-    private EntityPlayer buyingPlayer;
+    private PlayerEntity buyingPlayer;
     @Nullable
     private MerchantRecipeList buyingList;
     private int timeUntilReset;
@@ -100,7 +98,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
         this.tasks.addTask(7, new PlagueDoctorAIFollowGolem(this));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(9, new PlagueDoctorAIVillagerInteract(this));
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
@@ -182,11 +180,11 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         super.updateAITasks();
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
         if (!world.isRemote) {
-            PLAGUE_DOCTOR_TRIGGER.trigger((EntityPlayerMP) player, this);
+            PLAGUE_DOCTOR_TRIGGER.trigger((ServerPlayerEntity) player, this);
         }
         if (flag) {
             itemstack.interactWithEntity(player, this, hand);
@@ -213,11 +211,11 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("Riches", this.wealth);
-        compound.setInteger("Career", this.careerId);
-        compound.setInteger("CareerLevel", this.careerLevel);
+        compound.setInt("Riches", this.wealth);
+        compound.setInt("Career", this.careerId);
+        compound.setInt("CareerLevel", this.careerLevel);
         compound.setBoolean("Willing", this.isWillingToMate);
 
         if (this.buyingList != null) {
@@ -230,23 +228,23 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
             ItemStack itemstack = this.villagerInventory.getStackInSlot(i);
 
             if (!itemstack.isEmpty()) {
-                nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
+                nbttaglist.appendTag(itemstack.writeToNBT(new CompoundNBT()));
             }
         }
 
         compound.setTag("Inventory", nbttaglist);
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
-        this.wealth = compound.getInteger("Riches");
-        this.careerId = compound.getInteger("Career");
-        this.careerLevel = compound.getInteger("CareerLevel");
+        this.wealth = compound.getInt("Riches");
+        this.careerId = compound.getInt("Career");
+        this.careerLevel = compound.getInt("CareerLevel");
         this.isWillingToMate = compound.getBoolean("Willing");
 
         if (compound.hasKey("Offers", 10)) {
-            NBTTagCompound nbttagcompound = compound.getCompoundTag("Offers");
-            this.buyingList = new MerchantRecipeList(nbttagcompound);
+            CompoundNBT CompoundNBT = compound.getCompoundTag("Offers");
+            this.buyingList = new MerchantRecipeList(CompoundNBT);
         }
 
         NBTTagList nbttaglist = compound.getTagList("Inventory", 10);
@@ -304,7 +302,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         if (this.village != null && livingBase != null) {
             this.village.addOrRenewAgressor(livingBase);
 
-            if (livingBase instanceof EntityPlayer) {
+            if (livingBase instanceof PlayerEntity) {
                 int i = -1;
 
                 if (this.isChild()) {
@@ -325,15 +323,15 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
             Entity entity = cause.getTrueSource();
 
             if (entity != null) {
-                if (entity instanceof EntityPlayer) {
+                if (entity instanceof PlayerEntity) {
                     this.village.modifyPlayerReputation(entity.getUniqueID(), -2);
                 } else if (entity instanceof IMob) {
                     this.village.endMatingSeason();
                 }
             } else {
-                EntityPlayer entityplayer = this.world.getClosestPlayerToEntity(this, 16.0D);
+                PlayerEntity PlayerEntity = this.world.getClosestPlayerToEntity(this, 16.0D);
 
-                if (entityplayer != null) {
+                if (PlayerEntity != null) {
                     this.village.endMatingSeason();
                 }
             }
@@ -343,11 +341,11 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     }
 
     @Nullable
-    public EntityPlayer getCustomer() {
+    public PlayerEntity getCustomer() {
         return this.buyingPlayer;
     }
 
-    public void setCustomer(@Nullable EntityPlayer player) {
+    public void setCustomer(@Nullable PlayerEntity player) {
         this.buyingPlayer = player;
     }
 
@@ -429,7 +427,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     }
 
     @Nullable
-    public MerchantRecipeList getRecipes(EntityPlayer player) {
+    public MerchantRecipeList getRecipes(PlayerEntity player) {
         if (this.buyingList == null) {
             this.populateBuyingList();
         }
@@ -502,7 +500,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+            this.world.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
         }
     }
 
@@ -540,7 +538,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         return entityvillager;
     }
 
-    public boolean canBeLeashedTo(EntityPlayer player) {
+    public boolean canBeLeashedTo(PlayerEntity player) {
         return true;
     }
 

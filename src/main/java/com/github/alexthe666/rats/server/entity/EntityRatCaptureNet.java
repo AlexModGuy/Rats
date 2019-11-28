@@ -1,21 +1,14 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.items.ItemRatSack;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionType;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.DamageSource;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -41,15 +34,15 @@ public class EntityRatCaptureNet extends EntityPotion {
 
     protected void onImpact(RayTraceResult result) {
         ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK);
-        NBTTagCompound tag = new NBTTagCompound();
+        CompoundNBT tag = new CompoundNBT();
         if (!this.world.isRemote && thrower != null) {
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(30, 16, 30);
             List<EntityRat> list = this.world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             int capturedRat = 0;
             if (!list.isEmpty()) {
                 for (EntityRat rat : list) {
-                    if (rat.isTamed() && (rat.isOwner(thrower) || thrower instanceof EntityPlayer && ((EntityPlayer) thrower).isCreative())) {
-                        NBTTagCompound ratTag = new NBTTagCompound();
+                    if (rat.isTamed() && (rat.isOwner(thrower) || thrower instanceof PlayerEntity && ((PlayerEntity) thrower).isCreative())) {
+                        CompoundNBT ratTag = new CompoundNBT();
                         rat.writeEntityToNBT(ratTag);
                         capturedRat++;
                         world.setEntityState(rat, (byte) 86);
@@ -61,10 +54,10 @@ public class EntityRatCaptureNet extends EntityPotion {
             }
             this.setDead();
         }
-        sack.setTagCompound(tag);
+        sack.setTag(tag);
         ItemEntity itemEntity = new ItemEntity(world, this.posX, this.posY, this.posZ, sack);
         itemEntity.setEntityInvulnerable(true);
-        if(!world.isRemote){
+        if (!world.isRemote) {
             world.addEntity(itemEntity);
         }
     }

@@ -5,25 +5,28 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -57,9 +60,9 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
 
     private static ItemStack generateBanner() {
         NBTTagList patterns = new NBTTagList();
-        NBTTagCompound currentPattern = new NBTTagCompound();
+        CompoundNBT currentPattern = new CompoundNBT();
         currentPattern.setString("Pattern", "rats.rat_and_crossbones");
-        currentPattern.setInteger("Color", 15);
+        currentPattern.setInt("Color", 15);
         patterns.appendTag(currentPattern);
         return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
@@ -74,7 +77,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         }
     }
 
-    public boolean writeToNBTOptional(NBTTagCompound compound) {
+    public boolean writeToNBTOptional(CompoundNBT compound) {
         String s = this.getEntityString();
         compound.setString("id", s);
         this.writeToNBT(compound);
@@ -212,7 +215,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
         List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
 
         if (!list.isEmpty()) {
-            boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof EntityPlayer);
+            boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof PlayerEntity);
 
             for (int j = 0; j < list.size(); ++j) {
                 Entity entity = list.get(j);

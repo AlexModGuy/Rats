@@ -10,19 +10,19 @@ import net.minecraft.block.pattern.BlockMaterialMatcher;
 import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.block.pattern.BlockPatternBuilder;
 import net.minecraft.block.pattern.BlockStateMatcher;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.CachedBlockInfo;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockMarbledCheeseRatHead extends HorizontalBlock {
 
@@ -71,6 +71,7 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
             this.trySpawnGolem(worldIn, pos);
         }
     }
+
     public boolean canDispenserPlace(World worldIn, BlockPos pos) {
         return this.getGolemBasePattern().match(worldIn, pos) != null;
     }
@@ -89,12 +90,12 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
             EntityMarbleCheeseGolem entityirongolem = new EntityMarbleCheeseGolem(worldIn);
             entityirongolem.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
             worldIn.addEntity(entityirongolem);
-            for(ServerPlayerEntity serverplayerentity1 : worldIn.getEntitiesWithinAABB(ServerPlayerEntity.class, entityirongolem.getBoundingBox().grow(5.0D))) {
+            for (ServerPlayerEntity serverplayerentity1 : worldIn.getEntitiesWithinAABB(ServerPlayerEntity.class, entityirongolem.getBoundingBox().grow(5.0D))) {
                 CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayerentity1, entityirongolem);
             }
 
-            for(int i1 = 0; i1 < this.getGolemPattern().getPalmLength(); ++i1) {
-                for(int j1 = 0; j1 < this.getGolemPattern().getThumbLength(); ++j1) {
+            for (int i1 = 0; i1 < this.getGolemPattern().getPalmLength(); ++i1) {
+                for (int j1 = 0; j1 < this.getGolemPattern().getThumbLength(); ++j1) {
                     CachedBlockInfo cachedblockinfo1 = blockpattern$patternhelper.translateOffset(i1, j1, 0);
                     worldIn.notifyNeighbors(cachedblockinfo1.getPos(), Blocks.AIR);
                 }
@@ -109,7 +110,6 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(HORIZONTAL_FACING);
     }
-
 
 
     protected BlockPattern getGolemBasePattern() {

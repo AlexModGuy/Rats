@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -55,7 +55,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+        CompoundNBT tag = new CompoundNBT();
         this.writeToNBT(tag);
         return new SPacketUpdateTileEntity(pos, 1, tag);
     }
@@ -65,18 +65,18 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
         readFromNBT(packet.getNbtCompound());
     }
 
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return this.writeToNBT(new CompoundNBT());
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
         ItemStackHelper.saveAllItems(compound, this.baitStack);
         compound.setBoolean("IsShut", isShut);
         compound.setFloat("ShutProgress", shutProgress);
         return super.writeToNBT(compound);
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, baitStack);
         isShut = compound.getBoolean("IsShut");

@@ -7,56 +7,50 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRatArrow extends ItemArrow {
+public class ItemRatArrow extends ArrowItem {
 
     public ItemRatArrow() {
-        super();
-        this.setTranslationKey("rats.rat_arrow");
+        super(new Item.Properties().group(RatsMod.TAB).maxStackSize(1));
         this.setRegistryName(RatsMod.MODID, "rat_arrow");
-        this.setCreativeTab(RatsMod.TAB);
-        this.setMaxStackSize(1);
     }
 
     @Override
-    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-        itemStack.setTagCompound(new NBTTagCompound());
+    public void onCreated(ItemStack itemStack, World world, PlayerEntity player) {
+        itemStack.setTag(new CompoundNBT());
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int f, boolean f1) {
-        if (stack.getTagCompound() == null) {
-            stack.setTagCompound(new NBTTagCompound());
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if (stack.getTag() == null) {
+            stack.setTag(new CompoundNBT());
         }
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         List<String> ratNames = new ArrayList<>();
-        if (stack.getTagCompound() != null) {
-            NBTTagCompound ratTag = stack.getTagCompound().getCompoundTag("Rat");
+        if (stack.getTag() != null) {
+            CompoundNBT ratTag = stack.getTag().getCompound("Rat");
             String ratName = I18n.format("entity.rat.name");
             if (!ratTag.getString("CustomName").isEmpty()) {
                 ratName = ratTag.getString("CustomName");
@@ -65,31 +59,31 @@ public class ItemRatArrow extends ItemArrow {
     }
 
 
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
-        ItemStack stack = player.getHeldItem(hand);
-        NBTTagCompound ratTag = new NBTTagCompound();
-        if(stack.getTagCompound() != null && stack.getTagCompound().getCompoundTag("Rat") != null){
-            ratTag = stack.getTagCompound().getCompoundTag("Rat");
+    public ActionResultType onItemUse(ItemUseContext context) {
+        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+        CompoundNBT ratTag = new CompoundNBT();
+        if (stack.getTag() != null && stack.getTag().getCompound("Rat") != null) {
+            ratTag = stack.getTag().getCompound("Rat");
         }
-        EntityRat rat = new EntityRat(worldIn);
-        BlockPos offset = pos.offset(facing);
+        EntityRat rat = new EntityRat(context.getWorld());
+        BlockPos offset = context.getPos().offset(context.getFace());
         rat.readEntityFromNBT(ratTag);
         rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
-        if (!worldIn.isRemote) {
-            worldIn.addEntity(rat);
+        if (!context.getWorld().isRemote) {
+            context.getWorld().addEntity(rat);
         }
         stack.shrink(1);
-        player.setHeldItem(hand, new ItemStack(Items.ARROW));
-        player.swingArm(hand);
-        return EnumActionResult.SUCCESS;
+        context.getPlayer().setHeldItem(context.getHand(), new ItemStack(Items.ARROW));
+        context.getPlayer().swingArm(context.getHand());
+        return ActionResultType.SUCCESS;
     }
 
-    public EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter) {
+    public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
         EntityRatArrow arrow = new EntityRatArrow(worldIn, shooter, stack);
         return arrow;
     }
 
-    public boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.entity.player.EntityPlayer player) {
+    public boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.entity.player.PlayerEntity player) {
         return false;
     }
 }

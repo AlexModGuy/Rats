@@ -8,7 +8,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -112,7 +112,7 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
             }
             rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
-                EntityPlayer targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
+                PlayerEntity targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
                 if (targetPlayer != null && RatUtils.isCheese(duplicate)) {
                     if (!rat.isTamed() && rat.canBeTamed()) {
                         rat.wildTrust += 10;

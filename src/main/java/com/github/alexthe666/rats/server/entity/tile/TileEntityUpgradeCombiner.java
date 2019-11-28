@@ -4,14 +4,14 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
@@ -98,21 +98,21 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         return 300;
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         super.readFromNBT(compound);
         this.combinerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.combinerStacks);
-        this.furnaceBurnTime = compound.getInteger("BurnTime");
-        this.cookTime = compound.getInteger("CookTime");
-        this.totalCookTime = compound.getInteger("CookTimeTotal");
+        this.furnaceBurnTime = compound.getInt("BurnTime");
+        this.cookTime = compound.getInt("CookTime");
+        this.totalCookTime = compound.getInt("CookTimeTotal");
         this.currentItemBurnTime = getItemBurnTime(this.combinerStacks.get(1));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
         super.writeToNBT(compound);
-        compound.setInteger("BurnTime", (short) this.furnaceBurnTime);
-        compound.setInteger("CookTime", (short) this.cookTime);
-        compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
+        compound.setInt("BurnTime", (short) this.furnaceBurnTime);
+        compound.setInt("CookTime", (short) this.cookTime);
+        compound.setInt("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.combinerStacks);
         return compound;
     }
@@ -122,7 +122,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         return true;
     }
 
@@ -136,10 +136,10 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         ticksExisted++;
         boolean flag = this.isBurning();
         boolean flag1 = false;
-        EntityPlayer entityplayer = this.world.getClosestPlayer((double) ((float) this.pos.getX() + 0.5F), (double) ((float) this.pos.getY() + 0.5F), (double) ((float) this.pos.getZ() + 0.5F), 10.0D, false);
-        if (entityplayer != null) {
-            double d0 = entityplayer.posX - (double) ((float) this.pos.getX() + 0.5F);
-            double d1 = entityplayer.posZ - (double) ((float) this.pos.getZ() + 0.5F);
+        PlayerEntity PlayerEntity = this.world.getClosestPlayer((double) ((float) this.pos.getX() + 0.5F), (double) ((float) this.pos.getY() + 0.5F), (double) ((float) this.pos.getZ() + 0.5F), 10.0D, false);
+        if (PlayerEntity != null) {
+            double d0 = PlayerEntity.posX - (double) ((float) this.pos.getX() + 0.5F);
+            double d1 = PlayerEntity.posZ - (double) ((float) this.pos.getZ() + 0.5F);
             this.tRot = (float) MathHelper.atan2(d1, d0);
         } else {
             this.tRot += 0.04F;
@@ -243,12 +243,12 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
 
     private ItemStack getCombinerResult(ItemStack combiner, ItemStack stack) {
         if (!combiner.hasTagCompound()) {
-            combiner.setTagCompound(new NBTTagCompound());
+            combiner.setTag(new CompoundNBT());
         }
-        NBTTagCompound nbttagcompound1 = combiner.getTagCompound();
+        CompoundNBT CompoundNBT1 = combiner.getTag();
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-        if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
         }
         int addIndex = -1;
         for (int i = 0; i < nonnulllist.size(); i++) {
@@ -261,8 +261,8 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
             return combiner.copy();
         }
         nonnulllist.set(addIndex, stack.copy());
-        ItemStackHelper.saveAllItems(nbttagcompound1, nonnulllist);
-        combiner.setTagCompound(nbttagcompound1);
+        ItemStackHelper.saveAllItems(CompoundNBT1, nonnulllist);
+        combiner.setTag(CompoundNBT1);
         return combiner.copy();
     }
 
@@ -273,10 +273,10 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         return false;
     }
 
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(PlayerEntity player) {
     }
 
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(PlayerEntity player) {
     }
 
     @Override

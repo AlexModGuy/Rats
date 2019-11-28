@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import net.minecraft.block.BlockBush;
@@ -52,7 +51,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
             BlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
                 Item item = block.getBlock().getItemDropped(block, entity.getRNG(), 0);
-                if(entity.canRatPickupItem(new ItemStack(item))){
+                if (entity.canRatPickupItem(new ItemStack(item))) {
                     allBlocks.add(pos);
 
                 }

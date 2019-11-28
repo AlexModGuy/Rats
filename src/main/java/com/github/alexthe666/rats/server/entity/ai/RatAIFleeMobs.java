@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EntitySelectors;
@@ -52,7 +52,7 @@ public class RatAIFleeMobs extends EntityAIBase {
             return false;
         }
         List<EntityOcelot> ocelotList = this.entity.world.getEntitiesWithinAABB(EntityOcelot.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
-        List<EntityPlayer> playerList = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        List<PlayerEntity> playerList = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
         if (ocelotList.isEmpty() && playerList.isEmpty()) {
             return false;
         } else {
@@ -81,7 +81,7 @@ public class RatAIFleeMobs extends EntityAIBase {
         double d0 = vec3d1.length();
         vec3d1 = vec3d1.normalize();
         double d1 = vec3d.dotProduct(vec3d1);
-        if (trust < 100 || !(mob instanceof EntityPlayer)) {
+        if (trust < 100 || !(mob instanceof PlayerEntity)) {
             return d1 > 0.5 / d0 && mob.canEntityBeSeen(entity);
         }
         return false;
@@ -105,7 +105,7 @@ public class RatAIFleeMobs extends EntityAIBase {
     }
 
     public double getRunSpeed() {
-        if (this.closestLivingEntity == null || !(this.closestLivingEntity instanceof EntityPlayer)) {
+        if (this.closestLivingEntity == null || !(this.closestLivingEntity instanceof PlayerEntity)) {
             if (this.entity.getDistanceSq(this.closestLivingEntity) < 49.0D) {
                 return nearSpeed;
 

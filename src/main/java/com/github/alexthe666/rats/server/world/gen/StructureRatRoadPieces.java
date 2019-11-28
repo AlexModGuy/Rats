@@ -1,11 +1,10 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.*;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.Biomes;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -156,14 +155,14 @@ public class StructureRatRoadPieces {
             return null;
         }
 
-        protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+        protected void writeStructureToNBT(CompoundNBT tagCompound) {
             super.writeStructureToNBT(tagCompound);
-            tagCompound.setInteger("Length", this.length);
+            tagCompound.setInt("Length", this.length);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound tagCompound) {
+        protected void readStructureFromNBT(CompoundNBT tagCompound) {
             super.readStructureFromNBT(tagCompound);
-            this.length = tagCompound.getInteger("Length");
+            this.length = tagCompound.getInt("Length");
         }
 
         public void buildComponent(StructureComponent componentIn, List<StructureComponent> listIn, Random rand) {
@@ -173,32 +172,32 @@ public class StructureRatRoadPieces {
                 switch (Direction) {
                     case NORTH:
                     default:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.getBoundingBox().minX - 1, this.getBoundingBox().minY, this.getBoundingBox().minZ, Direction.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.getBoundingBox().minX - 1, this.getBoundingBox().minY, this.getBoundingBox().minZ, net.minecraft.util.Direction.WEST, this.getComponentType());
                         break;
                     case SOUTH:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, Direction.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, net.minecraft.util.Direction.WEST, this.getComponentType());
                         break;
                     case WEST:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, Direction.NORTH, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, net.minecraft.util.Direction.NORTH, this.getComponentType());
                         break;
                     case EAST:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, Direction.NORTH, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, net.minecraft.util.Direction.NORTH, this.getComponentType());
                 }
             }
             if (children < rand.nextInt(3) && rand.nextInt(3) > 0 && Direction != null) {
                 switch (Direction) {
                     case NORTH:
                     default:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, Direction.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, net.minecraft.util.Direction.EAST, this.getComponentType());
                         break;
                     case SOUTH:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, Direction.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, net.minecraft.util.Direction.EAST, this.getComponentType());
                         break;
                     case WEST:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, Direction.SOUTH, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, net.minecraft.util.Direction.SOUTH, this.getComponentType());
                         break;
                     case EAST:
-                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, Direction.SOUTH, this.getComponentType());
+                        generateAndAddRoadPiece((Start) componentIn, listIn, rand, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, net.minecraft.util.Direction.SOUTH, this.getComponentType());
                 }
             }
         }
@@ -233,7 +232,7 @@ public class StructureRatRoadPieces {
         }
 
         @Override
-        protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+        protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager p_143011_2_) {
             super.readStructureFromNBT(tagCompound);
         }
     }
@@ -326,9 +325,9 @@ public class StructureRatRoadPieces {
         /**
          * (abstract) Helper method to write subclass data to NBT
          */
-        protected void writeStructureToNBT(NBTTagCompound tagCompound) {
-            tagCompound.setInteger("HPos", this.averageGroundLvl);
-            tagCompound.setInteger("VCount", this.villagersSpawned);
+        protected void writeStructureToNBT(CompoundNBT tagCompound) {
+            tagCompound.setInt("HPos", this.averageGroundLvl);
+            tagCompound.setInt("VCount", this.villagersSpawned);
             tagCompound.setByte("Type", (byte) this.field_189928_h);
             tagCompound.setBoolean("Zombie", this.field_189929_i);
         }
@@ -336,9 +335,9 @@ public class StructureRatRoadPieces {
         /**
          * (abstract) Helper method to read subclass data from NBT
          */
-        protected void readStructureFromNBT(NBTTagCompound tagCompound) {
-            this.averageGroundLvl = tagCompound.getInteger("HPos");
-            this.villagersSpawned = tagCompound.getInteger("VCount");
+        protected void readStructureFromNBT(CompoundNBT tagCompound) {
+            this.averageGroundLvl = tagCompound.getInt("HPos");
+            this.villagersSpawned = tagCompound.getInt("VCount");
             this.field_189928_h = tagCompound.getByte("Type");
 
             if (tagCompound.getBoolean("Desert")) {
@@ -358,13 +357,13 @@ public class StructureRatRoadPieces {
                 switch (Direction) {
                     case NORTH:
                     default:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX - 1, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ + p_74891_5_, Direction.WEST, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX - 1, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ + p_74891_5_, net.minecraft.util.Direction.WEST, this.getComponentType());
                     case SOUTH:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX - 1, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ + p_74891_5_, Direction.WEST, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX - 1, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ + p_74891_5_, net.minecraft.util.Direction.WEST, this.getComponentType());
                     case WEST:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74891_5_, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ - 1, Direction.NORTH, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74891_5_, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ - 1, net.minecraft.util.Direction.NORTH, this.getComponentType());
                     case EAST:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74891_5_, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ - 1, Direction.NORTH, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74891_5_, this.boundingBox.minY + p_74891_4_, this.boundingBox.minZ - 1, net.minecraft.util.Direction.NORTH, this.getComponentType());
                 }
             } else {
                 return null;
@@ -381,13 +380,13 @@ public class StructureRatRoadPieces {
                 switch (Direction) {
                     case NORTH:
                     default:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + p_74894_4_, this.boundingBox.minZ + p_74894_5_, Direction.EAST, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + p_74894_4_, this.boundingBox.minZ + p_74894_5_, net.minecraft.util.Direction.EAST, this.getComponentType());
                     case SOUTH:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + p_74894_4_, this.boundingBox.minZ + p_74894_5_, Direction.EAST, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + p_74894_4_, this.boundingBox.minZ + p_74894_5_, net.minecraft.util.Direction.EAST, this.getComponentType());
                     case WEST:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74894_5_, this.boundingBox.minY + p_74894_4_, this.boundingBox.maxZ + 1, Direction.SOUTH, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74894_5_, this.boundingBox.minY + p_74894_4_, this.boundingBox.maxZ + 1, net.minecraft.util.Direction.SOUTH, this.getComponentType());
                     case EAST:
-                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74894_5_, this.boundingBox.minY + p_74894_4_, this.boundingBox.maxZ + 1, Direction.SOUTH, this.getComponentType());
+                        return generateAndAddComponent(start, structureComponents, rand, this.boundingBox.minX + p_74894_5_, this.boundingBox.minY + p_74894_4_, this.boundingBox.maxZ + 1, net.minecraft.util.Direction.SOUTH, this.getComponentType());
                 }
             } else {
                 return null;
@@ -571,7 +570,7 @@ public class StructureRatRoadPieces {
         }
 
         @Override
-        protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+        protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager p_143011_2_) {
             super.readStructureFromNBT(tagCompound);
         }
     }
@@ -596,15 +595,15 @@ public class StructureRatRoadPieces {
             return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175853_1_, structureboundingbox) == null ? new House(start, p_175853_7_, rand, structureboundingbox, facing) : null;
         }
 
-        protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+        protected void writeStructureToNBT(CompoundNBT tagCompound) {
             super.writeStructureToNBT(tagCompound);
-            tagCompound.setInteger("T", this.tablePosition);
+            tagCompound.setInt("T", this.tablePosition);
             tagCompound.setBoolean("C", this.isTallHouse);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound tagCompound) {
+        protected void readStructureFromNBT(CompoundNBT tagCompound) {
             super.readStructureFromNBT(tagCompound);
-            this.tablePosition = tagCompound.getInteger("T");
+            this.tablePosition = tagCompound.getInt("T");
             this.isTallHouse = tagCompound.getBoolean("C");
         }
 
@@ -624,7 +623,7 @@ public class StructureRatRoadPieces {
         }
 
         @Override
-        protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+        protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager p_143011_2_) {
             super.readStructureFromNBT(tagCompound);
         }
     }

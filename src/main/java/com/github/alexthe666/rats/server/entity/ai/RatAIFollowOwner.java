@@ -5,7 +5,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -39,7 +39,7 @@ public class RatAIFollowOwner extends EntityAIBase {
             EntityLivingBase entitylivingbase = this.rat.getOwner();
             if (entitylivingbase == null) {
                 return false;
-            } else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer) entitylivingbase).isSpectator()) {
+            } else if (entitylivingbase instanceof PlayerEntity && ((PlayerEntity) entitylivingbase).isSpectator()) {
                 return false;
             } else if (this.rat.isSitting()) {
                 return false;
@@ -75,7 +75,7 @@ public class RatAIFollowOwner extends EntityAIBase {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 boolean teleport = false;
-                if (!this.rat.getLeashed() && !this.rat.isRiding() && this.rat.getOwner() instanceof EntityPlayer) {
+                if (!this.rat.getLeashed() && !this.rat.isRiding() && this.rat.getOwner() instanceof PlayerEntity) {
                     if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
                         teleport = true;
                         int i = MathHelper.floor(this.owner.posX) - 2;

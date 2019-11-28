@@ -21,25 +21,26 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.LootFunction;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.RandomChance;
-import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -70,12 +71,12 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(EnumHand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
+        if (event.getPlayerEntity().getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getPlayerEntity().getHeldItem(EnumHand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
             event.setUseBlock(Event.Result.DENY);
         }
-        if (event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getEntityPlayer().getHeldItem(EnumHand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
+        if (event.getPlayerEntity().getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getPlayerEntity().getHeldItem(EnumHand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
             if (!RatConfig.disableRatlantis) {
-                if (!event.getEntityPlayer().isCreative()) {
+                if (!event.getPlayerEntity().isCreative()) {
                     event.getItemStack().shrink(1);
                 }
                 boolean canBuild = true;
@@ -87,7 +88,7 @@ public class ServerEvents {
                     }
                 }
                 if (canBuild) {
-                    event.getEntityPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
+                    event.getPlayerEntity().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
                     event.getWorld().setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
                     event.getWorld().setBlockState(pos.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
                     event.getWorld().setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
@@ -99,13 +100,13 @@ public class ServerEvents {
             if (event.getWorld().getBlockState(event.getPos()).getValue(BlockCauldron.LEVEL) == 0) {
                 event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());
                 if (!event.getWorld().isRemote) {
-                    CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) event.getEntityPlayer(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
+                    CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) event.getPlayerEntity(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
                 }
-                event.getEntityPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
-                if (!event.getEntityPlayer().isCreative()) {
+                event.getPlayerEntity().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
+                if (!event.getPlayerEntity().isCreative()) {
                     if (event.getItemStack().getItem() == Items.MILK_BUCKET) {
                         event.getItemStack().shrink(1);
-                        event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
+                        event.getPlayerEntity().addItemStackToInventory(new ItemStack(Items.BUCKET));
                     } else if (isMilk(event.getItemStack())) {
                         IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
                         fluidHandler.drain(1000, true);
@@ -128,7 +129,7 @@ public class ServerEvents {
     public void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof EntityOcelot) {
             EntityOcelot ocelot = (EntityOcelot) event.getTarget();
-            Item heldItem = event.getEntityPlayer().getHeldItem(event.getHand()).getItem();
+            Item heldItem = event.getPlayerEntity().getHeldItem(event.getHand()).getItem();
             Random random = event.getWorld().rand;
             if (ocelot.getHealth() < ocelot.getMaxHealth()) {
                 if (heldItem == RatsItemRegistry.RAW_RAT) {
@@ -149,15 +150,15 @@ public class ServerEvents {
                 }
             }
         }
-        if(event.getTarget() instanceof EntityVillager){
-            ItemStack heldItem = event.getEntityPlayer().getHeldItem(event.getHand());
-            if(heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((EntityVillager) event.getTarget()).isChild()){
-                EntityVillager villager = (EntityVillager)event.getTarget();
+        if (event.getTarget() instanceof EntityVillager) {
+            ItemStack heldItem = event.getPlayerEntity().getHeldItem(event.getHand());
+            if (heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((EntityVillager) event.getTarget()).isChild()) {
+                EntityVillager villager = (EntityVillager) event.getTarget();
                 EntityPlagueDoctor doctor = new EntityPlagueDoctor(event.getWorld());
                 doctor.copyLocationAndAnglesFrom(villager);
                 villager.setDead();
                 doctor.onInitialSpawn(event.getWorld().getDifficultyForLocation(event.getPos()), null);
-                if(!event.getWorld().isRemote){
+                if (!event.getWorld().isRemote) {
                     event.getWorld().addEntity(doctor);
                 }
                 doctor.setNoAI(villager.isAIDisabled());
@@ -165,14 +166,14 @@ public class ServerEvents {
                     doctor.setCustomNameTag(villager.getCustomNameTag());
                     doctor.setAlwaysRenderNameTag(villager.getAlwaysRenderNameTag());
                 }
-                event.getEntityPlayer().swingArm(event.getHand());
-                if(!event.getEntityPlayer().isCreative()){
+                event.getPlayerEntity().swingArm(event.getHand());
+                if (!event.getPlayerEntity().isCreative()) {
                     heldItem.shrink(1);
                 }
             }
         }
-        if(event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)){
-            if(event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)){
+        if (event.getPlayerEntity().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)) {
+            if (event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)) {
                 ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
             }
@@ -181,10 +182,10 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onHitEntity(LivingAttackEvent event) {
-        if(event.getSource().getImmediateSource() instanceof EntityLivingBase && RatConfig.plagueSpread){
-            EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
-            if(attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)){
-                if(!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)){
+        if (event.getSource().getImmediateSource() instanceof EntityLivingBase && RatConfig.plagueSpread) {
+            EntityLivingBase attacker = (EntityLivingBase) event.getSource().getImmediateSource();
+            if (attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)) {
+                if (!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)) {
                     event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                     event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
                 }
@@ -194,8 +195,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerPunch(AttackEntityEvent event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
-        TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
+        ItemStack itemstack = event.getPlayerEntity().getHeldItem(EnumHand.MAIN_HAND);
+        TinkersCompatBridge.onPlayerSwing(event.getPlayerEntity(), itemstack);
     }
 
     @SubscribeEvent
@@ -224,15 +225,15 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
-        if(TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack)){
+        ItemStack itemstack = event.getPlayerEntity().getHeldItem(EnumHand.MAIN_HAND);
+        if (TinkersCompatBridge.onPlayerSwing(event.getPlayerEntity(), itemstack)) {
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
         }
-        if (event.getEntityPlayer().isSneaking() && !event.getEntityPlayer().getPassengers().isEmpty()) {
-            for (Entity passenger : event.getEntityPlayer().getPassengers()) {
+        if (event.getPlayerEntity().isSneaking() && !event.getPlayerEntity().getPassengers().isEmpty()) {
+            for (Entity passenger : event.getPlayerEntity().getPassengers()) {
                 if (passenger instanceof EntityRat) {
                     passenger.dismountRidingEntity();
-                    passenger.setPosition(event.getEntityPlayer().posX, event.getEntityPlayer().posY, event.getEntityPlayer().posZ);
+                    passenger.setPosition(event.getPlayerEntity().posX, event.getPlayerEntity().posY, event.getPlayerEntity().posZ);
                     RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatDismount(passenger.getEntityId()));
                 }
             }
@@ -241,8 +242,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
-        TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
+        ItemStack itemstack = event.getPlayerEntity().getHeldItem(EnumHand.MAIN_HAND);
+        TinkersCompatBridge.onPlayerSwing(event.getPlayerEntity(), itemstack);
     }
 
     @SubscribeEvent
@@ -254,13 +255,13 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onDrops(LivingDropsEvent event) {
-        if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof EntityPlayer && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
+        if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof PlayerEntity && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
-        if (event.getEntityLiving() instanceof EntityCreeper && ((EntityCreeper)event.getEntityLiving()).getPowered()) {
+        if (event.getEntityLiving() instanceof EntityCreeper && ((EntityCreeper) event.getEntityLiving()).getPowered()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.CHARGED_CREEPER_CHUNK, event.getLootingLevel() + 1 + event.getEntityLiving().world.rand.nextInt(2))));
         }
-        if (event.getSource().getTrueSource() instanceof EntityRat && ((EntityRat)event.getSource().getTrueSource()).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)) {
+        if (event.getSource().getTrueSource() instanceof EntityRat && ((EntityRat) event.getSource().getTrueSource()).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.TINY_COIN)));
         }
     }
@@ -275,7 +276,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer) {
+        if (event.getEntityLiving() instanceof PlayerEntity) {
             AxisAlignedBB axisalignedbb = event.getEntityLiving().getEntityBoundingBox().grow(RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance);
             List<EntityRat> list = event.getEntityLiving().world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             List<EntityRat> voodooRats = new ArrayList<>();
@@ -286,10 +287,10 @@ public class ServerEvents {
                         voodooRats.add(rat);
                     }
                 }
-                if(!voodooRats.isEmpty()){
+                if (!voodooRats.isEmpty()) {
                     float damage = event.getAmount() / Math.max(1, voodooRats.size());
                     event.setCanceled(true);
-                    for(EntityRat rat : voodooRats){
+                    for (EntityRat rat : voodooRats) {
                         rat.attackEntityFrom(event.getSource(), damage);
                     }
                 }
@@ -303,7 +304,7 @@ public class ServerEvents {
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving().world.isRemote && (event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION) || event.getEntityLiving() instanceof EntityRat && ((EntityRat) event.getEntityLiving()).hasPlague())) {
             Random rand = event.getEntityLiving().getRNG();
-            if(rand.nextInt(4) == 0) {
+            if (rand.nextInt(4) == 0) {
                 int entitySize = 1;
                 if (event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength() > 0) {
                     entitySize = Math.max(1, (int) event.getEntityLiving().getEntityBoundingBox().getAverageEdgeLength());
@@ -322,7 +323,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onChestGenerated(LootTableLoadEvent event) {
-        if(RatConfig.addLoot) {
+        if (RatConfig.addLoot) {
             if (event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)
                     || event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)
                     || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)

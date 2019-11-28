@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanSpirit;
 import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

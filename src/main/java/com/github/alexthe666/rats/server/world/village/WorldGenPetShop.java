@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
 import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
-import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;

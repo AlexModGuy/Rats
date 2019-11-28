@@ -1,10 +1,9 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.server.world.village.WorldGenPlagueDoctor;
-import net.minecraft.block.*;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -37,13 +36,13 @@ public class RatsPlagueHutProcessor implements ITemplateProcessor {
         if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {
             ResourceLocation loot = WorldGenPlagueDoctor.LOOT;
             Random rand = new Random(worldIn.getSeed() + pos.toLong());
-            NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
+            CompoundNBT tag = blockInfoIn.tileentityData == null ? new CompoundNBT() : blockInfoIn.tileentityData;
             tag.setString("LootTable", loot.toString());
             tag.setLong("LootTableSeed", rand.nextLong());
             Template.BlockInfo newInfo = new Template.BlockInfo(pos, Blocks.CHEST.getDefaultState(), tag);
             return newInfo;
         } else if (blockInfoIn.blockState.getBlock() == Blocks.DIAMOND_BLOCK) {//spawn ocelot
-            if(hut != null){
+            if (hut != null) {
                 hut.villagerPos = pos;
             }
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());

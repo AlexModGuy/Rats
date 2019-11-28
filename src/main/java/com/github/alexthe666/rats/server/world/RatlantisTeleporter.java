@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.world;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Teleporter;
@@ -28,8 +28,8 @@ public class RatlantisTeleporter extends Teleporter {
             this.placeInPortal(entity);
             entity.setPositionAndRotation(0, 110, 0, 0, 0);
         } else {
-            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getBedLocation() != null) {
-                BlockPos bedPos = ((EntityPlayer) entity).getBedLocation();
+            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedLocation() != null) {
+                BlockPos bedPos = ((PlayerEntity) entity).getBedLocation();
                 entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
             } else {
                 BlockPos height = entity.world.getHeight(entity.getPosition());

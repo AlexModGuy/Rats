@@ -7,28 +7,17 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import org.lwjgl.Sys;
-
-import java.util.Comparator;
 
 public class RatAIDepositEnergy extends EntityAIBase {
     private static final int RADIUS = 16;
@@ -137,7 +126,7 @@ public class RatAIDepositEnergy extends EntityAIBase {
                 double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
                 if (distance < 1.86 && canSeeChest() && te != null) {
                     IEnergyStorage handler = te.getCapability(CapabilityEnergy.ENERGY, this.entity.depositFacing);
-                    if(handler == null){
+                    if (handler == null) {
                         this.targetBlock = null;
                         this.resetTask();
                         return;

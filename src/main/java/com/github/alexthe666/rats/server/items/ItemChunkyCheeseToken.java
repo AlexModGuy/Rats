@@ -25,7 +25,7 @@ public class ItemChunkyCheeseToken extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String formattedChance = NumberFormat.getNumberInstance().format(RatConfig.tokenDropRate);
         tooltip.add(I18n.format("item.rats.chunky_cheese_token.desc0", formattedChance));
-        if(!RatConfig.disableRatlantis){
+        if (!RatConfig.disableRatlantis) {
             tooltip.add(I18n.format("item.rats.chunky_cheese_token.desc1"));
         }
     }

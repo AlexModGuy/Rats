@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
@@ -12,7 +11,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.init.Items;
@@ -260,19 +258,19 @@ public class RatUtils {
                     Direction Direction;
 
                     if (d3 < d4 && d3 < d5) {
-                        Direction = i > l ? Direction.WEST : Direction.EAST;
+                        Direction = i > l ? net.minecraft.util.Direction.WEST : net.minecraft.util.Direction.EAST;
                         vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
                     } else if (d4 < d5) {
-                        Direction = j > i1 ? Direction.DOWN : Direction.UP;
+                        Direction = j > i1 ? net.minecraft.util.Direction.DOWN : net.minecraft.util.Direction.UP;
                         vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
                     } else {
-                        Direction = k > j1 ? Direction.NORTH : Direction.SOUTH;
+                        Direction = k > j1 ? net.minecraft.util.Direction.NORTH : net.minecraft.util.Direction.SOUTH;
                         vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
                     }
 
-                    l = MathHelper.floor(vec31.x) - (Direction == Direction.EAST ? 1 : 0);
-                    i1 = MathHelper.floor(vec31.y) - (Direction == Direction.UP ? 1 : 0);
-                    j1 = MathHelper.floor(vec31.z) - (Direction == Direction.SOUTH ? 1 : 0);
+                    l = MathHelper.floor(vec31.x) - (Direction == net.minecraft.util.Direction.EAST ? 1 : 0);
+                    i1 = MathHelper.floor(vec31.y) - (Direction == net.minecraft.util.Direction.UP ? 1 : 0);
+                    j1 = MathHelper.floor(vec31.z) - (Direction == net.minecraft.util.Direction.SOUTH ? 1 : 0);
                     blockpos = new BlockPos(l, i1, j1);
                     BlockState BlockState1 = world.getBlockState(blockpos);
                     Block block1 = BlockState1.getBlock();
@@ -397,19 +395,19 @@ public class RatUtils {
                     Direction Direction;
 
                     if (d3 < d4 && d3 < d5) {
-                        Direction = i > l ? Direction.WEST : Direction.EAST;
+                        Direction = i > l ? net.minecraft.util.Direction.WEST : net.minecraft.util.Direction.EAST;
                         vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
                     } else if (d4 < d5) {
-                        Direction = j > i1 ? Direction.DOWN : Direction.UP;
+                        Direction = j > i1 ? net.minecraft.util.Direction.DOWN : net.minecraft.util.Direction.UP;
                         vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
                     } else {
-                        Direction = k > j1 ? Direction.NORTH : Direction.SOUTH;
+                        Direction = k > j1 ? net.minecraft.util.Direction.NORTH : net.minecraft.util.Direction.SOUTH;
                         vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
                     }
 
-                    l = MathHelper.floor(vec31.x) - (Direction == Direction.EAST ? 1 : 0);
-                    i1 = MathHelper.floor(vec31.y) - (Direction == Direction.UP ? 1 : 0);
-                    j1 = MathHelper.floor(vec31.z) - (Direction == Direction.SOUTH ? 1 : 0);
+                    l = MathHelper.floor(vec31.x) - (Direction == net.minecraft.util.Direction.EAST ? 1 : 0);
+                    i1 = MathHelper.floor(vec31.y) - (Direction == net.minecraft.util.Direction.UP ? 1 : 0);
+                    j1 = MathHelper.floor(vec31.z) - (Direction == net.minecraft.util.Direction.SOUTH ? 1 : 0);
                     blockpos = new BlockPos(l, i1, j1);
                     BlockState BlockState1 = world.getBlockState(blockpos);
                     Block block1 = BlockState1.getBlock();

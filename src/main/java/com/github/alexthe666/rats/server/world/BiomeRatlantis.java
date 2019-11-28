@@ -5,14 +5,13 @@ import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import com.github.alexthe666.rats.server.world.gen.WorldGenMarblePile;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.passive.EntityParrot;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

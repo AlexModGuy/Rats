@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.EntityLivingBase;

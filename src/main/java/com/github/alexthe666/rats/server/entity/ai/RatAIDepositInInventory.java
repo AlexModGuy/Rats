@@ -47,7 +47,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if(!this.entity.shouldDepositItem(entity.getHeldItemMainhand())){
+        if (!this.entity.shouldDepositItem(entity.getHeldItemMainhand())) {
             return false;
         }
         if (this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {

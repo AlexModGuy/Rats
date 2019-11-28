@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,14 +18,15 @@ import java.util.function.Predicate;
 
 public class RatAIHarvestBreeder extends EntityAIBase {
     private static final int RADIUS = 16;
+    private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
     private final EntityRat entity;
     private Entity targetSheep = null;
     private boolean reachedSheep = false;
     private int fishingCooldown = 1000;
     private int throwCooldown = 0;
-    private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
     private Random rand = new Random();
     private Predicate<EntityLivingBase> perRatPredicate;
+
     public RatAIHarvestBreeder(EntityRat entity) {
         super();
         this.entity = entity;
@@ -60,14 +60,14 @@ public class RatAIHarvestBreeder extends EntityAIBase {
         if (this.targetSheep != null && !this.targetSheep.isDead && !this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1D);
             if (entity.getDistance(targetSheep) < 1.5D) {
-                if(targetSheep instanceof EntityAnimal && !((EntityAnimal) targetSheep).isInLove()){
+                if (targetSheep instanceof EntityAnimal && !((EntityAnimal) targetSheep).isInLove()) {
                     ((EntityAnimal) targetSheep).setInLove(null);
                     this.entity.getHeldItemMainhand().shrink(1);
                 }
                 this.targetSheep = null;
                 this.resetTask();
             }
-        }else{
+        } else {
             this.resetTask();
         }
     }
@@ -80,8 +80,8 @@ public class RatAIHarvestBreeder extends EntityAIBase {
         };
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) perRatPredicate);
         EntityLivingBase closestSheep = null;
-        for(EntityLivingBase base : list) {
-            if(closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)){
+        for (EntityLivingBase base : list) {
+            if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {
                 closestSheep = base;
             }
         }

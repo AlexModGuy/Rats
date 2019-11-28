@@ -42,7 +42,7 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
         if (brightness < 7 || rat.shouldEyesGlow()) {
             if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
                 this.ratRenderer.bindTexture(TEXTURE_DRAGON);
-            }else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
                 this.ratRenderer.bindTexture(TEXTURE_NONBELIEVER);
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 this.ratRenderer.bindTexture(TEXTURE_ENDER);

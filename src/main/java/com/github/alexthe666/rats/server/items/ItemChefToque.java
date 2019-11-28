@@ -1,30 +1,23 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
 
-public class ItemChefToque extends ItemArmor {
+public class ItemChefToque extends ArmorItem {
 
     public ItemChefToque() {
-        super(RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD);
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.chef_toque");
+        super(RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, "chef_toque");
     }
 
-    @SideOnly(Side.CLIENT)
+   /* @SideOnly(Side.CLIENT)
     public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(0);
     }
 
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
         return "rats:textures/model/toque.png";
-    }
+    }*/
 }

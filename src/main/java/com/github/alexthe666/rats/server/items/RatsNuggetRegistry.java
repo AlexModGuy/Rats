@@ -1,14 +1,15 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import java.util.*;
+
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class RatsNuggetRegistry {
 
@@ -20,44 +21,44 @@ public class RatsNuggetRegistry {
     });
 
     public static void init() {
-        for(String oreName : OreDictionary.getOreNames()){
-            if(oreName.contains("ore") && !OreDictionary.getOres(oreName).isEmpty()){
+        for (String oreName : OreDictionary.getOreNames()) {
+            if (oreName.contains("ore") && !OreDictionary.getOres(oreName).isEmpty()) {
                 ItemStack stack = ItemStack.EMPTY;
-                try{
+                try {
                     stack = OreDictionary.getOres(oreName).get(0);
-                }catch (Exception e){
+                } catch (Exception e) {
                     RatsMod.logger.warn("Could not make rat nugget for " + oreName);
                 }
                 ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
-                if(!burntItem.isEmpty()){
+                if (!burntItem.isEmpty()) {
                     ORE_TO_INGOTS.put(stack, burntItem);
                 }
             }
         }
-        for(Map.Entry<ItemStack, ItemStack> entry : ORE_TO_INGOTS.entrySet()){
+        for (Map.Entry<ItemStack, ItemStack> entry : ORE_TO_INGOTS.entrySet()) {
             ItemStack oreStack = entry.getKey();
             ItemStack ingotStack = entry.getValue();
             ItemStack stack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 1, getNuggetMeta(ingotStack));
-            NBTTagCompound poopTag = new NBTTagCompound();
-            NBTTagCompound oreTag = new NBTTagCompound();
+            CompoundNBT poopTag = new CompoundNBT();
+            CompoundNBT oreTag = new CompoundNBT();
             oreStack.writeToNBT(oreTag);
-            NBTTagCompound ingotTag = new NBTTagCompound();
+            CompoundNBT ingotTag = new CompoundNBT();
             ingotStack.writeToNBT(ingotTag);
             poopTag.setTag("OreItem", oreTag);
             poopTag.setTag("IngotItem", ingotTag);
-            stack.setTagCompound(poopTag);
+            stack.setTag(poopTag);
             GameRegistry.addSmelting(stack, entry.getValue(), 0.2F);
             OreDictionary.registerOre("ratPoop", stack);
         }
 
     }
 
-    public static int getNuggetMeta(ItemStack ore){
+    public static int getNuggetMeta(ItemStack ore) {
         int count = 0;
-        for(Map.Entry<ItemStack, ItemStack> entry : ORE_TO_INGOTS.entrySet()) {
-                if(entry.getValue().isItemEqual(ore)){
-                    break;
-                }
+        for (Map.Entry<ItemStack, ItemStack> entry : ORE_TO_INGOTS.entrySet()) {
+            if (entry.getValue().isItemEqual(ore)) {
+                break;
+            }
             count++;
         }
         return count;

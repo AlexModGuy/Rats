@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.client.particle;
 
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSpell;
-import net.minecraft.client.particle.ParticleWaterWake;
 import net.minecraft.world.World;
 
 public class ParticleBlackDeath extends ParticleSpell {

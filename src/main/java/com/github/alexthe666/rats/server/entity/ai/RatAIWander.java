@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +44,7 @@ public class RatAIWander extends EntityAIWanderAvoidWater {
                     vec3d = RatUtils.findRandomCageOrTubeTarget(this.rat, 15, 2);
                 }
             }
-            if(vec3d != null){
+            if (vec3d != null) {
                 vec3d = new Vec3d(RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat));
             }
         }

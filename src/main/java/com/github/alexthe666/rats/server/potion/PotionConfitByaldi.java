@@ -7,14 +7,14 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PotionConfitByaldi extends Potion {
+public class PotionConfitByaldi extends Effect {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/potion_effect.png");
 
@@ -28,8 +28,8 @@ public class PotionConfitByaldi extends Potion {
         if (entityLivingBaseIn.getHealth() < entityLivingBaseIn.getMaxHealth()) {
             entityLivingBaseIn.heal(1.0F);
         }
-        if (entityLivingBaseIn instanceof EntityPlayer) {
-            ((EntityPlayer) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
+        if (entityLivingBaseIn instanceof PlayerEntity) {
+            ((PlayerEntity) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
         }
     }
 

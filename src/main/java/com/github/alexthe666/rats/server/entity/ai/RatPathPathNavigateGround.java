@@ -11,7 +11,6 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class RatPathPathNavigateGround extends PathNavigateGround {
@@ -71,7 +70,7 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
     }
 
     public void onUpdateNavigation() {
-        if(!((EntityRat) entity).isTamed()) {
+        if (!((EntityRat) entity).isTamed()) {
             if (!this.noPath()) {
                 super.onUpdateNavigation();
             } else {
@@ -85,7 +84,7 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
                     }
                 }
             }
-        }else{
+        } else {
             super.onUpdateNavigation();
         }
     }

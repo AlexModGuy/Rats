@@ -5,11 +5,11 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -47,7 +47,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
@@ -100,7 +100,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         }
     }
 
-    public boolean doExtraEffect(EntityLivingBase target){
+    public boolean doExtraEffect(EntityLivingBase target) {
         return false;
     }
 
@@ -120,16 +120,16 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         return this.dataManager.get(TOGA).booleanValue();
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("ColorVariant", this.getColorVariant());
+        compound.setInt("ColorVariant", this.getColorVariant());
         compound.setBoolean("Toga", this.hasToga());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
         this.setToga(compound.getBoolean("Toga"));
-        this.setColorVariant(compound.getInteger("ColorVariant"));
+        this.setColorVariant(compound.getInt("ColorVariant"));
     }
 
     @Nullable

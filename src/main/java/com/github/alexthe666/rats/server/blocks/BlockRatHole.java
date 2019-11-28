@@ -1,34 +1,29 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
 public class BlockRatHole extends ContainerBlock {
 
@@ -68,7 +63,7 @@ public class BlockRatHole extends ContainerBlock {
             TileEntityRatHole te = (TileEntityRatHole) worldIn.getTileEntity(pos);
             NonNullList<ItemStack> ret = NonNullList.create();
             if (!worldIn.isRemote && worldIn instanceof ServerWorld) {
-                te.getImmitatedBlockState().getBlock().getDrops(te.getImmitatedBlockState(), (ServerWorld)worldIn, pos, null);
+                te.getImmitatedBlockState().getBlock().getDrops(te.getImmitatedBlockState(), (ServerWorld) worldIn, pos, null);
                 for (ItemStack stack : ret) {
                     ItemEntity ItemEntity = new ItemEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
                     worldIn.addEntity(ItemEntity);

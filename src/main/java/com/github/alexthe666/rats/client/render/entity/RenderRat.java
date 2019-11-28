@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -84,7 +84,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
 
     protected void preRenderCallback(EntityRat rat, float partialTickTime) {
         GL11.glScaled(0.6F, 0.6F, 0.6F);
-        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof EntityPlayer) {
+        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof PlayerEntity) {
             Entity riding = rat.getRidingEntity();
             if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
                 Render playerRender = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(riding);

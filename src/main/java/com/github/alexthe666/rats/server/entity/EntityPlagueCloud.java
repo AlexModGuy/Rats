@@ -2,21 +2,16 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -43,7 +38,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
     }
 
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {
-        if(potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION){
+        if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
             return false;
         }
         return super.isPotionApplicable(potioneffectIn);
@@ -57,7 +52,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
-    public void onLivingUpdate(){
+    public void onLivingUpdate() {
         super.onLivingUpdate();
         this.setNoGravity(true);
         double d0 = this.hurtTime > 0 ? 1 : 0;
@@ -67,32 +62,32 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         double y = this.posY + (double) (this.rand.nextFloat() * this.height) - (double) this.height;
         double z = this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
         float f = (this.width + this.height + this.width) * 0.333F + 0.5F;
-        if(particleDistSq(x, y, z) < f * f){
-            if(rand.nextBoolean()){
+        if (particleDistSq(x, y, z) < f * f) {
+            if (rand.nextBoolean()) {
                 RatsMod.PROXY.spawnParticle("black_death", x, y + 1.5F, z, d0, d1, d2);
-            }else{
+            } else {
                 this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
 
             }
         }
-        if(this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath){
-            EntityBlackDeath death = (EntityBlackDeath)this.getOwner();
-            if(death.getAttackTarget() != null && !death.getAttackTarget().isDead){
+        if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
+            EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
+            if (death.getAttackTarget() != null && !death.getAttackTarget().isDead) {
                 this.setAttackTarget(death.getAttackTarget());
-            }else{
-                float radius = (float)9 - (float)Math.sin(death.ticksExisted * 0.4D) * 0.25F;
+            } else {
+                float radius = (float) 9 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.25F;
                 int maxRatStuff = 360 / Math.max(death.getCloudsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getCloudsSummoned(), 1);
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX ;
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX;
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
                 this.getMoveHelper().setMoveTo(extraX, death.posY + 2 + rand.nextInt(2), extraZ, 1.0F);
             }
         }
-        if(this.getAttackTarget() != null && this.getAttackTarget().isDead){
+        if (this.getAttackTarget() != null && this.getAttackTarget().isDead) {
             this.setAttackTarget(null);
         }
-     }
+    }
 
     public void setDead() {
         if (!isDead && this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
@@ -102,11 +97,10 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         this.isDead = true;
     }
 
-    public double particleDistSq(double toX, double toY, double toZ)
-    {
-        double d0 = (double)posX - toX;
-        double d1 = (double)posY - toY;
-        double d2 = (double)posZ - toZ;
+    public double particleDistSq(double toX, double toY, double toZ) {
+        double d0 = (double) posX - toX;
+        double d1 = (double) posY - toY;
+        double d2 = (double) posZ - toZ;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
@@ -120,7 +114,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityPlagueCloud.AIMeleeAttack(this));
         this.tasks.addTask(8, new EntityPlagueCloud.AIMoveRandom());
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
         this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, EntityLivingBase.class, false));
@@ -134,13 +128,13 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         return flag;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos){
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public void fall(float distance, float damageMultiplier){
+    public void fall(float distance, float damageMultiplier) {
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
         if (this.getOwnerId() == null) {
             compound.setString("OwnerUUID", "");
@@ -149,7 +143,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
         String s;
 

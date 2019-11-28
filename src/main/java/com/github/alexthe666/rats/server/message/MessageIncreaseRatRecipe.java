@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -24,12 +24,12 @@ public class MessageIncreaseRatRecipe extends AbstractMessage<MessageIncreaseRat
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageIncreaseRatRecipe message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageIncreaseRatRecipe message, PlayerEntity player, MessageContext messageContext) {
         BlockPos pos = BlockPos.fromLong(message.blockPos);
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageIncreaseRatRecipe message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageIncreaseRatRecipe message, PlayerEntity player, MessageContext messageContext) {
         BlockPos pos = BlockPos.fromLong(message.blockPos);
         if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
             TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);

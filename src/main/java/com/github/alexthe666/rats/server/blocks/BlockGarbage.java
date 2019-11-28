@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
@@ -11,12 +10,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import javax.annotation.Nonnull;
+
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
@@ -24,17 +21,17 @@ import java.util.Random;
 public class BlockGarbage extends FallingBlock {
     public BlockGarbage() {
         super(Block.Properties.create(Material.ORGANIC).sound(SoundType.GROUND).hardnessAndResistance(0.7F, 1.0F));
-       this.setRegistryName(RatsMod.MODID, "garbage_pile");
+        this.setRegistryName(RatsMod.MODID, "garbage_pile");
     }
 
     @Override
     public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
-        if(random.nextFloat() <= 0.5){
+        if (random.nextFloat() <= 0.5) {
             EntityRat rat = new EntityRat(worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
-            if(rat.getCanSpawnHere() && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)){
+            if (rat.getCanSpawnHere() && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
                 rat.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
-                if(!worldIn.isRemote){
+                if (!worldIn.isRemote) {
                     worldIn.addEntity(rat);
                 }
             }

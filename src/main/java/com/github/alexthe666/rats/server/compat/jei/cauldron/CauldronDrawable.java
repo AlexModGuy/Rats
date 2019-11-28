@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.compat.jei.cauldron;
 
-import com.github.alexthe666.rats.RatsMod;
 import mezz.jei.api.gui.IDrawable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

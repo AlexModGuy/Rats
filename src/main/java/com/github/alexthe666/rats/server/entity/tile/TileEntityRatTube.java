@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
@@ -34,8 +34,8 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         }
     }
 
-    private Vec3d offsetTubePos(){
-        if(this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockRatTube) {
+    private Vec3d offsetTubePos() {
+        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockRatTube) {
             BlockState actualState = this.getBlockType().getActualState(this.getWorld().getBlockState(this.pos), this.getWorld(), this.pos);
             BlockPos pos = new BlockPos(0, 0, 0);
             if (actualState.getValue(BlockRatTube.UP)) {
@@ -94,15 +94,15 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         return false;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
         compound.setBoolean("Node", isNode);
-        compound.setInteger("OpenSide", opening == null ? -1 : opening.ordinal());
+        compound.setInt("OpenSide", opening == null ? -1 : opening.ordinal());
         return super.writeToNBT(compound);
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         isNode = compound.getBoolean("Node");
-        int i = compound.getInteger("OpenSide");
+        int i = compound.getInt("OpenSide");
         if (i == -1) {
             opening = null;
         } else {

@@ -1,12 +1,11 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,7 +29,7 @@ public class MessageAutoCurdlerFluid extends AbstractMessage<MessageAutoCurdlerF
 
 
     @Override
-    public void onClientReceived(Minecraft client, MessageAutoCurdlerFluid message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageAutoCurdlerFluid message, PlayerEntity player, MessageContext messageContext) {
         BlockPos pos = BlockPos.fromLong(message.blockPos);
         if (player.world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
             TileEntityAutoCurdler table = (TileEntityAutoCurdler) player.world.getTileEntity(pos);
@@ -39,7 +38,7 @@ public class MessageAutoCurdlerFluid extends AbstractMessage<MessageAutoCurdlerF
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageAutoCurdlerFluid message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageAutoCurdlerFluid message, PlayerEntity player, MessageContext messageContext) {
         BlockPos pos = BlockPos.fromLong(message.blockPos);
         if (player.world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
             TileEntityAutoCurdler table = (TileEntityAutoCurdler) player.world.getTileEntity(pos);
@@ -56,8 +55,8 @@ public class MessageAutoCurdlerFluid extends AbstractMessage<MessageAutoCurdlerF
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeLong(blockPos);
-        NBTTagCompound fluidTag = new NBTTagCompound();
-        if(fluid != null){
+        CompoundNBT fluidTag = new CompoundNBT();
+        if (fluid != null) {
             fluid.writeToNBT(fluidTag);
         }
         ByteBufUtils.writeTag(buf, fluidTag);

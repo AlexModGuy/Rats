@@ -1,15 +1,12 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.EndPortalTileEntity;
-import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,7 +17,7 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
     private BlockPos exitPortal;
     private boolean exactTeleport;
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
         super.writeToNBT(compound);
         compound.setLong("Age", this.age);
 
@@ -35,7 +32,7 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
         return compound;
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         super.readFromNBT(compound);
         this.age = compound.getLong("Age");
 
@@ -60,8 +57,8 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
         return new SPacketUpdateTileEntity(this.pos, 8, this.getUpdateTag());
     }
 
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @SideOnly(Side.CLIENT)

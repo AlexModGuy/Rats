@@ -1,9 +1,8 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -20,13 +19,13 @@ public class TileEntityMilkCauldron extends TileEntity implements ITickable {
         }
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("TicksExisted", ticksExisted);
+    public CompoundNBT writeToNBT(CompoundNBT compound) {
+        compound.setInt("TicksExisted", ticksExisted);
         return super.writeToNBT(compound);
     }
 
-    public void readFromNBT(NBTTagCompound compound) {
-        ticksExisted = compound.getInteger("TicksExisted");
+    public void readFromNBT(CompoundNBT compound) {
+        ticksExisted = compound.getInt("TicksExisted");
         super.readFromNBT(compound);
     }
 

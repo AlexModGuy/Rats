@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -149,13 +149,13 @@ public class EntityLaserPortal extends Entity {
         this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUniqueID();
     }
 
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        this.ticksExisted = compound.getInteger("Age");
+    protected void readEntityFromNBT(CompoundNBT compound) {
+        this.ticksExisted = compound.getInt("Age");
         this.ownerUniqueId = compound.getUniqueId("OwnerUUID");
     }
 
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        compound.setInteger("Age", this.ticksExisted);
+    protected void writeEntityToNBT(CompoundNBT compound) {
+        compound.setInt("Age", this.ticksExisted);
 
         if (this.ownerUniqueId != null) {
             compound.setUniqueId("OwnerUUID", this.ownerUniqueId);

@@ -5,25 +5,24 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAIStrife;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.entity.*;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -60,7 +59,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
         this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
         this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, EntityLivingBase.class, true));
@@ -168,21 +167,21 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         this.dataManager.set(BEAST_COUNT, Integer.valueOf(count));
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("RatsSummoned", this.getRatsSummoned());
-        compound.setInteger("CloudsSummoned", this.getCloudsSummoned());
-        compound.setInteger("BeastsSummoned", this.getBeastsSummoned());
+        compound.setInt("RatsSummoned", this.getRatsSummoned());
+        compound.setInt("CloudsSummoned", this.getCloudsSummoned());
+        compound.setInt("BeastsSummoned", this.getBeastsSummoned());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
         if (this.hasCustomName()) {
             this.bossInfo.setName(this.getDisplayName());
         }
-        this.setRatsSummoned(compound.getInteger("RatsSummoned"));
-        this.setCloudsSummoned(compound.getInteger("CloudsSummoned"));
-        this.setBeastsSummoned(compound.getInteger("BeastsSummoned"));
+        this.setRatsSummoned(compound.getInt("RatsSummoned"));
+        this.setCloudsSummoned(compound.getInt("CloudsSummoned"));
+        this.setBeastsSummoned(compound.getInt("BeastsSummoned"));
 
     }
 
@@ -192,12 +191,12 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
     }
 
 
-    public void addTrackingPlayer(EntityPlayerMP player) {
+    public void addTrackingPlayer(ServerPlayerEntity player) {
         super.addTrackingPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
-    public void removeTrackingPlayer(EntityPlayerMP player) {
+    public void removeTrackingPlayer(ServerPlayerEntity player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
     }

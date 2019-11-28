@@ -10,7 +10,7 @@ import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -54,7 +54,7 @@ public class RatExplosion extends Explosion {
     /**
      * Maps players to the knockback vector applied by the explosion, to send to the client
      */
-    private final Map<EntityPlayer, Vec3d> playerKnockbackMap;
+    private final Map<PlayerEntity, Vec3d> playerKnockbackMap;
     private final Vec3d position;
 
     @SideOnly(Side.CLIENT)
@@ -167,11 +167,11 @@ public class RatExplosion extends Explosion {
                         entity.motionY += d7 * d11;
                         entity.motionZ += d9 * d11;
 
-                        if (entity instanceof EntityPlayer) {
-                            EntityPlayer entityplayer = (EntityPlayer) entity;
+                        if (entity instanceof PlayerEntity) {
+                            PlayerEntity PlayerEntity = (PlayerEntity) entity;
 
-                            if (!entityplayer.isSpectator() && (!entityplayer.isCreative() || !entityplayer.capabilities.isFlying)) {
-                                this.playerKnockbackMap.put(entityplayer, new Vec3d(d5 * d10, d7 * d10, d9 * d10));
+                            if (!PlayerEntity.isSpectator() && (!PlayerEntity.isCreative() || !PlayerEntity.capabilities.isFlying)) {
+                                this.playerKnockbackMap.put(PlayerEntity, new Vec3d(d5 * d10, d7 * d10, d9 * d10));
                             }
                         }
                     }
@@ -236,7 +236,7 @@ public class RatExplosion extends Explosion {
         }
     }
 
-    public Map<EntityPlayer, Vec3d> getPlayerKnockbackMap() {
+    public Map<PlayerEntity, Vec3d> getPlayerKnockbackMap() {
         return this.playerKnockbackMap;
     }
 

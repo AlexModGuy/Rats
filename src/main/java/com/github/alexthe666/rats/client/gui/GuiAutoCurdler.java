@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
-import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -36,50 +34,6 @@ public class GuiAutoCurdler extends GuiContainer {
         this.tileFurnace = furnaceInv;
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String s = this.tileFurnace.getDisplayName().getUnformattedText();
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 5, 4210752);
-        this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 94 + 2, 4210752);
-        int screenW = (this.width - this.xSize) / 2;
-        int screenH = (this.height - this.ySize) / 2;
-        if(((TileEntityAutoCurdler)tileFurnace).tank.getFluid() != null){
-            if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
-                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)tileFurnace).tank.getFluid().getLocalizedName();
-                String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)tileFurnace).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
-                net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, width, height, 120, fontRenderer);
-            }
-        }
-    }
-
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(TEXTURE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-        int l = this.getCookProgressScaled(50);
-        this.drawTexturedModalRect(i + 63, j + 35, 176, 0, l + 1, 16);
-        if(((TileEntityAutoCurdler)tileFurnace).tank.getFluid() != null){
-            FluidTank tank = ((TileEntityAutoCurdler)tileFurnace).tank;
-            int textureYPos = (int)(57 * (tank.getFluidAmount() / (float)tank.getCapacity()));
-            renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
-            this.mc.getTextureManager().bindTexture(TEXTURE);
-        }
-        this.drawTexturedModalRect(i + 29, j + 15, 0, 166, 24, 58);
-    }
-
-    private int getCookProgressScaled(int pixels) {
-        int i = this.tileFurnace.getField(1);
-        int j = this.tileFurnace.getField(2);
-        return j != 0 && i != 0 ? i * pixels / j : 0;
-    }
-
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
         TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
         Tessellator tessellator = Tessellator.getInstance();
@@ -108,5 +62,49 @@ public class GuiAutoCurdler extends GuiContainer {
 
             y += currentHeight;
         } while (height > 0);
+    }
+
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String s = this.tileFurnace.getDisplayName().getUnformattedText();
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 5, 4210752);
+        this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 94 + 2, 4210752);
+        int screenW = (this.width - this.xSize) / 2;
+        int screenH = (this.height - this.ySize) / 2;
+        if (((TileEntityAutoCurdler) tileFurnace).tank.getFluid() != null) {
+            if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
+                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluid().getLocalizedName();
+                String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
+                net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, width, height, 120, fontRenderer);
+            }
+        }
+    }
+
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(TEXTURE);
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+        int l = this.getCookProgressScaled(50);
+        this.drawTexturedModalRect(i + 63, j + 35, 176, 0, l + 1, 16);
+        if (((TileEntityAutoCurdler) tileFurnace).tank.getFluid() != null) {
+            FluidTank tank = ((TileEntityAutoCurdler) tileFurnace).tank;
+            int textureYPos = (int) (57 * (tank.getFluidAmount() / (float) tank.getCapacity()));
+            renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
+            this.mc.getTextureManager().bindTexture(TEXTURE);
+        }
+        this.drawTexturedModalRect(i + 29, j + 15, 0, 166, 24, 58);
+    }
+
+    private int getCookProgressScaled(int pixels) {
+        int i = this.tileFurnace.getField(1);
+        int j = this.tileFurnace.getField(2);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
     }
 }

@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.model.ModelPiratCannon;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityChestRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -34,7 +32,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
-    private static  ItemStack BRAIN_STACK = new ItemStack(RatsBlockRegistry.BRAIN_BLOCK);
+    private static ItemStack BRAIN_STACK = new ItemStack(RatsBlockRegistry.BRAIN_BLOCK);
     RenderRat renderer;
 
     public LayerRatHeldItem(RenderRat renderer) {

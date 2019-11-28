@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLiving;

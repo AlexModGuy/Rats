@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -79,7 +78,7 @@ public class EntityRatDragonFire extends EntityFireball {
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width, 0, 0, 0);
         }
-        if(ticksExisted > 200){
+        if (ticksExisted > 200) {
             this.setDead();
         }
     }

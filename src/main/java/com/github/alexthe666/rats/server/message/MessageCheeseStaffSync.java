@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +30,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageCheeseStaffSync message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageCheeseStaffSync message, PlayerEntity player, MessageContext messageContext) {
         Entity e = player.world.getEntityByID(message.entityId);
         if (e instanceof EntityRat) {
             EntityRat rat = (EntityRat) e;
@@ -53,7 +53,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageCheeseStaffSync message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageCheeseStaffSync message, PlayerEntity player, MessageContext messageContext) {
         Entity e = player.world.getEntityByID(message.entityId);
         if (e instanceof EntityRat) {
             EntityRat rat = (EntityRat) e;

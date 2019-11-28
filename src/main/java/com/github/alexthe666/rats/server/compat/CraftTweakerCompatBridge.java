@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.compat;
 
 import com.github.alexthe666.rats.server.compat.crafttweaker.CraftTweakerCompat;
 import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.common.Loader;
 
 public class CraftTweakerCompatBridge {
     private static final String CT_MOD_ID = "crafttweaker";

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import java.util.List;
 import java.util.Random;
 
-public class VillageCreatorPlagueDoctor  implements VillagerRegistry.IVillageCreationHandler {
+public class VillageCreatorPlagueDoctor implements VillagerRegistry.IVillageCreationHandler {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {

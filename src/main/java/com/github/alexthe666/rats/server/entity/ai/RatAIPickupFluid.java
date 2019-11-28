@@ -14,8 +14,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -85,7 +83,7 @@ public class RatAIPickupFluid extends EntityAIBase {
                     return;
                 }
                 int currentAmount = 0;
-                if(this.entity.transportingFluid != null){
+                if (this.entity.transportingFluid != null) {
                     currentAmount = this.entity.transportingFluid.amount;
                 }
                 int howMuchWeWant = this.entity.getMBTransferRate() - currentAmount;
@@ -93,16 +91,16 @@ public class RatAIPickupFluid extends EntityAIBase {
                 FluidStack drainedStack = null;
                 try {
                     int totalTankHeld = 0;
-                    if(handler.getTankProperties().length > 0){
+                    if (handler.getTankProperties().length > 0) {
                         IFluidTankProperties firstTank = handler.getTankProperties()[0];
-                        if(handler.getTankProperties().length > 1){
-                            for(IFluidTankProperties otherTank : handler.getTankProperties()){
-                                if(this.entity.transportingFluid != null && this.entity.transportingFluid.isFluidEqual(otherTank.getContents())){
+                        if (handler.getTankProperties().length > 1) {
+                            for (IFluidTankProperties otherTank : handler.getTankProperties()) {
+                                if (this.entity.transportingFluid != null && this.entity.transportingFluid.isFluidEqual(otherTank.getContents())) {
                                     firstTank = otherTank;
                                 }
                             }
                         }
-                        if(firstTank.getContents() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.isFluidEqual(firstTank.getContents()))){
+                        if (firstTank.getContents() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.isFluidEqual(firstTank.getContents()))) {
                             howMuchWeWant = Math.min(firstTank.getContents().amount, howMuchWeWant);
 
                             if (handler.drain(howMuchWeWant, false) != null) {
@@ -118,12 +116,12 @@ public class RatAIPickupFluid extends EntityAIBase {
                     this.targetBlock = null;
                     this.resetTask();
                 } else {
-                    if(this.entity.transportingFluid == null){
+                    if (this.entity.transportingFluid == null) {
                         this.entity.transportingFluid = drainedStack.copy();
-                    }else{
+                    } else {
                         this.entity.transportingFluid.amount += Math.max(drainedStack.amount, 0);
                     }
-                    if(!this.entity.world.isRemote){
+                    if (!this.entity.world.isRemote) {
                         RatsMod.NETWORK_WRAPPER.sendToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                     }
                     SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_FILL : this.entity.transportingFluid.getFluid().getFillSound();

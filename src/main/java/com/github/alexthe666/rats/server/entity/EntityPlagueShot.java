@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -12,7 +12,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -83,16 +82,16 @@ public class EntityPlagueShot extends EntityArrow {
 
     protected void arrowHit(EntityLivingBase living) {
         super.arrowHit(living);
-        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))){
+        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))) {
             living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200));
 
-            if (living instanceof EntityPlayer) {
-                this.damageShield((EntityPlayer) living, (float) this.getDamage());
+            if (living instanceof PlayerEntity) {
+                this.damageShield((PlayerEntity) living, (float) this.getDamage());
             }
         }
     }
 
-    protected void damageShield(EntityPlayer player, float damage) {
+    protected void damageShield(PlayerEntity player, float damage) {
         if (damage >= 3.0F && player.getActiveItemStack().getItem().isShield(player.getActiveItemStack(), player)) {
             ItemStack copyBeforeUse = player.getActiveItemStack().copy();
             int i = 1 + MathHelper.floor(damage);

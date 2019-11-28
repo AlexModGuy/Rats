@@ -10,7 +10,7 @@ public class ModelPlagueDoctor extends ModelVillager {
     public ModelRenderer plagueMaskNose_1;
 
     public ModelPlagueDoctor(float scale) {
-        super(scale,0, 64, 128);
+        super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
         this.plagueMaskNose_1 = new ModelRenderer(this, 16, 87);

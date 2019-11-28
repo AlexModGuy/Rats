@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 
-public class ModelPlagueDoctorMask extends ModelBiped{
+public class ModelPlagueDoctorMask extends ModelBiped {
 
     public ModelRenderer hat;
     public ModelRenderer plagueMaskNose;

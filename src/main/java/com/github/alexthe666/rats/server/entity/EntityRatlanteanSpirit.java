@@ -9,11 +9,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -44,10 +43,10 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityRatlanteanSpirit.AIFireballAttack(this));
         this.tasks.addTask(8, new EntityRatlanteanSpirit.AIMoveRandom());
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRatlanteanSpirit.class));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityGolem.class, false));
         this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
     }

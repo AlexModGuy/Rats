@@ -7,16 +7,17 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -92,16 +93,16 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         this.dataManager.set(COLOR_VARIANT, Integer.valueOf(color));
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("ColorVariant", this.getColorVariant());
-        compound.setInteger("AttackSelection", attackSelection);
+        compound.setInt("ColorVariant", this.getColorVariant());
+        compound.setInt("AttackSelection", attackSelection);
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(CompoundNBT compound) {
         super.readEntityFromNBT(compound);
-        this.setColorVariant(compound.getInteger("ColorVariant"));
-        attackSelection = compound.getInteger("AttackSelection");
+        this.setColorVariant(compound.getInt("ColorVariant"));
+        attackSelection = compound.getInt("AttackSelection");
         if (this.hasCustomName()) {
             this.bossInfo.setName(this.getDisplayName());
         }
@@ -113,12 +114,12 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
     }
 
 
-    public void addTrackingPlayer(EntityPlayerMP player) {
+    public void addTrackingPlayer(ServerPlayerEntity player) {
         super.addTrackingPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
-    public void removeTrackingPlayer(EntityPlayerMP player) {
+    public void removeTrackingPlayer(ServerPlayerEntity player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
     }
@@ -134,7 +135,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         super.onUpdate();
         if (world.isRemote) {
             RatsMod.PROXY.spawnParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
-                    this.posY + this.getEyeHeight() + (double) (this.rand.nextFloat() * 0.35F),
+                    this.posY + this.getEyeHeight() + (this.rand.nextFloat() * 0.35F),
                     this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     0.0F, 0.0F, 0.0F);
         }
@@ -215,7 +216,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         this.tasks.addTask(1, new EntityNeoRatlantean.AIFollowPrey(this));
         this.tasks.addTask(2, new EntityNeoRatlantean.AIMoveRandom());
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));

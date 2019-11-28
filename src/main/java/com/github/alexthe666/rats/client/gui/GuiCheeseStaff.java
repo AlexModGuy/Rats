@@ -21,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.List;
 
@@ -102,7 +101,7 @@ public class GuiCheeseStaff extends GuiScreen {
                 namelist = pick.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL);
             } catch (Throwable ignored) {
             }
-            if(namelist != null && !namelist.isEmpty()){
+            if (namelist != null && !namelist.isEmpty()) {
                 return namelist.get(0);
             }
         }
@@ -120,10 +119,10 @@ public class GuiCheeseStaff extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if(mc != null){
-            try{
+        if (mc != null) {
+            try {
                 this.drawDefaultBackground();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }

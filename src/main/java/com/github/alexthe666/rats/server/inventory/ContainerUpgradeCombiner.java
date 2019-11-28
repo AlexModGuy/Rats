@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.inventory;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
@@ -14,7 +14,7 @@ public class ContainerUpgradeCombiner extends SyncedFieldContainer {
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
-    public ContainerUpgradeCombiner(IInventory inv, EntityPlayer player) {
+    public ContainerUpgradeCombiner(IInventory inv, PlayerEntity player) {
         super(inv);
         this.tileRatCraftingTable = inv;
         this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 20, 35));
@@ -32,11 +32,11 @@ public class ContainerUpgradeCombiner extends SyncedFieldContainer {
         }
     }
 
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return this.tileRatCraftingTable.isUsableByPlayer(playerIn);
     }
 
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 

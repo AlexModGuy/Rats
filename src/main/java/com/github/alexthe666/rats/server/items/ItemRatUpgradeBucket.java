@@ -1,19 +1,12 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ItemRatUpgradeBucket extends ItemRatUpgrade {
 
@@ -21,8 +14,8 @@ public class ItemRatUpgradeBucket extends ItemRatUpgrade {
         super(name, rarity, textLength);
     }
 
-    public static ItemStack getBucketFromFluid(FluidStack ingredient){
-        if(ingredient == null){
+    public static ItemStack getBucketFromFluid(FluidStack ingredient) {
+        if (ingredient == null) {
             return new ItemStack(Items.BUCKET);
         }
         if (ingredient.getFluid() == FluidRegistry.WATER) {
@@ -41,11 +34,11 @@ public class ItemRatUpgradeBucket extends ItemRatUpgrade {
         return new ItemStack(Items.BUCKET);
     }
 
-    public static int getMbTransferRate(Item item){
-        if(item == RatsItemRegistry.RAT_UPGRADE_BUCKET || item == RatsItemRegistry.RAT_UPGRADE_MILKER){
+    public static int getMbTransferRate(Item item) {
+        if (item == RatsItemRegistry.RAT_UPGRADE_BUCKET || item == RatsItemRegistry.RAT_UPGRADE_MILKER) {
             return Fluid.BUCKET_VOLUME;
         }
-        if(item == RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET){
+        if (item == RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET) {
             return Fluid.BUCKET_VOLUME * 5;
         }
         return 0;

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,7 +13,8 @@ public class RenderNothing extends Render<Entity> {
         super(Minecraft.getMinecraft().getRenderManager());
     }
 
-    public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks){}
+    public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    }
 
     @Nullable
     @Override

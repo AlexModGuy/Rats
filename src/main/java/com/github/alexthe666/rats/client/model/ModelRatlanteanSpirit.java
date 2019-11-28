@@ -1,10 +1,8 @@
 package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
@@ -83,7 +81,7 @@ public class ModelRatlanteanSpirit extends AdvancedModelBase {
 
     public void animate(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5,entity);
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity rat) {

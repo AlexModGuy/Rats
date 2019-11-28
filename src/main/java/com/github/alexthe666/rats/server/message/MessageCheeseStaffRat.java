@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -25,7 +25,7 @@ public class MessageCheeseStaffRat extends AbstractMessage<MessageCheeseStaffRat
     }
 
     @Override
-    public void onClientReceived(Minecraft client, MessageCheeseStaffRat message, EntityPlayer player, MessageContext messageContext) {
+    public void onClientReceived(Minecraft client, MessageCheeseStaffRat message, PlayerEntity player, MessageContext messageContext) {
         if (message.clear) {
             RatsMod.PROXY.setRefrencedRat(null);
         } else {
@@ -37,7 +37,7 @@ public class MessageCheeseStaffRat extends AbstractMessage<MessageCheeseStaffRat
     }
 
     @Override
-    public void onServerReceived(MinecraftServer server, MessageCheeseStaffRat message, EntityPlayer player, MessageContext messageContext) {
+    public void onServerReceived(MinecraftServer server, MessageCheeseStaffRat message, PlayerEntity player, MessageContext messageContext) {
     }
 
     @Override

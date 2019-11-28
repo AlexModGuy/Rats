@@ -14,7 +14,7 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -67,10 +67,10 @@ public class RatAIHarvestMine extends EntityAIBase {
     }
 
     private NonNullList<ItemStack> getMiningList() {
-        NBTTagCompound nbttagcompound1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTagCompound();
+        CompoundNBT CompoundNBT1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTag();
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-        if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-            ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
         }
         return nonnulllist;
     }

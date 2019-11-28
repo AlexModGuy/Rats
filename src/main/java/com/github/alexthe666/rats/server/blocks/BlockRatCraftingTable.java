@@ -7,13 +7,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
@@ -36,12 +34,7 @@ public class BlockRatCraftingTable extends ContainerBlock {
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isSneaking()) {
-            return false;
-        } else {
-            //playerIn.openGui(RatsMod.INSTANCE, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
+        return !playerIn.isSneaking();
     }
 
     public BlockRenderType getRenderType(BlockState state) {

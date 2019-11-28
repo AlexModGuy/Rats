@@ -7,13 +7,11 @@ import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
+import net.minecraft.potion.Effect;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ConfigFileTypeHandler;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -39,8 +37,8 @@ public class RatsMod {
         }
     };
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-    public static Potion CONFIT_BYALDI_POTION = new PotionConfitByaldi();
-    public static Potion PLAGUE_POTION = new PotionPlague();
+    public static Effect CONFIT_BYALDI_POTION = new PotionConfitByaldi();
+    public static Effect PLAGUE_POTION = new PotionPlague();
 
     public RatsMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);

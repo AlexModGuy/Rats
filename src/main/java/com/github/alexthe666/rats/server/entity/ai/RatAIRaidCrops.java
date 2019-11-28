@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.BlockState;
