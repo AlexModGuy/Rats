@@ -3,52 +3,58 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemRatUpgrade extends ItemGeneric {
+public class ItemRatUpgrade extends Item {
     private int rarity = 0;
     private int textLength = 0;
 
+    public ItemRatUpgrade(String name, int stacksize) {
+        super(new Item.Properties().group(RatsMod.TAB_UPGRADES).maxStackSize(stacksize));
+        this.setRegistryName(RatsMod.MODID, name);
+    }
+
+    public ItemRatUpgrade(String name, int stacksize, int rarity, int textLength) {
+        this(name, stacksize);
+        this.rarity = rarity;
+        this.textLength = textLength;
+    }
+
     public ItemRatUpgrade(String name) {
-        super(name);
-        this.setCreativeTab(RatsMod.TAB_UPGRADES);
+        this(name, 64);
     }
 
     public ItemRatUpgrade(String name, int rarity, int textLength) {
-        this(name);
-        this.rarity = rarity;
-        this.textLength = textLength;
-        this.setCreativeTab(RatsMod.TAB_UPGRADES);
+        this(name, 64,rarity, textLength);
     }
 
-    public EnumRarity getRarity(ItemStack stack) {
+    public Rarity getRarity(ItemStack stack) {
         if (rarity != 0 && rarity != 4) {
-            return EnumRarity.values()[rarity];
+            return Rarity.values()[rarity];
         }
         return super.getRarity(stack);
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
         return rarity >= 3 || super.hasEffect(stack);
     }
 
 
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(I18n.format(this.getTranslationKey() + i + ".desc"));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + i + ".desc"));
 
             }
         } else {
-            tooltip.add(I18n.format(this.getTranslationKey() + ".desc"));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc"));
         }
     }
 }

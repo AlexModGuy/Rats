@@ -111,8 +111,8 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         passenger.setPosition(this.posX, this.posY + 0.45D, this.posZ);
-        if (passenger instanceof EntityLivingBase) {
-            ((EntityLivingBase) passenger).renderYawOffset = this.renderYawOffset;
+        if (passenger instanceof LivingEntity) {
+            ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
         }
     }
 
@@ -280,7 +280,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     public void shoot(EntityPirat pirat) {
         world.updateEntityWithOptionalForce(this, true);
 
-        EntityLivingBase target = pirat.getAttackTarget();
+        LivingEntity target = pirat.getAttackTarget();
         if (target == null) {
             target = world.getNearestPlayerNotCreative(this, 30);
         }

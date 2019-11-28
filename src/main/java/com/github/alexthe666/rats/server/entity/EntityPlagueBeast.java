@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.google.common.base.Optional;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,7 +39,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, EntityLivingBase.class, false));
+        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }
 
     protected void applyEntityAttributes() {
@@ -98,7 +98,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         this.isDead = true;
     }
 
-    public boolean doExtraEffect(EntityLivingBase target) {
+    public boolean doExtraEffect(LivingEntity target) {
         target.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200, 0));
         return true;
     }
@@ -148,17 +148,17 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
     }
 
-    public EntityLivingBase getOwner() {
+    public LivingEntity getOwner() {
         try {
             UUID uuid = this.getOwnerId();
-            EntityLivingBase player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            LivingEntity player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
             if (player != null) {
                 return player;
             } else {
                 if (!world.isRemote) {
                     Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
-                    if (entity instanceof EntityLivingBase) {
-                        return (EntityLivingBase) entity;
+                    if (entity instanceof LivingEntity) {
+                        return (LivingEntity) entity;
                     }
                 }
             }

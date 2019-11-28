@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -16,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityPlagueShot extends EntityArrow {
+public class EntityPlagueShot extends AbstractArrowEntity {
 
     public EntityPlagueShot(World worldIn) {
         super(worldIn);
@@ -29,7 +31,7 @@ public class EntityPlagueShot extends EntityArrow {
         this.setDamage(6F);
     }
 
-    public EntityPlagueShot(World worldIn, EntityLivingBase shooter, double dmg) {
+    public EntityPlagueShot(World worldIn, LivingEntity shooter, double dmg) {
         super(worldIn, shooter);
         this.setDamage(dmg);
     }
@@ -80,7 +82,7 @@ public class EntityPlagueShot extends EntityArrow {
         }
     }
 
-    protected void arrowHit(EntityLivingBase living) {
+    protected void arrowHit(LivingEntity living) {
         super.arrowHit(living);
         if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))) {
             living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200));

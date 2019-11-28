@@ -6,7 +6,7 @@ import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityGolem;
@@ -217,22 +217,22 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         }
 
         public void updateTask() {
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if (entitylivingbase.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (LivingEntity.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityRatlanteanSpirit.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 0.5D);
+                EntityRatlanteanSpirit.this.moveHelper.setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, 0.5D);
 
             }
-            if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
+            if (LivingEntity.getDistanceSq(this.parentEntity) < 4096.0D) {
                 World world = this.parentEntity.world;
                 ++this.attackTimer;
 
                 if (this.attackTimer == 20) {
                     double d1 = 4.0D;
-                    double d2 = entitylivingbase.posX - (this.parentEntity.posX);
-                    double d3 = entitylivingbase.posY + (double) (entitylivingbase.height) - (this.parentEntity.posY + (double) (this.parentEntity.height / 2.0F));
-                    double d4 = entitylivingbase.posZ - (this.parentEntity.posZ);
+                    double d2 = LivingEntity.posX - (this.parentEntity.posX);
+                    double d3 = LivingEntity.posY + (double) (LivingEntity.height) - (this.parentEntity.posY + (double) (this.parentEntity.height / 2.0F));
+                    double d4 = LivingEntity.posZ - (this.parentEntity.posZ);
                     world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
                     EntityRatlanteanFlame entitylargefireball = new EntityRatlanteanFlame(world, this.parentEntity, d2, d3, d4);
                     entitylargefireball.posX = this.parentEntity.posX;

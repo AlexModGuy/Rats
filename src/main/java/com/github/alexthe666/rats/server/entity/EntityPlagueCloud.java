@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
@@ -117,13 +117,13 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
-        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, EntityLivingBase.class, false));
+        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
-        if (flag && entityIn instanceof EntityLivingBase) {
-            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600, 0));
+        if (flag && entityIn instanceof LivingEntity) {
+            ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600, 0));
         }
         return flag;
     }
@@ -170,17 +170,17 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
     }
 
-    public EntityLivingBase getOwner() {
+    public LivingEntity getOwner() {
         try {
             UUID uuid = this.getOwnerId();
-            EntityLivingBase player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            LivingEntity player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
             if (player != null) {
                 return player;
             } else {
                 if (!world.isRemote) {
                     Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
-                    if (entity instanceof EntityLivingBase) {
-                        return (EntityLivingBase) entity;
+                    if (entity instanceof LivingEntity) {
+                        return (LivingEntity) entity;
                     }
                 }
             }
@@ -280,18 +280,18 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         }
 
         public void updateTask() {
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if (entitylivingbase.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (LivingEntity.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityPlagueCloud.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY + 1.0D, entitylivingbase.posZ, 0.5D);
+                EntityPlagueCloud.this.moveHelper.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1.0D, LivingEntity.posZ, 0.5D);
 
             }
-            if (entitylivingbase.getDistanceSq(this.parentEntity) < 5.0D) {
+            if (LivingEntity.getDistanceSq(this.parentEntity) < 5.0D) {
                 World world = this.parentEntity.world;
                 ++this.attackTimer;
                 if (this.attackTimer == 5) {
-                    this.parentEntity.attackEntityAsMob(entitylivingbase);
+                    this.parentEntity.attackEntityAsMob(LivingEntity);
                     this.attackTimer = -10;
                 }
             } else if (this.attackTimer > 0) {

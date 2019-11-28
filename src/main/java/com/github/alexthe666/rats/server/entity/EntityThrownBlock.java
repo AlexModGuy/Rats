@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityThrownBlock extends Entity {
-    public EntityLivingBase shootingEntity;
+    public LivingEntity shootingEntity;
     public BlockState fallTile;
     public boolean dropBlock = true;
     public CompoundNBT tileEntityData;
@@ -41,7 +41,7 @@ public class EntityThrownBlock extends Entity {
         this.setSize(0.98F, 0.98F);
     }
 
-    public EntityThrownBlock(World worldIn, BlockState blockState, EntityLivingBase entityNeoRatlantean) {
+    public EntityThrownBlock(World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
         super(worldIn);
         this.setSize(0.98F, 0.98F);
         this.fallTile = blockState;
@@ -99,7 +99,7 @@ public class EntityThrownBlock extends Entity {
             this.motionZ *= (double) f;
             if (this.shootingEntity != null && shootingEntity instanceof EntityLiving) {
                 if (((EntityLiving) shootingEntity).getAttackTarget() != null) {
-                    EntityLivingBase target = ((EntityLiving) shootingEntity).getAttackTarget();
+                    LivingEntity target = ((EntityLiving) shootingEntity).getAttackTarget();
                     double d0 = target.posX - this.posX;
                     double d1 = target.posY - this.posY;
                     double d2 = target.posZ - this.posZ;
@@ -249,8 +249,8 @@ public class EntityThrownBlock extends Entity {
                     this.motionZ = vec3d.z;
                 }
 
-                if (source.getTrueSource() instanceof EntityLivingBase) {
-                    this.shootingEntity = (EntityLivingBase) source.getTrueSource();
+                if (source.getTrueSource() instanceof LivingEntity) {
+                    this.shootingEntity = (LivingEntity) source.getTrueSource();
                 }
 
                 return true;

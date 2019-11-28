@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNodeType;
@@ -18,7 +18,7 @@ public class RatAIFollowOwner extends EntityAIBase {
     World world;
     float maxDist;
     float minDist;
-    private EntityLivingBase owner;
+    private LivingEntity owner;
     private int timeToRecalcPath;
     private float oldWaterCost;
 
@@ -36,17 +36,17 @@ public class RatAIFollowOwner extends EntityAIBase {
      */
     public boolean shouldExecute() {
         if (rat.isTamed() && rat.isFollowing()) {
-            EntityLivingBase entitylivingbase = this.rat.getOwner();
-            if (entitylivingbase == null) {
+            LivingEntity LivingEntity = this.rat.getOwner();
+            if (LivingEntity == null) {
                 return false;
-            } else if (entitylivingbase instanceof PlayerEntity && ((PlayerEntity) entitylivingbase).isSpectator()) {
+            } else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity) LivingEntity).isSpectator()) {
                 return false;
             } else if (this.rat.isSitting()) {
                 return false;
-            } else if (this.rat.getDistanceSq(entitylivingbase) < (double) (this.minDist * this.minDist)) {
+            } else if (this.rat.getDistanceSq(LivingEntity) < (double) (this.minDist * this.minDist)) {
                 return false;
             } else {
-                this.owner = entitylivingbase;
+                this.owner = LivingEntity;
                 return true;
             }
         }

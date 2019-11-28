@@ -231,11 +231,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.tasks.addTask(7, new RatAIRaidCrops(this));
         this.tasks.addTask(7, new RatAIEnterTrap(this));
         this.tasks.addTask(7, new RatAIFleePosition(this));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
-            public boolean apply(@Nullable EntityLivingBase entity) {
+        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
+            public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
                 } else {
@@ -298,17 +298,17 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     @Nullable
-    public EntityLivingBase getOwner() {
+    public LivingEntity getOwner() {
         try {
             UUID uuid = this.getOwnerId();
-            EntityLivingBase player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            LivingEntity player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
             if (player != null) {
                 return player;
             } else {
                 if (!world.isRemote) {
                     Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
-                    if (entity instanceof EntityLivingBase) {
-                        return (EntityLivingBase) entity;
+                    if (entity instanceof LivingEntity) {
+                        return (LivingEntity) entity;
                     }
                 }
             }
@@ -698,13 +698,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
-            if (this.hasPlague() && entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+            if (this.hasPlague() && entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
+                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
+                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
+                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
                 Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
@@ -1594,15 +1594,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.hasPlague()) {
             if (entityIn instanceof EntityRat && !((EntityRat) entityIn).isTamed()) {
                 ((EntityRat) entityIn).setPlague(true);
-            } else if (entityIn instanceof EntityLivingBase && rollForPlague((EntityLivingBase) entityIn)) {
-                if (((EntityLivingBase) entityIn).getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
-                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+            } else if (entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
+                if (((LivingEntity) entityIn).getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
+                    ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                 }
             }
         }
     }
 
-    private boolean rollForPlague(EntityLivingBase target) {
+    private boolean rollForPlague(LivingEntity target) {
         boolean mask = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.BLACK_DEATH_MASK;
         if (mask) {
             return rand.nextFloat() < 0.3F;
@@ -1827,7 +1827,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
-        if (entity != null && (entity.isDead || entity instanceof EntityLivingBase && ((EntityLivingBase) entity).getHealth() <= 0.0F)) {
+        if (entity != null && (entity.isDead || entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() <= 0.0F)) {
             this.dismountRidingEntity();
         } else {
             this.motionX = 0.0D;
@@ -2501,7 +2501,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CREATIVE)) {
-            return source.getTrueSource() == null || source.getTrueSource() instanceof EntityLivingBase && !isOwner((EntityLivingBase) source.getTrueSource());
+            return source.getTrueSource() == null || source.getTrueSource() instanceof LivingEntity && !isOwner((LivingEntity) source.getTrueSource());
         }
         return super.isEntityInvulnerable(source);
     }

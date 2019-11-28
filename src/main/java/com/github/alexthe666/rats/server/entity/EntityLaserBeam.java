@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
@@ -36,7 +36,7 @@ public class EntityLaserBeam extends EntityArrow {
         this.setDamage(6F);
     }
 
-    public EntityLaserBeam(World worldIn, EntityLivingBase shooter) {
+    public EntityLaserBeam(World worldIn, LivingEntity shooter) {
         super(worldIn, shooter);
         this.setDamage(RatConfig.neoRatlanteanAttack);
     }

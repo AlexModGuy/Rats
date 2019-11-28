@@ -15,7 +15,7 @@ import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -173,8 +173,8 @@ public class ServerEvents {
             }
         }
         if (event.getPlayerEntity().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)) {
-            if (event.getTarget() instanceof EntityLivingBase && !((EntityLivingBase) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)) {
-                ((EntityLivingBase) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+            if (event.getTarget() instanceof LivingEntity && !((LivingEntity) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)) {
+                ((LivingEntity) event.getTarget()).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
             }
         }
@@ -182,8 +182,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onHitEntity(LivingAttackEvent event) {
-        if (event.getSource().getImmediateSource() instanceof EntityLivingBase && RatConfig.plagueSpread) {
-            EntityLivingBase attacker = (EntityLivingBase) event.getSource().getImmediateSource();
+        if (event.getSource().getImmediateSource() instanceof LivingEntity && RatConfig.plagueSpread) {
+            LivingEntity attacker = (LivingEntity) event.getSource().getImmediateSource();
             if (attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)) {
                 if (!event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION)) {
                     event.getEntityLiving().addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));

@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -25,7 +25,7 @@ public class RatAIFleeMobs extends EntityAIBase {
     private final PathNavigate navigation;
     private final Predicate<Entity> avoidTargetSelector;
     protected EntityRat entity;
-    protected EntityLivingBase closestLivingEntity;
+    protected LivingEntity closestLivingEntity;
     private Path path;
 
     public RatAIFleeMobs(EntityRat entityIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
@@ -74,7 +74,7 @@ public class RatAIFleeMobs extends EntityAIBase {
         }
     }
 
-    private boolean shouldFlee(EntityLivingBase mob) {
+    private boolean shouldFlee(LivingEntity mob) {
         int trust = entity.wildTrust;
         Vec3d vec3d = mob.getLook(1.0F).normalize();
         Vec3d vec3d1 = new Vec3d(entity.posX - mob.posX, entity.getEntityBoundingBox().minY + (double) entity.getEyeHeight() - (mob.posY + (double) mob.getEyeHeight()), entity.posZ - mob.posZ);

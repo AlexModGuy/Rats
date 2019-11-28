@@ -1,27 +1,31 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.potion.PotionEffect;
-import net.minecraftforge.common.util.EnumHelper;
+import net.minecraft.item.*;
+import net.minecraft.util.SoundEvents;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 
+import java.lang.reflect.Field;
+
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(RatsMod.MODID)
 public class RatsItemRegistry {
 
-    public static ArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("ChefToque", "rats:cheftoque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static ArmorMaterial HAT_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PiratHat", "rats:pirat_hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static ArmorMaterial PLAGUE_MASK_MATERIAL = EnumHelper.addArmorMaterial("PlagueMask", "rats:plague_mask", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
-    public static ToolMaterial PIRAT_CUTLASS_MATERIAL = EnumHelper.addToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
-    public static Item.ToolMaterial BAGHNAKHS_MATERIAL = EnumHelper.addToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
-    public static Item.ToolMaterial PLAGUE_SCYTHE_MATERIAL = EnumHelper.addToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
+    public static IArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new RatArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static IArmorMaterial HAT_ARMOR_MATERIAL = new RatArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static IArmorMaterial PLAGUE_MASK_MATERIAL = new RatArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
+    public static IItemTier PIRAT_CUTLASS_MATERIAL = new RatToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
+    public static IItemTier BAGHNAKHS_MATERIAL = new RatToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
+    public static IItemTier PLAGUE_SCYTHE_MATERIAL = new RatToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
-    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat").setPotionEffect(new PotionEffect(MobEffects.HUNGER, 200, 0), 1);
+    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat");
 
     public static Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false, "cooked_rat");
 
@@ -83,7 +87,7 @@ public class RatsItemRegistry {
 
     public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
 
-    public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi");
 
     public static Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true, "potato_pancake");
 
@@ -93,7 +97,7 @@ public class RatsItemRegistry {
 
     public static Item CENTIPEDE = new ItemGeneric("centipede");
 
-    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes").setPotionEffect(new PotionEffect(RatsMod.CONFIT_BYALDI_POTION, 1800, 0), 1);
+    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes");
 
     public static Item TINY_COIN = new ItemGeneric("tiny_coin");
 
@@ -151,9 +155,9 @@ public class RatsItemRegistry {
 
     public static Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 
-    public static Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", "mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
+    public static Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 
-    public static Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", "living_mice", RatsSoundRegistry.LIVING_MICE);
+    public static Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);
 
     public static Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);
 
@@ -281,4 +285,25 @@ public class RatsItemRegistry {
         }
     }
 
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        try {
+            for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Item) {
+                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatConfig.disablePlastic) {
+                        event.getRegistry().register((Item) obj);
+                    }
+                } else if (obj instanceof Item[]) {
+                    for (Item item : (Item[]) obj) {
+                        event.getRegistry().register((item));
+
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        RatsUpgradeConflictRegistry.init();
+    }
 }

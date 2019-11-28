@@ -1,10 +1,12 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,13 +16,13 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityRatCaptureNet extends EntityPotion {
+public class EntityRatCaptureNet extends PotionEntity {
 
     public EntityRatCaptureNet(World worldIn) {
         super(worldIn);
     }
 
-    public EntityRatCaptureNet(World worldIn, EntityLivingBase throwerIn, ItemStack potionDamageIn) {
+    public EntityRatCaptureNet(World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
         super(worldIn, throwerIn, potionDamageIn);
     }
 

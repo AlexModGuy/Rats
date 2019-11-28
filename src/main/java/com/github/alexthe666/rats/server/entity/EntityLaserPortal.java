@@ -6,7 +6,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.CompoundNBT;
@@ -26,7 +26,7 @@ public class EntityLaserPortal extends Entity {
     public float scaleOfPortal;
     public float scaleOfPortalPrev;
     @Nullable
-    private EntityLivingBase creator;
+    private LivingEntity creator;
     @Nullable
     private Entity facingTarget;
     private UUID ownerUniqueId;
@@ -44,7 +44,7 @@ public class EntityLaserPortal extends Entity {
         this.isImmuneToFire = true;
     }
 
-    public EntityLaserPortal(World worldIn, double x, double y, double z, EntityLivingBase creator) {
+    public EntityLaserPortal(World worldIn, double x, double y, double z, LivingEntity creator) {
         this(worldIn);
         this.setSize(0.9F, 1.5F);
         this.setPosition(x, y, z);
@@ -80,7 +80,7 @@ public class EntityLaserPortal extends Entity {
     private void faceTarget() {
         if (facingTarget == null || this.getCreator() != null && !facingTarget.isEntityEqual(((EntityLiving) this.getCreator()).getAttackTarget())) {
             if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
-                EntityLivingBase target = ((EntityLiving) this.getCreator()).getAttackTarget();
+                LivingEntity target = ((EntityLiving) this.getCreator()).getAttackTarget();
                 if (target == null && this.getCreator() instanceof EntityMob) {
                     target = world.getNearestPlayerNotCreative(this, 30);
                 }
@@ -97,15 +97,15 @@ public class EntityLaserPortal extends Entity {
 
     private void tryFiring() {
         if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
-            EntityLivingBase target = ((EntityLiving) this.getCreator()).getAttackTarget();
+            LivingEntity target = ((EntityLiving) this.getCreator()).getAttackTarget();
             if (target == null && this.getCreator() instanceof EntityMob) {
                 target = world.getNearestPlayerNotCreative(this, 30);
             }
             if (target == null && this.getCreator() instanceof EntityRat && ((EntityRat) this.getCreator()).isTamed()) {
-                EntityLivingBase closest = null;
+                LivingEntity closest = null;
                 for (Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getEntityBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)) {
-                    if (entity instanceof EntityLivingBase && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))) {
-                        closest = (EntityLivingBase) entity;
+                    if (entity instanceof LivingEntity && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))) {
+                        closest = (LivingEntity) entity;
                     }
                 }
                 target = closest;
@@ -132,19 +132,19 @@ public class EntityLaserPortal extends Entity {
     }
 
     @Nullable
-    public EntityLivingBase getCreator() {
+    public LivingEntity getCreator() {
         if (this.creator == null && this.ownerUniqueId != null && this.world instanceof WorldServer) {
             Entity entity = ((WorldServer) this.world).getEntityFromUuid(this.ownerUniqueId);
 
-            if (entity instanceof EntityLivingBase) {
-                this.creator = (EntityLivingBase) entity;
+            if (entity instanceof LivingEntity) {
+                this.creator = (LivingEntity) entity;
             }
         }
 
         return this.creator;
     }
 
-    public void setCreator(@Nullable EntityLivingBase ownerIn) {
+    public void setCreator(@Nullable LivingEntity ownerIn) {
         this.creator = ownerIn;
         this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUniqueID();
     }

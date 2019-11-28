@@ -3,21 +3,23 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityRatlanteanFlame extends EntityFireball {
+public class EntityRatlanteanFlame extends FireballEntity {
 
     public EntityRatlanteanFlame(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.6F);
     }
 
-    public EntityRatlanteanFlame(World worldIn, EntityLivingBase shooter, double accelX, double accelY, double accelZ) {
+    public EntityRatlanteanFlame(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(worldIn, shooter, accelX, accelY, accelZ);
         this.setSize(0.6F, 0.6F);
     }

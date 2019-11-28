@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
@@ -28,7 +28,7 @@ public class EntityGolemBeam extends EntityArrow {
         this.setDamage(8F);
     }
 
-    public EntityGolemBeam(World worldIn, EntityLivingBase shooter) {
+    public EntityGolemBeam(World worldIn, LivingEntity shooter) {
         super(worldIn, shooter);
         this.setDamage(RatConfig.ratlanteanAutomatonAttack * 0.5F + 0.5F);
     }

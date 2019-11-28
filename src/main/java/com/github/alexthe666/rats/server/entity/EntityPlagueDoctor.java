@@ -57,7 +57,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Item.getItemFromBlock(Blocks.RED_FLOWER));
     private static final com.google.common.base.Predicate<Entity> PLAGUE_PREDICATE = new com.google.common.base.Predicate<Entity>() {
         public boolean apply(@Nullable Entity entity) {
-            return entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(RatsMod.PLAGUE_POTION) || entity instanceof EntityRat && ((EntityRat) entity).hasPlague() || entity instanceof IPlagueLegion;
+            return entity instanceof LivingEntity && ((LivingEntity) entity).isPotionActive(RatsMod.PLAGUE_POTION) || entity instanceof EntityRat && ((EntityRat) entity).hasPlague() || entity instanceof IPlagueLegion;
         }
     };
     private final InventoryBasic villagerInventory;
@@ -103,7 +103,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityZombieVillager.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, PLAGUE_PREDICATE));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
     }
 
     protected void applyEntityAttributes() {
@@ -293,10 +293,10 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     }
 
     /**
-     * Hint to AI tasks that we were attacked by the passed EntityLivingBase and should retaliate. Is not guaranteed to
+     * Hint to AI tasks that we were attacked by the passed LivingEntity and should retaliate. Is not guaranteed to
      * change our actual active target (for example if we are currently busy attacking someone else)
      */
-    public void setRevengeTarget(@Nullable EntityLivingBase livingBase) {
+    public void setRevengeTarget(@Nullable LivingEntity livingBase) {
         super.setRevengeTarget(livingBase);
 
         if (this.village != null && livingBase != null) {
@@ -631,7 +631,7 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
 
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         double d0 = target.posY + (double) target.getEyeHeight() - 1.100000023841858D;
         double d1 = target.posX + target.motionX - this.posX;
         double d2 = d0 - this.posY;

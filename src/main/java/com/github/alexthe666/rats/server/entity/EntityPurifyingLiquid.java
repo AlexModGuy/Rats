@@ -2,9 +2,11 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionType;
@@ -17,13 +19,13 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityPurifyingLiquid extends EntityPotion {
+public class EntityPurifyingLiquid extends PotionEntity {
 
     public EntityPurifyingLiquid(World worldIn) {
         super(worldIn);
     }
 
-    public EntityPurifyingLiquid(World worldIn, EntityLivingBase throwerIn, ItemStack potionDamageIn) {
+    public EntityPurifyingLiquid(World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
         super(worldIn, throwerIn, potionDamageIn);
     }
 
@@ -40,37 +42,37 @@ public class EntityPurifyingLiquid extends EntityPotion {
             ItemStack itemstack = this.getPotion();
             PotionType potiontype = PotionUtils.getPotionFromItem(itemstack);
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
-            List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+            List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
-                for (EntityLivingBase entitylivingbase : list) {
-                    if (entitylivingbase.canBeHitWithPotion()) {
-                        double d0 = this.getDistanceSq(entitylivingbase);
+                for (LivingEntity LivingEntity : list) {
+                    if (LivingEntity.canBeHitWithPotion()) {
+                        double d0 = this.getDistanceSq(LivingEntity);
 
                         if (d0 < 16.0D) {
                             double d1 = 1.0D - Math.sqrt(d0) / 4.0D;
 
-                            if (entitylivingbase == result.entityHit) {
+                            if (LivingEntity == result.entityHit) {
                                 d1 = 1.0D;
                             }
-                            if (entitylivingbase instanceof EntityRat) {
-                                EntityRat rat = (EntityRat) entitylivingbase;
+                            if (LivingEntity instanceof EntityRat) {
+                                EntityRat rat = (EntityRat) LivingEntity;
                                 if (rat.hasPlague()) {
                                     rat.setPlague(false);
                                     rat.setTamed(false);
                                     rat.setOwnerId(null);
                                 }
                             }
-                            if (entitylivingbase.isPotionActive(RatsMod.PLAGUE_POTION)) {
-                                entitylivingbase.removePotionEffect(RatsMod.PLAGUE_POTION);
+                            if (LivingEntity.isPotionActive(RatsMod.PLAGUE_POTION)) {
+                                LivingEntity.removePotionEffect(RatsMod.PLAGUE_POTION);
                             }
-                            if (entitylivingbase instanceof IPlagueLegion) {
-                                entitylivingbase.attackEntityFrom(DamageSource.MAGIC, 10);
+                            if (LivingEntity instanceof IPlagueLegion) {
+                                LivingEntity.attackEntityFrom(DamageSource.MAGIC, 10);
                             }
-                            if (entitylivingbase instanceof EntityZombieVillager && !((EntityZombieVillager) entitylivingbase).isConverting()) {
-                                CompoundNBT tag = entitylivingbase.writeToNBT(new CompoundNBT());
+                            if (LivingEntity instanceof EntityZombieVillager && !((EntityZombieVillager) LivingEntity).isConverting()) {
+                                CompoundNBT tag = LivingEntity.writeToNBT(new CompoundNBT());
                                 tag.setInt("ConversionTime", 200);
-                                entitylivingbase.readEntityFromNBT(tag);
-                                this.world.setEntityState(entitylivingbase, (byte) 16);
+                                LivingEntity.readEntityFromNBT(tag);
+                                this.world.setEntityState(LivingEntity, (byte) 16);
                             }
                         }
                     }

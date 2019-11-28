@@ -32,7 +32,7 @@ public class RenderIllagerPiper extends RenderLiving<EntityIllagerPiper> {
         return ILLUSIONIST;
     }
 
-    protected void preRenderCallback(EntityIllagerPiper entitylivingbaseIn, float partialTickTime) {
+    protected void preRenderCallback(EntityIllagerPiper LivingEntityIn, float partialTickTime) {
         float f = 0.9375F;
         GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
     }

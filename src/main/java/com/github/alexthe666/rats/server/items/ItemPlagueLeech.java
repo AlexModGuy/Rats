@@ -7,9 +7,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -18,13 +20,11 @@ import java.util.List;
 public class ItemPlagueLeech extends Item {
 
     public ItemPlagueLeech() {
-        super();
-        this.setCreativeTab(RatsMod.TAB);
-        this.setTranslationKey("rats.plague_leech");
+        super(new Item.Properties().group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, "plague_leech");
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, EnumHand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         if (!playerIn.isCreative()) {
             playerIn.getHeldItem(handIn).shrink(1);
             playerIn.attackEntityFrom(DamageSource.CACTUS, 2);
@@ -33,11 +33,12 @@ public class ItemPlagueLeech extends Item {
             }
             playerIn.swingArm(handIn);
         }
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("item.rats.plague_heal_chance.desc", 50));
+
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("item.rats.plague_heal_chance.desc", 50));
     }
 
 }

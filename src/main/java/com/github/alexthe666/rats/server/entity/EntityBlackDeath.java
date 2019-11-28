@@ -62,7 +62,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
-        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, EntityLivingBase.class, true));
+        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
     }
 
     protected void entityInit() {
@@ -202,7 +202,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 
         summonMinion(getMinionTypeToSpawn());
     }

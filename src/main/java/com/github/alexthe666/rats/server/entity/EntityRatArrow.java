@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -53,8 +53,8 @@ public class EntityRatArrow extends AbstractArrowEntity {
         if (!world.isRemote) {
             world.addEntity(rat);
         }
-        if (entity != null && entity instanceof EntityLivingBase && !rat.isOnSameTeam(entity)) {
-            rat.setAttackTarget((EntityLivingBase) entity);
+        if (entity != null && entity instanceof LivingEntity && !rat.isOnSameTeam(entity)) {
+            rat.setAttackTarget((LivingEntity) entity);
         }
         if (this.inGround) {
             this.setDead();

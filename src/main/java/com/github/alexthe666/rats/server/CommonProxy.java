@@ -62,27 +62,6 @@ public class CommonProxy {
         event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
     }
 
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        try {
-            for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Item) {
-                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatConfig.disablePlastic) {
-                        event.getRegistry().register((Item) obj);
-                    }
-                } else if (obj instanceof Item[]) {
-                    for (Item item : (Item[]) obj) {
-                        event.getRegistry().register((item));
-
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        RatsUpgradeConflictRegistry.init();
-    }
 
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {

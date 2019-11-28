@@ -36,8 +36,8 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
     public static final Animation ANIMATION_MELEE = Animation.create(15);
     public static final Animation ANIMATION_RANGED = Animation.create(15);
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "marbled_cheese_golem"));
-    private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
-        public boolean apply(@Nullable EntityLivingBase entity) {
+    private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
+        public boolean apply(@Nullable LivingEntity entity) {
             return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
@@ -152,7 +152,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         this.useRangedAttack = true;
         if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_RANGED);
@@ -368,9 +368,9 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
 
         public boolean shouldExecute() {
             followDist = EntityMarbleCheeseGolem.this.getEntityBoundingBox().getAverageEdgeLength();
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
-            return entitylivingbase != null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
+            return LivingEntity != null && (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity));
         }
 
         public void startExecuting() {
@@ -381,10 +381,10 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         }
 
         public void updateTask() {
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
-            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
-                EntityMarbleCheeseGolem.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY + 1, entitylivingbase.posZ, 1D);
+            if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
+                EntityMarbleCheeseGolem.this.moveHelper.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1, LivingEntity.posZ, 1D);
             }
         }
     }

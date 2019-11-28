@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -18,7 +18,7 @@ public class EntityCheeseCannonball extends EntityThrowable {
         super(worldIn);
     }
 
-    public EntityCheeseCannonball(World worldIn, EntityLivingBase throwerIn) {
+    public EntityCheeseCannonball(World worldIn, LivingEntity throwerIn) {
         super(worldIn, throwerIn);
     }
 

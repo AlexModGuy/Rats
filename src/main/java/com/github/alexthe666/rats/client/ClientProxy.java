@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -250,7 +250,7 @@ public class ClientProxy extends CommonProxy {
     public void postInit() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
             Render render = entry.getValue();
-            if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+            if (render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
                 ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
             }
         }
@@ -285,7 +285,7 @@ public class ClientProxy extends CommonProxy {
                     if (entry.getValue() != null) {
                         try {
                             Render render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
-                            if (render != null && render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+                            if (render != null && render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
                                 ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
                             }
                         } catch (NullPointerException exp) {
@@ -298,7 +298,7 @@ public class ClientProxy extends CommonProxy {
             if (entityRendersOld != null) {
                 for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
                     Render render = entry.getValue();
-                    if (render instanceof RenderLivingBase && EntityLivingBase.class.isAssignableFrom(entry.getKey())) {
+                    if (render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
                         ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
                     }
                 }

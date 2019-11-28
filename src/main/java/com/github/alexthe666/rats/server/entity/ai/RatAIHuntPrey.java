@@ -2,15 +2,15 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.google.common.base.Predicate;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.util.EnumHand;
 
-public class RatAIHuntPrey<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<EntityLivingBase> {
+public class RatAIHuntPrey<T extends LivingEntity> extends EntityAINearestAttackableTarget<LivingEntity> {
     private final EntityRat rat;
 
-    public RatAIHuntPrey(EntityRat entityIn, Predicate<? super EntityLivingBase> targetSelector) {
-        super(entityIn, EntityLivingBase.class, 10, true, false, targetSelector);
+    public RatAIHuntPrey(EntityRat entityIn, Predicate<? super LivingEntity> targetSelector) {
+        super(entityIn, LivingEntity.class, 10, true, false, targetSelector);
         this.rat = entityIn;
     }
 

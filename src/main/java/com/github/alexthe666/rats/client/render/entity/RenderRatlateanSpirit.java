@@ -21,9 +21,9 @@ public class RenderRatlateanSpirit extends RenderLiving<EntityMob> {
         return entity instanceof EntityPlagueCloud ? TEXTURE_CLOUD : TEXTURE;
     }
 
-    protected void preRenderCallback(EntityMob entitylivingbaseIn, float partialTickTime) {
-        doPortalEffect(entitylivingbaseIn, partialTickTime);
-        float scale = entitylivingbaseIn instanceof EntityPlagueCloud ? 2 : 1.5F;
+    protected void preRenderCallback(EntityMob LivingEntityIn, float partialTickTime) {
+        doPortalEffect(LivingEntityIn, partialTickTime);
+        float scale = LivingEntityIn instanceof EntityPlagueCloud ? 2 : 1.5F;
         GlStateManager.scale(scale, scale, scale);
     }
 

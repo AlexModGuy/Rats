@@ -31,10 +31,10 @@ public class RenderPlagueDoctor extends RenderLiving<EntityPlagueDoctor> {
     /**
      * Allows the render to do state modifications necessary before the model is rendered.
      */
-    protected void preRenderCallback(EntityPlagueDoctor entitylivingbaseIn, float partialTickTime) {
+    protected void preRenderCallback(EntityPlagueDoctor LivingEntityIn, float partialTickTime) {
         float f = 0.9375F;
 
-        if (entitylivingbaseIn.getGrowingAge() < 0) {
+        if (LivingEntityIn.getGrowingAge() < 0) {
             f = (float) ((double) f * 0.5D);
             this.shadowSize = 0.25F;
         } else {

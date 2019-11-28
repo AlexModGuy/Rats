@@ -58,11 +58,11 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
         this.tasks.addTask(3, this.aiSit = new RatAISit(this));
         this.tasks.addTask(5, new RatAIEnterTrap(this));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 5, true, false, new Predicate<EntityLivingBase>() {
-            public boolean apply(@Nullable EntityLivingBase entity) {
-                return !(entity instanceof IRatlantean) && entity instanceof EntityLivingBase && !entity.isOnSameTeam(EntityPirat.this);
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, LivingEntity.class, 5, true, false, new Predicate<LivingEntity>() {
+            public boolean apply(@Nullable LivingEntity entity) {
+                return !(entity instanceof IRatlantean) && entity instanceof LivingEntity && !entity.isOnSameTeam(EntityPirat.this);
             }
         }));
         this.targetTasks.addTask(2, new RatAIHurtByTarget(this, false));
@@ -77,8 +77,8 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
 
-    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
-        super.setAttackTarget(entitylivingbaseIn);
+    public void setAttackTarget(@Nullable LivingEntity LivingEntityIn) {
+        super.setAttackTarget(LivingEntityIn);
         this.setCombatTask();
     }
 
@@ -227,7 +227,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         if (attackCooldown == 0) {
             this.faceEntity(target, 180, 180);
             double d0 = target.posX - this.posX;

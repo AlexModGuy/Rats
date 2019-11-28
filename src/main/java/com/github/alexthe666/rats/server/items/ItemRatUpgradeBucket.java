@@ -1,8 +1,9 @@
 package com.github.alexthe666.rats.server.items;
 
-import net.minecraft.init.Items;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,22 +16,9 @@ public class ItemRatUpgradeBucket extends ItemRatUpgrade {
     }
 
     public static ItemStack getBucketFromFluid(FluidStack ingredient) {
-        if (ingredient == null) {
-            return new ItemStack(Items.BUCKET);
-        }
-        if (ingredient.getFluid() == FluidRegistry.WATER) {
-            return new ItemStack(Items.WATER_BUCKET);
-        } else if (ingredient.getFluid() == FluidRegistry.LAVA) {
-            return new ItemStack(Items.LAVA_BUCKET);
-        } else if (ingredient.getFluid().getName().equals("milk")) {
-            return new ItemStack(Items.MILK_BUCKET);
-        } else if (FluidRegistry.isUniversalBucketEnabled()) {
-            ItemStack filledBucket = FluidUtil.getFilledBucket(ingredient);
-            FluidStack fluidContained = FluidUtil.getFluidContained(filledBucket);
-            if (fluidContained != null && fluidContained.isFluidEqual(ingredient)) {
-                return filledBucket;
-            }
-        }
+        net.minecraftforge.fluids.Fluid fluid = ingredient.getFluid();
+        ItemStack filledBucket = FluidUtil.getFilledBucket(ingredient);
+        //TODO: Forge needs to finish its fluid implementation
         return new ItemStack(Items.BUCKET);
     }
 

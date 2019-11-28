@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,12 +24,12 @@ public class PotionConfitByaldi extends Effect {
         this.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 10.0D, 0).setBeneficial();
     }
 
-    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
-        if (entityLivingBaseIn.getHealth() < entityLivingBaseIn.getMaxHealth()) {
-            entityLivingBaseIn.heal(1.0F);
+    public void performEffect(LivingEntity LivingEntityIn, int amplifier) {
+        if (LivingEntityIn.getHealth() < LivingEntityIn.getMaxHealth()) {
+            LivingEntityIn.heal(1.0F);
         }
-        if (entityLivingBaseIn instanceof PlayerEntity) {
-            ((PlayerEntity) entityLivingBaseIn).getFoodStats().addStats(100, 1.0F);
+        if (LivingEntityIn instanceof PlayerEntity) {
+            ((PlayerEntity) LivingEntityIn).getFoodStats().addStats(100, 1.0F);
         }
     }
 
@@ -37,17 +37,17 @@ public class PotionConfitByaldi extends Effect {
         return duration > 0;
     }
 
-    public void removeAttributesModifiersFromEntity(EntityLivingBase entityLivingBaseIn, AbstractAttributeMap attributeMapIn, int amplifier) {
-        super.removeAttributesModifiersFromEntity(entityLivingBaseIn, attributeMapIn, amplifier);
-        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() - (float) (20 * (amplifier + 1)));
-        if (entityLivingBaseIn.getHealth() > entityLivingBaseIn.getMaxHealth()) {
-            entityLivingBaseIn.setHealth(entityLivingBaseIn.getMaxHealth());
+    public void removeAttributesModifiersFromEntity(LivingEntity LivingEntityIn, AbstractAttributeMap attributeMapIn, int amplifier) {
+        super.removeAttributesModifiersFromEntity(LivingEntityIn, attributeMapIn, amplifier);
+        LivingEntityIn.setAbsorptionAmount(LivingEntityIn.getAbsorptionAmount() - (float) (20 * (amplifier + 1)));
+        if (LivingEntityIn.getHealth() > LivingEntityIn.getMaxHealth()) {
+            LivingEntityIn.setHealth(LivingEntityIn.getMaxHealth());
         }
     }
 
-    public void applyAttributesModifiersToEntity(EntityLivingBase entityLivingBaseIn, AbstractAttributeMap attributeMapIn, int amplifier) {
-        entityLivingBaseIn.setAbsorptionAmount(entityLivingBaseIn.getAbsorptionAmount() + (float) (20 * (amplifier + 1)));
-        super.applyAttributesModifiersToEntity(entityLivingBaseIn, attributeMapIn, amplifier);
+    public void applyAttributesModifiersToEntity(LivingEntity LivingEntityIn, AbstractAttributeMap attributeMapIn, int amplifier) {
+        LivingEntityIn.setAbsorptionAmount(LivingEntityIn.getAbsorptionAmount() + (float) (20 * (amplifier + 1)));
+        super.applyAttributesModifiersToEntity(LivingEntityIn, attributeMapIn, amplifier);
     }
 
     public String getName() {

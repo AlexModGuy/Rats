@@ -8,7 +8,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -28,8 +28,8 @@ public class RatAIHarvestMilk extends EntityAIBase {
     private int fishingCooldown = 1000;
     private int throwCooldown = 0;
     private Random rand = new Random();
-    private Predicate<EntityLivingBase> COW_PREDICATE = new com.google.common.base.Predicate<EntityLivingBase>() {
-        public boolean apply(@Nullable EntityLivingBase entity) {
+    private Predicate<LivingEntity> COW_PREDICATE = new com.google.common.base.Predicate<LivingEntity>() {
+        public boolean apply(@Nullable LivingEntity entity) {
             return entity != null && RatUtils.isCow(entity) && !entity.isChild();
         }
     };
@@ -88,8 +88,8 @@ public class RatAIHarvestMilk extends EntityAIBase {
 
     private void resetTarget() {
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) COW_PREDICATE);
-        EntityLivingBase closestCow = null;
-        for (EntityLivingBase base : list) {
+        LivingEntity closestCow = null;
+        for (LivingEntity base : list) {
             if (closestCow == null || base.getDistanceSq(entity) < closestCow.getDistanceSq(entity)) {
                 closestCow = base;
             }

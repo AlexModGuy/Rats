@@ -41,8 +41,8 @@ import java.util.List;
 public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "neo_ratlantean"));
-    private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
-        public boolean apply(@Nullable EntityLivingBase entity) {
+    private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
+        public boolean apply(@Nullable LivingEntity entity) {
             return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
@@ -265,7 +265,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 
     }
 
@@ -343,9 +343,9 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
 
         public boolean shouldExecute() {
             followDist = EntityNeoRatlantean.this.getEntityBoundingBox().getAverageEdgeLength();
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
-            return entitylivingbase != null && (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase));
+            return LivingEntity != null && (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity));
         }
 
         public void startExecuting() {
@@ -356,11 +356,11 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         }
 
         public void updateTask() {
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
-            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityNeoRatlantean.this.moveHelper.setMoveTo(entitylivingbase.posX + rand.nextInt(10) - 20, entitylivingbase.posY + 3, entitylivingbase.posZ + rand.nextInt(10) - 20, 1D);
+                EntityNeoRatlantean.this.moveHelper.setMoveTo(LivingEntity.posX + rand.nextInt(10) - 20, LivingEntity.posY + 3, LivingEntity.posZ + rand.nextInt(10) - 20, 1D);
             }
         }
     }

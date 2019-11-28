@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
@@ -74,8 +74,8 @@ public class RenderRat extends RenderLiving<EntityRat> {
 
 
     public boolean shouldRender(EntityRat rat, ICamera camera, double camX, double camY, double camZ) {
-        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof EntityLivingBase) {
-            if (((EntityLivingBase) rat.getRidingEntity()).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.CHEF_TOQUE) {
+        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof LivingEntity) {
+            if (((LivingEntity) rat.getRidingEntity()).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.CHEF_TOQUE) {
                 return false;
             }
         }

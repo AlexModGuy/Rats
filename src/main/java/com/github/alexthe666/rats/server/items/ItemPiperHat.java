@@ -23,7 +23,7 @@ public class ItemPiperHat extends ArmorItem {
     }
 
     /*@SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+    public ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(1);
     }
 

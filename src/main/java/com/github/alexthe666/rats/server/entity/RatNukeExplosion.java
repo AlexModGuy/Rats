@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
@@ -148,8 +148,8 @@ public class RatNukeExplosion extends Explosion {
                         entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)));
                         double d11 = d10;
 
-                        if (entity instanceof EntityLivingBase) {
-                            d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase) entity, d10);
+                        if (entity instanceof LivingEntity) {
+                            d11 = EnchantmentProtection.getBlastDamageReduction((LivingEntity) entity, d10);
                         }
 
                         entity.motionX += d5 * d11;
@@ -237,13 +237,13 @@ public class RatNukeExplosion extends Explosion {
      * Returns either the entity that placed the explosive block, the entity that caused the explosion or null.
      */
     @Nullable
-    public EntityLivingBase getExplosivePlacedBy() {
+    public LivingEntity getExplosivePlacedBy() {
         if (this.exploder == null) {
             return null;
         } else if (this.exploder instanceof EntityTNTPrimed) {
             return ((EntityTNTPrimed) this.exploder).getTntPlacedBy();
         } else {
-            return this.exploder instanceof EntityLivingBase ? (EntityLivingBase) this.exploder : null;
+            return this.exploder instanceof LivingEntity ? (LivingEntity) this.exploder : null;
         }
     }
 

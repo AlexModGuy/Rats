@@ -9,7 +9,7 @@ import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.EnumHand;
 
 public class ModelRat extends AdvancedModelBase {
@@ -244,9 +244,9 @@ public class ModelRat extends AdvancedModelBase {
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
-        if (rat.getRidingEntity() != null && rat.getRidingEntity() instanceof EntityLivingBase) {
+        if (rat.getRidingEntity() != null && rat.getRidingEntity() instanceof LivingEntity) {
             maxTailRotation = (float) Math.toRadians(30);
-            EntityLivingBase rider = (EntityLivingBase) rat.getRidingEntity();
+            LivingEntity rider = (LivingEntity) rat.getRidingEntity();
             f12 = (float) Math.toRadians(-15) + rider.limbSwingAmount;
             this.walk(this.tail1, speedIdle, degreeIdle, false, -1, 0, rider.limbSwing, rider.limbSwingAmount);
             this.walk(this.tail2, speedIdle, degreeIdle * 0.5F, false, -2, 0, rider.limbSwing, rider.limbSwingAmount);

@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.monster.AbstractIllager;
@@ -112,7 +112,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         summonRat();
     }
 

@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,9 +18,9 @@ public class RenderBlackDeath extends RenderLiving<EntityBlackDeath> {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelBlackDeath(), 0.5F);
         this.addLayer(new LayerBlackDeathMask(this));
         this.addLayer(new LayerHeldItem(this) {
-            public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-                if (((EntityBlackDeath) entitylivingbaseIn).isSummoning()) {
-                    super.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+            public void doRenderLayer(LivingEntity LivingEntityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                if (((EntityBlackDeath) LivingEntityIn).isSummoning()) {
+                    super.doRenderLayer(LivingEntityIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
                 }
             }
 

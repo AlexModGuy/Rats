@@ -30,8 +30,8 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "feral_ratlantean"));
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
-    private static final Predicate<EntityLivingBase> NOT_RATLANTEAN = new Predicate<EntityLivingBase>() {
-        public boolean apply(@Nullable EntityLivingBase entity) {
+    private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
+        public boolean apply(@Nullable LivingEntity entity) {
             return entity.isEntityAlive() && !(entity instanceof IRatlantean);
         }
     };
@@ -100,7 +100,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
         }
     }
 
-    public boolean doExtraEffect(EntityLivingBase target) {
+    public boolean doExtraEffect(LivingEntity target) {
         return false;
     }
 

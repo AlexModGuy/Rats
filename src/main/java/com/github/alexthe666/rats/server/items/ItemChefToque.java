@@ -13,7 +13,7 @@ public class ItemChefToque extends ArmorItem {
     }
 
    /* @SideOnly(Side.CLIENT)
-    public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
+    public net.minecraft.client.model.ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(0);
     }
 

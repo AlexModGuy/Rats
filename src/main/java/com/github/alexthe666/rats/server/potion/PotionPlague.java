@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.PotionEffect;
@@ -20,7 +20,7 @@ public class PotionPlague extends Effect {
         this.setRegistryName(RatsMod.MODID, "plague");
     }
 
-    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
+    public void performEffect(LivingEntity LivingEntityIn, int amplifier) {
     }
 
     public boolean isReady(int duration, int amplifier) {

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
@@ -19,7 +19,7 @@ public class EntityRatDragonFire extends EntityFireball {
         this.setSize(0.6F, 0.6F);
     }
 
-    public EntityRatDragonFire(World worldIn, EntityLivingBase shooter, double accelX, double accelY, double accelZ) {
+    public EntityRatDragonFire(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(worldIn, shooter, accelX, accelY, accelZ);
         this.setSize(0.6F, 0.6F);
     }

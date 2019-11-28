@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,8 +25,8 @@ public class RatAIHarvestShears extends EntityAIBase {
     private int fishingCooldown = 1000;
     private int throwCooldown = 0;
     private Random rand = new Random();
-    private Predicate<EntityLivingBase> SHEAR_PREDICATE = new com.google.common.base.Predicate<EntityLivingBase>() {
-        public boolean apply(@Nullable EntityLivingBase entity) {
+    private Predicate<LivingEntity> SHEAR_PREDICATE = new com.google.common.base.Predicate<LivingEntity>() {
+        public boolean apply(@Nullable LivingEntity entity) {
             return entity != null && entity instanceof IShearable && ((IShearable) entity).isShearable(SHEAR_STACK, entity.world, entity.getPosition());
         }
     };
@@ -81,8 +81,8 @@ public class RatAIHarvestShears extends EntityAIBase {
 
     private void resetTarget() {
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) SHEAR_PREDICATE);
-        EntityLivingBase closestSheep = null;
-        for (EntityLivingBase base : list) {
+        LivingEntity closestSheep = null;
+        for (LivingEntity base : list) {
             if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {
                 closestSheep = base;
             }
