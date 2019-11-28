@@ -1,68 +1,37 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.EndPortalTileEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class TileEntityRatlantisPortal extends EndPortalTileEntity implements ITickable {
+public class TileEntityRatlantisPortal extends EndPortalTileEntity implements ITickableTileEntity {
     private long age;
-    private BlockPos exitPortal;
-    private boolean exactTeleport;
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        super.writeToNBT(compound);
-        compound.setLong("Age", this.age);
-
-        if (this.exitPortal != null) {
-            compound.setTag("ExitPortal", NBTUtil.createPosTag(this.exitPortal));
-        }
-
-        if (this.exactTeleport) {
-            compound.setBoolean("ExactTeleport", this.exactTeleport);
-        }
-
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+        compound.putLong("Age", this.age);
         return compound;
     }
 
-    public void readFromNBT(CompoundNBT compound) {
-        super.readFromNBT(compound);
+    public void read(CompoundNBT compound) {
+        super.read(compound);
         this.age = compound.getLong("Age");
-
-        if (compound.hasKey("ExitPortal", 10)) {
-            this.exitPortal = NBTUtil.getPosFromTag(compound.getCompoundTag("ExitPortal"));
-        }
-
-        this.exactTeleport = compound.getBoolean("ExactTeleport");
     }
 
-    @SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 65536.0D;
-    }
-
-    public void update() {
+    public void tick() {
         ++this.age;
     }
 
-    @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(this.pos, 8, this.getUpdateTag());
-    }
+
 
     public CompoundNBT getUpdateTag() {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean shouldRenderFace(Direction p_184313_1_) {
-        return this.getBlockType().getDefaultState().shouldSideBeRendered(this.world, this.getPos(), p_184313_1_);
+        return this.getBlockState().isSideInvisible(this.getBlockState(), p_184313_1_);
     }
 }

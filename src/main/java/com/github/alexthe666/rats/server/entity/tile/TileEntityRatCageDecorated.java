@@ -4,7 +4,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 
@@ -12,34 +12,34 @@ public class TileEntityRatCageDecorated extends TileEntity {
     private NonNullList<ItemStack> containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityRatCageDecorated() {
+        super(null);
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
+    public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT tag = new CompoundNBT();
-        this.writeToNBT(tag);
-        return new SPacketUpdateTileEntity(pos, 1, tag);
+        this.write(tag);
+        return new SUpdateTileEntityPacket(pos, 1, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        readFromNBT(packet.getNbtCompound());
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        read(packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
-
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
+    public CompoundNBT write(CompoundNBT compound) {
         ItemStackHelper.saveAllItems(compound, this.containedDeco);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
-    public void readFromNBT(CompoundNBT compound) {
+    public void read(CompoundNBT compound) {
         containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, containedDeco);
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
     public ItemStack getContainedItem() {

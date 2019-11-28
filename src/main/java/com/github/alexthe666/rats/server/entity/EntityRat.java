@@ -2574,4 +2574,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         return super.isOnSameTeam(entityIn);
     }
+
+    public boolean isDead(){
+        return dead;
+    }
 }

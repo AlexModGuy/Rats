@@ -1,11 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -16,12 +11,12 @@ public class RatsNuggetRegistry {
     public static Map<ItemStack, ItemStack> ORE_TO_INGOTS = new TreeMap<>(new Comparator<ItemStack>() {
         @Override
         public int compare(ItemStack o1, ItemStack o2) {
-            return o1.getDisplayName().compareTo(o2.getDisplayName());
+            return o1.getDisplayName().getString().compareTo(o2.getDisplayName().getString());
         }
     });
 
     public static void init() {
-        for (String oreName : OreDictionary.getOreNames()) {
+        /*for (String oreName : OreDictionary.getOreNames()) {
             if (oreName.contains("ore") && !OreDictionary.getOres(oreName).isEmpty()) {
                 ItemStack stack = ItemStack.EMPTY;
                 try {
@@ -50,7 +45,7 @@ public class RatsNuggetRegistry {
             GameRegistry.addSmelting(stack, entry.getValue(), 0.2F);
             OreDictionary.registerOre("ratPoop", stack);
         }
-
+    */
     }
 
     public static int getNuggetMeta(ItemStack ore) {

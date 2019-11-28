@@ -1,17 +1,22 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 
-public class TileEntityMilkCauldron extends TileEntity implements ITickable {
+public class TileEntityMilkCauldron extends TileEntity implements ITickableTileEntity {
     int ticksExisted;
 
+    public TileEntityMilkCauldron() {
+        super(null);
+    }
+
     @Override
-    public void update() {
+    public void tick() {
         ticksExisted++;
         if (RatConfig.cheesemaking && ticksExisted >= RatConfig.milkCauldronTime) {
             world.setBlockState(this.getPos(), RatsBlockRegistry.CHEESE_CAULDRON.getDefaultState());
@@ -19,14 +24,14 @@ public class TileEntityMilkCauldron extends TileEntity implements ITickable {
         }
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        compound.setInt("TicksExisted", ticksExisted);
-        return super.writeToNBT(compound);
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("TicksExisted", ticksExisted);
+        return super.write(compound);
     }
 
-    public void readFromNBT(CompoundNBT compound) {
+    public void read(CompoundNBT compound) {
         ticksExisted = compound.getInt("TicksExisted");
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
 }

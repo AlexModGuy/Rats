@@ -2,25 +2,29 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityRatTrap extends TileEntity implements ITickable {
+public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity {
     public boolean isShut;
     public float shutProgress;
     private NonNullList<ItemStack> baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
 
+    public TileEntityRatTrap() {
+        super(null);
+    }
+
     @Override
-    public void update() {
+    public void tick() {
         boolean prevShut = isShut;
         if (isShut && shutProgress < 6.0F) {
             shutProgress += 1.5F;
@@ -39,7 +43,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.65F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                if (!rat.isDead) {
+                if (!rat.isDead()) {
                     rat.setKilledInTrap();
                     isShut = true;
                     world.playSound(null, this.getPos(), SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1F, 1F);
@@ -54,34 +58,34 @@ public class TileEntityRatTrap extends TileEntity implements ITickable {
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
+    public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT tag = new CompoundNBT();
-        this.writeToNBT(tag);
-        return new SPacketUpdateTileEntity(pos, 1, tag);
+        this.write(tag);
+        return new SUpdateTileEntityPacket(pos, 1, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        readFromNBT(packet.getNbtCompound());
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        read(packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
+    public CompoundNBT write(CompoundNBT compound) {
         ItemStackHelper.saveAllItems(compound, this.baitStack);
-        compound.setBoolean("IsShut", isShut);
-        compound.setFloat("ShutProgress", shutProgress);
-        return super.writeToNBT(compound);
+        compound.putBoolean("IsShut", isShut);
+        compound.putFloat("ShutProgress", shutProgress);
+        return super.write(compound);
     }
 
-    public void readFromNBT(CompoundNBT compound) {
+    public void read(CompoundNBT compound) {
         baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, baitStack);
         isShut = compound.getBoolean("IsShut");
         shutProgress = compound.getFloat("ShutProgress");
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
     public void setBaitStack(ItemStack stack) {

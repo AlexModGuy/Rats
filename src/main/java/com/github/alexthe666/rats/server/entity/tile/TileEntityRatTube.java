@@ -2,64 +2,43 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class TileEntityRatTube extends TileEntity implements ITickable {
+public class TileEntityRatTube extends TileEntity implements ITickableTileEntity {
 
-    private static PropertyBool[] allOpenVars = new PropertyBool[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
+    private static BooleanProperty[] allOpenVars = new BooleanProperty[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
     public Direction opening = null;
     public boolean isNode = false;
 
+    public TileEntityRatTube() {
+        super(null);
+    }
+
     @Override
-    public void update() {
+    public void tick() {
         if (isOpen()) {
             float i = this.getPos().getX() + 0.5F;
             float j = this.getPos().getY() + 0.2F;
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.4F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                rat.motionX *= 1.75F;
-                rat.motionZ *= 1.75F;
+                rat.setMotionMultiplier(this.getBlockState(), new Vec3d(1.75F, 1, 1.75F));
                 this.updateRat(rat);
             }
         }
     }
 
-    private Vec3d offsetTubePos() {
-        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockRatTube) {
-            BlockState actualState = this.getBlockType().getActualState(this.getWorld().getBlockState(this.pos), this.getWorld(), this.pos);
-            BlockPos pos = new BlockPos(0, 0, 0);
-            if (actualState.getValue(BlockRatTube.UP)) {
-                pos = pos.offset(Direction.UP);
-            }
-            if (actualState.getValue(BlockRatTube.DOWN)) {
-                pos = pos.offset(Direction.DOWN);
-            }
-            if (actualState.getValue(BlockRatTube.EAST)) {
-                pos = pos.offset(Direction.EAST);
-            }
-            if (actualState.getValue(BlockRatTube.WEST)) {
-                pos = pos.offset(Direction.WEST);
-            }
-            if (actualState.getValue(BlockRatTube.NORTH)) {
-                pos = pos.offset(Direction.NORTH);
-            }
-            if (actualState.getValue(BlockRatTube.SOUTH)) {
-                pos = pos.offset(Direction.SOUTH);
-            }
-            return new Vec3d(pos.getX() * 0.25D, pos.getY() * 0.25D, pos.getZ() * 0.25D);
-        }
-        return Vec3d.ZERO;
-    }
+
 
     private void updateRat(EntityRat rat) {
 
@@ -85,8 +64,8 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
     private boolean isOpen() {
         BlockState state = world.getBlockState(this.getPos());
         if (state.getBlock() instanceof BlockRatTube) {
-            for (PropertyBool opened : allOpenVars) {
-                if (state.getValue(opened)) {
+            for (BooleanProperty opened : allOpenVars) {
+                if (state.get(opened)) {
                     return true;
                 }
             }
@@ -94,13 +73,13 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         return false;
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        compound.setBoolean("Node", isNode);
-        compound.setInt("OpenSide", opening == null ? -1 : opening.ordinal());
-        return super.writeToNBT(compound);
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putBoolean("Node", isNode);
+        compound.putInt("OpenSide", opening == null ? -1 : opening.ordinal());
+        return super.write(compound);
     }
 
-    public void readFromNBT(CompoundNBT compound) {
+    public void read(CompoundNBT compound) {
         isNode = compound.getBoolean("Node");
         int i = compound.getInt("OpenSide");
         if (i == -1) {
@@ -108,7 +87,7 @@ public class TileEntityRatTube extends TileEntity implements ITickable {
         } else {
             opening = Direction.values()[MathHelper.clamp(i, 0, Direction.values().length - 1)];
         }
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
     public void setEntranceData(Direction side, boolean open) {

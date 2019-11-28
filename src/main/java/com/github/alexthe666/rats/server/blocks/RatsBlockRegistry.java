@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -8,6 +9,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
@@ -118,4 +120,19 @@ public class RatsBlockRegistry {
             throw new RuntimeException(e);
         }
     }
+
+    @SubscribeEvent
+    public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatHole::new, RAT_HOLE).build(null).setRegistryName("rat_hole"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatTrap::new, RAT_TRAP).build(null).setRegistryName("rat_trap"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityMilkCauldron::new, MILK_CAULDRON).build(null).setRegistryName("milk_cauldron"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatCageDecorated::new, RAT_CAGE_DECORATED).build(null).setRegistryName("rat_cage_decorated"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatCageBreedingLantern::new, RAT_CAGE_BREEDING_LANTERN).build(null).setRegistryName("rat_cage_breeding_lantern"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatCraftingTable::new, RAT_CRAFTING_TABLE).build(null).setRegistryName("rat_crafting_table"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatlantisPortal::new, RATLANTIS_PORTAL).build(null).setRegistryName("ratlantis_portal"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityRatTube::new, RAT_TUBE_COLOR).build(null).setRegistryName("rat_tube"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityUpgradeSeparator::new, UPGRADE_SEPARATOR).build(null).setRegistryName("upgrade_seperator"));
+        event.getRegistry().register(TileEntityType.Builder.create(TileEntityUpgradeCombiner::new, UPGRADE_COMBINER).build(null).setRegistryName("upgrade_combiner"));
+    }
+
 }

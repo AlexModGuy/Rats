@@ -1,18 +1,18 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated implements ITickable {
+public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated implements ITickableTileEntity {
 
     public int breedingCooldown = 0;
     private Random random;
@@ -28,19 +28,19 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
     public void setContainedItem(ItemStack stack) {
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        compound.setInt("BreedingCooldown", breedingCooldown);
-        return super.writeToNBT(compound);
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("BreedingCooldown", breedingCooldown);
+        return super.write(compound);
     }
 
-    public void readFromNBT(CompoundNBT compound) {
+    public void read(CompoundNBT compound) {
         breedingCooldown = compound.getInt("BreedingCooldown");
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
 
     @Override
-    public void update() {
+    public void tick() {
         float f = (24000.0F - breedingCooldown) / 24000.0F;
         float f1 = f * 0.6F + 0.4F;
         float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
@@ -83,6 +83,6 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
         } else {
             breedingCooldown--;
         }
-        world.spawnParticle(EnumParticleTypes.REDSTONE, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3);
+        //world.addParticle((IParticleData) ParticleTypes.DUST, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3);
     }
 }
