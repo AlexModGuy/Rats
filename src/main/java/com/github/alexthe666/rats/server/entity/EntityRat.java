@@ -2138,6 +2138,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 1.0F;
             }
         }
+        if(this.getRNG().nextFloat() < 0.025F){
+            this.setColorVariant(this.getRNG().nextBoolean() ? 9 : 5);
+        }
         return livingdata;
     }
 
