@@ -291,8 +291,8 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
             Minecraft minecraft = Minecraft.getMinecraft();
-            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
             GlStateManager.pushMatrix();
+            ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
             GlStateManager.translate(0F, 0.1F, 0.1F);
             GlStateManager.rotate(180, 1.0F, 0.0F, 0.0F);
             GlStateManager.scale(2, 2, 2);
