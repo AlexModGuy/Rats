@@ -464,6 +464,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        compound.setFloat("HomeDistance", getMaximumHomeDistance());
+        if(getHomePosition() != null){
+            compound.setInteger("HomePosX", getHomePosition().getX());
+            compound.setInteger("HomePosY", getHomePosition().getY());
+            compound.setInteger("HomePosZ", getHomePosition().getZ());
+        }
         compound.setInteger("CookingProgress", cookingProgress);
         compound.setInteger("DigCooldown", digCooldown);
         compound.setInteger("BreedCooldown", breedCooldown);
@@ -515,6 +521,17 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+        /*
+        compound.setFloat("HomeDistance", getMaximumHomeDistance());
+        if(getHomePosition() != null){
+            compound.setInteger("HomePosX", getHomePosition().getX());
+            compound.setInteger("HomePosY", getHomePosition().getY());
+            compound.setInteger("HomePosZ", getHomePosition().getZ());
+        }
+         */
+        if (compound.hasKey("HomePosX") && compound.hasKey("HomePosY") && compound.hasKey("HomePosZ")) {
+            setHomePosAndDistance(new BlockPos(compound.getInteger("HomePosX"), compound.getInteger("HomePosY"), compound.getInteger("HomePosZ")), compound.getInteger("HomeDistance"));
+        }
         cookingProgress = compound.getInteger("CookingProgress");
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
