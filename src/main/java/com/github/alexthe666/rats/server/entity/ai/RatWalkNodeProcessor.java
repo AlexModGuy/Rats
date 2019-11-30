@@ -37,7 +37,9 @@ public class RatWalkNodeProcessor extends WalkNodeProcessor {
                     if (pathnodetype == PathNodeType.DOOR_WOOD_CLOSED && canOpenDoorsIn && canEnterDoorsIn) {
                         pathnodetype = PathNodeType.WALKABLE;
                     }
-
+                    if (pathnodetype == PathNodeType.FENCE) {
+                        pathnodetype = PathNodeType.WALKABLE;
+                    }
                     if (pathnodetype == PathNodeType.DOOR_OPEN && !canEnterDoorsIn) {
                         pathnodetype = PathNodeType.BLOCKED;
                     }

@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityLlama;
@@ -97,7 +98,7 @@ public class RatAIHarvestBreeder extends EntityAIBase {
     private static boolean canBreedMob(EntityAnimal entity, ItemStack heldItemMainhand) {
         return !(entity instanceof EntityRat) && ((EntityAnimal) entity).isBreedingItem(heldItemMainhand)
                 || entity instanceof EntityLlama && heldItemMainhand.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK)
-                || entity instanceof EntityHorse && heldItemMainhand.getItem() == Items.GOLDEN_APPLE;
+                || entity instanceof AbstractHorse && heldItemMainhand.getItem() == Items.GOLDEN_APPLE;
     }
 
 }
