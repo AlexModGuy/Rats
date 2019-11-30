@@ -243,8 +243,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
+        this.targetTasks.addTask(2, new RatAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(3, new RatAIOwnerHurtTarget(this));
         this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false));
     }
 
@@ -698,6 +698,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public boolean isTargetCommand() {
         return getCommandInteger() == 4 || getCommandInteger() == 5;
+    }
+
+    public boolean isAttackCommand() {
+        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
     }
 
     public EntitySenses getSenses() {

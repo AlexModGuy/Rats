@@ -17,7 +17,7 @@ public class RatAIHurtByTarget extends EntityAIHurtByTarget {
     public boolean shouldExecute() {
         EntityLivingBase entitylivingbase = this.taskOwner.getRevengeTarget();
         if (rat.isTamed() || !(entitylivingbase instanceof EntityPlayer)) {
-            return super.shouldExecute();
+            return super.shouldExecute() && ((EntityRat)taskOwner).isAttackCommand();
         }
         return false;
     }

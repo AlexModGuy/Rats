@@ -16,7 +16,7 @@ public class RatAIHuntPrey<T extends EntityLivingBase> extends EntityAINearestAt
     }
 
     public boolean shouldExecute() {
-        return !rat.isInCage() && rat.shouldHunt() && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && super.shouldExecute();
+        return !rat.isInCage() && rat.shouldHunt() && ((EntityRat)taskOwner).isAttackCommand() && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && super.shouldExecute();
     }
 
     public boolean shouldContinueExecuting() {
