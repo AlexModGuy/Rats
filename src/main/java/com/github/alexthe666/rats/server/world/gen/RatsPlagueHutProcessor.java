@@ -100,11 +100,11 @@ public class RatsPlagueHutProcessor implements ITemplateProcessor {
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING)).withProperty(BlockStairs.HALF, blockstateIn.getValue(BlockStairs.HALF));
             }
 
             if (blockstateIn.getBlock() == Blocks.STONE_STAIRS) {
-                return Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING)).withProperty(BlockStairs.HALF, blockstateIn.getValue(BlockStairs.HALF));
             }
 
             if (blockstateIn.getBlock() == Blocks.GRAVEL) {
@@ -120,7 +120,7 @@ public class RatsPlagueHutProcessor implements ITemplateProcessor {
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING)).withProperty(BlockStairs.HALF, blockstateIn.getValue(BlockStairs.HALF));
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_FENCE) {
@@ -136,7 +136,7 @@ public class RatsPlagueHutProcessor implements ITemplateProcessor {
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.ACACIA_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.ACACIA_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING)).withProperty(BlockStairs.HALF, blockstateIn.getValue(BlockStairs.HALF));
             }
 
             if (blockstateIn.getBlock() == Blocks.COBBLESTONE) {

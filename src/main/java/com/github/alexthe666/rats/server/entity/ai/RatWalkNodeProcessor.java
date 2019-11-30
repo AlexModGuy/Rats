@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWall;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +38,7 @@ public class RatWalkNodeProcessor extends WalkNodeProcessor {
                     if (pathnodetype == PathNodeType.DOOR_WOOD_CLOSED && canOpenDoorsIn && canEnterDoorsIn) {
                         pathnodetype = PathNodeType.WALKABLE;
                     }
-                    if (pathnodetype == PathNodeType.FENCE) {
+                    if (pathnodetype == PathNodeType.FENCE && !(block instanceof BlockWall)) {
                         pathnodetype = PathNodeType.WALKABLE;
                     }
                     if (pathnodetype == PathNodeType.DOOR_OPEN && !canEnterDoorsIn) {
