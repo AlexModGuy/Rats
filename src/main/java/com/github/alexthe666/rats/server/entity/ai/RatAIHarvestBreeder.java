@@ -8,7 +8,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityLlama;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IShearable;
 
@@ -75,7 +79,7 @@ public class RatAIHarvestBreeder extends EntityAIBase {
     private void resetTarget() {
         perRatPredicate = new com.google.common.base.Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
-                return entity != null && entity instanceof EntityAnimal && !entity.isChild() && !((EntityAnimal) entity).isInLove() && ((EntityAnimal) entity).getGrowingAge() == 0 && ((EntityAnimal) entity).isBreedingItem(RatAIHarvestBreeder.this.entity.getHeldItemMainhand());
+                return entity != null && entity instanceof EntityAnimal && !entity.isChild() && !((EntityAnimal) entity).isInLove() && ((EntityAnimal) entity).getGrowingAge() == 0 && RatAIHarvestBreeder.canBreedMob(((EntityAnimal) entity), RatAIHarvestBreeder.this.entity.getHeldItemMainhand());
             }
         };
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) perRatPredicate);
@@ -88,6 +92,12 @@ public class RatAIHarvestBreeder extends EntityAIBase {
         if (closestSheep != null) {
             this.targetSheep = closestSheep;
         }
+    }
+
+    private static boolean canBreedMob(EntityAnimal entity, ItemStack heldItemMainhand) {
+        return !(entity instanceof EntityRat) && ((EntityAnimal) entity).isBreedingItem(heldItemMainhand)
+                || entity instanceof EntityLlama && heldItemMainhand.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK)
+                || entity instanceof EntityHorse && heldItemMainhand.getItem() == Items.GOLDEN_APPLE;
     }
 
 }

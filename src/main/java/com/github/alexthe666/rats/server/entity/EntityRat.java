@@ -105,6 +105,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             "rats:textures/entity/rat/tamed/rat_brown_undercoat.png",
             "rats:textures/entity/rat/tamed/rat_dark_undercoat.png"
     };
+    private static final int CHRISTMAS_PRESENT_TIME = 24000;
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
     public float sitProgress;
@@ -1010,7 +1011,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
             this.tryGiftgiving();
             if (cookingProgress > 0) {
-                if (cookingProgress == 23999) {
+                if (cookingProgress == CHRISTMAS_PRESENT_TIME-1) {
                     this.world.setEntityState(this, (byte) 126);
                 }
             }
@@ -1494,7 +1495,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 cookingProgress = 0;
             } else {
                 cookingProgress++;
-                if (cookingProgress >= 24000) {
+                if (cookingProgress >= CHRISTMAS_PRESENT_TIME) {
                     for (ItemStack stack : result) {
                         if (heldItem.isEmpty() && !held) {
                             this.setHeldItem(EnumHand.MAIN_HAND, stack.copy());
