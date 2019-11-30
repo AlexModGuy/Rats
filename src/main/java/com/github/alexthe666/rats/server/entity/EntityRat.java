@@ -375,7 +375,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     @Override
     public boolean canBreatheUnderwater() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDERWATER);
     }
 
     protected boolean isValidLightLevel() {
