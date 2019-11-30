@@ -1010,7 +1010,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
             this.tryGiftgiving();
             if (cookingProgress > 0) {
-                if (cookingProgress == 71999) {
+                if (cookingProgress == 23999) {
                     this.world.setEntityState(this, (byte) 126);
                 }
             }
@@ -1494,7 +1494,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 cookingProgress = 0;
             } else {
                 cookingProgress++;
-                if (cookingProgress == 72000) {
+                if (cookingProgress >= 24000) {
                     for (ItemStack stack : result) {
                         if (heldItem.isEmpty() && !held) {
                             this.setHeldItem(EnumHand.MAIN_HAND, stack.copy());
