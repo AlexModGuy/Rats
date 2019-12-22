@@ -4,16 +4,14 @@ import com.github.alexthe666.rats.ConfigHolder;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.*;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.github.alexthe666.rats.server.items.RatsUpgradeConflictRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -69,7 +67,22 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+    public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+        try {
+            for (Field f : RatsEntityRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof EntityType) {
+                    event.getRegistry().register((EntityType) obj);
+                } else if (obj instanceof EntityType[]) {
+                    for (EntityType type : (EntityType[]) obj) {
+                        event.getRegistry().register(type);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        /*
         registerSpawnable(EntityEntryBuilder.<EntityRat>create(), event, EntityRat.class, "rat", 1, 0X30333E, 0XDAABA1);
         registerSpawnable(EntityEntryBuilder.<EntityIllagerPiper>create(), event, EntityIllagerPiper.class, "illager_piper", 2, 0XCABC42, 0X3B6063);
         registerSpawnable(EntityEntryBuilder.<EntityRatlanteanSpirit>create(), event, EntityRatlanteanSpirit.class, "ratlantean_spirit", 3, 0XEDBD00, 0XFFE8AF);
@@ -95,8 +108,10 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityRatDragonFire>create(), event, EntityRatDragonFire.class, "rat_dragon_fire", 23);
         registerUnspawnable(EntityEntryBuilder.<EntityRatArrow>create(), event, EntityRatArrow.class, "rat_arrow", 24);
         EntitySpawnPlacementRegistry.setPlacementType(EntityPirat.class, EntityLiving.SpawnPlacementType.IN_WATER);
+        */
     }
 
+    /*
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {
         builder.entity(entityClass);
         builder.id(new ResourceLocation(RatsMod.MODID, name), id);
@@ -114,6 +129,7 @@ public class CommonProxy {
         event.getRegistry().register(builder.build());
     }
 
+     */
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
         final ModConfig config = event.getConfig();

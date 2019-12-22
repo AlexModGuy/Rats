@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.monster.AbstractIllager;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntityIllagerPiper extends AbstractIllager implements IRangedAttackMob {
+public class EntityIllagerPiper extends AbstractIllagerEntity implements IRangedAttackMob {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "illager_piper"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
