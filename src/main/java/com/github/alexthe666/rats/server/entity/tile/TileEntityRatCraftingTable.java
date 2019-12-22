@@ -6,28 +6,39 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TileEntityRatCraftingTable extends TileEntity implements ITickable, ISidedInventory {
+public class TileEntityRatCraftingTable extends LockableTileEntity implements ITickableTileEntity, ISidedInventory {
 
     private static final Predicate<ItemStack> EMPTY_ITEM_PREDICATE = new Predicate<ItemStack>() {
         public boolean apply(@Nullable ItemStack itemStack) {
@@ -49,12 +60,20 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     private List<IRecipe> currentApplicableRecipes = new ArrayList<>();
     private IRecipe selectedRecipe = null;
     private int selectedRecipeIndex = 0;
+    private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
+
+    protected TileEntityRatCraftingTable() {
+        super(null);
+    }
 
     private static List<IRecipe> findMatchingRecipesFor(ItemStack stack) {
         List<IRecipe> matchingRecipes = EMPTY_LIST;
         if (!stack.isEmpty()) {
             matchingRecipes = new ArrayList<>();
-            List<IRecipe> allRecipes = new ArrayList<>(ForgeRegistries.RECIPES.getValues());
+            List<IRecipe> allRecipes = new ArrayList<IRecipe>();
+            for(IRecipeSerializer serializer : RECIPES_TO_SCAN){
+                //TODO
+            }
             for (IRecipe recipe : allRecipes) {
                 if (recipe.canFit(3, 3) && recipe.getRecipeOutput().isItemEqual(stack)) {
                     matchingRecipes.add(recipe);
@@ -91,7 +110,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
 
     public static NonNullList<ItemStack> consumeIngredients(IRecipe recipe, NonNullList<ItemStack> stacks, NonNullList<ItemStack> inv) {
         Map<Ingredient, Integer> ingredients = new HashMap<>();
-        InventoryCrafting inventoryCrafting = new InventoryCrafting(new ContainerEmpty(), 3, 3);
+        CraftingInventory inventoryCrafting = new CraftingInventory(new ContainerEmpty(null, 0), 3, 3);
         for (Map.Entry<Ingredient, Integer> ing : compressRecipe(recipe).entrySet()) {
             ingredients.put(ing.getKey(), ing.getValue());
         }
@@ -136,7 +155,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         List<ItemStack> countedIngredients = new ArrayList<>();
         Map<Ingredient, Integer> ingredients = new HashMap<>();
         for (int i = 0; i < recipe.getIngredients().size(); i++) {
-            Ingredient ingredient = recipe.getIngredients().get(i);
+            Ingredient ingredient = (Ingredient) recipe.getIngredients().get(i);
             ItemStack[] matches = ingredient.getMatchingStacks();
             int index = 0;
             if (matches.length > 0) {
@@ -145,7 +164,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
                 if (!doesListContainStack(countedIngredients, counted)) {
                     if (!counted.isEmpty() && counted.getItem() != Items.AIR) {
                         for (int j = 0; j < recipe.getIngredients().size(); j++) {
-                            if (doesArrayContainStack(recipe.getIngredients().get(j).getMatchingStacks(), counted)) {
+                            if (doesArrayContainStack(((Ingredient)recipe.getIngredients().get(j)).getMatchingStacks(), counted)) {
                                 count++;
                             }
                         }
@@ -280,7 +299,7 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     }
 
     @Override
-    public void update() {
+    public void tick() {
         boolean flag = false;
         hasRat = false;
         this.prevCookTime = cookTime;
@@ -369,10 +388,6 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         return "rats:rat_crafting_table";
     }
 
-    public Container createContainer(InventoryPlayer playerInventory, PlayerEntity playerIn) {
-        return new ContainerFurnace(playerInventory, this);
-    }
-
     public int getFieldCount() {
         return 1;
     }
@@ -385,26 +400,26 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
         this.cookTime = value;
     }
 
-    public void readFromNBT(CompoundNBT compound) {
-        super.readFromNBT(compound);
+    public void read(CompoundNBT compound) {
+        super.read(compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
         this.cookTime = compound.getInt("CookTime");
         this.totalCookTime = compound.getInt("CookTimeTotal");
 
-        if (compound.hasKey("CustomName", 8)) {
+        if (!compound.getString("CustomName").isEmpty()) {
             this.furnaceCustomName = compound.getString("CustomName");
         }
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        super.writeToNBT(compound);
-        compound.setInt("CookTime", (short) this.cookTime);
-        compound.setInt("CookTimeTotal", (short) this.totalCookTime);
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+        compound.putInt("CookTime", (short) this.cookTime);
+        compound.putInt("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.inventory);
 
         if (this.hasCustomName()) {
-            compound.setString("CustomName", this.furnaceCustomName);
+            compound.putString("CustomName", this.furnaceCustomName);
         }
         return compound;
     }
@@ -414,13 +429,13 @@ public class TileEntityRatCraftingTable extends TileEntity implements ITickable,
     }
 
     @Override
-    public String getName() {
-        return this.hasCustomName() ? this.furnaceCustomName : "container.rat_crafting_table";
+    protected ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.rat_crafting_table");
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentTranslation(getName());
+    protected Container createMenu(int id, PlayerInventory player) {
+        return null;
     }
 
     @Override

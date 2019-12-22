@@ -1,22 +1,29 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -27,7 +34,7 @@ import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
 
-public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISidedInventory {
+public class TileEntityAutoCurdler extends LockableTileEntity implements ITickableTileEntity, ISidedInventory {
 
     private static final int[] SLOTS_TOP = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
@@ -41,14 +48,16 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     private int prevFluid = 0;
 
     public TileEntityAutoCurdler() {
+        super(null);
     }
 
     public static boolean isMilk(ItemStack stack) {
         if (stack.getItem() == Items.MILK_BUCKET) {
             return true;
         }
-        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack != null && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"));
+        FluidStack def = null; //TODO
+        LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
+        return fluidStack != null && (fluidStack.orElse(null).getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getUnlocalizedName().contains("Milk"));
     }
 
     public int getSizeInventory() {
@@ -91,8 +100,8 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         }
     }
 
-    public void readFromNBT(CompoundNBT compound) {
-        super.readFromNBT(compound);
+    public void read(CompoundNBT compound) {
+        super.read(compound);
         tank.readFromNBT(compound);
         this.curdlerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.curdlerStacks);
@@ -100,11 +109,11 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         this.totalCookTime = compound.getInt("CookTimeTotal");
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        super.writeToNBT(compound);
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
         tank.writeToNBT(compound);
-        compound.setInt("CookTime", (short) this.cookTime);
-        compound.setInt("CookTimeTotal", (short) this.totalCookTime);
+        compound.putInt("CookTime", (short) this.cookTime);
+        compound.putInt("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.curdlerStacks);
         return compound;
     }
@@ -122,7 +131,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
         return this.tank.getFluidAmount() >= 1000 && tank.getFluid() != null && isMilkFluid(tank.getFluid());
     }
 
-    public void update() {
+    public void tick() {
         if (!world.isRemote) {
             if (prevFluid != tank.getFluidAmount()) {
                 RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
@@ -161,12 +170,13 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
             }
 
         } else if (isMilk(curdlerStacks.get(0))) {
-            FluidStack fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
+            FluidStack def = null;
+            LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
             if (fluidStack != null) {
-                IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(curdlerStacks.get(0));
+                IFluidHandlerItem fluidHandler = (IFluidHandlerItem) FluidUtil.getFluidHandler(curdlerStacks.get(0));
                 if (fluidHandler.drain(Integer.MAX_VALUE, false) != null && fluidHandler.drain(Integer.MAX_VALUE, false).amount > 0) {
-                    if (tank.fill(fluidStack.copy(), false) != 0) {
-                        tank.fill(fluidStack.copy(), true);
+                    if (tank.fill(fluidStack.orElse(def).copy(), false) != 0) {
+                        tank.fill(fluidStack.orElse(def).copy(), true);
                         fluidHandler.drain(Integer.MAX_VALUE, true);
                     }
                 }
@@ -295,13 +305,13 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
     }
 
     @Override
-    public String getName() {
-        return "container.auto_curdler";
+    protected ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.auto_curdler");
     }
 
     @Override
-    public boolean hasCustomName() {
-        return false;
+    protected Container createMenu(int id, PlayerInventory player) {
+        return null;
     }
 
     @Override
@@ -322,10 +332,4 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
             return (T) tank;
         return super.getCapability(capability, facing);
     }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentTranslation(getName());
-    }
-
 }

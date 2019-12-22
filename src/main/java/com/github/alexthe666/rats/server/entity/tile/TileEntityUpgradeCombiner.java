@@ -5,24 +5,20 @@ import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, ISidedInventory {
+public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTileEntity, ISidedInventory {
 
     private static final int[] SLOTS_TOP = new int[]{0, 2};
     private static final int[] SLOTS_SIDE = new int[]{1};
@@ -41,13 +37,13 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     private int totalCookTime;
 
     public TileEntityUpgradeCombiner() {
+        super(null);
     }
 
     public static int getItemBurnTime(ItemStack stack) {
         return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS ? 150 : 0;
     }
 
-    @SideOnly(Side.CLIENT)
     public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
         return new net.minecraft.util.math.AxisAlignedBB(pos, pos.add(1, 2, 1));
     }
@@ -98,8 +94,8 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         return 300;
     }
 
-    public void readFromNBT(CompoundNBT compound) {
-        super.readFromNBT(compound);
+    public void read(CompoundNBT compound) {
+        super.read(compound);
         this.combinerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.combinerStacks);
         this.furnaceBurnTime = compound.getInt("BurnTime");
@@ -108,11 +104,11 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         this.currentItemBurnTime = getItemBurnTime(this.combinerStacks.get(1));
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT compound) {
-        super.writeToNBT(compound);
-        compound.setInt("BurnTime", (short) this.furnaceBurnTime);
-        compound.setInt("CookTime", (short) this.cookTime);
-        compound.setInt("CookTimeTotal", (short) this.totalCookTime);
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+        compound.putInt("BurnTime", (short) this.furnaceBurnTime);
+        compound.putInt("CookTime", (short) this.cookTime);
+        compound.putInt("CookTimeTotal", (short) this.totalCookTime);
         ItemStackHelper.saveAllItems(compound, this.combinerStacks);
         return compound;
     }
@@ -130,7 +126,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
         return this.furnaceBurnTime > 0;
     }
 
-    public void update() {
+    public void tick() {
         this.totalCookTime = 300;
         this.ratRotationPrev = this.ratRotation;
         ticksExisted++;
@@ -233,21 +229,18 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
             } else if (itemstack2.isItemEqual(itemstack1)) {
                 itemstack2.grow(itemstack1.getCount());
             }
-            if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1 && !this.combinerStacks.get(1).isEmpty() && this.combinerStacks.get(1).getItem() == Items.BUCKET) {
-                this.combinerStacks.set(1, new ItemStack(Items.WATER_BUCKET));
-            }
             itemstack.shrink(1);
             this.combinerStacks.get(2).shrink(1);
         }
     }
 
     private ItemStack getCombinerResult(ItemStack combiner, ItemStack stack) {
-        if (!combiner.hasTagCompound()) {
+        if (!combiner.hasTag()) {
             combiner.setTag(new CompoundNBT());
         }
         CompoundNBT CompoundNBT1 = combiner.getTag();
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+        if (CompoundNBT1 != null && CompoundNBT1.contains("Items")) {
             ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
         }
         int addIndex = -1;
@@ -357,16 +350,6 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
     }
 
     @Override
-    public String getName() {
-        return "container.upgrade_combiner";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
     @javax.annotation.Nullable
     public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
         if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -381,7 +364,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickable, 
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TextComponentTranslation(getName());
+        return new TranslationTextComponent("container.upgrade_combiner"));
     }
 
 }
