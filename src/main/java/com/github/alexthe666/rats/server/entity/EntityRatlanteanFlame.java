@@ -3,9 +3,8 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -14,8 +13,8 @@ import net.minecraft.world.World;
 
 public class EntityRatlanteanFlame extends FireballEntity {
 
-    public EntityRatlanteanFlame(World worldIn) {
-        super(worldIn);
+    public EntityRatlanteanFlame(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(0.6F, 0.6F);
     }
 

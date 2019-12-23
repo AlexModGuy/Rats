@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.google.common.base.Optional;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,8 +29,8 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "plague_beast"));
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueBeast.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
-    public EntityPlagueBeast(World worldIn) {
-        super(worldIn);
+    public EntityPlagueBeast(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
     protected void initEntityAI() {

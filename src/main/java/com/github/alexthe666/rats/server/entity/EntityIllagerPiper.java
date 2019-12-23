@@ -3,10 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -43,8 +40,8 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
     private int ratCooldown = 0;
     private int fluteTicks = 0;
 
-    public EntityIllagerPiper(World world) {
-        super(world);
+    public EntityIllagerPiper(EntityType type, World world) {
+        super(type, world);
         this.setCombatTask();
     }
 

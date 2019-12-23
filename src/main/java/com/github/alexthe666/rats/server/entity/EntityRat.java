@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
@@ -15,9 +17,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
-import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -25,6 +25,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -166,11 +167,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private int visualCooldown = 0;
     private int poopCooldown = 0;
 
-    public EntityRat(World worldIn) {
-        super(worldIn);
+    public EntityRat(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setPathPriority(PathNodeType.RAIL, 1000F);
         switchNavigator(1);
-        this.setSize(0.49F, 0.49F);
         initInventory();
     }
 

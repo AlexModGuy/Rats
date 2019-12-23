@@ -5,10 +5,7 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
@@ -27,12 +24,12 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
+public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
 
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueCloud.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
-    public EntityPlagueCloud(World worldIn) {
-        super(worldIn);
+    public EntityPlagueCloud(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(1.0F, 1.5F);
         this.moveHelper = new EntityPlagueCloud.AIMoveControl(this);
     }

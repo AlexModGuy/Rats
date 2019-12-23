@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -19,25 +21,25 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLaserBeam extends EntityArrow {
+public class EntityLaserBeam extends AbstractArrowEntity {
 
     private static final DataParameter<Float> R = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> G = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> B = EntityDataManager.createKey(EntityLaserBeam.class, DataSerializers.FLOAT);
 
-    public EntityLaserBeam(World worldIn) {
-        super(worldIn);
+    public EntityLaserBeam(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setDamage(6F);
     }
 
-    public EntityLaserBeam(World worldIn, double x, double y, double z, float r, float g, float b) {
-        this(worldIn);
+    public EntityLaserBeam(EntityType type, World worldIn, double x, double y, double z, float r, float g, float b) {
+        this(type, worldIn);
         this.setPosition(x, y, z);
         this.setDamage(6F);
     }
 
-    public EntityLaserBeam(World worldIn, LivingEntity shooter) {
-        super(worldIn, shooter);
+    public EntityLaserBeam(EntityType type, World worldIn, LivingEntity shooter) {
+        super(type, shooter, worldIn);
         this.setDamage(RatConfig.neoRatlanteanAttack);
     }
 

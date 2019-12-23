@@ -1,11 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -20,19 +19,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityPlagueShot extends AbstractArrowEntity {
 
-    public EntityPlagueShot(World worldIn) {
-        super(worldIn);
+    public EntityPlagueShot(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setDamage(6F);
     }
 
-    public EntityPlagueShot(World worldIn, double x, double y, double z, float r, float g, float b) {
-        this(worldIn);
+    public EntityPlagueShot(EntityType type, World worldIn, double x, double y, double z, float r, float g, float b) {
+        this(type, worldIn);
         this.setPosition(x, y, z);
         this.setDamage(6F);
     }
 
-    public EntityPlagueShot(World worldIn, LivingEntity shooter, double dmg) {
-        super(worldIn, shooter);
+    public EntityPlagueShot(EntityType type, World worldIn, LivingEntity shooter, double dmg) {
+        super(type, shooter, worldIn);
         this.setDamage(dmg);
     }
 

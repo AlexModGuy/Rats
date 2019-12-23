@@ -8,9 +8,7 @@ import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIVillagerInterac
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.item.ItemEntity;
@@ -51,7 +49,7 @@ import java.util.Set;
 
 import static com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry.PLAGUE_DOCTOR_TRIGGER;
 
-public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMob, INpc, IMerchant {
+public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMob, INpc, IMerchant {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "plague_doctor"));
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Item.getItemFromBlock(Blocks.RED_FLOWER));
@@ -79,8 +77,8 @@ public class EntityPlagueDoctor extends EntityAgeable implements IRangedAttackMo
     private boolean areAdditionalTasksSet;
     private int randomTickDivider;
 
-    public EntityPlagueDoctor(World worldIn) {
-        super(worldIn);
+    public EntityPlagueDoctor(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.villagerInventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6F, 1.95F);
         ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);

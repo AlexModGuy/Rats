@@ -2,12 +2,11 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -17,13 +16,13 @@ public class EntityRatArrow extends AbstractArrowEntity {
 
     private ItemStack stack;
 
-    public EntityRatArrow(World worldIn) {
-        super(worldIn);
+    public EntityRatArrow(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.stack = new ItemStack(RatsItemRegistry.RAT_ARROW);
     }
 
-    public EntityRatArrow(World worldIn, LivingEntity shooter, ItemStack stack) {
-        super(worldIn, shooter);
+    public EntityRatArrow(EntityType type, World worldIn, LivingEntity shooter, ItemStack stack) {
+        super(type, shooter, worldIn);
         this.stack = stack;
     }
 

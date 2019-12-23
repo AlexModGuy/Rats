@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -15,21 +17,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityGolemBeam extends EntityArrow {
+public class EntityGolemBeam extends AbstractArrowEntity {
 
-    public EntityGolemBeam(World worldIn) {
-        super(worldIn);
+    public EntityGolemBeam(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setDamage(8F);
     }
 
-    public EntityGolemBeam(World worldIn, double x, double y, double z) {
-        this(worldIn);
+    public EntityGolemBeam(EntityType type, World worldIn, double x, double y, double z) {
+        this(type, worldIn);
         this.setPosition(x, y, z);
         this.setDamage(8F);
     }
 
-    public EntityGolemBeam(World worldIn, LivingEntity shooter) {
-        super(worldIn, shooter);
+    public EntityGolemBeam(EntityType type, World worldIn, LivingEntity shooter) {
+        super(type, shooter, worldIn);
         this.setDamage(RatConfig.ratlanteanAutomatonAttack * 0.5F + 0.5F);
     }
 

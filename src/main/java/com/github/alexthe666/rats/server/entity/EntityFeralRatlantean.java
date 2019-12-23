@@ -6,8 +6,9 @@ import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -22,7 +23,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity, IRatlantean {
+public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity, IRatlantean {
 
     public static final Animation ANIMATION_BITE = Animation.create(15);
     public static final Animation ANIMATION_SLASH = Animation.create(25);
@@ -38,8 +39,8 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
     private int animationTick;
     private Animation currentAnimation;
 
-    public EntityFeralRatlantean(World worldIn) {
-        super(worldIn);
+    public EntityFeralRatlantean(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(1.85F, 1.2F);
     }
 

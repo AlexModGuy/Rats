@@ -5,10 +5,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -25,15 +22,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity, IRatlantean {
+public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity, IRatlantean {
 
     public static final Animation ANIMATION_ATTACK = Animation.create(10);
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "ratlantean_soul"));
     private int animationTick;
     private Animation currentAnimation;
 
-    public EntityRatlanteanSpirit(World worldIn) {
-        super(worldIn);
+    public EntityRatlanteanSpirit(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(0.5F, 0.85F);
         this.moveHelper = new EntityRatlanteanSpirit.AIMoveControl(this);
     }

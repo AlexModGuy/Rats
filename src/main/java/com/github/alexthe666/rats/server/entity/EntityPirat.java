@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
@@ -32,8 +33,8 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     private EntityAIAttackMelee aiAttackOnCollide;
     private int attackCooldown = 70;
 
-    public EntityPirat(World worldIn) {
-        super(worldIn);
+    public EntityPirat(EntityType type, World worldIn) {
+        super(type, worldIn);
         waterBased = true;
         Arrays.fill(this.inventoryArmorDropChances, 0.2F);
         Arrays.fill(this.inventoryHandsDropChances, 0.2F);

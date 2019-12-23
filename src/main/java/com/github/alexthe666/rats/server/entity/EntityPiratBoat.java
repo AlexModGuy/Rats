@@ -5,12 +5,9 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -38,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class EntityPiratBoat extends EntityMob implements IRatlantean {
+public class EntityPiratBoat extends MobEntity implements IRatlantean {
     public static final ItemStack BANNER = generateBanner();
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityPiratBoat.class, DataSerializers.BOOLEAN);
@@ -51,8 +48,8 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     private EntityBoat.Status previousStatus;
     private double lastYd;
 
-    public EntityPiratBoat(World worldIn) {
-        super(worldIn);
+    public EntityPiratBoat(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.paddlePositions = new float[2];
         this.setSize(1.75F, 0.8F);
         switchNavigator(0);

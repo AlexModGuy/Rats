@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
@@ -16,16 +16,16 @@ import java.util.List;
 
 public class EntityVialOfSentience extends PotionEntity {
 
-    public EntityVialOfSentience(World worldIn) {
-        super(worldIn);
+    public EntityVialOfSentience(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
-    public EntityVialOfSentience(World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
-        super(worldIn, throwerIn, potionDamageIn);
+    public EntityVialOfSentience(EntityType type, World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
+        super(type, worldIn, throwerIn, potionDamageIn);
     }
 
-    public EntityVialOfSentience(World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
-        super(worldIn, x, y, z, potionDamageIn);
+    public EntityVialOfSentience(EntityType type, World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
+        super(type, worldIn, x, y, z, potionDamageIn);
     }
 
     public ItemStack getPotion() {

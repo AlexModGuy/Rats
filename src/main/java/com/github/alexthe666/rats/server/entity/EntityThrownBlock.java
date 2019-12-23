@@ -7,12 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -36,13 +37,13 @@ public class EntityThrownBlock extends Entity {
     private int ticksAlive;
     private int ticksInAir;
 
-    public EntityThrownBlock(World worldIn) {
-        super(worldIn);
+    public EntityThrownBlock(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(0.98F, 0.98F);
     }
 
-    public EntityThrownBlock(World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
-        super(worldIn);
+    public EntityThrownBlock(EntityType type, World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
+        super(type, worldIn);
         this.setSize(0.98F, 0.98F);
         this.fallTile = blockState;
         this.shootingEntity = entityNeoRatlantean;

@@ -1,7 +1,8 @@
 package com.github.alexthe666.rats.server.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -12,18 +13,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityCheeseCannonball extends EntityThrowable {
+public class EntityCheeseCannonball extends ThrowableEntity {
 
-    public EntityCheeseCannonball(World worldIn) {
-        super(worldIn);
+    public EntityCheeseCannonball(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
-    public EntityCheeseCannonball(World worldIn, LivingEntity throwerIn) {
-        super(worldIn, throwerIn);
+    public EntityCheeseCannonball(EntityType type, World worldIn, LivingEntity throwerIn) {
+        super(type, throwerIn, worldIn);
     }
 
-    public EntityCheeseCannonball(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
+    public EntityCheeseCannonball(EntityType type, World worldIn, double x, double y, double z) {
+        super(type, x, y, z, worldIn);
     }
 
     @SideOnly(Side.CLIENT)

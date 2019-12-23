@@ -2,10 +2,9 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,16 +20,18 @@ import java.util.List;
 
 public class EntityPurifyingLiquid extends PotionEntity {
 
-    public EntityPurifyingLiquid(World worldIn) {
-        super(worldIn);
+    public EntityPurifyingLiquid(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
-    public EntityPurifyingLiquid(World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
-        super(worldIn, throwerIn, potionDamageIn);
+    public EntityPurifyingLiquid(EntityType type, World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
+        this(type, worldIn);
+        this.owner = throwerIn;
     }
 
-    public EntityPurifyingLiquid(World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
-        super(worldIn, x, y, z, potionDamageIn);
+    public EntityPurifyingLiquid(EntityType type, World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
+        this(type, worldIn);
+        this.setPosition(x, y, z);
     }
 
     public ItemStack getPotion() {

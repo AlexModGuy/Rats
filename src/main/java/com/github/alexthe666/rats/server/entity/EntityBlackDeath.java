@@ -5,13 +5,14 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAIStrife;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -36,7 +37,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRangedAttackMob {
+public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRangedAttackMob {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "black_death"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
@@ -48,8 +49,8 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
     private int ratCooldown = 0;
     private int summonAnimationCooldown = 0;
 
-    public EntityBlackDeath(World worldIn) {
-        super(worldIn);
+    public EntityBlackDeath(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(0.6F, 1.95F);
         ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
     }

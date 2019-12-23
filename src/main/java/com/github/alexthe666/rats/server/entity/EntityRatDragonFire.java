@@ -2,8 +2,10 @@ package com.github.alexthe666.rats.server.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -12,21 +14,18 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityRatDragonFire extends EntityFireball {
+public class EntityRatDragonFire extends AbstractFireballEntity {
 
-    public EntityRatDragonFire(World worldIn) {
-        super(worldIn);
-        this.setSize(0.6F, 0.6F);
+    public EntityRatDragonFire(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
-    public EntityRatDragonFire(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
-        super(worldIn, shooter, accelX, accelY, accelZ);
-        this.setSize(0.6F, 0.6F);
+    public EntityRatDragonFire(EntityType type, LivingEntity shooter, World worldIn, double accelX, double accelY, double accelZ) {
+        super(type, shooter, accelX, accelY, accelZ, worldIn);
     }
 
-    public EntityRatDragonFire(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
-        super(worldIn, x, y, z, accelX, accelY, accelZ);
-        this.setSize(0.6F, 0.6F);
+    public EntityRatDragonFire(EntityType type, World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
+        super(type, x, y, z, accelX, accelY, accelZ, worldIn);
     }
 
     public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {

@@ -7,9 +7,7 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
@@ -38,7 +36,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
+public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "neo_ratlantean"));
     private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
@@ -54,8 +52,8 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
     private int summonCooldown = 0;
     private int humTicks = 0;
 
-    public EntityNeoRatlantean(World worldIn) {
-        super(worldIn);
+    public EntityNeoRatlantean(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setHealth(this.getMaxHealth());
         this.setSize(0.8F, 1.3F);
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);

@@ -8,10 +8,7 @@ import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
@@ -47,8 +44,8 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
     private boolean useRangedAttack = false;
     private Animation currentAnimation;
 
-    public EntityMarbleCheeseGolem(World worldIn) {
-        super(worldIn);
+    public EntityMarbleCheeseGolem(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setHealth(this.getMaxHealth());
         this.setSize(2F, 3.5F);
         this.isImmuneToFire = true;

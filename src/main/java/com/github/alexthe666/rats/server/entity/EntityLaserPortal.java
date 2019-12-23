@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
@@ -31,21 +32,21 @@ public class EntityLaserPortal extends Entity {
     private Entity facingTarget;
     private UUID ownerUniqueId;
 
-    public EntityLaserPortal(World worldIn) {
-        super(worldIn);
+    public EntityLaserPortal(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.setSize(0.9F, 1.5F);
         this.isImmuneToFire = true;
     }
 
-    public EntityLaserPortal(World worldIn, double x, double y, double z) {
-        this(worldIn);
+    public EntityLaserPortal(EntityType type, World worldIn, double x, double y, double z) {
+        this(type, worldIn);
         this.setSize(0.9F, 1.5F);
         this.setPosition(x, y, z);
         this.isImmuneToFire = true;
     }
 
-    public EntityLaserPortal(World worldIn, double x, double y, double z, LivingEntity creator) {
-        this(worldIn);
+    public EntityLaserPortal(EntityType type, World worldIn, double x, double y, double z, LivingEntity creator) {
+        this(type, worldIn);
         this.setSize(0.9F, 1.5F);
         this.setPosition(x, y, z);
         this.setCreator(creator);
