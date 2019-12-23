@@ -460,7 +460,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         return RatsVillageRegistry.PLAGUE_DOCTOR;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setRecipes(@Nullable MerchantRecipeList recipeList) {
     }
 
@@ -479,7 +479,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     /**
      * Handler for {@link World#setEntityState}
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 12) {
             this.spawnParticles(EnumParticleTypes.HEART);
@@ -492,7 +492,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void spawnParticles(EnumParticleTypes particleType) {
         for (int i = 0; i < 5; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;

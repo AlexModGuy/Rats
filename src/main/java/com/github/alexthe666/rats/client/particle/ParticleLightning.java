@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleLightning extends ParticleFlame {
 
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("rats:textures/particle/lightning_0.png");

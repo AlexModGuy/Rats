@@ -54,7 +54,7 @@ public class BiomeRatlantis extends Biome {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getSkyColorByTemp(float currentTemperature) {
         return 0XFFC62A;
     }

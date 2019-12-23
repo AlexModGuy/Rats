@@ -23,7 +23,7 @@ public class WorldProviderRatlantis extends WorldProvider {
         return RatsWorldRegistry.RATLANTIS_DIM;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Vec3d getFogColor(float p_76562_1_, float p_76562_2_) {
         float f = MathHelper.clamp(MathHelper.cos(p_76562_1_ * ((float) Math.PI * 2F)) * 2.0F + 0.5F, 0, 1F);
         float bright = 1.15F * f;

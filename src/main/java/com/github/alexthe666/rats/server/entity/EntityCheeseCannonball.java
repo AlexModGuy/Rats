@@ -27,7 +27,7 @@ public class EntityCheeseCannonball extends ThrowableEntity {
         super(type, x, y, z, worldIn);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 3) {
             double d0 = 0.08D;
@@ -38,7 +38,7 @@ public class EntityCheeseCannonball extends ThrowableEntity {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender() {
         return 15728880;
     }

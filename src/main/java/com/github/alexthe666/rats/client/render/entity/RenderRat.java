@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderRat extends RenderLiving<EntityRat> {
 
     private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();

@@ -55,9 +55,9 @@ import java.util.Map;
 @Mod.EventBusSubscriber
 public class ClientProxy extends CommonProxy {
     public static final ModelResourceLocation RAT_NUGGET_MODEL = new ModelResourceLocation(new ResourceLocation(RatsMod.MODID, "rat_nugget_ore"), "inventory");
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static final RatsTEISR TEISR = new RatsTEISR();
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
     public static BlockPos refrencedPos;
     public static Direction refrencedFacing;
@@ -118,7 +118,7 @@ public class ClientProxy extends CommonProxy {
         TinkersCompatBridge.loadTinkersClientCompat();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void init() {
         MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
@@ -246,7 +246,7 @@ public class ClientProxy extends CommonProxy {
         ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void postInit() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
             Render render = entry.getValue();
@@ -310,7 +310,7 @@ public class ClientProxy extends CommonProxy {
         return Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiRat) && !(Minecraft.getMinecraft().currentScreen instanceof GuiCheeseStaff);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Object getArmorModel(int index) {
         if (index == 0) {
             return new ModelChefToque(1.0F);
@@ -333,7 +333,7 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void openCheeseStaffGui() {
         if (refrencedRat != null) {
@@ -357,7 +357,7 @@ public class ClientProxy extends CommonProxy {
         refrencedFacing = facing;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
         World world = Minecraft.getMinecraft().world;

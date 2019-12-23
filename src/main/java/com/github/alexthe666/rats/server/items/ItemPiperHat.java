@@ -22,7 +22,7 @@ public class ItemPiperHat extends ArmorItem {
         this.setRegistryName(RatsMod.MODID, "piper_hat");
     }
 
-    /*@SideOnly(Side.CLIENT)
+    /*@OnlyIn(Dist.CLIENT)
     public ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(1);
     }

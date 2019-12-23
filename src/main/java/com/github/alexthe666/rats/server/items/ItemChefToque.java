@@ -12,7 +12,7 @@ public class ItemChefToque extends ArmorItem {
         this.setRegistryName(RatsMod.MODID, "chef_toque");
     }
 
-   /* @SideOnly(Side.CLIENT)
+   /* @OnlyIn(Dist.CLIENT)
     public net.minecraft.client.model.ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(0);
     }

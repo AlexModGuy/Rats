@@ -250,7 +250,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     protected void doWaterSplashEffect() {
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getRowingTime(int side, float limbSwing) {
         return (float) MathHelper.clampedLerp((double) this.paddlePositions[side] - 0.39269909262657166D, (double) this.paddlePositions[side], (double) limbSwing);
     }

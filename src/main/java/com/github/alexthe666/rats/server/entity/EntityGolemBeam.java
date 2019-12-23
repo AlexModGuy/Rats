@@ -84,7 +84,7 @@ public class EntityGolemBeam extends AbstractArrowEntity {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender() {
         return 15728880;
     }

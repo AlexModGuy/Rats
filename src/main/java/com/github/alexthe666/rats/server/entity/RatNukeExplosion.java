@@ -46,12 +46,12 @@ public class RatNukeExplosion extends Explosion {
     private final Map<PlayerEntity, Vec3d> playerKnockbackMap;
     private final Vec3d position;
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public RatNukeExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, List<BlockPos> affectedPositions) {
         this(worldIn, entityIn, x, y, z, size, false, true, affectedPositions);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public RatNukeExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, boolean causesFire, boolean damagesTerrain, List<BlockPos> affectedPositions) {
         this(worldIn, entityIn, x, y, z, size, causesFire, damagesTerrain);
         this.affectedBlockPositions.addAll(affectedPositions);

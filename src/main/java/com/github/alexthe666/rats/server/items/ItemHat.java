@@ -47,7 +47,7 @@ public class ItemHat extends ArmorItem {
         }
     }
 
-    /*@SideOnly(Side.CLIENT)
+    /*@OnlyIn(Dist.CLIENT)
     public ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(modelIndex);
     }

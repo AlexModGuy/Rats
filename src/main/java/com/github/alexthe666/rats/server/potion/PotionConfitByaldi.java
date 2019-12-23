@@ -1,27 +1,32 @@
 package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.DisplayEffectsScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.EffectType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class PotionConfitByaldi extends Effect {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/potion_effect.png");
 
     public PotionConfitByaldi() {
-        super(false, 0XFFDD59);
+        super(EffectType.BENEFICIAL, 0XFFDD59);
         this.setRegistryName(RatsMod.MODID, "synesthesia");
-        this.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 10.0D, 0).setBeneficial();
+        this.addAttributesModifier(SharedMonsterAttributes.ATTACK_SPEED, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 10.0D, AttributeModifier.Operation.ADDITION);
     }
 
     public void performEffect(LivingEntity LivingEntityIn, int amplifier) {
@@ -54,22 +59,21 @@ public class PotionConfitByaldi extends Effect {
         return "rats.synesthesia";
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc) {
-        mc.getTextureManager().bindTexture(TEXTURE);
+    @OnlyIn(Dist.CLIENT)
+    public void renderInventoryEffect(EffectInstance effect, DisplayEffectsScreen<?> gui, int x, int y, float z) {
+        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(x + 6, y + 7, 0, 0, 18, 18);
     }
 
 
-    @SideOnly(Side.CLIENT)
-    public void renderHUDEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
-        mc.getTextureManager().bindTexture(TEXTURE);
+    @OnlyIn(Dist.CLIENT)
+    public void renderHUDEffect(EffectInstance effect, AbstractGui gui, int x, int y, float z, float alpha) {
+        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(x + 3, y + 3, 0, 0, 18, 18);
 
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();

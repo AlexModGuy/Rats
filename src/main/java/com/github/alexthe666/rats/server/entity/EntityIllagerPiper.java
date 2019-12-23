@@ -157,7 +157,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AbstractIllager.IllagerArmPose getArmPose() {
         return IllagerArmPose.BOW_AND_ARROW;
     }
@@ -202,7 +202,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 82) {
             this.playEffect(0);

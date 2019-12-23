@@ -3,26 +3,21 @@ package com.github.alexthe666.rats.server;
 import com.github.alexthe666.rats.ConfigHolder;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.*;
+import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.potion.Potion;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -33,7 +28,7 @@ import java.lang.reflect.Field;
 public class CommonProxy {
 
     @SubscribeEvent
-    public static void registerPotions(RegistryEvent.Register<Potion> event) {
+    public static void registerPotions(RegistryEvent.Register<Effect> event) {
         event.getRegistry().registerAll(RatsMod.CONFIT_BYALDI_POTION, RatsMod.PLAGUE_POTION);
     }
 
@@ -76,6 +71,7 @@ public class CommonProxy {
                 } else if (obj instanceof EntityType[]) {
                     for (EntityType type : (EntityType[]) obj) {
                         event.getRegistry().register(type);
+
                     }
                 }
             }

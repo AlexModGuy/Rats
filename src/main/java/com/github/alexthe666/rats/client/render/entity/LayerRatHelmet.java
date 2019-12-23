@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
     RenderRat renderer;
     private float alpha = 1.0F;

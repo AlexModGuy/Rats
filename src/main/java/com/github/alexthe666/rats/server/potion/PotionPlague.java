@@ -1,22 +1,26 @@
 package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.DisplayEffectsScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.PotionEffect;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.EffectType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 
 public class PotionPlague extends Effect {
 
     public PotionPlague() {
-        super(false, 0X445637);
+        super(EffectType.HARMFUL, 0X445637);
         this.setRegistryName(RatsMod.MODID, "plague");
     }
 
@@ -32,21 +36,21 @@ public class PotionPlague extends Effect {
     }
 
 
-    @SideOnly(Side.CLIENT)
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc) {
-        mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
+    @OnlyIn(Dist.CLIENT)
+    public void renderInventoryEffect(EffectInstance effect, DisplayEffectsScreen<?> gui, int x, int y, float z) {
+        Minecraft.getInstance().getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 6, y + 7, 18, 0, 18, 18);
     }
 
 
-    @SideOnly(Side.CLIENT)
-    public void renderHUDEffect(int x, int y, PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
-        mc.getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
+    @OnlyIn(Dist.CLIENT)
+    public void renderHUDEffect(EffectInstance effect, AbstractGui gui, int x, int y, float z, float alpha) {
+        Minecraft.getInstance().getTextureManager().bindTexture(PotionConfitByaldi.TEXTURE);
         this.drawTexturedModalRect(x + 3, y + 3, 18, 0, 18, 18);
 
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();

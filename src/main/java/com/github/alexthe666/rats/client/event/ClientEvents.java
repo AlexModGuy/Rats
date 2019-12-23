@@ -40,7 +40,7 @@ public class ClientEvents {
     private float maxSynesthesiaProgress = 40;
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onPlayerInteract(RenderGameOverlayEvent.Pre event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getMinecraft().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatConfig.plagueHearts) {
             return;
@@ -137,7 +137,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() == Minecraft.getMinecraft().player) {
             EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
@@ -165,7 +165,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onGetFOVModifier(EntityViewRenderEvent.FOVModifier event) {
         if (event.getEntity() == Minecraft.getMinecraft().player && prevSynesthesiaProgress > 0) {
             float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * LLibrary.PROXY.getPartialTicks());

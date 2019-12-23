@@ -2027,7 +2027,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 82) {
             this.playEffect(0);
@@ -2123,7 +2123,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return livingdata;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String getRatTexture() {
         return RAT_TEXTURES[MathHelper.clamp(this.getColorVariant(), 0, RAT_TEXTURES.length - 1)];
     }
@@ -2506,7 +2506,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return super.isEntityInvulnerable(source);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPartying(BlockPos pos, boolean isPartying) {
         int moves = this.rand.nextInt(4);
         if (!this.isDancing() && isPartying) {
