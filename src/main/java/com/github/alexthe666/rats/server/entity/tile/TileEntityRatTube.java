@@ -7,10 +7,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -21,7 +19,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
     public boolean isNode = false;
 
     public TileEntityRatTube() {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_TUBE);
     }
 
     @Override

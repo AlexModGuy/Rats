@@ -5,10 +5,12 @@ import net.minecraft.tileentity.EndPortalTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 
-import javax.annotation.Nullable;
-
 public class TileEntityRatlantisPortal extends EndPortalTileEntity implements ITickableTileEntity {
     private long age;
+
+    protected TileEntityRatlantisPortal() {
+        super(RatsTileEntityRegistry.RATLANTIS_PORTAL);
+    }
 
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);

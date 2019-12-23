@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
 
 public class RatToolMaterial implements IItemTier {
    private String name;
@@ -13,6 +10,7 @@ public class RatToolMaterial implements IItemTier {
    private float damage;
    private float speed;
    private int enchantability;
+    private Ingredient ingredient = null;
 
     public RatToolMaterial(String name, int harvestLevel, int durability, float damage, float speed, int enchantability) {
         this.name = name;
@@ -54,6 +52,10 @@ public class RatToolMaterial implements IItemTier {
 
     @Override
     public Ingredient getRepairMaterial() {
-        return null;
+        return ingredient == null ? Ingredient.EMPTY : ingredient;
+    }
+
+    public void setRepairMaterial(Ingredient ingredient){
+        this.ingredient = ingredient;
     }
 }

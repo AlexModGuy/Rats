@@ -6,13 +6,18 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
 public class TileEntityRatCageDecorated extends TileEntity {
     private NonNullList<ItemStack> containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityRatCageDecorated() {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_CAGE_DECORATED);
+    }
+
+    public TileEntityRatCageDecorated(TileEntityType type) {
+        super(type);
     }
 
     @Override

@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,7 +17,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
     public float ratRotationPrev;
 
     public TileEntityUpgradeSeparator() {
-        super(null);
+        super(RatsTileEntityRegistry.UPGRADE_SEPERATOR);
     }
 
     @Override

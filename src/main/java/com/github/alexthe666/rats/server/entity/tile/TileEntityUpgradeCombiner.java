@@ -37,7 +37,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     private int totalCookTime;
 
     public TileEntityUpgradeCombiner() {
-        super(null);
+        super(RatsTileEntityRegistry.UPGRADE_COMBINER);
     }
 
     public static int getItemBurnTime(ItemStack stack) {

@@ -20,7 +20,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
     private NonNullList<ItemStack> baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityRatTrap() {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_TRAP);
     }
 
     @Override

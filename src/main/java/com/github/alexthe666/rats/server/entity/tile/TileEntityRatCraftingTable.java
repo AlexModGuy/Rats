@@ -63,7 +63,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
 
     protected TileEntityRatCraftingTable() {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_CRAFTING_TABLE);
     }
 
     private static List<IRecipe> findMatchingRecipesFor(ItemStack stack) {

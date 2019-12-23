@@ -12,7 +12,7 @@ public class TileEntityMilkCauldron extends TileEntity implements ITickableTileE
     int ticksExisted;
 
     public TileEntityMilkCauldron() {
-        super(null);
+        super(RatsTileEntityRegistry.MILK_CAULDRON);
     }
 
     @Override

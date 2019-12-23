@@ -16,12 +16,12 @@ public class TileEntityRatHole extends TileEntity {
     private NonNullList<ItemStack> immitationStack = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityRatHole() {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_HOLE);
         setImmitatedBlockState(Blocks.OAK_PLANKS.getDefaultState());
     }
 
     public TileEntityRatHole(BlockState state) {
-        super(null);
+        super(RatsTileEntityRegistry.RAT_HOLE);
         setImmitatedBlockState(state);
     }
 

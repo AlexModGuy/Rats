@@ -12,6 +12,7 @@ public class RatArmorMaterial implements IArmorMaterial {
     private int encantability;
     private SoundEvent sound;
     private float toughness;
+    private Ingredient ingredient = null;
 
     public RatArmorMaterial(String name, int durability, int[] damageReduction, int encantability, SoundEvent sound, float toughness) {
         this.name = name;
@@ -44,7 +45,11 @@ public class RatArmorMaterial implements IArmorMaterial {
 
     @Override
     public Ingredient getRepairMaterial() {
-        return null;
+        return ingredient == null ? Ingredient.EMPTY : ingredient;
+    }
+
+    public void setRepairMaterial(Ingredient ingredient){
+        this.ingredient = ingredient;
     }
 
     @Override

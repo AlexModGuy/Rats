@@ -16,12 +16,12 @@ import java.lang.reflect.Field;
 @ObjectHolder(RatsMod.MODID)
 public class RatsItemRegistry {
 
-    public static IArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new RatArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static IArmorMaterial HAT_ARMOR_MATERIAL = new RatArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static IArmorMaterial PLAGUE_MASK_MATERIAL = new RatArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
-    public static IItemTier PIRAT_CUTLASS_MATERIAL = new RatToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
-    public static IItemTier BAGHNAKHS_MATERIAL = new RatToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
-    public static IItemTier PLAGUE_SCYTHE_MATERIAL = new RatToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
+    public static RatArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new RatArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static RatArmorMaterial HAT_ARMOR_MATERIAL = new RatArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static RatArmorMaterial PLAGUE_MASK_MATERIAL = new RatArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
+    public static RatToolMaterial PIRAT_CUTLASS_MATERIAL = new RatToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
+    public static RatToolMaterial BAGHNAKHS_MATERIAL = new RatToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
+    public static RatToolMaterial PLAGUE_SCYTHE_MATERIAL = new RatToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 

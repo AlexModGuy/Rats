@@ -18,6 +18,7 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
     private Random random;
 
     public TileEntityRatCageBreedingLantern() {
+        super(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN);
         random = new Random();
     }
 

@@ -1,17 +1,13 @@
 package com.github.alexthe666.rats.server.recipes;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.BannerPattern;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +44,9 @@ public class RatsRecipeRegistry {
     public static void register() {
         CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAW)));
-        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.SKULL), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)));
-        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(RatsBlockRegistry.RATGLOVE_FLOWER)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.SKELETON_SKULL), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)));
+        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BLUE_ORCHID), new ItemStack(RatsBlockRegistry.RATGLOVE_FLOWER)));
+        /*
         OreDictionary.registerOre("foodCheese", RatsItemRegistry.CHEESE);
         OreDictionary.registerOre("listAllmeatraw", RatsItemRegistry.RAW_RAT);
         OreDictionary.registerOre("foodRatraw", RatsItemRegistry.RAW_RAT);
@@ -102,28 +99,26 @@ public class RatsRecipeRegistry {
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);
-        GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);
+        GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);*/
         addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
         addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
         addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
-        RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairItem(new ItemStack(Blocks.WOOL));
-        RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairItem(new ItemStack(Items.LEATHER));
-        RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairItem(new ItemStack(Items.IRON_INGOT));
-        RatsItemRegistry.BAGHNAKHS_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW));
-        RatsItemRegistry.PLAGUE_SCYTHE_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE));
-        RatsItemRegistry.PLAGUE_MASK_MATERIAL.setRepairItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE));
+        RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Blocks.WHITE_WOOL)));
+        RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.LEATHER)));
+        RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)));
+        RatsItemRegistry.BAGHNAKHS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW)));
+        RatsItemRegistry.PLAGUE_SCYTHE_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE)));
+        RatsItemRegistry.PLAGUE_MASK_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE)));
     }
 
 
     public static BannerPattern addBanner(String name, ItemStack craftingStack) {
-        Class<?>[] classes = {String.class, String.class, ItemStack.class};
-        Object[] names = {name, "rats." + name, craftingStack};
-        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
+        return BannerPattern.create(name.toUpperCase(), name, "rats." + name, craftingStack);
     }
 
     public static SharedRecipe getRatChefRecipe(ItemStack stack) {
         for (SharedRecipe recipe : RAT_CHEF_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+            if (ItemStack.areItemsEqual(recipe.getInput(), stack)) {
                 return recipe;
             }
         }
@@ -132,7 +127,7 @@ public class RatsRecipeRegistry {
 
     public static SharedRecipe getArcheologistRecipe(ItemStack stack) {
         for (SharedRecipe recipe : RAT_ARCHEOLOGIST_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+            if (ItemStack.areItemsEqual(recipe.getInput(), stack)) {
                 return recipe;
             }
         }
@@ -141,7 +136,7 @@ public class RatsRecipeRegistry {
 
     public static SharedRecipe getGemcutterRecipe(ItemStack stack) {
         for (SharedRecipe recipe : RAT_GEMCUTTER_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+            if (ItemStack.areItemsEqual(recipe.getInput(), stack)) {
                 return recipe;
             }
         }

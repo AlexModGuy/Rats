@@ -48,7 +48,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     private int prevFluid = 0;
 
     public TileEntityAutoCurdler() {
-        super(null);
+        super(RatsTileEntityRegistry.AUTO_CURDLER);
     }
 
     public static boolean isMilk(ItemStack stack) {
