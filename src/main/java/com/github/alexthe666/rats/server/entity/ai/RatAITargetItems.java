@@ -10,7 +10,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -101,16 +101,16 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
             this.resetTask();
             this.taskOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             EntityRat rat = (EntityRat) this.taskOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             int extractSize = rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? this.targetEntity.getItem().getCount() : 1;
             duplicate.setCount(extractSize);
             this.targetEntity.getItem().shrink(extractSize);
-            if (!rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !rat.world.isRemote) {
-                rat.entityDropItem(rat.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+            if (!rat.getHeldItem(Hand.MAIN_HAND).isEmpty() && !rat.world.isRemote) {
+                rat.entityDropItem(rat.getHeldItem(Hand.MAIN_HAND), 0.0F);
             }
-            rat.setHeldItem(EnumHand.MAIN_HAND, duplicate);
+            rat.setHeldItem(Hand.MAIN_HAND, duplicate);
             if (this.targetEntity.getThrower() != null) {
                 PlayerEntity targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
                 if (targetPlayer != null && RatUtils.isCheese(duplicate)) {

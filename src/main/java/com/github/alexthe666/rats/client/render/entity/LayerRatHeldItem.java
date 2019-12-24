@@ -15,7 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -43,7 +43,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
         if (!(this.renderer.getMainModel() instanceof ModelRat)) {
             return;
         }
-        ItemStack itemstack = entity.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack itemstack = entity.getHeldItem(Hand.MAIN_HAND);
         if (!itemstack.isEmpty()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F);
             GlStateManager.pushMatrix();

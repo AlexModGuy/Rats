@@ -5,16 +5,19 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.item.*;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RatAIHarvestFarmer extends Goal {
     private static final int RADIUS = 16;
@@ -40,16 +43,16 @@ public class RatAIHarvestFarmer extends Goal {
     }
 
     private boolean holdingSeeds() {
-        return !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSeeds || this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSeedFood);
+        return !this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && (this.entity.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BlockNamedItem);
     }
 
     private boolean holdingBonemeal() {
-        ItemStack stack = this.entity.getHeldItem(EnumHand.MAIN_HAND);
-        return !stack.isEmpty() && stack.getItem() == Items.DYE && EnumDyeColor.byDyeDamage(stack.getMetadata()) == EnumDyeColor.WHITE;
+        ItemStack stack = this.entity.getHeldItem(Hand.MAIN_HAND);
+        return !stack.isEmpty() && stack.getItem() == Items.BONE_MEAL;
     }
 
     private boolean holdingBlock() {
-        return !this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock);
+        return !this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && (this.entity.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BlockItem);
     }
 
     @Override
@@ -69,18 +72,15 @@ public class RatAIHarvestFarmer extends Goal {
             if (holdingSeeds()) {
                 BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-                if (block.getBlock().isFertile(entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
-                    double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F) {
+                if (block.getBlock().isFertile(block, entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
+                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    if (distance < 2.5F) {
                         if (holdingSeeds()) {
-                            ItemStack seedStack = this.entity.getHeldItem(EnumHand.MAIN_HAND).copy();
+                            ItemStack seedStack = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
                             seedStack.setCount(1);
-                            this.entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-                            if (seedStack.getItem() instanceof ItemSeeds) {
-                                entity.world.setBlockState(targetBlock.up(), ((ItemSeeds) seedStack.getItem()).getPlant(entity.world, targetBlock.up()));
-                            }
-                            if (seedStack.getItem() instanceof ItemSeedFood) {
-                                entity.world.setBlockState(targetBlock.up(), ((ItemSeedFood) seedStack.getItem()).getPlant(entity.world, targetBlock.up()));
+                            this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
+                            if (seedStack.getItem() instanceof BlockNamedItem) {
+                                entity.world.setBlockState(targetBlock.up(), ((BlockNamedItem) seedStack.getItem()).getBlock().getDefaultState());
                             }
                         }
                         this.targetBlock = null;
@@ -95,10 +95,10 @@ public class RatAIHarvestFarmer extends Goal {
                 BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 if (canPlantBeBonemealed(targetBlock, block)) {
-                    double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F) {
+                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    if (distance < 2.5F) {
                         if (holdingBonemeal()) {
-                            this.entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                            this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                             if (block.getBlock() instanceof IGrowable) {
                                 IGrowable igrowable = (IGrowable) block.getBlock();
                                 if (igrowable.canGrow(entity.world, targetBlock, block, entity.world.isRemote)) {
@@ -117,14 +117,16 @@ public class RatAIHarvestFarmer extends Goal {
                     this.resetTask();
                 }
             } else if (holdingBlock()) {
-                ItemBlock itemBlock = ((ItemBlock) entity.getHeldItem(EnumHand.MAIN_HAND).getItem());
+                BlockItem itemBlock = ((BlockItem) entity.getHeldItem(Hand.MAIN_HAND).getItem());
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-                if (entity.world.mayPlace(itemBlock.getBlock(), this.targetBlock, false, Direction.UP, (Entity) null)) {
-                    double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F) {
+                if (entity.world.isAirBlock(targetBlock.up())) {
+                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    if (distance < 2.5F) {
                         if (holdingBlock()) {
-                            BlockState BlockState1 = itemBlock.getBlock().getStateForPlacement(entity.world, targetBlock, entity.getHorizontalFacing(), 0, 0, 0, entity.getHeldItem(EnumHand.MAIN_HAND).getMetadata(), entity, EnumHand.MAIN_HAND);
-                            this.entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                            BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(targetBlock), new Vec3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+                            ItemUseContext itemusecontext = new ItemUseContext(null, Hand.MAIN_HAND, raytrace);
+                            BlockState BlockState1 = itemBlock.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
+                            this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                             entity.world.setBlockState(targetBlock, BlockState1);
                             if (entity.isEntityInsideOpaqueBlock()) {
                                 entity.setPosition(entity.posX, entity.posY + 1, entity.posZ);
@@ -147,7 +149,7 @@ public class RatAIHarvestFarmer extends Goal {
     private void resetTarget() {
         if (holdingBonemeal()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (canPlantBeBonemealed(pos, this.entity.world.getBlockState(pos))) {
                     allBlocks.add(pos);
                 }
@@ -158,8 +160,8 @@ public class RatAIHarvestFarmer extends Goal {
             }
         } else if (holdingSeeds()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-                if (entity.world.getBlockState(pos).getBlock().isFertile(entity.world, pos) && entity.world.isAirBlock(pos.up())) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+                if (entity.world.getBlockState(pos).getBlock().isFertile(entity.world.getBlockState(pos), entity.world, pos) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }
             }
@@ -169,12 +171,12 @@ public class RatAIHarvestFarmer extends Goal {
             }
         } else if (holdingBlock()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            Block block = Blocks.SAPLING;
-            if (this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock) {
-                block = ((ItemBlock) this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem()).getBlock();
+            Block block = Blocks.OAK_SAPLING;
+            if (this.entity.getHeldItem(Hand.MAIN_HAND).getItem() != null && this.entity.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BlockItem) {
+                block = ((BlockItem) this.entity.getHeldItem(Hand.MAIN_HAND).getItem()).getBlock();
             }
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
-                if (entity.world.mayPlace(block, pos, false, Direction.UP, (Entity) null) && entity.world.isAirBlock(pos.up())) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+                if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
                     allBlocks.add(pos);
                 }
             }
@@ -187,7 +189,7 @@ public class RatAIHarvestFarmer extends Goal {
     }
 
     private boolean canPlantBeBonemealed(BlockPos pos, BlockState BlockState) {
-        if (BlockState.getBlock() instanceof IGrowable && !(BlockState.getBlock() instanceof BlockTallGrass) && !(BlockState.getBlock() instanceof BlockGrass)) {
+        if (BlockState.getBlock() instanceof IGrowable && !(BlockState.getBlock() instanceof TallGrassBlock) && !(BlockState.getBlock() instanceof GrassBlock)) {
             IGrowable igrowable = (IGrowable) BlockState.getBlock();
             if (igrowable.canGrow(entity.world, pos, BlockState, entity.world.isRemote)) {
                 if (!entity.world.isRemote) {

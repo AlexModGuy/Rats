@@ -17,8 +17,8 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
 
     public BlockPos targetPosition;
 
-    public RatPathPathNavigateGround(EntityRat entitylivingIn, World worldIn) {
-        super(entitylivingIn, worldIn);
+    public RatPathPathNavigateGround(EntityRat LivingEntityIn, World worldIn) {
+        super(LivingEntityIn, worldIn);
     }
 
     protected PathFinder getPathFinder() {
@@ -46,13 +46,13 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
         return super.getPathToPos(pos);
     }
 
-    public Path getPathToEntityLiving(Entity entityIn) {
+    public Path getPathToLivingEntity(Entity entityIn) {
         this.targetPosition = new BlockPos(entityIn);
-        return super.getPathToEntityLiving(entityIn);
+        return super.getPathToLivingEntity(entityIn);
     }
 
-    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
-        Path path = this.getPathToEntityLiving(entityIn);
+    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
+        Path path = this.getPathToLivingEntity(entityIn);
 
         if (path != null) {
             return this.setPath(path, speedIn);

@@ -121,7 +121,7 @@ public class ItemRatSack extends Item {
         return ActionResultType.PASS;
     }
 
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
         return new ItemStack(RatsItemRegistry.RAT_SACK);
     }
 }

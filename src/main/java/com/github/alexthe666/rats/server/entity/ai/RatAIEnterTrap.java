@@ -4,9 +4,12 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -34,7 +37,7 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
         if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage()) {
             return false;
         }
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         if (this.entity.isTamed()) {
@@ -50,15 +53,16 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return super.shouldContinueExecuting() && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     public boolean canSeeChest() {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
-            return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(destinationBlock);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.up().getX() + 0.5, destinationBlock.up().getY() + 0.5, destinationBlock.up().getZ() + 0.5), false);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
+            return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos);
         }
         return true;
     }
@@ -70,14 +74,14 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
             BlockPos trapPos = this.destinationBlock.up();
             TileEntity entity = this.entity.world.getTileEntity(trapPos);
             if (entity instanceof TileEntityRatTrap && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty()) {
-                double distance = this.entity.getDistance(trapPos.getX(), trapPos.getY(), trapPos.getZ());
-                if (distance < 0.5F && canSeeChest()) {
+                double distance = this.entity.getDistanceSq(trapPos.getX(), trapPos.getY(), trapPos.getZ());
+                if (distance < 1.0F && canSeeChest()) {
                     ItemStack duplicate = ((TileEntityRatTrap) entity).getBait().copy();
                     duplicate.setCount(1);
-                    if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                        this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                    if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
+                        this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
                     }
-                    this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
+                    this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
                     ((TileEntityRatTrap) entity).getBait().shrink(1);
                     this.entity.fleePos = this.destinationBlock;
                 }

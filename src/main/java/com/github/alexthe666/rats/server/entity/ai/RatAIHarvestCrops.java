@@ -1,23 +1,24 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockStem;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RatAIHarvestCrops extends Goal {
     private static final int RADIUS = 16;
@@ -38,7 +39,7 @@ public class RatAIHarvestCrops extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage()) {
             return false;
         }
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         resetTarget();
@@ -47,13 +48,15 @@ public class RatAIHarvestCrops extends Goal {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             BlockState block = this.entity.world.getBlockState(pos);
-            if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
-                Item item = block.getBlock().getItemDropped(block, entity.getRNG(), 0);
-                if (entity.canRatPickupItem(new ItemStack(item))) {
-                    allBlocks.add(pos);
-
+            if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof StemBlock)) {
+                LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                List<ItemStack> items = block.getBlock().getDrops(block, loot);
+                for(ItemStack stack : items){
+                    if (entity.canRatPickupItem(stack)) {
+                        allBlocks.add(pos);
+                    }
                 }
             }
         }
@@ -65,7 +68,7 @@ public class RatAIHarvestCrops extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (this.entity.world.getBlockState(targetBlock).getBlock() instanceof BlockBush || this.entity.world.getBlockState(targetBlock).getMaterial() == Material.GOURD);
+        return targetBlock != null && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && (this.entity.world.getBlockState(targetBlock).getBlock() instanceof BushBlock || this.entity.world.getBlockState(targetBlock).getMaterial() == Material.GOURD);
     }
 
     public void resetTask() {
@@ -78,28 +81,28 @@ public class RatAIHarvestCrops extends Goal {
         if (this.targetBlock != null) {
             BlockState block = this.entity.world.getBlockState(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-            if (block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) {
-                if (block.getBlock() instanceof BlockCrops && !((BlockCrops) block.getBlock()).isMaxAge(block)) {
+            if (block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD) {
+                if (block.getBlock() instanceof CropsBlock && !((CropsBlock) block.getBlock()).isMaxAge(block)) {
                     this.targetBlock = null;
                     this.resetTask();
                     return;
                 }
-                double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                if (distance < 1.5F) {
-                    NonNullList<ItemStack> drops = NonNullList.create();
-                    block.getBlock().getDrops(drops, this.entity.world, targetBlock, block, 0);
+                double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                if (distance < 2.25F) {
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(targetBlock)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                         ItemStack duplicate = drops.get(0).copy();
                         drops.remove(0);
-                        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
+                            this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
                         }
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
+                        this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
                         for (ItemStack drop : drops) {
                             this.entity.entityDropItem(drop, 0);
                         }
                         this.entity.world.destroyBlock(targetBlock, false);
-                        if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof BlockCrops) {
+                        if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof CropsBlock) {
                             this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
                         }
                         this.entity.fleePos = this.targetBlock;

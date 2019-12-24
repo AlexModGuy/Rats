@@ -1,13 +1,15 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.Goal;
+import com.github.alexthe666.rats.RatConfig;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.EnumSet;
+
 public abstract class RatAIMoveToBlock extends Goal {
-    private final EntityCreature creature;
+    private final CreatureEntity creature;
     private final double movementSpeed;
     private final int searchLength;
     /**
@@ -17,13 +19,13 @@ public abstract class RatAIMoveToBlock extends Goal {
     /**
      * Block to move to
      */
-    protected BlockPos destinationBlock = BlockPos.ORIGIN;
+    protected BlockPos destinationBlock = BlockPos.ZERO;
     protected double distanceCheck = 1.0D;
     private int timeoutCounter;
     private int maxStayTicks;
     private boolean isAboveDestination;
 
-    public RatAIMoveToBlock(EntityCreature creature, double speedIn, int length) {
+    public RatAIMoveToBlock(CreatureEntity creature, double speedIn, int length) {
         this.creature = creature;
         this.movementSpeed = speedIn;
         this.searchLength = length;
@@ -39,7 +41,7 @@ public abstract class RatAIMoveToBlock extends Goal {
             --this.runDelay;
             return false;
         } else {
-            this.runDelay = RatsMod.CONFIG_OPTIONS.ratUpdateDelay + this.creature.getRNG().nextInt(RatsMod.CONFIG_OPTIONS.ratUpdateDelay);
+            this.runDelay = RatConfig.ratUpdateDelay + this.creature.getRNG().nextInt(RatConfig.ratUpdateDelay);
             return this.searchForDestination();
         }
     }
@@ -60,11 +62,15 @@ public abstract class RatAIMoveToBlock extends Goal {
         this.maxStayTicks = this.creature.getRNG().nextInt(this.creature.getRNG().nextInt(1200) + 1200) + 1200;
     }
 
+    public double getTargetDistanceSq() {
+        return 1.0D;
+    }
+
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        if (this.creature.getDistanceSqToCenter(this.destinationBlock.up()) > distanceCheck) {
+        if (!this.destinationBlock.up().withinDistance(this.creature.getPositionVec(), this.getTargetDistanceSq())) {
             this.isAboveDestination = false;
             ++this.timeoutCounter;
 

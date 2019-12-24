@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelIllager;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.AbstractIllager;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelIllagerPiper extends ModelIllager {
@@ -42,7 +42,7 @@ public class ModelIllagerPiper extends ModelIllager {
 
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-        if (((AbstractIllager) entityIn).getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.RAT_FLUTE) {
+        if (((AbstractIllager) entityIn).getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RAT_FLUTE) {
             float f = 0.01F * (float) (entityIn.getEntityId() % 10);
             this.nose.rotateAngleY = 0.0F;
             this.nose.rotateAngleZ = MathHelper.cos((float) entityIn.ticksExisted * f) * 2.5F * 0.017453292F;

@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,7 +19,7 @@ public class RenderIllagerPiper extends RenderLiving<EntityIllagerPiper> {
     public RenderIllagerPiper() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelIllagerPiper(), 0.5F);
         this.addLayer(new LayerHeldItem(this) {
-            protected void translateToHand(EnumHandSide side) {
+            protected void translateToHand(HandSide side) {
                 ModelIllagerPiper model = ((ModelIllagerPiper) this.livingEntityRenderer.getMainModel());
                 model.getArm(side).postRender(0.0625F);
                 GL11.glTranslatef(0.2F, 0.2F, 0.1F);

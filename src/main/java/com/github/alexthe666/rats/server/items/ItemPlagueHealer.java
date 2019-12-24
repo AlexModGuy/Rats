@@ -34,12 +34,12 @@ public class ItemPlagueHealer extends ItemGenericFood {
         }
     }
 
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
         if (stack.getItem() == RatsItemRegistry.PLAGUE_STEW) {
-            super.onItemUseFinish(stack, worldIn, entityLiving);
+            super.onItemUseFinish(stack, worldIn, LivingEntity);
             return new ItemStack(Items.BOWL);
         } else {
-            return super.onItemUseFinish(stack, worldIn, entityLiving);
+            return super.onItemUseFinish(stack, worldIn, LivingEntity);
         }
     }
 

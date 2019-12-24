@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -121,12 +121,12 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setMale(this.getRNG().nextBoolean());
         this.setPlague(false);
         this.setToga(false);
-        this.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(RatsItemRegistry.PIRAT_CUTLASS));
+        this.setHeldItem(Hand.MAIN_HAND, new ItemStack(RatsItemRegistry.PIRAT_CUTLASS));
         this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.PIRAT_HAT));
         if (!this.isRiding()) {
             EntityPiratBoat boat = new EntityPiratBoat(world);
@@ -257,8 +257,8 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public static class PiratMoveHelper extends EntityMoveHelper {
 
-        public PiratMoveHelper(EntityLiving entitylivingIn) {
-            super(entitylivingIn);
+        public PiratMoveHelper(LivingEntity LivingEntityIn) {
+            super(LivingEntityIn);
         }
 
         public void onUpdateMoveHelper() {

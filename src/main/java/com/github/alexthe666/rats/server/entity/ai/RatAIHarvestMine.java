@@ -4,25 +4,28 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RatAIHarvestMine extends Goal {
     private static final int RADIUS = 16;
@@ -45,7 +48,7 @@ public class RatAIHarvestMine extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
             return false;
         }
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         resetTarget();
@@ -55,7 +58,7 @@ public class RatAIHarvestMine extends Goal {
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
         NonNullList<ItemStack> mining = getMiningList();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             if (doesListContainBlock(entity.world, mining, pos)) {
                 allBlocks.add(pos);
             }
@@ -69,7 +72,7 @@ public class RatAIHarvestMine extends Goal {
     private NonNullList<ItemStack> getMiningList() {
         CompoundNBT CompoundNBT1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTag();
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-        if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+        if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
             ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
         }
         return nonnulllist;
@@ -88,7 +91,7 @@ public class RatAIHarvestMine extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return targetBlock != null && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     public void resetTask() {
@@ -112,7 +115,7 @@ public class RatAIHarvestMine extends Goal {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                    double distance = this.entity.getDistance(rayPos.getX(), rayPos.getY(), rayPos.getZ());
+                    double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
                     if (distance < 2.5F) {
                         entity.world.setEntityState(entity, (byte) 85);
                         entity.crafting = true;
@@ -124,10 +127,9 @@ public class RatAIHarvestMine extends Goal {
                             entity.crafting = false;
                         }
                         if (distance < 0.6F) {
-                            entity.motionZ *= 0.0D;
-                            entity.motionX *= 0.0D;
+                            this.entity.setMotion(0, 0, 0);
                             entity.getNavigator().clearPath();
-                            entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                            //entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                         }
                         breakingTime++;
                         int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);
@@ -160,24 +162,18 @@ public class RatAIHarvestMine extends Goal {
     }
 
     private void destroyBlock(BlockPos pos, BlockState state) {
-        NonNullList<ItemStack> drops = NonNullList.create();
-        state.getBlock().getDrops(drops, this.entity.world, pos, state, 0);
-        if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
-            ItemStack duplicate = drops.get(0).copy();
-            drops.remove(0);
-            if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+        if(entity.world instanceof ServerWorld){
+            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+            List<ItemStack> drops = state.getBlock().getDrops(state, loot);
+            if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
+                for (ItemStack drop : drops) {
+                    this.entity.entityDropItem(drop, 0);
+                }
+                this.entity.world.destroyBlock(pos, false);
+                this.entity.fleePos = pos;
             }
-            this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
-            for (ItemStack drop : drops) {
-                this.entity.entityDropItem(drop, 0);
-            }
-            this.entity.world.destroyBlock(pos, false);
-            if (state.getBlock() instanceof BlockCrops) {
-                this.entity.world.setBlockState(pos, state.getBlock().getDefaultState());
-            }
-            this.entity.fleePos = pos;
         }
+
     }
 
     public class BlockSorter implements Comparator<BlockPos> {

@@ -6,23 +6,29 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class RatAIDepositFluid extends Goal {
     private static final int RADIUS = 16;
@@ -66,9 +72,10 @@ public class RatAIDepositFluid extends Goal {
 
     public boolean canSeeChest() {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
             return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(targetBlock);
         }
 
@@ -89,16 +96,15 @@ public class RatAIDepositFluid extends Goal {
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);
                     if (RatUtils.canRatBreakBlock(this.entity.world, rayPos, this.entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                        double distance = this.entity.getDistance(rayPos.getX(), rayPos.getY(), rayPos.getZ());
+                        double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
                         SoundType soundType = block.getBlock().getSoundType(block, this.entity.world, rayPos, null);
-                        if (distance < 2.5F) {
+                        if (distance < 6F) {
                             this.entity.world.setEntityState(this.entity, (byte) 85);
                             this.entity.crafting = true;
                             if (distance < 0.6F) {
-                                this.entity.motionZ *= 0.0D;
-                                this.entity.motionX *= 0.0D;
+                                this.entity.setMotion(0, 0, 0);
                                 this.entity.getNavigator().clearPath();
-                                this.entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                                //this.entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                             }
                             breakingTime++;
                             int hardness = (int) (block.getBlockHardness(this.entity.world, rayPos) * 100);
@@ -128,28 +134,28 @@ public class RatAIDepositFluid extends Goal {
                 }
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
-                double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-                if (distance < 1.86 && canSeeChest() && te != null) {
+                double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
+                if (distance < 3.4 && canSeeChest() && te != null) {
                     FluidStack copiedFluid = this.entity.transportingFluid.copy();
-                    IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this.entity.depositFacing);
-                    if (handler == null) {
+                    LazyOptional<IFluidHandler> handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this.entity.depositFacing);
+                    if (handler.orElse(null) == null) {
                         return;
                     }
                     if (this.entity.transportingFluid != null) {
                         int minusAmount = 0;
                         try {
-                            if (handler.getTankProperties().length > 0) {
-                                IFluidTankProperties firstTank = handler.getTankProperties()[0];
-                                if (handler.getTankProperties().length > 1) {
-                                    for (IFluidTankProperties otherTank : handler.getTankProperties()) {
+                            if (handler.orElse(null).getTankProperties().length > 0) {
+                                IFluidTankProperties firstTank = handler.orElse(null).getTankProperties()[0];
+                                if (handler.orElse(null).getTankProperties().length > 1) {
+                                    for (IFluidTankProperties otherTank : handler.orElse(null).getTankProperties()) {
                                         if (copiedFluid != null && copiedFluid.isFluidEqual(otherTank.getContents())) {
                                             firstTank = otherTank;
                                         }
                                     }
                                 }
                                 if (firstTank.getContents() == null || (copiedFluid == null || copiedFluid.isFluidEqual(firstTank.getContents()))) {
-                                    if (handler.fill(copiedFluid, false) != 0) {
-                                        minusAmount = handler.fill(copiedFluid, true);
+                                    if (handler.orElse(null).fill(copiedFluid, false) != 0) {
+                                        minusAmount = handler.orElse(null).fill(copiedFluid, true);
                                     }
                                 }
 
@@ -169,7 +175,7 @@ public class RatAIDepositFluid extends Goal {
                                 this.entity.transportingFluid.amount = total;
                             }
                             if (!this.entity.world.isRemote) {
-                                RatsMod.NETWORK_WRAPPER.sendToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
+                                RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                             }
                             SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_EMPTY : this.entity.transportingFluid.getFluid().getEmptySound();
                             this.entity.playSound(sound, 1, 1);
@@ -189,14 +195,17 @@ public class RatAIDepositFluid extends Goal {
     }
 
     private void destroyBlock(BlockPos pos, BlockState state) {
-        NonNullList<ItemStack> drops = NonNullList.create();
-        state.getBlock().getDrops(drops, this.entity.world, pos, state, 0);
-        if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
-            for (ItemStack drop : drops) {
-                this.entity.entityDropItem(drop, 0);
+        if(entity.world instanceof ServerWorld){
+            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+            List<ItemStack> drops = state.getBlock().getDrops(state, loot);
+            if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
+                for (ItemStack drop : drops) {
+                    this.entity.entityDropItem(drop, 0);
+                }
+                this.entity.world.destroyBlock(pos, false);
+                this.entity.fleePos = pos;
             }
-            this.entity.world.destroyBlock(pos, false);
-            this.entity.fleePos = pos;
         }
+
     }
 }

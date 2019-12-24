@@ -5,22 +5,21 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.Goal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootParameterSet;
+import net.minecraft.world.storage.loot.LootTables;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RatAIHarvestFisherman extends Goal {
     private static final int RADIUS = 16;
@@ -41,7 +40,7 @@ public class RatAIHarvestFisherman extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || !entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || !entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         resetTarget();
@@ -50,7 +49,7 @@ public class RatAIHarvestFisherman extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return targetBlock != null && entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     public void resetTask() {
@@ -64,17 +63,17 @@ public class RatAIHarvestFisherman extends Goal {
     @Override
     public void tick() {
         if (this.targetBlock != null) {
-            if (entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+            if (entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
                 if (!hasReachedWater) {
                     this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
                 }
                 if (isShore(this.targetBlock, entity.world)) {
-                    double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F) {
+                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    if (distance < 2.5F) {
                         // this.targetBlock = null;
                         //  this.resetTask();
                         if (throwCooldown == 0) {
-                            entity.playSound(SoundEvents.ENTITY_BOBBER_THROW, 1, 0.5F);
+                            entity.playSound(SoundEvents.ENTITY_FISHING_BOBBER_THROW, 1, 0.5F);
                             throwCooldown = 20;
                         }
                         hasReachedWater = true;
@@ -97,7 +96,7 @@ public class RatAIHarvestFisherman extends Goal {
             if (fishingCooldown == 0) {
                 spawnFishingLoot();
                 entity.world.setEntityState(entity, (byte) 101);
-                entity.playSound(SoundEvents.ENTITY_BOBBER_SPLASH, 1, 1);
+                entity.playSound(SoundEvents.ENTITY_FISHING_BOBBER_SPLASH, 1, 1);
             }
         } else {
             entity.world.setEntityState(entity, (byte) 86);
@@ -110,7 +109,7 @@ public class RatAIHarvestFisherman extends Goal {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             if (isShore(pos, this.entity.world)) {
                 allBlocks.add(pos);
             }
@@ -121,9 +120,10 @@ public class RatAIHarvestFisherman extends Goal {
         }
     }
 
+    private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     private boolean isShore(BlockPos pos, World world) {
-        for (Direction facing : Direction.HORIZONTALS) {
-            if (world.getBlockState(pos.offset(facing)).getMaterial() == Material.WATER && world.getBlockState(pos).isOpaqueCube() && world.isAirBlock(pos.up())) {
+        for (Direction facing : HORIZONTALS) {
+            if (world.getBlockState(pos.offset(facing)).getMaterial() == Material.WATER && world.getBlockState(pos).isOpaqueCube(this.entity.world, pos) && world.isAirBlock(pos.up())) {
                 return true;
             }
         }
@@ -133,9 +133,10 @@ public class RatAIHarvestFisherman extends Goal {
     public void spawnFishingLoot() {
         this.fishingCooldown = 250 + rand.nextInt(750);
         double luck = 0.1D;
-        LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.entity.world);
-        lootcontext$builder.withLuck((float) luck).withLootedEntity(this.entity); // Forge: add player & looted entity to LootContext
-        List<ItemStack> result = this.entity.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.entity.getRNG(), lootcontext$builder.build());
+        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) this.entity.world);
+        lootcontext$builder.withLuck((float) luck); // Forge: add player & looted entity to LootContext
+        LootParameterSet.Builder lootparameterset$builder = new LootParameterSet.Builder();
+        List<ItemStack> result = entity.world.getServer().getLootTableManager().getLootTableFromLocation(LootTables.GAMEPLAY_FISHING).generate(lootcontext$builder.build(lootparameterset$builder.build()));
 
         for (ItemStack itemstack : result) {
             ItemEntity ItemEntity = new ItemEntity(this.entity.world, this.entity.posX, this.entity.posY, this.entity.posZ, itemstack);

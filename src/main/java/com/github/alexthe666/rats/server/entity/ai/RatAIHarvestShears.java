@@ -4,14 +4,14 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.init.Items;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -62,7 +62,7 @@ public class RatAIHarvestShears extends Goal {
 
     @Override
     public void tick() {
-        if (this.targetSheep != null && !this.targetSheep.isDead && this.entity.getHeldItemMainhand().isEmpty()) {
+        if (this.targetSheep != null && this.targetSheep.isAlive() && this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1D);
             if (entity.getDistance(targetSheep) < 1.5D) {
                 if (targetSheep instanceof IShearable) {
@@ -80,7 +80,7 @@ public class RatAIHarvestShears extends Goal {
     }
 
     private void resetTarget() {
-        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) SHEAR_PREDICATE);
+        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, this.entity.getBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super LivingEntity>) SHEAR_PREDICATE);
         LivingEntity closestSheep = null;
         for (LivingEntity base : list) {
             if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {

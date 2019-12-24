@@ -6,8 +6,8 @@ import net.minecraft.world.World;
 
 public class PiratBoatPathNavigate extends SwimmerPathNavigator {
 
-    public PiratBoatPathNavigate(MobEntity entitylivingIn, World worldIn) {
-        super(entitylivingIn, worldIn);
+    public PiratBoatPathNavigate(MobEntity LivingEntityIn, World worldIn) {
+        super(LivingEntityIn, worldIn);
     }
 
     protected boolean isInLiquid() {

@@ -10,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -59,7 +59,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
         if (!this.entity.canMove() || this.entity.isTamed() || this.entity.isInCage() || !RatConfig.ratsStealItems) {
             return false;
         }
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         if (this.runDelay <= 0) {
@@ -72,7 +72,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return super.shouldContinueExecuting() && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     public boolean canSeeChest() {
@@ -105,10 +105,10 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                     } else {
                         ItemStack duplicate = stack.copy();
                         duplicate.setCount(1);
-                        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
+                            this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
                         }
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
+                        this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
                         stack.shrink(1);
                         if (RatConfig.ratsContaminateFood && this.entity.getRNG().nextInt(3) == 0) {
                             int slotToReplace = RatUtils.getContaminatedSlot(this.entity, feeder, this.entity.world.rand);

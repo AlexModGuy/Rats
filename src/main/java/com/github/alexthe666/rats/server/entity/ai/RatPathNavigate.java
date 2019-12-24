@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -19,8 +19,8 @@ public class RatPathNavigate extends PathNavigateGround {
 
     public BlockPos targetPosition;
 
-    public RatPathNavigate(EntityLiving entitylivingIn, World worldIn) {
-        super(entitylivingIn, worldIn);
+    public RatPathNavigate(LivingEntity LivingEntityIn, World worldIn) {
+        super(LivingEntityIn, worldIn);
     }
 
 
@@ -45,13 +45,13 @@ public class RatPathNavigate extends PathNavigateGround {
         return super.getPathToPos(pos);
     }
 
-    public Path getPathToEntityLiving(Entity entityIn) {
+    public Path getPathToLivingEntity(Entity entityIn) {
         this.targetPosition = new BlockPos(entityIn);
-        return super.getPathToEntityLiving(entityIn);
+        return super.getPathToLivingEntity(entityIn);
     }
 
-    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
-        Path path = this.getPathToEntityLiving(entityIn);
+    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
+        Path path = this.getPathToLivingEntity(entityIn);
 
         if (path != null) {
             return this.setPath(path, speedIn);

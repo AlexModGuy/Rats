@@ -50,10 +50,10 @@ public class ItemGenericFood extends Item {
         return builder.build();
     }
 
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
         if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
-            if (entityLiving instanceof PlayerEntity) {
-                PlayerEntity PlayerEntity = (PlayerEntity) entityLiving;
+            if (LivingEntity instanceof PlayerEntity) {
+                PlayerEntity PlayerEntity = (PlayerEntity) LivingEntity;
                 PlayerEntity.getFoodStats().addStats(healAmount, saturation);
                 worldIn.playSound(null, PlayerEntity.posX, PlayerEntity.posY, PlayerEntity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
                 this.onFoodEaten(stack, worldIn, PlayerEntity);
@@ -61,12 +61,12 @@ public class ItemGenericFood extends Item {
                     CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) PlayerEntity, stack);
                 }
             }
-            if (!(entityLiving instanceof PlayerEntity) || !((PlayerEntity) entityLiving).isCreative()) {
+            if (!(LivingEntity instanceof PlayerEntity) || !((PlayerEntity) LivingEntity).isCreative()) {
                 stack.shrink(1);
             }
             return stack;
         } else {
-            return super.onItemUseFinish(stack, worldIn, entityLiving);
+            return super.onItemUseFinish(stack, worldIn, LivingEntity);
         }
     }
 

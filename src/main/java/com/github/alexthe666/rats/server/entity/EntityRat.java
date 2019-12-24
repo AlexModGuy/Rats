@@ -689,7 +689,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isHoldingFood() {
-        return !this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (RatUtils.isRatFood(this.getHeldItem(EnumHand.MAIN_HAND)) || hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()));
+        return !this.getHeldItem(Hand.MAIN_HAND).isEmpty() && (RatUtils.isRatFood(this.getHeldItem(Hand.MAIN_HAND)) || hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -846,7 +846,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
-        boolean holdingInHands = !sitting && (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
+        boolean holdingInHands = !sitting && (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
                 || this.getAnimation() == ANIMATION_EAT || this.holdsItemInHandUpgrade() || this.getMBTransferRate() > 0);
         if (sitting && sitProgress < 20.0F) {
             sitProgress += sitInc;
@@ -876,16 +876,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (this.getAnimation() == ANIMATION_EAT && isHoldingFood() && eatingTicks <= 40) {
             eatingTicks++;
-            eatItem(this.getHeldItem(EnumHand.MAIN_HAND), 3);
+            eatItem(this.getHeldItem(Hand.MAIN_HAND), 3);
             if (eatingTicks == 40) {
                 ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
-                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(EnumHand.MAIN_HAND))) {
-                    pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(EnumHand.MAIN_HAND)));
+                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(Hand.MAIN_HAND))) {
+                    pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(Hand.MAIN_HAND)));
                     CompoundNBT poopTag = new CompoundNBT();
                     CompoundNBT oreTag = new CompoundNBT();
-                    ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(oreTag);
+                    ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(Hand.MAIN_HAND)).writeToNBT(oreTag);
                     CompoundNBT ingotTag = new CompoundNBT();
-                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(EnumHand.MAIN_HAND)).writeToNBT(ingotTag);
+                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(Hand.MAIN_HAND)).writeToNBT(ingotTag);
                     poopTag.setTag("OreItem", oreTag);
                     poopTag.setTag("IngotItem", ingotTag);
                     pooStack.setTag(poopTag);
@@ -899,10 +899,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     }
 
                 }
-                this.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                this.getHeldItem(Hand.MAIN_HAND).shrink(1);
                 int healAmount = 1;
-                if (this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemFood) {
-                    healAmount = ((ItemFood) this.getHeldItem(EnumHand.MAIN_HAND).getItem()).getHealAmount(this.getHeldItem(EnumHand.MAIN_HAND));
+                if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemFood) {
+                    healAmount = ((ItemFood) this.getHeldItem(Hand.MAIN_HAND).getItem()).getHealAmount(this.getHeldItem(Hand.MAIN_HAND));
                 }
                 this.heal(healAmount);
                 eatingTicks = 0;
@@ -1085,7 +1085,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             }
         }
-        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
+        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
         if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper) {
@@ -1343,7 +1343,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (cookingProgress == 100) {
                 heldItem.shrink(1);
                 if (heldItem.isEmpty()) {
-                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                    this.setHeldItem(Hand.MAIN_HAND, burntItem);
                 } else {
                     if (!this.tryDepositItemInContainers(burntItem)) {
                         if (!world.isRemote) {
@@ -1366,7 +1366,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (cookingProgress == 100) {
                 heldItem.shrink(1);
                 if (heldItem.isEmpty()) {
-                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                    this.setHeldItem(Hand.MAIN_HAND, burntItem);
                 } else {
                     if (!this.tryDepositItemInContainers(burntItem)) {
                         if (!world.isRemote) {
@@ -1389,7 +1389,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (cookingProgress == 100) {
                 heldItem.shrink(1);
                 if (heldItem.isEmpty()) {
-                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                    this.setHeldItem(Hand.MAIN_HAND, burntItem);
                 } else {
                     if (!this.tryDepositItemInContainers(burntItem)) {
                         if (!world.isRemote) {
@@ -1448,7 +1448,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     burntItem = EnchantmentHelper.addRandomEnchantment(this.getRNG(), burntItem, (int) (2.0F + (float) this.getRNG().nextInt(2) + power), false);
                 }
                 if (heldItem.isEmpty()) {
-                    this.setHeldItem(EnumHand.MAIN_HAND, burntItem);
+                    this.setHeldItem(Hand.MAIN_HAND, burntItem);
                 } else {
                     if (!this.tryDepositItemInContainers(burntItem)) {
                         if (!world.isRemote) {
@@ -1477,7 +1477,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 if (cookingProgress == 72000) {
                     for (ItemStack stack : result) {
                         if (heldItem.isEmpty() && !held) {
-                            this.setHeldItem(EnumHand.MAIN_HAND, stack.copy());
+                            this.setHeldItem(Hand.MAIN_HAND, stack.copy());
                             held = true;
                         } else {
                             if (!this.tryDepositItemInContainers(stack.copy())) {
@@ -1867,7 +1867,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public boolean processInteract(PlayerEntity player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == RatsItemRegistry.RAT_TOGA) {
             if (!this.hasToga()) {
@@ -2094,7 +2094,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setColorVariant(this.getRNG().nextInt(4));
         this.setMale(this.getRNG().nextBoolean());
@@ -2339,7 +2339,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public ItemStack getUpgradeSlot() {
-        return getHeldItem(EnumHand.OFF_HAND);
+        return getHeldItem(Hand.OFF_HAND);
     }
 
     public ItemStack getUpgrade(Item item) {

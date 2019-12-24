@@ -87,7 +87,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(7, new EntityAILookIdle(this));
         this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
     }
 
     protected void updateAIgoalSelector() {

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -90,7 +90,7 @@ public class EntityRatlanteanFlame extends FireballEntity {
             } else {
                 boolean flag1 = true;
 
-                if (this.shootingEntity != null && this.shootingEntity instanceof EntityLiving) {
+                if (this.shootingEntity != null && this.shootingEntity instanceof LivingEntity) {
                     flag1 = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
                 }
             }

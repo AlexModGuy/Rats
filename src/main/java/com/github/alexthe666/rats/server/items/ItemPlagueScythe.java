@@ -40,21 +40,21 @@ public class ItemPlagueScythe extends SwordItem {
         return multimap;
     }
 
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
-        if (entityLiving.swingProgress == 0) {
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
+        if (LivingEntity.swingProgress == 0) {
             Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EquipmentSlotType.MAINHAND);
             double totalDmg = 0;
             for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
                 totalDmg += modifier.getAmount();
             }
-            entityLiving.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
-            EntityPlagueShot shot = new EntityPlagueShot(entityLiving.world, entityLiving, totalDmg * 0.5F);
-            shot.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 0.8F, 1.0F);
-            if (!entityLiving.world.isRemote) {
-                entityLiving.world.addEntity(shot);
+            LivingEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
+            EntityPlagueShot shot = new EntityPlagueShot(LivingEntity.world, LivingEntity, totalDmg * 0.5F);
+            shot.shoot(LivingEntity, LivingEntity.rotationPitch, LivingEntity.rotationYaw, 0.0F, 0.8F, 1.0F);
+            if (!LivingEntity.world.isRemote) {
+                LivingEntity.world.addEntity(shot);
             }
         }
-        return super.onItemUseFinish(stack, worldIn, entityLiving);
+        return super.onItemUseFinish(stack, worldIn, LivingEntity);
     }
 
 

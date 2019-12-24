@@ -57,7 +57,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.goalSelector.addGoal(4, new EntityAIAttackMelee(this, 1.0D, false));
         this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
         this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
         this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
@@ -115,7 +115,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setEquipmentBasedOnDifficulty(difficulty);
         this.setEnchantmentBasedOnDifficulty(difficulty);
@@ -250,8 +250,8 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         return SoundEvents.ENTITY_VINDICATION_ILLAGER_HURT;
     }
 
-    public EnumHandSide getPrimaryHand() {
-        return EnumHandSide.RIGHT;
+    public HandSide getPrimaryHand() {
+        return HandSide.RIGHT;
     }
 
     @Nullable

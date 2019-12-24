@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
@@ -79,9 +79,9 @@ public class EntityLaserPortal extends Entity {
     }
 
     private void faceTarget() {
-        if (facingTarget == null || this.getCreator() != null && !facingTarget.isEntityEqual(((EntityLiving) this.getCreator()).getAttackTarget())) {
-            if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
-                LivingEntity target = ((EntityLiving) this.getCreator()).getAttackTarget();
+        if (facingTarget == null || this.getCreator() != null && !facingTarget.isEntityEqual(((LivingEntity) this.getCreator()).getAttackTarget())) {
+            if (this.getCreator() != null && this.getCreator() instanceof LivingEntity) {
+                LivingEntity target = ((LivingEntity) this.getCreator()).getAttackTarget();
                 if (target == null && this.getCreator() instanceof EntityMob) {
                     target = world.getNearestPlayerNotCreative(this, 30);
                 }
@@ -97,8 +97,8 @@ public class EntityLaserPortal extends Entity {
     }
 
     private void tryFiring() {
-        if (this.getCreator() != null && this.getCreator() instanceof EntityLiving) {
-            LivingEntity target = ((EntityLiving) this.getCreator()).getAttackTarget();
+        if (this.getCreator() != null && this.getCreator() instanceof LivingEntity) {
+            LivingEntity target = ((LivingEntity) this.getCreator()).getAttackTarget();
             if (target == null && this.getCreator() instanceof EntityMob) {
                 target = world.getNearestPlayerNotCreative(this, 30);
             }

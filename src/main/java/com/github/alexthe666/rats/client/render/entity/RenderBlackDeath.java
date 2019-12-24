@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderBlackDeath extends RenderLiving<EntityBlackDeath> {
@@ -24,10 +24,10 @@ public class RenderBlackDeath extends RenderLiving<EntityBlackDeath> {
                 }
             }
 
-            protected void translateToHand(EnumHandSide p_191361_1_) {
+            protected void translateToHand(HandSide p_191361_1_) {
                 ((ModelBlackDeath) this.livingEntityRenderer.getMainModel()).getArm(p_191361_1_).postRender(0.0625F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.translate(p_191361_1_ == EnumHandSide.LEFT ? -0.1F : 0.1F, 0.1F, 0);
+                GlStateManager.translate(p_191361_1_ == HandSide.LEFT ? -0.1F : 0.1F, 0.1F, 0);
             }
         });
     }

@@ -7,15 +7,15 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -65,7 +65,7 @@ public class RatAIHarvestMilk extends Goal {
 
     @Override
     public void tick() {
-        if (this.targetCow != null && !this.targetCow.isDead && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
+        if (this.targetCow != null && this.targetCow.isAlive() && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetCow, 1D);
             if (entity.getDistance(targetCow) < 1.5D) {
                 if (this.entity.transportingFluid == null) {
@@ -73,7 +73,7 @@ public class RatAIHarvestMilk extends Goal {
                     if (milkWrapper.getFluid() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
                         this.entity.transportingFluid = milkWrapper.getFluid().copy();
                         if (!this.entity.world.isRemote) {
-                            RatsMod.NETWORK_WRAPPER.sendToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
+                            RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                         }
                         this.entity.playSound(SoundEvents.ENTITY_COW_MILK, 1, 1);
                         this.targetCow = null;
@@ -87,7 +87,7 @@ public class RatAIHarvestMilk extends Goal {
     }
 
     private void resetTarget() {
-        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) COW_PREDICATE);
+        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, this.entity.getBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super LivingEntity>) COW_PREDICATE);
         LivingEntity closestCow = null;
         for (LivingEntity base : list) {
             if (closestCow == null || base.getDistanceSq(entity) < closestCow.getDistanceSq(entity)) {

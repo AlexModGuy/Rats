@@ -61,7 +61,7 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.goalSelector.addGoal(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
         this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
         this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
     }
@@ -317,11 +317,11 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        IEntityLivingData ientitylivingdata = super.onInitialSpawn(difficulty, livingdata);
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
+        ILivingEntityData iLivingEntitydata = super.onInitialSpawn(difficulty, livingdata);
         this.setEquipmentBasedOnDifficulty(difficulty);
         this.setEnchantmentBasedOnDifficulty(difficulty);
-        return ientitylivingdata;
+        return iLivingEntitydata;
     }
 
     @Nullable

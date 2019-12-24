@@ -6,7 +6,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -96,9 +96,9 @@ public class EntityThrownBlock extends Entity {
             this.motionX *= (double) f;
             this.motionY *= (double) f;
             this.motionZ *= (double) f;
-            if (this.shootingEntity != null && shootingEntity instanceof EntityLiving) {
-                if (((EntityLiving) shootingEntity).getAttackTarget() != null) {
-                    LivingEntity target = ((EntityLiving) shootingEntity).getAttackTarget();
+            if (this.shootingEntity != null && shootingEntity instanceof LivingEntity) {
+                if (((LivingEntity) shootingEntity).getAttackTarget() != null) {
+                    LivingEntity target = ((LivingEntity) shootingEntity).getAttackTarget();
                     double d0 = target.posX - this.posX;
                     double d1 = target.posY - this.posY;
                     double d2 = target.posZ - this.posZ;

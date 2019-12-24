@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -28,7 +28,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
             return false;
         }
 
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         if (this.runDelay <= 0) {
@@ -41,7 +41,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return super.shouldContinueExecuting() && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     @Override
@@ -61,10 +61,10 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
                     } else {
                         ItemStack duplicate = stack.copy();
                         duplicate.setCount(1);
-                        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                            this.entity.entityDropItem(this.entity.getHeldItem(EnumHand.MAIN_HAND), 0.0F);
+                        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
+                            this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
                         }
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, duplicate);
+                        this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
                         this.entity.world.destroyBlock(cropsPos, false);
                     }
                     this.entity.fleePos = cropsPos;

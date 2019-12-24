@@ -4,18 +4,20 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.Goal;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RatAIHarvestTrees extends Goal {
     private static final int RADIUS = 16;
@@ -34,13 +36,11 @@ public class RatAIHarvestTrees extends Goal {
     }
 
     public static final boolean isBlockLog(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isWood(world, pos);
+        return world.getBlockState(pos).isIn(BlockTags.LOGS);
     }
 
     public static final boolean isBlockLeaf(World world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        return state.getBlock().isLeaves(state, world, pos);
-
+        return world.getBlockState(pos).getBlock() instanceof LeavesBlock;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class RatAIHarvestTrees extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
             return false;
         }
-        if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             return false;
         }
         resetTarget();
@@ -58,7 +58,7 @@ public class RatAIHarvestTrees extends Goal {
     private void resetTarget() {
         World world = entity.world;
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS / 2, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS / 2, RADIUS))) {
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             if (isBlockLog(world, pos)) {
                 BlockPos topOfLog = new BlockPos(pos);
                 while (!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()) {
@@ -79,7 +79,7 @@ public class RatAIHarvestTrees extends Goal {
 
     private BlockPos getStump(BlockPos log) {
         if (log.getY() > 0) {
-            for (BlockPos pos : BlockPos.getAllInBox(log.add(-4, -4, -4), log.add(4, 0, 4))) {
+            for (BlockPos pos : BlockPos.getAllInBox(log.add(-4, -4, -4), log.add(4, 0, 4)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (isBlockLog(entity.world, pos.down()) || isBlockLeaf(entity.world, pos.down())) {
                     return getStump(pos.down());
                 }
@@ -90,7 +90,7 @@ public class RatAIHarvestTrees extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+        return targetBlock != null && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
     }
 
     public void resetTask() {
@@ -105,21 +105,22 @@ public class RatAIHarvestTrees extends Goal {
         if (this.targetBlock != null) {
             if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
                 RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false);
-                if (rayTrace != null && rayTrace.hitVec != null) {
-                    BlockPos pos = rayTrace.getBlockPos().offset(rayTrace.sideHit);
-                    this.entity.getNavigator().tryMoveToXYZ(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 1D);
+                if (rayTrace instanceof BlockRayTraceResult) {
+                    BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+                    BlockPos pos = blockRayTraceResult.getPos();
+                    BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
+                    this.entity.getNavigator().tryMoveToXYZ(sidePos.getX() + 0.5D, sidePos.getY() + 0.5D, sidePos.getZ() + 0.5D, 1D);
                 }
             }
             if (isBlockLog(this.entity.world, this.targetBlock)) {
-                double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 2.5F) {
                     entity.world.setEntityState(entity, (byte) 85);
                     entity.crafting = true;
                     if (distance < 0.6F) {
-                        entity.motionZ *= 0.0D;
-                        entity.motionX *= 0.0D;
+                        this.entity.setMotion(0, 0, 0);
                         entity.getNavigator().clearPath();
-                        entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                        //entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                     }
                     breakingTime++;
                     int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
@@ -160,7 +161,7 @@ public class RatAIHarvestTrees extends Goal {
             if (!queue.contains(base)) {
                 queue.add(base);
             }
-            for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8))) {
+            for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (isBlockLog(world, pos) && !queue.contains(pos)) {
                     if (isBlockLog(world, pos.up()) && !isBlockLog(world, base.up())) {
                         base = pos;

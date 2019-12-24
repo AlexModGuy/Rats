@@ -198,8 +198,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         }
         if (this.getControllingPassenger() != null) {
             this.updateMotion();
-            if (this.getControllingPassenger() instanceof EntityLiving) {
-                EntityLiving riding = (EntityLiving) this.getControllingPassenger();
+            if (this.getControllingPassenger() instanceof LivingEntity) {
+                LivingEntity riding = (LivingEntity) this.getControllingPassenger();
                 this.moveStrafing = riding.moveStrafing;
                 this.moveForward = riding.moveForward;
                 this.moveRelative(moveStrafing, 0, moveForward, 0.10F);
@@ -270,8 +270,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     @Override
-    public EnumHandSide getPrimaryHand() {
-        return EnumHandSide.RIGHT;
+    public HandSide getPrimaryHand() {
+        return HandSide.RIGHT;
     }
 
     public void shoot(EntityPirat pirat) {

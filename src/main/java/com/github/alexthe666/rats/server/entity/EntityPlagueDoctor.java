@@ -96,7 +96,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         this.goalSelector.addGoal(9, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(9, new PlagueDoctorAIVillagerInteract(this));
         this.goalSelector.addGoal(9, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTarget(this, EntityZombieVillager.class, true));
         this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
     }
@@ -175,7 +175,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         super.updateAIgoalSelector();
     }
 
-    public boolean processInteract(PlayerEntity player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
         if (!world.isRemote) {
@@ -189,7 +189,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
                 this.populateBuyingList();
             }
 
-            if (hand == EnumHand.MAIN_HAND) {
+            if (hand == Hand.MAIN_HAND) {
                 player.addStat(StatList.TALKED_TO_VILLAGER);
             }
 
@@ -509,15 +509,15 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
      *
      * @param difficulty The current local difficulty
      * @param livingdata Shared spawn data. Will usually be null. (See return value for more information)
-     * @return The IEntityLivingData to pass to this method for other instances of this entity class within the same
+     * @return The ILivingEntityData to pass to this method for other instances of this entity class within the same
      * pack
      */
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
         return this.finalizeMobSpawn(difficulty, livingdata, true);
     }
 
-    public IEntityLivingData finalizeMobSpawn(DifficultyInstance p_190672_1_, @Nullable IEntityLivingData p_190672_2_, boolean p_190672_3_) {
+    public ILivingEntityData finalizeMobSpawn(DifficultyInstance p_190672_1_, @Nullable ILivingEntityData p_190672_2_, boolean p_190672_3_) {
         p_190672_2_ = super.onInitialSpawn(p_190672_1_, p_190672_2_);
         this.populateBuyingList();
         return p_190672_2_;

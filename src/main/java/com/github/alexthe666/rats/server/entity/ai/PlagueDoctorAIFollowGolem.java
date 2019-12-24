@@ -72,7 +72,7 @@ public class PlagueDoctorAIFollowGolem extends Goal {
         this.villager.getLookController().setLookPositionWithEntity(this.ironGolem, 30.0F, 30.0F);
 
         if (this.ironGolem.getHoldRoseTick() == this.takeGolemRoseTick) {
-            this.villager.getNavigator().tryMoveToEntityLiving(this.ironGolem, 0.5D);
+            this.villager.getNavigator().tryMoveToLivingEntity(this.ironGolem, 0.5D);
             this.tookGolemRose = true;
         }
 

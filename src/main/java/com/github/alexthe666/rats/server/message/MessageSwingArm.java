@@ -21,7 +21,7 @@ public class MessageSwingArm {
             PlayerEntity player = context.get().getSender();
             if(player != null) {
                 //TODO: Wait for tinkers construct update
-                //TinkersCompatBridge.onPlayerSwing(player, player.getHeldItem(EnumHand.MAIN_HAND));
+                //TinkersCompatBridge.onPlayerSwing(player, player.getHeldItem(Hand.MAIN_HAND));
             }
         }
     }

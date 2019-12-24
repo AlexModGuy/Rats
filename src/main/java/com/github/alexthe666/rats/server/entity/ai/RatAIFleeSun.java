@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.entity.ai.EntityAIFleeSun;
+import net.minecraft.entity.ai.goal.FleeSunGoal;
 
-public class RatAIFleeSun extends EntityAIFleeSun {
+public class RatAIFleeSun extends FleeSunGoal {
     private EntityRat rat;
 
     public RatAIFleeSun(EntityRat rat, double movementSpeedIn) {

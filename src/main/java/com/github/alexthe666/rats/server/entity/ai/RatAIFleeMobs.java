@@ -5,16 +5,17 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.EntitySelectors;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 
 public class RatAIFleeMobs extends Goal {
@@ -22,7 +23,7 @@ public class RatAIFleeMobs extends Goal {
     private final double farSpeed;
     private final double nearSpeed;
     private final float avoidDistance;
-    private final PathNavigate navigation;
+    private final PathNavigator navigation;
     private final Predicate<Entity> avoidTargetSelector;
     protected EntityRat entity;
     protected LivingEntity closestLivingEntity;
@@ -35,7 +36,7 @@ public class RatAIFleeMobs extends Goal {
     public RatAIFleeMobs(EntityRat entityIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
         this.canBeSeenSelector = new Predicate<Entity>() {
             public boolean apply(@Nullable Entity p_apply_1_) {
-                return p_apply_1_.isEntityAlive() && RatAIFleeMobs.this.entity.getEntitySenses().canSee(p_apply_1_) && !RatAIFleeMobs.this.entity.isOnSameTeam(p_apply_1_);
+                return p_apply_1_.isAlive() && RatAIFleeMobs.this.entity.getEntitySenses().canSee(p_apply_1_) && !RatAIFleeMobs.this.entity.isOnSameTeam(p_apply_1_);
             }
         };
         this.entity = entityIn;
@@ -51,8 +52,8 @@ public class RatAIFleeMobs extends Goal {
         if (this.entity.isTamed() || this.entity.hasPlague()) {
             return false;
         }
-        List<EntityOcelot> ocelotList = this.entity.world.getEntitiesWithinAABB(EntityOcelot.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
-        List<PlayerEntity> playerList = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getEntityBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector));
+        List<OcelotEntity> ocelotList = this.entity.world.getEntitiesWithinAABB(OcelotEntity.class, this.entity.getBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(this.canBeSeenSelector, this.avoidTargetSelector));
+        List<PlayerEntity> playerList = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(this.canBeSeenSelector, this.avoidTargetSelector));
         if (ocelotList.isEmpty() && playerList.isEmpty()) {
             return false;
         } else {
@@ -68,7 +69,7 @@ public class RatAIFleeMobs extends Goal {
                 return false;
             } else {
                 entity.isFleeing = true;
-                this.path = entity.getNavigator().getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
+                this.path = entity.getNavigator().getPathToPos(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
                 return this.path != null;
             }
         }
@@ -77,7 +78,7 @@ public class RatAIFleeMobs extends Goal {
     private boolean shouldFlee(LivingEntity mob) {
         int trust = entity.wildTrust;
         Vec3d vec3d = mob.getLook(1.0F).normalize();
-        Vec3d vec3d1 = new Vec3d(entity.posX - mob.posX, entity.getEntityBoundingBox().minY + (double) entity.getEyeHeight() - (mob.posY + (double) mob.getEyeHeight()), entity.posZ - mob.posZ);
+        Vec3d vec3d1 = new Vec3d(entity.posX - mob.posX, entity.getBoundingBox().minY + (double) entity.getEyeHeight() - (mob.posY + (double) mob.getEyeHeight()), entity.posZ - mob.posZ);
         double d0 = vec3d1.length();
         vec3d1 = vec3d1.normalize();
         double d1 = vec3d.dotProduct(vec3d1);

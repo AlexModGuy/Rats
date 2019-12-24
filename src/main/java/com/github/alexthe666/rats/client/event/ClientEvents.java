@@ -139,9 +139,9 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() == Minecraft.getMinecraft().player) {
+        if (event.getLivingEntity() == Minecraft.getMinecraft().player) {
             EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
-            PotionEffect active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
+            PotionEffect active = event.getLivingEntity().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
             if (synesthesia && !renderer.isShaderActive()) {
                 renderer.loadShader(SYNESTHESIA);

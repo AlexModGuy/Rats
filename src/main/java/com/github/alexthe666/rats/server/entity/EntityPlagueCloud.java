@@ -112,7 +112,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         this.goalSelector.addGoal(1, new EntityPlagueCloud.AIMeleeAttack(this));
         this.goalSelector.addGoal(8, new EntityPlagueCloud.AIMoveRandom());
         this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }

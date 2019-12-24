@@ -10,7 +10,7 @@ import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 
 public class ModelRat extends AdvancedModelBase {
     public AdvancedModelRenderer body1;
@@ -239,7 +239,7 @@ public class ModelRat extends AdvancedModelBase {
         float speedDance = 0.75F;
         float degreeDance = 0.4F;
         boolean running = rat.isSprinting() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT);
-        boolean holdingInHands = !rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT ||
+        boolean holdingInHands = !rat.getHeldItem(Hand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT ||
                 rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || rat.getMBTransferRate() > 0;
         float maxTailRotation = (float) Math.toRadians(15);
 

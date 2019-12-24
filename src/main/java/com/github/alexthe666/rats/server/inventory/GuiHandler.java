@@ -8,7 +8,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -28,7 +28,7 @@ public class GuiHandler implements IGuiHandler {
             return new ContainerRatCraftingTable((TileEntityRatCraftingTable) tile, player);
         }
         if (ID == 3) {
-            EnumHand hand = EnumHand.MAIN_HAND;
+            Hand hand = Hand.MAIN_HAND;
             return new ContainerRatUpgrade(player, player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
         if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {
@@ -52,7 +52,7 @@ public class GuiHandler implements IGuiHandler {
             return new GuiRatCraftingTable((TileEntityRatCraftingTable) tile, player.inventory);
         }
         if (ID == 3) {
-            EnumHand hand = EnumHand.MAIN_HAND;
+            Hand hand = Hand.MAIN_HAND;
             return new GuiRatUpgrade(player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
         if (ID == 4 && tile != null && tile instanceof TileEntityUpgradeCombiner) {

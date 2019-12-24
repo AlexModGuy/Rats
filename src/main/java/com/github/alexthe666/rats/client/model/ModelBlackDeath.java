@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityBlackDeath;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelBlackDeath extends ModelBase {
@@ -122,8 +122,8 @@ public class ModelBlackDeath extends ModelBase {
         }
     }
 
-    public ModelRenderer getArm(EnumHandSide p_191216_1_) {
-        return p_191216_1_ == EnumHandSide.LEFT ? this.leftArm : this.rightArm;
+    public ModelRenderer getArm(HandSide p_191216_1_) {
+        return p_191216_1_ == HandSide.LEFT ? this.leftArm : this.rightArm;
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

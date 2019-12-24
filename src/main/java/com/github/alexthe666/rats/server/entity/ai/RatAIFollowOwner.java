@@ -1,16 +1,16 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.Goal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.EnumSet;
 
 public class RatAIFollowOwner extends Goal {
     private final EntityRat rat;
@@ -28,7 +28,7 @@ public class RatAIFollowOwner extends Goal {
         this.followSpeed = followSpeedIn;
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     /**
@@ -70,20 +70,20 @@ public class RatAIFollowOwner extends Goal {
     }
 
     public void tick() {
-        this.rat.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.rat.getVerticalFaceSpeed());
+        this.rat.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float) this.rat.getVerticalFaceSpeed());
         if (rat.isFollowing()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 boolean teleport = false;
-                if (!this.rat.getLeashed() && !this.rat.isRiding() && this.rat.getOwner() instanceof PlayerEntity) {
+                if (!this.rat.getLeashed() && !this.rat.isPassenger() && this.rat.getOwner() instanceof PlayerEntity) {
                     if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
                         teleport = true;
                         int i = MathHelper.floor(this.owner.posX) - 2;
                         int j = MathHelper.floor(this.owner.posZ) - 2;
-                        int k = MathHelper.floor(this.owner.getEntityBoundingBox().minY);
+                        int k = MathHelper.floor(this.owner.getBoundingBox().minY);
                         for (int l = 0; l <= 4; ++l) {
                             for (int i1 = 0; i1 <= 4; ++i1) {
-                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isTeleportFriendlyBlock(i, j, k, l, i1)) {
+                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.canTeleportToBlock(new BlockPos(i + l, k - 1, j + i1))) {
                                     this.rat.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k, (double) ((float) (j + i1) + 0.5F), this.rat.rotationYaw, this.rat.rotationPitch);
                                     this.rat.getNavigator().clearPath();
                                     return;
@@ -93,16 +93,15 @@ public class RatAIFollowOwner extends Goal {
                     }
                 }
                 if (!teleport) {
-                    this.rat.getNavigator().tryMoveToEntityLiving(this.owner, this.followSpeed);
+                    this.rat.getNavigator().tryMoveToLivingEntity(this.owner, this.followSpeed);
                 }
             }
 
         }
     }
 
-    protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset) {
-        BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);
-        BlockState BlockState = this.world.getBlockState(blockpos);
-        return BlockState.getBlockFaceShape(this.world, blockpos, Direction.DOWN) == BlockFaceShape.SOLID && BlockState.canEntitySpawn(this.rat) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2));
+    protected boolean canTeleportToBlock(BlockPos pos) {
+        BlockState blockstate = this.world.getBlockState(pos);
+        return blockstate.canEntitySpawn(this.world, pos, this.rat.getType()) && this.world.isAirBlock(pos.up()) && this.world.isAirBlock(pos.up(2));
     }
 }
