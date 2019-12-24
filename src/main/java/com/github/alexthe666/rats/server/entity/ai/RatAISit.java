@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.entity.ai.EntityAISit;
+import net.minecraft.entity.ai.goal.SitGoal;
 
-public class RatAISit extends EntityAISit {
+public class RatAISit extends SitGoal {
 
     private EntityRat rat;
 

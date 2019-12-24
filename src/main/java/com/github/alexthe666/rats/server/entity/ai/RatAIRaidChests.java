@@ -1,17 +1,19 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -27,7 +29,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
 
     public static boolean isChestRaidable(World world, BlockPos pos) {
         String[] blacklist = RatConfig.blacklistedRatBlocks;
-        if (world.getBlockState(pos).getBlock() instanceof BlockContainer) {
+        if (world.getBlockState(pos).getBlock() instanceof ContainerBlock) {
             Block block = world.getBlockState(pos).getBlock();
             boolean listed = false;
             for (String name : blacklist) {
@@ -45,7 +47,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                             return true;
                         }
                     } catch (Exception e) {
-                        RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
+                        RatsMod.LOGGER.warn("Rats stopped a " + entity.getClass().getSimpleName() + " from causing a crash during access");
                         e.printStackTrace();
                     }
                 }
@@ -77,9 +79,10 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
 
     public boolean canSeeChest() {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
             return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(destinationBlock);
         }
         return true;
@@ -92,11 +95,11 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
             TileEntity entity = this.entity.world.getTileEntity(this.destinationBlock);
             if (entity instanceof IInventory) {
                 IInventory feeder = (IInventory) entity;
-                double distance = this.entity.getDistance(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ());
-                if (distance < 2.5F && distance >= 1.5F && canSeeChest()) {
+                double distance = this.entity.getDistanceSq(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ());
+                if (distance < 6.25F && distance > 2.72F && canSeeChest() && entity instanceof IInventory) {
                     toggleChest(feeder, true);
                 }
-                if (distance < 1.5F && canSeeChest()) {
+                if (distance <= 2.89F && canSeeChest()) {
                     toggleChest(feeder, false);
                     ItemStack stack = RatUtils.getFoodFromInventory(this.entity, feeder, this.entity.world.rand);
                     if (stack == ItemStack.EMPTY) {
@@ -138,16 +141,13 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
     }
 
     public void toggleChest(IInventory te, boolean open) {
-        if (te instanceof TileEntityChest) {
-            TileEntityChest chest = (TileEntityChest) te;
+        if (te instanceof ChestTileEntity) {
+            ChestTileEntity chest = (ChestTileEntity) te;
             if (open) {
-                chest.numPlayersUsing++;
-                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
+                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockState().getBlock(), 1, 1);
             } else {
-                if (chest.numPlayersUsing > 0) {
-                    chest.numPlayersUsing = 0;
-                    this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
-                }
+                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockState().getBlock(), 1, 0);
+
             }
         }
     }

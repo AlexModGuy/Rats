@@ -8,17 +8,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.Comparator;
+import java.util.EnumSet;
 
 public class RatAIPickupFromInventory extends Goal {
     private static final int RADIUS = 16;
@@ -66,37 +69,39 @@ public class RatAIPickupFromInventory extends Goal {
 
     public boolean canSeeChest() {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
             return entity.world.isAirBlock(sidePos) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(targetBlock);
         }
         return true;
     }
+
 
     @Override
     public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
-            double distance = this.entity.getDistance(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-            if (distance < 2.5 && distance > 1.65 && canSeeChest() && entity instanceof IInventory) {
+            double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
+            if (distance < 6.25F && distance > 2.72F && canSeeChest() && entity instanceof IInventory) {
                 toggleChest((IInventory) entity, true);
             }
-            if (distance <= 1.7 && canSeeChest()) {
+            if (distance <= 2.89F && canSeeChest()) {
                 if (entity instanceof IInventory) {
                     toggleChest((IInventory) entity, false);
                 }
-                IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN);
-                if (handler == null) {
+                LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN);
+                if (handler.orElse(null) == null) {
                     return;
                 }
-                int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler, this.entity.world.rand);
+                int slot = RatUtils.getItemSlotFromItemHandler(this.entity, handler.orElse(null), this.entity.world.rand);
                 int extractSize = this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? 64 : 1;
                 ItemStack stack = ItemStack.EMPTY;
                 try {
-                    if (handler.getSlots() > 0 && handler.extractItem(slot, extractSize, true) != ItemStack.EMPTY) {
-                        stack = handler.extractItem(slot, extractSize, false);
+                    if (handler.orElse(null).getSlots() > 0 && handler.orElse(null).extractItem(slot, extractSize, true) != ItemStack.EMPTY) {
+                        stack = handler.orElse(null).extractItem(slot, extractSize, false);
                     }
                 } catch (Exception e) {
                     //container is empty
@@ -119,16 +124,13 @@ public class RatAIPickupFromInventory extends Goal {
     }
 
     public void toggleChest(IInventory te, boolean open) {
-        if (te instanceof TileEntityChest) {
-            TileEntityChest chest = (TileEntityChest) te;
+        if (te instanceof ChestTileEntity) {
+            ChestTileEntity chest = (ChestTileEntity) te;
             if (open) {
-                chest.numPlayersUsing++;
-                this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
+                this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 1);
             } else {
-                if (chest.numPlayersUsing > 0) {
-                    chest.numPlayersUsing = 0;
-                    this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockType(), 1, chest.numPlayersUsing);
-                }
+                this.entity.world.addBlockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 0);
+
             }
         }
     }

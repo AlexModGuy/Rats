@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
@@ -20,10 +21,13 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -686,11 +690,11 @@ public class RatUtils {
                 && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && net.minecraft.entity.boss.EntityWither.canDestroyBlock(blockState.getBlock());
     }
 
-    public static boolean isRatTube(IBlockAccess world, BlockPos offset) {
+    public static boolean isRatTube(IWorldReader world, BlockPos offset) {
         return world.getTileEntity(offset) instanceof TileEntityRatTube;
     }
 
-    public static boolean isConnectedToRatTube(IBlockAccess world, BlockPos pos) {
+    public static boolean isConnectedToRatTube(IWorldReader world, BlockPos pos) {
         if (world.isAirBlock(pos)) {
             for (Direction facing : Direction.values()) {
                 if (isRatTube(world, pos.offset(facing))) {
@@ -701,12 +705,12 @@ public class RatUtils {
         return false;
     }
 
-    public static boolean isOpenRatTube(IBlockAccess world, EntityRat rat, BlockPos pos) {
+    public static boolean isOpenRatTube(IBlockReader world, EntityRat rat, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockRatTube) {
             for (int i = 0; i < Direction.values().length; i++) {
-                PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if (state.getValue(bool) && rat != null) {
+                BooleanProperty bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                if (state.get(bool) && rat != null) {
                     return true;
                 }
             }
@@ -714,11 +718,11 @@ public class RatUtils {
         return false;
     }
 
-    public static boolean isLinkedToTube(IBlockAccess world, BlockPos offset) {
+    public static boolean isLinkedToTube(IWorldReader world, BlockPos offset) {
         return isRatTube(world, offset) || isConnectedToRatTube(world, offset);
     }
 
-    public static BlockPos offsetTubeEntrance(IBlockAccess worldIn, BlockPos pos) {
+    public static BlockPos offsetTubeEntrance(IWorldReader worldIn, BlockPos pos) {
         BlockState state = worldIn.getBlockState(pos);
         if (state.getBlock() instanceof BlockRatTube) {
             for (int i = 0; i < Direction.values().length; i++) {
@@ -823,7 +827,7 @@ public class RatUtils {
     public static boolean canSpawnInDimension(World world) {
         if (RatConfig.blacklistedRatDimensions.length > 0) {
             for (int i = 0; i < RatConfig.blacklistedRatDimensions.length; i++) {
-                if (RatConfig.blacklistedRatDimensions[i] == world.provider.getDimension()) {
+                if (RatConfig.blacklistedRatDimensions[i] == world.getDimension()) {
                     return false;
                 }
             }

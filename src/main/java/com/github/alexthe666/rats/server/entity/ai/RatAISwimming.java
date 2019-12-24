@@ -2,9 +2,9 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.goal.SwimGoal;
 
-public class RatAISwimming extends EntityAISwimming {
+public class RatAISwimming extends SwimGoal {
 
     private EntityRat entityRat;
 

@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.pathfinding;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorldReader;
 
 public class AStarNode {
     private static final float H = 1;
@@ -29,7 +29,7 @@ public class AStarNode {
         return baseCost + H * calcCost;
     }
 
-    public void generateReachablePos(IBlockAccess world) {
+    public void generateReachablePos(IWorldReader world) {
         boolean flag = false;
         for (Direction facing : Direction.values()) {
             BlockPos offset = pos.offset(facing);
@@ -47,7 +47,7 @@ public class AStarNode {
                 for (int j = -1; j < 1; j++) {
                     for (int k = -1; k < 1; k++) {
                         BlockPos offset = pos.add(i, j, k);
-                        if (world.isAirBlock(offset) && world.isSideSolid(offset.down(), Direction.UP, false)) {
+                        if (world.isAirBlock(offset) && world.getBlockState(offset.down()).isSolid()) {
                             travel(offset, baseCost + 50);
                         }
                     }

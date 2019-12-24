@@ -4,9 +4,11 @@ import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.ai.Goal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.EnumSet;
 
 public class RatAIWanderAquatic extends Goal {
     BlockPos target;
@@ -46,7 +48,7 @@ public class RatAIWanderAquatic extends Goal {
         if (rat.world.getBlockState(target).getMaterial() == Material.WATER || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
             rat.getMoveHelper().setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);
             if (rat.getAttackTarget() == null) {
-                rat.getLookHelper().setLookPosition((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 180.0F, 20.0F);
+                rat.getLookController().setLookPosition((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 180.0F, 20.0F);
             }
         }
     }

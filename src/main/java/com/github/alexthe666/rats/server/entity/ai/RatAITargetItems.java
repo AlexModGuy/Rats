@@ -6,20 +6,22 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
-public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
+public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
     protected final RatAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super ItemEntity> targetEntitySelector;
     protected int executionChance;
@@ -51,16 +53,16 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
                 return !stack.isEmpty() && RatUtils.shouldRaidItem(stack) && rat.canRatPickupItem(stack);
             }
         };
-        this.setMutexBits(0);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+        if (!rat.canMove() || this.goalOwner.isPassenger() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
         if (!this.mustUpdate) {
-            long worldTime = this.taskOwner.world.getWorldTime() % 10;
+            long worldTime = this.goalOwner.world.getGameTime() % 10;
             if (this.rat.getIdleTime() >= 100 && worldTime != 0) {
                 return false;
             }
@@ -68,7 +70,7 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
                 return false;
             }
         }
-        List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+        List<ItemEntity> list = this.goalOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
         if (list.isEmpty()) {
             return false;
         } else {
@@ -85,24 +87,24 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+        return this.goalOwner.getBoundingBox().grow(targetDistance, targetDistance, targetDistance);
     }
 
     @Override
     public void startExecuting() {
-        this.taskOwner.getNavigator().tryMoveToXYZ(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ, 1);
+        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ, 1);
         super.startExecuting();
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity != null && !this.targetEntity.isAlive()) {
             this.resetTask();
-            this.taskOwner.getNavigator().clearPath();
+            this.goalOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
-            EntityRat rat = (EntityRat) this.taskOwner;
+        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+            EntityRat rat = (EntityRat) this.goalOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             int extractSize = rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? this.targetEntity.getItem().getCount() : 1;
             duplicate.setCount(extractSize);
@@ -111,8 +113,8 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
                 rat.entityDropItem(rat.getHeldItem(Hand.MAIN_HAND), 0.0F);
             }
             rat.setHeldItem(Hand.MAIN_HAND, duplicate);
-            if (this.targetEntity.getThrower() != null) {
-                PlayerEntity targetPlayer = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
+            if (this.targetEntity.getThrowerId() != null) {
+                PlayerEntity targetPlayer = this.goalOwner.world.getPlayerByUuid(this.targetEntity.getThrowerId());
                 if (targetPlayer != null && RatUtils.isCheese(duplicate)) {
                     if (!rat.isTamed() && rat.canBeTamed()) {
                         rat.wildTrust += 10;
@@ -130,7 +132,7 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
                             untameableText = "entity.rat.tamed_by_other";
                         }
                         if (!rat.isOwner(targetPlayer)) {
-                            targetPlayer.sendStatusMessage(new TextComponentTranslation(untameableText), true);
+                            targetPlayer.sendStatusMessage(new TranslationTextComponent(untameableText), true);
                         }
                     }
 
@@ -146,7 +148,7 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.taskOwner.getNavigator().noPath();
+        return !this.goalOwner.getNavigator().noPath();
     }
 
     public static class Sorter implements Comparator<Entity> {

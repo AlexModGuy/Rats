@@ -3,11 +3,11 @@ package com.github.alexthe666.rats.server.pathfinding;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorldReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,19 +31,19 @@ public class AStar {
         this.includeAir = includeAir;
     }
 
-    protected static boolean isRatTube(IBlockAccess world, BlockPos offset) {
+    protected static boolean isRatTube(IWorldReader world, BlockPos offset) {
         return world.getTileEntity(offset) instanceof TileEntityRatTube;
     }
 
-    public static BlockPos getConnectedToRatTube(IBlockAccess world, BlockPos pos) {
+    public static BlockPos getConnectedToRatTube(IWorldReader world, BlockPos pos) {
         for (Direction facing : Direction.values()) {
             BlockPos statePos = pos.offset(facing);
             BlockState state = world.getBlockState(statePos);
-            if (state.getBlock() instanceof BlockRatTube && state.getBlock().getMetaFromState(state) > 0) {
+            if (state.getBlock() instanceof BlockRatTube) {
                 for (int i = 0; i < Direction.values().length; i++) {
-                    PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                    BooleanProperty bool = BlockRatTube.ALL_OPEN_PROPS[i];
                     BlockPos offsetInPos = statePos.offset(Direction.values()[i]);
-                    if (state.getValue(bool) && (world.isAirBlock(offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)) {
+                    if (state.get(bool) && (world.isAirBlock(offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)) {
                         return offsetInPos;
                     }
                 }
@@ -52,7 +52,7 @@ public class AStar {
         return null;
     }
 
-    public BlockPos[] getPath(IBlockAccess world) {
+    public BlockPos[] getPath(IWorldReader world) {
         shoppingList.add(start);
         while (confirmedList.size() < overflowLimit && !pathFound && shoppingList.size() > 0) {
             AStarNode n = shoppingList.get(0);

@@ -1,12 +1,18 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
+
+import java.util.List;
 
 public class RatAIRaidCrops extends RatAIMoveToBlock {
     private final EntityRat entity;
@@ -19,7 +25,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
 
     public static boolean isCrops(World world, BlockPos pos) {
         BlockState block = world.getBlockState(pos.up());
-        return block.getBlock() instanceof BlockCrops;
+        return block.getBlock() instanceof CropsBlock;
     }
 
     @Override
@@ -51,20 +57,26 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
         if (this.getIsAboveDestination() && this.destinationBlock != null) {
             BlockPos cropsPos = this.destinationBlock.up();
             BlockState block = this.entity.world.getBlockState(cropsPos);
-            if (block.getBlock() instanceof BlockCrops) {
-                double distance = this.entity.getDistance(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
-                if (distance < 1.5F) {
-                    ItemStack stack = new ItemStack(block.getBlock().getItemDropped(block, this.entity.getRNG(), 0));
-                    if (stack == ItemStack.EMPTY || !entity.canRatPickupItem(stack)) {
-                        //
+            if (block.getBlock() instanceof CropsBlock) {
+                double distance = this.entity.getDistanceSq(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
+                if (distance < 2.5F) {
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(destinationBlock)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    List<ItemStack> drops = block.getBlock().getDrops(block, loot);
+                    if (drops.isEmpty()) {
                         stop = true;
                     } else {
-                        ItemStack duplicate = stack.copy();
-                        duplicate.setCount(1);
-                        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                            this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
+                        int count = 0;
+                        for(ItemStack stack : drops){
+                            if(count == 0){
+                                ItemStack duplicate = stack.copy();
+                                duplicate.setCount(1);
+                                if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
+                                    this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
+                                }
+                                this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
+                            }
+                            count++;
                         }
-                        this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
                         this.entity.world.destroyBlock(cropsPos, false);
                     }
                     this.entity.fleePos = cropsPos;
