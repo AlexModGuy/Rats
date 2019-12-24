@@ -37,15 +37,15 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
 
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityRatlanteanSpirit.AIFireballAttack(this));
-        this.tasks.addTask(8, new EntityRatlanteanSpirit.AIMoveRandom());
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRatlanteanSpirit.class));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, false));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityGolem.class, false));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(1, new EntityRatlanteanSpirit.AIFireballAttack(this));
+        this.goalSelector.addGoal(8, new EntityRatlanteanSpirit.AIMoveRandom());
+        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRatlanteanSpirit.class));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, false));
+        this.targetSelector.addGoal(3, new EntityAINearestAttackableTarget(this, EntityGolem.class, false));
+        this.targetSelector.addGoal(4, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
     }
 
     protected void applyEntityAttributes() {
@@ -161,10 +161,10 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         }
     }
 
-    class AIMoveRandom extends EntityAIBase {
+    class AIMoveRandom extends Goal {
 
         public AIMoveRandom() {
-            this.setMutexBits(1);
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         public boolean shouldExecute() {
@@ -194,7 +194,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         }
     }
 
-    class AIFireballAttack extends EntityAIBase {
+    class AIFireballAttack extends Goal {
         private final EntityRatlanteanSpirit parentEntity;
         public int attackTimer;
 

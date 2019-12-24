@@ -2,19 +2,20 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.IPlagueLegion;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 
 import javax.annotation.Nullable;
 
-public class BlackDeathAITargetNonPlagued extends EntityAINearestAttackableTarget {
+public class BlackDeathAITargetNonPlagued extends NearestAttackableTargetGoal {
 
-    public BlackDeathAITargetNonPlagued(EntityCreature creature, Class<LivingEntity> LivingEntityClass, boolean b) {
+    public BlackDeathAITargetNonPlagued(CreatureEntity creature, Class<LivingEntity> LivingEntityClass, boolean b) {
         super(creature, LivingEntityClass, b);
     }
 
-    protected boolean isSuitableTarget(@Nullable LivingEntity target, boolean includeInvincibles) {
+    protected boolean isSuitableTarget(@Nullable LivingEntity target, EntityPredicate includeInvincibles) {
         if (super.isSuitableTarget(target, includeInvincibles)) {
             if (target instanceof IPlagueLegion) {
                 return false;

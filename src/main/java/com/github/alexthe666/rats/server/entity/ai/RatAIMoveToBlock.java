@@ -2,11 +2,11 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class RatAIMoveToBlock extends EntityAIBase {
+public abstract class RatAIMoveToBlock extends Goal {
     private final EntityCreature creature;
     private final double movementSpeed;
     private final int searchLength;
@@ -28,11 +28,11 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
         this.movementSpeed = speedIn;
         this.searchLength = length;
         this.distanceCheck = 1.0D;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     /**
-     * Returns whether the EntityAIBase should begin execution.
+     * Returns whether the Goal should begin execution.
      */
     public boolean shouldExecute() {
         if (this.runDelay > 0) {
@@ -45,7 +45,7 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
     }
 
     /**
-     * Returns whether an in-progress EntityAIBase should continue executing
+     * Returns whether an in-progress Goal should continue executing
      */
     public boolean shouldContinueExecuting() {
         return this.timeoutCounter >= -this.maxStayTicks && this.timeoutCounter <= 1200 && this.shouldMoveTo(this.creature.world, this.destinationBlock);
@@ -63,7 +63,7 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask() {
+    public void tick() {
         if (this.creature.getDistanceSqToCenter(this.destinationBlock.up()) > distanceCheck) {
             this.isAboveDestination = false;
             ++this.timeoutCounter;

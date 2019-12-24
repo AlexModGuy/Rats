@@ -1,18 +1,18 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAIFleePosition extends EntityAIBase {
+public class RatAIFleePosition extends Goal {
     private EntityRat rat;
     private Path path;
 
     public RatAIFleePosition(EntityRat rat) {
         this.rat = rat;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override

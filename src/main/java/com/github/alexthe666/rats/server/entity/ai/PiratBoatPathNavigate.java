@@ -1,16 +1,17 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.world.World;
 
-public class PiratBoatPathNavigate extends PathNavigateSwimmer {
+public class PiratBoatPathNavigate extends SwimmerPathNavigator {
 
-    public PiratBoatPathNavigate(EntityLiving entitylivingIn, World worldIn) {
+    public PiratBoatPathNavigate(MobEntity entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }
 
     protected boolean isInLiquid() {
-        return this.entity.isOverWater();
+        //TODO this.entity.isOverWater()
+        return this.entity.isInWater();
     }
 }

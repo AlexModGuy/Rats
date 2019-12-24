@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAIHarvestFarmer extends EntityAIBase {
+public class RatAIHarvestFarmer extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -27,7 +27,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RatAIHarvestFarmer extends EntityAIBase {
 
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             if (holdingSeeds()) {
                 BlockState block = this.entity.world.getBlockState(this.targetBlock);

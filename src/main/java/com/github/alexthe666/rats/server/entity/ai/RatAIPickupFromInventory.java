@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.Comparator;
 
-public class RatAIPickupFromInventory extends EntityAIBase {
+public class RatAIPickupFromInventory extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -31,7 +31,7 @@ public class RatAIPickupFromInventory extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class RatAIPickupFromInventory extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);

@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumHand;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class RatAIHarvestTrees extends EntityAIBase {
+public class RatAIHarvestTrees extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final RatAIHarvestTrees.BlockSorter targetSorter;
@@ -30,7 +30,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new RatAIHarvestTrees.BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     public static final boolean isBlockLog(World world, BlockPos pos) {
@@ -101,7 +101,7 @@ public class RatAIHarvestTrees extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
                 RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false);

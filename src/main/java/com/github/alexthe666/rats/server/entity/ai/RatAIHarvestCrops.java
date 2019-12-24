@@ -8,7 +8,7 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAIHarvestCrops extends EntityAIBase {
+public class RatAIHarvestCrops extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -30,7 +30,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RatAIHarvestCrops extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             BlockState block = this.entity.world.getBlockState(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);

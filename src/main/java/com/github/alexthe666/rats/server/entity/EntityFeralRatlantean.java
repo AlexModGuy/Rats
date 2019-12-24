@@ -45,13 +45,13 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
+        this.goalSelector.addGoal(1, new EntityAISwimming(this));
+        this.goalSelector.addGoal(2, new EntityAIAttackMelee(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
 
     protected void applyEntityAttributes() {

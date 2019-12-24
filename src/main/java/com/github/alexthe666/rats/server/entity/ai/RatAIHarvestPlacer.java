@@ -6,13 +6,13 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
-public class RatAIHarvestPlacer extends EntityAIBase {
+public class RatAIHarvestPlacer extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
@@ -21,7 +21,7 @@ public class RatAIHarvestPlacer extends EntityAIBase {
     public RatAIHarvestPlacer(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RatAIHarvestPlacer extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             if (holdingBlock()) {
                 ItemStack stack = this.entity.getHeldItem(EnumHand.MAIN_HAND);

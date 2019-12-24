@@ -26,9 +26,12 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -65,10 +68,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -83,8 +83,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public static final Animation ANIMATION_IDLE_SNIFF = Animation.create(20);
     public static final Animation ANIMATION_DANCE_0 = Animation.create(35);
     public static final Animation ANIMATION_DANCE_1 = Animation.create(30);
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "rat"));
-    public static final ResourceLocation CHRISTMAS_LOOT = LootTableList.register(new ResourceLocation("rats", "christmas_rat_gifts"));
+    public static final ResourceLocation CHRISTMAS_LOOT = new ResourceLocation("rats", "christmas_rat_gifts");
     private static final DataParameter<Boolean> IS_MALE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
@@ -119,7 +118,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public BlockPos fleePos;
     public boolean holdInMouth = true;
     public int wildTrust = 0;
-    public ContainerHorseChest ratInventory;
     public BlockPos depositPos;
     public Direction depositFacing = Direction.UP;
     public BlockPos pickupPos;
@@ -157,9 +155,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
     private int eatenItems = 0;
-    private EntityAIBase aiHarvest;
-    private EntityAIBase aiPickup;
-    private EntityAIBase aiDeposit;
+    private Goal aiHarvest;
+    private Goal aiPickup;
+    private Goal aiDeposit;
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
     private int rangedAttackCooldownPsychic = 0;
@@ -213,28 +211,28 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
-        this.tasks.addTask(0, new RatAIAttackMelee(this, 1.45D, true));
-        this.tasks.addTask(1, new RatAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.45D, false));
-        this.tasks.addTask(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
+        this.goalSelector.addGoal(0, new RatAIAttackMelee(this, 1.45D, true));
+        this.goalSelector.addGoal(1, new RatAISwimming(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
+        this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isEntityAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
+                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
             }
         }, 10.0F, 0.8D, 1.33D));
-        this.tasks.addTask(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
-        this.tasks.addTask(5, new RatAIFleeSun(this, 1.66D));
-        this.tasks.addTask(5, this.aiSit = new RatAISit(this));
-        this.tasks.addTask(6, new RatAIWander(this, 1.0D));
-        this.tasks.addTask(6, new RatAIWanderFlight(this));
-        this.tasks.addTask(6, new RatAIWanderAquatic(this));
-        this.tasks.addTask(7, new RatAIRaidChests(this));
-        this.tasks.addTask(7, new RatAIRaidCrops(this));
-        this.tasks.addTask(7, new RatAIEnterTrap(this));
-        this.tasks.addTask(7, new RatAIFleePosition(this));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
+        this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
+        this.goalSelector.addGoal(5, new RatAIFleeSun(this, 1.66D));
+        this.goalSelector.addGoal(5, this.aiSit = new RatAISit(this));
+        this.goalSelector.addGoal(6, new RatAIWander(this, 1.0D));
+        this.goalSelector.addGoal(6, new RatAIWanderFlight(this));
+        this.goalSelector.addGoal(6, new RatAIWanderAquatic(this));
+        this.goalSelector.addGoal(7, new RatAIRaidChests(this));
+        this.goalSelector.addGoal(7, new RatAIRaidCrops(this));
+        this.goalSelector.addGoal(7, new RatAIEnterTrap(this));
+        this.goalSelector.addGoal(7, new RatAIFleePosition(this));
+        this.goalSelector.addGoal(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
+        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
+        this.targetSelector.addGoal(0, new RatAITargetItems(this, false));
+        this.targetSelector.addGoal(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
@@ -246,15 +244,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             }
         }));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false));
+        this.targetSelector.addGoal(2, new EntityAIOwnerHurtByTarget(this));
+        this.targetSelector.addGoal(3, new EntityAIOwnerHurtTarget(this));
+        this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, false));
     }
 
     protected void setupDynamicAI() {
-        this.tasks.removeTask(this.aiHarvest);
-        this.tasks.removeTask(this.aiDeposit);
-        this.tasks.removeTask(this.aiPickup);
+        this.goalSelector.removeTask(this.aiHarvest);
+        this.goalSelector.removeTask(this.aiDeposit);
+        this.goalSelector.removeTask(this.aiPickup);
         if (this.aiHarvest == null) {
             aiHarvest = new RatAIHarvestCrops(this);
         }
@@ -292,9 +290,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             aiDeposit = new RatAIDepositInInventory(this);
             aiPickup = new RatAIPickupFromInventory(this);
         }
-        this.tasks.addTask(3, this.aiHarvest);
-        this.tasks.addTask(4, this.aiDeposit);
-        this.tasks.addTask(4, this.aiPickup);
+        this.goalSelector.addGoal(3, this.aiHarvest);
+        this.goalSelector.addGoal(4, this.aiDeposit);
+        this.goalSelector.addGoal(4, this.aiPickup);
     }
 
     @Nullable
@@ -1659,7 +1657,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return null;
     }
 
-    public void updateAITasks() {
+    public void updateAIgoalSelector() {
         if (this.getMoveHelper().isUpdating()) {
             double d0 = this.getMoveHelper().getSpeed();
             if (d0 == 0.6D) {

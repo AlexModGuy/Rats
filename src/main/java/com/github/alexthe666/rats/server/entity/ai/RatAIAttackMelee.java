@@ -2,9 +2,9 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 
-public class RatAIAttackMelee extends EntityAIAttackMelee {
+public class RatAIAttackMelee extends MeleeAttackGoal {
     private EntityRat rat;
 
     public RatAIAttackMelee(EntityRat rat, double speed, boolean memory) {
@@ -12,8 +12,8 @@ public class RatAIAttackMelee extends EntityAIAttackMelee {
         this.rat = rat;
     }
 
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
         //this.attackTick = 0;
     }
 

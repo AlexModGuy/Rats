@@ -51,23 +51,23 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, aiArrowAttack = new PiratAIStrife(this, 1.0D, 20, 30.0F));
-        this.tasks.addTask(1, aiAttackOnCollide = new EntityAIAttackMelee(this, 1.45D, false));
-        this.tasks.addTask(2, new PiratAIWander(this, 1.0D));
-        this.tasks.addTask(2, new RatAIWander(this, 1.0D));
-        this.tasks.addTask(3, new RatAIFleeSun(this, 1.66D));
-        this.tasks.addTask(3, this.aiSit = new RatAISit(this));
-        this.tasks.addTask(5, new RatAIEnterTrap(this));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, LivingEntity.class, 5, true, false, new Predicate<LivingEntity>() {
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(1, aiArrowAttack = new PiratAIStrife(this, 1.0D, 20, 30.0F));
+        this.goalSelector.addGoal(1, aiAttackOnCollide = new EntityAIAttackMelee(this, 1.45D, false));
+        this.goalSelector.addGoal(2, new PiratAIWander(this, 1.0D));
+        this.goalSelector.addGoal(2, new RatAIWander(this, 1.0D));
+        this.goalSelector.addGoal(3, new RatAIFleeSun(this, 1.66D));
+        this.goalSelector.addGoal(3, this.aiSit = new RatAISit(this));
+        this.goalSelector.addGoal(5, new RatAIEnterTrap(this));
+        this.goalSelector.addGoal(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
+        this.goalSelector.addGoal(8, new EntityAILookIdle(this));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTarget(this, LivingEntity.class, 5, true, false, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 return !(entity instanceof IRatlantean) && entity instanceof LivingEntity && !entity.isOnSameTeam(EntityPirat.this);
             }
         }));
-        this.targetTasks.addTask(2, new RatAIHurtByTarget(this, false));
-        this.tasks.removeTask(this.aiAttackOnCollide);
+        this.targetSelector.addGoal(2, new RatAIHurtByTarget(this, false));
+        this.goalSelector.removeTask(this.aiAttackOnCollide);
     }
 
     protected void applyEntityAttributes() {
@@ -85,17 +85,17 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public void setCombatTask() {
         if (this.world != null && !this.world.isRemote) {
-            this.tasks.removeTask(this.aiAttackOnCollide);
-            this.tasks.removeTask(this.aiArrowAttack);
+            this.goalSelector.removeTask(this.aiAttackOnCollide);
+            this.goalSelector.removeTask(this.aiArrowAttack);
             if (this.isRiding()) {
                 int i = 20;
                 if (this.world.getDifficulty() != EnumDifficulty.HARD) {
                     i = 40;
                 }
                 this.aiArrowAttack.setAttackCooldown(i);
-                this.tasks.addTask(1, this.aiArrowAttack);
+                this.goalSelector.addGoal(1, this.aiArrowAttack);
             } else {
-                this.tasks.addTask(1, this.aiAttackOnCollide);
+                this.goalSelector.addGoal(1, this.aiAttackOnCollide);
             }
         }
     }

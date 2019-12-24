@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class RatAIPickupEnergy extends EntityAIBase {
+public class RatAIPickupEnergy extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
@@ -22,7 +22,7 @@ public class RatAIPickupEnergy extends EntityAIBase {
     public RatAIPickupEnergy(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RatAIPickupEnergy extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);

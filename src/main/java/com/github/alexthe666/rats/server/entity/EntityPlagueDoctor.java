@@ -2,9 +2,6 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIFollowGolem;
-import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAILookAtTradePlayer;
-import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAITradePlayer;
-import com.github.alexthe666.rats.server.entity.ai.PlagueDoctorAIVillagerInteract;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import com.google.common.collect.Sets;
@@ -74,7 +71,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     private int careerId;
     private int careerLevel;
     private boolean isLookingForHome;
-    private boolean areAdditionalTasksSet;
+    private boolean areAdditionalgoalSelectorSet;
     private int randomTickDivider;
 
     public EntityPlagueDoctor(EntityType type, World worldIn) {
@@ -86,22 +83,22 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new PlagueDoctorAITradePlayer(this));
-        this.tasks.addTask(1, new PlagueDoctorAILookAtTradePlayer(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
-        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(4, new EntityAITempt(this, 1.2D, false, TEMPTATION_ITEMS));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
-        this.tasks.addTask(7, new PlagueDoctorAIFollowGolem(this));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.tasks.addTask(9, new PlagueDoctorAIVillagerInteract(this));
-        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityZombieVillager.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(1, new PlagueDoctorAITradePlayer(this));
+        this.goalSelector.addGoal(1, new PlagueDoctorAILookAtTradePlayer(this));
+        this.goalSelector.addGoal(2, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
+        this.goalSelector.addGoal(2, new EntityAIMoveIndoors(this));
+        this.goalSelector.addGoal(3, new EntityAIRestrictOpenDoor(this));
+        this.goalSelector.addGoal(4, new EntityAITempt(this, 1.2D, false, TEMPTATION_ITEMS));
+        this.goalSelector.addGoal(4, new EntityAIOpenDoor(this, true));
+        this.goalSelector.addGoal(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
+        this.goalSelector.addGoal(7, new PlagueDoctorAIFollowGolem(this));
+        this.goalSelector.addGoal(9, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(9, new PlagueDoctorAIVillagerInteract(this));
+        this.goalSelector.addGoal(9, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTarget(this, EntityZombieVillager.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
     }
 
     protected void applyEntityAttributes() {
@@ -131,7 +128,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         return potioneffectIn.getPotion() != RatsMod.PLAGUE_POTION && super.isPotionApplicable(potioneffectIn);
     }
 
-    protected void updateAITasks() {
+    protected void updateAIgoalSelector() {
         if (--this.randomTickDivider <= 0) {
             BlockPos blockpos = new BlockPos(this);
             this.world.getVillageCollection().addToVillagerPositionList(blockpos);
@@ -175,7 +172,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
             }
         }
 
-        super.updateAITasks();
+        super.updateAIgoalSelector();
     }
 
     public boolean processInteract(PlayerEntity player, EnumHand hand) {
@@ -291,7 +288,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     }
 
     /**
-     * Hint to AI tasks that we were attacked by the passed LivingEntity and should retaliate. Is not guaranteed to
+     * Hint to AI goalSelector that we were attacked by the passed LivingEntity and should retaliate. Is not guaranteed to
      * change our actual active target (for example if we are currently busy attacking someone else)
      */
     public void setRevengeTarget(@Nullable LivingEntity livingBase) {

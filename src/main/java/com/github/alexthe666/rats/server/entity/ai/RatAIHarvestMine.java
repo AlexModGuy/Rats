@@ -9,7 +9,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ItemStackHelper;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatAIHarvestMine extends EntityAIBase {
+public class RatAIHarvestMine extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -37,7 +37,7 @@ public class RatAIHarvestMine extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class RatAIHarvestMine extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             BlockPos rayPos = entity.rayTraceBlockPos(this.targetBlock);
             if (rayPos == null) {

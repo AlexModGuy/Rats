@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.Direction;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class RatAIFollowOwner extends EntityAIBase {
+public class RatAIFollowOwner extends Goal {
     private final EntityRat rat;
     private final double followSpeed;
     World world;
@@ -32,7 +32,7 @@ public class RatAIFollowOwner extends EntityAIBase {
     }
 
     /**
-     * Returns whether the EntityAIBase should begin execution.
+     * Returns whether the Goal should begin execution.
      */
     public boolean shouldExecute() {
         if (rat.isTamed() && rat.isFollowing()) {
@@ -69,7 +69,7 @@ public class RatAIFollowOwner extends EntityAIBase {
         this.rat.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
     }
 
-    public void updateTask() {
+    public void tick() {
         this.rat.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.rat.getVerticalFaceSpeed());
         if (rat.isFollowing()) {
             if (--this.timeToRecalcPath <= 0) {

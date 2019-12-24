@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class RatAIHarvestBreeder extends EntityAIBase {
+public class RatAIHarvestBreeder extends Goal {
     private static final int RADIUS = 16;
     private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
     private final EntityRat entity;
@@ -30,7 +30,7 @@ public class RatAIHarvestBreeder extends EntityAIBase {
     public RatAIHarvestBreeder(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class RatAIHarvestBreeder extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetSheep != null && !this.targetSheep.isDead && !this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1D);
             if (entity.getDistance(targetSheep) < 1.5D) {

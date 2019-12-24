@@ -2,16 +2,16 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAIWanderFlight extends EntityAIBase {
+public class RatAIWanderFlight extends Goal {
     BlockPos target;
     EntityRat rat;
 
     public RatAIWanderFlight(EntityRat rat) {
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         this.rat = rat;
     }
 
@@ -33,7 +33,7 @@ public class RatAIWanderFlight extends EntityAIBase {
         return false;
     }
 
-    public void updateTask() {
+    public void tick() {
         if (!rat.isDirectPathBetweenPoints(new Vec3d(target))) {
             int dist = 8;
             if (rat.isInCage()) {

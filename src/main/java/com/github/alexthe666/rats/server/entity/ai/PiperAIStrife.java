@@ -2,11 +2,13 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 
-public class PiperAIStrife extends EntityAIBase {
+import java.util.EnumSet;
+
+public class PiperAIStrife extends Goal {
 
     private final EntityIllagerPiper entity;
     private final double moveSpeedAmp;
@@ -23,7 +25,7 @@ public class PiperAIStrife extends EntityAIBase {
         this.moveSpeedAmp = moveSpeedAmpIn;
         this.attackCooldown = attackCooldownIn;
         this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     public void setAttackCooldown(int p_189428_1_) {
@@ -31,7 +33,7 @@ public class PiperAIStrife extends EntityAIBase {
     }
 
     /**
-     * Returns whether the EntityAIBase should begin execution.
+     * Returns whether the Goal should begin execution.
      */
     public boolean shouldExecute() {
         return this.entity.getAttackTarget() != null && this.isPipeInMainhand();
@@ -47,12 +49,12 @@ public class PiperAIStrife extends EntityAIBase {
 
     public void startExecuting() {
         super.startExecuting();
-        ((IRangedAttackMob) this.entity).setSwingingArms(true);
+        //((IRangedAttackMob) this.entity).setSwingingArms(true);
     }
 
     public void resetTask() {
         super.resetTask();
-        ((IRangedAttackMob) this.entity).setSwingingArms(false);
+        //((IRangedAttackMob) this.entity).setSwingingArms(false);
         this.seeTime = 0;
         this.attackTime = -1;
         this.entity.resetActiveHand();
@@ -61,11 +63,11 @@ public class PiperAIStrife extends EntityAIBase {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask() {
+    public void tick() {
         LivingEntity LivingEntity = this.entity.getAttackTarget();
 
         if (LivingEntity != null) {
-            double d0 = this.entity.getDistanceSq(LivingEntity.posX, LivingEntity.getEntityBoundingBox().minY, LivingEntity.posZ);
+            double d0 = this.entity.getDistanceSq(LivingEntity.posX, LivingEntity.getBoundingBox().minY, LivingEntity.posZ);
             boolean flag = this.entity.getEntitySenses().canSee(LivingEntity);
             boolean flag1 = this.seeTime > 0;
 
@@ -109,7 +111,7 @@ public class PiperAIStrife extends EntityAIBase {
                 this.entity.getMoveHelper().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
                 this.entity.faceEntity(LivingEntity, 30.0F, 30.0F);
             } else {
-                this.entity.getLookHelper().setLookPositionWithEntity(LivingEntity, 30.0F, 30.0F);
+                this.entity.getLookController().setLookPositionWithEntity(LivingEntity, 30.0F, 30.0F);
             }
 
             if (!flag && this.seeTime < -60) {

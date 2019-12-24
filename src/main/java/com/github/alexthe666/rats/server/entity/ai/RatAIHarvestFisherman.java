@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class RatAIHarvestFisherman extends EntityAIBase {
+public class RatAIHarvestFisherman extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final RatAIHarvestFisherman.BlockSorter targetSorter;
@@ -36,7 +36,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new RatAIHarvestFisherman.BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
 
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null) {
             if (entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
                 if (!hasReachedWater) {

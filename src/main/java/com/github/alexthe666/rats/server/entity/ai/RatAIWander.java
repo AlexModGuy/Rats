@@ -2,30 +2,32 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
-public class RatAIWander extends EntityAIWanderAvoidWater {
+public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
     private EntityRat rat;
 
     public RatAIWander(EntityRat creatureIn, double speedIn) {
         super(creatureIn, speedIn);
         this.rat = creatureIn;
         this.executionChance = 200;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Nullable
     protected Vec3d getPosition() {
-        if (this.entity.isInWater()) {
-            Vec3d vec3d = RandomPositionGenerator.getLandPos(this.entity, 15, 7);
+        if (this.rat.isInWater()) {
+            Vec3d vec3d = RandomPositionGenerator.getLandPos(this.rat, 15, 7);
             return vec3d == null ? generateRatPosition() : vec3d;
         } else {
-            return this.entity.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.entity, 10, 7) : generateRatPosition();
+            return this.rat.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.rat, 10, 7) : generateRatPosition();
         }
     }
 

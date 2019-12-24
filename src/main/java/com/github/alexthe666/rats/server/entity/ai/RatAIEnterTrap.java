@@ -64,8 +64,8 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
         if (this.getIsAboveDestination() && this.destinationBlock != null) {
             BlockPos trapPos = this.destinationBlock.up();
             TileEntity entity = this.entity.world.getTileEntity(trapPos);

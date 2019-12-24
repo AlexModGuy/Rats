@@ -5,7 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RatAIFleeMobs extends EntityAIBase {
+public class RatAIFleeMobs extends Goal {
     private final Predicate<Entity> canBeSeenSelector;
     private final double farSpeed;
     private final double nearSpeed;
@@ -44,7 +44,7 @@ public class RatAIFleeMobs extends EntityAIBase {
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
         this.navigation = entityIn.getNavigator();
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     public boolean shouldExecute() {
@@ -100,7 +100,7 @@ public class RatAIFleeMobs extends EntityAIBase {
         this.closestLivingEntity = null;
     }
 
-    public void updateTask() {
+    public void tick() {
         this.entity.getNavigator().setSpeed(getRunSpeed());
     }
 

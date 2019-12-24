@@ -1,39 +1,37 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.passive.IronGolemEntity;
 
+import java.util.EnumSet;
 import java.util.List;
 
-public class PlagueDoctorAIFollowGolem extends EntityAIBase {
+public class PlagueDoctorAIFollowGolem extends Goal {
     private final EntityPlagueDoctor villager;
-    private EntityIronGolem ironGolem;
+    private IronGolemEntity ironGolem;
     private int takeGolemRoseTick;
     private boolean tookGolemRose;
 
     public PlagueDoctorAIFollowGolem(EntityPlagueDoctor villagerIn) {
         this.villager = villagerIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute() {
         if (this.villager.getGrowingAge() >= 0) {
             return false;
         } else if (!this.villager.world.isDaytime()) {
             return false;
         } else {
-            List<EntityIronGolem> list = this.villager.world.getEntitiesWithinAABB(EntityIronGolem.class, this.villager.getEntityBoundingBox().grow(6.0D, 2.0D, 6.0D));
+            List<IronGolemEntity> list = this.villager.world.getEntitiesWithinAABB(IronGolemEntity.class, this.villager.getBoundingBox().grow(6.0D, 2.0D, 6.0D));
 
             if (list.isEmpty()) {
                 return false;
             } else {
-                for (EntityIronGolem entityirongolem : list) {
-                    if (entityirongolem.getHoldRoseTick() > 0) {
-                        this.ironGolem = entityirongolem;
+                for (IronGolemEntity IronGolemEntity : list) {
+                    if (IronGolemEntity.getHoldRoseTick() > 0) {
+                        this.ironGolem = IronGolemEntity;
                         break;
                     }
                 }
@@ -44,7 +42,7 @@ public class PlagueDoctorAIFollowGolem extends EntityAIBase {
     }
 
     /**
-     * Returns whether an in-progress EntityAIBase should continue executing
+     * Returns whether an in-progress Goal should continue executing
      */
     public boolean shouldContinueExecuting() {
         return this.ironGolem.getHoldRoseTick() > 0;
@@ -70,8 +68,8 @@ public class PlagueDoctorAIFollowGolem extends EntityAIBase {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask() {
-        this.villager.getLookHelper().setLookPositionWithEntity(this.ironGolem, 30.0F, 30.0F);
+    public void tick() {
+        this.villager.getLookController().setLookPositionWithEntity(this.ironGolem, 30.0F, 30.0F);
 
         if (this.ironGolem.getHoldRoseTick() == this.takeGolemRoseTick) {
             this.villager.getNavigator().tryMoveToEntityLiving(this.ironGolem, 0.5D);

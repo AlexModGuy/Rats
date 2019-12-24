@@ -9,7 +9,7 @@ import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class RatAIHarvestMilk extends EntityAIBase {
+public class RatAIHarvestMilk extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetCow = null;
@@ -37,7 +37,7 @@ public class RatAIHarvestMilk extends EntityAIBase {
     public RatAIHarvestMilk(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RatAIHarvestMilk extends EntityAIBase {
 
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetCow != null && !this.targetCow.isDead && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetCow, 1D);
             if (entity.getDistance(targetCow) < 1.5D) {

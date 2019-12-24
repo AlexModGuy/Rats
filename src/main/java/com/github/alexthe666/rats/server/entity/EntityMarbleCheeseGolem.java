@@ -81,17 +81,17 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityMarbleCheeseGolem.AIFollowPrey(this));
-        this.tasks.addTask(2, new EntityMarbleCheeseGolem.AIMoveRandom());
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
+        this.goalSelector.addGoal(1, new EntityMarbleCheeseGolem.AIFollowPrey(this));
+        this.goalSelector.addGoal(2, new EntityMarbleCheeseGolem.AIMoveRandom());
+        this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
 
-    protected void updateAITasks() {
-        super.updateAITasks();
+    protected void updateAIgoalSelector() {
+        super.updateAIgoalSelector();
         this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
         if (this.blockBreakCounter > 0) {
             --this.blockBreakCounter;
@@ -321,10 +321,10 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         }
     }
 
-    class AIMoveRandom extends EntityAIBase {
+    class AIMoveRandom extends Goal {
 
         public AIMoveRandom() {
-            this.setMutexBits(1);
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         public boolean shouldExecute() {
@@ -354,7 +354,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         }
     }
 
-    class AIFollowPrey extends EntityAIBase {
+    class AIFollowPrey extends Goal {
         private final EntityMarbleCheeseGolem parentEntity;
         public int attackTimer;
         private double followDist;

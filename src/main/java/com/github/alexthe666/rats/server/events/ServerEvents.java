@@ -203,11 +203,11 @@ public class ServerEvents {
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof EntityIronGolem && RatConfig.golemsTargetRats) {
             EntityIronGolem golem = (EntityIronGolem) event.getEntity();
-            golem.targetTasks.addTask(4, new EntityAINearestAttackableTarget(golem, EntityRat.class, 10, false, false, UNTAMED_RAT_SELECTOR));
+            golem.targetSelector.addGoal(4, new EntityAINearestAttackableTarget(golem, EntityRat.class, 10, false, false, UNTAMED_RAT_SELECTOR));
         }
         if (event.getEntity() != null && RatUtils.isPredator(event.getEntity()) && event.getEntity() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) event.getEntity();
-            animal.targetTasks.addTask(5, new EntityAINearestAttackableTarget(animal, EntityRat.class, true));
+            animal.targetSelector.addGoal(5, new EntityAINearestAttackableTarget(animal, EntityRat.class, true));
         }
         if (event.getEntity() != null && event.getEntity() instanceof EntityHusk) {
             if (((EntityHusk) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {

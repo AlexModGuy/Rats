@@ -2,11 +2,12 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
+import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigateFlying;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class FlyingRatPathNavigate extends PathNavigateFlying {
+public class FlyingRatPathNavigate extends FlyingPathNavigator {
 
     public EntityRat rat;
 
@@ -17,9 +18,9 @@ public class FlyingRatPathNavigate extends PathNavigateFlying {
 
     public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
         if (rat.hasFlight()) {
-            rat.getMoveHelper().setMoveTo(entityIn.posX, entityIn.posY + entityIn.height, entityIn.posZ, 0.25D);
+            rat.getMoveHelper().setMoveTo(entityIn.posX, entityIn.posY + entityIn.getHeight(), entityIn.posZ, 0.25D);
         }
-        Path path = this.getPathToEntityLiving(entityIn);
+        Path path = this.getPathToEntityLiving(entityIn, 0);
         return path != null && this.setPath(path, speedIn);
     }
 
@@ -27,6 +28,6 @@ public class FlyingRatPathNavigate extends PathNavigateFlying {
         if (rat.hasFlight()) {
             rat.getMoveHelper().setMoveTo(x, y, z, 0.25D);
         }
-        return this.setPath(this.getPathToXYZ(x, y, z), speedIn);
+        return this.setPath(getPathToPos(new BlockPos(x, y, z), 0), speedIn);
     }
 }

@@ -86,8 +86,8 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
         if (this.getIsAboveDestination() && this.destinationBlock != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.destinationBlock);
             if (entity instanceof IInventory) {

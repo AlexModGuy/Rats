@@ -45,8 +45,8 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
 
         if (this.getIsAboveDestination() && this.destinationBlock != null) {
             BlockPos cropsPos = this.destinationBlock.up();

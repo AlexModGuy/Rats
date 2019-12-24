@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class RatAIPickupFluid extends EntityAIBase {
+public class RatAIPickupFluid extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
@@ -28,7 +28,7 @@ public class RatAIPickupFluid extends EntityAIBase {
     public RatAIPickupFluid(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RatAIPickupFluid extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);

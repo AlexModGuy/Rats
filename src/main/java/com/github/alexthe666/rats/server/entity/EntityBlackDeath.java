@@ -57,13 +57,13 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
 
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
-        this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
-        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
+        this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
+        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
+        this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
     }
 
     protected void entityInit() {
@@ -127,8 +127,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
     }
 
-    protected void updateAITasks() {
-        super.updateAITasks();
+    protected void updateAIgoalSelector() {
+        super.updateAIgoalSelector();
         this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
     }
 

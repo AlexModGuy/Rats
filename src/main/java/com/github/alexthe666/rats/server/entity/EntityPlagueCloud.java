@@ -108,13 +108,13 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
 
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityPlagueCloud.AIMeleeAttack(this));
-        this.tasks.addTask(8, new EntityPlagueCloud.AIMoveRandom());
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
-        this.targetTasks.addTask(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(1, new EntityPlagueCloud.AIMeleeAttack(this));
+        this.goalSelector.addGoal(8, new EntityPlagueCloud.AIMoveRandom());
+        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
+        this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -224,10 +224,10 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         }
     }
 
-    class AIMoveRandom extends EntityAIBase {
+    class AIMoveRandom extends Goal {
 
         public AIMoveRandom() {
-            this.setMutexBits(1);
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         public boolean shouldExecute() {
@@ -257,7 +257,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         }
     }
 
-    class AIMeleeAttack extends EntityAIBase {
+    class AIMeleeAttack extends Goal {
         private final EntityPlagueCloud parentEntity;
         public int attackTimer;
 

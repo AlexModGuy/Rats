@@ -61,8 +61,8 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         this.moveHelper = new EntityNeoRatlantean.AIMoveControl(this);
     }
 
-    protected void updateAITasks() {
-        super.updateAITasks();
+    protected void updateAIgoalSelector() {
+        super.updateAIgoalSelector();
         if (this.ticksExisted % 100 == 0) {
             this.heal(1);
         }
@@ -211,13 +211,13 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityNeoRatlantean.AIFollowPrey(this));
-        this.tasks.addTask(2, new EntityNeoRatlantean.AIMoveRandom());
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
+        this.goalSelector.addGoal(1, new EntityNeoRatlantean.AIFollowPrey(this));
+        this.goalSelector.addGoal(2, new EntityNeoRatlantean.AIMoveRandom());
+        this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_RATLANTEAN));
     }
 
     protected void applyEntityAttributes() {
@@ -330,7 +330,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
     }
 
-    public class AIFollowPrey extends EntityAIBase {
+    public class AIFollowPrey extends Goal {
         private final EntityNeoRatlantean parentEntity;
         public int attackTimer;
         private double followDist;
@@ -363,10 +363,10 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
     }
 
-    public class AIMoveRandom extends EntityAIBase {
+    public class AIMoveRandom extends Goal {
 
         public AIMoveRandom() {
-            this.setMutexBits(1);
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         public boolean shouldExecute() {

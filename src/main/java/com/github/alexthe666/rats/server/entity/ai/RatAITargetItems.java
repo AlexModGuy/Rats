@@ -29,7 +29,7 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
         this(creature, checkSight, false);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     public RatAITargetItems(EntityRat creature, boolean checkSight, boolean onlyNearby) {
@@ -95,8 +95,8 @@ public class RatAITargetItems<T extends ItemEntity> extends EntityAITarget {
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
         if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
             this.taskOwner.getNavigator().clearPath();

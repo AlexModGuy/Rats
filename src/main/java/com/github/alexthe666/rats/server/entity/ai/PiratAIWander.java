@@ -2,11 +2,13 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class PiratAIWander extends EntityAIBase {
+import java.util.EnumSet;
+
+public class PiratAIWander extends Goal {
     private EntityPirat rat;
     private double xPosition;
     private double yPosition;
@@ -23,7 +25,7 @@ public class PiratAIWander extends EntityAIBase {
         this.rat = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
-        this.setMutexBits(0);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.Goal;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class RatAIDepositFluid extends EntityAIBase {
+public class RatAIDepositFluid extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
@@ -35,7 +35,7 @@ public class RatAIDepositFluid extends EntityAIBase {
     public RatAIDepositFluid(EntityRat entity) {
         super();
         this.entity = entity;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RatAIDepositFluid extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade

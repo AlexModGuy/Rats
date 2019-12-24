@@ -53,15 +53,15 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
 
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
+        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
+        this.targetSelector.addGoal(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
     }
 
     public boolean getCanSpawnHere() {
@@ -133,15 +133,15 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
 
     public void setCombatTask() {
         if (this.world != null && !this.world.isRemote) {
-            this.tasks.removeTask(this.aiAttackOnCollide);
-            this.tasks.removeTask(this.aiArrowAttack);
+            this.goalSelector.removeTask(this.aiAttackOnCollide);
+            this.goalSelector.removeTask(this.aiArrowAttack);
             ItemStack itemstack = this.getHeldItemMainhand();
             if (itemstack.getItem() == RatsItemRegistry.RAT_FLUTE) {
                 int i = 100;
                 this.aiArrowAttack.setAttackCooldown(i);
-                this.tasks.addTask(4, this.aiArrowAttack);
+                this.goalSelector.addGoal(4, this.aiArrowAttack);
             } else {
-                this.tasks.addTask(4, this.aiAttackOnCollide);
+                this.goalSelector.addGoal(4, this.aiAttackOnCollide);
             }
         }
     }

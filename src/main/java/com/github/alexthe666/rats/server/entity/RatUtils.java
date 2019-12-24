@@ -8,8 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -656,7 +657,7 @@ public class RatUtils {
         }
     }
 
-    public static BlockPos findLowestRatCage(BlockPos pos, EntityCreature rat) {
+    public static BlockPos findLowestRatCage(BlockPos pos, CreatureEntity rat) {
         if (rat.world.getBlockState(pos.down()).getBlock() != RatsBlockRegistry.RAT_CAGE && !(rat.world.getBlockState(pos.down()).getBlock() instanceof BlockRatTube)) {
             return pos;
         } else {
@@ -667,7 +668,7 @@ public class RatUtils {
         }
     }
 
-    public static BlockPos findLowestWater(BlockPos pos, EntityCreature rat) {
+    public static BlockPos findLowestWater(BlockPos pos, CreatureEntity rat) {
         if (rat.world.getBlockState(pos).getMaterial() == Material.WATER) {
             return pos;
         } else {
@@ -731,7 +732,7 @@ public class RatUtils {
         return pos;
     }
 
-    public static Vec3d generateRandomWaterPos(EntityCreature p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vec3d p_191379_3_, boolean p_191379_4_) {
+    public static Vec3d generateRandomWaterPos(CreatureEntity p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vec3d p_191379_3_, boolean p_191379_4_) {
         PathNavigate pathnavigate = p_191379_0_.getNavigator();
         Random random = p_191379_0_.getRNG();
         boolean flag;
@@ -803,7 +804,7 @@ public class RatUtils {
         }
     }
 
-    private static BlockPos moveAboveSolid(BlockPos p_191378_0_, EntityCreature p_191378_1_) {
+    private static BlockPos moveAboveSolid(BlockPos p_191378_0_, CreatureEntity p_191378_1_) {
         if (!p_191378_1_.world.getBlockState(p_191378_0_).getMaterial().isSolid()) {
             return p_191378_0_;
         } else {
@@ -816,7 +817,7 @@ public class RatUtils {
         }
     }
 
-    private static boolean isWaterDestination(BlockPos p_191380_0_, EntityCreature p_191380_1_) {
+    private static boolean isWaterDestination(BlockPos p_191380_0_, CreatureEntity p_191380_1_) {
         return p_191380_1_.world.getBlockState(p_191380_0_).getMaterial() == Material.WATER;
     }
 

@@ -8,8 +8,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Comparator;
 
-public class RatAIDepositInInventory extends EntityAIBase {
+public class RatAIDepositInInventory extends Goal {
     private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
@@ -39,7 +39,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
         super();
         this.entity = entity;
         this.targetSorter = new BlockSorter(entity);
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class RatAIDepositInInventory extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
