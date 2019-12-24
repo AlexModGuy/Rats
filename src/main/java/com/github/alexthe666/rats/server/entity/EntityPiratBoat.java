@@ -114,8 +114,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(FIRING, Boolean.valueOf(false));
     }
 

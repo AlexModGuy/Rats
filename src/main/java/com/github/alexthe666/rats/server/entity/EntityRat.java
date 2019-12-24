@@ -28,6 +28,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -59,6 +60,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.*;
@@ -238,7 +240,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.targetSelector.addGoal(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
-                    return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
+                    return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != Difficulty.PEACEFUL;
                 } else {
                     if (entity instanceof TameableEntity && ((TameableEntity) entity).isTamed()) {
                         return false;
@@ -327,50 +329,48 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    protected void deaddEntity() {
-        net.minecraftforge.fml.common.eventhandler.Event.Result result = null;
-        if ((this.idleTime & 0x1F) == 0x1F && (result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this)) != net.minecraftforge.fml.common.eventhandler.Event.Result.DEFAULT) {
-            if (result == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY) {
-                this.idleTime = 0;
-            } else {
-                this.setDead();
+    protected void checkDespawn() {
+        if (!this.isNoDespawnRequired() && !this.preventDespawn()) {
+            Entity entity = this.world.getClosestPlayer(this, -1.0D);
+            net.minecraftforge.eventbus.api.Event.Result result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this);
+            if (result == net.minecraftforge.eventbus.api.Event.Result.DENY) {
+                idleTime = 0;
+                entity = null;
+            } else if (result == net.minecraftforge.eventbus.api.Event.Result.ALLOW) {
+                this.remove();
+                entity = null;
             }
-        } else {
-            Entity entity = this.world.getClosestPlayerToEntity(this, -1.0D);
             if (entity != null) {
-                double d0 = entity.posX - this.posX;
-                double d1 = entity.posY - this.posY;
-                double d2 = entity.posZ - this.posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                double d0 = entity.getDistanceSq(this);
 
-                if (this.canDespawn() && d3 > (RatConfig.ratDespawnFarDistance * RatConfig.ratDespawnFarDistance)) {
-                    this.setDead();
+                if (this.canDespawn(d0) && d0 > (RatConfig.ratDespawnFarDistance * RatConfig.ratDespawnFarDistance)) {
+                    this.remove();
                 }
                 double closeDist = RatConfig.ratDespawnCloseDistance * RatConfig.ratDespawnCloseDistance;
-                if (this.idleTime > 300 && this.rand.nextInt(RatConfig.ratDespawnRandomChance) == 0 && d3 > closeDist && this.canDespawn()) {
-                    this.setDead();
-                } else if (d3 < closeDist) {
+                if (this.idleTime > 300 && this.rand.nextInt(RatConfig.ratDespawnRandomChance) == 0 && d0 > closeDist && this.canDespawn(d0)) {
+                    this.remove();
+                } else if (d0 < closeDist) {
                     this.idleTime = 0;
                 }
             }
         }
     }
 
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         int spawnRoll = RatConfig.ratSpawnDecrease;
         if (RatUtils.canSpawnInDimension(world)) {
             if (RatConfig.ratsSpawnLikeMonsters) {
-                if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+                if (world.getDifficulty() == Difficulty.PEACEFUL) {
                     spawnRoll *= 2;
                 }
                 if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
                     BlockPos pos = new BlockPos(this);
                     BlockState BlockState = this.world.getBlockState((pos).down());
-                    return this.isValidLightLevel() && BlockState.canEntitySpawn(this);
+                    return this.isValidLightLevel() && BlockState.canEntitySpawn(world, pos.down(), RatsEntityRegistry.RAT);
                 }
             } else {
                 spawnRoll /= 2;
-                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) && super.getCanSpawnHere();
+                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) && super.canSpawn(worldIn, spawnReasonIn);
             }
         }
         return false;
@@ -384,17 +384,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     protected boolean isValidLightLevel() {
         BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
-        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+        if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
             return false;
         } else {
-            int i = this.world.getLightFromNeighbors(blockpos);
-
-            if (this.world.isThundering()) {
-                int j = this.world.getSkylightSubtracted();
-                this.world.setSkylightSubtracted(10);
-                i = this.world.getLightFromNeighbors(blockpos);
-                this.world.setSkylightSubtracted(j);
-            }
+            int i = this.world.isThundering() ? this.world.getNeighborAwareLightSubtracted(blockpos, 10) : this.world.getLight(blockpos);
             return i <= this.rand.nextInt(8);
         }
     }
@@ -407,8 +400,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(IS_MALE, Boolean.valueOf(false));
         this.dataManager.register(TOGA, Boolean.valueOf(false));
         this.dataManager.register(PLAGUE, Boolean.valueOf(false));
@@ -421,29 +414,29 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
     protected void switchNavigator(int type) {
         if (type == 1) {//cage or wild
-            this.moveHelper = new EntityMoveHelper(this);
+            this.moveController = new MovementController(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {//tamed
-            this.moveHelper = new EntityMoveHelper(this);
+            this.moveController = new MovementController(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying
-            this.moveHelper = new RatFlyingMoveHelper(this);
+            this.moveController = new RatFlyingMoveHelper(this);
             this.navigator = new FlyingRatPathNavigate(this, world);
             this.navigatorType = 2;
         } else if (type == 3) {//tube
-            this.moveHelper = new RatTubeMoveHelper(this);
+            this.moveController = new RatTubeMoveHelper(this);
             RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
             if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
                 PathPoint point = this.navigator.getPath().getFinalPathPoint();
@@ -565,26 +558,24 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
         }
         if (compound.contains("TransportingFluid")) {
-            CompoundNBT fluidTag = compound.getCompoundTag("TransportingFluid");
+            CompoundNBT fluidTag = compound.getCompound("TransportingFluid");
             if (!fluidTag.isEmpty()) {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
         }
         if (compound.contains("CustomName", 8)) {
-            this.setCustomNameTag(compound.getString("CustomName"));
+            this.setCustomName(new StringTextComponent(compound.getString("CustomName")));
         }
-
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-
-        if (this.isEntityInvulnerable(source) || source == DamageSource.IN_WALL && this.isPassenger()) {
+        if (this.isInvulnerableTo(source) || source == DamageSource.IN_WALL && this.isPassenger()) {
             return false;
         } else {
             Entity entity = source.getTrueSource();
 
-            if (this.aiSit != null) {
-                this.aiSit.setSitting(false);
+            if (this.sitGoal != null) {
+                this.sitGoal.setSitting(false);
             }
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof EntityArrow)) {
@@ -702,12 +693,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (flag) {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
-                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 6000));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
-                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600));
-                ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 600));
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 600));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
                 Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
@@ -732,19 +723,19 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         this.setRatStatus(RatStatus.IDLE);
         if (this.getUpgradeSlot() != prevUpgrade) {
             this.onUpgradeChanged();
         }
-        super.onLivingUpdate();
+        super.livingTick();
         this.prevFlyingPitch = flyingPitch;
         if (this.inTube()) {
             if (navigatorType != 3) {
                 switchNavigator(3);
             }
             if (climbingTube) {
-                this.motionY += 0.1D;
+                this.setMotion(this.getMotion().x, this.getMotion().y + 0.1D, this.getMotion().z);
             } else if (!this.onGround && this.motionY < 0.0D) {
                 this.motionY *= 0.6D;
             }

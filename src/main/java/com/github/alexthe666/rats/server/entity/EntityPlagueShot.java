@@ -40,8 +40,8 @@ public class EntityPlagueShot extends AbstractArrowEntity {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
     }
 
     public void onUpdate() {

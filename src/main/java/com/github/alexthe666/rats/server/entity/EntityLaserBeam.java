@@ -48,8 +48,8 @@ public class EntityLaserBeam extends AbstractArrowEntity {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(R, Float.valueOf(0.66F));
         this.dataManager.register(G, Float.valueOf(0.97F));
         this.dataManager.register(B, Float.valueOf(0.97F));

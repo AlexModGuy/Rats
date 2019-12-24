@@ -104,8 +104,8 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         return true;
     }
 
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 

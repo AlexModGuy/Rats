@@ -45,8 +45,8 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.setCombatTask();
     }
 
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
         this.dataManager.register(RAT_COUNT, Integer.valueOf(0));
     }

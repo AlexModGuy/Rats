@@ -20,7 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
@@ -89,7 +89,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
             this.goalSelector.removeTask(this.aiArrowAttack);
             if (this.isRiding()) {
                 int i = 20;
-                if (this.world.getDifficulty() != EnumDifficulty.HARD) {
+                if (this.world.getDifficulty() != Difficulty.HARD) {
                     i = 40;
                 }
                 this.aiArrowAttack.setAttackCooldown(i);
@@ -106,7 +106,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         if (attackCooldown > 0) {
             attackCooldown--;
         }
-        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+        if (!this.world.isRemote && this.world.getDifficulty() == Difficulty.PEACEFUL) {
             this.setDead();
         }
     }
@@ -143,7 +143,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this);
         BlockState BlockState = this.world.getBlockState(pos.down());
-        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && BlockState.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
+        return this.world.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && BlockState.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
     }
 
     protected boolean isValidLightLevel() {

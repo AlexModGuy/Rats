@@ -71,8 +71,8 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(TOGA, Boolean.valueOf(true));
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
     }

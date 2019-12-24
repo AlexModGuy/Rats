@@ -50,7 +50,7 @@ public class EntityThrownBlock extends Entity {
     public static void registerFixesFireball(DataFixer fixer, String name) {
     }
 
-    protected void entityInit() {
+    protected void registerData() {
     }
 
     @OnlyIn(Dist.CLIENT)

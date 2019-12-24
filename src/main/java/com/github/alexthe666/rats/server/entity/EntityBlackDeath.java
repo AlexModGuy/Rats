@@ -64,8 +64,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
     }
 
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
         this.dataManager.register(IS_SUMMONING, Boolean.valueOf(false));
         this.dataManager.register(RAT_COUNT, Integer.valueOf(0));

@@ -101,8 +101,8 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 

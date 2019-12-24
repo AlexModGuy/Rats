@@ -169,7 +169,7 @@ public class EntityLaserPortal extends Entity {
 
 
     @Override
-    protected void entityInit() {
+    protected void registerData() {
 
     }
 }

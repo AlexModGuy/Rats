@@ -78,8 +78,8 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
     }
 
