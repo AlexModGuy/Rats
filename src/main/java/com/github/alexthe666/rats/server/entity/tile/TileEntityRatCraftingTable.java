@@ -4,10 +4,8 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.inventory.ContainerEmpty;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -18,22 +16,14 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -50,8 +40,8 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private static List<IRecipe> EMPTY_LIST = new ArrayList<>();
     public int prevCookTime;
     public boolean hasRat;
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.UP);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.DOWN);
+    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
+            net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private NonNullList<ItemStack> inventory = NonNullList.withSize(11, ItemStack.EMPTY);
     private int cookTime;
     private int totalCookTime = 200;
@@ -180,7 +170,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
 
     private static boolean doesArrayContainStack(ItemStack[] list, ItemStack stack) {
         for (ItemStack currentItem : list) {
-            if (OreDictionary.itemMatches(stack, currentItem, false)) {
+            if (ItemStack.areItemsEqual(stack, currentItem)) {
                 return true;
             }
         }
@@ -189,7 +179,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
 
     private static boolean doesListContainStack(List<ItemStack> list, ItemStack stack) {
         for (ItemStack currentItem : list) {
-            if (OreDictionary.itemMatches(stack, currentItem, false)) {
+            if (ItemStack.areItemsEqual(stack, currentItem)) {
                 return true;
             }
         }
@@ -444,13 +434,15 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     }
 
     @Override
-    @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
-        if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == Direction.DOWN)
-                return (T) handlerBottom;
+    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
+        if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == Direction.UP)
+                return handlers[0].cast();
+            else if (facing == Direction.DOWN)
+                return handlers[1].cast();
             else
-                return (T) handlerTop;
+                return handlers[2].cast();
+        }
         return super.getCapability(capability, facing);
     }
 

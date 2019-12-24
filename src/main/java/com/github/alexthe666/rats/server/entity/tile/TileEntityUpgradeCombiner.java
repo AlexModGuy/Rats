@@ -18,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nullable;
+
 public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTileEntity, ISidedInventory {
 
     private static final int[] SLOTS_TOP = new int[]{0, 2};
@@ -27,9 +29,8 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     public float ratRotation;
     public float ratRotationPrev;
     public float tRot;
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.UP);
-    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, Direction.NORTH);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.Direction.DOWN);
+    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
+            net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
     private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
     private int furnaceBurnTime;
     private int currentItemBurnTime;
@@ -350,21 +351,20 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     }
 
     @Override
-    @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.Direction facing) {
-        if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == Direction.DOWN)
-                return (T) handlerBottom;
-            else if (facing == Direction.UP)
-                return (T) handlerTop;
+    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
+        if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == Direction.UP)
+                return handlers[0].cast();
+            else if (facing == Direction.DOWN)
+                return handlers[1].cast();
             else
-                return (T) handlerSide;
+                return handlers[2].cast();
+        }
         return super.getCapability(capability, facing);
     }
 
-    @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("container.upgrade_combiner"));
+        return new TranslationTextComponent("container.upgrade_combiner");
     }
 
 }
