@@ -137,7 +137,7 @@ public class ServerEvents {
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
                 if (heldItem == RatsItemRegistry.COOKED_RAT) {
@@ -145,7 +145,7 @@ public class ServerEvents {
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
             }
@@ -312,7 +312,7 @@ public class ServerEvents {
                 for (int i = 0; i < entitySize; i++) {
                     float motionX = rand.nextFloat() * 0.2F - 0.1F;
                     float motionZ = rand.nextFloat() * 0.2F - 0.1F;
-                    RatsMod.PROXY.spawnParticle("flea", event.getLivingEntity().posX + (double) (rand.nextFloat() * event.getLivingEntity().width * 2F) - (double) event.getLivingEntity().width,
+                    RatsMod.PROXY.addParticle("flea", event.getLivingEntity().posX + (double) (rand.nextFloat() * event.getLivingEntity().width * 2F) - (double) event.getLivingEntity().width,
                             event.getLivingEntity().posY + (double) (rand.nextFloat() * event.getLivingEntity().height),
                             event.getLivingEntity().posZ + (double) (rand.nextFloat() * event.getLivingEntity().width * 2F) - (double) event.getLivingEntity().width,
                             motionX, 0.0F, motionZ);

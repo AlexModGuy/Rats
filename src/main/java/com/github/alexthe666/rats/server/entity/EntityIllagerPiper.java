@@ -92,7 +92,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
 
     public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInt("RatsSummoned", this.getRatsSummoned());
+        compound.putInt("RatsSummoned", this.getRatsSummoned());
     }
 
     public void readEntityFromNBT(CompoundNBT compound) {
@@ -218,11 +218,11 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
 
         if (type == 1) {
             double d0 = 0.0;
-            this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+            this.world.addParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
         } else {
             double d0 = 0.65;
             for (int i = 0; i < 9; ++i) {
-                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+                this.world.addParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
             }
         }
 

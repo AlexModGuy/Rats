@@ -172,7 +172,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
                 float angle = (0.01745329251F * (this.ticksExisted * 4 + i * 120));
                 double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + this.pos.getX() + 0.5D;
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + this.pos.getZ() + 0.5D;
-                RatsMod.PROXY.spawnParticle("upgrade_combiner", extraX,
+                RatsMod.PROXY.addParticle("upgrade_combiner", extraX,
                         extraY,
                         extraZ,
                         -0.1F, -0.1F, 0F);

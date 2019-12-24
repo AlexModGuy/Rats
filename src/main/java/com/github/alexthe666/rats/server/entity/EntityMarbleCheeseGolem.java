@@ -204,7 +204,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 1.25 + posY;
-            world.spawnParticle(EnumParticleTypes.END_ROD, extraX + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
+            world.addParticle(EnumParticleTypes.END_ROD, extraX + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
                     0F, -0.1F, 0F);

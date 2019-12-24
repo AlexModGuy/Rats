@@ -61,9 +61,9 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         float f = (this.width + this.height + this.width) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
-                RatsMod.PROXY.spawnParticle("black_death", x, y + 1.5F, z, d0, d1, d2);
+                RatsMod.PROXY.addParticle("black_death", x, y + 1.5F, z, d0, d1, d2);
             } else {
-                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
+                this.world.addParticle(EnumParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
 
             }
         }

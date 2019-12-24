@@ -88,7 +88,7 @@ public class EntityThrownBlock extends Entity {
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
                     float f1 = 0.25F;
-                    this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
+                    this.world.addParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
                 }
 
                 f = 0.8F;
@@ -172,7 +172,7 @@ public class EntityThrownBlock extends Entity {
      */
     public void writeEntityToNBT(CompoundNBT compound) {
         compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
-        compound.setInt("life", this.ticksAlive);
+        compound.putInt("life", this.ticksAlive);
         Block block = this.fallTile != null ? this.fallTile.getBlock() : Blocks.AIR;
         ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
         compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());

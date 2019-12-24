@@ -157,7 +157,7 @@ public class StructureRatRoadPieces {
 
         protected void writeStructureToNBT(CompoundNBT tagCompound) {
             super.writeStructureToNBT(tagCompound);
-            tagCompound.setInt("Length", this.length);
+            tagCompound.putInt("Length", this.length);
         }
 
         protected void readStructureFromNBT(CompoundNBT tagCompound) {
@@ -326,10 +326,10 @@ public class StructureRatRoadPieces {
          * (abstract) Helper method to write subclass data to NBT
          */
         protected void writeStructureToNBT(CompoundNBT tagCompound) {
-            tagCompound.setInt("HPos", this.averageGroundLvl);
-            tagCompound.setInt("VCount", this.villagersSpawned);
+            tagCompound.putInt("HPos", this.averageGroundLvl);
+            tagCompound.putInt("VCount", this.villagersSpawned);
             tagCompound.setByte("Type", (byte) this.field_189928_h);
-            tagCompound.setBoolean("Zombie", this.field_189929_i);
+            tagCompound.putBoolean("Zombie", this.field_189929_i);
         }
 
         /**
@@ -597,8 +597,8 @@ public class StructureRatRoadPieces {
 
         protected void writeStructureToNBT(CompoundNBT tagCompound) {
             super.writeStructureToNBT(tagCompound);
-            tagCompound.setInt("T", this.tablePosition);
-            tagCompound.setBoolean("C", this.isTallHouse);
+            tagCompound.putInt("T", this.tablePosition);
+            tagCompound.putBoolean("C", this.isTallHouse);
         }
 
         protected void readStructureFromNBT(CompoundNBT tagCompound) {

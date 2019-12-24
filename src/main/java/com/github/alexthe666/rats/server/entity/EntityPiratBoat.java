@@ -59,7 +59,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         NBTTagList patterns = new NBTTagList();
         CompoundNBT currentPattern = new CompoundNBT();
         currentPattern.setString("Pattern", "rats.rat_and_crossbones");
-        currentPattern.setInt("Color", 15);
+        currentPattern.putInt("Color", 15);
         patterns.appendTag(currentPattern);
         return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
     }
@@ -160,7 +160,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
+                this.world.addParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
             }
         }
     }

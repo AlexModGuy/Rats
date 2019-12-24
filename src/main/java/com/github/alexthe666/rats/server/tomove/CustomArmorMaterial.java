@@ -1,11 +1,11 @@
-package com.github.alexthe666.rats.server.items;
+package com.github.alexthe666.rats.server.tomove;
 
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 
-public class RatArmorMaterial implements IArmorMaterial {
+public class CustomArmorMaterial implements IArmorMaterial {
     private String name;
     private int durability;
     private int[] damageReduction;
@@ -14,7 +14,7 @@ public class RatArmorMaterial implements IArmorMaterial {
     private float toughness;
     private Ingredient ingredient = null;
 
-    public RatArmorMaterial(String name, int durability, int[] damageReduction, int encantability, SoundEvent sound, float toughness) {
+    public CustomArmorMaterial(String name, int durability, int[] damageReduction, int encantability, SoundEvent sound, float toughness) {
         this.name = name;
         this.durability = durability;
         this.damageReduction = damageReduction;

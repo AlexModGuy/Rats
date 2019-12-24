@@ -17,6 +17,7 @@ import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
+import com.github.alexthe666.rats.server.tomove.AnimationHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,6 +29,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,12 +41,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.EffectInstance;
@@ -72,6 +76,7 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
@@ -447,13 +452,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = newNav;
             this.navigatorType = 3;
         } else if (type == 4) {//aquatic
-            this.moveHelper = new RatAquaticMoveHelper(this);
+            this.moveController = new RatAquaticMoveHelper(this);
             this.navigator = new AquaticRatPathNavigate(this, world);
             this.navigatorType = 4;
         }
     }
 
-    protected PathNavigate createNavigator(World worldIn) {
+    protected PathNavigator createNavigator(World worldIn) {
         if (isTamed() && !this.isInCage()) {
             return super.createNavigator(worldIn);
         } else {
@@ -461,59 +466,59 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public void writeEntityToNBT(CompoundNBT compound) {
-        super.writeEntityToNBT(compound);
-        compound.setInt("CookingProgress", cookingProgress);
-        compound.setInt("DigCooldown", digCooldown);
-        compound.setInt("BreedCooldown", breedCooldown);
-        compound.setInt("CoinCooldown", coinCooldown);
-        compound.setInt("CheeseFeedings", cheeseFeedings);
-        compound.setInt("TransportingRF", this.getHeldRF());
-        compound.setInt("Command", this.getCommandInteger());
-        compound.setInt("ColorVariant", this.getColorVariant());
-        compound.setBoolean("Plague", this.hasPlague());
-        compound.setBoolean("VisualFlag", this.getVisualFlag());
-        compound.setBoolean("Dancing", this.isDancing());
-        compound.setBoolean("Toga", this.hasToga());
-        compound.setBoolean("IsMale", this.isMale());
-        compound.setInt("WildTrust", wildTrust);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("CookingProgress", cookingProgress);
+        compound.putInt("DigCooldown", digCooldown);
+        compound.putInt("BreedCooldown", breedCooldown);
+        compound.putInt("CoinCooldown", coinCooldown);
+        compound.putInt("CheeseFeedings", cheeseFeedings);
+        compound.putInt("TransportingRF", this.getHeldRF());
+        compound.putInt("Command", this.getCommandInteger());
+        compound.putInt("ColorVariant", this.getColorVariant());
+        compound.putBoolean("Plague", this.hasPlague());
+        compound.putBoolean("VisualFlag", this.getVisualFlag());
+        compound.putBoolean("Dancing", this.isDancing());
+        compound.putBoolean("Toga", this.hasToga());
+        compound.putBoolean("IsMale", this.isMale());
+        compound.putInt("WildTrust", wildTrust);
         if (ratInventory != null) {
-            NBTTagList nbttaglist = new NBTTagList();
+            ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < ratInventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = ratInventory.getStackInSlot(i);
                 if (!itemstack.isEmpty()) {
                     CompoundNBT CompoundNBT = new CompoundNBT();
-                    CompoundNBT.setByte("Slot", (byte) i);
-                    itemstack.writeToNBT(CompoundNBT);
-                    nbttaglist.appendTag(CompoundNBT);
+                    CompoundNBT.putByte("Slot", (byte) i);
+                    itemstack.write(CompoundNBT);
+                    nbttaglist.add(CompoundNBT);
                 }
             }
-            compound.setTag("Items", nbttaglist);
+            compound.put("Items", nbttaglist);
         }
-        compound.setInt("EatenItems", eatenItems);
+        compound.putInt("EatenItems", eatenItems);
         if (pickupPos != null) {
-            compound.setInt("PickupPosX", pickupPos.getX());
-            compound.setInt("PickupPosY", pickupPos.getY());
-            compound.setInt("PickupPosZ", pickupPos.getZ());
+            compound.putInt("PickupPosX", pickupPos.getX());
+            compound.putInt("PickupPosY", pickupPos.getY());
+            compound.putInt("PickupPosZ", pickupPos.getZ());
         }
         if (depositPos != null) {
-            compound.setInt("DepositPosX", depositPos.getX());
-            compound.setInt("DepositPosY", depositPos.getY());
-            compound.setInt("DepositPosZ", depositPos.getZ());
-            compound.setInt("DepositFacing", depositFacing.ordinal());
+            compound.putInt("DepositPosX", depositPos.getX());
+            compound.putInt("DepositPosY", depositPos.getY());
+            compound.putInt("DepositPosZ", depositPos.getZ());
+            compound.putInt("DepositFacing", depositFacing.ordinal());
         }
         if (transportingFluid != null) {
             CompoundNBT fluidTag = new CompoundNBT();
             transportingFluid.writeToNBT(fluidTag);
-            compound.setTag("TransportingFluid", fluidTag);
+            compound.put("TransportingFluid", fluidTag);
         }
         if (this.hasCustomName()) {
-            compound.setString("CustomName", this.getCustomNameTag());
+            compound.putString("CustomName", this.getCustomName().toString());
         }
     }
 
-    public void readEntityFromNBT(CompoundNBT compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         cookingProgress = compound.getInt("CookingProgress");
         digCooldown = compound.getInt("DigCooldown");
         breedCooldown = compound.getInt("BreedCooldown");
@@ -530,22 +535,24 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.setMale(compound.getBoolean("IsMale"));
         this.setColorVariant(compound.getInt("ColorVariant"));
         if (ratInventory != null) {
-            NBTTagList nbttaglist = compound.getTagList("Items", 10);
+            ListNBT nbttaglist = compound.getList("Items", 10);
             this.initInventory();
-            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                CompoundNBT CompoundNBT = nbttaglist.getCompoundTagAt(i);
+            for (int i = 0; i < nbttaglist.size(); ++i) {
+                CompoundNBT CompoundNBT = nbttaglist.getCompound(i);
                 int j = CompoundNBT.getByte("Slot") & 255;
                 if (j <= 4) {
-                    ratInventory.setInventorySlotContents(j, new ItemStack(CompoundNBT));
+                    ItemStack itemstack = ItemStack.read(CompoundNBT);
+                    ratInventory.setInventorySlotContents(j, itemstack);
                 }
             }
         } else {
-            NBTTagList nbttaglist = compound.getTagList("Items", 10);
+            ListNBT nbttaglist = compound.getList("Items", 10);
             this.initInventory();
-            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                CompoundNBT CompoundNBT = nbttaglist.getCompoundTagAt(i);
+            for (int i = 0; i < nbttaglist.size(); ++i) {
+                CompoundNBT CompoundNBT = nbttaglist.getCompound(i);
                 int j = CompoundNBT.getByte("Slot") & 255;
-                ratInventory.setInventorySlotContents(j, new ItemStack(CompoundNBT));
+                ItemStack itemstack = ItemStack.read(CompoundNBT);
+                ratInventory.setInventorySlotContents(j, itemstack);
             }
         }
         if (compound.contains("PickupPosX") && compound.contains("PickupPosY") && compound.contains("PickupPosZ")) {
@@ -916,7 +923,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double d0 = 0D;
             double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
             double d2 = 0D;
-            this.world.spawnParticle(ParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+            this.world.addParticle(ParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.getHeldItemMainhand().isEmpty()) {
             this.tryCooking();
@@ -925,13 +932,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     if (rand.nextFloat() < 0.125F) {
-                        this.world.spawnParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        this.world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                 }
             }
@@ -943,13 +950,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(ParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
+                    this.world.addParticle(ParticleTypes.BLOCK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
                     if (rand.nextFloat() < 0.125F) {
-                        this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        this.world.addParticle(ParticleTypes.ENCHANT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                 }
             }
@@ -961,11 +968,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(ParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
+                    this.world.addParticle(ParticleTypes.BLOCK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
                 }
             }
         }
@@ -976,12 +983,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 999) {
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
-                    this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.ENCHANT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.ENCHANT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 }
             }
         }
@@ -1016,7 +1023,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(ParticleTypes.PORTAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                this.world.addParticle(ParticleTypes.PORTAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
 
             }
         }
@@ -1028,7 +1035,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 0.125 + posY + sitAddition;
             float particleRand = 0.1F;
-            RatsMod.PROXY.spawnParticle("saliva", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
+            RatsMod.PROXY.addParticle("saliva", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
                     0F, 0.0F, 0F);
@@ -1041,7 +1048,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
             double extraY = 0.12 + posY + sitAddition;
             float particleRand = 0.4F;
-            RatsMod.PROXY.spawnParticle("rat_lightning", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
+            RatsMod.PROXY.addParticle("rat_lightning", extraX + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * particleRand * 2) - (double) particleRand,
                     0F, 0.0F, 0F);
@@ -1063,10 +1070,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     world.setEntityState(this, (byte) 85);
                     ItemStack stack = ratCraftingTable.getStackInSlot(0);
                     if (stack.isEmpty()) {
-                        this.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        this.world.addParticle(ParticleTypes.SMOKE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     } else {
-                        this.world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
-                        this.world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
                     }
                     if (ratCraftingTable.prevCookTime % 20 == 0) {
                         this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
@@ -1077,7 +1084,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
                 if (ratCraftingTable.prevCookTime == 199) {
                     for (int i = 0; i < 4; i++) {
-                        this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                     this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
                 }
@@ -1097,7 +1104,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (death.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
                 this.setAttackTarget(death.getAttackTarget());
             }
-            if (this.getAttackTarget() == null || this.getAttackTarget().isDead) {
+            if (this.getAttackTarget() == null || !this.getAttackTarget().isAlive()) {
                 float radius = (float) 5 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.5F;
                 int maxRatStuff = 360 / Math.max(death.getRatsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getRatsSummoned(), 1);
@@ -1106,7 +1113,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
                 BlockPos runToPos = new BlockPos(extraX, death.posY, extraZ);
                 int steps = 0;
-                while (world.getBlockState(runToPos).isOpaqueCube() && steps < 10) {
+                while (world.getBlockState(runToPos).isOpaqueCube(world, runToPos) && steps < 10) {
                     runToPos = runToPos.up();
                     steps++;
                 }
@@ -1130,21 +1137,21 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     BlockPos ourPos = new BlockPos(this);
                     int searchRange = 10;
                     List<BlockPos> listOfAll = new ArrayList<>();
-                    for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange))) {
+                    for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                         BlockState state = world.getBlockState(pos);
-                        if (!world.isAirBlock(pos) && EntityWither.canDestroyBlock(state.getBlock())) {
+                        if (!world.isAirBlock(pos) && WitherEntity.canDestroyBlock(state)) {
                             listOfAll.add(pos);
                         }
                     }
                     if (listOfAll.size() > 0) {
                         BlockPos pos = listOfAll.get(rand.nextInt(listOfAll.size()));
-                        EntityThrownBlock thrownBlock = new EntityThrownBlock(world, world.getBlockState(pos), this);
+                        EntityThrownBlock thrownBlock = new EntityThrownBlock(RatsEntityRegistry.THROWN_BLOCK, world, world.getBlockState(pos), this);
                         thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                         thrownBlock.dropBlock = false;
                         if (!world.isRemote) {
                             world.addEntity(thrownBlock);
                         }
-                        RatsMod.NETWORK_WRAPPER.sendToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
+                        RatsMod.sendMSGToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
                     } else {
                         rangedAttackCooldownPsychic = 5;
                     }
@@ -1152,7 +1159,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     rangedAttackCooldownPsychic = 100;
                     int bounds = 5;
                     for (int i = 0; i < rand.nextInt(2) + 1; i++) {
-                        EntityLaserPortal laserPortal = new EntityLaserPortal(world, this.getAttackTarget().posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, this.getAttackTarget().posZ + this.rand.nextInt(bounds * 2) - bounds, this);
+                        EntityLaserPortal laserPortal = new EntityLaserPortal(RatsEntityRegistry.LASER_PORTAL, world, this.getAttackTarget().posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, this.getAttackTarget().posZ + this.rand.nextInt(bounds * 2) - bounds, this);
                         world.addEntity(laserPortal);
                     }
                 }
@@ -1164,10 +1171,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             if (rangedAttackCooldownCannon == 0 && this.getAttackTarget() != null) {
                 rangedAttackCooldownCannon = 60;
-                EntityCheeseCannonball cannonball = new EntityCheeseCannonball(world, this);
-                cannonball.ignoreEntity = this;
+                EntityCheeseCannonball cannonball = new EntityCheeseCannonball(RatsEntityRegistry.CHEESE_CANNONBALL, world, this);
+                //cannonball.ignoreEntity = this;
                 double extraY = 0.6 + posY;
-                double d0 = this.getAttackTarget().posY + (double) this.getAttackTarget().getEyegetHeight()() - 1.100000023841858D;
+                double d0 = this.getAttackTarget().posY + (double) this.getAttackTarget().getEyeHeight() - 1.100000023841858D;
                 double d1 = this.getAttackTarget().posX - this.posX;
                 double d3 = this.getAttackTarget().posZ - this.posZ;
                 double d2 = d0 - extraY;
@@ -1197,7 +1204,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().getHeight() / 2 - extraY;
                 double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
                 this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.25F + rand.nextFloat() * 0.5F);
-                EntityRatDragonFire beam = new EntityRatDragonFire(world, this, targetRelativeX, targetRelativeY, targetRelativeZ);
+                EntityRatDragonFire beam = new EntityRatDragonFire(RatsEntityRegistry.RAT_DRAGON_FIRE, this, world, targetRelativeX, targetRelativeY, targetRelativeZ);
                 beam.setPosition(extraX, extraY, extraZ);
                 if (!world.isRemote) {
                     world.addEntity(beam);
@@ -1218,7 +1225,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().getHeight() / 2 - extraY;
                     double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
                     this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
-                    EntityLaserBeam beam = new EntityLaserBeam(world, this);
+                    EntityLaserBeam beam = new EntityLaserBeam(RatsEntityRegistry.LASER_BEAM, world, this);
                     beam.setRGB(1.0F, 0.0F, 0.0F);
                     beam.setDamage(2.0F);
                     beam.setPosition(extraX, extraY, extraZ);
@@ -1276,7 +1283,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void createBabiesFrom(EntityRat mother, EntityRat father) {
         for (int i = 0; i < 1; i++) {
-            EntityRat baby = new EntityRat(this.world);
+            EntityRat baby = new EntityRat(RatsEntityRegistry.RAT, this.world);
             baby.setMale(this.rand.nextBoolean());
             int babyColor = 0;
             if (father.getColorVariant() <= 3 && mother.getColorVariant() <= 3) {
@@ -1407,16 +1414,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             burntItem = heldItem.copy();
         }
         if (heldItem.getItem() == Items.ENCHANTED_BOOK && disenchant) {
-            burntItem = new ItemStack(Items.BOOK, heldItem.getCount(), heldItem.getMetadata());
+            burntItem = new ItemStack(Items.BOOK, heldItem.getCount());
         }
-        if (heldItem.isItemEnchantable() && !disenchant && !heldItem.isItemEnchanted()) {
+        if (heldItem.isEnchantable() && !disenchant && !heldItem.isEnchanted()) {
             burntItem = heldItem.copy();
         }
-        if (disenchant && heldItem.isItemEnchanted()) {
+        if (disenchant && heldItem.isEnchanted()) {
             burntItem = heldItem.copy();
             if (burntItem.getTag() != null && burntItem.getTag().contains("ench", 9)) {
-                if (!burntItem.getTag().getTagList("ench", 10).isEmpty()) {
-                    burntItem.getTag().setTag("ench", new CompoundNBT());
+                if (!burntItem.getTag().getList("ench", 10).isEmpty()) {
+                    burntItem.getTag().put("ench", new CompoundNBT());
                 }
             }
         }

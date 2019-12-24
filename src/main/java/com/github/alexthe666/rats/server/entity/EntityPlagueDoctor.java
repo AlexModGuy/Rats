@@ -208,10 +208,10 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
 
     public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInt("Riches", this.wealth);
-        compound.setInt("Career", this.careerId);
-        compound.setInt("CareerLevel", this.careerLevel);
-        compound.setBoolean("Willing", this.isWillingToMate);
+        compound.putInt("Riches", this.wealth);
+        compound.putInt("Career", this.careerId);
+        compound.putInt("CareerLevel", this.careerLevel);
+        compound.putBoolean("Willing", this.isWillingToMate);
 
         if (this.buyingList != null) {
             compound.setTag("Offers", this.buyingList.getRecipiesAsTags());
@@ -479,23 +479,23 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 12) {
-            this.spawnParticles(EnumParticleTypes.HEART);
+            this.addParticles(EnumParticleTypes.HEART);
         } else if (id == 13) {
-            this.spawnParticles(EnumParticleTypes.VILLAGER_ANGRY);
+            this.addParticles(EnumParticleTypes.VILLAGER_ANGRY);
         } else if (id == 14) {
-            this.spawnParticles(EnumParticleTypes.VILLAGER_HAPPY);
+            this.addParticles(EnumParticleTypes.VILLAGER_HAPPY);
         } else {
             super.handleStatusUpdate(id);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void spawnParticles(EnumParticleTypes particleType) {
+    private void addParticles(EnumParticleTypes particleType) {
         for (int i = 0; i < 5; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+            this.world.addParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
         }
     }
 

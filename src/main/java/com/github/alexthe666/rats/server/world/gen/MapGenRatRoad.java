@@ -98,7 +98,7 @@ public class MapGenRatRoad extends MapGenStructure {
 
         public void writeToNBT(CompoundNBT tagCompound) {
             super.writeToNBT(tagCompound);
-            tagCompound.setBoolean("Valid", this.hasMoreThanTwoComponents);
+            tagCompound.putBoolean("Valid", this.hasMoreThanTwoComponents);
         }
 
         public void readFromNBT(CompoundNBT tagCompound) {

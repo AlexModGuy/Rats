@@ -3,6 +3,8 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.tomove.CustomArmorMaterial;
+import com.github.alexthe666.rats.server.tomove.CustomToolMaterial;
 import net.minecraft.item.*;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
@@ -16,12 +18,12 @@ import java.lang.reflect.Field;
 @ObjectHolder(RatsMod.MODID)
 public class RatsItemRegistry {
 
-    public static RatArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new RatArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static RatArmorMaterial HAT_ARMOR_MATERIAL = new RatArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-    public static RatArmorMaterial PLAGUE_MASK_MATERIAL = new RatArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
-    public static RatToolMaterial PIRAT_CUTLASS_MATERIAL = new RatToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
-    public static RatToolMaterial BAGHNAKHS_MATERIAL = new RatToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
-    public static RatToolMaterial PLAGUE_SCYTHE_MATERIAL = new RatToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
+    public static CustomArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new CustomArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static CustomArmorMaterial HAT_ARMOR_MATERIAL = new CustomArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+    public static CustomArmorMaterial PLAGUE_MASK_MATERIAL = new CustomArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
+    public static CustomToolMaterial PIRAT_CUTLASS_MATERIAL = new CustomToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
+    public static CustomToolMaterial BAGHNAKHS_MATERIAL = new CustomToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
+    public static CustomToolMaterial PLAGUE_SCYTHE_MATERIAL = new CustomToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
     public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 

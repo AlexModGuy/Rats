@@ -71,7 +71,7 @@ public class EntityPurifyingLiquid extends PotionEntity {
                             }
                             if (LivingEntity instanceof EntityZombieVillager && !((EntityZombieVillager) LivingEntity).isConverting()) {
                                 CompoundNBT tag = LivingEntity.writeToNBT(new CompoundNBT());
-                                tag.setInt("ConversionTime", 200);
+                                tag.putInt("ConversionTime", 200);
                                 LivingEntity.readEntityFromNBT(tag);
                                 this.world.setEntityState(LivingEntity, (byte) 16);
                             }

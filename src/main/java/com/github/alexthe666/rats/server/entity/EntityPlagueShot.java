@@ -58,9 +58,9 @@ public class EntityPlagueShot extends AbstractArrowEntity {
         float f = (this.width + this.height + this.width) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
-                RatsMod.PROXY.spawnParticle("black_death", x, y + 0.5D, z, d0, d1, d2);
+                RatsMod.PROXY.addParticle("black_death", x, y + 0.5D, z, d0, d1, d2);
             } else {
-                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, x, y + 0.5D, z, d0, d1, d2);
+                this.world.addParticle(EnumParticleTypes.SPELL_MOB, x, y + 0.5D, z, d0, d1, d2);
 
             }
         }

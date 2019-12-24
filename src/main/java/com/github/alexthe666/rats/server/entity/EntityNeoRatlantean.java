@@ -93,8 +93,8 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
 
     public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInt("ColorVariant", this.getColorVariant());
-        compound.setInt("AttackSelection", attackSelection);
+        compound.putInt("ColorVariant", this.getColorVariant());
+        compound.putInt("AttackSelection", attackSelection);
     }
 
     public void readEntityFromNBT(CompoundNBT compound) {
@@ -132,7 +132,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     public void onUpdate() {
         super.onUpdate();
         if (world.isRemote) {
-            RatsMod.PROXY.spawnParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
+            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     this.posY + this.getEyeHeight() + (this.rand.nextFloat() * 0.35F),
                     this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     0.0F, 0.0F, 0.0F);

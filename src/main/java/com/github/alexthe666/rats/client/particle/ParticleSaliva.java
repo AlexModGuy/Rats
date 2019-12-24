@@ -61,7 +61,7 @@ public class ParticleSaliva extends Particle {
 
         if (this.onGround) {
             this.setExpired();
-            this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.world.addParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }

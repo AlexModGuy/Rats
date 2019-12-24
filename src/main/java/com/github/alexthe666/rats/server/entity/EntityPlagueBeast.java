@@ -65,7 +65,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         double d0 = 0D;
         double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
         double d2 = 0D;
-        this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+        this.world.addParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
         if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
             if (death.getAttackTarget() != null && !death.getAttackTarget().isDead) {

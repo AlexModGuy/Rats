@@ -123,8 +123,8 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
 
     public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInt("ColorVariant", this.getColorVariant());
-        compound.setBoolean("Toga", this.hasToga());
+        compound.putInt("ColorVariant", this.getColorVariant());
+        compound.putBoolean("Toga", this.hasToga());
     }
 
     public void readEntityFromNBT(CompoundNBT compound) {

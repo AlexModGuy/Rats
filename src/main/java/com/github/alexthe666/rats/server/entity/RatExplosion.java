@@ -183,13 +183,13 @@ public class RatExplosion extends Explosion {
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
      */
-    public void doExplosionB(boolean spawnParticles) {
+    public void doExplosionB(boolean addParticles) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
 
         if (this.size >= 2.0F && this.damagesTerrain) {
-            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+            this.world.addParticle(EnumParticleTypes.EXPLOSION_HUGE, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         } else {
-            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+            this.world.addParticle(EnumParticleTypes.EXPLOSION_LARGE, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
         if (this.damagesTerrain) {
@@ -197,7 +197,7 @@ public class RatExplosion extends Explosion {
                 BlockState BlockState = this.world.getBlockState(blockpos);
                 Block block = BlockState.getBlock();
 
-                if (spawnParticles) {
+                if (addParticles) {
                     double d0 = (double) ((float) blockpos.getX() + this.world.rand.nextFloat());
                     double d1 = (double) ((float) blockpos.getY() + this.world.rand.nextFloat());
                     double d2 = (double) ((float) blockpos.getZ() + this.world.rand.nextFloat());
@@ -213,8 +213,8 @@ public class RatExplosion extends Explosion {
                     d3 = d3 * d7;
                     d4 = d4 * d7;
                     d5 = d5 * d7;
-                    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + this.x) / 2.0D, (d1 + this.y) / 2.0D, (d2 + this.z) / 2.0D, d3, d4, d5);
-                    this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
+                    this.world.addParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + this.x) / 2.0D, (d1 + this.y) / 2.0D, (d2 + this.z) / 2.0D, d3, d4, d5);
+                    this.world.addParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
                 }
 
                 if (BlockState.getMaterial() != Material.AIR) {

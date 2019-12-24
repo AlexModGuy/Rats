@@ -1,9 +1,9 @@
-package com.github.alexthe666.rats.server.items;
+package com.github.alexthe666.rats.server.tomove;
 
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
 
-public class RatToolMaterial implements IItemTier {
+public class CustomToolMaterial implements IItemTier {
    private String name;
    private int harvestLevel;
    private int durability;
@@ -12,7 +12,7 @@ public class RatToolMaterial implements IItemTier {
    private int enchantability;
     private Ingredient ingredient = null;
 
-    public RatToolMaterial(String name, int harvestLevel, int durability, float damage, float speed, int enchantability) {
+    public CustomToolMaterial(String name, int harvestLevel, int durability, float damage, float speed, int enchantability) {
         this.name = name;
         this.harvestLevel = harvestLevel;
         this.durability = durability;

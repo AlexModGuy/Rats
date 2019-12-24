@@ -1,10 +1,12 @@
-package com.github.alexthe666.rats.server.entity;
+package com.github.alexthe666.rats.server.entity.ai;
 
-import net.minecraft.entity.ai.EntityMoveHelper;
+import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
-public class RatAquaticMoveHelper extends EntityMoveHelper {
+public class RatAquaticMoveHelper extends MovementController {
     EntityRat rat;
 
     public RatAquaticMoveHelper(EntityRat rat) {
@@ -13,7 +15,7 @@ public class RatAquaticMoveHelper extends EntityMoveHelper {
     }
 
     public void onUpdateMoveHelper() {
-        if (this.action == EntityMoveHelper.Action.MOVE_TO && this.rat.isInWater()) {
+        if (this.action == MovementController.Action.MOVE_TO && this.rat.isInWater()) {
             if (rat.collidedHorizontally && !rat.onGround) {
                 rat.rotationYaw += 180.0F;
                 int dist = 3;
@@ -26,23 +28,17 @@ public class RatAquaticMoveHelper extends EntityMoveHelper {
                 this.posY = target.getY();
                 this.posZ = target.getZ();
             }
-            double d0 = this.posX - rat.posX;
-            double d1 = this.posY - rat.posY;
-            double d2 = this.posZ - rat.posZ;
-            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            d3 = (double) MathHelper.sqrt(d3);
+            Vec3d vec3d = new Vec3d(this.posX - rat.posX, this.posY - rat.posY, this.posZ - rat.posZ);
+            double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
-            if (d3 < edgeLength) {
-                this.action = EntityMoveHelper.Action.WAIT;
-                rat.motionX *= 0.5D;
-                rat.motionY *= 0.5D;
-                rat.motionZ *= 0.5D;
+            if (d0 < edgeLength) {
+                this.action = MovementController.Action.WAIT;
+                rat.setMotion(rat.getMotion().scale(0.5D));
             } else {
-                rat.motionX += d0 / d3 * 0.1D * this.speed;
-                rat.motionY += d1 / d3 * 0.1D * this.speed;
-                rat.motionZ += d2 / d3 * 0.1D * this.speed;
+                rat.setMotion(rat.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                 if (rat.getAttackTarget() == null) {
-                    rat.rotationYaw = -((float) MathHelper.atan2(rat.motionX, rat.motionZ)) * (180F / (float) Math.PI);
+                    Vec3d vec3d1 = rat.getMotion();
+                    rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 } else {
                     double d4 = rat.getAttackTarget().posX - rat.posX;

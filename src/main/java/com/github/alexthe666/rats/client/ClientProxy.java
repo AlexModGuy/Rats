@@ -359,7 +359,7 @@ public class ClientProxy extends CommonProxy {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
+    public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
         World world = Minecraft.getMinecraft().world;
         if (world == null) {
             return;

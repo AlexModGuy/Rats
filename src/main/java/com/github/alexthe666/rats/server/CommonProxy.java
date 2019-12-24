@@ -168,6 +168,6 @@ public class CommonProxy {
     public void setCheeseStaffContext(BlockPos pos, Direction facing) {
     }
 
-    public void spawnParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
+    public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
     }
 }

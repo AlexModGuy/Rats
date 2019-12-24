@@ -66,7 +66,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         this.setNoGravity(true);
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (world.isRemote) {
-            RatsMod.PROXY.spawnParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
+            RatsMod.PROXY.addParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     0.92F, 0.82, 0.0F);

@@ -168,9 +168,9 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
 
     public void writeEntityToNBT(CompoundNBT compound) {
         super.writeEntityToNBT(compound);
-        compound.setInt("RatsSummoned", this.getRatsSummoned());
-        compound.setInt("CloudsSummoned", this.getCloudsSummoned());
-        compound.setInt("BeastsSummoned", this.getBeastsSummoned());
+        compound.putInt("RatsSummoned", this.getRatsSummoned());
+        compound.putInt("CloudsSummoned", this.getCloudsSummoned());
+        compound.putInt("BeastsSummoned", this.getBeastsSummoned());
     }
 
     public void readEntityFromNBT(CompoundNBT compound) {
@@ -283,8 +283,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
             float f = this.renderYawOffset * 0.017453292F + MathHelper.cos((float) this.ticksExisted * 0.6662F) * 0.25F;
             float f1 = MathHelper.cos(f);
             float f2 = MathHelper.sin(f);
-            RatsMod.PROXY.spawnParticle("black_death", this.posX + (double) f1 * 0.6D, this.posY + 1.8D, this.posZ + (double) f2 * 0.6D, d0, d1, d2);
-            RatsMod.PROXY.spawnParticle("black_death", this.posX - (double) f1 * 0.6D, this.posY + 1.8D, this.posZ - (double) f2 * 0.6D, d0, d1, d2);
+            RatsMod.PROXY.addParticle("black_death", this.posX + (double) f1 * 0.6D, this.posY + 1.8D, this.posZ + (double) f2 * 0.6D, d0, d1, d2);
+            RatsMod.PROXY.addParticle("black_death", this.posX - (double) f1 * 0.6D, this.posY + 1.8D, this.posZ - (double) f2 * 0.6D, d0, d1, d2);
         }
         if (this.getRatsSummoned() < 15 && ratCooldown == 0) {
             summonMinion(0);

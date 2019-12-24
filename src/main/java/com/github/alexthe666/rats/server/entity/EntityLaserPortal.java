@@ -70,7 +70,7 @@ public class EntityLaserPortal extends Entity {
             faceTarget();
         }
         if (world.isRemote && scaleOfPortal >= 0.5F) {
-            RatsMod.PROXY.spawnParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
+            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
                     0.0F, 0.0F, 0.0F);
@@ -156,7 +156,7 @@ public class EntityLaserPortal extends Entity {
     }
 
     protected void writeEntityToNBT(CompoundNBT compound) {
-        compound.setInt("Age", this.ticksExisted);
+        compound.putInt("Age", this.ticksExisted);
 
         if (this.ownerUniqueId != null) {
             compound.setUniqueId("OwnerUUID", this.ownerUniqueId);
