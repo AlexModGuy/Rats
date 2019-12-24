@@ -1,56 +1,50 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
-import io.netty.buffer.ByteBuf;
-import net.ilexiconn.llibrary.server.network.AbstractMessage;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageIncreaseRatRecipe extends AbstractMessage<MessageIncreaseRatRecipe> {
+import java.util.function.Supplier;
+
+public class MessageIncreaseRatRecipe {
 
     public long blockPos;
     public boolean increase;
-
-    public MessageIncreaseRatRecipe() {
-
-    }
 
     public MessageIncreaseRatRecipe(long blockPos, boolean increase) {
         this.blockPos = blockPos;
         this.increase = increase;
     }
 
-    @Override
-    public void onClientReceived(Minecraft client, MessageIncreaseRatRecipe message, PlayerEntity player, MessageContext messageContext) {
-        BlockPos pos = BlockPos.fromLong(message.blockPos);
-    }
+    public static class Handler {
+        public Handler() {
+        }
 
-    @Override
-    public void onServerReceived(MinecraftServer server, MessageIncreaseRatRecipe message, PlayerEntity player, MessageContext messageContext) {
-        BlockPos pos = BlockPos.fromLong(message.blockPos);
-        if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
-            TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);
-            if (message.increase) {
-                table.increaseRecipe();
-            } else {
-                table.decreaseRecipe();
+        public static void handle(MessageIncreaseRatRecipe message, Supplier<NetworkEvent.Context> context) {
+            ((NetworkEvent.Context)context.get()).setPacketHandled(true);
+            PlayerEntity player = context.get().getSender();
+            if(player != null) {
+                BlockPos pos = BlockPos.fromLong(message.blockPos);
+                if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
+                    TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);
+                    if (message.increase) {
+                        table.increaseRecipe();
+                    } else {
+                        table.decreaseRecipe();
+                    }
+                }
             }
         }
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        blockPos = buf.readLong();
-        increase = buf.readBoolean();
+    public static MessageIncreaseRatRecipe read(PacketBuffer buf) {
+        return new MessageIncreaseRatRecipe(buf.readLong(), buf.readBoolean());
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeLong(blockPos);
-        buf.writeBoolean(increase);
+    public static void write(MessageIncreaseRatRecipe message, PacketBuffer buf) {
+        buf.writeLong(message.blockPos);
+        buf.writeBoolean(message.increase);
     }
-
 }

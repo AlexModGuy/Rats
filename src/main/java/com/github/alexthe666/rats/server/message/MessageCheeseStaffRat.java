@@ -2,54 +2,47 @@ package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import io.netty.buffer.ByteBuf;
-import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageCheeseStaffRat extends AbstractMessage<MessageCheeseStaffRat> {
+import java.util.function.Supplier;
+
+public class MessageCheeseStaffRat {
 
     public int entityId;
     public boolean clear;
-
-    public MessageCheeseStaffRat() {
-
-    }
 
     public MessageCheeseStaffRat(int entityId, boolean clear) {
         this.clear = clear;
         this.entityId = entityId;
     }
 
-    @Override
-    public void onClientReceived(Minecraft client, MessageCheeseStaffRat message, PlayerEntity player, MessageContext messageContext) {
-        if (message.clear) {
-            RatsMod.PROXY.setRefrencedRat(null);
-        } else {
-            Entity e = player.world.getEntityByID(message.entityId);
-            if (e instanceof EntityRat) {
-                RatsMod.PROXY.setRefrencedRat((EntityRat) e);
+    public static class Handler {
+        public Handler() {
+        }
+
+        public static void handle(MessageCheeseStaffRat message, Supplier<NetworkEvent.Context> context) {
+            ((NetworkEvent.Context)context.get()).setPacketHandled(true);
+            if (message.clear) {
+                RatsMod.PROXY.setRefrencedRat(null);
+            } else {
+                Entity e = Minecraft.getInstance().player.world.getEntityByID(message.entityId);
+                if (e instanceof EntityRat) {
+                    RatsMod.PROXY.setRefrencedRat((EntityRat) e);
+                }
             }
         }
     }
 
-    @Override
-    public void onServerReceived(MinecraftServer server, MessageCheeseStaffRat message, PlayerEntity player, MessageContext messageContext) {
+    public static MessageCheeseStaffRat read(PacketBuffer packetBuffer) {
+        return new MessageCheeseStaffRat(packetBuffer.readInt(), packetBuffer.readBoolean());
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        entityId = buf.readInt();
-        clear = buf.readBoolean();
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(entityId);
-        buf.writeBoolean(clear);
+    public static void write(MessageCheeseStaffRat message, PacketBuffer buf) {
+        buf.writeInt(message.entityId);
+        buf.writeBoolean(message.clear);
     }
 
 }

@@ -1,18 +1,17 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import io.netty.buffer.ByteBuf;
-import net.ilexiconn.llibrary.server.network.AbstractMessage;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageUpdateRatFluid extends AbstractMessage<MessageUpdateRatFluid> {
+import java.util.function.Supplier;
+
+public class MessageUpdateRatFluid {
 
     public int ratId;
     public FluidStack fluid;
@@ -26,39 +25,34 @@ public class MessageUpdateRatFluid extends AbstractMessage<MessageUpdateRatFluid
         this.fluid = fluid;
     }
 
-    @Override
-    public void onClientReceived(Minecraft client, MessageUpdateRatFluid message, PlayerEntity player, MessageContext messageContext) {
-        Entity entity = player.world.getEntityByID(message.ratId);
-        if (entity instanceof EntityRat) {
-            EntityRat rat = (EntityRat) entity;
-            rat.transportingFluid = message.fluid;
+    public static class Handler {
+        public Handler() {
+        }
+
+        public static void handle(MessageUpdateRatFluid message, Supplier<NetworkEvent.Context> context) {
+            ((NetworkEvent.Context)context.get()).setPacketHandled(true);
+            PlayerEntity player = context.get().getSender();
+            if(player != null) {
+                Entity entity = player.world.getEntityByID(message.ratId);
+                if (entity instanceof EntityRat) {
+                    EntityRat rat = (EntityRat) entity;
+                    rat.transportingFluid = message.fluid;
+
+                }
+            }
         }
     }
 
-    @Override
-    public void onServerReceived(MinecraftServer server, MessageUpdateRatFluid message, PlayerEntity player, MessageContext messageContext) {
-        Entity entity = player.world.getEntityByID(message.ratId);
-        if (entity instanceof EntityRat) {
-            EntityRat rat = (EntityRat) entity;
-            rat.transportingFluid = message.fluid;
-
-        }
+    public static MessageUpdateRatFluid read(PacketBuffer buf) {
+        return new MessageUpdateRatFluid(buf.readInt(), FluidStack.loadFluidStackFromNBT(PacketBufferUtils.readTag(buf)));
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        ratId = buf.readInt();
-        fluid = FluidStack.loadFluidStackFromNBT(ByteBufUtils.readTag(buf));
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(ratId);
+    public static void write(MessageUpdateRatFluid message, PacketBuffer buf) {
+        buf.writeInt(message.ratId);
         CompoundNBT fluidTag = new CompoundNBT();
-        if (fluid != null) {
-            fluid.writeToNBT(fluidTag);
+        if (message.fluid != null) {
+            message.fluid.writeToNBT(fluidTag);
         }
-        ByteBufUtils.writeTag(buf, fluidTag);
+        PacketBufferUtils.writeTag(buf, fluidTag);
     }
-
 }

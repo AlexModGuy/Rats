@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
@@ -16,7 +15,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
@@ -137,7 +135,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     public void tick() {
         if (!world.isRemote) {
             if (prevFluid != tank.getFluidAmount()) {
-                RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
+                RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
                 prevFluid = tank.getFluidAmount();
             }
 
@@ -225,13 +223,13 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
 
     public void openInventory(PlayerEntity player) {
         if (!world.isRemote) {
-            RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
+            RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }
     }
 
     public void closeInventory(PlayerEntity player) {
         if (!world.isRemote) {
-            RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
+            RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(this.getPos().toLong(), tank.getFluid()));
         }
     }
 

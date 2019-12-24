@@ -1,65 +1,50 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
-import io.netty.buffer.ByteBuf;
-import net.ilexiconn.llibrary.server.network.AbstractMessage;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageAutoCurdlerFluid extends AbstractMessage<MessageAutoCurdlerFluid> {
+import java.util.function.Supplier;
+
+public class MessageAutoCurdlerFluid {
 
     public long blockPos;
     public FluidStack fluid;
-
-    public MessageAutoCurdlerFluid() {
-
-    }
-
 
     public MessageAutoCurdlerFluid(long blockPos, FluidStack fluid) {
         this.blockPos = blockPos;
         this.fluid = fluid;
     }
 
+    public static class Handler {
+        public Handler() {
+        }
 
-    @Override
-    public void onClientReceived(Minecraft client, MessageAutoCurdlerFluid message, PlayerEntity player, MessageContext messageContext) {
-        BlockPos pos = BlockPos.fromLong(message.blockPos);
-        if (player.world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
-            TileEntityAutoCurdler table = (TileEntityAutoCurdler) player.world.getTileEntity(pos);
-            table.tank.setFluid(message.fluid);
+        public static void handle(MessageAutoCurdlerFluid message, Supplier<NetworkEvent.Context> context) {
+            ((NetworkEvent.Context)context.get()).setPacketHandled(true);
+            BlockPos pos = BlockPos.fromLong(message.blockPos);
+            if (context.get() != null &&  context.get().getSender() != null && context.get().getSender().world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
+                TileEntityAutoCurdler table = (TileEntityAutoCurdler) context.get().getSender().world.getTileEntity(pos);
+                table.tank.setFluid(message.fluid);
+            }
         }
     }
 
-    @Override
-    public void onServerReceived(MinecraftServer server, MessageAutoCurdlerFluid message, PlayerEntity player, MessageContext messageContext) {
-        BlockPos pos = BlockPos.fromLong(message.blockPos);
-        if (player.world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
-            TileEntityAutoCurdler table = (TileEntityAutoCurdler) player.world.getTileEntity(pos);
-            table.tank.setFluid(message.fluid);
-        }
+    public static MessageAutoCurdlerFluid read(PacketBuffer packetBuffer) {
+        return new MessageAutoCurdlerFluid(packetBuffer.readLong(), FluidStack.loadFluidStackFromNBT(PacketBufferUtils.readTag(packetBuffer)));
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        blockPos = buf.readLong();
-        fluid = FluidStack.loadFluidStackFromNBT(ByteBufUtils.readTag(buf));
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeLong(blockPos);
+    public static void write(MessageAutoCurdlerFluid message, PacketBuffer packetBuffer) {
+        packetBuffer.writeLong(message.blockPos);
         CompoundNBT fluidTag = new CompoundNBT();
-        if (fluid != null) {
-            fluid.writeToNBT(fluidTag);
+        if (message.fluid != null) {
+            message.fluid.writeToNBT(fluidTag);
         }
-        ByteBufUtils.writeTag(buf, fluidTag);
+        PacketBufferUtils.writeTag(packetBuffer, fluidTag);
     }
 
 }
