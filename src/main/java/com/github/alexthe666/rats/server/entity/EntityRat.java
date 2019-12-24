@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
@@ -17,63 +18,59 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
-import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.ContainerHorseChest;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.world.*;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.*;
 
 public class EntityRat extends TameableEntity implements IAnimatedEntity {
@@ -109,7 +106,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             "rats:textures/entity/rat/tamed/rat_dark_undercoat.png"
     };
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
-            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD};
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR};
+    protected Inventory ratInventory;
     public float sitProgress;
     public float holdProgress;
     public float deadInTrapProgress;
@@ -173,7 +171,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
-        if (rat.hasHome()) {
+        if (rat.detachHome()) {
             x = rat.getHomePosition().getX() + rng.nextInt((int) rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance() / 2;
             z = rat.getHomePosition().getZ() + rng.nextInt((int) rat.getMaximumHomeDistance()) - rat.getMaximumHomeDistance() / 2;
         }
@@ -192,7 +190,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         BlockPos pos;
         BlockPos topY = new BlockPos(x, rat.posY, z);
         BlockPos bottomY = new BlockPos(x, rat.posY, z);
-        while (world.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < world.getHeight()) {
+        while (world.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < world.getgetHeight()()) {
             topY = topY.up();
         }
         while (world.getBlockState(bottomY).getMaterial() == Material.WATER && bottomY.getY() > 0) {
@@ -207,7 +205,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return rat.getPosition();
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
@@ -216,12 +214,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
+                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
             }
         }, 10.0F, 0.8D, 1.33D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
         this.goalSelector.addGoal(5, new RatAIFleeSun(this, 1.66D));
-        this.goalSelector.addGoal(5, this.aiSit = new RatAISit(this));
+        this.goalSelector.addGoal(5, this.sitGoal = new RatAISit(this));
         this.goalSelector.addGoal(6, new RatAIWander(this, 1.0D));
         this.goalSelector.addGoal(6, new RatAIWanderFlight(this));
         this.goalSelector.addGoal(6, new RatAIWanderAquatic(this));
@@ -229,30 +227,30 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(7, new RatAIRaidCrops(this));
         this.goalSelector.addGoal(7, new RatAIEnterTrap(this));
         this.goalSelector.addGoal(7, new RatAIFleePosition(this));
-        this.goalSelector.addGoal(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
-        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
+        this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 6.0F));
+        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(0, new RatAITargetItems(this, false));
         this.targetSelector.addGoal(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
-                    return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
+                    return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
                 } else {
-                    if (entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
+                    if (entity instanceof TameableEntity && ((TameableEntity) entity).isTamed()) {
                         return false;
                     }
                     return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof PlayerEntity) || EntityRat.this.hasPlague()) && !entity.isChild();
                 }
             }
         }));
-        this.targetSelector.addGoal(2, new EntityAIOwnerHurtByTarget(this));
-        this.targetSelector.addGoal(3, new EntityAIOwnerHurtTarget(this));
-        this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, false));
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, new Class[0]));
     }
 
     protected void setupDynamicAI() {
-        this.goalSelector.removeTask(this.aiHarvest);
-        this.goalSelector.removeTask(this.aiDeposit);
-        this.goalSelector.removeTask(this.aiPickup);
+        this.goalSelector.removeGoal(this.aiHarvest);
+        this.goalSelector.removeGoal(this.aiDeposit);
+        this.goalSelector.removeGoal(this.aiPickup);
         if (this.aiHarvest == null) {
             aiHarvest = new RatAIHarvestCrops(this);
         }
@@ -299,12 +297,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public LivingEntity getOwner() {
         try {
             UUID uuid = this.getOwnerId();
-            LivingEntity player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            LivingEntity player = uuid == null ? null : this.world.getPlayerByUuid(uuid);
             if (player != null) {
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.dimension).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }
@@ -316,11 +314,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return null;
     }
 
-    protected boolean canDespawn() {
+    public boolean canDespawn(double distanceToClosestPlayer) {
         if (RatConfig.ratsSpawnLikeMonsters) {
             return !this.isTamed() && !this.isChild();
         } else {
-            return super.canDespawn();
+            return super.canDespawn(distanceToClosestPlayer);
         }
     }
 
@@ -380,7 +378,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     protected boolean isValidLightLevel() {
-        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
         if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
             return false;
         } else {
@@ -420,9 +418,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
@@ -550,22 +548,22 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ratInventory.setInventorySlotContents(j, new ItemStack(CompoundNBT));
             }
         }
-        if (compound.hasKey("PickupPosX") && compound.hasKey("PickupPosY") && compound.hasKey("PickupPosZ")) {
+        if (compound.contains("PickupPosX") && compound.contains("PickupPosY") && compound.contains("PickupPosZ")) {
             pickupPos = new BlockPos(compound.getInt("PickupPosX"), compound.getInt("PickupPosY"), compound.getInt("PickupPosZ"));
         }
-        if (compound.hasKey("DepositPosX") && compound.hasKey("DepositPosY") && compound.hasKey("DepositPosZ")) {
+        if (compound.contains("DepositPosX") && compound.contains("DepositPosY") && compound.contains("DepositPosZ")) {
             depositPos = new BlockPos(compound.getInt("DepositPosX"), compound.getInt("DepositPosY"), compound.getInt("DepositPosZ"));
-            if (compound.hasKey("DepositFacing")) {
+            if (compound.contains("DepositFacing")) {
                 depositFacing = Direction.values()[compound.getInt("DepositFacing")];
             }
         }
-        if (compound.hasKey("TransportingFluid")) {
+        if (compound.contains("TransportingFluid")) {
             CompoundNBT fluidTag = compound.getCompoundTag("TransportingFluid");
             if (!fluidTag.isEmpty()) {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
         }
-        if (compound.hasKey("CustomName", 8)) {
+        if (compound.contains("CustomName", 8)) {
             this.setCustomNameTag(compound.getString("CustomName"));
         }
 
@@ -573,7 +571,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
-        if (this.isEntityInvulnerable(source) || source == DamageSource.IN_WALL && this.isRiding()) {
+        if (this.isEntityInvulnerable(source) || source == DamageSource.IN_WALL && this.isPassenger()) {
             return false;
         } else {
             Entity entity = source.getTrueSource();
@@ -693,7 +691,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
@@ -705,12 +703,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 600));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
-                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
-                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double) (this.height / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
@@ -844,7 +842,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.isMoving()) {
             this.setRatStatus(RatStatus.MOVING);
         }
-        boolean sitting = isSitting() || this.isRiding() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
+        boolean sitting = isSitting() || this.isPassenger() || this.isDancing() || (this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF) && shouldSitDuringAnimation();
         float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5 : 1F;
         boolean holdingInHands = !sitting && (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && (!this.holdInMouth || cookingProgress > 0)
                 || this.getAnimation() == ANIMATION_EAT || this.holdsItemInHandUpgrade() || this.getMBTransferRate() > 0);
@@ -918,7 +916,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double d0 = 0D;
             double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
             double d2 = 0D;
-            this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+            this.world.spawnParticle(ParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.getHeldItemMainhand().isEmpty()) {
             this.tryCooking();
@@ -927,13 +925,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     if (rand.nextFloat() < 0.125F) {
-                        this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                        this.world.spawnParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                 }
             }
@@ -945,13 +943,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
+                    this.world.spawnParticle(ParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
                     if (rand.nextFloat() < 0.125F) {
-                        this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                        this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                 }
             }
@@ -963,11 +961,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 99) {
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
+                    this.world.spawnParticle(ParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
                 }
             }
         }
@@ -978,12 +976,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 if (cookingProgress == 999) {
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
-                    this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.spawnParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 }
             }
         }
@@ -1008,7 +1006,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
             if (!world.isRemote) {
-                if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isRiding()) {
+                if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isPassenger()) {
                     Vec3d target = new Vec3d(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
                     if (this.getDistanceSq(target.x, target.y, target.z) > 20 || !this.isDirectPathBetweenPoints(target)) {
                         this.attemptTeleport(target.x, target.y, target.z);
@@ -1018,7 +1016,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                this.world.spawnParticle(ParticleTypes.PORTAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
 
             }
         }
@@ -1065,10 +1063,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     world.setEntityState(this, (byte) 85);
                     ItemStack stack = ratCraftingTable.getStackInSlot(0);
                     if (stack.isEmpty()) {
-                        this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                        this.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     } else {
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
                     }
                     if (ratCraftingTable.prevCookTime % 20 == 0) {
                         this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
@@ -1079,7 +1077,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
                 if (ratCraftingTable.prevCookTime == 199) {
                     for (int i = 0; i < 4; i++) {
-                        this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                        this.world.spawnParticle(ParticleTypes.VILLAGER_HAPPY, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                     this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
                 }
@@ -1096,7 +1094,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
-            if (death.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
+            if (death.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
                 this.setAttackTarget(death.getAttackTarget());
             }
             if (this.getAttackTarget() == null || this.getAttackTarget().isDead) {
@@ -1169,7 +1167,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 EntityCheeseCannonball cannonball = new EntityCheeseCannonball(world, this);
                 cannonball.ignoreEntity = this;
                 double extraY = 0.6 + posY;
-                double d0 = this.getAttackTarget().posY + (double) this.getAttackTarget().getEyeHeight() - 1.100000023841858D;
+                double d0 = this.getAttackTarget().posY + (double) this.getAttackTarget().getEyegetHeight()() - 1.100000023841858D;
                 double d1 = this.getAttackTarget().posX - this.posX;
                 double d3 = this.getAttackTarget().posZ - this.posZ;
                 double d2 = d0 - extraY;
@@ -1196,7 +1194,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
                 double extraY = 0.2 + posY;
                 double targetRelativeX = this.getAttackTarget().posX - extraX;
-                double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height / 2 - extraY;
+                double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().getHeight() / 2 - extraY;
                 double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
                 this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.25F + rand.nextFloat() * 0.5F);
                 EntityRatDragonFire beam = new EntityRatDragonFire(world, this, targetRelativeX, targetRelativeY, targetRelativeZ);
@@ -1217,7 +1215,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
                     double extraY = 0.2 + posY;
                     double targetRelativeX = this.getAttackTarget().posX - extraX;
-                    double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().height / 2 - extraY;
+                    double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().getHeight() / 2 - extraY;
                     double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
                     this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
                     EntityLaserBeam beam = new EntityLaserBeam(world, this);
@@ -1305,7 +1303,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean canBeCollidedWith() {
-        return (!this.isRiding() || !(this.getRidingEntity() instanceof PlayerEntity));
+        return (!this.isPassenger() || !(this.getRidingEntity() instanceof PlayerEntity));
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {
@@ -1416,7 +1414,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (disenchant && heldItem.isItemEnchanted()) {
             burntItem = heldItem.copy();
-            if (burntItem.getTag() != null && burntItem.getTag().hasKey("ench", 9)) {
+            if (burntItem.getTag() != null && burntItem.getTag().contains("ench", 9)) {
                 if (!burntItem.getTag().getTagList("ench", 10).isEmpty()) {
                     burntItem.getTag().setTag("ench", new CompoundNBT());
                 }
@@ -1469,7 +1467,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!world.isRemote) {
             LootContext.Builder lootcontext$builder = new LootContext.Builder((net.minecraft.world.WorldServer) this.world);
             lootcontext$builder.withLuck((float) luck).withLootedEntity(this); // Forge: add player & looted entity to LootContext
-            result = this.world.getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generateLootForPools(this.getRNG(), lootcontext$builder.build());
+            result = this.world.getServer().getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generateLootForPools(this.getRNG(), lootcontext$builder.build());
             if (result.isEmpty()) {
                 cookingProgress = 0;
             } else {
@@ -1497,10 +1495,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private boolean tryDepositItemInContainers(ItemStack burntItem) {
         if (world.getTileEntity(new BlockPos(this)) != null) {
             TileEntity te = world.getTileEntity(new BlockPos(this));
-            IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
-            if (handler != null) {
-                if (ItemHandlerHelper.insertItem(handler, burntItem, true).isEmpty()) {
-                    ItemHandlerHelper.insertItem(handler, burntItem, false);
+            LazyOptional<IItemHandler> handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+            if (handler.orElse(null) != null) {
+                if (ItemHandlerHelper.insertItem(handler.orElse(null), burntItem, true).isEmpty()) {
+                    ItemHandlerHelper.insertItem(handler.orElse(null), burntItem, false);
                     return true;
                 }
             }
@@ -1510,7 +1508,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     protected void eatItem(ItemStack stack, int eatingParticleCount) {
         if (!stack.isEmpty()) {
-            if (stack.getItemUseAction() == EnumAction.DRINK) {
+            if (stack.getUseAction() == UseAction.DRINK) {
                 this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
             if (RatUtils.isRatFood(stack) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING)) {
@@ -1523,12 +1521,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     vec3d1 = vec3d1.rotatePitch(-this.rotationPitch * 0.017453292F);
                     vec3d1 = vec3d1.rotateYaw(-this.rotationYaw * 0.017453292F);
                     vec3d1 = vec3d1.add(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
+                    this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z);
 
-                    if (stack.getHasSubtypes()) {
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()), stack.getMetadata());
-                    } else {
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()));
-                    }
                 }
                 this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.25F + 0.25F * (float) this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.3F);
             }
@@ -1539,12 +1533,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (diggingPos != null) {
             ++this.breakingTime;
             int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
-            this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+            //this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
-            this.motionZ *= 0.0D;
-            this.motionX *= 0.0D;
+            this.setMotion(0, 0, 0);
             if (breakingTime % 40 == 0) {
                 this.playSound(RatsSoundRegistry.RAT_DIG, this.getSoundVolume(), this.getSoundPitch());
             }
@@ -1572,7 +1565,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 digCooldown = 3000;
                 diggingPos = null;
             }
-            if (diggingPos != null && this.getDistanceSq(diggingPos) > 2F) {
+            if (diggingPos != null && this.getDistanceSq(diggingPos.getX(), diggingPos.getY(), diggingPos.getZ()) > 2F) {
                 this.breakingTime = 0;
                 this.previousBreakProgress = -1;
                 this.world.sendBlockBreakProgress(this.getEntityId(), diggingPos, 0);
@@ -1594,14 +1587,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ((EntityRat) entityIn).setPlague(true);
             } else if (entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
                 if (((LivingEntity) entityIn).getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
-                    ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 6000));
+                    ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 6000));
                 }
             }
         }
     }
 
     private boolean rollForPlague(LivingEntity target) {
-        boolean mask = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == RatsItemRegistry.BLACK_DEATH_MASK;
+        boolean mask = target.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || target.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.BLACK_DEATH_MASK;
         if (mask) {
             return rand.nextFloat() < 0.3F;
         }
@@ -1609,7 +1602,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isInRatHole() {
-        return RatUtils.isRatHoleInBoundingBox(this.getEntityBoundingBox().grow(0.5D, 0.5D, 0.5D), world);
+        return RatUtils.isRatHoleInBoundingBox(this.getBoundingBox().grow(0.5D, 0.5D, 0.5D), world);
     }
 
     private void findDigTarget() {
@@ -1625,10 +1618,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             if (finalDigPathPoint != null) {
                 BlockPos digPos = rayTraceBlockPos(finalDigPathPoint);
-                if (digPos != null && this.getDistanceSq(digPos) < 2) {
+                if (digPos != null && this.getDistanceSq(digPos.getX(), digPos.getY(), digPos.getZ()) < 2) {
                     if (world.getTileEntity(digPos) == null) {
                         Material material = world.getBlockState(digPos).getMaterial();
-                        if (RatUtils.canRatBreakBlock(world, digPos, this) && canDigBlock(world, digPos) && (material.isToolNotRequired() || material == Material.CRAFTED_SNOW) && digPos.getY() == (int) Math.round(this.posY)) {
+                        if (RatUtils.canRatBreakBlock(world, digPos, this) && canDigBlock(world, digPos) && (material.isToolNotRequired() || material == Material.SNOW_BLOCK) && digPos.getY() == (int) Math.round(this.posY)) {
                             diggingPos = digPos;
                         }
                     }
@@ -1638,14 +1631,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     private boolean canDigBlock(World world, BlockPos pos) {
-        return world.getBlockState(pos).isOpaqueCube();
+        return world.getBlockState(pos).isOpaqueCube(world, pos);
     }
 
     public BlockPos rayTraceBlockPos(BlockPos targetPos) {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, this.getPositionVector(), new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
             if (!world.isAirBlock(sidePos)) {
                 return sidePos;
             } else if (!world.isAirBlock(pos)) {
@@ -1679,22 +1673,20 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     protected void createRunningParticles() {
     }
 
-    public void travel(float strafe, float vertical, float forward) {
+    public void travel(Vec3d vec3d) {
         if (!this.canMove()) {
-            strafe = 0;
-            vertical = 0;
-            forward = 0;
-            this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+            //this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
         }
-        super.travel(strafe, vertical, forward);
+        super.travel(vec3d);
     }
 
     public void openGUI(PlayerEntity playerEntity) {
         if (!this.world.isRemote && (!this.isBeingRidden() || this.isPassenger(playerEntity))) {
-            playerEntity.openGui(RatsMod.INSTANCE, 1, this.world, this.getEntityId(), 0, 0);
+           //TODO: Guis
+            // playerEntity.openGui(RatsMod.INSTANCE, 1, this.world, this.getEntityId(), 0, 0);
         }
     }
 
@@ -1708,7 +1700,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     @Nullable
     @Override
-    public EntityAgeable createChild(EntityAgeable ageable) {
+    public AgeableEntity createChild(AgeableEntity ageable) {
         return null;
     }
 
@@ -1747,7 +1739,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean canPhaseThroughBlock(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() instanceof BlockFence || world.getBlockState(pos).getBlock() instanceof BlockFenceGate;
+        return world.getBlockState(pos).getBlock() instanceof FenceBlock || world.getBlockState(pos).getBlock() instanceof FenceBlock;
     }
 
     public void setKilledInTrap() {
@@ -1759,13 +1751,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
         if (this.deathTime == maxDeathTime) {
-            if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))) {
+            if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))) {
                 int i = this.getExperiencePoints(this.attackingPlayer);
                 i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
                 while (i > 0) {
-                    int j = EntityXPOrb.getXPSplit(i);
+                    int j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.addEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
                 }
                 if (rand.nextInt(RatConfig.tokenDropRate) == 0) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
@@ -1775,7 +1767,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
                 if (this.hasToga()) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
-                    if (this.dimension == RatConfig.ratlantisDimensionId) {
+                    if (this.dimension == DimensionType.getById(RatConfig.ratlantisDimensionId)) {
                         boolean flag = false;
                         if (!flag && rand.nextFloat() < 0.01F) {
                             this.entityDropItem(new ItemStack(Items.DIAMOND), 0.0F);
@@ -1801,47 +1793,47 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             }
 
-            this.setDead();
+            this.remove();
             for (int k = 0; k < 20; ++k) {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
+                this.world.addParticle(ParticleTypes.EXPLOSION, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
         }
     }
 
-    public void setDead() {
-        if (!isDead && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper) {
+    public void remove() {
+        if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper) {
             EntityIllagerPiper illagerPiper = (EntityIllagerPiper) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
+            this.setOwnerId(null);
         }
-        if (!isDead && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
+        if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath illagerPiper = (EntityBlackDeath) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
+            this.setOwnerId(null);
         }
-        this.isDead = true;
+        super.remove();
     }
 
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
-        if (entity != null && (entity.isDead || entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() <= 0.0F)) {
-            this.dismountRidingEntity();
+        if (entity != null && (!entity.isAlive() || entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() <= 0.0F)) {
+            this.stopRiding();
         } else {
-            this.motionX = 0.0D;
-            this.motionY = 0.0D;
-            this.motionZ = 0.0D;
-            this.onUpdate();
-            if (this.isRiding()) {
+            this.setMotion(0, 0, 0);
+            this.tick();
+            if (this.isPassenger()) {
                 this.updateRiding(entity);
             }
         }
     }
 
-    public boolean writeToNBTOptional(CompoundNBT compound) {
+    public boolean writeUnlessRemoved(CompoundNBT compound) {
         String s = this.getEntityString();
-        compound.setString("id", s);
-        this.writeToNBT(compound);
+        compound.putString("id", s);
+        this.writeWithoutTypeId(compound);
         return true;
     }
 
@@ -1862,7 +1854,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.prevRotationYaw = ((PlayerEntity) riding).rotationYawHead;
             this.setPosition(riding.posX + extraX, riding.posY + extraY, riding.posZ + extraZ);
             if (((PlayerEntity) riding).isElytraFlying()) {
-                this.dismountRidingEntity();
+                this.stopRiding();
             }
         }
     }
@@ -1902,16 +1894,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     CompoundNBT ratTag = new CompoundNBT();
                     this.writeEntityToNBT(ratTag);
                     int currentRat = ItemRatSack.getRatsInStack(itemstack) + 1;
-                    compound.setTag("Rat_" + currentRat, ratTag);
+                    compound.put("Rat_" + currentRat, ratTag);
                     this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1, 1);
-                    this.setDead();
+                    this.remove();
                     player.swingArm(hand);
                     return true;
                 } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
                     RatsMod.PROXY.setRefrencedRat(this);
-                    itemstack.getTag().setUniqueId("RatUUID", this.getPersistentID());
+                    itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
-                    player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.bind", this.getName()), true);
+                    player.sendStatusMessage(new TranslationTextComponent("entity.rat.staff.bind", this.getName()), true);
                     return true;
                 } else if (itemstack.getItem() == Items.ARROW) {
                     RatsMod.PROXY.setRefrencedRat(this);
@@ -1920,7 +1912,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     CompoundNBT compound = new CompoundNBT();
                     CompoundNBT ratTag = new CompoundNBT();
                     this.writeEntityToNBT(ratTag);
-                    compound.setTag("Rat", ratTag);
+                    compound.put("Rat", ratTag);
                     ratArrowStack.setTag(compound);
                     if (itemstack.isEmpty()) {
                         player.setHeldItem(hand, ratArrowStack);
@@ -1929,14 +1921,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     }
                     this.playSound(RatsSoundRegistry.RAT_HURT, 1, 1);
                     player.swingArm(hand);
-                    this.setDead();
+                    this.remove();
                     return true;
                 } else if (!player.isSneaking() && this.canBeTamed()) {
                     openGUI(player);
                     return true;
                 } else {
                     if (player.getPassengers().size() < 3) {
-                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.dismount_instructions"), true);
+                        player.sendStatusMessage(new TranslationTextComponent("entity.rat.dismount_instructions"), true);
                         this.startRiding(player, true);
                     }
                     return true;
@@ -1966,23 +1958,23 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return !this.hasPlague();
     }
 
-    public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-        if (slotIn == EntityEquipmentSlot.MAINHAND) {
+    public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
+        if (slotIn == EquipmentSlotType.MAINHAND) {
             return ratInventory.getStackInSlot(0);
-        } else if (slotIn == EntityEquipmentSlot.HEAD) {
+        } else if (slotIn == EquipmentSlotType.HEAD) {
             return ratInventory.getStackInSlot(1);
-        } else if (slotIn == EntityEquipmentSlot.OFFHAND) {
+        } else if (slotIn == EquipmentSlotType.OFFHAND) {
             return ratInventory.getStackInSlot(2);
         }
         return super.getItemStackFromSlot(slotIn);
     }
 
-    public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
-        if (slotIn == EntityEquipmentSlot.MAINHAND) {
+    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
+        if (slotIn == EquipmentSlotType.MAINHAND) {
             ratInventory.setInventorySlotContents(0, stack);
-        } else if (slotIn == EntityEquipmentSlot.HEAD) {
+        } else if (slotIn == EquipmentSlotType.HEAD) {
             ratInventory.setInventorySlotContents(1, stack);
-        } else if (slotIn == EntityEquipmentSlot.OFFHAND) {
+        } else if (slotIn == EquipmentSlotType.OFFHAND) {
             ratInventory.setInventorySlotContents(2, stack);
         } else {
             super.getItemStackFromSlot(slotIn);
@@ -1990,8 +1982,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     private void initInventory() {
-        ratInventory = new ContainerHorseChest("ratInventory", 4);
-        ratInventory.setCustomName(this.getName());
+        ratInventory = new Inventory(4);
+        //ratInventory.setCustomName(this.getName());
         if (ratInventory != null) {
             for (int j = 0; j < ratInventory.getSizeInventory(); ++j) {
                 ItemStack itemstack = ratInventory.getStackInSlot(j);
@@ -2009,6 +2001,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
+    @Override
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
         if (!this.hasFlight() && !this.inTube()) {
             super.updateFallState(y, onGroundIn, state, pos);
@@ -2055,10 +2048,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
-                double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.height;
-                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
-                world.spawnParticle(EnumParticleTypes.WATER_SPLASH, d3, d4, d5, (double) f, (double) f1, (double) f2);
+                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.getWidth() * 2.0D;
+                double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.getHeight();
+                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.getWidth() * 2.0D;
+                world.addParticle(ParticleTypes.SPLASH, d3, d4, d5, (double) f, (double) f1, (double) f2);
             }
         } else if (type == 2) {
             for (int j = 0; j < 5; ++j) {
@@ -2066,59 +2059,63 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
-                double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.height;
-                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.width * 2.0D;
-                world.spawnParticle(EnumParticleTypes.PORTAL, d3, d4, d5, (double) f, (double) f1, (double) f2);
+                double d3 = this.prevPosX + (this.posX - this.prevPosX) * d6 + (rand.nextDouble() - 0.5D) * this.getWidth() * 2.0D;
+                double d4 = this.prevPosY + (this.posY - this.prevPosY) * d6 + rand.nextDouble() * (double) this.getHeight();
+                double d5 = this.prevPosZ + (this.posZ - this.prevPosZ) * d6 + (rand.nextDouble() - 0.5D) * this.getWidth() * 2.0D;
+                world.addParticle(ParticleTypes.PORTAL, d3, d4, d5, (double) f, (double) f1, (double) f2);
             }
         } else {
-            EnumParticleTypes enumparticletypes = EnumParticleTypes.SMOKE_NORMAL;
+            BasicParticleType p = ParticleTypes.SMOKE;
 
             if (type == 1) {
-                enumparticletypes = EnumParticleTypes.HEART;
+                p = ParticleTypes.HEART;
             }
             if (type == 5) {
-                enumparticletypes = EnumParticleTypes.SNOW_SHOVEL;
+                p = ParticleTypes.ITEM_SNOWBALL;
             }
             for (int i = 0; i < 9; ++i) {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                this.world.addParticle(p, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + 0.5D + (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
             }
         }
     }
 
     public boolean isMoving() {
-        return Math.abs(motionX) >= 0.05D || Math.abs(motionZ) >= 0.05D;
+        return Math.abs(this.getMotion().x) >= 0.05D || Math.abs(this.getMotion().z) >= 0.05D;
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setColorVariant(this.getRNG().nextInt(4));
         this.setMale(this.getRNG().nextBoolean());
-        if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL && RatConfig.plagueRats) {
+        if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != Difficulty.PEACEFUL && RatConfig.plagueRats) {
             this.setPlague(true);
         }
-        if (this.dimension == RatConfig.ratlantisDimensionId) {
+        if (this.dimension == DimensionType.getById(RatConfig.ratlantisDimensionId)) {
             this.setToga(true);
         }
-        if (this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
-            Calendar calendar = this.world.getCurrentDate();
-            if (calendar.get(2) + 1 == 10 && calendar.get(5) > 10 && this.rand.nextFloat() <= 0.25F) {
-                this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Blocks.PUMPKIN));
-                this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 1.0F;
+        if (this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
+            LocalDate localdate = LocalDate.now();
+            int i = localdate.get(ChronoField.DAY_OF_MONTH);
+            int j = localdate.get(ChronoField.MONTH_OF_YEAR);
+            if (j == 10 && i > 10 && this.rand.nextFloat() <= 0.25F) {
+                this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(Blocks.PUMPKIN));
+                this.inventoryArmorDropChances[EquipmentSlotType.HEAD.getIndex()] = 1.0F;
             }
         }
-        if (this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
-            Calendar calendar = this.world.getCurrentDate();
-            if ((calendar.get(2) + 1 == 11 && calendar.get(5) > 10 || calendar.get(2) + 1 == 12) && this.rand.nextFloat() <= 0.25F) {
-                this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT));
-                this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 1.0F;
+        if (this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
+            LocalDate localdate = LocalDate.now();
+            int i = localdate.get(ChronoField.DAY_OF_MONTH);
+            int j = localdate.get(ChronoField.MONTH_OF_YEAR);
+            if ((j == 11 && i > 15 || j == 12 || j == 1 && i <= 10) && this.rand.nextFloat() <= 0.25F) {
+                this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT));
+                this.inventoryArmorDropChances[EquipmentSlotType.HEAD.getIndex()] = 1.0F;
             }
         }
-        return livingdata;
+        return spawnDataIn;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -2130,28 +2127,28 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return this.getCommandInteger() == 3 && this.getHealth() >= this.getMaxHealth() / 2F || !this.isTamed() && this.hasPlague();
     }
 
-    public String getName() {
-        if (this.hasCustomName()) {
-            return this.getCustomNameTag();
+    private static void removeClickEvents(ITextComponent p_207712_0_) {
+        p_207712_0_.applyTextStyle((p_213318_0_) -> {
+            p_213318_0_.setClickEvent((ClickEvent)null);
+        }).getSiblings().forEach(EntityRat::removeClickEvents);
+    }
+
+    public ITextComponent getName() {
+        ITextComponent itextcomponent = this.getCustomName();
+        if (itextcomponent != null) {
+            ITextComponent itextcomponent1 = itextcomponent.deepCopy();
+            removeClickEvents(itextcomponent1);
+            return itextcomponent1;
         } else {
-            String s = EntityList.getEntityString(this);
-            if (s == null) {
-                s = "generic";
-            }
             if (this.hasPlague()) {
-                s = "plague_rat";
+                return new TranslationTextComponent("plague_rat");
             }
-            return I18n.translateToLocal("entity." + s + ".name");
+            return this.getType().getName(); // Forge: Use getter to allow overriding by mods
         }
     }
 
     public boolean shouldEyesGlow() {
         return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -2164,8 +2161,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!this.hasPlague() && this.getHealth() <= this.getMaxHealth() / 2D || this.isChild()) {
             return RatsSoundRegistry.RAT_IDLE;
         }
-        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
-            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_idle"));
+        if (RatsMod.ICEANDFIRE_LOADED && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = Registry.SOUND_EVENT.getOrDefault(new ResourceLocation("iceandfire", "firedragon_child_idle"));
             if (possibleDragonSound != null) {
                 return possibleDragonSound;
             }
@@ -2174,8 +2171,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     protected SoundEvent getDeathSound() {
-        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
-            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_death"));
+        if (RatsMod.ICEANDFIRE_LOADED && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = Registry.SOUND_EVENT.getOrDefault(new ResourceLocation("iceandfire", "firedragon_child_death"));
             if (possibleDragonSound != null) {
                 return possibleDragonSound;
             }
@@ -2184,8 +2181,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        if (RatsMod.iafLoaded && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
-            SoundEvent possibleDragonSound = SoundEvent.REGISTRY.getObject(new ResourceLocation("iceandfire", "firedragon_child_hurt"));
+        if (RatsMod.ICEANDFIRE_LOADED && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
+            SoundEvent possibleDragonSound = Registry.SOUND_EVENT.getOrDefault(new ResourceLocation("iceandfire", "firedragon_child_hurt"));
             if (possibleDragonSound != null) {
                 return possibleDragonSound;
             }
@@ -2209,7 +2206,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             } else {
                 CompoundNBT1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTag();
             }
-            if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+            if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
@@ -2265,7 +2262,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (flag1) {
                 this.setPositionAndUpdate(this.posX, this.posY, this.posZ);
 
-                if (world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(this.getEntityBoundingBox())) {
+                if (world.getCollisionShapes(this, this.getBoundingBox()).toArray().length == 0 && !world.containsAnyLiquid(this.getBoundingBox())) {
                     flag = true;
                 }
             }
@@ -2276,20 +2273,21 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return false;
         } else {
             int i = 128;
-            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+            this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1, 1);
             return true;
         }
     }
 
     public boolean isDirectPathBetweenPoints(Vec3d target) {
         RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, getPositionVector(), target.add(0.5, 0.5, 0.5), false);
-        if (rayTrace != null && rayTrace.hitVec != null) {
-            BlockPos sidePos = rayTrace.getBlockPos();
-            BlockPos pos = new BlockPos(rayTrace.hitVec);
+        if (rayTrace instanceof BlockRayTraceResult) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
             if (!world.isAirBlock(pos) || !world.isAirBlock(sidePos)) {
                 return true;
             } else {
-                return rayTrace.typeOfHit == RayTraceResult.Type.MISS;
+                return rayTrace.getType() == RayTraceResult.Type.MISS;
             }
         }
         return true;
@@ -2297,7 +2295,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public BlockPos getLightPosition() {
         BlockPos pos = new BlockPos(this);
-        if (!world.getBlockState(pos).isFullBlock()) {
+        if (!world.getBlockState(pos).isSolid()) {
             return pos.up();
         }
         return pos;
@@ -2313,13 +2311,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             BlockState state = world.getBlockState(pos);
             boolean above = world.getBlockState(pos.up()).getBlock() instanceof BlockRatTube;
             if (state.getBlock() instanceof BlockRatTube) {
-                List<AxisAlignedBB> aabbs = ((BlockRatTube) state.getBlock()).compileAABBList(world, pos, state);
+                List<VoxelShape> aabbs = ((BlockRatTube) state.getBlock()).compileVoxelList(world, pos, state);
                 AxisAlignedBB bb = new AxisAlignedBB(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
-                for (AxisAlignedBB box : aabbs) {
-                    bb = bb.union(box);
+                for (VoxelShape box : aabbs) {
+                    bb = bb.union(box.getBoundingBox());
                 }
                 bb = bb.grow(0.05F, 0, 0.05F).offset(pos);
-                return bb.contains(this.getPositionVector().add(0, this.height / 2, 0)) || bb.contains(this.getPositionVector()) && above;
+                return bb.contains(this.getPositionVector().add(0, this.getHeight() / 2, 0)) || bb.contains(this.getPositionVector()) && above;
             }
         }
         return false;
@@ -2349,7 +2347,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (stack.getItem() instanceof ItemRatCombinedUpgrade) {
             CompoundNBT CompoundNBT1 = stack.getTag();
-            if (CompoundNBT1 != null && CompoundNBT1.hasKey("Items", 9)) {
+            if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                 for (ItemStack stack1 : nonnulllist) {
@@ -2448,16 +2446,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             flagAttack = true;
         }
         if (!flagHealth) {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
         }
         if (!flagArmor) {
-            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+            this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
         }
         if (!flagAttack) {
-            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         }
         if (!flagSpeed) {
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         }
         if (this.getHeldRF() > this.getRFTransferRate()) {
             this.setHeldRF(0);
@@ -2466,14 +2464,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     private void tryIncreaseStat(IAttribute stat, double value) {
-        double prev = this.getEntityAttribute(stat).getAttributeValue();
+        double prev = this.getAttribute(stat).getValue();
         if (prev < value) {
-            this.getEntityAttribute(stat).setBaseValue(value);
+            this.getAttribute(stat).setBaseValue(value);
         }
     }
 
-    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
-        if (potioneffectIn.getPotion() == MobEffects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        if (potioneffectIn.getPotion() == Effects.POISON && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return false;
         }
         if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
@@ -2482,7 +2480,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return super.isPotionApplicable(potioneffectIn);
     }
 
-    public boolean isEntityInvulnerable(DamageSource source) {
+    public boolean isInvulnerableTo(DamageSource source) {
         if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
             return true;
         }
@@ -2501,7 +2499,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CREATIVE)) {
             return source.getTrueSource() == null || source.getTrueSource() instanceof LivingEntity && !isOwner((LivingEntity) source.getTrueSource());
         }
-        return super.isEntityInvulnerable(source);
+        return super.isInvulnerableTo(source);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -2564,8 +2562,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
-        if (entityIn instanceof EntityTameable) {
-            EntityTameable tameable = (EntityTameable) entityIn;
+        if (entityIn instanceof TameableEntity) {
+            TameableEntity tameable = (TameableEntity) entityIn;
             if (tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())) {
                 return true;
             }

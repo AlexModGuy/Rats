@@ -21,7 +21,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -30,8 +30,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
@@ -39,24 +39,22 @@ import javax.annotation.Nullable;
 
 public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRangedAttackMob {
 
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "black_death"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_SUMMONING = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CLOUD_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BEAST_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
-    private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
+    private final BossInfo bossInfo = (new ServerBossInfo( this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
     private int ratCooldown = 0;
     private int summonAnimationCooldown = 0;
 
     public EntityBlackDeath(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.setSize(0.6F, 1.95F);
-        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
+        ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
     }
 
-    protected void initEntityAI() {
-        super.initEntityAI();
+    protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
         this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
@@ -120,11 +118,11 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.blackDeathHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.blackDeathAttack);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.blackDeathHealth);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.blackDeathAttack);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
     }
 
     protected void updateAIgoalSelector() {

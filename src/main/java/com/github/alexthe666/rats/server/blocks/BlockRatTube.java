@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
@@ -104,7 +105,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
         return aabb;
     }
 
-    public List<VoxelShape> compileAABBList(IWorldReader reader, BlockPos pos, BlockState state) {
+    public List<VoxelShape> compileVoxelList(IWorldReader reader, BlockPos pos, BlockState state) {
         List<VoxelShape> aabbs = new ArrayList<>();
         aabbs.add(INTERACT_AABB_CENTER);
         if (state.getBlock() instanceof BlockRatTube) {
@@ -195,12 +196,16 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     }
 
     public VoxelShape getBoundingBox(BlockState state, IWorldReader source, BlockPos pos) {
-        List<VoxelShape> aabbs = compileAABBList(source, pos, state);
+        List<VoxelShape> aabbs = compileVoxelList(source, pos, state);
         VoxelShape bb = Block.makeCuboidShape(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
         for (VoxelShape box : aabbs) {
             bb = VoxelShapes.combineAndSimplify(bb, box, IBooleanFunction.ONLY_FIRST).simplify();
         }
         return bb;
+    }
+
+    public AxisAlignedBB translateToAABB(VoxelShape shape){
+        return shape.getBoundingBox();
     }
 
     public VoxelShape rotateWithMap(VoxelShape aabb, Direction facing, Map<Direction, VoxelShape> checkMap) {

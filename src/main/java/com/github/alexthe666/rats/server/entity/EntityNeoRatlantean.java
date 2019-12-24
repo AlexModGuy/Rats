@@ -210,7 +210,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         return EntityWither.canDestroyBlock(state.getBlock());
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityNeoRatlantean.AIFollowPrey(this));
         this.goalSelector.addGoal(2, new EntityNeoRatlantean.AIMoveRandom());
         this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -222,11 +222,11 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.neoRatlanteanHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.neoRatlanteanAttack);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.neoRatlanteanHealth);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.neoRatlanteanAttack);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
     }
 
     public void fall(float distance, float damageMultiplier) {
@@ -306,7 +306,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 d3 = (double) MathHelper.sqrt(d3);
 
-                if (d3 < EntityNeoRatlantean.this.getEntityBoundingBox().getAverageEdgeLength()) {
+                if (d3 < EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;
                     EntityNeoRatlantean.this.motionX *= 0.5D;
                     EntityNeoRatlantean.this.motionY *= 0.5D;
@@ -340,7 +340,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
 
         public boolean shouldExecute() {
-            followDist = EntityNeoRatlantean.this.getEntityBoundingBox().getAverageEdgeLength();
+            followDist = EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength();
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
             return LivingEntity != null && (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity));

@@ -104,7 +104,7 @@ public class EntityLaserPortal extends Entity {
             }
             if (target == null && this.getCreator() instanceof EntityRat && ((EntityRat) this.getCreator()).isTamed()) {
                 LivingEntity closest = null;
-                for (Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getEntityBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)) {
+                for (Entity entity : world.getEntitiesInAABBexcluding(this.getCreator(), this.getBoundingBox().grow(40, 10, 40), MONSTER_NOT_RAT)) {
                     if (entity instanceof LivingEntity && (closest == null || entity.getDistanceSq(this) < closest.getDistanceSq(this))) {
                         closest = (LivingEntity) entity;
                     }

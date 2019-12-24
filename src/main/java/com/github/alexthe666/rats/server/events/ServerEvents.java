@@ -277,7 +277,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
         if (event.getLivingEntity() instanceof PlayerEntity) {
-            AxisAlignedBB axisalignedbb = event.getLivingEntity().getEntityBoundingBox().grow(RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance);
+            AxisAlignedBB axisalignedbb = event.getLivingEntity().getBoundingBox().grow(RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance);
             List<EntityRat> list = event.getLivingEntity().world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             List<EntityRat> voodooRats = new ArrayList<>();
             int capturedRat = 0;
@@ -306,8 +306,8 @@ public class ServerEvents {
             Random rand = event.getLivingEntity().getRNG();
             if (rand.nextInt(4) == 0) {
                 int entitySize = 1;
-                if (event.getLivingEntity().getEntityBoundingBox().getAverageEdgeLength() > 0) {
-                    entitySize = Math.max(1, (int) event.getLivingEntity().getEntityBoundingBox().getAverageEdgeLength());
+                if (event.getLivingEntity().getBoundingBox().getAverageEdgeLength() > 0) {
+                    entitySize = Math.max(1, (int) event.getLivingEntity().getBoundingBox().getAverageEdgeLength());
                 }
                 for (int i = 0; i < entitySize; i++) {
                     float motionX = rand.nextFloat() * 0.2F - 0.1F;

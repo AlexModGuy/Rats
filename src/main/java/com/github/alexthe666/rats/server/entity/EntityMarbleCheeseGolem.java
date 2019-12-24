@@ -65,11 +65,11 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.ratlanteanAutomatonHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.8D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.ratlanteanAutomatonAttack);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.ratlanteanAutomatonHealth);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.8D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.ratlanteanAutomatonAttack);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
     }
 
     public EnumCreatureAttribute getCreatureAttribute() {
@@ -80,7 +80,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         return false;
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityMarbleCheeseGolem.AIFollowPrey(this));
         this.goalSelector.addGoal(2, new EntityMarbleCheeseGolem.AIMoveRandom());
         this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -297,7 +297,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 d3 = (double) MathHelper.sqrt(d3);
 
-                if (d3 < EntityMarbleCheeseGolem.this.getEntityBoundingBox().getAverageEdgeLength()) {
+                if (d3 < EntityMarbleCheeseGolem.this.getBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;
                     EntityMarbleCheeseGolem.this.motionX *= 0.5D;
                     EntityMarbleCheeseGolem.this.motionY *= 0.5D;
@@ -364,7 +364,7 @@ public class EntityMarbleCheeseGolem extends MobEntity implements IAnimatedEntit
         }
 
         public boolean shouldExecute() {
-            followDist = EntityMarbleCheeseGolem.this.getEntityBoundingBox().getAverageEdgeLength();
+            followDist = EntityMarbleCheeseGolem.this.getBoundingBox().getAverageEdgeLength();
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
             return LivingEntity != null && (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity));

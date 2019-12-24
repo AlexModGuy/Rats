@@ -42,7 +42,7 @@ public class EntityPurifyingLiquid extends PotionEntity {
         if (!this.world.isRemote) {
             ItemStack itemstack = this.getPotion();
             PotionType potiontype = PotionUtils.getPotionFromItem(itemstack);
-            AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
+            AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
                 for (LivingEntity LivingEntity : list) {

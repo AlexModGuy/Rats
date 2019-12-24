@@ -39,7 +39,7 @@ public class EntityRatCaptureNet extends PotionEntity {
         ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK);
         CompoundNBT tag = new CompoundNBT();
         if (!this.world.isRemote && thrower != null) {
-            AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(30, 16, 30);
+            AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(30, 16, 30);
             List<EntityRat> list = this.world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             int capturedRat = 0;
             if (!list.isEmpty()) {

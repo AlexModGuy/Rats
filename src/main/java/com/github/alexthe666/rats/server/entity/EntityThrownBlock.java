@@ -55,7 +55,7 @@ public class EntityThrownBlock extends Entity {
 
     @OnlyIn(Dist.CLIENT)
     public boolean isInRangeToRenderDist(double distance) {
-        double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
+        double d0 = this.getBoundingBox().getAverageEdgeLength() * 4.0D;
 
         if (Double.isNaN(d0)) {
             d0 = 4.0D;
@@ -127,7 +127,7 @@ public class EntityThrownBlock extends Entity {
         if (fallTile != null) {
             Block block = this.fallTile.getBlock();
             if (result != null && result.getBlockPos() != null) {
-                for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
+                for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
                     hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatConfig.neoRatlanteanAttack);
                 }
                 BlockPos blockpos1 = result.getBlockPos().up();

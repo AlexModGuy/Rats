@@ -50,7 +50,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     protected void switchNavigator(int type) {
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(1, aiArrowAttack = new PiratAIStrife(this, 1.0D, 20, 30.0F));
         this.goalSelector.addGoal(1, aiAttackOnCollide = new EntityAIAttackMelee(this, 1.45D, false));
@@ -72,10 +72,10 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
 
     public void setAttackTarget(@Nullable LivingEntity LivingEntityIn) {
@@ -165,7 +165,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     public boolean isNotColliding() {
-        return this.world.checkNoEntityCollision(this.getEntityBoundingBox(), this);
+        return this.world.checkNoEntityCollision(this.getBoundingBox(), this);
     }
 
     public boolean canBeTamed() {
@@ -190,7 +190,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     public boolean handleWaterMovement() {
         if (this.getRidingEntity() instanceof EntityPiratBoat) {
             this.inWater = false;
-        } else if (this.world.handleMaterialAcceleration(this.getEntityBoundingBox().grow(0.0D, -0.4000000059604645D, 0.0D).shrink(0.001D), Material.WATER, this)) {
+        } else if (this.world.handleMaterialAcceleration(this.getBoundingBox().grow(0.0D, -0.4000000059604645D, 0.0D).shrink(0.001D), Material.WATER, this)) {
             if (!this.inWater && !this.firstUpdate) {
                 this.doWaterSplashEffect();
             }
@@ -263,7 +263,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
         public void onUpdateMoveHelper() {
             if (this.action == EntityMoveHelper.Action.STRAFE) {
-                float f = (float) this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+                float f = (float) this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
                 float f1 = (float) this.speed * f;
                 float f2 = this.moveForward;
                 float f3 = this.moveStrafe;
@@ -313,7 +313,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
                 float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
                 this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f9, 90.0F);
-                this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
+                this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
                 this.entity.setMoveForward(this.entity.getAIMoveSpeed());
 
                 if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
@@ -321,7 +321,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
                     this.action = EntityMoveHelper.Action.JUMPING;
                 }
             } else if (this.action == EntityMoveHelper.Action.JUMPING) {
-                this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
+                this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
 
                 if (this.entity.onGround) {
                     this.action = EntityMoveHelper.Action.WAIT;

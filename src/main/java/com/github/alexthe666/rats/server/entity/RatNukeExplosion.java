@@ -143,7 +143,7 @@ public class RatNukeExplosion extends Explosion {
                         d5 = d5 / d13;
                         d7 = d7 / d13;
                         d9 = d9 / d13;
-                        double d14 = (double) this.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+                        double d14 = (double) this.world.getBlockDensity(vec3d, entity.getBoundingBox());
                         double d10 = (1.0D - d12) * d14;
                         entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)));
                         double d11 = d10;

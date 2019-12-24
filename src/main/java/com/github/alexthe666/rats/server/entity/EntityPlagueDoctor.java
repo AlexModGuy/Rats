@@ -82,7 +82,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
         this.setCanPickUpLoot(true);
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(1, new PlagueDoctorAITradePlayer(this));
         this.goalSelector.addGoal(1, new PlagueDoctorAILookAtTradePlayer(this));
@@ -103,7 +103,7 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     }
 
     public void onLivingUpdate() {

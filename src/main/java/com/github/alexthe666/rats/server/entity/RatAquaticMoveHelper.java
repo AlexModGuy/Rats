@@ -31,7 +31,7 @@ public class RatAquaticMoveHelper extends EntityMoveHelper {
             double d2 = this.posZ - rat.posZ;
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
             d3 = (double) MathHelper.sqrt(d3);
-            double edgeLength = rat.getEntityBoundingBox().getAverageEdgeLength();
+            double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d3 < edgeLength) {
                 this.action = EntityMoveHelper.Action.WAIT;
                 rat.motionX *= 0.5D;

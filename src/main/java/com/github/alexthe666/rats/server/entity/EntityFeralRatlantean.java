@@ -44,7 +44,7 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
         this.setSize(1.85F, 1.2F);
     }
 
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityAISwimming(this));
         this.goalSelector.addGoal(2, new EntityAIAttackMelee(this, 1.0D, true));
         this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -56,11 +56,11 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {

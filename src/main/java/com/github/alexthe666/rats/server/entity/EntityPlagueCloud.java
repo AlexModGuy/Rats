@@ -106,8 +106,8 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 
-    protected void initEntityAI() {
-        super.initEntityAI();
+    protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(1, new EntityPlagueCloud.AIMeleeAttack(this));
         this.goalSelector.addGoal(8, new EntityPlagueCloud.AIMoveRandom());
@@ -200,7 +200,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 d3 = (double) MathHelper.sqrt(d3);
 
-                if (d3 < EntityPlagueCloud.this.getEntityBoundingBox().getAverageEdgeLength()) {
+                if (d3 < EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;
                     EntityPlagueCloud.this.motionX *= 0.5D;
                     EntityPlagueCloud.this.motionY *= 0.5D;

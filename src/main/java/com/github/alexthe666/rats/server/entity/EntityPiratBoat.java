@@ -209,7 +209,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
             }
         }
         this.doBlockCollisions();
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
 
         if (!list.isEmpty()) {
             boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof PlayerEntity);
@@ -230,19 +230,19 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
-        this.getEntityAttribute(SWIM_SPEED).setBaseValue(0.1D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+        this.getAttribute(SWIM_SPEED).setBaseValue(0.1D);
     }
 
     public void applyEntityCollision(Entity entityIn) {
         if (entityIn instanceof EntityBoat) {
-            if (entityIn.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
+            if (entityIn.getBoundingBox().minY < this.getBoundingBox().maxY) {
                 super.applyEntityCollision(entityIn);
             }
-        } else if (entityIn.getEntityBoundingBox().minY <= this.getEntityBoundingBox().minY) {
+        } else if (entityIn.getBoundingBox().minY <= this.getBoundingBox().minY) {
             super.applyEntityCollision(entityIn);
         }
     }
@@ -316,7 +316,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     public float getWaterLevelAbove() {
-        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.ceil(axisalignedbb.maxX);
         int k = MathHelper.floor(axisalignedbb.maxY);
@@ -367,7 +367,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     private boolean checkInWater() {
-        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.ceil(axisalignedbb.maxX);
         int k = MathHelper.floor(axisalignedbb.minY - 0.5D);
@@ -404,7 +404,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         EntityBoat.Status entityboat$status = this.getUnderwaterStatus();
 
         if (entityboat$status != null) {
-            this.waterLevel = this.getEntityBoundingBox().minY;
+            this.waterLevel = this.getBoundingBox().minY;
             return entityboat$status;
         } else if (this.checkInWater()) {
             return EntityBoat.Status.IN_WATER;
@@ -415,7 +415,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
 
     @Nullable
     private EntityBoat.Status getUnderwaterStatus() {
-        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
         double d0 = axisalignedbb.maxY + 0.001D;
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.ceil(axisalignedbb.maxX);
@@ -457,14 +457,14 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         double d2 = 0.0D;
         float momentum = 0.05F;
         if (this.previousStatus == EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.ON_LAND) {
-            this.waterLevel = this.getEntityBoundingBox().minY + (double) this.height;
+            this.waterLevel = this.getBoundingBox().minY + (double) this.height;
             this.setPosition(this.posX, (double) (this.getWaterLevelAbove() - this.height) + 0.101D, this.posZ);
             this.motionY = 0.0D;
             this.lastYd = 0.0D;
             this.status = EntityBoat.Status.IN_WATER;
         } else {
             double up1 = this.waterLevel + 1.5;
-            double up2 = this.getEntityBoundingBox().minY + 0.5;
+            double up2 = this.getBoundingBox().minY + 0.5;
             if (this.status == EntityBoat.Status.IN_WATER) {
                 d2 = (up1 - up2) / (double) this.height;
                 momentum = 0.9F;

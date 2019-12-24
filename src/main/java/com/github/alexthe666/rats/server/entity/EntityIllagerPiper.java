@@ -51,8 +51,8 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.dataManager.register(RAT_COUNT, Integer.valueOf(0));
     }
 
-    protected void initEntityAI() {
-        super.initEntityAI();
+    protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(4, new EntityAIAttackMelee(this, 1.0D, false));
         this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));

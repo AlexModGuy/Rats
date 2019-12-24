@@ -48,6 +48,7 @@ public class RatsMod {
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static Effect CONFIT_BYALDI_POTION = new PotionConfitByaldi();
     public static Effect PLAGUE_POTION = new PotionPlague();
+    public static boolean ICEANDFIRE_LOADED;
     private static int packetsRegistered = 0;
 
     static {

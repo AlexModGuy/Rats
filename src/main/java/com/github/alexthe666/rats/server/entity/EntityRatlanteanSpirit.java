@@ -35,8 +35,8 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         this.moveHelper = new EntityRatlanteanSpirit.AIMoveControl(this);
     }
 
-    protected void initEntityAI() {
-        super.initEntityAI();
+    protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(0, new EntityAISwimming(this));
         this.goalSelector.addGoal(1, new EntityRatlanteanSpirit.AIFireballAttack(this));
         this.goalSelector.addGoal(8, new EntityRatlanteanSpirit.AIMoveRandom());
@@ -50,8 +50,8 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
     public void move(MoverType type, double x, double y, double z) {
@@ -137,7 +137,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 d3 = (double) MathHelper.sqrt(d3);
 
-                if (d3 < EntityRatlanteanSpirit.this.getEntityBoundingBox().getAverageEdgeLength()) {
+                if (d3 < EntityRatlanteanSpirit.this.getBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;
                     EntityRatlanteanSpirit.this.motionX *= 0.5D;
                     EntityRatlanteanSpirit.this.motionY *= 0.5D;
