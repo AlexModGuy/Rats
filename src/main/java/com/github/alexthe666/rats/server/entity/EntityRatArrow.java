@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -33,19 +35,27 @@ public class EntityRatArrow extends AbstractArrowEntity {
 
     protected void onHit(RayTraceResult raytraceResultIn) {
         super.onHit(raytraceResultIn);
-        Entity entity = raytraceResultIn.entityHit;
-        EntityRat rat = new EntityRat(world);
-        CompoundNBT ratTag = new CompoundNBT();
-        if (stack.getTag() != null && !stack.getTag().getCompoundTag("Rat").isEmpty()) {
-            ratTag = stack.getTag().getCompoundTag("Rat");
+        Entity entity = null;
+        BlockPos pos = null;
+        if(raytraceResultIn instanceof EntityRayTraceResult){
+            entity = ((EntityRayTraceResult)raytraceResultIn).getEntity();
+            pos = new BlockPos(((EntityRayTraceResult)raytraceResultIn).getEntity());
         }
-        rat.readEntityFromNBT(ratTag);
-        BlockPos pos = raytraceResultIn.getBlockPos();
+        EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
+        CompoundNBT ratTag = new CompoundNBT();
+        if (stack.getTag() != null && !stack.getTag().getCompound("Rat").isEmpty()) {
+            ratTag = stack.getTag().getCompound("Rat");
+        }
+        rat.readAdditional(ratTag);
+        if(raytraceResultIn instanceof BlockRayTraceResult){
+            pos = ((BlockRayTraceResult)raytraceResultIn).getPos();
+
+        }
         if (pos == null) {
-            pos = new BlockPos(raytraceResultIn.hitVec);
+            pos = new BlockPos(raytraceResultIn.getHitVec());
         } else {
-            if (raytraceResultIn.sideHit != null) {
-                pos = pos.offset(raytraceResultIn.sideHit);
+            if (raytraceResultIn instanceof BlockRayTraceResult && ((BlockRayTraceResult)raytraceResultIn).getFace() != null) {
+                pos = pos.offset(((BlockRayTraceResult)raytraceResultIn).getFace());
             }
         }
         rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
@@ -56,7 +66,7 @@ public class EntityRatArrow extends AbstractArrowEntity {
             rat.setAttackTarget((LivingEntity) entity);
         }
         if (this.inGround) {
-            this.setDead();
+            this.remove();
             if (!world.isRemote) {
                 this.entityDropItem(getArrowStack(), 0.0F);
             }

@@ -111,7 +111,7 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1D);
             }
-            if (!entity.moveController.isUpdating() && entity.onGround) {
+            if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {

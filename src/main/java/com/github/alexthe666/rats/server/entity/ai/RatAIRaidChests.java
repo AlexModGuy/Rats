@@ -78,7 +78,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
     }
 
     public boolean canSeeChest() {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), false, entity);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();

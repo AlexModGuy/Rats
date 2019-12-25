@@ -5,8 +5,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionType;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -20,14 +18,6 @@ public class EntityVialOfSentience extends PotionEntity {
         super(type, worldIn);
     }
 
-    public EntityVialOfSentience(EntityType type, World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
-        super(type, worldIn, throwerIn, potionDamageIn);
-    }
-
-    public EntityVialOfSentience(EntityType type, World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
-        super(type, worldIn, x, y, z, potionDamageIn);
-    }
-
     public ItemStack getPotion() {
         return new ItemStack(RatsItemRegistry.VIAL_OF_SENTIENCE);
     }
@@ -35,7 +25,6 @@ public class EntityVialOfSentience extends PotionEntity {
     protected void onImpact(RayTraceResult result) {
         if (!this.world.isRemote) {
             ItemStack itemstack = this.getPotion();
-            PotionType potiontype = PotionUtils.getPotionFromItem(itemstack);
             AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
 
@@ -43,18 +32,12 @@ public class EntityVialOfSentience extends PotionEntity {
                 for (LivingEntity LivingEntity : list) {
                     if (LivingEntity.canBeHitWithPotion()) {
                         double d0 = this.getDistanceSq(LivingEntity);
-
                         if (d0 < 16.0D) {
-                            double d1 = 1.0D - Math.sqrt(d0) / 4.0D;
-
-                            if (LivingEntity == result.entityHit) {
-                                d1 = 1.0D;
-                            }
                             if (LivingEntity instanceof EntityFeralRatlantean) {
-                                EntityNeoRatlantean ratlantean = new EntityNeoRatlantean(world);
+                                EntityNeoRatlantean ratlantean = new EntityNeoRatlantean(RatsEntityRegistry.NEO_RATLANTEAN, world);
                                 ratlantean.setColorVariant(((EntityFeralRatlantean) LivingEntity).getColorVariant());
                                 ratlantean.copyLocationAndAnglesFrom(LivingEntity);
-                                LivingEntity.setDead();
+                                LivingEntity.remove();
                                 if (!world.isRemote) {
                                     world.addEntity(ratlantean);
                                 }
@@ -62,7 +45,7 @@ public class EntityVialOfSentience extends PotionEntity {
                         }
                     }
                 }
-                this.setDead();
+                this.remove();
             }
         }
         this.world.playEvent(2002, new BlockPos(this), 0XFEFE7E);

@@ -5,17 +5,17 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityPlagueShot extends AbstractArrowEntity {
 
@@ -44,27 +44,27 @@ public class EntityPlagueShot extends AbstractArrowEntity {
         super.registerData();
     }
 
-    public void onUpdate() {
-        float sqrt = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+    public void tick() {
+        float sqrt = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
         if ((sqrt < 0.1F || this.inGround || this.collidedHorizontally) && this.ticksExisted > 5) {
-            this.setDead();
+            this.remove();
         }
         double d0 = 0;
         double d1 = 0.01D;
         double d2 = 0D;
-        double x = this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-        double y = this.posY + (double) (this.rand.nextFloat() * this.height) - (double) this.height;
-        double z = this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-        float f = (this.width + this.height + this.width) * 0.333F + 0.5F;
+        double x = this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double y = this.posY + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
+        double z = this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        float f = (this.getWidth() + this.getHeight() + this.getWidth()) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
                 RatsMod.PROXY.addParticle("black_death", x, y + 0.5D, z, d0, d1, d2);
             } else {
-                this.world.addParticle(ParticleTypes.SPELL_MOB, x, y + 0.5D, z, d0, d1, d2);
+                this.world.addParticle(ParticleTypes.EFFECT, x, y + 0.5D, z, d0, d1, d2);
 
             }
         }
-        super.onUpdate();
+        super.tick();
     }
 
     public double particleDistSq(double toX, double toY, double toZ) {
@@ -83,9 +83,8 @@ public class EntityPlagueShot extends AbstractArrowEntity {
 
     protected void arrowHit(LivingEntity living) {
         super.arrowHit(living);
-        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))) {
-            living.addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 1200));
-
+        if (living != null && (this.getShooter() == null || !living.isEntityEqual(this.getShooter()))) {
+            living.addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 1200));
             if (living instanceof PlayerEntity) {
                 this.damageShield((PlayerEntity) living, (float) this.getDamage());
             }
@@ -96,8 +95,9 @@ public class EntityPlagueShot extends AbstractArrowEntity {
         if (damage >= 3.0F && player.getActiveItemStack().getItem().isShield(player.getActiveItemStack(), player)) {
             ItemStack copyBeforeUse = player.getActiveItemStack().copy();
             int i = 1 + MathHelper.floor(damage);
-            player.getActiveItemStack().damageItem(i, player);
-
+            player.getActiveItemStack().damageItem(i, player, (p_213833_1_) -> {
+                p_213833_1_.sendBreakAnimation(Hand.MAIN_HAND);
+            });
             if (player.getActiveItemStack().isEmpty()) {
                 Hand Hand = player.getActiveHand();
                 net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, copyBeforeUse, Hand);

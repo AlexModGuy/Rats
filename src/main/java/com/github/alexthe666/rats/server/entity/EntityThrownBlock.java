@@ -1,31 +1,32 @@
 package com.github.alexthe666.rats.server.entity;
 
 
+import com.github.alexthe666.rats.RatConfig;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityThrownBlock extends Entity {
     public LivingEntity shootingEntity;
@@ -37,17 +38,12 @@ public class EntityThrownBlock extends Entity {
 
     public EntityThrownBlock(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.setSize(0.98F, 0.98F);
     }
 
     public EntityThrownBlock(EntityType type, World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
         super(type, worldIn);
-        this.setSize(0.98F, 0.98F);
         this.fallTile = blockState;
         this.shootingEntity = entityNeoRatlantean;
-    }
-
-    public static void registerFixesFireball(DataFixer fixer, String name) {
     }
 
     protected void registerData() {
@@ -65,58 +61,65 @@ public class EntityThrownBlock extends Entity {
         return distance < d0 * d0;
     }
 
-    public void onUpdate() {
-        if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-            super.onUpdate();
+    @Override
+    protected void readAdditional(CompoundNBT compound) {
+
+    }
+
+    @Override
+    protected void writeAdditional(CompoundNBT compound) {
+
+    }
+
+    public void tick() {
+        if (this.world.isRemote || (this.shootingEntity == null || this.shootingEntity.isAlive()) && this.world.isBlockLoaded(new BlockPos(this))) {
+            super.tick();
 
             ++this.ticksInAir;
             if (ticksInAir > 25) {
                 this.noClip = true;
-                RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, true, this.ticksInAir >= 25, this.shootingEntity);
+                RayTraceResult raytraceresult = ProjectileHelper.func_221266_a(this, true, this.ticksInAir >= 25, this.shootingEntity, RayTraceContext.BlockMode.COLLIDER);
                 if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                     this.onImpact(raytraceresult);
                 }
             } else {
                 this.noClip = false;
             }
-            this.posX += this.motionX;
-            this.posY += this.motionY;
-            this.posZ += this.motionZ;
+            this.posX += this.getMotion().x;
+            this.posY += this.getMotion().y;
+            this.posZ += this.getMotion().z;
             ProjectileHelper.rotateTowardsMovement(this, 0.2F);
             float f = this.getMotionFactor();
 
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
                     float f1 = 0.25F;
-                    this.world.addParticle(ParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
+                    this.world.addParticle(ParticleTypes.BUBBLE, this.posX - this.getMotion().x * 0.25D, this.posY - this.getMotion().y * 0.25D, this.posZ - this.getMotion().z * 0.25D, this.getMotion().x, this.getMotion().y, this.getMotion().z);
                 }
 
                 f = 0.8F;
             }
-            this.motionX *= (double) f;
-            this.motionY *= (double) f;
-            this.motionZ *= (double) f;
             if (this.shootingEntity != null && shootingEntity instanceof LivingEntity) {
-                if (((LivingEntity) shootingEntity).getAttackTarget() != null) {
-                    LivingEntity target = ((LivingEntity) shootingEntity).getAttackTarget();
+                if (((MobEntity) shootingEntity).getAttackTarget() != null) {
+                    LivingEntity target = ((MobEntity) shootingEntity).getAttackTarget();
                     double d0 = target.posX - this.posX;
                     double d1 = target.posY - this.posY;
                     double d2 = target.posZ - this.posZ;
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                     d3 = (double) MathHelper.sqrt(d3);
-                    this.motionX += d0 / d3 * 0.2D;
-                    this.motionY += d1 / d3 * 0.2D;
-                    this.motionZ += d2 / d3 * 0.2D;
+                    Vec3d vec3d = this.getMotion();
+                    vec3d.add(d0 / d3 * 0.2D, d1 / d3 * 0.2D, d2 / d3 * 0.2D);
+                    this.setMotion(vec3d);
                 }
             }
             this.setPosition(this.posX, this.posY, this.posZ);
         } else {
-            this.setDead();
+            this.remove();
         }
     }
 
     public boolean canEntityBeSeen(Entity entityIn) {
-        return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double) entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
+        return this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double) entityIn.getEyeHeight(), entityIn.posZ), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)) == null;
     }
 
     protected float getMotionFactor() {
@@ -126,42 +129,49 @@ public class EntityThrownBlock extends Entity {
     protected void onImpact(RayTraceResult result) {
         if (fallTile != null) {
             Block block = this.fallTile.getBlock();
-            if (result != null && result.getBlockPos() != null) {
+            BlockPos pos = null;
+            if (result instanceof BlockRayTraceResult) {
+                pos = ((BlockRayTraceResult) result).getPos();
+            }
+            if (result instanceof EntityRayTraceResult) {
+                pos = new BlockPos(((EntityRayTraceResult) result).getEntity());
+            }
+            if (pos != null) {
                 for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
                     hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatConfig.neoRatlanteanAttack);
                 }
-                BlockPos blockpos1 = result.getBlockPos().up();
-                if (this.world.mayPlace(block, blockpos1, true, Direction.UP, null)) {
+                BlockPos blockpos1 = pos.up();
+                if (true) {
                     if (dropBlock) {
                         this.world.setBlockState(blockpos1, this.fallTile);
                     }
-                    if (block instanceof BlockFalling) {
-                        ((BlockFalling) block).onEndFalling(this.world, blockpos1, this.fallTile, fallTile);
+                    if (block instanceof FallingBlock) {
+                        ((FallingBlock) block).onEndFalling(this.world, blockpos1, this.fallTile, fallTile);
                     }
                     if (this.tileEntityData != null && block.hasTileEntity(this.fallTile)) {
                         TileEntity tileentity = this.world.getTileEntity(blockpos1);
 
                         if (tileentity != null) {
-                            CompoundNBT CompoundNBT = tileentity.writeToNBT(new CompoundNBT());
+                            CompoundNBT CompoundNBT = tileentity.write(new CompoundNBT());
 
-                            for (String s : this.tileEntityData.getKeySet()) {
-                                NBTBase nbtbase = this.tileEntityData.getTag(s);
+                            for (String s : this.tileEntityData.keySet()) {
+                                INBT nbtbase = this.tileEntityData.get(s);
 
                                 if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s)) {
-                                    CompoundNBT.setTag(s, nbtbase.copy());
+                                    CompoundNBT.put(s, nbtbase.copy());
                                 }
                             }
 
-                            tileentity.readFromNBT(CompoundNBT);
+                            tileentity.read(CompoundNBT);
                             tileentity.markDirty();
                         }
                     }
-                    this.setDead();
-                } else if (this.world.getGameRules().getBoolean("doEntityDrops")) {
+                    this.remove();
+                } else if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
                     if (!world.isRemote && dropBlock) {
-                        this.entityDropItem(new ItemStack(block, 1, block.damageDropped(this.fallTile)), 0.0F);
+                        this.entityDropItem(new ItemStack(block, 1), 0.0F);
                     }
-                    this.setDead();
+                    this.remove();
                 }
             }
         }
@@ -171,14 +181,13 @@ public class EntityThrownBlock extends Entity {
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     public void writeEntityToNBT(CompoundNBT compound) {
-        compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
+        compound.put("direction", this.newDoubleNBTList(this.getMotion().x, this.getMotion().y, this.getMotion().z));
         compound.putInt("life", this.ticksAlive);
         Block block = this.fallTile != null ? this.fallTile.getBlock() : Blocks.AIR;
-        ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
-        compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
-        compound.setByte("Data", (byte) block.getMetaFromState(this.fallTile));
+        ResourceLocation resourcelocation = Registry.BLOCK.getKey(block);
+        compound.putString("Block", resourcelocation == null ? "" : resourcelocation.toString());
         if (this.tileEntityData != null) {
-            compound.setTag("TileEntityData", this.tileEntityData);
+            compound.put("TileEntityData", this.tileEntityData);
         }
     }
 
@@ -186,36 +195,34 @@ public class EntityThrownBlock extends Entity {
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     public void readEntityFromNBT(CompoundNBT compound) {
-        if (compound.hasKey("power", 9)) {
-            NBTTagList nbttaglist = compound.getTagList("power", 6);
+        if (compound.contains("power", 9)) {
+            ListNBT nbttaglist = compound.getList("power", 6);
         }
 
         this.ticksAlive = compound.getInt("life");
 
-        if (compound.hasKey("direction", 9) && compound.getTagList("direction", 6).tagCount() == 3) {
-            NBTTagList nbttaglist1 = compound.getTagList("direction", 6);
-            this.motionX = nbttaglist1.getDoubleAt(0);
-            this.motionY = nbttaglist1.getDoubleAt(1);
-            this.motionZ = nbttaglist1.getDoubleAt(2);
+        if (compound.contains("direction", 9) && compound.getList("direction", 6).size() == 3) {
+            ListNBT nbttaglist1 = compound.getList("direction", 6);
+            this.setMotion(nbttaglist1.getDouble(0), nbttaglist1.getDouble(1), nbttaglist1.getDouble(2));
         } else {
-            this.setDead();
+            this.remove();
         }
         int i = compound.getByte("Data") & 255;
 
-        if (compound.hasKey("Block", 8)) {
-            this.fallTile = Block.getBlockFromName(compound.getString("Block")).getStateFromMeta(i);
-        } else if (compound.hasKey("TileID", 99)) {
-            this.fallTile = Block.getBlockById(compound.getInt("TileID")).getStateFromMeta(i);
+        if (compound.contains("Block", 8)) {
+            this.fallTile = Registry.BLOCK.getOrDefault(new ResourceLocation(compound.getString("Block"))).getDefaultState();
+        } else if (compound.contains("TileID", 99)) {
+            this.fallTile = Block.getStateById(compound.getInt("TileID")).getBlockState();
         } else {
-            this.fallTile = Block.getBlockById(compound.getByte("Tile") & 255).getStateFromMeta(i);
+            this.fallTile = Block.getStateById(compound.getByte("Tile") & 255).getBlockState();
         }
 
         Block block = this.fallTile.getBlock();
         if (block == null || block.getDefaultState().getMaterial() == Material.AIR) {
             this.fallTile = Blocks.GRASS.getDefaultState();
         }
-        if (compound.hasKey("TileEntityData", 10)) {
-            this.tileEntityData = compound.getCompoundTag("TileEntityData");
+        if (compound.contains("TileEntityData", 10)) {
+            this.tileEntityData = compound.getCompound("TileEntityData");
         }
     }
 
@@ -230,11 +237,16 @@ public class EntityThrownBlock extends Entity {
         return 1.0F;
     }
 
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return null;
+    }
+
     /**
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (this.isEntityInvulnerable(source)) {
+        if (this.isInvulnerableTo(source)) {
             return false;
         } else {
             this.markVelocityChanged();
@@ -243,9 +255,7 @@ public class EntityThrownBlock extends Entity {
                 Vec3d vec3d = source.getTrueSource().getLookVec();
 
                 if (vec3d != null) {
-                    this.motionX = vec3d.x;
-                    this.motionY = vec3d.y;
-                    this.motionZ = vec3d.z;
+                    this.setMotion(vec3d);
                 }
 
                 if (source.getTrueSource() instanceof LivingEntity) {

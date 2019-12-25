@@ -1652,7 +1652,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public BlockPos rayTraceBlockPos(BlockPos targetPos) {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, this.getPositionVector(), new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5), false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, this.getPositionVector(), new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5), false, this);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();
@@ -2296,7 +2296,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isDirectPathBetweenPoints(Vec3d target) {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, getPositionVector(), target.add(0.5, 0.5, 0.5), false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, getPositionVector(), target.add(0.5, 0.5, 0.5), false, this);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();

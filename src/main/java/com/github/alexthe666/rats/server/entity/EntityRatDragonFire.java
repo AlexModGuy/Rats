@@ -1,17 +1,14 @@
 package com.github.alexthe666.rats.server.entity;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.init.Blocks;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 public class EntityRatDragonFire extends AbstractFireballEntity {
@@ -27,86 +24,64 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
     public EntityRatDragonFire(EntityType type, World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
         super(type, x, y, z, accelX, accelY, accelZ, worldIn);
     }
-
-    public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
-        float f = -MathHelper.sin(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
-        float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * 0.017453292F);
-        float f2 = MathHelper.cos(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
-        this.shoot((double) f, (double) f1, (double) f2, velocity, inaccuracy);
-        this.motionX += entityThrower.motionX;
-        this.motionZ += entityThrower.motionZ;
-
-        if (!entityThrower.onGround) {
-            this.motionY += entityThrower.motionY;
-        }
-    }
-
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        float f = MathHelper.sqrt(x * x + y * y + z * z);
-        x = x / (double) f;
-        y = y / (double) f;
-        z = z / (double) f;
-        x = x + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        y = y + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        z = z + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        x = x * (double) velocity;
-        y = y * (double) velocity;
-        z = z * (double) velocity;
-        this.motionX = x;
-        this.motionY = y;
-        this.motionZ = z;
-        float f1 = MathHelper.sqrt(x * x + z * z);
-        this.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(y, (double) f1) * (180D / Math.PI));
+        Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy).scale((double)velocity);
+        this.setMotion(vec3d);
+        float f = MathHelper.sqrt(func_213296_b(vec3d));
+        this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
+        this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)f) * (double)(180F / (float)Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
+    }
+
+    public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
+        float f = -MathHelper.sin(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
+        float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
+        float f2 = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
+        this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
+        this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.onGround ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
     }
 
     protected boolean isFireballFiery() {
         return false;
     }
 
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         if (world.isRemote) {
             /*RatsMod.PROXY.addParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     0.92F, 0.82, 0.0F);*/
-            world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
-                    this.posY + (double) (this.rand.nextFloat() * this.height),
-                    this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width, 0, 0, 0);
+            world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
+                    this.posY + (double) (this.rand.nextFloat() * this.getHeight()),
+                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(), 0, 0, 0);
         }
         if (ticksExisted > 200) {
-            this.setDead();
+            this.remove();
         }
     }
 
     protected void onImpact(RayTraceResult result) {
         if (!this.world.isRemote) {
-            if (result.entityHit != null) {
-                if (!result.entityHit.isImmuneToFire()) {
-                    boolean flag = result.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F);
-
+            if (result.getType() == RayTraceResult.Type.ENTITY) {
+                Entity entity = ((EntityRayTraceResult)result).getEntity();
+                if (!entity.isImmuneToFire()) {
+                    int i = entity.func_223314_ad();
+                    entity.setFire(10);
+                    boolean flag = entity.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F);
                     if (flag) {
-                        this.applyEnchantments(this.shootingEntity, result.entityHit);
-                        result.entityHit.setFire(5);
+                        this.applyEnchantments(this.shootingEntity, entity);
+                    } else {
+                        entity.func_223308_g(i);
                     }
                 }
-            } else {
-                boolean flag1 = true;
-                if (this.shootingEntity != null && this.shootingEntity instanceof LivingEntity) {
-                    flag1 = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
+            } else if (this.shootingEntity == null || !(this.shootingEntity instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity)) {
+                BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)result;
+                BlockPos blockpos = blockraytraceresult.getPos().offset(blockraytraceresult.getFace());
+                if (this.world.isAirBlock(blockpos)) {
+                    this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
                 }
-                if (flag1) {
-                    BlockPos blockpos = result.getBlockPos().offset(result.sideHit);
-                    if (this.world.isAirBlock(blockpos)) {
-                        this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
-                    }
-                }
-            }
-            if (result.entityHit != null) {
-                this.setDead();
             }
         }
     }

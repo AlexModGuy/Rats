@@ -6,9 +6,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -38,28 +38,28 @@ public class EntityRatCaptureNet extends PotionEntity {
     protected void onImpact(RayTraceResult result) {
         ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK);
         CompoundNBT tag = new CompoundNBT();
-        if (!this.world.isRemote && thrower != null) {
+        if (!this.world.isRemote && getThrower() != null) {
             AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(30, 16, 30);
             List<EntityRat> list = this.world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             int capturedRat = 0;
             if (!list.isEmpty()) {
                 for (EntityRat rat : list) {
-                    if (rat.isTamed() && (rat.isOwner(thrower) || thrower instanceof PlayerEntity && ((PlayerEntity) thrower).isCreative())) {
+                    if (rat.isTamed() && (rat.isOwner(getThrower()) || getThrower() instanceof PlayerEntity && ((PlayerEntity) getThrower()).isCreative())) {
                         CompoundNBT ratTag = new CompoundNBT();
-                        rat.writeEntityToNBT(ratTag);
+                        rat.writeAdditional(ratTag);
                         capturedRat++;
                         world.setEntityState(rat, (byte) 86);
-                        tag.setTag("Rat_" + capturedRat, ratTag);
-                        rat.setDead();
+                        tag.put("Rat_" + capturedRat, ratTag);
+                        rat.remove();
                     }
                 }
                 this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1);
             }
-            this.setDead();
+            this.remove();
         }
         sack.setTag(tag);
         ItemEntity itemEntity = new ItemEntity(world, this.posX, this.posY, this.posZ, sack);
-        itemEntity.setEntityInvulnerable(true);
+        itemEntity.setInvulnerable(true);
         if (!world.isRemote) {
             world.addEntity(itemEntity);
         }

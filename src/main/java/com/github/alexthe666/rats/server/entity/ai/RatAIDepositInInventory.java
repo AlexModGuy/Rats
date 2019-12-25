@@ -77,7 +77,7 @@ public class RatAIDepositInInventory extends Goal {
     }
 
     public boolean canSeeChest() {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false, entity);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();
@@ -97,7 +97,7 @@ public class RatAIDepositInInventory extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.moveController.isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);

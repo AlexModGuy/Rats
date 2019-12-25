@@ -4,11 +4,11 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.PotionType;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,20 +41,14 @@ public class EntityPurifyingLiquid extends PotionEntity {
     protected void onImpact(RayTraceResult result) {
         if (!this.world.isRemote) {
             ItemStack itemstack = this.getPotion();
-            PotionType potiontype = PotionUtils.getPotionFromItem(itemstack);
+            Potion potiontype = PotionUtils.getPotionFromItem(itemstack);
             AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
                 for (LivingEntity LivingEntity : list) {
                     if (LivingEntity.canBeHitWithPotion()) {
                         double d0 = this.getDistanceSq(LivingEntity);
-
                         if (d0 < 16.0D) {
-                            double d1 = 1.0D - Math.sqrt(d0) / 4.0D;
-
-                            if (LivingEntity == result.entityHit) {
-                                d1 = 1.0D;
-                            }
                             if (LivingEntity instanceof EntityRat) {
                                 EntityRat rat = (EntityRat) LivingEntity;
                                 if (rat.hasPlague()) {
@@ -69,10 +63,11 @@ public class EntityPurifyingLiquid extends PotionEntity {
                             if (LivingEntity instanceof IPlagueLegion) {
                                 LivingEntity.attackEntityFrom(DamageSource.MAGIC, 10);
                             }
-                            if (LivingEntity instanceof EntityZombieVillager && !((EntityZombieVillager) LivingEntity).isConverting()) {
-                                CompoundNBT tag = LivingEntity.writeToNBT(new CompoundNBT());
+                            if (LivingEntity instanceof ZombieVillagerEntity && !((ZombieVillagerEntity) LivingEntity).isConverting()) {
+                                CompoundNBT tag = new CompoundNBT();
+                                LivingEntity.writeAdditional(tag);
                                 tag.putInt("ConversionTime", 200);
-                                LivingEntity.readEntityFromNBT(tag);
+                                LivingEntity.readAdditional(tag);
                                 this.world.setEntityState(LivingEntity, (byte) 16);
                             }
                         }
@@ -81,7 +76,7 @@ public class EntityPurifyingLiquid extends PotionEntity {
             }
             int i = potiontype.hasInstantEffect() ? 2007 : 2002;
             this.world.playEvent(i, new BlockPos(this), 0XBFDFE2);
-            this.setDead();
+            this.remove();
         }
     }
 }

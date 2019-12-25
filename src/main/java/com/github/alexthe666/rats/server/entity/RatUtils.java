@@ -8,31 +8,28 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.init.Items;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.item.Items;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,7 +39,7 @@ import java.util.Random;
 public class RatUtils {
 
     public static boolean isRatFood(ItemStack stack) {
-        return (stack.getItem() instanceof ItemFood || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
+        return (stack.getItem().isFood() || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
     }
 
     public static boolean shouldRaidItem(ItemStack stack) {
@@ -51,6 +48,9 @@ public class RatUtils {
 
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
+        return false;
+        /*
+        TODO: Seeds
         if (item instanceof ItemSeeds && item != Items.NETHER_WART) {
             return true;
         }
@@ -59,6 +59,7 @@ public class RatUtils {
         NonNullList<ItemStack> seed = OreDictionary.getOres("seed");
         NonNullList<ItemStack> seeds = OreDictionary.getOres("seeds");
         return listAllseed.contains(stack) || listAllSeeds.contains(stack) || seed.contains(stack) || seeds.contains(stack);
+         */
     }
 
     public static boolean doesContainFood(IInventory inventory) {
@@ -148,20 +149,22 @@ public class RatUtils {
                 for (int j4 = j3; j4 < k3; ++j4) {
                     BlockState BlockState1 = world.getBlockState(blockpos$pooledmutableblockpos.setPos(l3, i4, j4));
                     if (BlockState1.getBlock() == RatsBlockRegistry.RAT_HOLE || BlockState1.getBlock() == RatsBlockRegistry.RAT_CAGE) {
-                        blockpos$pooledmutableblockpos.release();
+                        blockpos$pooledmutableblockpos.close();
                         return true;
                     }
                 }
             }
         }
 
-        blockpos$pooledmutableblockpos.release();
+        blockpos$pooledmutableblockpos.close();
         return false;
     }
 
     @Nullable
-    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vec3d start, Vec3d end, boolean stopOnLiquid) {
-        return rayTraceBlocksIgnoreRatholes(world, start, end, stopOnLiquid, false, true);
+    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vec3d start, Vec3d end, boolean stopOnLiquid, Entity entity) {
+        //TODO: Redo ray trace code
+        return world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+        //rayTraceBlocksIgnoreRatholes(world, start, end, stopOnLiquid, false, true);
     }
 
     @Nullable
@@ -178,13 +181,13 @@ public class RatUtils {
                 BlockState BlockState = world.getBlockState(blockpos);
                 Block block = BlockState.getBlock();
 
-                if ((!ignoreBlockWithoutBoundingBox || BlockState.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(BlockState, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE && block != RatsBlockRegistry.RAT_CAGE) {
-                    RayTraceResult raytraceresult = BlockState.collisionRayTrace(world, blockpos, vec31, vec32);
+               /* if ((!ignoreBlockWithoutBoundingBox || BlockState.getCollisionShape(world, blockpos) != VoxelShapes.empty()) && block.canCollideCheck(BlockState, stopOnLiquid) && block != RatsBlockRegistry.RAT_HOLE && block != RatsBlockRegistry.RAT_CAGE) {
+                    RayTraceResult raytraceresult = null; //BlockState.collisionRayTrace(world, blockpos, vec31, vec32);
 
                     if (raytraceresult != null) {
                         return raytraceresult;
                     }
-                }
+                }*/
 
                 RayTraceResult raytraceresult2 = null;
                 int k1 = 200;
@@ -280,7 +283,7 @@ public class RatUtils {
                     BlockState BlockState1 = world.getBlockState(blockpos);
                     Block block1 = BlockState1.getBlock();
 
-                    if ((!ignoreBlockWithoutBoundingBox || BlockState1.getMaterial() == Material.PORTAL || BlockState1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE && block1 != RatsBlockRegistry.RAT_CAGE) {
+                   /* if ((!ignoreBlockWithoutBoundingBox || BlockState1.getMaterial() == Material.PORTAL || BlockState1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block1 != RatsBlockRegistry.RAT_HOLE && block1 != RatsBlockRegistry.RAT_CAGE) {
                         if (block1.canCollideCheck(BlockState1, stopOnLiquid)) {
                             RayTraceResult raytraceresult1 = BlockState1.collisionRayTrace(world, blockpos, vec31, vec32);
 
@@ -290,144 +293,7 @@ public class RatUtils {
                         } else {
                             raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, Direction, blockpos);
                         }
-                    }
-                }
-
-                return returnLastUncollidableBlock ? raytraceresult2 : null;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    @Nullable
-    public static RayTraceResult rayTraceBlocksIgnoreOurRattube(World world, Vec3d vec31, Vec3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
-        if (!Double.isNaN(vec31.x) && !Double.isNaN(vec31.y) && !Double.isNaN(vec31.z)) {
-            if (!Double.isNaN(vec32.x) && !Double.isNaN(vec32.y) && !Double.isNaN(vec32.z)) {
-                int i = MathHelper.floor(vec32.x);
-                int j = MathHelper.floor(vec32.y);
-                int k = MathHelper.floor(vec32.z);
-                int l = MathHelper.floor(vec31.x);
-                int i1 = MathHelper.floor(vec31.y);
-                int j1 = MathHelper.floor(vec31.z);
-                BlockPos blockpos = new BlockPos(l, i1, j1);
-                BlockState BlockState = world.getBlockState(blockpos);
-                Block block = BlockState.getBlock();
-
-                if ((!ignoreBlockWithoutBoundingBox || BlockState.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(BlockState, stopOnLiquid) && !(block instanceof BlockRatTube)) {
-                    RayTraceResult raytraceresult = BlockState.collisionRayTrace(world, blockpos, vec31, vec32);
-                    if (raytraceresult != null) {
-                        return raytraceresult;
-                    }
-                }
-
-                RayTraceResult raytraceresult2 = null;
-                int k1 = 200;
-
-                while (k1-- >= 0) {
-                    if (Double.isNaN(vec31.x) || Double.isNaN(vec31.y) || Double.isNaN(vec31.z)) {
-                        return null;
-                    }
-
-                    if (l == i && i1 == j && j1 == k) {
-                        return returnLastUncollidableBlock ? raytraceresult2 : null;
-                    }
-
-                    boolean flag2 = true;
-                    boolean flag = true;
-                    boolean flag1 = true;
-                    double d0 = 999.0D;
-                    double d1 = 999.0D;
-                    double d2 = 999.0D;
-
-                    if (i > l) {
-                        d0 = (double) l + 1.0D;
-                    } else if (i < l) {
-                        d0 = (double) l + 0.0D;
-                    } else {
-                        flag2 = false;
-                    }
-
-                    if (j > i1) {
-                        d1 = (double) i1 + 1.0D;
-                    } else if (j < i1) {
-                        d1 = (double) i1 + 0.0D;
-                    } else {
-                        flag = false;
-                    }
-
-                    if (k > j1) {
-                        d2 = (double) j1 + 1.0D;
-                    } else if (k < j1) {
-                        d2 = (double) j1 + 0.0D;
-                    } else {
-                        flag1 = false;
-                    }
-
-                    double d3 = 999.0D;
-                    double d4 = 999.0D;
-                    double d5 = 999.0D;
-                    double d6 = vec32.x - vec31.x;
-                    double d7 = vec32.y - vec31.y;
-                    double d8 = vec32.z - vec31.z;
-
-                    if (flag2) {
-                        d3 = (d0 - vec31.x) / d6;
-                    }
-
-                    if (flag) {
-                        d4 = (d1 - vec31.y) / d7;
-                    }
-
-                    if (flag1) {
-                        d5 = (d2 - vec31.z) / d8;
-                    }
-
-                    if (d3 == -0.0D) {
-                        d3 = -1.0E-4D;
-                    }
-
-                    if (d4 == -0.0D) {
-                        d4 = -1.0E-4D;
-                    }
-
-                    if (d5 == -0.0D) {
-                        d5 = -1.0E-4D;
-                    }
-
-                    Direction Direction;
-
-                    if (d3 < d4 && d3 < d5) {
-                        Direction = i > l ? net.minecraft.util.Direction.WEST : net.minecraft.util.Direction.EAST;
-                        vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
-                    } else if (d4 < d5) {
-                        Direction = j > i1 ? net.minecraft.util.Direction.DOWN : net.minecraft.util.Direction.UP;
-                        vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
-                    } else {
-                        Direction = k > j1 ? net.minecraft.util.Direction.NORTH : net.minecraft.util.Direction.SOUTH;
-                        vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
-                    }
-
-                    l = MathHelper.floor(vec31.x) - (Direction == net.minecraft.util.Direction.EAST ? 1 : 0);
-                    i1 = MathHelper.floor(vec31.y) - (Direction == net.minecraft.util.Direction.UP ? 1 : 0);
-                    j1 = MathHelper.floor(vec31.z) - (Direction == net.minecraft.util.Direction.SOUTH ? 1 : 0);
-                    blockpos = new BlockPos(l, i1, j1);
-                    BlockState BlockState1 = world.getBlockState(blockpos);
-                    Block block1 = BlockState1.getBlock();
-
-                    if ((!ignoreBlockWithoutBoundingBox || BlockState1.getMaterial() == Material.PORTAL || BlockState1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB)) {
-                        if (block1.canCollideCheck(BlockState1, stopOnLiquid)) {
-                            RayTraceResult raytraceresult1 = BlockState1.collisionRayTrace(world, blockpos, vec31, vec32);
-
-                            if (raytraceresult1 != null) {
-                                return raytraceresult1;
-                            }
-                        } else {
-                            raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, Direction, blockpos);
-                        }
-                    }
+                    }*/
                 }
 
                 return returnLastUncollidableBlock ? raytraceresult2 : null;
@@ -440,7 +306,7 @@ public class RatUtils {
     }
 
     public static boolean isPredator(Entity entity) {
-        return entity instanceof EntityOcelot;
+        return entity instanceof OcelotEntity;
     }
 
     public static RatCommand wrapCommand(int newCommand) {
@@ -455,7 +321,8 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return cheese.getItem() == RatsItemRegistry.CHEESE || OreDictionary.getOres("foodCheese", false).contains(cheese);
+        return cheese.getItem() == RatsItemRegistry.CHEESE; //TODO: Cheese
+        // || OreDictionary.getOres("foodCheese", false).contains(cheese);
     }
 
     @Nullable
@@ -465,12 +332,12 @@ public class RatUtils {
 
     @Nullable
     public static Vec3d generateRandomCageOrTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
-        PathNavigate pathnavigate = rat.getNavigator();
+        PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
 
-        if (rat.hasHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ)) + 4.0D;
+        if (rat.detachHome()) {
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -489,7 +356,7 @@ public class RatUtils {
             int j1 = random.nextInt(2 * searchWidth + 1) - searchWidth;
 
             if (positionVector == null || (double) l * positionVector.x + (double) j1 * positionVector.z >= 0.0D) {
-                if (rat.hasHome() && searchWidth > 1) {
+                if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
                     if (rat.posX > (double) blockpos.getX()) {
@@ -531,12 +398,12 @@ public class RatUtils {
 
     @Nullable
     public static Vec3d generateRandomCagePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
-        PathNavigate pathnavigate = rat.getNavigator();
+        PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
 
-        if (rat.hasHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ)) + 4.0D;
+        if (rat.detachHome()) {
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -555,7 +422,7 @@ public class RatUtils {
             int j1 = random.nextInt(2 * searchWidth + 1) - searchWidth;
 
             if (positionVector == null || (double) l * positionVector.x + (double) j1 * positionVector.z >= 0.0D) {
-                if (rat.hasHome() && searchWidth > 1) {
+                if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
                     if (rat.posX > (double) blockpos.getX()) {
@@ -597,12 +464,12 @@ public class RatUtils {
 
     @Nullable
     public static Vec3d generateRandomTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
-        PathNavigate pathnavigate = rat.getNavigator();
+        PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
 
-        if (rat.hasHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ)) + 4.0D;
+        if (rat.detachHome()) {
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -621,7 +488,7 @@ public class RatUtils {
             int j1 = random.nextInt(2 * searchWidth + 1) - searchWidth;
 
             if (positionVector == null || (double) l * positionVector.x + (double) j1 * positionVector.z >= 0.0D) {
-                if (rat.hasHome() && searchWidth > 1) {
+                if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
                     if (rat.posX > (double) blockpos.getX()) {
@@ -688,7 +555,7 @@ public class RatUtils {
         BlockState blockState = world.getBlockState(pos);
         float hardness = blockState.getBlockHardness(world, pos);
         return hardness != -1.0F && hardness <= RatConfig.ratStrengthThreshold
-                && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && net.minecraft.entity.boss.EntityWither.canDestroyBlock(blockState.getBlock());
+                && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && WitherEntity.canDestroyBlock(blockState);
     }
 
     public static boolean isRatTube(IWorldReader world, BlockPos offset) {
@@ -727,8 +594,8 @@ public class RatUtils {
         BlockState state = worldIn.getBlockState(pos);
         if (state.getBlock() instanceof BlockRatTube) {
             for (int i = 0; i < Direction.values().length; i++) {
-                PropertyBool bool = BlockRatTube.ALL_OPEN_PROPS[i];
-                if (state.getValue(bool)) {
+                BooleanProperty bool = BlockRatTube.ALL_OPEN_PROPS[i];
+                if (state.get(bool)) {
                     return pos.offset(Direction.values()[i]);
                 }
             }
@@ -737,12 +604,12 @@ public class RatUtils {
     }
 
     public static Vec3d generateRandomWaterPos(CreatureEntity p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vec3d p_191379_3_, boolean p_191379_4_) {
-        PathNavigate pathnavigate = p_191379_0_.getNavigator();
+        PathNavigator pathnavigate = p_191379_0_.getNavigator();
         Random random = p_191379_0_.getRNG();
         boolean flag;
 
-        if (p_191379_0_.hasHome()) {
-            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.posX), (double) MathHelper.floor(p_191379_0_.posY), (double) MathHelper.floor(p_191379_0_.posZ)) + 4.0D;
+        if (p_191379_0_.detachHome()) {
+            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.posX), (double) MathHelper.floor(p_191379_0_.posY), (double) MathHelper.floor(p_191379_0_.posZ), true) + 4.0D;
             double d1 = (double) (p_191379_0_.getMaximumHomeDistance() + (float) p_191379_1_);
             flag = d0 < d1 * d1;
         } else {
@@ -761,7 +628,7 @@ public class RatUtils {
             int j1 = random.nextInt(2 * p_191379_1_ + 1) - p_191379_1_;
 
             if (p_191379_3_ == null || (double) l * p_191379_3_.x + (double) j1 * p_191379_3_.z >= 0.0D) {
-                if (p_191379_0_.hasHome() && p_191379_1_ > 1) {
+                if (p_191379_0_.detachHome() && p_191379_1_ > 1) {
                     BlockPos blockpos = p_191379_0_.getHomePosition();
 
                     if (p_191379_0_.posX > (double) blockpos.getX()) {
@@ -828,7 +695,7 @@ public class RatUtils {
     public static boolean canSpawnInDimension(IWorld world) {
         if (RatConfig.blacklistedRatDimensions.length > 0) {
             for (int i = 0; i < RatConfig.blacklistedRatDimensions.length; i++) {
-                if (RatConfig.blacklistedRatDimensions[i] == world.getDimension()) {
+                if (RatConfig.blacklistedRatDimensions[i] == world.getDimension().getType().getId()) {
                     return false;
                 }
             }
@@ -837,11 +704,11 @@ public class RatUtils {
     }
 
     public static boolean isCow(Entity entity) {
-        String s = EntityList.getEntityString(entity);
+        String s = entity.getType().getTranslationKey();
         if (s == null) {
             s = "generic";
         }
-        return entity instanceof EntityCow || s.contains("cow");
+        return entity instanceof CowEntity || s.contains("cow");
     }
 
     public static class TubeSorter implements Comparator<Direction> {
@@ -854,8 +721,8 @@ public class RatUtils {
         public int compare(Direction p_compare_1_, Direction p_compare_2_) {
             BlockPos pos1 = new BlockPos(theEntity).offset(p_compare_1_);
             BlockPos pos2 = new BlockPos(theEntity).offset(p_compare_2_);
-            double d0 = this.theEntity.tubeTarget.getDistance(pos1.getX(), pos1.getY(), pos1.getZ());
-            double d1 = this.theEntity.tubeTarget.getDistance(pos2.getX(), pos2.getY(), pos2.getZ());
+            double d0 = this.theEntity.tubeTarget.distanceSq(pos1.getX(), pos1.getY(), pos1.getZ(), true);
+            double d1 = this.theEntity.tubeTarget.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ(), true);
             return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
         }
     }
