@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.inventory.ContainerEmpty;
+import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.player.PlayerEntity;
@@ -100,7 +101,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
 
     public static NonNullList<ItemStack> consumeIngredients(IRecipe recipe, NonNullList<ItemStack> stacks, NonNullList<ItemStack> inv) {
         Map<Ingredient, Integer> ingredients = new HashMap<>();
-        CraftingInventory inventoryCrafting = new CraftingInventory(new ContainerEmpty(null, 0), 3, 3);
+        CraftingInventory inventoryCrafting = new CraftingInventory(new ContainerEmpty(103, null), 3, 3);
         for (Map.Entry<Ingredient, Integer> ing : compressRecipe(recipe).entrySet()) {
             ingredients.put(ing.getKey(), ing.getValue());
         }
@@ -448,5 +449,11 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
 
     public boolean hasMultipleRecipes() {
         return currentApplicableRecipes.size() > 1;
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+        return new ContainerRatCraftingTable(id, this, playerInventory);
     }
 }

@@ -1,10 +1,11 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRatUpgrade extends Container {
@@ -13,27 +14,33 @@ public class ContainerRatUpgrade extends Container {
     private IInventory inventory;
     private IInventory inventoryPlayer;
 
-    public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
-        super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, 103);
+    //public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
+    public ContainerRatUpgrade(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+        super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, id);
+        InventoryRatUpgrade itemInventory = (InventoryRatUpgrade)tileInventory;
         int numRows = itemInventory.getSizeInventory() / 9;
         this.inventory = itemInventory;
         this.inventoryPlayer = playerInventory;
-        itemInventory.openInventory(player);
+        itemInventory.openInventory(playerInventory.player);
         this.stack = itemInventory.upgradeStack;
         int i = (numRows - 4) * 18;
         for (int j = 0; j < numRows; ++j) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlotToContainer(new SlotRatListUpgrade(inventory, itemInventory.upgradeStack, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new SlotRatListUpgrade(inventory, itemInventory.upgradeStack, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
         for (int l = 0; l < 3; ++l) {
             for (int j1 = 0; j1 < 9; ++j1) {
-                this.addSlotToContainer(new Slot(player.inventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
+                this.addSlot(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
             }
         }
         for (int i1 = 0; i1 < 9; ++i1) {
-            this.addSlotToContainer(new Slot(player.inventory, i1, 8 + i1 * 18, 161 + i));
+            this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 161 + i));
         }
+    }
+
+    public ContainerRatUpgrade(int i, PlayerInventory playerInventory) {
+        this(i, new Inventory(27), playerInventory);
     }
 
     @Override

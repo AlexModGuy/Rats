@@ -3,12 +3,15 @@ package com.github.alexthe666.rats.server.entity.tile;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
+import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -32,7 +35,7 @@ import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
 
-public class TileEntityAutoCurdler extends LockableTileEntity implements ITickableTileEntity, ISidedInventory {
+public class TileEntityAutoCurdler extends LockableTileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
 
     private static final int[] SLOTS_TOP = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
@@ -328,5 +331,11 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return holder.cast();
         return super.getCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+        return new ContainerAutoCurdler(id, this, playerInventory);
     }
 }

@@ -1,51 +1,37 @@
 package com.github.alexthe666.rats.server.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IContainerListener;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.FurnaceResultSlot;
+import net.minecraft.inventory.container.Slot;
 
-public class ContainerAutoCurdler extends SyncedFieldContainer {
+public class ContainerAutoCurdler extends Container {
 
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
-    public ContainerAutoCurdler(IInventory inv, PlayerEntity player) {
-        super(inv);
+    public ContainerAutoCurdler(int id, IInventory inv, PlayerInventory playerInventory) {
+        super(RatsContainerRegistry.AUTO_CURDLER_CONTAINER, id);
         this.tileRatCraftingTable = inv;
-        this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 8, 35));
-        this.addSlotToContainer(new SlotFurnaceOutput(player, tileRatCraftingTable, 1, 129, 35));
+        this.addSlot(new Slot(tileRatCraftingTable, 0, 8, 35));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, tileRatCraftingTable, 1, 129, 35));
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
         for (int k = 0; k < 9; ++k) {
-            this.addSlotToContainer(new Slot(player.inventory, k, 8 + k * 18, 142));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
     }
 
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-        listener.sendAllWindowProperties(this, this.tileRatCraftingTable);
+    public ContainerAutoCurdler(int i, PlayerInventory playerInventory) {
+        this(i, new Inventory(2), playerInventory);
     }
-
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icontainerlistener = this.listeners.get(i);
-
-            if (this.cookTime != this.tileRatCraftingTable.getField(1)) {
-                icontainerlistener.sendWindowProperty(this, 1, this.tileRatCraftingTable.getField(1));
-            }
-        }
-
-        this.cookTime = this.tileRatCraftingTable.getField(1);
-    }
-
 
     public boolean canInteractWith(PlayerEntity playerIn) {
         return this.tileRatCraftingTable.isUsableByPlayer(playerIn);

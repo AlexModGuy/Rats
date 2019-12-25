@@ -1,27 +1,26 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemBanner;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRat extends Container {
     private IInventory ratInventory;
-    private EntityRat rat;
 
-    public ContainerRat(final EntityRat rat, PlayerEntity player) {
-        super(RatsContainerRegistry.RAT_CONTAINER, 100);
-        this.ratInventory = rat.ratInventory;
-        this.rat = rat;
+    public ContainerRat(int id, IInventory ratInventory, PlayerInventory playerInventory) {
+        super(RatsContainerRegistry.RAT_CONTAINER, id);
+        this.ratInventory = ratInventory;
         byte b0 = 3;
-        ratInventory.openInventory(player);
+        ratInventory.openInventory(playerInventory.player);
         int i = (b0 - 4) * 18;
-        this.addSlotToContainer(new Slot(rat.ratInventory, 0, 61, 54) {
+        this.addSlot(new Slot(ratInventory, 0, 61, 54) {
             public void onSlotChanged() {
                 this.inventory.markDirty();
             }
@@ -31,17 +30,17 @@ public class ContainerRat extends Container {
                 return super.isItemValid(stack);
             }
         });
-        this.addSlotToContainer(new Slot(rat.ratInventory, 1, 61, 18) {
+        this.addSlot(new Slot(ratInventory, 1, 61, 18) {
             public void onSlotChanged() {
                 this.inventory.markDirty();
             }
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && (stack.getItem().isValidArmor(stack, EquipmentSlotType.HEAD, player) || stack.getItem() instanceof ItemBanner);
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && (stack.getItem().canEquip(stack, EquipmentSlotType.HEAD, playerInventory.player) || stack.getItem() instanceof BannerItem);
             }
         });
-        this.addSlotToContainer(new Slot(rat.ratInventory, 2, 61, 36) {
+        this.addSlot(new Slot(ratInventory, 2, 61, 36) {
             public void onSlotChanged() {
                 this.inventory.markDirty();
             }
@@ -53,18 +52,22 @@ public class ContainerRat extends Container {
         });
         for (int i1 = 0; i1 < 3; ++i1) {
             for (int k1 = 0; k1 < 9; ++k1) {
-                this.addSlotToContainer(new Slot(player.inventory, k1 + i1 * 9 + 9, 8 + k1 * 18, 102 + i1 * 18 + -18));
+                this.addSlot(new Slot(playerInventory, k1 + i1 * 9 + 9, 8 + k1 * 18, 102 + i1 * 18 + -18));
             }
         }
 
         for (int j1 = 0; j1 < 9; ++j1) {
-            this.addSlotToContainer(new Slot(player.inventory, j1, 8 + j1 * 18, 142));
+            this.addSlot(new Slot(playerInventory, j1, 8 + j1 * 18, 142));
         }
+    }
+
+    public ContainerRat(int i, PlayerInventory playerInventory) {
+        this(i, new Inventory(3), playerInventory);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return this.ratInventory.isUsableByPlayer(playerIn) && this.rat.isEntityAlive() && this.rat.getDistance(playerIn) < 8.0F;
+        return this.ratInventory.isUsableByPlayer(playerIn);
     }
 
     @Override

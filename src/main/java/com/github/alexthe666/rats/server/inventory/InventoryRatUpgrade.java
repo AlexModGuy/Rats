@@ -17,7 +17,7 @@ public class InventoryRatUpgrade implements ISidedInventory {
 
     public InventoryRatUpgrade(ItemStack upgradeStack) {
         this.upgradeStack = upgradeStack;
-        if (!upgradeStack.hasTagCompound()) {
+        if (!upgradeStack.hasTag()) {
             upgradeStack.setTag(new CompoundNBT());
         }
         readFromNBT(upgradeStack.getTag());
@@ -92,7 +92,7 @@ public class InventoryRatUpgrade implements ISidedInventory {
 
     @Override
     public void closeInventory(PlayerEntity player) {
-        if (!upgradeStack.hasTagCompound()) {
+        if (!upgradeStack.hasTag()) {
             upgradeStack.setTag(new CompoundNBT());
         }
         writeToNBT(upgradeStack.getTag());
@@ -107,36 +107,10 @@ public class InventoryRatUpgrade implements ISidedInventory {
     }
 
     @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
     public void clear() {
         this.items.clear();
     }
 
-    @Override
-    public String getName() {
-        return upgradeStack.getDisplayName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
     public ITextComponent getDisplayName() {
         return upgradeStack.getTextComponent();
     }

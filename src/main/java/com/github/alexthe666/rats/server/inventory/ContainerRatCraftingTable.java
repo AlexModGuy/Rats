@@ -1,32 +1,38 @@
 package com.github.alexthe666.rats.server.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.FurnaceResultSlot;
+import net.minecraft.inventory.container.Slot;
 
 public class ContainerRatCraftingTable extends Container {
 
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
-    public ContainerRatCraftingTable(IInventory inv, PlayerEntity player) {
-        super(RatsContainerRegistry.RAT_CRAFTING_TABLE_CONTAINER, 102);
-        this.tileRatCraftingTable = inv;
-        this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 35, 20));
-        this.addSlotToContainer(new SlotFurnaceOutput(player, tileRatCraftingTable, 1, 124, 20));
+    public ContainerRatCraftingTable(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+        super(RatsContainerRegistry.RAT_CRAFTING_TABLE_CONTAINER, id);
+        this.tileRatCraftingTable = tileInventory;
+        this.addSlot(new Slot(tileRatCraftingTable, 0, 35, 20));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, tileRatCraftingTable, 1, 124, 20));
         for (int k = 2; k < 11; ++k) {
-            this.addSlotToContainer(new Slot(tileRatCraftingTable, k, k * 18 - 28, 100));
+            this.addSlot(new Slot(tileRatCraftingTable, k, k * 18 - 28, 100));
         }
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 129 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 129 + i * 18));
             }
         }
         for (int k = 0; k < 9; ++k) {
-            this.addSlotToContainer(new Slot(player.inventory, k, 8 + k * 18, 187));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 187));
         }
+    }
+
+    public ContainerRatCraftingTable(int i, PlayerInventory playerInventory) {
+        this(i, new Inventory(11), playerInventory);
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {

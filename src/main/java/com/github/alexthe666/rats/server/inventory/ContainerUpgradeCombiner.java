@@ -4,10 +4,12 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.FurnaceResultSlot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerUpgradeCombiner extends Container {
@@ -15,22 +17,25 @@ public class ContainerUpgradeCombiner extends Container {
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
-    public ContainerUpgradeCombiner(IInventory inv, PlayerEntity player) {
-        super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, 104);
-        this.tileRatCraftingTable = inv;
-        this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 20, 35));
-        this.addSlotToContainer(new Slot(tileRatCraftingTable, 1, 44, 57));
-        this.addSlotToContainer(new Slot(tileRatCraftingTable, 2, 69, 35));
-        this.addSlotToContainer(new SlotFurnaceOutput(player, tileRatCraftingTable, 3, 129, 35));
-
+    public ContainerUpgradeCombiner(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+        super(RatsContainerRegistry.UPGRADE_COMBINER_CONTAINER, id);
+        this.tileRatCraftingTable = tileInventory;
+        this.addSlot(new Slot(tileRatCraftingTable, 0, 20, 35));
+        this.addSlot(new Slot(tileRatCraftingTable, 1, 44, 57));
+        this.addSlot(new Slot(tileRatCraftingTable, 2, 69, 35));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, tileRatCraftingTable, 3, 129, 35));
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
         for (int k = 0; k < 9; ++k) {
-            this.addSlotToContainer(new Slot(player.inventory, k, 8 + k * 18, 142));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
+    }
+
+    public ContainerUpgradeCombiner(int i, PlayerInventory playerInventory) {
+        this(i, new Inventory(3), playerInventory);
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
