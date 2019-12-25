@@ -32,8 +32,10 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -41,12 +43,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.FurnaceRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
@@ -65,7 +72,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSet;
+import net.minecraft.world.storage.loot.LootTables;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
@@ -197,7 +207,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         BlockPos pos;
         BlockPos topY = new BlockPos(x, rat.posY, z);
         BlockPos bottomY = new BlockPos(x, rat.posY, z);
-        while (world.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < world.getgetHeight()()) {
+        while (world.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < world.getHeight()) {
             topY = topY.up();
         }
         while (world.getBlockState(bottomY).getMaterial() == Material.WATER && bottomY.getY() > 0) {
@@ -221,7 +231,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof EntityOcelot;
+                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof OcelotEntity;
             }
         }, 10.0F, 0.8D, 1.33D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
@@ -578,7 +588,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.sitGoal.setSitting(false);
             }
 
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof EntityArrow)) {
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof ArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
@@ -689,7 +699,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
             if (this.hasPlague() && entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
@@ -701,12 +711,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 600));
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
-                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+                Explosion.Mode explosion$mode = world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+                Explosion explosion = new Explosion(this.world, null, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, explosion$mode);
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
-                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean("mobGriefing"));
+                Explosion explosion = new RatNukeExplosion(this.world, this, this.posX, this.posY + (double) (this.getHeight() / 16.0F), this.posZ, 4.0F, false, world.getGameRules().getBoolean(GameRules.MOB_GRIEFING));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }
@@ -736,11 +747,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             if (climbingTube) {
                 this.setMotion(this.getMotion().x, this.getMotion().y + 0.1D, this.getMotion().z);
-            } else if (!this.onGround && this.motionY < 0.0D) {
-                this.motionY *= 0.6D;
+            } else if (!this.onGround && this.getMotion().y < 0.0D) {
+                this.setMotion(this.getMotion().x, this.getMotion().scale(0.6).y, this.getMotion().z);
             }
             double ydist = prevPosY - this.posY;//down 0.4 up -0.38
-            double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+            double planeDist = (Math.abs(this.getMotion().x) + Math.abs(this.getMotion().z)) * 12F;
             this.flyingPitch += (float) (ydist) * 100;
             this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
             float plateau = 2;
@@ -765,14 +776,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             if (canMove()) {
                 if (this.getMoveHelper().getY() > this.posY) {
-                    this.motionY += 0.08F;
+                    this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
                 }
             } else if (!onGround) {
-                this.motionY -= 0.08F;
+                this.setMotion(this.getMotion().x, this.getMotion().y - 0.08D, this.getMotion().z);
             }
             if (!this.onGround) {
                 double ydist = prevPosY - this.posY;//down 0.4 up -0.38
-                double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+                double planeDist = (Math.abs(this.getMotion().x) + Math.abs(this.getMotion().z)) * 12F;
                 this.flyingPitch += (float) (ydist) * 20;
                 this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
                 float plateau = 2;
@@ -796,14 +807,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             if (canMove()) {
                 if (this.getMoveHelper().getY() > this.posY) {
-                    this.motionY += 0.08F;
+                    this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
                 }
             } else if (!onGround) {
-                this.motionY -= 0.08F;
+                this.setMotion(this.getMotion().x, this.getMotion().y - 0.08D, this.getMotion().z);
             }
             if (!this.onGround) {
                 double ydist = prevPosY - this.posY;//down 0.4 up -0.38
-                double planeDist = (Math.abs(motionX) + Math.abs(motionZ)) * 12F;
+                double planeDist = (Math.abs(this.getMotion().x) + Math.abs(this.getMotion().z)) * 12F;
                 this.flyingPitch += (float) (ydist) * 20;
                 this.flyingPitch = MathHelper.clamp(this.flyingPitch, -90, 90);
                 float plateau = 2;
@@ -876,14 +887,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (eatingTicks == 40) {
                 ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(Hand.MAIN_HAND))) {
-                    pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2, RatsNuggetRegistry.getNuggetMeta(this.getHeldItem(Hand.MAIN_HAND)));
+                    pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2);
                     CompoundNBT poopTag = new CompoundNBT();
                     CompoundNBT oreTag = new CompoundNBT();
-                    ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(Hand.MAIN_HAND)).writeToNBT(oreTag);
+                    ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(Hand.MAIN_HAND)).write(oreTag);
                     CompoundNBT ingotTag = new CompoundNBT();
-                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(Hand.MAIN_HAND)).writeToNBT(ingotTag);
-                    poopTag.setTag("OreItem", oreTag);
-                    poopTag.setTag("IngotItem", ingotTag);
+                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(Hand.MAIN_HAND)).write(ingotTag);
+                    poopTag.put("OreItem", oreTag);
+                    poopTag.put("IngotItem", ingotTag);
                     pooStack.setTag(poopTag);
                 }
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {
@@ -897,8 +908,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
                 this.getHeldItem(Hand.MAIN_HAND).shrink(1);
                 int healAmount = 1;
-                if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemFood) {
-                    healAmount = ((ItemFood) this.getHeldItem(Hand.MAIN_HAND).getItem()).getHealAmount(this.getHeldItem(Hand.MAIN_HAND));
+                if (this.getHeldItem(Hand.MAIN_HAND).getItem().isFood()) {
+                    healAmount = this.getHeldItem(Hand.MAIN_HAND).getItem().getFood().getHealing();
                 }
                 this.heal(healAmount);
                 eatingTicks = 0;
@@ -914,7 +925,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double d0 = 0D;
             double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
             double d2 = 0D;
-            this.world.addParticle(ParticleTypes.SPELL_MOB, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+            this.world.addParticle(ParticleTypes.EFFECT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.getHeldItemMainhand().isEmpty()) {
             this.tryCooking();
@@ -927,7 +938,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.addParticle(ParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    this.world.addParticle(ParticleTypes.SMOKE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     if (rand.nextFloat() < 0.125F) {
                         this.world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
@@ -945,7 +956,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.addParticle(ParticleTypes.BLOCK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(RatsBlockRegistry.GARBAGE_PILE));
+                    this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, RatsBlockRegistry.GARBAGE_PILE.getDefaultState()), this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     if (rand.nextFloat() < 0.125F) {
                         this.world.addParticle(ParticleTypes.ENCHANT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
@@ -963,7 +974,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 } else {
-                    this.world.addParticle(ParticleTypes.BLOCK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Block.getIdFromBlock(Blocks.DIAMOND_ORE));
+                    this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.DIAMOND_ORE.getDefaultState()), this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                 }
             }
         }
@@ -1063,8 +1074,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     if (stack.isEmpty()) {
                         this.world.addParticle(ParticleTypes.SMOKE, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     } else {
-                        this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
-                        this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2, Item.getIdFromItem(stack.getItem()));
+                        this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY, this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
                     if (ratCraftingTable.prevCookTime % 20 == 0) {
                         this.playSound(CRAFTING_SOUNDS[rand.nextInt(CRAFTING_SOUNDS.length - 1)], 0.6F, 0.75F + rand.nextFloat());
@@ -1259,7 +1270,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.isDancing() && this.getAnimation() != this.getDanceAnimation()) {
             this.setAnimation(this.getDanceAnimation());
         }
-        if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distanceSq(this.posX, this.posY, this.posZ) > 15.0D * 15.0D || this.world.getBlockState(this.jukeboxPos).getBlock() != Blocks.JUKEBOX)) {
+        if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distanceSq(this.posX, this.posY, this.posZ, true) > 15.0D * 15.0D || this.world.getBlockState(this.jukeboxPos).getBlock() != Blocks.JUKEBOX)) {
             this.setDancing(false);
         }
     }
@@ -1305,12 +1316,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {
-        ItemStack burntItem = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
-        SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
-        if (recipe != null) {
-            burntItem = recipe.getOutput().copy();
+        FurnaceRecipe irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, null, this.world).orElse(null);
+        if(irecipe != null && !irecipe.getRecipeOutput().isEmpty()){
+            ItemStack burntItem = irecipe.getRecipeOutput().copy();
+            SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
+            if (recipe != null) {
+                burntItem = recipe.getOutput().copy();
+            }
+            return burntItem;
         }
-        return burntItem;
+       return ItemStack.EMPTY;
     }
 
     public ItemStack getArcheologyResultFor(ItemStack stack) {
@@ -1430,13 +1445,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     for (int j = -1; j <= 1; ++j) {
                         for (int k = -1; k <= 1; ++k) {
                             if ((j != 0 || k != 0) && this.world.isAirBlock(position.add(k, 0, j)) && this.world.isAirBlock(position.add(k, 1, j))) {
-                                power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 0, j * 2));
-                                power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 1, j * 2));
+                                power += getPower(world, position.add(k * 2, 0, j * 2));
+                                power += getPower(world, position.add(k * 2, 1, j * 2));
                                 if (k != 0 && j != 0) {
-                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 0, j));
-                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k * 2, 1, j));
-                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k, 0, j * 2));
-                                    power += net.minecraftforge.common.ForgeHooks.getEnchantPower(world, position.add(k, 1, j * 2));
+                                    power += getPower(world, position.add(k * 2, 0, j));
+                                    power += getPower(world, position.add(k * 2, 1, j));
+                                    power += getPower(world, position.add(k, 0, j * 2));
+                                    power += getPower(world, position.add(k, 1, j * 2));
                                 }
                             }
                         }
@@ -1457,15 +1472,19 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
+    private float getPower(net.minecraft.world.World world, net.minecraft.util.math.BlockPos pos) {
+        return world.getBlockState(pos).getEnchantPowerBonus(world, pos);
+    }
+
     private void tryGiftgiving() {
         ItemStack heldItem = this.getHeldItemMainhand();
         boolean held = false;
         int luck = 1;
-        List<ItemStack> result = new ArrayList<>();
         if (!world.isRemote) {
-            LootContext.Builder lootcontext$builder = new LootContext.Builder((net.minecraft.world.WorldServer) this.world);
-            lootcontext$builder.withLuck((float) luck).withLootedEntity(this); // Forge: add player & looted entity to LootContext
-            result = this.world.getServer().getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generateLootForPools(this.getRNG(), lootcontext$builder.build());
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) this.world);
+            lootcontext$builder.withLuck((float) luck); // Forge: add player & looted entity to LootContext
+            LootParameterSet.Builder lootparameterset$builder = new LootParameterSet.Builder();
+            List<ItemStack> result = this.world.getServer().getLootTableManager().getLootTableFromLocation(CHRISTMAS_LOOT).generate(lootcontext$builder.build(lootparameterset$builder.build()));
             if (result.isEmpty()) {
                 cookingProgress = 0;
             } else {
@@ -1890,7 +1909,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                         itemstack.setTag(compound);
                     }
                     CompoundNBT ratTag = new CompoundNBT();
-                    this.writeEntityToNBT(ratTag);
+                    this.writeAdditional(ratTag);
                     int currentRat = ItemRatSack.getRatsInStack(itemstack) + 1;
                     compound.put("Rat_" + currentRat, ratTag);
                     this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1, 1);
@@ -1909,7 +1928,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     ItemStack ratArrowStack = new ItemStack(RatsItemRegistry.RAT_ARROW);
                     CompoundNBT compound = new CompoundNBT();
                     CompoundNBT ratTag = new CompoundNBT();
-                    this.writeEntityToNBT(ratTag);
+                    this.writeAdditional(ratTag);
                     compound.put("Rat", ratTag);
                     ratArrowStack.setTag(compound);
                     if (itemstack.isEmpty()) {
