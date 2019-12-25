@@ -3,38 +3,47 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.google.common.base.Optional;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.Optional;
 import java.util.UUID;
 
-public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
+public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
 
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueCloud.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<java.util.Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityPlagueCloud.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
     public EntityPlagueCloud(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.setSize(1.0F, 1.5F);
         this.moveController = new EntityPlagueCloud.AIMoveControl(this);
     }
 
-    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
         if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
             return false;
         }
@@ -49,27 +58,27 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         this.setNoGravity(true);
         double d0 = this.hurtTime > 0 ? 1 : 0;
         double d1 = 0.01D;
         double d2 = 0D;
-        double x = this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-        double y = this.posY + (double) (this.rand.nextFloat() * this.height) - (double) this.height;
-        double z = this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-        float f = (this.width + this.height + this.width) * 0.333F + 0.5F;
+        double x = this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double y = this.posY + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
+        double z = this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        float f = (this.getWidth() + this.getHeight() + this.getWidth()) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
                 RatsMod.PROXY.addParticle("black_death", x, y + 1.5F, z, d0, d1, d2);
             } else {
-                this.world.addParticle(ParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
+                this.world.addParticle(ParticleTypes.EFFECT, x, y + 1.5F, z, d0, d1, d2);
 
             }
         }
         if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
-            if (death.getAttackTarget() != null && !death.getAttackTarget().isDead) {
+            if (death.getAttackTarget() != null && death.getAttackTarget().isAlive()) {
                 this.setAttackTarget(death.getAttackTarget());
             } else {
                 float radius = (float) 9 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.25F;
@@ -81,17 +90,17 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
                 this.moveController.setMoveTo(extraX, death.posY + 2 + rand.nextInt(2), extraZ, 1.0F);
             }
         }
-        if (this.getAttackTarget() != null && this.getAttackTarget().isDead) {
+        if (this.getAttackTarget() != null && !this.getAttackTarget().isAlive()) {
             this.setAttackTarget(null);
         }
     }
 
-    public void setDead() {
-        if (!isDead && this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
+    public void remove() {
+        if (!isAlive() && this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath illagerPiper = (EntityBlackDeath) this.getOwner();
             illagerPiper.setCloudsSummoned(illagerPiper.getCloudsSummoned() - 1);
         }
-        this.isDead = true;
+        super.remove();
     }
 
     public double particleDistSq(double toX, double toY, double toZ) {
@@ -103,24 +112,24 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
 
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
+        this.dataManager.register(OWNER_UNIQUE_ID, Optional.empty());
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new EntityPlagueCloud.AIMeleeAttack(this));
         this.goalSelector.addGoal(8, new EntityPlagueCloud.AIMoveRandom());
-        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityPlagueCloud.class));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, LivingEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && entityIn instanceof LivingEntity) {
-            ((LivingEntity) entityIn).addPotionEffect(new PotionEffect(RatsMod.PLAGUE_POTION, 600, 0));
+            ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 600, 0));
         }
         return flag;
     }
@@ -131,20 +140,20 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
     public void fall(float distance, float damageMultiplier) {
     }
 
-    public void writeEntityToNBT(CompoundNBT compound) {
-        super.writeEntityToNBT(compound);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
         if (this.getOwnerId() == null) {
-            compound.setString("OwnerUUID", "");
+            compound.putString("OwnerUUID", "");
         } else {
-            compound.setString("OwnerUUID", this.getOwnerId().toString());
+            compound.putString("OwnerUUID", this.getOwnerId().toString());
         }
     }
 
-    public void readEntityFromNBT(CompoundNBT compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         String s;
 
-        if (compound.hasKey("OwnerUUID", 8)) {
+        if (compound.contains("OwnerUUID", 8)) {
             s = compound.getString("OwnerUUID");
         } else {
             String s1 = compound.getString("Owner");
@@ -160,22 +169,22 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
     }
 
     public UUID getOwnerId() {
-        return (UUID) ((Optional) this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional) this.dataManager.get(OWNER_UNIQUE_ID)).orElse(null);
     }
 
     public void setOwnerId(@Nullable UUID p_184754_1_) {
-        this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
+        this.dataManager.set(OWNER_UNIQUE_ID, Optional.ofNullable(p_184754_1_));
     }
 
     public LivingEntity getOwner() {
         try {
             UUID uuid = this.getOwnerId();
-            LivingEntity player = uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            LivingEntity player = uuid == null ? null : this.world.getPlayerByUuid(uuid);
             if (player != null) {
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.dimension).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }
@@ -187,31 +196,24 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         return null;
     }
 
-    class AIMoveControl extends EntitymoveController {
+    class AIMoveControl extends MovementController {
         public AIMoveControl(EntityPlagueCloud vex) {
             super(vex);
         }
 
         public void tick() {
-            if (this.action == EntitymoveController.Action.MOVE_TO) {
-                double d0 = this.posX - EntityPlagueCloud.this.posX;
-                double d1 = this.posY - EntityPlagueCloud.this.posY;
-                double d2 = this.posZ - EntityPlagueCloud.this.posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double) MathHelper.sqrt(d3);
-
-                if (d3 < EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntitymoveController.Action.WAIT;
-                    EntityPlagueCloud.this.motionX *= 0.5D;
-                    EntityPlagueCloud.this.motionY *= 0.5D;
-                    EntityPlagueCloud.this.motionZ *= 0.5D;
+            if (this.action == MovementController.Action.MOVE_TO) {
+                Vec3d vec3d = new Vec3d(this.posX - EntityPlagueCloud.this.posX, this.posY - EntityPlagueCloud.this.posY, this.posZ - EntityPlagueCloud.this.posZ);
+                double d0 = vec3d.length();
+                double edgeLength = EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength();
+                if (d0 < edgeLength) {
+                    this.action = MovementController.Action.WAIT;
+                    EntityPlagueCloud.this.setMotion(EntityPlagueCloud.this.getMotion().scale(0.5D));
                 } else {
-                    EntityPlagueCloud.this.motionX += d0 / d3 * 0.05D * this.speed;
-                    EntityPlagueCloud.this.motionY += d1 / d3 * 0.05D * this.speed;
-                    EntityPlagueCloud.this.motionZ += d2 / d3 * 0.05D * this.speed;
-
+                    EntityPlagueCloud.this.setMotion(EntityPlagueCloud.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityPlagueCloud.this.getAttackTarget() == null) {
-                        EntityPlagueCloud.this.rotationYaw = -((float) MathHelper.atan2(EntityPlagueCloud.this.motionX, EntityPlagueCloud.this.motionZ)) * (180F / (float) Math.PI);
+                        Vec3d vec3d1 = EntityPlagueCloud.this.getMotion();
+                        EntityPlagueCloud.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityPlagueCloud.this.renderYawOffset = EntityPlagueCloud.this.rotationYaw;
                     } else {
                         double d4 = EntityPlagueCloud.this.getAttackTarget().posX - EntityPlagueCloud.this.posX;
@@ -276,7 +278,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         public void resetTask() {
         }
 
-        public void updateTask() {
+        public void tick() {
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {

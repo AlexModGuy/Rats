@@ -2,34 +2,35 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.entity.ai.PiratBoatPathNavigate;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
+import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemBanner;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tileentity.BannerPattern;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -44,29 +45,27 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     private boolean prevFire;
     private int fireCooldown = 0;
     private double waterLevel;
-    private EntityBoat.Status status;
-    private EntityBoat.Status previousStatus;
+    private BoatEntity.Status status;
+    private BoatEntity.Status previousStatus;
     private double lastYd;
 
     public EntityPiratBoat(EntityType type, World worldIn) {
         super(type, worldIn);
         this.paddlePositions = new float[2];
-        this.setSize(1.75F, 0.8F);
         switchNavigator(0);
     }
 
     private static ItemStack generateBanner() {
-        NBTTagList patterns = new NBTTagList();
-        CompoundNBT currentPattern = new CompoundNBT();
-        currentPattern.setString("Pattern", "rats.rat_and_crossbones");
-        currentPattern.putInt("Color", 15);
-        patterns.appendTag(currentPattern);
-        return ItemBanner.makeBanner(EnumDyeColor.BLACK, patterns);
+        ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
+        CompoundNBT compoundnbt = itemstack.getOrCreateChildTag("BlockEntityTag");
+        ListNBT listnbt = (new BannerPattern.Builder()).func_222477_a(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, DyeColor.WHITE).func_222476_a();
+        compoundnbt.put("Patterns", listnbt);
+        return itemstack;
     }
 
     protected void switchNavigator(int type) {
         if (type == 1) {//land
-            this.navigator = new PathNavigateGround(this, world);
+            this.navigator = new GroundPathNavigator(this, world);
             this.navigatorType = 1;
         } else {//sea
             this.navigator = new PiratBoatPathNavigate(this, world);
@@ -74,10 +73,10 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         }
     }
 
-    public boolean writeToNBTOptional(CompoundNBT compound) {
+    public boolean writeUnlessPassenger(CompoundNBT compound) {
         String s = this.getEntityString();
-        compound.setString("id", s);
-        this.writeToNBT(compound);
+        compound.putString("id", s);
+        super.writeUnlessPassenger(compound);
         return true;
     }
 
@@ -129,16 +128,17 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
 
     protected void onDeathUpdate() {
         ++this.deathTime;
-        this.motionY *= 0.6D;
+        Vec3d vec3d = this.getMotion();
+        this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         this.livingSoundTime = 20;
         if (this.deathTime >= 80) {
-            if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))) {
+            if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))) {
                 int i = this.getExperiencePoints(this.attackingPlayer);
                 i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
                 while (i > 0) {
-                    int j = EntityXPOrb.getXPSplit(i);
+                    int j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.addEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
             if (!this.world.isRemote) {
@@ -146,7 +146,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                     this.entityDropItem(new ItemStack(Items.STICK), 0.0F);
                 }
                 for (int j = 0; j < rand.nextInt(3); j++) {
-                    this.entityDropItem(new ItemStack(Blocks.PLANKS), 0.0F);
+                    this.entityDropItem(new ItemStack(Blocks.OAK_PLANKS), 0.0F);
                 }
                 if (rand.nextInt(3) == 0) {
                     this.entityDropItem(BANNER.copy(), 0.0F);
@@ -155,21 +155,21 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL), 0.0F);
                 }
             }
-            this.setDead();
+            this.remove();
             for (int k = 0; k < 20; ++k) {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
+                this.world.addParticle(ParticleTypes.EXPLOSION, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
         }
     }
 
-    public void onUpdate() {
+    public void tick() {
         this.previousStatus = this.status;
         this.status = this.getBoatStatus();
-        super.onUpdate();
-        boolean groundNavigate = !this.isInWater() && this.status != EntityBoat.Status.IN_WATER;
+        super.tick();
+        boolean groundNavigate = !this.isInWater() && this.status != BoatEntity.Status.IN_WATER;
         if (!world.isRemote) {
             if (groundNavigate && navigatorType != 1) {
                 switchNavigator(1);
@@ -179,7 +179,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
             }
         }
         if (this.getRidingEntity() != null) {
-            if (!this.getRidingEntity().isRiding()) {
+            if (!this.getRidingEntity().isPassenger()) {
                 this.getRidingEntity().startRiding(this, true);
             }
         }
@@ -202,14 +202,14 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                 LivingEntity riding = (LivingEntity) this.getControllingPassenger();
                 this.moveStrafing = riding.moveStrafing;
                 this.moveForward = riding.moveForward;
-                this.moveRelative(moveStrafing, 0, moveForward, 0.10F);
+                this.moveRelative(0.10F, new Vec3d(moveStrafing, 0, moveForward));
                 this.rotationYaw = riding.rotationYaw;
                 this.rotationYawHead = riding.rotationYawHead;
                 this.prevRotationYaw = riding.prevRotationYaw;
             }
         }
         this.doBlockCollisions();
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().grow((double)0.2F, (double)-0.01F, (double)0.2F), EntityPredicates.pushableBy(this));
 
         if (!list.isEmpty()) {
             boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof PlayerEntity);
@@ -218,7 +218,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                 Entity entity = list.get(j);
 
                 if (!entity.isPassenger(this)) {
-                    if (flag && this.getPassengers().size() < 2 && !entity.isRiding() && entity.width < this.width && entity instanceof EntityPirat) {
+                    if (flag && this.getPassengers().size() < 2 && !entity.isPassenger() && entity.getWidth() < this.getWidth() && entity instanceof EntityPirat) {
                         entity.startRiding(this);
                     } else {
                         this.applyEntityCollision(entity);
@@ -228,8 +228,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         }
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
@@ -238,7 +238,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     public void applyEntityCollision(Entity entityIn) {
-        if (entityIn instanceof EntityBoat) {
+        if (entityIn instanceof BoatEntity) {
             if (entityIn.getBoundingBox().minY < this.getBoundingBox().maxY) {
                 super.applyEntityCollision(entityIn);
             }
@@ -275,11 +275,11 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     }
 
     public void shoot(EntityPirat pirat) {
-        world.updateEntityWithOptionalForce(this, true);
+        //world.updateEntityWithOptionalForce(this, true);
 
         LivingEntity target = pirat.getAttackTarget();
         if (target == null) {
-            target = world.getNearestPlayerNotCreative(this, 30);
+            target = world.getClosestPlayer(this, 30);
         }
         if (target != null) {
             {
@@ -288,8 +288,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                 float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.renderYawOffset = this.rotationYaw = f % 360;
             }
-            EntityCheeseCannonball cannonball = new EntityCheeseCannonball(world, pirat);
-            cannonball.ignoreEntity = this;
+            EntityCheeseCannonball cannonball = new EntityCheeseCannonball(RatsEntityRegistry.CHEESE_CANNONBALL, world, pirat);
+            //cannonball.ignoreEntity = this;
             float radius = 1.6F;
             float angle = (0.01745329251F * (this.renderYawOffset));
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
@@ -323,46 +323,34 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
-        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
 
-        try {
-            label108:
-
-            for (int k1 = k; k1 < l; ++k1) {
+        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+            label161:
+            for(int k1 = k; k1 < l; ++k1) {
                 float f = 0.0F;
-                int l1 = i;
 
-                while (true) {
-                    if (l1 >= j) {
-                        if (f < 1.0F) {
-                            float f2 = (float) blockpos$pooledmutableblockpos.getY() + f;
-                            return f2;
-                        }
-
-                        break;
-                    }
-
-                    for (int i2 = i1; i2 < j1; ++i2) {
+                for(int l1 = i; l1 < j; ++l1) {
+                    for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(l1, k1, i2);
-                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
-
-                        if (BlockState.getMaterial() == Material.WATER) {
-                            f = Math.max(f, BlockLiquid.getBlockLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos));
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
+                        if (ifluidstate.isTagged(FluidTags.WATER)) {
+                            f = Math.max(f, ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos));
                         }
 
                         if (f >= 1.0F) {
-                            continue label108;
+                            continue label161;
                         }
                     }
+                }
 
-                    ++l1;
+                if (f < 1.0F) {
+                    float f2 = (float)blockpos$pooledmutableblockpos.getY() + f;
+                    return f2;
                 }
             }
 
-            float f1 = (float) (l + 1);
+            float f1 = (float)(l + 1);
             return f1;
-        } finally {
-            blockpos$pooledmutableblockpos.release();
         }
     }
 
@@ -376,45 +364,44 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         this.waterLevel = Double.MIN_VALUE;
-        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
-
-        try {
-            for (int k1 = i; k1 < j; ++k1) {
-                for (int l1 = k; l1 < l; ++l1) {
-                    for (int i2 = i1; i2 < j1; ++i2) {
+        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+            for(int k1 = i; k1 < j; ++k1) {
+                for(int l1 = k; l1 < l; ++l1) {
+                    for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
-
-                        if (BlockState.getMaterial() == Material.WATER) {
-                            float f = BlockLiquid.getLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos);
-                            this.waterLevel = Math.max((double) f, this.waterLevel);
-                            flag |= axisalignedbb.minY < (double) f;
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
+                        if (ifluidstate.isTagged(FluidTags.WATER)) {
+                            float f = (float)l1 + ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos);
+                            this.waterLevel = Math.max((double)f, this.waterLevel);
+                            flag |= axisalignedbb.minY < (double)f;
                         }
                     }
                 }
             }
-        } finally {
-            blockpos$pooledmutableblockpos.release();
         }
 
         return flag || this.isOverWater();
     }
 
-    private EntityBoat.Status getBoatStatus() {
-        EntityBoat.Status entityboat$status = this.getUnderwaterStatus();
+    private boolean isOverWater() {
+        return this.isInWater();
+    }
 
-        if (entityboat$status != null) {
+    private BoatEntity.Status getBoatStatus() {
+        BoatEntity.Status BoatEntity$status = this.getUnderwaterStatus();
+
+        if (BoatEntity$status != null) {
             this.waterLevel = this.getBoundingBox().minY;
-            return entityboat$status;
+            return BoatEntity$status;
         } else if (this.checkInWater()) {
-            return EntityBoat.Status.IN_WATER;
+            return BoatEntity.Status.IN_WATER;
         } else {
-            return EntityBoat.Status.ON_LAND;
+            return BoatEntity.Status.ON_LAND;
         }
     }
 
     @Nullable
-    private EntityBoat.Status getUnderwaterStatus() {
+    private BoatEntity.Status getUnderwaterStatus() {
         AxisAlignedBB axisalignedbb = this.getBoundingBox();
         double d0 = axisalignedbb.maxY + 0.001D;
         int i = MathHelper.floor(axisalignedbb.minX);
@@ -424,19 +411,16 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
-        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
-
-        try {
-            for (int k1 = i; k1 < j; ++k1) {
-                for (int l1 = k; l1 < l; ++l1) {
-                    for (int i2 = i1; i2 < j1; ++i2) {
+        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+            for(int k1 = i; k1 < j; ++k1) {
+                for(int l1 = k; l1 < l; ++l1) {
+                    for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        BlockState BlockState = this.world.getBlockState(blockpos$pooledmutableblockpos);
-
-                        if (BlockState.getMaterial() == Material.WATER && d0 < (double) BlockLiquid.getLiquidHeight(BlockState, this.world, blockpos$pooledmutableblockpos)) {
-                            if (BlockState.getValue(BlockLiquid.LEVEL).intValue() != 0) {
-                                EntityBoat.Status entityboat$status = EntityBoat.Status.UNDER_FLOWING_WATER;
-                                return entityboat$status;
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
+                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutableblockpos.getY() + ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos))) {
+                            if (!ifluidstate.isSource()) {
+                                BoatEntity.Status boatentity$status = BoatEntity.Status.UNDER_FLOWING_WATER;
+                                return boatentity$status;
                             }
 
                             flag = true;
@@ -444,47 +428,46 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                     }
                 }
             }
-        } finally {
-            blockpos$pooledmutableblockpos.release();
         }
 
-        return flag ? EntityBoat.Status.UNDER_WATER : null;
+        return flag ? BoatEntity.Status.UNDER_WATER : null;
     }
 
     private void updateMotion() {
-        double d0 = -0.03999999910593033D;
-        double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
+        double d0 = (double)-0.04F;
+        double d1 = this.hasNoGravity() ? 0.0D : (double)-0.04F;
         double d2 = 0.0D;
         float momentum = 0.05F;
-        if (this.previousStatus == EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.IN_AIR && this.status != EntityBoat.Status.ON_LAND) {
-            this.waterLevel = this.getBoundingBox().minY + (double) this.height;
-            this.setPosition(this.posX, (double) (this.getWaterLevelAbove() - this.height) + 0.101D, this.posZ);
-            this.motionY = 0.0D;
+        if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
+            this.waterLevel = this.getBoundingBox().minY + (double)this.getHeight();
+            this.setPosition(this.posX, (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.101D, this.posZ);
+            this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
             this.lastYd = 0.0D;
-            this.status = EntityBoat.Status.IN_WATER;
+            this.status = BoatEntity.Status.IN_WATER;
         } else {
-            double up1 = this.waterLevel + 1.5;
-            double up2 = this.getBoundingBox().minY + 0.5;
-            if (this.status == EntityBoat.Status.IN_WATER) {
-                d2 = (up1 - up2) / (double) this.height;
+            if (this.status == BoatEntity.Status.IN_WATER) {
+                d2 = (this.waterLevel - this.getBoundingBox().minY) / (double)this.getHeight();
                 momentum = 0.9F;
-            } else if (this.status == EntityBoat.Status.UNDER_FLOWING_WATER) {
-                d2 = (up1 - up2) / (double) this.height;
+            } else if (this.status == BoatEntity.Status.UNDER_FLOWING_WATER) {
+                d1 = -7.0E-4D;
                 momentum = 0.9F;
-            } else if (this.status == EntityBoat.Status.UNDER_WATER) {
-                d2 = (up1 - up2) / (double) this.height;
+            } else if (this.status == BoatEntity.Status.UNDER_WATER) {
+                d2 = (double)0.01F;
                 momentum = 0.45F;
-            } else if (this.status == EntityBoat.Status.IN_AIR) {
+            } else if (this.status == BoatEntity.Status.IN_AIR) {
                 momentum = 0.9F;
-                this.motionY += d1;
-            } else if (this.status == EntityBoat.Status.ON_LAND) {
-                momentum = 0.0F;
-                this.motionY += d1;
+            } else if (this.status == BoatEntity.Status.ON_LAND) {
+               /* momentum = this.boatGlide;
+                if (this.getControllingPassenger() instanceof PlayerEntity) {
+                    this.boatGlide /= 2.0F;
+                }*/
             }
 
+            Vec3d vec3d = this.getMotion();
+            this.setMotion(vec3d.x * (double)momentum, vec3d.y + d1, vec3d.z * (double)momentum);
             if (d2 > 0.0D) {
-                this.motionY += d2 * 0.06153846016296973D;
-                this.motionY *= 0.75D;
+                Vec3d vec3d1 = this.getMotion();
+                this.setMotion(vec3d1.x, (vec3d1.y + d2 * 0.06153846016296973D) * 0.75D, vec3d1.z);
             }
         }
     }
@@ -501,18 +484,19 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         return false;
     }
 
-    public void travel(float strafe, float vertical, float forward) {
-        if (this.isServerWorld() && (this.isInWater() || status == EntityBoat.Status.IN_WATER)) {
+    public void travel(Vec3d p_213352_1_) {
+        /*if (this.isServerWorld() && (this.isInWater() || status == BoatEntity.Status.IN_WATER)) {
             float forwards = forward;
             float strafes = strafe * 0.5F;
-            this.moveRelative(forwards, vertical, strafes, 0);
+            this.moveRelative(0, new Vec3d(forwards, vertical, strafes));
             this.motionX *= 0.8999999761581421D;
             this.motionY *= 0.8999999761581421D;
             this.motionZ *= 0.8999999761581421D;
             this.move(MoverType.SELF, this.motionX, this.isInWater() ? this.motionY : 0, this.motionZ);
         } else {
-            super.travel(strafe, vertical, forward);
-        }
+        }*/
+        super.travel(p_213352_1_);
+
     }
 
 }

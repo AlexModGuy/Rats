@@ -110,7 +110,7 @@ public class RatAIDepositInInventory extends Goal {
                             if (distance < 0.6F) {
                                 this.entity.setMotion(0, 0, 0);
                                 this.entity.getNavigator().clearPath();
-                                //this.entity.moveController.action = EntitymoveController.Action.WAIT;
+                                //this.entity.moveController.action = MovementController.Action.WAIT;
                             }
                             breakingTime++;
                             int hardness = (int) (block.getBlockHardness(this.entity.world, rayPos) * 100);

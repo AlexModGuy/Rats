@@ -442,7 +442,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying
-            this.moveController = new RatFlyingmoveController(this);
+            this.moveController = new RatFlyingMoveHelper(this);
             this.navigator = new FlyingRatPathNavigate(this, world);
             this.navigatorType = 2;
         } else if (type == 3) {//tube
@@ -1550,7 +1550,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (diggingPos != null) {
             ++this.breakingTime;
             int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
-            //this.moveController.action = EntitymoveController.Action.WAIT;
+            //this.moveController.action = MovementController.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
@@ -1692,7 +1692,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void travel(Vec3d vec3d) {
         if (!this.canMove()) {
-            //this.moveController.action = EntitymoveController.Action.WAIT;
+            //this.moveController.action = MovementController.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }

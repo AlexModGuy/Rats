@@ -124,13 +124,13 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
-    class AIMoveControl extends EntitymoveController {
+    class AIMoveControl extends MovementController {
         public AIMoveControl(EntityRatlanteanSpirit vex) {
             super(vex);
         }
 
         public void tick() {
-            if (this.action == EntitymoveController.Action.MOVE_TO) {
+            if (this.action == MovementController.Action.MOVE_TO) {
                 double d0 = this.posX - EntityRatlanteanSpirit.this.posX;
                 double d1 = this.posY - EntityRatlanteanSpirit.this.posY;
                 double d2 = this.posZ - EntityRatlanteanSpirit.this.posZ;
@@ -138,7 +138,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
                 d3 = (double) MathHelper.sqrt(d3);
 
                 if (d3 < EntityRatlanteanSpirit.this.getBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntitymoveController.Action.WAIT;
+                    this.action = MovementController.Action.WAIT;
                     EntityRatlanteanSpirit.this.motionX *= 0.5D;
                     EntityRatlanteanSpirit.this.motionY *= 0.5D;
                     EntityRatlanteanSpirit.this.motionZ *= 0.5D;

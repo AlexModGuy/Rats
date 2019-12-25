@@ -19,6 +19,9 @@ public class RatsRecipeRegistry {
     public static List<SharedRecipe> RAT_ARCHEOLOGIST_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_GEMCUTTER_RECIPES = new ArrayList<>();
 
+    public static final BannerPattern RAT_PATTERN = addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
+    public static final BannerPattern CHEESE_PATTERN = addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
+    public static final BannerPattern RAT_AND_CROSSBONES_PATTERN = addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
     public static void preRegister() {
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CHEESE), new ItemStack(RatsItemRegistry.STRING_CHEESE, 4)));
@@ -100,9 +103,7 @@ public class RatsRecipeRegistry {
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);
         GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);*/
-        addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
-        addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
-        addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
+
         RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Blocks.WHITE_WOOL)));
         RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.LEATHER)));
         RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)));

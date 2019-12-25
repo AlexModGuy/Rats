@@ -129,7 +129,7 @@ public class RatAIHarvestMine extends Goal {
                         if (distance < 0.6F) {
                             this.entity.setMotion(0, 0, 0);
                             entity.getNavigator().clearPath();
-                            //entity.moveController.action = EntitymoveController.Action.WAIT;
+                            //entity.moveController.action = MovementController.Action.WAIT;
                         }
                         breakingTime++;
                         int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);
