@@ -1,50 +1,45 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAIStrife;
 import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.ServerBossInfo;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.*;
 
 import javax.annotation.Nullable;
 
-public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRangedAttackMob {
+public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IRangedAttackMob {
 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_SUMMONING = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CLOUD_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BEAST_COUNT = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.VARINT);
-    private final BossInfo bossInfo = (new ServerBossInfo( this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
+    private final ServerBossInfo bossInfo = (new ServerBossInfo( this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
     private int ratCooldown = 0;
     private int summonAnimationCooldown = 0;
 
@@ -55,12 +50,12 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new EntityAISwimming(this));
+        this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(4, new BlackDeathAIStrife(this, 1.0D, 100, 32.0F));
-        this.goalSelector.addGoal(8, new EntityAIWander(this, 0.6D));
-        this.goalSelector.addGoal(9, new EntityAIWatchClosest(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new EntityAIWatchClosest(this, LivingEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, true, EntityRat.class));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, LivingEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityRat.class).setCallsForHelp());
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, true));
     }
 
@@ -73,7 +68,7 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.dataManager.register(BEAST_COUNT, Integer.valueOf(0));
     }
 
-    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
         if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
             return false;
         }
@@ -100,8 +95,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         return false;
     }
 
-    public void setDead() {
-        if (!isDead) {
+    public void remove() {
+        if (!this.isAlive()) {
             double dist = 20F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
                 if (rat.isOwner(this)) {
@@ -113,11 +108,11 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
                 }
             }
         }
-        this.isDead = true;
+        super.remove();
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.blackDeathHealth);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.blackDeathAttack);
@@ -125,8 +120,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
     }
 
-    protected void updateAIgoalSelector() {
-        super.updateAIgoalSelector();
+    protected void updateAITasks() {
+        super.updateAITasks();
         this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
@@ -166,15 +161,15 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         this.dataManager.set(BEAST_COUNT, Integer.valueOf(count));
     }
 
-    public void writeEntityToNBT(CompoundNBT compound) {
-        super.writeEntityToNBT(compound);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
         compound.putInt("RatsSummoned", this.getRatsSummoned());
         compound.putInt("CloudsSummoned", this.getCloudsSummoned());
         compound.putInt("BeastsSummoned", this.getBeastsSummoned());
     }
 
-    public void readEntityFromNBT(CompoundNBT compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         if (this.hasCustomName()) {
             this.bossInfo.setName(this.getDisplayName());
         }
@@ -184,8 +179,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
 
     }
 
-    public void setCustomNameTag(String name) {
-        super.setCustomNameTag(name);
+    public void setCustomName(ITextComponent name) {
+        super.setCustomName(name);
         this.bossInfo.setName(this.getDisplayName());
     }
 
@@ -206,7 +201,6 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         summonMinion(getMinionTypeToSpawn());
     }
 
-    @Override
     public void setSwingingArms(boolean swingingArms) {
         this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
     }
@@ -219,8 +213,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
             }
             world.setEntityState(this, (byte) 82);
             if (type == 0 && this.getRatsSummoned() < 15) {
-                EntityRat rat = new EntityRat(this.world);
-                rat.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
+                EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
+                rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
                 rat.copyLocationAndAnglesFrom(this);
                 rat.setPlague(true);
                 if (!world.isRemote) {
@@ -235,8 +229,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
                 this.setRatsSummoned(this.getRatsSummoned() + 1);
             }
             if (type == 1 && this.getCloudsSummoned() < 4) {
-                EntityPlagueCloud cloud = new EntityPlagueCloud(this.world);
-                cloud.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
+                EntityPlagueCloud cloud = new EntityPlagueCloud(RatsEntityRegistry.PLAGUE_CLOUD, this.world);
+                cloud.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
                 cloud.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(cloud);
@@ -248,8 +242,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
                 this.setCloudsSummoned(this.getCloudsSummoned() + 1);
             }
             if (type == 2 && this.getBeastsSummoned() < 3) {
-                EntityPlagueBeast beast = new EntityPlagueBeast(this.world);
-                beast.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(this)), null);
+                EntityPlagueBeast beast = new EntityPlagueBeast(RatsEntityRegistry.PLAGUE_BEAST, this.world);
+                beast.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
                 beast.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(beast);
@@ -264,8 +258,8 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
         }
     }
 
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (ratCooldown > 0) {
             ratCooldown--;
         }
@@ -310,20 +304,15 @@ public class EntityBlackDeath extends MobEntity implements IPlagueLegion, IRange
     }
 
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(RatsItemRegistry.PLAGUE_SCYTHE));
-        this.setDropChance(EntityEquipmentSlot.MAINHAND, 0);
+        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(RatsItemRegistry.PLAGUE_SCYTHE));
+        this.setDropChance(EquipmentSlotType.MAINHAND, 0);
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
-        ILivingEntityData iLivingEntitydata = super.onInitialSpawn(difficulty, livingdata);
-        this.setEquipmentBasedOnDifficulty(difficulty);
-        this.setEnchantmentBasedOnDifficulty(difficulty);
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        ILivingEntityData iLivingEntitydata = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        this.setEquipmentBasedOnDifficulty(difficultyIn);
+        this.setEnchantmentBasedOnDifficulty(difficultyIn);
         return iLivingEntitydata;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
     }
 }

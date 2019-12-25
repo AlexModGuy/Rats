@@ -48,11 +48,11 @@ public class ItemHat extends ArmorItem {
     }
 
     /*@OnlyIn(Dist.CLIENT)
-    public ModelBiped getArmorModel(LivingEntity LivingEntity, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+    public ModelBiped getArmorModel(LivingEntity LivingEntity, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped _default) {
         return (ModelBiped) RatsMod.PROXY.getArmorModel(modelIndex);
     }
 
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         return "rats:textures/model/" + name + ".png";
     }*/
 }

@@ -4,7 +4,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -61,7 +61,7 @@ public class ParticleSaliva extends Particle {
 
         if (this.onGround) {
             this.setExpired();
-            this.world.addParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.world.addParticle(ParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }

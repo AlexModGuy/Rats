@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBanner;
@@ -37,7 +37,7 @@ public class ContainerRat extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && (stack.getItem().isValidArmor(stack, EntityEquipmentSlot.HEAD, player) || stack.getItem() instanceof ItemBanner);
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && (stack.getItem().isValidArmor(stack, EquipmentSlotType.HEAD, player) || stack.getItem() instanceof ItemBanner);
             }
         });
         this.addSlotToContainer(new Slot(rat.ratInventory, 2, 61, 36) {

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
@@ -84,7 +84,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         if (!(this.renderer.getMainModel() instanceof ModelRat)) {
             return;
         }
-        ItemStack itemstack = LivingEntityIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        ItemStack itemstack = LivingEntityIn.getItemStackFromSlot(EquipmentSlotType.HEAD);
         GlStateManager.pushMatrix();
         if (LivingEntityIn instanceof EntityRat && ((EntityRat) LivingEntityIn).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
             for (ModelRenderer renderer : renderer.getMainModel().boxList) {
@@ -103,10 +103,10 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         if (itemstack.getItem() instanceof ItemArmor) {
             ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
 
-            if (itemarmor.getEquipmentSlot() == EntityEquipmentSlot.HEAD) {
-                ModelBiped t = this.getModelFromSlot(EntityEquipmentSlot.HEAD);
-                t = getArmorModelHook(LivingEntityIn, itemstack, EntityEquipmentSlot.HEAD, t);
-                this.setModelSlotVisible(t, EntityEquipmentSlot.HEAD);
+            if (itemarmor.getEquipmentSlot() == EquipmentSlotType.HEAD) {
+                ModelBiped t = this.getModelFromSlot(EquipmentSlotType.HEAD);
+                t = getArmorModelHook(LivingEntityIn, itemstack, EquipmentSlotType.HEAD, t);
+                this.setModelSlotVisible(t, EquipmentSlotType.HEAD);
                 ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).neck.postRender(0.0625F);
@@ -156,7 +156,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                     GlStateManager.translate(0, 0.275, 0.0F);
                     GlStateManager.scale(1.25F, 1.25F, 1.25F);
                 }
-                this.renderer.bindTexture(this.getArmorResource(LivingEntityIn, itemstack, EntityEquipmentSlot.HEAD, null));
+                this.renderer.bindTexture(this.getArmorResource(LivingEntityIn, itemstack, EquipmentSlotType.HEAD, null));
                 {
                     if (itemarmor.hasOverlay(itemstack)) // Allow this for anything, not only cloth
                     {
@@ -166,7 +166,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                         float f2 = (float) (i & 255) / 255.0F;
                         GlStateManager.color(this.colorR * f, this.colorG * f1, this.colorB * f2, this.alpha);
                         t.render(LivingEntityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-                        this.renderer.bindTexture(this.getArmorResource(LivingEntityIn, itemstack, EntityEquipmentSlot.HEAD, "overlay"));
+                        this.renderer.bindTexture(this.getArmorResource(LivingEntityIn, itemstack, EquipmentSlotType.HEAD, "overlay"));
                     }
                     { // Non-colored
                         GlStateManager.color(this.colorR, this.colorG, this.colorB, this.alpha);
@@ -210,7 +210,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
     }
 
     @SuppressWarnings("incomplete-switch")
-    protected void setModelSlotVisible(ModelBiped p_188359_1_, EntityEquipmentSlot slotIn) {
+    protected void setModelSlotVisible(ModelBiped p_188359_1_, EquipmentSlotType slotIn) {
         this.setModelVisible(p_188359_1_);
         switch (slotIn) {
             case HEAD:
@@ -238,7 +238,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
     }
 
     @Override
-    protected ModelBiped getArmorModelHook(net.minecraft.entity.LivingEntity entity, net.minecraft.item.ItemStack itemStack, EntityEquipmentSlot slot, ModelBiped model) {
+    protected ModelBiped getArmorModelHook(net.minecraft.entity.LivingEntity entity, net.minecraft.item.ItemStack itemStack, EquipmentSlotType slot, ModelBiped model) {
         return net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
     }
 }

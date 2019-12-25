@@ -26,12 +26,12 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.Hand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -137,7 +137,7 @@ public class ServerEvents {
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().addParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(ParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
                 if (heldItem == RatsItemRegistry.COOKED_RAT) {
@@ -145,7 +145,7 @@ public class ServerEvents {
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().addParticle(EnumParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(ParticleTypes.VILLAGER_HAPPY, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
             }
@@ -211,14 +211,14 @@ public class ServerEvents {
         }
         if (event.getEntity() != null && event.getEntity() instanceof EntityHusk) {
             if (((EntityHusk) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
-                event.getEntity().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
-                ((LivingEntity) event.getEntity()).setDropChance(EntityEquipmentSlot.HEAD, 0.5F);
+                event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                ((LivingEntity) event.getEntity()).setDropChance(EquipmentSlotType.HEAD, 0.5F);
             }
         }
         if (event.getEntity() != null && (event.getEntity() instanceof AbstractSkeleton || event.getEntity() instanceof EntityZombie) && BiomeDictionary.hasType(event.getWorld().getBiome(event.getEntity().getPosition()), BiomeDictionary.Type.JUNGLE)) {
             if (((LivingEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
-                event.getEntity().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
-                ((LivingEntity) event.getEntity()).setDropChance(EntityEquipmentSlot.HEAD, 0.5F);
+                event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                ((LivingEntity) event.getEntity()).setDropChance(EquipmentSlotType.HEAD, 0.5F);
             }
         }
     }

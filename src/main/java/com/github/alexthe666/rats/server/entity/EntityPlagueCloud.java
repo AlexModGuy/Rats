@@ -15,7 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -63,7 +63,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
             if (rand.nextBoolean()) {
                 RatsMod.PROXY.addParticle("black_death", x, y + 1.5F, z, d0, d1, d2);
             } else {
-                this.world.addParticle(EnumParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
+                this.world.addParticle(ParticleTypes.SPELL_MOB, x, y + 1.5F, z, d0, d1, d2);
 
             }
         }

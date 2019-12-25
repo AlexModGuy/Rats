@@ -6,11 +6,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.Hand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -60,7 +60,7 @@ public class EntityPlagueShot extends AbstractArrowEntity {
             if (rand.nextBoolean()) {
                 RatsMod.PROXY.addParticle("black_death", x, y + 0.5D, z, d0, d1, d2);
             } else {
-                this.world.addParticle(EnumParticleTypes.SPELL_MOB, x, y + 0.5D, z, d0, d1, d2);
+                this.world.addParticle(ParticleTypes.SPELL_MOB, x, y + 0.5D, z, d0, d1, d2);
 
             }
         }
@@ -103,9 +103,9 @@ public class EntityPlagueShot extends AbstractArrowEntity {
                 net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, copyBeforeUse, Hand);
 
                 if (Hand == Hand.MAIN_HAND) {
-                    this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                    this.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
                 } else {
-                    this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
                 }
                 player.resetActiveHand();
                 this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.world.rand.nextFloat() * 0.4F);

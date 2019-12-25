@@ -1,39 +1,36 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.tomove.AnimationHandler;
 import com.google.common.base.Predicate;
-import net.ilexiconn.llibrary.server.animation.Animation;
-import net.ilexiconn.llibrary.server.animation.AnimationHandler;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity, IRatlantean {
+public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEntity, IRatlantean {
 
     public static final Animation ANIMATION_BITE = Animation.create(15);
     public static final Animation ANIMATION_SLASH = Animation.create(25);
     public static final Animation ANIMATION_SNIFF = Animation.create(20);
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "feral_ratlantean"));
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
     private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
-            return entity.isEntityAlive() && !(entity instanceof IRatlantean);
+            return entity.isAlive() && !(entity instanceof IRatlantean);
         }
     };
     private int animationTick;
@@ -41,21 +38,20 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
 
     public EntityFeralRatlantean(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.setSize(1.85F, 1.2F);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAISwimming(this));
-        this.goalSelector.addGoal(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
-        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
+        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
@@ -77,8 +73,8 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
     }
 
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
             if (this.getAnimation() == NO_ANIMATION) {
@@ -87,12 +83,12 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
                 this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
                 this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
             }
         }
@@ -121,24 +117,24 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
         return this.dataManager.get(TOGA).booleanValue();
     }
 
-    public void writeEntityToNBT(CompoundNBT compound) {
-        super.writeEntityToNBT(compound);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
         compound.putInt("ColorVariant", this.getColorVariant());
         compound.putBoolean("Toga", this.hasToga());
     }
 
-    public void readEntityFromNBT(CompoundNBT compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         this.setToga(compound.getBoolean("Toga"));
         this.setColorVariant(compound.getInt("ColorVariant"));
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setColorVariant(this.getRNG().nextInt(4));
         this.setToga(true);
-        return livingdata;
+        return spawnDataIn;
     }
 
     @Override
@@ -180,10 +176,5 @@ public class EntityFeralRatlantean extends MobEntity implements IAnimatedEntity,
 
     protected float getSoundPitch() {
         return super.getSoundPitch() * 0.4F;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
     }
 }

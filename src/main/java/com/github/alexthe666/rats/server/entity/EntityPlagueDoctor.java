@@ -479,18 +479,18 @@ public class EntityPlagueDoctor extends AgeableEntity implements IRangedAttackMo
     @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 12) {
-            this.addParticles(EnumParticleTypes.HEART);
+            this.addParticles(ParticleTypes.HEART);
         } else if (id == 13) {
-            this.addParticles(EnumParticleTypes.VILLAGER_ANGRY);
+            this.addParticles(ParticleTypes.VILLAGER_ANGRY);
         } else if (id == 14) {
-            this.addParticles(EnumParticleTypes.VILLAGER_HAPPY);
+            this.addParticles(ParticleTypes.VILLAGER_HAPPY);
         } else {
             super.handleStatusUpdate(id);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void addParticles(EnumParticleTypes particleType) {
+    private void addParticles(ParticleTypes particleType) {
         for (int i = 0; i < 5; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;

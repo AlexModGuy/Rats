@@ -9,7 +9,7 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -123,10 +123,10 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         return livingdata;
     }
 
-    public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
+    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
         super.setItemStackToSlot(slotIn, stack);
 
-        if (!this.world.isRemote && slotIn == EntityEquipmentSlot.MAINHAND) {
+        if (!this.world.isRemote && slotIn == EquipmentSlotType.MAINHAND) {
             this.setCombatTask();
         }
     }
@@ -148,7 +148,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
 
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(RatsItemRegistry.RAT_FLUTE));
+        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(RatsItemRegistry.RAT_FLUTE));
     }
 
 
@@ -214,15 +214,15 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
     }
 
     protected void playEffect(int type) {
-        EnumParticleTypes enumparticletypes = EnumParticleTypes.NOTE;
+        ParticleTypes ParticleTypes = ParticleTypes.NOTE;
 
         if (type == 1) {
             double d0 = 0.0;
-            this.world.addParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+            this.world.addParticle(ParticleTypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
         } else {
             double d0 = 0.65;
             for (int i = 0; i < 9; ++i) {
-                this.world.addParticle(enumparticletypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
+                this.world.addParticle(ParticleTypes, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, 0, 0);
             }
         }
 

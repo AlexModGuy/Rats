@@ -8,7 +8,7 @@ import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -73,7 +73,7 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     0.92F, 0.82, 0.0F);*/
-            world.addParticle(EnumParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
+            world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     this.posY + (double) (this.rand.nextFloat() * this.height),
                     this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width, 0, 0, 0);
         }

@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.NodeProcessor;
@@ -127,7 +127,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.setPlague(false);
         this.setToga(false);
         this.setHeldItem(Hand.MAIN_HAND, new ItemStack(RatsItemRegistry.PIRAT_CUTLASS));
-        this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.PIRAT_HAT));
+        this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.PIRAT_HAT));
         if (!this.isRiding()) {
             EntityPiratBoat boat = new EntityPiratBoat(world);
             boat.copyLocationAndAnglesFrom(this);
