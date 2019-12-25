@@ -4,16 +4,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 
-public class ContainerRatUpgrade extends SyncedFieldContainer {
+public class ContainerRatUpgrade extends Container {
 
     private ItemStack stack;
     private IInventory inventory;
     private IInventory inventoryPlayer;
 
     public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
-        super(itemInventory);
+        super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, 103);
         int numRows = itemInventory.getSizeInventory() / 9;
         this.inventory = itemInventory;
         this.inventoryPlayer = playerInventory;

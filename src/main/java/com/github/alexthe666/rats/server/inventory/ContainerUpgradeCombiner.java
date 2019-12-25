@@ -7,15 +7,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 
-public class ContainerUpgradeCombiner extends SyncedFieldContainer {
+public class ContainerUpgradeCombiner extends Container {
 
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
     public ContainerUpgradeCombiner(IInventory inv, PlayerEntity player) {
-        super(inv);
+        super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, 104);
         this.tileRatCraftingTable = inv;
         this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 20, 35));
         this.addSlotToContainer(new Slot(tileRatCraftingTable, 1, 44, 57));

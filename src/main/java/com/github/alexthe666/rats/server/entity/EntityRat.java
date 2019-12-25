@@ -19,7 +19,6 @@ import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.github.alexthe666.rats.server.tomove.AnimationHandler;
 import com.google.common.base.Predicate;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
@@ -43,9 +42,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -75,7 +72,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameterSet;
-import net.minecraft.world.storage.loot.LootTables;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
@@ -446,7 +442,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = new FlyingRatPathNavigate(this, world);
             this.navigatorType = 2;
         } else if (type == 3) {//tube
-            this.moveController = new RatTubemoveController(this);
+            this.moveController = new RatTubeMoveHelper(this);
             RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
             if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
                 PathPoint point = this.navigator.getPath().getFinalPathPoint();
@@ -455,7 +451,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = newNav;
             this.navigatorType = 3;
         } else if (type == 4) {//aquatic
-            this.moveController = new RatAquaticmoveController(this);
+            this.moveController = new RatAquaticMoveHelper(this);
             this.navigator = new AquaticRatPathNavigate(this, world);
             this.navigatorType = 4;
         }

@@ -3,10 +3,10 @@ package com.github.alexthe666.rats.server.inventory;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 
@@ -15,6 +15,7 @@ public class ContainerRat extends Container {
     private EntityRat rat;
 
     public ContainerRat(final EntityRat rat, PlayerEntity player) {
+        super(RatsContainerRegistry.RAT_CONTAINER, 100);
         this.ratInventory = rat.ratInventory;
         this.rat = rat;
         byte b0 = 3;

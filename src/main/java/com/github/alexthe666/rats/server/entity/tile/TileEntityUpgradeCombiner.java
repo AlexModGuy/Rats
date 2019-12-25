@@ -1,12 +1,17 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.FurnaceContainer;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,7 +25,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTileEntity, ISidedInventory {
+public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
 
     private static final int[] SLOTS_TOP = new int[]{0, 2};
     private static final int[] SLOTS_SIDE = new int[]{1};
@@ -367,4 +372,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
         return new TranslationTextComponent("container.upgrade_combiner");
     }
 
+    @Nullable
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+        return new ContainerUpgradeCombiner(id, this, player, playerInventory);
+    }
 }

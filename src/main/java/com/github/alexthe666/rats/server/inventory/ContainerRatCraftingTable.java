@@ -4,14 +4,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.container.Container;
 
-public class ContainerRatCraftingTable extends SyncedFieldContainer {
+public class ContainerRatCraftingTable extends Container {
 
     private final IInventory tileRatCraftingTable;
     private int cookTime;
 
     public ContainerRatCraftingTable(IInventory inv, PlayerEntity player) {
-        super(inv);
+        super(RatsContainerRegistry.RAT_CRAFTING_TABLE_CONTAINER, 102);
         this.tileRatCraftingTable = inv;
         this.addSlotToContainer(new Slot(tileRatCraftingTable, 0, 35, 20));
         this.addSlotToContainer(new SlotFurnaceOutput(player, tileRatCraftingTable, 1, 124, 20));

@@ -6,10 +6,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAquaticmoveController extends MovementController {
+public class RatAquaticMoveHelper extends MovementController {
     EntityRat rat;
 
-    public RatAquaticmoveController(EntityRat rat) {
+    public RatAquaticMoveHelper(EntityRat rat) {
         super(rat);
         this.rat = rat;
     }

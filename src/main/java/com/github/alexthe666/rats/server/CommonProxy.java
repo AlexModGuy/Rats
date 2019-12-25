@@ -5,11 +5,13 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
@@ -54,7 +56,6 @@ public class CommonProxy {
     public static void registerVillagers(RegistryEvent.Register<VillagerProfession> event) {
         event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
     }
-
 
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
@@ -134,6 +135,23 @@ public class CommonProxy {
             RatConfig.bakeClient(config);
         } else if (config.getSpec() == ConfigHolder.SERVER_SPEC) {
             RatConfig.bakeServer(config);
+        }
+    }
+
+    private void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
+        try {
+            for (Field f : RatsContainerRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof ContainerType) {
+                    event.getRegistry().register((ContainerType) obj);
+                } else if (obj instanceof ContainerType[]) {
+                    for (ContainerType container : (ContainerType[]) obj) {
+                        event.getRegistry().register(container);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
