@@ -18,7 +18,7 @@ public class FlyingRatPathNavigate extends FlyingPathNavigator {
 
     public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
         if (rat.hasFlight()) {
-            rat.getMoveHelper().setMoveTo(entityIn.posX, entityIn.posY + entityIn.getHeight(), entityIn.posZ, 0.25D);
+            rat.moveController.setMoveTo(entityIn.posX, entityIn.posY + entityIn.getHeight(), entityIn.posZ, 0.25D);
         }
         Path path = this.getPathToLivingEntity(entityIn, 0);
         return path != null && this.setPath(path, speedIn);
@@ -26,7 +26,7 @@ public class FlyingRatPathNavigate extends FlyingPathNavigator {
 
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         if (rat.hasFlight()) {
-            rat.getMoveHelper().setMoveTo(x, y, z, 0.25D);
+            rat.moveController.setMoveTo(x, y, z, 0.25D);
         }
         return this.setPath(getPathToPos(new BlockPos(x, y, z), 0), speedIn);
     }

@@ -27,6 +27,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -824,7 +825,7 @@ public class RatUtils {
         return p_191380_1_.world.getBlockState(p_191380_0_).getMaterial() == Material.WATER;
     }
 
-    public static boolean canSpawnInDimension(World world) {
+    public static boolean canSpawnInDimension(IWorld world) {
         if (RatConfig.blacklistedRatDimensions.length > 0) {
             for (int i = 0; i < RatConfig.blacklistedRatDimensions.length; i++) {
                 if (RatConfig.blacklistedRatDimensions[i] == world.getDimension()) {

@@ -87,13 +87,13 @@ public class RatPathNavigate extends GroundPathNavigator {
             this.world.getProfiler().endSection();
             if (!this.noPath()) {
                 Vec3d vec3d2 = this.currentPath.getPosition(this.entity);
-                this.entity.getMoveHelper().setMoveTo(vec3d2.x, vec3d2.y, vec3d2.z, this.speed);
+                this.entity.moveController.setMoveTo(vec3d2.x, vec3d2.y, vec3d2.z, this.speed);
 
             }
         } else if (targetPosition != null) {
             double d0 = 1;
             if (this.entity.getDistanceSq(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ()) >= d0 && (this.entity.posY <= (double) this.targetPosition.getY() || this.entity.getDistanceSq(this.targetPosition.getX(), MathHelper.floor(this.entity.posY), this.targetPosition.getZ()) >= d0)) {
-                this.entity.getMoveHelper().setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
+                this.entity.moveController.setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
             } else {
                 this.targetPosition = null;
             }

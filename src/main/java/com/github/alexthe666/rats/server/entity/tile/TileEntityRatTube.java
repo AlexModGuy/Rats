@@ -54,7 +54,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
             }
             if(rat.tubePathway != null && max > 0){
                 BlockPos currentNode = rat.tubePathway[MathHelper.clamp(rat.currentTubeNode, 0, max)];
-                rat.getMoveHelper().setMoveTo(currentNode.getX() + 0.5D, currentNode.getY() + 0.25D, currentNode.getZ() + 0.5D, 1.0D);
+                rat.moveController.setMoveTo(currentNode.getX() + 0.5D, currentNode.getY() + 0.25D, currentNode.getZ() + 0.5D, 1.0D);
             }
         }*/
     }

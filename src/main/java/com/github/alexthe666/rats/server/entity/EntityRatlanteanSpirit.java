@@ -32,7 +32,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
     public EntityRatlanteanSpirit(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setSize(0.5F, 0.85F);
-        this.moveHelper = new EntityRatlanteanSpirit.AIMoveControl(this);
+        this.moveController = new EntityRatlanteanSpirit.AIMoveControl(this);
     }
 
     protected void registerGoals() {
@@ -124,13 +124,13 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
     }
 
-    class AIMoveControl extends EntityMoveHelper {
+    class AIMoveControl extends EntitymoveController {
         public AIMoveControl(EntityRatlanteanSpirit vex) {
             super(vex);
         }
 
-        public void onUpdateMoveHelper() {
-            if (this.action == EntityMoveHelper.Action.MOVE_TO) {
+        public void tick() {
+            if (this.action == EntitymoveController.Action.MOVE_TO) {
                 double d0 = this.posX - EntityRatlanteanSpirit.this.posX;
                 double d1 = this.posY - EntityRatlanteanSpirit.this.posY;
                 double d2 = this.posZ - EntityRatlanteanSpirit.this.posZ;
@@ -138,7 +138,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
                 d3 = (double) MathHelper.sqrt(d3);
 
                 if (d3 < EntityRatlanteanSpirit.this.getBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntityMoveHelper.Action.WAIT;
+                    this.action = EntitymoveController.Action.WAIT;
                     EntityRatlanteanSpirit.this.motionX *= 0.5D;
                     EntityRatlanteanSpirit.this.motionY *= 0.5D;
                     EntityRatlanteanSpirit.this.motionZ *= 0.5D;
@@ -168,7 +168,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
         }
 
         public boolean shouldExecute() {
-            return !EntityRatlanteanSpirit.this.getMoveHelper().isUpdating() && EntityRatlanteanSpirit.this.rand.nextInt(2) == 0;
+            return !EntityRatlanteanSpirit.this.moveController.isUpdating() && EntityRatlanteanSpirit.this.rand.nextInt(2) == 0;
         }
 
         public boolean shouldContinueExecuting() {
@@ -182,10 +182,10 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
                 BlockPos blockpos1 = blockpos.add(EntityRatlanteanSpirit.this.rand.nextInt(15) - 7, EntityRatlanteanSpirit.this.rand.nextInt(11) - 5, EntityRatlanteanSpirit.this.rand.nextInt(15) - 7);
 
                 if (EntityRatlanteanSpirit.this.world.isAirBlock(blockpos1)) {
-                    EntityRatlanteanSpirit.this.moveHelper.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
+                    EntityRatlanteanSpirit.this.moveController.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
 
                     if (EntityRatlanteanSpirit.this.getAttackTarget() == null) {
-                        EntityRatlanteanSpirit.this.getLookHelper().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                        EntityRatlanteanSpirit.this.getLookController().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
                     }
 
                     break;
@@ -218,7 +218,7 @@ public class EntityRatlanteanSpirit extends MobEntity implements IAnimatedEntity
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityRatlanteanSpirit.this.moveHelper.setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, 0.5D);
+                EntityRatlanteanSpirit.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, 0.5D);
 
             }
             if (LivingEntity.getDistanceSq(this.parentEntity) < 4096.0D) {

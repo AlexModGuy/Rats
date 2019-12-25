@@ -31,7 +31,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
     public EntityPlagueCloud(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setSize(1.0F, 1.5F);
-        this.moveHelper = new EntityPlagueCloud.AIMoveControl(this);
+        this.moveController = new EntityPlagueCloud.AIMoveControl(this);
     }
 
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {
@@ -78,7 +78,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
                 double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX;
                 double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
-                this.getMoveHelper().setMoveTo(extraX, death.posY + 2 + rand.nextInt(2), extraZ, 1.0F);
+                this.moveController.setMoveTo(extraX, death.posY + 2 + rand.nextInt(2), extraZ, 1.0F);
             }
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().isDead) {
@@ -187,13 +187,13 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         return null;
     }
 
-    class AIMoveControl extends EntityMoveHelper {
+    class AIMoveControl extends EntitymoveController {
         public AIMoveControl(EntityPlagueCloud vex) {
             super(vex);
         }
 
-        public void onUpdateMoveHelper() {
-            if (this.action == EntityMoveHelper.Action.MOVE_TO) {
+        public void tick() {
+            if (this.action == EntitymoveController.Action.MOVE_TO) {
                 double d0 = this.posX - EntityPlagueCloud.this.posX;
                 double d1 = this.posY - EntityPlagueCloud.this.posY;
                 double d2 = this.posZ - EntityPlagueCloud.this.posZ;
@@ -201,7 +201,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
                 d3 = (double) MathHelper.sqrt(d3);
 
                 if (d3 < EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntityMoveHelper.Action.WAIT;
+                    this.action = EntitymoveController.Action.WAIT;
                     EntityPlagueCloud.this.motionX *= 0.5D;
                     EntityPlagueCloud.this.motionY *= 0.5D;
                     EntityPlagueCloud.this.motionZ *= 0.5D;
@@ -231,7 +231,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
         }
 
         public boolean shouldExecute() {
-            return !EntityPlagueCloud.this.getMoveHelper().isUpdating() && EntityPlagueCloud.this.rand.nextInt(2) == 0;
+            return !EntityPlagueCloud.this.moveController.isUpdating() && EntityPlagueCloud.this.rand.nextInt(2) == 0;
         }
 
         public boolean shouldContinueExecuting() {
@@ -245,10 +245,10 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
                 BlockPos blockpos1 = blockpos.add(EntityPlagueCloud.this.rand.nextInt(15) - 7, EntityPlagueCloud.this.rand.nextInt(11) - 5, EntityPlagueCloud.this.rand.nextInt(15) - 7);
 
                 if (EntityPlagueCloud.this.world.isAirBlock(blockpos1)) {
-                    EntityPlagueCloud.this.moveHelper.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
+                    EntityPlagueCloud.this.moveController.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
 
                     if (EntityPlagueCloud.this.getAttackTarget() == null) {
-                        EntityPlagueCloud.this.getLookHelper().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                        EntityPlagueCloud.this.getLookController().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
                     }
 
                     break;
@@ -281,7 +281,7 @@ public class EntityPlagueCloud extends MobEntity implements IPlagueLegion {
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityPlagueCloud.this.moveHelper.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1.0D, LivingEntity.posZ, 0.5D);
+                EntityPlagueCloud.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1.0D, LivingEntity.posZ, 0.5D);
 
             }
             if (LivingEntity.getDistanceSq(this.parentEntity) < 5.0D) {

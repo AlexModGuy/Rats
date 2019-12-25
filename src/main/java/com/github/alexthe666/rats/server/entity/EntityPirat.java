@@ -38,7 +38,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         waterBased = true;
         Arrays.fill(this.inventoryArmorDropChances, 0.2F);
         Arrays.fill(this.inventoryHandsDropChances, 0.2F);
-        this.moveHelper = new PiratMoveHelper(this);
+        this.moveController = new PiratmoveController(this);
         this.navigator = new PiratPathNavigate(this, world);
     }
 
@@ -255,14 +255,14 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         return false;
     }
 
-    public static class PiratMoveHelper extends EntityMoveHelper {
+    public static class PiratmoveController extends EntitymoveController {
 
-        public PiratMoveHelper(LivingEntity LivingEntityIn) {
+        public PiratmoveController(LivingEntity LivingEntityIn) {
             super(LivingEntityIn);
         }
 
-        public void onUpdateMoveHelper() {
-            if (this.action == EntityMoveHelper.Action.STRAFE) {
+        public void tick() {
+            if (this.action == EntitymoveController.Action.STRAFE) {
                 float f = (float) this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
                 float f1 = (float) this.speed * f;
                 float f2 = this.moveForward;
@@ -298,9 +298,9 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
                 this.entity.setAIMoveSpeed(f1);
                 this.entity.setMoveForward(this.moveForward);
                 this.entity.setMoveStrafing(this.moveStrafe);
-                this.action = EntityMoveHelper.Action.WAIT;
-            } else if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-                this.action = EntityMoveHelper.Action.WAIT;
+                this.action = EntitymoveController.Action.WAIT;
+            } else if (this.action == EntitymoveController.Action.MOVE_TO) {
+                this.action = EntitymoveController.Action.WAIT;
                 double d0 = this.posX - this.entity.posX;
                 double d1 = this.posZ - this.entity.posZ;
                 double d2 = this.posY - this.entity.posY;
@@ -318,13 +318,13 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
                 if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
                     this.entity.getJumpHelper().setJumping();
-                    this.action = EntityMoveHelper.Action.JUMPING;
+                    this.action = EntitymoveController.Action.JUMPING;
                 }
-            } else if (this.action == EntityMoveHelper.Action.JUMPING) {
+            } else if (this.action == EntitymoveController.Action.JUMPING) {
                 this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
 
                 if (this.entity.onGround) {
-                    this.action = EntityMoveHelper.Action.WAIT;
+                    this.action = EntitymoveController.Action.WAIT;
                 }
             } else {
                 this.entity.setMoveForward(0.0F);

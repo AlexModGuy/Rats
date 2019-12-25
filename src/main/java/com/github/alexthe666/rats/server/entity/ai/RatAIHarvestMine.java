@@ -111,7 +111,7 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1D);
             }
-            if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
+            if (!entity.moveController.isUpdating() && entity.onGround) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
@@ -129,7 +129,7 @@ public class RatAIHarvestMine extends Goal {
                         if (distance < 0.6F) {
                             this.entity.setMotion(0, 0, 0);
                             entity.getNavigator().clearPath();
-                            //entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                            //entity.moveController.action = EntitymoveController.Action.WAIT;
                         }
                         breakingTime++;
                         int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);

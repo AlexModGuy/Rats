@@ -1,51 +1,53 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
-import net.ilexiconn.llibrary.server.animation.Animation;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
+public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntity, IRangedAttackMob, IRatlantean {
 
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "neo_ratlantean"));
     private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
-            return entity.isEntityAlive() && !(entity instanceof IRatlantean);
+            return entity.isAlive() && !(entity instanceof IRatlantean);
         }
     };
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityFeralRatlantean.class, DataSerializers.VARINT);
-    private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS));
+    private final ServerBossInfo bossInfo = (new ServerBossInfo(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS));
     private int animationTick;
     private Animation currentAnimation;
     private int attackSelection = 0;
@@ -55,14 +57,13 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     public EntityNeoRatlantean(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setHealth(this.getMaxHealth());
-        this.setSize(0.8F, 1.3F);
-        ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
+        ((GroundPathNavigator) this.getNavigator()).setCanSwim(true);
         this.experienceValue = 80;
-        this.moveHelper = new EntityNeoRatlantean.AIMoveControl(this);
+        this.moveController = new EntityNeoRatlantean.AIMoveControl(this);
     }
 
-    protected void updateAIgoalSelector() {
-        super.updateAIgoalSelector();
+    protected void updateAITasks() {
+        super.updateAITasks();
         if (this.ticksExisted % 100 == 0) {
             this.heal(1);
         }
@@ -91,14 +92,14 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         this.dataManager.set(COLOR_VARIANT, Integer.valueOf(color));
     }
 
-    public void writeEntityToNBT(CompoundNBT compound) {
-        super.writeEntityToNBT(compound);
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
         compound.putInt("ColorVariant", this.getColorVariant());
         compound.putInt("AttackSelection", attackSelection);
     }
 
-    public void readEntityFromNBT(CompoundNBT compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         this.setColorVariant(compound.getInt("ColorVariant"));
         attackSelection = compound.getInt("AttackSelection");
         if (this.hasCustomName()) {
@@ -106,8 +107,8 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
     }
 
-    public void setCustomNameTag(String name) {
-        super.setCustomNameTag(name);
+    public void setCustomName(ITextComponent name) {
+        super.setCustomName(name);
         this.bossInfo.setName(this.getDisplayName());
     }
 
@@ -123,18 +124,18 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, @Nullable ILivingEntityData livingdata) {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setColorVariant(this.getRNG().nextInt(4));
-        return livingdata;
+        return spawnDataIn;
     }
 
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         if (world.isRemote) {
-            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
+            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
                     this.posY + this.getEyeHeight() + (this.rand.nextFloat() * 0.35F),
-                    this.posZ + (double) (this.rand.nextFloat() * this.width) - (double) this.width / 2,
+                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
                     0.0F, 0.0F, 0.0F);
         }
         if (summonCooldown > 0) {
@@ -142,8 +143,8 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
     }
 
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (humTicks % 80 == 0) {
             this.playSound(RatsSoundRegistry.NEORATLANTEAN_LOOP, 1, 1);
         }
@@ -154,17 +155,20 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
                 summonCooldown = 100;
                 int bounds = 5;
                 for (int i = 0; i < rand.nextInt(3) + 3; i++) {
-                    EntityLaserPortal laserPortal = new EntityLaserPortal(world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, this);
+                    EntityLaserPortal laserPortal = new EntityLaserPortal(RatsEntityRegistry.LASER_PORTAL, world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, this);
                     world.addEntity(laserPortal);
                 }
                 resetAttacks();
             }
             if (attackSelection == 1 && summonCooldown == 0) {
                 int bounds = 20;
-                this.world.addWeatherEffect(new EntityLightningBolt(this.world, entity.posX, entity.posY, entity.posZ, false));
-                for (int i = 0; i < rand.nextInt(3) + 2; i++) {
-                    this.world.addWeatherEffect(new EntityLightningBolt(this.world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, entity.posY, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, false));
+                if(!world.isRemote){
+                    ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.posX, entity.posY, entity.posZ, false));
+                    for (int i = 0; i < rand.nextInt(3) + 2; i++) {
+                        ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, entity.posY, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, false));
+                    }
                 }
+
                 summonCooldown = 100;
                 resetAttacks();
             }
@@ -172,7 +176,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
                 int searchRange = 10;
                 BlockPos ourPos = new BlockPos(this);
                 List<BlockPos> listOfAll = new ArrayList<>();
-                for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange))) {
+                for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                     BlockState state = world.getBlockState(pos);
                     if (!world.isAirBlock(pos) && canPickupBlock(state)) {
                         listOfAll.add(pos);
@@ -181,21 +185,21 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
                 boolean flag = false;
                 if (listOfAll.size() > 0) {
                     BlockPos pos = listOfAll.get(rand.nextInt(listOfAll.size()));
-                    EntityThrownBlock thrownBlock = new EntityThrownBlock(world, world.getBlockState(pos), this);
+                    EntityThrownBlock thrownBlock = new EntityThrownBlock(RatsEntityRegistry.THROWN_BLOCK, world, world.getBlockState(pos), this);
                     thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                     if (!world.isRemote) {
                         world.addEntity(thrownBlock);
                     }
-                    RatsMod.NETWORK_WRAPPER.sendToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
+                    RatsMod.sendMSGToAll(new MessageSyncThrownBlock(thrownBlock.getEntityId(), pos.toLong()));
                     world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     summonCooldown = 40;
                 }
                 resetAttacks();
             }
             if (attackSelection == 3 && summonCooldown == 0) {
-                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.GLOWING, 200));
-                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.WITHER, 200));
-                this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 200));
+                this.getAttackTarget().addPotionEffect(new EffectInstance(Effects.GLOWING, 200));
+                this.getAttackTarget().addPotionEffect(new EffectInstance(Effects.WITHER, 200));
+                this.getAttackTarget().addPotionEffect(new EffectInstance(Effects.LEVITATION, 200));
                 summonCooldown = 40;
                 resetAttacks();
             }
@@ -207,21 +211,21 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
     }
 
     public boolean canPickupBlock(BlockState state) {
-        return EntityWither.canDestroyBlock(state.getBlock());
+        return WitherEntity.canDestroyBlock(state);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityNeoRatlantean.AIFollowPrey(this));
         this.goalSelector.addGoal(2, new EntityNeoRatlantean.AIMoveRandom());
-        this.goalSelector.addGoal(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.goalSelector.addGoal(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(7, new EntityAILookIdle(this));
-        this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-        this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.neoRatlanteanHealth);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.neoRatlanteanAttack);
@@ -267,11 +271,6 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
 
     }
 
-    @Override
-    public void setSwingingArms(boolean swingingArms) {
-
-    }
-
     protected SoundEvent getAmbientSound() {
         return RatsSoundRegistry.NEORATLANTEAN_IDLE;
     }
@@ -288,36 +287,24 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         return 10;
     }
 
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
-    }
-
-    class AIMoveControl extends EntityMoveHelper {
+    class AIMoveControl extends MovementController {
         public AIMoveControl(EntityNeoRatlantean vex) {
             super(vex);
         }
 
-        public void onUpdateMoveHelper() {
-            if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-                double d0 = this.posX - EntityNeoRatlantean.this.posX;
-                double d1 = this.posY - EntityNeoRatlantean.this.posY;
-                double d2 = this.posZ - EntityNeoRatlantean.this.posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double) MathHelper.sqrt(d3);
-
-                if (d3 < EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntityMoveHelper.Action.WAIT;
-                    EntityNeoRatlantean.this.motionX *= 0.5D;
-                    EntityNeoRatlantean.this.motionY *= 0.5D;
-                    EntityNeoRatlantean.this.motionZ *= 0.5D;
+        public void tick() {
+            if (this.action == MovementController.Action.MOVE_TO) {
+                Vec3d vec3d = new Vec3d(this.posX - EntityNeoRatlantean.this.posX, this.posY - EntityNeoRatlantean.this.posY, this.posZ - EntityNeoRatlantean.this.posZ);
+                double d0 = vec3d.length();
+                double edgeLength = EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength();
+                if (d0 < edgeLength) {
+                    this.action = MovementController.Action.WAIT;
+                    EntityNeoRatlantean.this.setMotion(EntityNeoRatlantean.this.getMotion().scale(0.5D));
                 } else {
-                    EntityNeoRatlantean.this.motionX += d0 / d3 * 0.25D * this.speed;
-                    EntityNeoRatlantean.this.motionY += d1 / d3 * 0.25D * this.speed;
-                    EntityNeoRatlantean.this.motionZ += d2 / d3 * 0.25D * this.speed;
-
+                    EntityNeoRatlantean.this.setMotion(EntityNeoRatlantean.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityNeoRatlantean.this.getAttackTarget() == null) {
-                        EntityNeoRatlantean.this.rotationYaw = -((float) MathHelper.atan2(EntityNeoRatlantean.this.motionX, EntityNeoRatlantean.this.motionZ)) * (180F / (float) Math.PI);
+                        Vec3d vec3d1 = EntityNeoRatlantean.this.getMotion();
+                        EntityNeoRatlantean.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityNeoRatlantean.this.renderYawOffset = EntityNeoRatlantean.this.rotationYaw;
                     } else {
                         double d4 = EntityNeoRatlantean.this.getAttackTarget().posX - EntityNeoRatlantean.this.posX;
@@ -358,7 +345,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
             double maxFollow = followDist * 5;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityNeoRatlantean.this.moveHelper.setMoveTo(LivingEntity.posX + rand.nextInt(10) - 20, LivingEntity.posY + 3, LivingEntity.posZ + rand.nextInt(10) - 20, 1D);
+                EntityNeoRatlantean.this.moveController.setMoveTo(LivingEntity.posX + rand.nextInt(10) - 20, LivingEntity.posY + 3, LivingEntity.posZ + rand.nextInt(10) - 20, 1D);
             }
         }
     }
@@ -370,7 +357,7 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
         }
 
         public boolean shouldExecute() {
-            return !EntityNeoRatlantean.this.getMoveHelper().isUpdating() && EntityNeoRatlantean.this.rand.nextInt(2) == 0;
+            return !EntityNeoRatlantean.this.moveController.isUpdating() && EntityNeoRatlantean.this.rand.nextInt(2) == 0;
         }
 
         public boolean shouldContinueExecuting() {
@@ -384,10 +371,10 @@ public class EntityNeoRatlantean extends MobEntity implements IAnimatedEntity, I
                 BlockPos blockpos1 = blockpos.add(EntityNeoRatlantean.this.rand.nextInt(15) - 7, EntityNeoRatlantean.this.rand.nextInt(11) - 5, EntityNeoRatlantean.this.rand.nextInt(15) - 7);
 
                 if (EntityNeoRatlantean.this.world.isAirBlock(blockpos1)) {
-                    EntityNeoRatlantean.this.moveHelper.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 1D);
+                    EntityNeoRatlantean.this.moveController.setMoveTo((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 1D);
 
                     if (EntityNeoRatlantean.this.getAttackTarget() == null) {
-                        EntityNeoRatlantean.this.getLookHelper().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                        EntityNeoRatlantean.this.getLookController().setLookPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
                     }
 
                     break;

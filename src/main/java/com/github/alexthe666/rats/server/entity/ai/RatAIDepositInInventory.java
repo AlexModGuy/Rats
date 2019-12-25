@@ -97,7 +97,7 @@ public class RatAIDepositInInventory extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.moveController.isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);
@@ -110,7 +110,7 @@ public class RatAIDepositInInventory extends Goal {
                             if (distance < 0.6F) {
                                 this.entity.setMotion(0, 0, 0);
                                 this.entity.getNavigator().clearPath();
-                                //this.entity.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+                                //this.entity.moveController.action = EntitymoveController.Action.WAIT;
                             }
                             breakingTime++;
                             int hardness = (int) (block.getBlockHardness(this.entity.world, rayPos) * 100);

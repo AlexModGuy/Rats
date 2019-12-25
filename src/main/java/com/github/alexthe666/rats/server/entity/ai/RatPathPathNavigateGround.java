@@ -78,7 +78,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
                     double d0 = 1.0F;
 
                     if (this.entity.getDistanceSq(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ()) >= d0 && (this.entity.posY <= (double) this.targetPosition.getY() || this.entity.getDistanceSq(this.targetPosition.getX(), MathHelper.floor(this.entity.posY), this.targetPosition.getZ()) >= d0)) {
-                        this.entity.getMoveHelper().setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
+                        this.entity.moveController.setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
                     } else {
                         this.targetPosition = null;
                     }

@@ -8,10 +8,10 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.MathHelper;
 
-public class RatTubeMoveHelper extends MovementController {
+public class RatTubemoveController extends MovementController {
     EntityRat rat;
 
-    public RatTubeMoveHelper(EntityRat rat) {
+    public RatTubemoveController(EntityRat rat) {
         super(rat);
         this.speed = 1F;
         this.rat = rat;

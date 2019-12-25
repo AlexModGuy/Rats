@@ -208,7 +208,7 @@ public class BlockRatCage extends Block {
                         rat.stopRiding();
                         rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                         rat.getNavigator().clearPath();
-                        //rat.getMoveHelper().action = MovementController.Action.WAIT;
+                        //rat.moveController.action = MovementController.Action.WAIT;
                         ratCount++;
                     }
                 }

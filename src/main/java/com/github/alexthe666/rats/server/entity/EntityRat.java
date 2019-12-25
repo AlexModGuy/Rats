@@ -442,11 +442,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying
-            this.moveController = new RatFlyingMoveHelper(this);
+            this.moveController = new RatFlyingmoveController(this);
             this.navigator = new FlyingRatPathNavigate(this, world);
             this.navigatorType = 2;
         } else if (type == 3) {//tube
-            this.moveController = new RatTubeMoveHelper(this);
+            this.moveController = new RatTubemoveController(this);
             RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
             if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
                 PathPoint point = this.navigator.getPath().getFinalPathPoint();
@@ -455,7 +455,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigator = newNav;
             this.navigatorType = 3;
         } else if (type == 4) {//aquatic
-            this.moveController = new RatAquaticMoveHelper(this);
+            this.moveController = new RatAquaticmoveController(this);
             this.navigator = new AquaticRatPathNavigate(this, world);
             this.navigatorType = 4;
         }
@@ -775,7 +775,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 switchNavigator(2);
             }
             if (canMove()) {
-                if (this.getMoveHelper().getY() > this.posY) {
+                if (this.moveController.getY() > this.posY) {
                     this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
                 }
             } else if (!onGround) {
@@ -806,7 +806,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 switchNavigator(4);
             }
             if (canMove()) {
-                if (this.getMoveHelper().getY() > this.posY) {
+                if (this.moveController.getY() > this.posY) {
                     this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
                 }
             } else if (!onGround) {
@@ -1550,7 +1550,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (diggingPos != null) {
             ++this.breakingTime;
             int i = (int) ((float) this.breakingTime / 160.0F * 10.0F);
-            //this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+            //this.moveController.action = EntitymoveController.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
@@ -1669,8 +1669,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public void updateAIgoalSelector() {
-        if (this.getMoveHelper().isUpdating()) {
-            double d0 = this.getMoveHelper().getSpeed();
+        if (this.moveController.isUpdating()) {
+            double d0 = this.moveController.getSpeed();
             if (d0 == 0.6D) {
                 this.setSneaking(true);
                 this.setSprinting(false);
@@ -1692,7 +1692,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void travel(Vec3d vec3d) {
         if (!this.canMove()) {
-            //this.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+            //this.moveController.action = EntitymoveController.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }

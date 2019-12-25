@@ -6,15 +6,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class RatAquaticMoveHelper extends MovementController {
+public class RatAquaticmoveController extends MovementController {
     EntityRat rat;
 
-    public RatAquaticMoveHelper(EntityRat rat) {
+    public RatAquaticmoveController(EntityRat rat) {
         super(rat);
         this.rat = rat;
     }
 
-    public void onUpdateMoveHelper() {
+    public void tick() {
         if (this.action == MovementController.Action.MOVE_TO && this.rat.isInWater()) {
             if (rat.collidedHorizontally && !rat.onGround) {
                 rat.rotationYaw += 180.0F;
