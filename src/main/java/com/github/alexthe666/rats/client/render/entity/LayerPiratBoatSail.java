@@ -25,7 +25,7 @@ public class LayerPiratBoatSail implements LayerRenderer<EntityPiratBoat> {
         GlStateManager.rotate(90F, 0F, 1F, 0F);
         GlStateManager.translate(0F, -0.8F, -0.9F);
         GlStateManager.scale(4F, 4F, 4F);
-        Minecraft.getMinecraft().getItemRenderer().renderItem(rat, EntityPiratBoat.BANNER, ItemCameraTransforms.TransformType.GROUND);
+        Minecraft.getInstance().getItemRenderer().renderItem(rat, EntityPiratBoat.BANNER, ItemCameraTransforms.TransformType.GROUND);
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();

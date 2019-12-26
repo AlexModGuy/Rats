@@ -14,12 +14,12 @@ public class RenderThrownBlock extends Render<EntityThrownBlock> {
     private static final ModelCube MODEL_CUBE = new ModelCube(1.1F);
 
     public RenderThrownBlock() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
         this.shadowSize = 0.5F;
     }
 
     public void doRender(EntityThrownBlock entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         if (entity.fallTile != null) {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
@@ -53,9 +53,9 @@ public class RenderThrownBlock extends Render<EntityThrownBlock> {
         GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
         GlStateManager.disableLighting();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+        Minecraft.getInstance().entityRenderer.setupFogColor(true);
         MODEL_CUBE.render(entity, 0, 0, 0, 0, 0, 0.0625F);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+        Minecraft.getInstance().entityRenderer.setupFogColor(false);
         GlStateManager.matrixMode(5890);
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(5888);

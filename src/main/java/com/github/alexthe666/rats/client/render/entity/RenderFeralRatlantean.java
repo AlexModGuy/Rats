@@ -18,7 +18,7 @@ public class RenderFeralRatlantean extends RenderLiving<EntityFeralRatlantean> {
     private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_green.png");
 
     public RenderFeralRatlantean() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelFeralRatlantean(), 0.5F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelFeralRatlantean(), 0.5F);
         this.addLayer(new LayerFeralRatlanteanClothes(this));
         this.addLayer(new LayerFeralRatlanteanEyes(this));
     }

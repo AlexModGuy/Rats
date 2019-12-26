@@ -20,7 +20,7 @@ public class RenderPlagueBeast extends RenderLiving<EntityFeralRatlantean> {
     private static final ResourceLocation EYE_TEXTURE = new ResourceLocation("rats:textures/entity/plague_beast_eyes.png");
 
     public RenderPlagueBeast() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelFeralRatlantean(), 0.5F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelFeralRatlantean(), 0.5F);
         this.addLayer(new LayerBasicOverlay(this, PLAGUE_TEXTURE));
         this.addLayer(new LayerGlowingOverlay(this, EYE_TEXTURE));
     }

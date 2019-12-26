@@ -7,7 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelBlackDeath extends EntityModel {
+public class ModelBlackDeath<T extends EntityBlackDeath> extends EntityModel<T> {
     public RendererModel head;
     public RendererModel hat;
     public RendererModel body;
@@ -81,14 +81,12 @@ public class ModelBlackDeath extends EntityModel {
         this.head.addChild(this.brim);
     }
 
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+    public void render(EntityBlackDeath abstractillager, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, abstractillager);
         this.head.render(scale);
         this.body.render(scale);
         this.leg0.render(scale);
         this.leg1.render(scale);
-        EntityBlackDeath abstractillager = (EntityBlackDeath) entityIn;
-
         if (!abstractillager.isSummoning()) {
             this.arms.render(scale);
         } else {

@@ -18,7 +18,7 @@ public class RenderGolemBeam extends RenderArrow {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/golem_beam.png");
 
     public RenderGolemBeam() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
     }
 
     public void doRender(EntityArrow entity, double x, double y, double z, float entityYaw, float partialTicks) {

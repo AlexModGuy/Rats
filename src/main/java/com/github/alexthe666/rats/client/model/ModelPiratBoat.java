@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelPiratBoat extends EntityModel {
+public class ModelPiratBoat <T extends LivingEntity> extends EntityModel<T> {
     private final int patchList = GLAllocation.generateDisplayLists(1);
     public RendererModel[] boatSides = new RendererModel[5];
     public RendererModel[] paddles = new RendererModel[2];

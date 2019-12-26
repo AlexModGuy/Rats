@@ -54,7 +54,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 float f = 0.5F;
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             if (entity.shouldNotIdleAnimation()) {
                 translateToHead();
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
@@ -115,7 +115,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 float f = 0.5F;
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             translateToHand(false);
             GlStateManager.rotate(-80.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(10.0F, 0.0F, 1.0F, 0.0F);
@@ -136,7 +136,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 float f = 0.5F;
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             translateToHand(true);
             GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -154,7 +154,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
                 float f = 0.5F;
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             translateToHand(true);
             GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -165,7 +165,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(true);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
@@ -182,7 +182,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
@@ -192,7 +192,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
@@ -201,7 +201,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
@@ -211,7 +211,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-90F, 0.0F, 0.0F, 1.0F);
@@ -222,7 +222,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHand(false);
             GlStateManager.rotate(-180F, 0.0F, 0.0F, 1.0F);
@@ -233,7 +233,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
             GlStateManager.pushMatrix();
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
             ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
@@ -261,7 +261,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
             GlStateManager.pushMatrix();
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
             ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
@@ -288,7 +288,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
             GlStateManager.pushMatrix();
             GlStateManager.translate(0F, 0.1F, 0.1F);
@@ -298,7 +298,7 @@ public class LayerRatHeldItem implements LayerRenderer<EntityRat> {
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
             translateToHead();
             GlStateManager.translate(0F, 0.1F, 0.035F);

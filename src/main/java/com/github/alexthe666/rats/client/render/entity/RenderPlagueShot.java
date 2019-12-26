@@ -16,7 +16,7 @@ public class RenderPlagueShot extends Render<EntityPlagueShot> {
     private static final ModelRatlanteanSpirit MODEL_SPIRIT = new ModelRatlanteanSpirit();
 
     public RenderPlagueShot() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
     }
 
     public void doRender(EntityPlagueShot entity, double x, double y, double z, float entityYaw, float partialTicks) {

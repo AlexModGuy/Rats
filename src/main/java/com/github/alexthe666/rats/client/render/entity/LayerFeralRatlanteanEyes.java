@@ -23,9 +23,9 @@ public class LayerFeralRatlanteanEyes implements LayerRenderer<EntityFeralRatlan
         GlStateManager.depthFunc(514);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
         GlStateManager.enableLighting();
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+        Minecraft.getInstance().entityRenderer.setupFogColor(true);
         this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+        Minecraft.getInstance().entityRenderer.setupFogColor(false);
         this.ratRenderer.setLightmap(rat);
         GlStateManager.disableBlend();
         GlStateManager.depthFunc(515);

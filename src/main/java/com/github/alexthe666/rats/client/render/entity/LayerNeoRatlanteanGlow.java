@@ -23,9 +23,9 @@ public class LayerNeoRatlanteanGlow implements LayerRenderer<EntityNeoRatlantean
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
         GlStateManager.enableLighting();
         GlStateManager.disableCull();
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+        Minecraft.getInstance().entityRenderer.setupFogColor(true);
         this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+        Minecraft.getInstance().entityRenderer.setupFogColor(false);
         this.ratRenderer.setLightmap(rat);
         GlStateManager.enableCull();
         GlStateManager.disableBlend();

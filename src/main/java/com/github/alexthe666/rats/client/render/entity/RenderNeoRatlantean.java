@@ -18,7 +18,7 @@ public class RenderNeoRatlantean extends RenderLiving<EntityNeoRatlantean> {
     private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_green.png");
 
     public RenderNeoRatlantean() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelNeoRatlantean(), 0.65F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelNeoRatlantean(), 0.65F);
         this.addLayer(new LayerNeoRatlanteanGlow(this));
     }
 

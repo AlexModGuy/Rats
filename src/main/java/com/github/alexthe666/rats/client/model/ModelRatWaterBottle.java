@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.model;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 
-public class ModelRatWaterBottle extends EntityModel {
+public class ModelRatWaterBottle <T extends LivingEntity> extends EntityModel<T> {
     public RendererModel waterBottle;
     public RendererModel bottom;
     public RendererModel sip;

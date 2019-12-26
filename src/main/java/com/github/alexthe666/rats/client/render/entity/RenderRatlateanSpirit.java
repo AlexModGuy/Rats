@@ -14,7 +14,7 @@ public class RenderRatlateanSpirit extends RenderLiving<EntityMob> {
     private static final ResourceLocation TEXTURE_CLOUD = new ResourceLocation("rats:textures/entity/plague_cloud.png");
 
     public RenderRatlateanSpirit() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelRatlanteanSpirit(), 0.5F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelRatlanteanSpirit(), 0.5F);
     }
 
     protected ResourceLocation getEntityTexture(EntityMob entity) {

@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderRatlanteanFlame extends Render<EntityRatlanteanFlame> {
 
     public RenderRatlanteanFlame() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
     }
 
     public void doRender(EntityRatlanteanFlame entity, double x, double y, double z, float entityYaw, float partialTicks) {
@@ -24,7 +24,7 @@ public class RenderRatlanteanFlame extends Render<EntityRatlanteanFlame> {
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
-        TextureAtlasSprite textureatlassprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(RatsItemRegistry.RATLANTEAN_FLAME);
+        TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getRenderItem().getItemModelMesher().getParticleIcon(RatsItemRegistry.RATLANTEAN_FLAME);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         float f = textureatlassprite.getMinU();

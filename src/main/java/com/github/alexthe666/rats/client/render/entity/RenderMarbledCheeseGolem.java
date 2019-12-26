@@ -12,7 +12,7 @@ public class RenderMarbledCheeseGolem extends RenderLiving<EntityMarbleCheeseGol
     private static final ResourceLocation MARBLED_CHEESE_GOLEM_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/marble_cheese_golem.png");
 
     public RenderMarbledCheeseGolem() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelMarbledCheeseGolem(), 0.95F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelMarbledCheeseGolem(), 0.95F);
         this.addLayer(new LayerCheeseGolemGlow(this));
     }
 

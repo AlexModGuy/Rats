@@ -50,9 +50,9 @@ public class LayerRatPlague implements LayerRenderer<EntityRat> {
             GlStateManager.color(0.5F, 0.5F, 0.5F, alpha);
             GlStateManager.disableLighting();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-            Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+            Minecraft.getInstance().entityRenderer.setupFogColor(true);
             RAT_MODEL.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+            Minecraft.getInstance().entityRenderer.setupFogColor(false);
             GlStateManager.matrixMode(5890);
             GlStateManager.loadIdentity();
             GlStateManager.matrixMode(5888);

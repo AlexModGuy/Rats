@@ -16,7 +16,7 @@ public class RenderLaserPortal extends Render<EntityLaserPortal> {
     private static final ModelNeoRatlantean MODEL_NEO_RATLANTEAN = new ModelNeoRatlantean();
 
     public RenderLaserPortal() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
         MODEL_NEO_RATLANTEAN.floatyPivot.setRotationPoint(0, 0, 0);
         MODEL_NEO_RATLANTEAN.floatyPivot.rotateAngleY = 0.7853981633974483F;
     }

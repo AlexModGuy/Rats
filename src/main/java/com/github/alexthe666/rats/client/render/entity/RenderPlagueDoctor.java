@@ -13,7 +13,7 @@ public class RenderPlagueDoctor extends RenderLiving<EntityPlagueDoctor> {
     private static final ResourceLocation VILLAGER_TEXTURES = new ResourceLocation("rats:textures/entity/plague_doctor.png");
 
     public RenderPlagueDoctor() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelPlagueDoctor(0.0F), 0.5F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelPlagueDoctor(0.0F), 0.5F);
         this.addLayer(new LayerCustomHead(this.getMainModel().villagerHead));
     }
 

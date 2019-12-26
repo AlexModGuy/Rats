@@ -19,7 +19,7 @@ public class RenderLaserBeam extends RenderArrow {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/laser_beam.png");
 
     public RenderLaserBeam() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
     }
 
     public void doRender(EntityArrow entity, double x, double y, double z, float entityYaw, float partialTicks) {

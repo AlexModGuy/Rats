@@ -41,7 +41,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
     public static void renderEnchantedGlint(RenderLivingBase<?> p_188364_0_, LivingEntity p_188364_1_, ModelRenderer model, float p_188364_3_, float p_188364_4_, float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_, float r, float g, float b) {
         float f = (float) p_188364_1_.ticksExisted + p_188364_5_;
         p_188364_0_.bindTexture(ENCHANTED_ITEM_GLINT_RES);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+        Minecraft.getInstance().entityRenderer.setupFogColor(true);
         GlStateManager.enableBlend();
         GlStateManager.depthFunc(514);
         GlStateManager.depthMask(false);
@@ -72,7 +72,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
         GlStateManager.depthFunc(515);
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+        Minecraft.getInstance().entityRenderer.setupFogColor(false);
     }
 
     protected void initArmor() {
@@ -191,7 +191,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
 
                 }
                 GlStateManager.scale(1.7F, 1.7F, 1.7F);
-                Minecraft.getMinecraft().getItemRenderer().renderItem(LivingEntityIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
+                Minecraft.getInstance().getItemRenderer().renderItem(LivingEntityIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
             } else {
                 ((ModelRat) this.renderer.getMainModel()).body1.postRender(0.0625F);
                 ((ModelRat) this.renderer.getMainModel()).body2.postRender(0.0625F);
@@ -201,7 +201,7 @@ public class LayerRatHelmet extends LayerArmorBase<ModelBiped> {
                 GlStateManager.rotate(180, 1, 0, 0);
                 GlStateManager.rotate(180, 0, 1, 0);
                 GlStateManager.scale(0.8F, 0.8F, 0.8F);
-                Minecraft.getMinecraft().getItemRenderer().renderItem(LivingEntityIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
+                Minecraft.getInstance().getItemRenderer().renderItem(LivingEntityIn, itemstack, ItemCameraTransforms.TransformType.FIXED);
             }
 
         }

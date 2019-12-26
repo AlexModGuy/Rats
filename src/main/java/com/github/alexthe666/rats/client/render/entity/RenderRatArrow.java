@@ -12,7 +12,7 @@ public class RenderRatArrow extends RenderArrow<EntityRatArrow> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat_arrow.png");
 
     public RenderRatArrow() {
-        super(Minecraft.getMinecraft().getRenderManager());
+        super(Minecraft.getInstance().getRenderManager());
     }
 
     @Nullable

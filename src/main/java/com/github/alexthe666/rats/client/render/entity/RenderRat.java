@@ -39,7 +39,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ResourceLocation SHARVA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_sharva.png");
 
     public RenderRat() {
-        super(Minecraft.getMinecraft().getRenderManager(), RAT_MODEL, 0.15F);
+        super(Minecraft.getInstance().getRenderManager(), RAT_MODEL, 0.15F);
         this.addLayer(new LayerRatPlague(this));
         this.addLayer(new LayerRatEyes(this));
         this.addLayer(new LayerRatHelmet(this));
@@ -52,7 +52,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
 
     protected void renderModel(EntityRat rat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         boolean flag = this.isVisible(rat);
-        boolean flag1 = !flag && !rat.isInvisibleToPlayer(Minecraft.getMinecraft().player);
+        boolean flag1 = !flag && !rat.isInvisibleToPlayer(Minecraft.getInstance().player);
         if (flag || flag1) {
             if (!this.bindEntityTexture(rat)) {
                 return;
@@ -87,7 +87,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
         if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof PlayerEntity) {
             Entity riding = rat.getRidingEntity();
             if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
-                Render playerRender = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(riding);
+                Render playerRender = Minecraft.getInstance().getRenderManager().getEntityRenderObject(riding);
                 if (playerRender instanceof RenderLivingBase && ((RenderLivingBase) playerRender).getMainModel() instanceof ModelBiped) {
                     ((ModelBiped) ((RenderLivingBase) playerRender).getMainModel()).bipedHead.postRender(0.0625F);
                     GlStateManager.translate(0.0F, -0.7F, 0.25);
@@ -128,7 +128,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);
             if (resourcelocation == null) {
                 resourcelocation = new ResourceLocation(s);
-                //Minecraft.getMinecraft().getTextureManager().loadTexture(resourcelocation, new LayeredTexture(entity.getVariantTexturePaths()));
+                //Minecraft.getInstance().getTextureManager().loadTexture(resourcelocation, new LayeredTexture(entity.getVariantTexturePaths()));
                 LAYERED_LOCATION_CACHE.put(s, resourcelocation);
             }
             return resourcelocation;

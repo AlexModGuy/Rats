@@ -17,7 +17,7 @@ public class RenderIllagerPiper extends RenderLiving<EntityIllagerPiper> {
     private static final ResourceLocation ILLUSIONIST = new ResourceLocation("rats:textures/entity/illager_piper.png");
 
     public RenderIllagerPiper() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelIllagerPiper(), 0.5F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelIllagerPiper(), 0.5F);
         this.addLayer(new LayerHeldItem(this) {
             protected void translateToHand(HandSide side) {
                 ModelIllagerPiper model = ((ModelIllagerPiper) this.livingEntityRenderer.getMainModel());

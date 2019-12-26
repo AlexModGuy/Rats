@@ -15,7 +15,7 @@ public class RenderPiratBoat extends RenderLiving<EntityPiratBoat> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/boat/boat_oak.png");
 
     public RenderPiratBoat() {
-        super(Minecraft.getMinecraft().getRenderManager(), new ModelPiratBoat(), 0.65F);
+        super(Minecraft.getInstance().getRenderManager(), new ModelPiratBoat(), 0.65F);
         this.addLayer(new LayerPiratBoatSail(this));
     }
 

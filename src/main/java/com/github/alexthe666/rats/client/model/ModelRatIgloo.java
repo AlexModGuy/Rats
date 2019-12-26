@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.Entity;
 
-public class ModelRatIgloo extends EntityModel {
+public class ModelRatIgloo <T extends LivingEntity> extends EntityModel<T> {
     public RendererModel cube1;
     public RendererModel crown;
     public RendererModel entrance;
