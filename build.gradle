@@ -90,7 +90,7 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.0.13'
-    compile 'citadel:citadel:1.0.0:deobf'
+    compile 'citadel:citadel:1.0.1:deobf'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

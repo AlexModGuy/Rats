@@ -4,7 +4,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
 import net.minecraft.client.Minecraft;
 
-public class ModelRatBreedingLantern extends AdvancedEntityModel {
+public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel top;
     public AdvancedRendererModel connector1;
     public AdvancedRendererModel connector2;

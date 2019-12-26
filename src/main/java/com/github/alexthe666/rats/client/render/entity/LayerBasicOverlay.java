@@ -15,7 +15,7 @@ public class LayerBasicOverlay implements LayerRenderer<LivingEntity> {
         this.texture = texture;
     }
 
-    public void doRenderLayer(LivingEntity rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(LivingEntity rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();

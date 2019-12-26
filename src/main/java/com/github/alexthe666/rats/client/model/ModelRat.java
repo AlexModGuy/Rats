@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 
-public class ModelRat extends AdvancedEntityModel {
+public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel body1;
     public AdvancedRendererModel body2;
     public AdvancedRendererModel tail1;

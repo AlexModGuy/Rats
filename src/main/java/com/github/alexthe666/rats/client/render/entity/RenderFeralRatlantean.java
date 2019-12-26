@@ -3,15 +3,14 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelFeralRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderFeralRatlantean extends RenderLiving<EntityFeralRatlantean> {
-
+public class RenderFeralRatlantean extends MobRenderer<EntityFeralRatlantean, ModelFeralRatlantean<EntityFeralRatlantean>> {
     private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_blue.png");
     private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_black.png");
     private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_brown.png");

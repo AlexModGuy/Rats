@@ -6,7 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
 
-public class ModelPinkie extends AdvancedEntityModel {
+public class ModelPinkie<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel body;
 
     public ModelPinkie() {

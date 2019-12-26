@@ -8,7 +8,7 @@ import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelNeoRatlantean extends AdvancedEntityModel {
+public class ModelNeoRatlantean<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel body1;
     public AdvancedRendererModel floaty;
     public AdvancedRendererModel floatyPivot;

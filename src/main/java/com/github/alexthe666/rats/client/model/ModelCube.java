@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.LivingEntity;
 
-public class ModelCube <T extends LivingEntity> extends EntityModel<T> {
+public class ModelCube <T extends Entity> extends EntityModel<T> {
     public RendererModel head;
 
     public ModelCube() {

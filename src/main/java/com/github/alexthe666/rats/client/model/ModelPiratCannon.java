@@ -4,7 +4,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
 import net.minecraft.entity.Entity;
 
-public class ModelPiratCannon extends AdvancedEntityModel {
+public class ModelPiratCannon<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel base;
     public AdvancedRendererModel middle;
     public AdvancedRendererModel backCannon;

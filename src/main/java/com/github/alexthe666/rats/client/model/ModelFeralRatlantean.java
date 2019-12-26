@@ -7,7 +7,7 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
 import net.minecraft.entity.Entity;
 
-public class ModelFeralRatlantean extends AdvancedEntityModel {
+public class ModelFeralRatlantean<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel lowerbody;
     public AdvancedRendererModel midBody;
     public AdvancedRendererModel backLeftThigh;

@@ -8,7 +8,7 @@ import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelMarbledCheeseGolem extends AdvancedEntityModel {
+public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityModel<T> {
     public AdvancedRendererModel body;
     public AdvancedRendererModel headBase;
     public AdvancedRendererModel armLeft1;

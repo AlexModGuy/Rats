@@ -3,36 +3,39 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.LightType;
 
-public class LayerRatEyes implements LayerRenderer<EntityRat> {
+public class LayerRatEyes extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png");
     private static final ResourceLocation TEXTURE_PLAGUE = new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png");
     private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png");
     private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png");
     private static final ResourceLocation TEXTURE_NONBELIEVER = new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png");
     private static final ResourceLocation TEXTURE_DRAGON = new ResourceLocation("rats:textures/entity/rat/rat_eye_dragon_upgrade.png");
-    private final RenderRat ratRenderer;
+    private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRenderer;
 
-    public LayerRatEyes(RenderRat ratRendererIn) {
+    public LayerRatEyes(IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRendererIn) {
+        super(ratRendererIn);
         this.ratRenderer = ratRendererIn;
     }
 
-    public void doRenderLayer(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (!(ratRenderer.getMainModel() instanceof ModelRat)) {
+    public void render(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
-        long roundedTime = rat.world.getWorldTime() % 24000;
+        long roundedTime = rat.world.getDayTime() % 24000;
         boolean night = roundedTime >= 13000 && roundedTime <= 22000;
         BlockPos ratPos = rat.getLightPosition();
-        int i = rat.world.getLightFor(EnumSkyBlock.SKY, ratPos);
-        int j = rat.world.getLightFor(EnumSkyBlock.BLOCK, ratPos);
+        int i = rat.world.getLightFor(LightType.SKY, ratPos);
+        int j = rat.world.getLightFor(LightType.BLOCK, ratPos);
         int brightness;
         if (night) {
             brightness = j;
@@ -54,17 +57,21 @@ public class LayerRatEyes implements LayerRenderer<EntityRat> {
                 this.ratRenderer.bindTexture(TEXTURE);
             }
             GlStateManager.enableBlend();
+            GlStateManager.disableAlphaTest();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
             GlStateManager.disableLighting();
-            GlStateManager.depthFunc(514);
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
+            GlStateManager.depthMask(!rat.isInvisible());
+            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
             GlStateManager.enableLighting();
-            Minecraft.getInstance().entityRenderer.setupFogColor(true);
-            this.ratRenderer.getMainModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            Minecraft.getInstance().entityRenderer.setupFogColor(false);
-            this.ratRenderer.setLightmap(rat);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+            gamerenderer.setupFogColor(false);
+            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            gamerenderer.setupFogColor(false);
+            this.func_215334_a(rat);
+            GlStateManager.depthMask(true);
             GlStateManager.disableBlend();
-            GlStateManager.depthFunc(515);
+            GlStateManager.enableAlphaTest();
         }
     }
 

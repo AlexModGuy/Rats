@@ -10,7 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderBlackDeath<T extends EntityBlackDeath> extends MobRenderer<T, ModelBlackDeath<T>> {
+public class RenderBlackDeath extends MobRenderer<EntityBlackDeath, ModelBlackDeath<EntityBlackDeath>> {
 
     private static final ResourceLocation BLACK_DEATH_TEXTURE = new ResourceLocation("rats:textures/entity/black_death.png");
 

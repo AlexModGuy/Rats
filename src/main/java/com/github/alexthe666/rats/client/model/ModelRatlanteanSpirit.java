@@ -7,7 +7,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
-public class ModelRatlanteanSpirit extends AdvancedEntityModel {
+public class ModelRatlanteanSpirit<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel head;
     public AdvancedRendererModel snout;
     public AdvancedRendererModel leftEar;
