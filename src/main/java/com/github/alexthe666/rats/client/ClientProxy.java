@@ -332,7 +332,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void openCheeseStaffGui() {
         if (refrencedRat != null) {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
+            Minecraft.getInstance().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
         }
     }
 

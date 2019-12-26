@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,14 +10,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -52,14 +49,15 @@ public class ItemCheeseStick extends Item {
         }
         if (!context.getWorld().isRemote) {
             if (rat == null || !(rat instanceof EntityRat)) {
-                //RatsMod.NETWORK_WRAPPER.sendToAll(new MessageCheeseStaffRat(0, true));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true));
                 context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rat.staff.no_rat"), true);
             } else {
-                //RatsMod.NETWORK_WRAPPER.sendToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
                 EntityRat boundRat = (EntityRat) rat;
                 context.getPlayer().swingArm(context.getHand());
             }
         }
+
         RatsMod.PROXY.openCheeseStaffGui();
 
             /*if (worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null) {

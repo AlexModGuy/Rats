@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerRatUpgrade extends Container {
 
     private ItemStack stack;
-    private IInventory inventory;
+    public IInventory inventory;
     private IInventory inventoryPlayer;
 
     //public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
