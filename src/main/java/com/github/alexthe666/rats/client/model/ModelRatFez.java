@@ -1,23 +1,23 @@
 package com.github.alexthe666.rats.client.model;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 
-public class ModelRatFez extends ModelBiped {
-    public ModelRenderer fez1;
-    public ModelRenderer fez2;
+public class ModelRatFez extends BipedModel {
+    public RendererModel fez1;
+    public RendererModel fez2;
 
     public ModelRatFez(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.fez2 = new ModelRenderer(this, 0, 75);
+        this.fez2 = new RendererModel(this, 0, 75);
         this.fez2.setRotationPoint(2.0F, -7.0F, 1.5F);
         this.fez2.addBox(0.0F, 0.0F, 0.0F, 3, 5, 2, 0.0F);
         this.setRotateAngle(fez2, 0.0F, 0.0F, -0.27314402793711257F);
-        this.fez1 = new ModelRenderer(this, 0, 64);
+        this.fez1 = new RendererModel(this, 0, 64);
         this.fez1.setRotationPoint(0.0F, -8.0F, 0.0F);
         this.fez1.addBox(0.0F, -6.0F, 0.0F, 5, 6, 5, 0.0F);
         this.setRotateAngle(fez1, -0.4459316238845512F, 0.0F, 0.3312634920285238F);
@@ -25,9 +25,9 @@ public class ModelRatFez extends ModelBiped {
         this.bipedHead.addChild(this.fez1);
     }
 
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        if (entityIn instanceof EntityArmorStand) {
-            EntityArmorStand entityarmorstand = (EntityArmorStand) entityIn;
+      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        if (entityIn instanceof ArmorStandEntity) {
+            ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
             this.bipedHead.rotateAngleY = 0.017453292F * entityarmorstand.getHeadRotation().getY();
             this.bipedHead.rotateAngleZ = 0.017453292F * entityarmorstand.getHeadRotation().getZ();
@@ -49,15 +49,15 @@ public class ModelRatFez extends ModelBiped {
             this.bipedRightLeg.rotateAngleY = 0.017453292F * entityarmorstand.getRightLegRotation().getY();
             this.bipedRightLeg.rotateAngleZ = 0.017453292F * entityarmorstand.getRightLegRotation().getZ();
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
-            copyModelAngles(this.bipedHead, this.bipedHeadwear);
+            this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
         }
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    public void setRotateAngle(RendererModel RendererModel, float x, float y, float z) {
+        RendererModel.rotateAngleX = x;
+        RendererModel.rotateAngleY = y;
+        RendererModel.rotateAngleZ = z;
     }
 }

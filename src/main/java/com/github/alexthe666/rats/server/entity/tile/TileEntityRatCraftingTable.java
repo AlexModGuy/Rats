@@ -81,7 +81,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         }
     };
 
-    protected TileEntityRatCraftingTable() {
+    public TileEntityRatCraftingTable() {
         super(RatsTileEntityRegistry.RAT_CRAFTING_TABLE);
     }
 

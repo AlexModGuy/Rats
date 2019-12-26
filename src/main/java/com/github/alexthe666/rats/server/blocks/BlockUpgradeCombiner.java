@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -39,15 +40,22 @@ public class BlockUpgradeCombiner extends ContainerBlock {
         return BlockRenderType.MODEL;
     }
 
-
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        return !playerIn.isSneaking();
-    }
-
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityUpgradeCombiner();
     }
 
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn.isRemote) {
+            return true;
+        } else if(!player.isSneaking()){
+            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+            if (inamedcontainerprovider != null) {
+                player.openContainer(inamedcontainerprovider);
+            }
+            return true;
+        }
+        return false;
+    }
 }

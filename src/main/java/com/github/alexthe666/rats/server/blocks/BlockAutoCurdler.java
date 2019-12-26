@@ -8,6 +8,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
@@ -58,8 +59,17 @@ public class BlockAutoCurdler extends ContainerBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        return !playerIn.isSneaking();
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn.isRemote) {
+            return true;
+        } else if(!player.isSneaking()){
+            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+            if (inamedcontainerprovider != null) {
+                player.openContainer(inamedcontainerprovider);
+            }
+            return true;
+        }
+        return false;
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {

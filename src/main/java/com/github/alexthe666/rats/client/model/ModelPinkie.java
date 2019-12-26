@@ -1,18 +1,18 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
+import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
-import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 
-public class ModelPinkie extends AdvancedModelBase {
-    public AdvancedModelRenderer body;
+public class ModelPinkie extends AdvancedEntityModel {
+    public AdvancedRendererModel body;
 
     public ModelPinkie() {
         this.textureWidth = 16;
         this.textureHeight = 16;
-        this.body = new AdvancedModelRenderer(this, 0, 0);
+        this.body = new AdvancedRendererModel(this, 0, 0);
         this.body.setRotationPoint(0.0F, 23.0F, 0.0F);
         this.body.addBox(-1.0F, -1.0F, -2.0F, 2, 2, 4, 0.0F);
         this.updateDefaultPose();

@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -31,12 +32,6 @@ public class BlockRatCraftingTable extends ContainerBlock {
         }
     }
 
-
-    @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        return !playerIn.isSneaking();
-    }
-
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
@@ -47,5 +42,17 @@ public class BlockRatCraftingTable extends ContainerBlock {
         return new TileEntityRatCraftingTable();
     }
 
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn.isRemote) {
+            return true;
+        } else if(!player.isSneaking()){
+            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+            if (inamedcontainerprovider != null) {
+                player.openContainer(inamedcontainerprovider);
+            }
+            return true;
+        }
+        return false;
+    }
 
 }
