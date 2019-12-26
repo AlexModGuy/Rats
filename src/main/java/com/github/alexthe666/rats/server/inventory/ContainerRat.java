@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,10 +14,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerRat extends Container {
     private IInventory ratInventory;
+    public EntityRat rat;
 
-    public ContainerRat(int id, IInventory ratInventory, PlayerInventory playerInventory) {
+    public ContainerRat(int id, IInventory ratInventory, PlayerInventory playerInventory, EntityRat rat) {
         super(RatsContainerRegistry.RAT_CONTAINER, id);
         this.ratInventory = ratInventory;
+        this.rat = rat;
         byte b0 = 3;
         ratInventory.openInventory(playerInventory.player);
         int i = (b0 - 4) * 18;
@@ -62,7 +65,7 @@ public class ContainerRat extends Container {
     }
 
     public ContainerRat(int i, PlayerInventory playerInventory) {
-        this(i, new Inventory(3), playerInventory);
+        this(i, new Inventory(3), playerInventory, null);
     }
 
     @Override

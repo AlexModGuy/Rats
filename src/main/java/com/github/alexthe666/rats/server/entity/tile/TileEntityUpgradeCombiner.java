@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -40,6 +41,43 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     private int currentItemBurnTime;
     private int cookTime;
     private int totalCookTime;
+    protected final IIntArray furnaceData = new IIntArray() {
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return TileEntityUpgradeCombiner.this.furnaceBurnTime;
+                case 1:
+                    return TileEntityUpgradeCombiner.this.currentItemBurnTime;
+                case 2:
+                    return TileEntityUpgradeCombiner.this.cookTime;
+                case 3:
+                    return TileEntityUpgradeCombiner.this.totalCookTime;
+                default:
+                    return 0;
+            }
+        }
+
+        public void set(int index, int value) {
+            switch (index) {
+                case 0:
+                    TileEntityUpgradeCombiner.this.furnaceBurnTime = value;
+                    break;
+                case 1:
+                    TileEntityUpgradeCombiner.this.currentItemBurnTime = value;
+                    break;
+                case 2:
+                    TileEntityUpgradeCombiner.this.cookTime = value;
+                    break;
+                case 3:
+                    TileEntityUpgradeCombiner.this.totalCookTime = value;
+            }
+
+        }
+
+        public int size() {
+            return 4;
+        }
+    };
 
     public TileEntityUpgradeCombiner() {
         super(RatsTileEntityRegistry.UPGRADE_COMBINER);
@@ -137,7 +175,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
         ticksExisted++;
         boolean flag = this.isBurning();
         boolean flag1 = false;
-        PlayerEntity PlayerEntity = this.world.getClosestPlayer((double) ((float) this.pos.getX() + 0.5F), (double) ((float) this.pos.getY() + 0.5F), (double) ((float) this.pos.getZ() + 0.5F), 10.0D, false);
+        PlayerEntity PlayerEntity = this.world.getClosestPlayer((float) this.pos.getX() + 0.5F, (float) this.pos.getY() + 0.5F, (float) this.pos.getZ() + 0.5F, 10.0D, false);
         if (PlayerEntity != null) {
             double d0 = PlayerEntity.posX - (double) ((float) this.pos.getX() + 0.5F);
             double d1 = PlayerEntity.posZ - (double) ((float) this.pos.getZ() + 0.5F);
@@ -374,6 +412,6 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ContainerUpgradeCombiner(id, this, playerInventory);
+        return new ContainerUpgradeCombiner(id, this, playerInventory, furnaceData);
     }
 }

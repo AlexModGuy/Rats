@@ -11,15 +11,18 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 
 public class ContainerUpgradeCombiner extends Container {
 
-    private final IInventory tileRatCraftingTable;
+    public final IInventory tileRatCraftingTable;
     private int cookTime;
-
-    public ContainerUpgradeCombiner(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+    private IIntArray vars;
+    public ContainerUpgradeCombiner(int id, IInventory tileInventory, PlayerInventory playerInventory, IIntArray vars) {
         super(RatsContainerRegistry.UPGRADE_COMBINER_CONTAINER, id);
         this.tileRatCraftingTable = tileInventory;
+        this.vars = vars;
         this.addSlot(new Slot(tileRatCraftingTable, 0, 20, 35));
         this.addSlot(new Slot(tileRatCraftingTable, 1, 44, 57));
         this.addSlot(new Slot(tileRatCraftingTable, 2, 69, 35));
@@ -35,7 +38,7 @@ public class ContainerUpgradeCombiner extends Container {
     }
 
     public ContainerUpgradeCombiner(int i, PlayerInventory playerInventory) {
-        this(i, new Inventory(3), playerInventory);
+        this(i, new Inventory(3), playerInventory, new IntArray(4));
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -93,5 +96,20 @@ public class ContainerUpgradeCombiner extends Container {
         }
 
         return itemstack;
+    }
+
+
+    public int getCookProgressScaled(int pixels) {
+        int i = this.vars.get(2);
+        int j = this.vars.get(3);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    public int getBurnLeftScaled(int pixels) {
+        int i = this.vars.get(1);
+        if (i == 0) {
+            i = 200;
+        }
+        return this.vars.get(0) * pixels / i;
     }
 }

@@ -21,6 +21,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
@@ -52,6 +53,33 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private IRecipe selectedRecipe = null;
     private int selectedRecipeIndex = 0;
     private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
+    protected final IIntArray furnaceData = new IIntArray() {
+        public int get(int index) {
+            switch(index) {
+                case 2:
+                    return TileEntityRatCraftingTable.this.cookTime;
+                case 3:
+                    return TileEntityRatCraftingTable.this.totalCookTime;
+                default:
+                    return 0;
+            }
+        }
+
+        public void set(int index, int value) {
+            switch(index) {
+                case 2:
+                    TileEntityRatCraftingTable.this.cookTime = value;
+                    break;
+                case 3:
+                    TileEntityRatCraftingTable.this.totalCookTime = value;
+            }
+
+        }
+
+        public int size() {
+            return 4;
+        }
+    };
 
     protected TileEntityRatCraftingTable() {
         super(RatsTileEntityRegistry.RAT_CRAFTING_TABLE);
@@ -454,6 +482,6 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ContainerRatCraftingTable(id, this, playerInventory);
+        return new ContainerRatCraftingTable(id, this, playerInventory, furnaceData);
     }
 }

@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
+import com.github.alexthe666.rats.client.gui.RatsGuiRegistry;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.*;
 import com.github.alexthe666.rats.client.render.NuggetColorRegister;
@@ -108,7 +109,8 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void preInit() {
-        TinkersCompatBridge.loadTinkersClientCompat();
+        //TinkersCompatBridge.loadTinkersClientCompat();
+        RatsGuiRegistry.register();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -300,7 +302,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public boolean shouldRenderNameplates() {
-        return Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiRat) && !(Minecraft.getMinecraft().currentScreen instanceof GuiCheeseStaff);
+        return Minecraft.getInstance().currentScreen == null || !(Minecraft.getInstance().currentScreen instanceof GuiRat) && !(Minecraft.getInstance().currentScreen instanceof GuiCheeseStaff);
     }
 
     @OnlyIn(Dist.CLIENT)

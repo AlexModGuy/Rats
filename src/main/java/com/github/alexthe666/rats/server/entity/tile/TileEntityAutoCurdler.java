@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
-import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,6 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -36,7 +36,6 @@ import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import javax.annotation.Nullable;
 
 public class TileEntityAutoCurdler extends LockableTileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
-
     private static final int[] SLOTS_TOP = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
     public int ticksExisted;
@@ -44,13 +43,37 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
-
-
     private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
     private int cookTime;
     private int totalCookTime;
     private int prevFluid = 0;
+    protected final IIntArray furnaceData = new IIntArray() {
+        public int get(int index) {
+            switch(index) {
+                case 2:
+                    return TileEntityAutoCurdler.this.cookTime;
+                case 3:
+                    return TileEntityAutoCurdler.this.totalCookTime;
+                default:
+                    return 0;
+            }
+        }
 
+        public void set(int index, int value) {
+            switch(index) {
+                case 2:
+                    TileEntityAutoCurdler.this.cookTime = value;
+                    break;
+                case 3:
+                    TileEntityAutoCurdler.this.totalCookTime = value;
+            }
+
+        }
+
+        public int size() {
+            return 4;
+        }
+    };
     public TileEntityAutoCurdler() {
         super(RatsTileEntityRegistry.AUTO_CURDLER);
     }
@@ -336,6 +359,6 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ContainerAutoCurdler(id, this, playerInventory);
+        return new ContainerAutoCurdler(id, this, playerInventory, furnaceData);
     }
 }

@@ -7,15 +7,18 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 
 public class ContainerRatCraftingTable extends Container {
 
-    private final IInventory tileRatCraftingTable;
-    private int cookTime;
+    public final IInventory tileRatCraftingTable;
+    public IIntArray vars;
 
-    public ContainerRatCraftingTable(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+    public ContainerRatCraftingTable(int id, IInventory tileInventory, PlayerInventory playerInventory, IIntArray vars) {
         super(RatsContainerRegistry.RAT_CRAFTING_TABLE_CONTAINER, id);
         this.tileRatCraftingTable = tileInventory;
+        this.vars = vars;
         this.addSlot(new Slot(tileRatCraftingTable, 0, 35, 20));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, tileRatCraftingTable, 1, 124, 20));
         for (int k = 2; k < 11; ++k) {
@@ -32,7 +35,7 @@ public class ContainerRatCraftingTable extends Container {
     }
 
     public ContainerRatCraftingTable(int i, PlayerInventory playerInventory) {
-        this(i, new Inventory(11), playerInventory);
+        this(i, new Inventory(11), playerInventory, new IntArray(4));
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -78,4 +81,11 @@ public class ContainerRatCraftingTable extends Container {
 
         return itemstack;
     }*/
+
+
+    public int getCookProgressScaled(int pixels) {
+        int i = vars.get(0);
+        int j = 200;
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
 }

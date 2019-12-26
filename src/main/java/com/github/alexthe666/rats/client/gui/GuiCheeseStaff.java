@@ -81,7 +81,7 @@ public class GuiCheeseStaff extends GuiScreen {
         int i = (this.width) / 2;
         int j = (this.height - 166) / 2;
         String topText = I18n.format("entity.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
-        int maxLength = Math.max(150, Minecraft.getMinecraft().fontRenderer.getStringWidth(topText) + 20);
+        int maxLength = Math.max(150, Minecraft.getMinecraft().font.getStringWidth(topText) + 20);
         this.buttonList.add(new GuiButton(0, i - maxLength / 2, j + 60, maxLength, 20, topText));
         this.buttonList.add(new GuiButton(1, i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rat.staff.mark_block_pickup", getPosName())));
         this.buttonList.add(new GuiButton(2, i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rat.staff.set_home_point", getPosName())));
