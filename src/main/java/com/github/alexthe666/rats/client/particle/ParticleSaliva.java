@@ -1,87 +1,64 @@
 package com.github.alexthe666.rats.client.particle;
 
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.util.ParticleTypes;
+import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.particle.SpriteTexturedParticle;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleSaliva extends Particle {
-    private int bobTimer;
+public class ParticleSaliva  extends SpriteTexturedParticle {
+    private final Fluid fluid;
 
-    public ParticleSaliva(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn) {
-        super(worldIn, xCoordIn, yCoordIn, zCoordIn, 0.0D, 0.0D, 0.0D);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-
-        this.particleRed = 0.0F;
-        this.particleGreen = 0.0F;
-        this.particleBlue = 1.0F;
-
-        this.setParticleTextureIndex(113);
+    public ParticleSaliva(World p_i49197_1_, double p_i49197_2_, double p_i49197_4_, double p_i49197_6_, Fluid p_i49197_8_) {
+        super(p_i49197_1_, p_i49197_2_, p_i49197_4_, p_i49197_6_);
         this.setSize(0.01F, 0.01F);
         this.particleGravity = 0.06F;
-        this.bobTimer = 5;
-        this.particleMaxAge = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
+        this.fluid = p_i49197_8_;
     }
 
-    public void onUpdate() {
+    public IParticleRenderType getRenderType() {
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
+    public int getBrightnessForRender(float partialTick) {
+        return this.fluid.isIn(FluidTags.LAVA) ? 240 : super.getBrightnessForRender(partialTick);
+    }
+
+    public void tick() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        this.motionY -= (double) this.particleGravity;
+        this.func_217576_g();
+        if (!this.isExpired) {
+            this.motionY -= (double)this.particleGravity;
+            this.move(this.motionX, this.motionY, this.motionZ);
+            this.func_217577_h();
+            if (!this.isExpired) {
+                this.motionX *= (double)0.98F;
+                this.motionY *= (double)0.98F;
+                this.motionZ *= (double)0.98F;
+                BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
+                IFluidState ifluidstate = this.world.getFluidState(blockpos);
+                if (ifluidstate.getFluid() == this.fluid && this.posY < (double)((float)blockpos.getY() + ifluidstate.func_215679_a(this.world, blockpos))) {
+                    this.setExpired();
+                }
 
-        if (this.bobTimer-- > 0) {
-            this.motionX *= 0.02D;
-            this.motionY *= 0.02D;
-            this.motionZ *= 0.02D;
-            this.setParticleTextureIndex(113);
-        } else {
-            this.setParticleTextureIndex(112);
+            }
         }
+    }
 
-        this.move(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.9800000190734863D;
-        this.motionY *= 0.9800000190734863D;
-        this.motionZ *= 0.9800000190734863D;
-
-        if (this.particleMaxAge-- <= 0) {
+    protected void func_217576_g() {
+        if (this.maxAge-- <= 0) {
             this.setExpired();
         }
 
-        if (this.onGround) {
-            this.setExpired();
-            this.world.addParticle(ParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
-        }
+    }
 
-        BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
-        BlockState BlockState = this.world.getBlockState(blockpos);
-        Material material = BlockState.getMaterial();
-
-        if (material.isLiquid() || material.isSolid()) {
-            double d0 = 0.0D;
-
-            if (BlockState.getBlock() instanceof BlockLiquid) {
-                d0 = (double) BlockLiquid.getLiquidHeightPercent(BlockState.getValue(BlockLiquid.LEVEL).intValue());
-            }
-
-            double d1 = (double) (MathHelper.floor(this.posY) + 1) - d0;
-
-            if (this.posY < d1) {
-                this.setExpired();
-            }
-        }
+    protected void func_217577_h() {
     }
 }

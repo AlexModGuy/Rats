@@ -138,7 +138,8 @@ public class CommonProxy {
         }
     }
 
-    private void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
+    @SubscribeEvent
+    public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
         try {
             for (Field f : RatsContainerRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

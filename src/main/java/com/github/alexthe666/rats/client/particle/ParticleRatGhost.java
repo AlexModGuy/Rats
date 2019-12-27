@@ -1,17 +1,18 @@
 package com.github.alexthe666.rats.client.particle;
 
-import net.minecraft.client.particle.ParticleRedstone;
+import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleRatGhost extends ParticleRedstone {
+public class ParticleRatGhost extends SpriteTexturedParticle {
 
     public ParticleRatGhost(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, colorR, colorG, colorB);
         this.particleAlpha = 1F;
-        this.particleMaxAge = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
+        this.maxAge = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
     }
 
     public int getBrightnessForRender(float f) {
@@ -21,9 +22,14 @@ public class ParticleRatGhost extends ParticleRedstone {
         return 240 | k << 16;
     }
 
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         this.motionY *= 1.015D;
 
+    }
+
+    @Override
+    public IParticleRenderType getRenderType() {
+        return IParticleRenderType.CUSTOM;
     }
 }
