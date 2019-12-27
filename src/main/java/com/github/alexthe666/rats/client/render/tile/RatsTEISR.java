@@ -3,12 +3,12 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeSeparator;
-import net.minecraft.client.renderer.tileentity.TileItemEntityStackRenderer;
+import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-public class RatsTEISR extends TileItemEntityStackRenderer {
+public class RatsTEISR extends ItemStackTileEntityRenderer {
 
     private RenderRatHole renderRatHole = new RenderRatHole();
     private RenderRatTrap renderRatTrap = new RenderRatTrap();

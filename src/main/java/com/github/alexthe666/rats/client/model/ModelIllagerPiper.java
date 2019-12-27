@@ -5,9 +5,10 @@ import net.minecraft.client.renderer.entity.model.IllagerModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelIllagerPiper extends IllagerModel {
+public class ModelIllagerPiper<T extends AbstractIllagerEntity> extends IllagerModel<T> {
     public RendererModel hat;
     public RendererModel hat_feather;
     public RendererModel hatTop;
@@ -38,7 +39,7 @@ public class ModelIllagerPiper extends IllagerModel {
         RendererModel.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(AbstractIllagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
         if (((AbstractIllagerEntity) entityIn).getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RAT_FLUTE) {
             float f = 0.01F * (float) (entityIn.getEntityId() % 10);
@@ -57,5 +58,9 @@ public class ModelIllagerPiper extends IllagerModel {
             this.leftArm.rotateAngleY = 0;
             this.leftArm.rotateAngleZ = ((float) Math.PI / 2F) + this.head.rotateAngleX;
         }
+    }
+
+    public RendererModel getArm(HandSide p_191216_1_) {
+        return p_191216_1_ == HandSide.LEFT ? this.leftArm : this.rightArm;
     }
 }

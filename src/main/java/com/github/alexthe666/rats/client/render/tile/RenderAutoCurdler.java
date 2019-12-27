@@ -3,13 +3,13 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.client.model.ModelAutoCurdler;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
-public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoCurdler> {
+public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler> {
     private static final ModelAutoCurdler MODEL_AUTO_CURDLER = new ModelAutoCurdler();
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/auto_curdler.png");
 
@@ -31,11 +31,11 @@ public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoC
         GL11.glTranslatef(-0.5F, 0.5F, -0.5F);
         GL11.glPushMatrix();
         AxisAlignedBB boundingBox = new AxisAlignedBB(0.25F, 0.6F - textureYPos, 0.25F, 0.75F, 0.5F, 0.75F);
-        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
         double avgY = boundingBox.maxY - boundingBox.minY;
         double avgX = Math.abs(boundingBox.maxX - boundingBox.minX);
@@ -86,16 +86,16 @@ public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoC
     }
 
     @Override
-    public void render(TileEntityAutoCurdler entity, double x, double y, double z, float f, int f1, float alpha) {
+    public void render(TileEntityAutoCurdler entity, double x, double y, double z, float alpha, int destroyProg) {
         float rotation = 0;
         if (entity != null && entity.getWorld() != null && entity instanceof TileEntityAutoCurdler) {
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.NORTH) {
+            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.NORTH) {
                 rotation = 180;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.EAST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.EAST) {
                 rotation = -90;
             }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == Direction.WEST) {
+            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.WEST) {
                 rotation = 90;
             }
             if (entity.tank.getFluidAmount() > 0) {
@@ -108,7 +108,7 @@ public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoC
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(rotation, 0, 1F, 0);
         GL11.glPushMatrix();
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
         MODEL_AUTO_CURDLER.render(0.0625F);
         GL11.glPopMatrix();
         GL11.glPopMatrix();

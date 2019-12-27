@@ -10,18 +10,18 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class LayerPlague extends LayerRenderer<LivingEntity, EntityModel<LivingEntity>> {
+public class LayerPlague<T extends LivingEntity> extends LayerRenderer<T, EntityModel<T>> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/plague_overlay.png");
-    private final IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> renderer;
+    private final IEntityRenderer<T, EntityModel<T>> renderer;
 
-    public LayerPlague(IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> renderer) {
+    public LayerPlague(IEntityRenderer<T, EntityModel<T>> renderer) {
         super(renderer);
         this.renderer = renderer;
     }
 
     @Override
-    public void render(LivingEntity LivingEntityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(T LivingEntityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (LivingEntityIn.isPotionActive(RatsMod.PLAGUE_POTION) && !(LivingEntityIn instanceof EntityRat)) {
             GlStateManager.pushMatrix();
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);

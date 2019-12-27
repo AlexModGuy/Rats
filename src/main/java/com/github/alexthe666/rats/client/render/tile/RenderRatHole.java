@@ -1,23 +1,22 @@
 package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import net.minecraft.block.state.BlockState;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
-public class RenderRatHole extends TileEntitySpecialRenderer<TileEntityRatHole> {
+public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
 
     private static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0F, 0.5F, 0F, 1F, 1F, 1F);
     private static final AxisAlignedBB NS_LEFT_AABB = new AxisAlignedBB(0F, 0F, 0F, 0.25F, 0.5F, 1F);
@@ -33,7 +32,7 @@ public class RenderRatHole extends TileEntitySpecialRenderer<TileEntityRatHole> 
     public static void renderAABB(AxisAlignedBB boundingBox, double x, double y, double z, TextureAtlasSprite sprite) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
         double avgY = boundingBox.maxY - boundingBox.minY;
         double avgX = Math.abs(boundingBox.maxX - boundingBox.minX);
@@ -82,25 +81,25 @@ public class RenderRatHole extends TileEntitySpecialRenderer<TileEntityRatHole> 
     }
 
     @Override
-    public void render(TileEntityRatHole entity, double x, double y, double z, float f, int f1, float alpha) {
-        BlockState state = Blocks.PLANKS.getDefaultState();
+    public void render(TileEntityRatHole entity, double x, double y, double z, float alpha, int destroyProg) {
+        BlockState state = Blocks.OAK_PLANKS.getDefaultState();
         boolean connectedNorth = false;
         boolean connectedEast = false;
         boolean connectedSouth = false;
         boolean connectedWest = false;
         if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatHole) {
-            BlockState actualState = RatsBlockRegistry.RAT_HOLE.getActualState(entity.getWorld().getBlockState(entity.getPos()), entity.getWorld(), entity.getPos());
-            connectedNorth = actualState.getValue(BlockRatHole.NORTH);
-            connectedEast = actualState.getValue(BlockRatHole.EAST);
-            connectedSouth = actualState.getValue(BlockRatHole.SOUTH);
-            connectedWest = actualState.getValue(BlockRatHole.WEST);
+            BlockState actualState = entity.getBlockState();
+            connectedNorth = actualState.get(BlockRatHole.NORTH);
+            connectedEast = actualState.get(BlockRatHole.EAST);
+            connectedSouth = actualState.get(BlockRatHole.SOUTH);
+            connectedWest = actualState.get(BlockRatHole.WEST);
             state = entity.getImmitatedBlockState();
         }
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         GL11.glPushMatrix();
-        IBakedModel ibakedmodel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        IBakedModel ibakedmodel = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(state);
+        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         renderAABB(TOP_AABB, x, y, z, ibakedmodel.getParticleTexture());
         renderAABB(EAST_CORNER_AABB, x, y, z, ibakedmodel.getParticleTexture());
         renderAABB(WEST_CORNER_AABB, x, y, z, ibakedmodel.getParticleTexture());

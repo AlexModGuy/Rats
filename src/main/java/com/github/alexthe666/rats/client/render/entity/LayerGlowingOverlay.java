@@ -10,17 +10,17 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class LayerGlowingOverlay extends LayerRenderer<LivingEntity, EntityModel<LivingEntity>> {
-    private final IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> ratRenderer;
+public class LayerGlowingOverlay<T extends LivingEntity> extends LayerRenderer<T, EntityModel<T>> {
+    private final IEntityRenderer<T, EntityModel<T>> ratRenderer;
     private final ResourceLocation texture;
 
-    public LayerGlowingOverlay(IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> ratRendererIn, ResourceLocation texture) {
+    public LayerGlowingOverlay(IEntityRenderer<T, EntityModel<T>> ratRendererIn, ResourceLocation texture) {
         super(ratRendererIn);
         this.ratRenderer = ratRendererIn;
         this.texture = texture;
     }
 
-    public void render(LivingEntity rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.ratRenderer.bindTexture(texture);
         GlStateManager.enableBlend();
         GlStateManager.disableAlphaTest();

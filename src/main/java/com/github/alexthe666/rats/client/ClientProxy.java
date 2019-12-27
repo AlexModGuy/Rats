@@ -16,9 +16,14 @@ import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
@@ -40,7 +45,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -117,30 +121,30 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
-        RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, new RenderRat());
-        RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, new RenderIllagerPiper());
-        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, new RenderRatlateanSpirit());
-        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanFlame.class, new RenderRatlanteanFlame());
-        RenderingRegistry.registerEntityRenderingHandler(EntityMarbleCheeseGolem.class, new RenderMarbledCheeseGolem());
-        RenderingRegistry.registerEntityRenderingHandler(EntityGolemBeam.class, new RenderGolemBeam());
-        RenderingRegistry.registerEntityRenderingHandler(EntityFeralRatlantean.class, new RenderFeralRatlantean());
-        RenderingRegistry.registerEntityRenderingHandler(EntityNeoRatlantean.class, new RenderNeoRatlantean());
-        RenderingRegistry.registerEntityRenderingHandler(EntityLaserBeam.class, new RenderLaserBeam());
-        RenderingRegistry.registerEntityRenderingHandler(EntityLaserPortal.class, new RenderLaserPortal());
-        RenderingRegistry.registerEntityRenderingHandler(EntityThrownBlock.class, new RenderThrownBlock());
-        RenderingRegistry.registerEntityRenderingHandler(EntityVialOfSentience.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPiratBoat.class, new RenderPiratBoat());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCheeseCannonball.class, new RenderSnowball<EntityCheeseCannonball>(Minecraft.getMinecraft().getRenderManager(), RatsItemRegistry.CHEESE_CANNONBALL, Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPirat.class, new RenderPirat());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueDoctor.class, new RenderPlagueDoctor());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPurifyingLiquid.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBlackDeath.class, new RenderBlackDeath());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueCloud.class, new RenderRatlateanSpirit());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueBeast.class, new RenderPlagueBeast());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueShot.class, new RenderPlagueShot());
-        RenderingRegistry.registerEntityRenderingHandler(EntityRatCaptureNet.class, new RenderPotion(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityRatDragonFire.class, new RenderNothing());
-        RenderingRegistry.registerEntityRenderingHandler(EntityRatArrow.class, new RenderRatArrow());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, manager -> new RenderRat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, manager -> new RenderIllagerPiper());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, manager -> new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanFlame.class, manager -> new RenderRatlanteanFlame());
+        RenderingRegistry.registerEntityRenderingHandler(EntityMarbleCheeseGolem.class, manager -> new RenderMarbledCheeseGolem());
+        RenderingRegistry.registerEntityRenderingHandler(EntityGolemBeam.class, manager -> new RenderGolemBeam());
+        RenderingRegistry.registerEntityRenderingHandler(EntityFeralRatlantean.class, manager -> new RenderFeralRatlantean());
+        RenderingRegistry.registerEntityRenderingHandler(EntityNeoRatlantean.class, manager -> new RenderNeoRatlantean());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLaserBeam.class, manager -> new RenderLaserBeam());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLaserPortal.class, manager -> new RenderLaserPortal());
+        RenderingRegistry.registerEntityRenderingHandler(EntityThrownBlock.class, manager -> new RenderThrownBlock());
+        RenderingRegistry.registerEntityRenderingHandler(EntityVialOfSentience.class, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPiratBoat.class, manager -> new RenderPiratBoat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityCheeseCannonball.class, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPirat.class, manager -> new RenderPirat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueDoctor.class, manager -> new RenderPlagueDoctor());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPurifyingLiquid.class, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBlackDeath.class, manager -> new RenderBlackDeath());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueCloud.class, manager -> new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueBeast.class, manager -> new RenderPlagueBeast());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlagueShot.class, manager -> new RenderPlagueShot());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatCaptureNet.class, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatDragonFire.class, manager -> new RenderNothing());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatArrow.class, manager -> new RenderRatArrow());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAutoCurdler.class, new RenderAutoCurdler());
@@ -149,24 +153,24 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageBreedingLantern.class, new RenderRatCageDecorated());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeCombiner.class, new RenderUpgradeCombiner());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeSeparator.class, new RenderUpgradeSeparator());
-        Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
+        /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
-        Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+        Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(new IBlockColor() {
             @Override
             public int colorMultiplier(BlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
                 return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic();
             }
         }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 BlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-                return Minecraft.getMinecraft().getBlockColors().colorMultiplier(state, null, null, tintIndex);
+                return Minecraft.getInstance().getBlockColors().colorMultiplier(state, null, null, tintIndex);
             }
         }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(new IBlockColor() {
             @Override
             public int colorMultiplier(BlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
                 Block block = state.getBlock();
@@ -180,7 +184,7 @@ public class ClientProxy extends CommonProxy {
                 return color.getColorValue();
             }
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 Block block = Block.getBlockFromItem(stack.getItem());
@@ -195,7 +199,7 @@ public class ClientProxy extends CommonProxy {
             }
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 int meta = 0;
@@ -209,7 +213,7 @@ public class ClientProxy extends CommonProxy {
             }
         }, RatsItemRegistry.RAT_IGLOOS);
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 if (tintIndex == 0) {
@@ -228,7 +232,7 @@ public class ClientProxy extends CommonProxy {
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
             @Override
             public int colorMultiplier(ItemStack stack, int tintIndex) {
                 if (tintIndex == 1) {
@@ -238,24 +242,24 @@ public class ClientProxy extends CommonProxy {
                 }
             }
         }, RatsItemRegistry.RAT_NUGGET_ORE);
-        ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
+        ModelBakery.reg(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
     }
 
     @OnlyIn(Dist.CLIENT)
     public void postInit() {
-        for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
-            Render render = entry.getValue();
-            if (render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
-                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
+        for (Map.Entry<Class<? extends Entity>, EntityRenderer<? extends Entity>> entry : Minecraft.getInstance().getRenderManager().renderers.entrySet()) {
+            EntityRenderer render = entry.getValue();
+            if (render instanceof LivingRenderer && LivingEntity.class.isAssignableFrom(entry.getKey())) {
+                ((LivingRenderer) render).addLayer(new LayerPlague((LivingRenderer) render));
             }
         }
-        for (Map.Entry<String, RenderPlayer> entry : Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet()) {
-            RenderPlayer render = entry.getValue();
+        for (Map.Entry<String, PlayerRenderer> entry : Minecraft.getInstance().getRenderManager().getSkinMap().entrySet()) {
+            PlayerRenderer render = entry.getValue();
             render.addLayer(new LayerPlague(render));
         }
-        Field renderingRegistryField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "INSTANCE", "INSTANCE"));
-        Field entityRendersField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderers", "entityRenderers"));
-        Field entityRendersOldField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderersOld", "entityRenderersOld"));
+        //        Map<String, FallbackResourceManager> resManagers = ObfuscationReflectionHelper.getPrivateValue(SimpleReloadableResourceManager.class, (SimpleReloadableResourceManager)Minecraft.getInstance().getResourceManager(), "field_199014"+"_c");
+        Field renderingRegistryField = ObfuscationReflectionHelper.findField(RenderingRegistry.class, "INSTANCE");
+        Field entityRendersField = ObfuscationReflectionHelper.findField(RenderingRegistry.class, "entityRenderers");
         RenderingRegistry registry = null;
         try {
             Field modifier = Field.class.getDeclaredField("modifiers");
@@ -266,12 +270,10 @@ public class ClientProxy extends CommonProxy {
         }
         if (registry != null) {
             Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenders = null;
-            Map<Class<? extends Entity>, Render<? extends Entity>> entityRendersOld = null;
             try {
                 Field modifier1 = Field.class.getDeclaredField("modifiers");
                 modifier1.setAccessible(true);
                 entityRenders = (Map<Class<? extends Entity>, IRenderFactory<? extends Entity>>) entityRendersField.get(registry);
-                entityRendersOld = (Map<Class<? extends Entity>, Render<? extends Entity>>) entityRendersOldField.get(registry);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -279,23 +281,15 @@ public class ClientProxy extends CommonProxy {
                 for (Map.Entry<Class<? extends Entity>, IRenderFactory<? extends Entity>> entry : entityRenders.entrySet()) {
                     if (entry.getValue() != null) {
                         try {
-                            Render render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
-                            if (render != null && render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
-                                ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
+                            EntityRenderer render = entry.getValue().createRenderFor(Minecraft.getInstance().getRenderManager());
+                            if (render != null && render instanceof LivingRenderer && LivingEntity.class.isAssignableFrom(entry.getKey())) {
+                                ((LivingRenderer) render).addLayer(new LayerPlague((LivingRenderer) render));
                             }
                         } catch (NullPointerException exp) {
-                            RatsMod.logger.warn("Rats: Could not apply plague render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
+                            RatsMod.LOGGER.warn("Rats: Could not apply plague render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
                         }
                     }
 
-                }
-            }
-            if (entityRendersOld != null) {
-                for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
-                    Render render = entry.getValue();
-                    if (render instanceof RenderLivingBase && LivingEntity.class.isAssignableFrom(entry.getKey())) {
-                        ((RenderLivingBase) render).addLayer(new LayerPlague((RenderLivingBase) render));
-                    }
                 }
             }
         }
@@ -355,27 +349,27 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
-        World world = Minecraft.getMinecraft().world;
+        World world = Minecraft.getInstance().world;
         if (world == null) {
             return;
         }
         if (name.equals("rat_ghost")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("rat_lightning")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("flea")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("saliva")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSaliva(world, x, y, z));
+            Minecraft.getInstance().particles.addEffect(new ParticleSaliva(world, x, y, z));
         }
         if (name.equals("black_death")) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleBlackDeath(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleBlackDeath(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
     }
 }

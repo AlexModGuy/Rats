@@ -1,9 +1,10 @@
 package com.github.alexthe666.rats.client.particle;
 
 import net.minecraft.client.particle.ParticleSpell;
+import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.world.World;
 
-public class ParticleBlackDeath extends ParticleSpell {
+public class ParticleBlackDeath extends SpellParticle {
 
     public ParticleBlackDeath(World world, double x, double y, double z, float motX, float motY, float motZ) {
         super(world, x, y, z, motX, motY, motZ);

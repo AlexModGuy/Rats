@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)

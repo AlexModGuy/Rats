@@ -2,8 +2,9 @@ package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.entity.model.VillagerModel;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 
-public class ModelPlagueDoctor extends VillagerModel {
+public class ModelPlagueDoctor<T extends AbstractVillagerEntity> extends VillagerModel<T> {
 
     public RendererModel plagueMaskNose;
     public RendererModel brim;

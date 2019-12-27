@@ -1,12 +1,13 @@
 package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
-public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityRatlantisPortal> {
+public class RenderRatlantisPortal extends TileEntityRenderer<TileEntityRatlantisPortal> {
     private static final ResourceLocation END_SKY_TEXTURE = new ResourceLocation("rats:textures/environment/ratlantis_sky_portal.png");
     private static final ResourceLocation END_PORTAL_TEXTURE = new ResourceLocation("rats:textures/environment/ratlantis_portal.png");
     private static final Random RANDOM = new Random(31100L);
@@ -22,33 +23,34 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
     private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
     private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
-    public void render(TileEntityRatlantisPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileEntityRatlantisPortal te, double x, double y, double z, float partialTicks, float aplha, int destroyProg) {
         GlStateManager.pushMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
         RANDOM.setSeed(31100L);
-        GlStateManager.getFloat(2982, MODELVIEW);
-        GlStateManager.getFloat(2983, PROJECTION);
+        GlStateManager.getMatrix(2982, MODELVIEW);
+        GlStateManager.getMatrix(2983, PROJECTION);
         double d0 = x * x + y * y + z * z;
         int i = this.getPasses(d0);
         float f = this.getOffset();
         boolean flag = false;
+        GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 
         for (int j = 0; j < i; ++j) {
             GlStateManager.pushMatrix();
             float f1 = 2.0F / (float) (18 - j);
 
             if (j == 0) {
-                Minecraft.getMinecraft().getTextureManager().bindTexture(END_SKY_TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(END_SKY_TEXTURE);
                 f1 = 0.15F;
                 GlStateManager.enableBlend();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             }
 
             if (j >= 1) {
-                Minecraft.getMinecraft().getTextureManager().bindTexture(END_PORTAL_TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(END_PORTAL_TEXTURE);
                 flag = true;
-                Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+                gamerenderer.setupFogColor(true);
             }
 
             if (j == 1) {
@@ -56,30 +58,30 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
             }
 
-            GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
-            GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
-            GlStateManager.texGen(GlStateManager.TexGen.R, 9216);
-            GlStateManager.texGen(GlStateManager.TexGen.S, 9474, this.getBuffer(1.0F, 0.0F, 0.0F, 0.0F));
-            GlStateManager.texGen(GlStateManager.TexGen.T, 9474, this.getBuffer(0.0F, 1.0F, 0.0F, 0.0F));
-            GlStateManager.texGen(GlStateManager.TexGen.R, 9474, this.getBuffer(0.0F, 0.0F, 1.0F, 0.0F));
-            GlStateManager.enableTexGenCoord(GlStateManager.TexGen.S);
-            GlStateManager.enableTexGenCoord(GlStateManager.TexGen.T);
-            GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
+            GlStateManager.texGenMode(GlStateManager.TexGen.S, 9216);
+            GlStateManager.texGenMode(GlStateManager.TexGen.T, 9216);
+            GlStateManager.texGenMode(GlStateManager.TexGen.R, 9216);
+            GlStateManager.texGenParam(GlStateManager.TexGen.S, 9474, this.getBuffer(1.0F, 0.0F, 0.0F, 0.0F));
+            GlStateManager.texGenParam(GlStateManager.TexGen.T, 9474, this.getBuffer(0.0F, 1.0F, 0.0F, 0.0F));
+            GlStateManager.texGenParam(GlStateManager.TexGen.R, 9474, this.getBuffer(0.0F, 0.0F, 1.0F, 0.0F));
+            GlStateManager.enableTexGen(GlStateManager.TexGen.S);
+            GlStateManager.enableTexGen(GlStateManager.TexGen.T);
+            GlStateManager.enableTexGen(GlStateManager.TexGen.R);
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5890);
             GlStateManager.pushMatrix();
             GlStateManager.loadIdentity();
-            GlStateManager.translate(0.5F, 0.5F, 0.0F);
-            GlStateManager.scale(0.5F, 0.5F, 1.0F);
+            GlStateManager.translatef(0.5F, 0.5F, 0.0F);
+            GlStateManager.scalef(0.5F, 0.5F, 1.0F);
             float f2 = (float) (j + 1);
-            float time = (Minecraft.getMinecraft().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
+            float time = (Minecraft.getInstance().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
             if (te == null) {
-                time = (Minecraft.getMinecraft().frameTimer.getIndex() - 1 + (1 * partialTicks)) % 3200F / 3200F;
+                time = (Minecraft.getInstance().frameTimer.getIndex() - 1 + (1 * partialTicks)) % 3200F / 3200F;
             }
-            GlStateManager.translate(17.0F / f2 * time * RANDOM.nextGaussian(), (2.0F + f2 / 1.5F) * time, 0.0F);
-            GlStateManager.rotate(180, 0.0F, 0.0F, 1.0F);
+            GlStateManager.translatef(17.0F / f2 * time * (float)RANDOM.nextGaussian(), (2.0F + f2 / 1.5F) * time, 0.0F);
+            GlStateManager.rotatef(180, 0.0F, 0.0F, 1.0F);
             float scal = 4.5F - f2 / 4.0F;
-            GlStateManager.scale(scal, scal, 1.0F);
+            GlStateManager.scalef(scal, scal, 1.0F);
             GlStateManager.multMatrix(PROJECTION);
             GlStateManager.multMatrix(MODELVIEW);
             Tessellator tessellator = Tessellator.getInstance();
@@ -134,18 +136,18 @@ public class RenderRatlantisPortal extends TileEntitySpecialRenderer<TileEntityR
             tessellator.draw();
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5888);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(END_SKY_TEXTURE);
+            Minecraft.getInstance().getTextureManager().bindTexture(END_SKY_TEXTURE);
 
         }
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableBlend();
-        GlStateManager.disableTexGenCoord(GlStateManager.TexGen.S);
-        GlStateManager.disableTexGenCoord(GlStateManager.TexGen.T);
-        GlStateManager.disableTexGenCoord(GlStateManager.TexGen.R);
+        GlStateManager.disableTexGen(GlStateManager.TexGen.S);
+        GlStateManager.disableTexGen(GlStateManager.TexGen.T);
+        GlStateManager.disableTexGen(GlStateManager.TexGen.R);
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
         if (flag) {
-            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+            gamerenderer.setupFogColor(false);
         }
         GlStateManager.popMatrix();
     }

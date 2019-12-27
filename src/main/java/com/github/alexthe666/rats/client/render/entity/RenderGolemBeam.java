@@ -1,19 +1,19 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderArrow;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 
-public class RenderGolemBeam extends RenderArrow {
+public class RenderGolemBeam extends ArrowRenderer {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/golem_beam.png");
 
@@ -21,14 +21,14 @@ public class RenderGolemBeam extends RenderArrow {
         super(Minecraft.getInstance().getRenderManager());
     }
 
-    public void doRender(EntityArrow entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(AbstractArrowEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.bindEntityTexture(entity);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translatef((float) x, (float) y, (float) z);
+        GlStateManager.rotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         int i = 0;
@@ -46,25 +46,24 @@ public class RenderGolemBeam extends RenderArrow {
 
         if (f9 > 0.0F) {
             float f10 = -MathHelper.sin(f9 * 3.0F) * f9;
-            GlStateManager.rotate(f10, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotatef(f10, 0.0F, 0.0F, 1.0F);
         }
 
-        GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(0.1F, 0.1F, 0.1F);
-        GlStateManager.translate(-4.0F, 0.0F, 0.0F);
+        GlStateManager.rotatef(45.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scalef(0.1F, 0.1F, 0.1F);
+        GlStateManager.translatef(-4.0F, 0.0F, 0.0F);
         if (this.renderOutlines) {
             GlStateManager.enableColorMaterial();
-            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+            GlStateManager.setupSolidRenderingTextureCombine(this.getTeamColor(entity));
         }
-
-        GlStateManager.glNormal3f(0.05625F, 0.0F, 0.0F);
+        GlStateManager.normal3f(0.05625F, 0.0F, 0.0F);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
         bufferbuilder.pos(-7.0D, -2.0D, -2.0D).tex(0.0D, 0.15625D).endVertex();
         bufferbuilder.pos(-7.0D, -2.0D, 2.0D).tex(0.15625D, 0.15625D).endVertex();
         bufferbuilder.pos(-7.0D, 2.0D, 2.0D).tex(0.15625D, 0.3125D).endVertex();
         bufferbuilder.pos(-7.0D, 2.0D, -2.0D).tex(0.0D, 0.3125D).endVertex();
         tessellator.draw();
-        GlStateManager.glNormal3f(-0.05625F, 0.0F, 0.0F);
+        GlStateManager.normal3f(-0.05625F, 0.0F, 0.0F);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
         bufferbuilder.pos(-7.0D, 2.0D, -2.0D).tex(0.0D, 0.15625D).endVertex();
         bufferbuilder.pos(-7.0D, 2.0D, 2.0D).tex(0.15625D, 0.15625D).endVertex();
@@ -73,8 +72,8 @@ public class RenderGolemBeam extends RenderArrow {
         tessellator.draw();
 
         for (int j = 0; j < 4; ++j) {
-            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.glNormal3f(0.0F, 0.0F, 0.05625F);
+            GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.normal3f(0.0F, 0.0F, 0.05625F);
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
             bufferbuilder.pos(-8.0D, -2.0D, 0.0D).tex(0.0D, 0.0D).endVertex();
             bufferbuilder.pos(8.0D, -2.0D, 0.0D).tex(0.5D, 0.0D).endVertex();
@@ -84,7 +83,7 @@ public class RenderGolemBeam extends RenderArrow {
         }
 
         if (this.renderOutlines) {
-            GlStateManager.disableOutlineMode();
+            GlStateManager.tearDownSolidRenderingTextureCombine();
             GlStateManager.disableColorMaterial();
         }
 

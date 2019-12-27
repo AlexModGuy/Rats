@@ -3,23 +3,24 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelNeoRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderNeoRatlantean extends RenderLiving<EntityNeoRatlantean> {
+public class RenderNeoRatlantean extends MobRenderer<EntityNeoRatlantean, ModelNeoRatlantean<EntityNeoRatlantean>> {
 
     private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_blue.png");
     private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_black.png");
     private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_brown.png");
     private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_green.png");
+    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/neo_ratlantean_glow.png");
 
     public RenderNeoRatlantean() {
         super(Minecraft.getInstance().getRenderManager(), new ModelNeoRatlantean(), 0.65F);
-        this.addLayer(new LayerNeoRatlanteanGlow(this));
+        this.addLayer(new LayerGlowingOverlay(this, GLOW_TEXTURE));
     }
 
     protected void preRenderCallback(EntityNeoRatlantean rat, float partialTickTime) {

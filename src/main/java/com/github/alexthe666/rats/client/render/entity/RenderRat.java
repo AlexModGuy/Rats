@@ -6,26 +6,27 @@ import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderRat extends RenderLiving<EntityRat> {
+public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
 
     private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();
     private static final ModelRat RAT_MODEL = new ModelRat(0.0F);
@@ -57,24 +58,26 @@ public class RenderRat extends RenderLiving<EntityRat> {
             if (!this.bindEntityTexture(rat)) {
                 return;
             }
+
             if (flag1) {
-                GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+                GlStateManager.setProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
             }
+            EntityModel model;
             if (rat.isChild()) {
-                mainModel = PINKIE_MODEL;
+                model = PINKIE_MODEL;
             } else {
-                mainModel = RAT_MODEL;
+                model = RAT_MODEL;
             }
-            this.mainModel.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            this.entityModel.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             if (flag1) {
-                GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+                GlStateManager.unsetProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
             }
         }
     }
 
 
     public boolean shouldRender(EntityRat rat, ICamera camera, double camX, double camY, double camZ) {
-        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof LivingEntity) {
+        if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof LivingEntity) {
             if (((LivingEntity) rat.getRidingEntity()).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.CHEF_TOQUE) {
                 return false;
             }
@@ -84,13 +87,13 @@ public class RenderRat extends RenderLiving<EntityRat> {
 
     protected void preRenderCallback(EntityRat rat, float partialTickTime) {
         GL11.glScaled(0.6F, 0.6F, 0.6F);
-        if (rat.isRiding() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof PlayerEntity) {
+        if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof PlayerEntity) {
             Entity riding = rat.getRidingEntity();
             if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
-                Render playerRender = Minecraft.getInstance().getRenderManager().getEntityRenderObject(riding);
-                if (playerRender instanceof RenderLivingBase && ((RenderLivingBase) playerRender).getMainModel() instanceof ModelBiped) {
-                    ((ModelBiped) ((RenderLivingBase) playerRender).getMainModel()).bipedHead.postRender(0.0625F);
-                    GlStateManager.translate(0.0F, -0.7F, 0.25);
+                EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
+                if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
+                    ((BipedModel) ((LivingRenderer) playerRender).getEntityModel()).bipedHead.postRender(0.0625F);
+                    GlStateManager.translatef(0.0F, -0.7F, 0.25F);
                 }
             }
         } else {
@@ -114,14 +117,15 @@ public class RenderRat extends RenderLiving<EntityRat> {
             if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC)) {
                 return AQUATIC_UPGRADE_TEXTURE;
             }
-            if (!entity.getCustomNameTag().isEmpty()) {
-                if (entity.getCustomNameTag().contains("julian") || entity.getCustomNameTag().contains("Julian")) {
+            if (entity.getCustomName() != null) {
+                String name = entity.getCustomName().getFormattedText();
+                if (name.contains("julian") || name.contains("Julian")) {
                     return JULIAN;
                 }
-                if (entity.getCustomNameTag().contains("shizuka") || entity.getCustomNameTag().contains("Shizuka")) {
+                if (name.contains("shizuka") || name.contains("Shizuka")) {
                     return SHIZUKA;
                 }
-                if (entity.getCustomNameTag().contains("sharva") || entity.getCustomNameTag().contains("Sharva")) {
+                if (name.contains("sharva") || name.contains("Sharva")) {
                     return SHARVA;
                 }
             }
