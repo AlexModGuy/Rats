@@ -1,11 +1,12 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
+import com.github.alexthe666.citadel.server.item.CustomToolMaterial;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.tomove.CustomArmorMaterial;
-import com.github.alexthe666.rats.server.tomove.CustomToolMaterial;
-import net.minecraft.item.*;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

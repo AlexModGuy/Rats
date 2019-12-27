@@ -1765,7 +1765,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
-    public boolean canPhaseThroughBlock(World world, BlockPos pos) {
+    public boolean canPhaseThroughBlock(IWorld world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() instanceof FenceBlock || world.getBlockState(pos).getBlock() instanceof FenceBlock;
     }
 
