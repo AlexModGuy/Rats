@@ -1,26 +1,26 @@
 package com.github.alexthe666.rats.client.event;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.ilexiconn.llibrary.LLibrary;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Random;
 
@@ -42,37 +42,36 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPlayerInteract(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getMinecraft().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatConfig.plagueHearts) {
+        if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getInstance().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatConfig.plagueHearts) {
             return;
         }
         left_height = 39;
-        ScaledResolution resolution = event.getResolution();
-        int width = resolution.getScaledWidth();
-        int height = resolution.getScaledHeight();
+        int width = Minecraft.getInstance().mainWindow.getScaledWidth();
+        int height = Minecraft.getInstance().mainWindow.getScaledHeight();
         GlStateManager.enableBlend();
-        PlayerEntity player = (PlayerEntity) Minecraft.getMinecraft().getRenderViewEntity();
+        PlayerEntity player = (PlayerEntity) Minecraft.getInstance().getRenderViewEntity();
         int health = MathHelper.ceil(player.getHealth());
         boolean highlight = healthUpdateCounter > (long) updateCounter && (healthUpdateCounter - (long) updateCounter) / 3L % 2L == 1L;
 
         if (health < this.playerHealth && player.hurtResistantTime > 0) {
-            this.lastSystemTime = Minecraft.getSystemTime();
+            this.lastSystemTime = Util.milliTime();
             this.healthUpdateCounter = (long) (this.updateCounter + 20);
         } else if (health > this.playerHealth && player.hurtResistantTime > 0) {
-            this.lastSystemTime = Minecraft.getSystemTime();
+            this.lastSystemTime = Util.milliTime();
             this.healthUpdateCounter = (long) (this.updateCounter + 10);
         }
 
-        if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L) {
+        if (Util.milliTime() - this.lastSystemTime > 1000L) {
             this.playerHealth = health;
             this.lastPlayerHealth = health;
-            this.lastSystemTime = Minecraft.getSystemTime();
+            this.lastSystemTime = Util.milliTime();
         }
 
         this.playerHealth = health;
         int healthLast = this.lastPlayerHealth;
 
         IAttributeInstance attrMaxHealth = player.getAttribute(SharedMonsterAttributes.MAX_HEALTH);
-        float healthMax = (float) attrMaxHealth.getAttributeValue();
+        float healthMax = (float) attrMaxHealth.getValue();
         float absorb = MathHelper.ceil(player.getAbsorptionAmount());
 
         int healthRows = MathHelper.ceil((healthMax + absorb) / 2.0F / 10.0F);
@@ -86,7 +85,7 @@ public class ClientEvents {
         if (rowHeight != 10) left_height += 10 - rowHeight;
 
         int regen = -1;
-        if (player.isPotionActive(MobEffects.REGENERATION)) {
+        if (player.isPotionActive(Effects.REGENERATION)) {
             regen = updateCounter % 25;
         }
 
@@ -128,20 +127,20 @@ public class ClientEvents {
         }
 
         GlStateManager.disableBlend();
-        Minecraft.getMinecraft().profiler.endSection();
+        Minecraft.getInstance().getProfiler().endSection();
     }
 
     private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(PLAGUE_HEART_TEXTURE);
-        Minecraft.getMinecraft().ingameGUI.drawTexturedModalRect(x, y, textureX, textureY, width, height);
+        Minecraft.getInstance().getTextureManager().bindTexture(PLAGUE_HEART_TEXTURE);
+        Minecraft.getInstance().ingameGUI.blit(x, y, textureX, textureY, width, height);
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.getLivingEntity() == Minecraft.getMinecraft().player) {
-            EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
-            PotionEffect active = event.getLivingEntity().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
+        if (event.getEntityLiving() == Minecraft.getInstance().player) {
+            GameRenderer renderer = Minecraft.getInstance().gameRenderer;
+            EffectInstance active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
             if (synesthesia && !renderer.isShaderActive()) {
                 renderer.loadShader(SYNESTHESIA);
@@ -150,10 +149,10 @@ public class ClientEvents {
                 renderer.stopUseShader();
             }
             if (prevSynesthesiaProgress == 2 && synesthesia) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_BEGIN, 1.0F));
+                Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(RatsSoundRegistry.POTION_EFFECT_BEGIN, 1.0F));
             }
             if (prevSynesthesiaProgress == 38 && !synesthesia) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(RatsSoundRegistry.POTION_EFFECT_END, 1.0F));
+                Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(RatsSoundRegistry.POTION_EFFECT_END, 1.0F));
             }
             prevSynesthesiaProgress = synesthesiaProgress;
             if (synesthesia && synesthesiaProgress < maxSynesthesiaProgress) {
@@ -167,8 +166,8 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onGetFOVModifier(EntityViewRenderEvent.FOVModifier event) {
-        if (event.getEntity() == Minecraft.getMinecraft().player && prevSynesthesiaProgress > 0) {
-            float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * LLibrary.PROXY.getPartialTicks());
+        if (prevSynesthesiaProgress > 0) {
+            float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * Minecraft.getInstance().getRenderPartialTicks());
             float renderProg;
             if (prevSynesthesiaProgress > synesthesiaProgress) {
                 renderProg = (float) Math.sin(prog / maxSynesthesiaProgress * Math.PI) * 40F;

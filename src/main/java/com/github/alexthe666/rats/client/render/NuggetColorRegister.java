@@ -3,8 +3,8 @@ package com.github.alexthe666.rats.client.render;
 import com.github.alexthe666.rats.server.items.ItemRatNuggetOre;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ public class NuggetColorRegister {
 
     public static int getNuggetColor(ItemStack stack) {
         ItemStack poopStack = ItemRatNuggetOre.getIngot(stack, FALLBACK_STACK);
-        String poopName = poopStack.getDisplayName();
+        String poopName = poopStack.getDisplayName().getFormattedText();
         if (TEXTURES_TO_COLOR.get(poopName) != null) {
             return TEXTURES_TO_COLOR.get(poopName).intValue();
         } else {
@@ -57,19 +57,24 @@ public class NuggetColorRegister {
     }
 
     private static TextureAtlasSprite getTextureAtlas(ItemStack oreStack) {
-        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(oreStack.getItem(), oreStack.getMetadata());
+        return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(oreStack.getItem());
     }
 
     private static BufferedImage getBufferedImage(TextureAtlasSprite textureAtlasSprite) {
-        final int iconWidth = textureAtlasSprite.getIconWidth();
-        final int iconHeight = textureAtlasSprite.getIconHeight();
+        final int iconWidth = textureAtlasSprite.getWidth();
+        final int iconHeight = textureAtlasSprite.getHeight();
         final int frameCount = textureAtlasSprite.getFrameCount();
         if (iconWidth <= 0 || iconHeight <= 0 || frameCount <= 0) {
             return null;
         }
         BufferedImage bufferedImage = new BufferedImage(iconWidth, iconHeight * frameCount, BufferedImage.TYPE_4BYTE_ABGR);
         for (int i = 0; i < frameCount; i++) {
-            int[][] frame = textureAtlasSprite.getFrameTextureData(i);
+            int[][] frame = new int[iconWidth][iconHeight];
+            for(int x = 0; x < iconWidth; x++){
+                for(int y = 0; y < iconHeight; y++){
+                    frame[x][y] = textureAtlasSprite.getPixelRGBA(i, x, y);
+                }
+            }
             int[] largest = frame[0];
             bufferedImage.setRGB(0, i * iconHeight, iconWidth, iconHeight, largest, 0, iconWidth);
         }

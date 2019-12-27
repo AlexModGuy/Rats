@@ -11,7 +11,7 @@ import com.github.alexthe666.rats.client.render.RenderNothing;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
-import com.github.alexthe666.rats.server.blocks.*;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -28,16 +28,20 @@ import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GrassColors;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -63,18 +67,13 @@ public class ClientProxy extends CommonProxy {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TRAP, (new StateMap.Builder()).ignore(BlockRatTrap.FACING).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.AUTO_CURDLER, (new StateMap.Builder()).ignore(BlockAutoCurdler.FACING).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_HOLE, (new StateMap.Builder()).ignore(BlockRatHole.NORTH, BlockRatHole.EAST, BlockRatHole.SOUTH, BlockRatHole.WEST).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_DECORATED, (new StateMap.Builder()).ignore(BlockRatCageDecorated.FACING).build());
-        ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, (new StateMap.Builder()).ignore(BlockRatCageBreedingLantern.FACING).build());
-
-        for (int i = 0; i < 16; i++) {
+      /*  for (int i = 0; i < 16; i++) {
             ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
             ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
             ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
         }
+
         ModelLoader.setCustomMeshDefinition(RatsItemRegistry.RAT_NUGGET_ORE, stack -> RAT_NUGGET_MODEL);
         ModelBakery.registerItemVariants(RatsItemRegistry.RAT_NUGGET_ORE, RAT_NUGGET_MODEL);
         try {
@@ -109,7 +108,7 @@ public class ClientProxy extends CommonProxy {
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public void preInit() {
@@ -157,22 +156,17 @@ public class ClientProxy extends CommonProxy {
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/
-        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+
+
+        //ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
+    }
+
+    @SubscribeEvent
+    public static void onBlockColors(ColorHandlerEvent.Block event) {
+        RatsMod.LOGGER.info("loaded in block colorizer");
+        event.getBlockColors().register(new IBlockColor() {
             @Override
-            public int colorMultiplier(BlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-                return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic();
-            }
-        }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
-        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
-            @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
-                BlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-                return Minecraft.getInstance().getBlockColors().colorMultiplier(state, null, null, tintIndex);
-            }
-        }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
-        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-            @Override
-            public int colorMultiplier(BlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+            public int getColor(BlockState state, @Nullable IEnviromentBlockReader worldIn, @Nullable BlockPos pos, int colorIn) {
                 Block block = state.getBlock();
                 int meta = 0;
                 for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
@@ -180,69 +174,81 @@ public class ClientProxy extends CommonProxy {
                         meta = i;
                     }
                 }
-                EnumDyeColor color = EnumDyeColor.byMetadata(meta);
-                return color.getColorValue();
+                DyeColor color = DyeColor.byId(meta);
+                return color.getFireworkColor();
             }
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
-        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
+        event.getBlockColors().register(new IBlockColor() {
             @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
-                Block block = Block.getBlockFromItem(stack.getItem());
+            public int getColor(BlockState state, @Nullable IEnviromentBlockReader worldIn, @Nullable BlockPos pos, int colorIn) {
+                return worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D);
+            }
+        }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
+    }
+
+    @SubscribeEvent
+    public static void onItemColors(ColorHandlerEvent.Item event) {
+        RatsMod.LOGGER.info("loaded in item colorizer");
+        event.getItemColors().register(new IItemColor() {
+            @Override
+            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
+                return GrassColors.get(0.5D, 1.0D);
+            }
+        }, Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
+        event.getItemColors().register(new IItemColor() {
+            @Override
+            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
+                Block block = Block.getBlockFromItem(p_getColor_1_.getItem());
                 int meta = 0;
                 for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
                     if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
                         meta = i;
                     }
                 }
-                EnumDyeColor color = EnumDyeColor.byMetadata(meta);
-                return color.getColorValue();
+                DyeColor color = DyeColor.byId(meta);
+                return color.getFireworkColor();
             }
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
-
-        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
+        event.getItemColors().register(new IItemColor() {
             @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
+            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
                 int meta = 0;
                 for (int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++) {
-                    if (stack.getItem() == RatsItemRegistry.RAT_IGLOOS[i]) {
+                    if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_IGLOOS[i]) {
                         meta = i;
                     }
                 }
-                EnumDyeColor color = EnumDyeColor.byMetadata(meta);
-                return color.getColorValue();
+                DyeColor color = DyeColor.byId(meta);
+                return color.getFireworkColor();
             }
         }, RatsItemRegistry.RAT_IGLOOS);
-
-        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
+        event.getItemColors().register(new IItemColor() {
             @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
-                if (tintIndex == 0) {
+            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
+                if (p_getColor_2_ == 0) {
                     int meta = 0;
                     for (int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++) {
-                        if (stack.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]) {
+                        if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]) {
                             meta = i;
                         }
                     }
-                    EnumDyeColor color = EnumDyeColor.byMetadata(meta);
-                    return color.getColorValue();
+                    DyeColor color = DyeColor.byId(meta);
+                    return color.getFireworkColor();
                 } else {
                     return -1;
                 }
-
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
-
-        Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
+        event.getItemColors().register(new IItemColor() {
             @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
-                if (tintIndex == 1) {
-                    return NuggetColorRegister.getNuggetColor(stack);
+            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
+                if (p_getColor_2_ == 1) {
+                    return NuggetColorRegister.getNuggetColor(p_getColor_1_);
                 } else {
                     return -1;
                 }
             }
         }, RatsItemRegistry.RAT_NUGGET_ORE);
-        ModelBakery.reg(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
     }
 
     @OnlyIn(Dist.CLIENT)
