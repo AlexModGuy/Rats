@@ -1,107 +1,58 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
-import com.github.alexthe666.rats.server.entity.EntityPirat;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanSpirit;
-import com.github.alexthe666.rats.server.world.gen.WorldGenMarblePile;
-import net.minecraft.block.BlockState;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.entity.passive.EntityParrot;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Random;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.placement.CountRangeConfig;
+import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BiomeRatlantis extends Biome {
 
-    private static final BlockState JUNGLE_LOG = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-    private static final BlockState JUNGLE_LEAF = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-    private static final BlockState OAK_LEAF = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-    private final WorldGenerator cheeseOre = new WorldGenMinable(RatsBlockRegistry.BLOCK_OF_CHEESE.getDefaultState(), 9);
-    private final WorldGenerator cheeseMarbleOre = new WorldGenMinable(RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState(), 25);
+    public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
 
 
     public BiomeRatlantis() {
-        super(new BiomeProperties("ratlantis").setTemperature(0.95F).setRainfall(0.9F));
+        super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).waterFogColor(270131).parent((String)null));
         this.setRegistryName("ratlantis");
-        this.decorator.treesPerChunk = 30;
-        this.decorator.grassPerChunk = 25;
-        this.decorator.flowersPerChunk = 4;
-        this.spawnableCreatureList.clear();
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityParrot.class, 60, 1, 2));
-        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityFeralRatlantean.class, 70, 1, 3));
-        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityPirat.class, 20, 1, 1));
-        this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityRatlanteanSpirit.class, 50, 1, 3));
-        addFlower(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState(), 30);
-    }
-
-    public WorldGenerator getRandomWorldGenForGrass(Random rand) {
-        return rand.nextInt(4) == 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-    }
-
-    public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
-        if (rand.nextInt(10) == 0) {
-            return BIG_TREE_FEATURE;
-        } else if (rand.nextInt(2) == 0) {
-            return new WorldGenShrub(JUNGLE_LOG, OAK_LEAF);
-        } else {
-            return (rand.nextInt(3) == 0 ? new WorldGenMegaJungle(false, 10, 20, JUNGLE_LOG, JUNGLE_LEAF) : new WorldGenTrees(false, 4 + rand.nextInt(7), JUNGLE_LOG, JUNGLE_LEAF, true));
-        }
+        DefaultBiomeFeatures.addCarvers(this);
+        DefaultBiomeFeatures.addStructures(this);
+        DefaultBiomeFeatures.addLakes(this);
+        DefaultBiomeFeatures.addMonsterRooms(this);
+        DefaultBiomeFeatures.addStoneVariants(this);
+        DefaultBiomeFeatures.addOres(this);
+        DefaultBiomeFeatures.addSedimentDisks(this);
+        DefaultBiomeFeatures.addBamboo(this);
+        DefaultBiomeFeatures.func_222323_C(this);
+        DefaultBiomeFeatures.addExtraDefaultFlowers(this);
+        DefaultBiomeFeatures.addJungleGrass(this);
+        DefaultBiomeFeatures.addMushrooms(this);
+        DefaultBiomeFeatures.addReedsAndPumpkins(this);
+        DefaultBiomeFeatures.addSprings(this);
+        DefaultBiomeFeatures.addJunglePlants(this);
+        DefaultBiomeFeatures.addFreezeTopLayer(this);
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.BLOCK_OF_CHEESE.getDefaultState(), 9), Placement.COUNT_RANGE, new CountRangeConfig(6, 0, 0, 100)));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState(), 9), Placement.COUNT_RANGE, new CountRangeConfig(6, 0, 0, 100)));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.EMERALD_ORE.getDefaultState(), 3), Placement.COUNT_RANGE, new CountRangeConfig(1, 0, 0, 10)));
+        this.addSpawn(EntityClassification.CREATURE, new Biome.SpawnListEntry(EntityType.PARROT, 60, 1, 2));
+        this.addSpawn(EntityClassification.CREATURE, new Biome.SpawnListEntry(EntityType.PANDA, 12, 1, 2));
+        this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.FERAL_RATLANTEAN, 50, 1, 3));
+        this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.PIRAT, 20, 1, 1));
+        this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.RATLANTEAN_SPIRIT, 50, 1, 1));
+        //addFlower(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState(), 30);
     }
 
     @OnlyIn(Dist.CLIENT)
     public int getSkyColorByTemp(float currentTemperature) {
         return 0XFFC62A;
     }
-
-    public void decorate(World worldIn, Random rand, BlockPos pos) {
-        super.decorate(worldIn, rand, pos);
-        net.minecraftforge.common.MinecraftForge.ORE_GEN_BUS.post(new net.minecraftforge.event.terraingen.OreGenEvent.Pre(worldIn, rand, pos));
-        WorldGenerator emeralds = new EmeraldGenerator();
-        if (net.minecraftforge.event.terraingen.TerrainGen.generateOre(worldIn, rand, emeralds, pos, net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.EMERALD))
-            emeralds.generate(worldIn, rand, pos);
-
-        int i = rand.nextInt(16) + 8;
-        int j = rand.nextInt(16) + 8;
-        int height = worldIn.getHeight(pos.add(i, 0, j)).getY() * 2; // could == 0, which crashes nextInt
-        if (height < 1) height = 1;
-        int k = rand.nextInt(height);
-        for (int melons = 0; melons < 3; melons++) {
-            (new WorldGenMarblePile()).generate(worldIn, rand, pos.add(i, k, j));
-        }
-        for (int j1 = 0; j1 < 7; ++j1) {
-            int k1 = rand.nextInt(16);
-            int l1 = rand.nextInt(100);
-            int i2 = rand.nextInt(16);
-            this.cheeseMarbleOre.generate(worldIn, rand, pos.add(k1, l1, i2));
-        }
-        for (int j1 = 0; j1 < 7; ++j1) {
-            int k1 = rand.nextInt(16);
-            int l1 = rand.nextInt(100);
-            int i2 = rand.nextInt(16);
-            this.cheeseOre.generate(worldIn, rand, pos.add(k1, l1, i2));
-        }
-    }
-
-    private static class EmeraldGenerator extends WorldGenerator {
-        @Override
-        public boolean generate(World worldIn, Random rand, BlockPos pos) {
-            int count = 3 + rand.nextInt(6);
-            for (int i = 0; i < count; i++) {
-                int offset = net.minecraftforge.common.ForgeModContainer.fixVanillaCascading ? 8 : 0; // MC-114332
-                BlockPos blockpos = pos.add(rand.nextInt(16) + offset, rand.nextInt(28) + 4, rand.nextInt(16) + offset);
-                net.minecraft.block.state.BlockState state = worldIn.getBlockState(blockpos);
-                if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, net.minecraft.block.state.pattern.BlockMatcher.forBlock(Blocks.STONE))) {
-                    worldIn.setBlockState(blockpos, Blocks.EMERALD_ORE.getDefaultState(), 16 | 2);
-                }
-            }
-            return true;
-        }
-    }
-
 }
