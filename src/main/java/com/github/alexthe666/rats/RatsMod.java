@@ -25,7 +25,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("rats")
+@Mod(RatsMod.MODID)
 public class RatsMod {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "rats";
@@ -64,9 +64,7 @@ public class RatsMod {
     }
 
     public RatsMod() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(PROXY);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
@@ -87,7 +85,9 @@ public class RatsMod {
         }
     }
 
-    private void preInit(final FMLCommonSetupEvent event) {
+    private void setup(final FMLCommonSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(PROXY);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageAutoCurdlerFluid.class, MessageAutoCurdlerFluid::write, MessageAutoCurdlerFluid::read, MessageAutoCurdlerFluid.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffRat.class, MessageCheeseStaffRat::write, MessageCheeseStaffRat::read, MessageCheeseStaffRat.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffSync.class, MessageCheeseStaffSync::write, MessageCheeseStaffSync::read, MessageCheeseStaffSync.Handler::handle);

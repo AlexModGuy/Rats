@@ -1,16 +1,15 @@
 modLoader="javafml" #mandatory
-loaderVersion="[26,)" #mandatory (26 is current forge version)
+loaderVersion="[28]" #mandatory
 issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
 [[mods]] #mandatory
 modId="rats" #mandatory
 version="4.0.0" #mandatory
 displayName="Rats" #mandatory
-updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/rats/files" #optional
 displayURL="https://www.curseforge.com/minecraft/mc-mods/rats" #optional
 logoFile="rats_logo.png" #optional
 authors="Alexthe666" #optional
 description='''
-Rats.
+What are we going to do today Pinky?
 '''
 [[dependencies.rats]] #optional
     # the modid of the dependency
