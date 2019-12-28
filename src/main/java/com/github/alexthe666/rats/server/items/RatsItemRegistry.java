@@ -295,7 +295,7 @@ public class RatsItemRegistry {
         try {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Item) {
+                if (obj instanceof Item && ((Item) obj).getRegistryName() != null) {
                     if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatConfig.disablePlastic) {
                         event.getRegistry().register((Item) obj);
                     }

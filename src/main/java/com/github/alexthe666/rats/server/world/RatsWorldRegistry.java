@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
@@ -9,13 +10,15 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
+import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(RatsMod.MODID)
 public class RatsWorldRegistry {
 
     public static final SurfaceBuilder<SurfaceBuilderConfig> RATLANTIS_SURFACE = new DefaultSurfaceBuilder(SurfaceBuilderConfig::deserialize);
-    public static ModDimension RATLANTIS_DIM = new RatlantisModDimension(RatlantisDimension::new).setRegistryName("rats:ratlantis");
+    public static final ModDimension RATLANTIS_DIM = new RatlantisModDimension(RatlantisDimension::new).setRegistryName("rats:ratlantis");
     public static DimensionType RATLANTIS_DIMENSION_TYPE;
-    public static Biome RATLANTIS_BIOME = new BiomeRatlantis();
+    public static final Biome RATLANTIS_BIOME = new BiomeRatlantis();
 
     static {
         RATLANTIS_SURFACE.setRegistryName("rats:ratlantis_surface");

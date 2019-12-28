@@ -2,13 +2,11 @@ package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.CommonProxy;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
@@ -19,7 +17,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -28,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(RatsMod.MODID)
+@Mod.EventBusSubscriber
 public class RatsMod {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "rats";
@@ -68,14 +66,7 @@ public class RatsMod {
     public RatsMod() {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(PROXY);
-        MinecraftForge.EVENT_BUS.register(RatsItemRegistry.class);
-        MinecraftForge.EVENT_BUS.register(RatsBlockRegistry.class);
         MinecraftForge.EVENT_BUS.addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, RatsItemRegistry::registerItem);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlocks);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlockItems);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerTileEntities);
         PROXY.init();
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);

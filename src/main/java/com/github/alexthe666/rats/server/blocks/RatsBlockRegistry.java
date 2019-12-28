@@ -30,16 +30,16 @@ public class RatsBlockRegistry {
     public static final Block MILK_CAULDRON = new BlockMilkCauldron();
     public static final Block CHEESE_CAULDRON = new BlockCheeseCauldron();
     public static final Block RAT_HOLE = new BlockRatHole();
-    public static final Block RAT_TRAP = new BlockRatTrap();
+    public static final Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
     public static final Block RAT_CAGE = new BlockRatCage("rat_cage");
     public static final Block RAT_CAGE_DECORATED = new BlockRatCageDecorated();
     public static final Block RAT_CAGE_BREEDING_LANTERN = new BlockRatCageBreedingLantern();
     public static final Block FISH_BARREL = new BlockGenericFacing("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
     public static final Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
     public static final Block AUTO_CURDLER = new BlockAutoCurdler();
-    public static final Block[] RAT_TUBE_COLOR = new Block[16];
+    public static final Block RAT_TRAP = new BlockRatTrap();
+    public static final Block[] RAT_TUBE_COLOR = initRatTubes();
     public static final Block GARBAGE_PILE = new BlockGarbage();
-    public static final Block RATGLOVE_FLOWER = new BlockRatgloveFlower();
     public static final Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_slab");
@@ -70,14 +70,18 @@ public class RatsBlockRegistry {
         }
     }.setUnlocalizedName("rats.milk");
 
-    static {
-        for (int i = 0; i < 16; i++) {
-            RAT_TUBE_COLOR[i] = new BlockRatTube(DyeColor.byId(i).getName());
-        }
-    }
+
 
     static {
         //FluidRegistry.registerFluid(MILK_FLUID);
+    }
+
+    private static Block[] initRatTubes(){
+        Block[] block = new Block[16];
+        for (int i = 0; i < 16; i++) {
+            block[i] = new BlockRatTube(DyeColor.byId(i).getName());
+        }
+        return block;
     }
 
 
@@ -86,7 +90,7 @@ public class RatsBlockRegistry {
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Block) {
+                if (obj instanceof Block && ((Block) obj).getRegistryName() != null) {
                     event.getRegistry().register((Block) obj);
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
@@ -104,7 +108,7 @@ public class RatsBlockRegistry {
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Block) {
+                if (obj instanceof Block && ((Block) obj).getRegistryName() != null) {
                     BlockItem blockItem = new BlockItem((Block) obj, new Item.Properties().group(RatsMod.TAB));
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);

@@ -8,7 +8,6 @@ import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
-import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.inventory.container.ContainerType;
@@ -56,7 +55,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerVillagers(RegistryEvent.Register<VillagerProfession> event) {
-        event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
+        // event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
     }
 
     @SubscribeEvent
@@ -155,17 +154,17 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerSurfaces(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
-        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
+        // event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
     }
 
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
-        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
+       // event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
     }
 
     @SubscribeEvent
     public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
-        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_DIM);
+      //  event.getRegistry().register(RatsWorldRegistry.RATLANTIS_DIM);
     }
 
         public void preInit() {

@@ -30,7 +30,7 @@ public class BlockRatTrap extends ContainerBlock {
 
     protected BlockRatTrap() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0.0F));
-        this.setRegistryName(RatsMod.MODID, "rattrap");
+        this.setRegistryName(RatsMod.MODID, "rat_trap");
         setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         //GameRegistry.registerTileEntity(TileEntityRatTrap.class, "rats.rat_trap");
     }
