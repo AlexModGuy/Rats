@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.RatConfig;
-import com.github.alexthe666.rats.server.world.gen.StructureRatRoadPieces;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;

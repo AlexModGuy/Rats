@@ -44,7 +44,7 @@ public class BlockRatlantisPortal extends ContainerBlock {
                         thePlayer.timeUntilPortal = 10;
                     } else if (thePlayer.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.changeDimension(RatsWorldRegistry.RATLANTIS_DIM);
+                        thePlayer.changeDimension(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
                     } else {
                         thePlayer.timeUntilPortal = 10;
                         thePlayer.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
@@ -53,7 +53,7 @@ public class BlockRatlantisPortal extends ContainerBlock {
                 if (!(entity instanceof PlayerEntity)) {
                     if (entity.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatsWorldRegistry.RATLANTIS_DIM);
+                        entity.changeDimension(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
                     } else {
                         entity.timeUntilPortal = 10;
                         entity.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));

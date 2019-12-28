@@ -8,7 +8,7 @@ import net.minecraft.util.Direction;
 public class TileEntityRatlantisPortal extends EndPortalTileEntity implements ITickableTileEntity {
     private long age;
 
-    protected TileEntityRatlantisPortal() {
+    public TileEntityRatlantisPortal() {
         super(RatsTileEntityRegistry.RATLANTIS_PORTAL);
     }
 

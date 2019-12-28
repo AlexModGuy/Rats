@@ -1,31 +1,35 @@
 package com.github.alexthe666.rats.server.world.gen;
 
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
+import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LogBlock;
+import net.minecraft.block.VineBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class WorldGenAquaduct extends WorldGenerator {
+public class WorldGenAquaduct extends Feature<NoFeatureConfig> {
 
     public Direction facing;
     int aquaDist = 0;
-
-    public WorldGenAquaduct(Direction facing) {
-        super(false);
+    private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST, Direction.SOUTH};
+    public WorldGenAquaduct(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_, Direction facing) {
+        super(p_i49873_1_);
         this.facing = facing;
-
     }
 
     public static Rotation getRotationFromFacing(Direction facing) {
@@ -41,63 +45,64 @@ public class WorldGenAquaduct extends WorldGenerator {
         }
     }
 
-    public static BlockPos getGround(BlockPos pos, World world) {
+    public static BlockPos getGround(BlockPos pos, IWorld world) {
         return getGround(pos.getX(), pos.getZ(), world);
     }
 
-    public static BlockPos getGround(int x, int z, World world) {
+    public static BlockPos getGround(int x, int z, IWorld world) {
         BlockPos skyPos = new BlockPos(x, 256, z);
-        while ((!world.getBlockState(skyPos).isOpaqueCube() || canHeightSkipBlock(skyPos, world)) && skyPos.getY() > 1) {
+        while ((!world.getBlockState(skyPos).isOpaqueCube(world, skyPos) || canHeightSkipBlock(skyPos, world)) && skyPos.getY() > 1) {
             skyPos = skyPos.down();
         }
         return skyPos;
     }
 
-    private static boolean canHeightSkipBlock(BlockPos pos, World world) {
+    private static boolean canHeightSkipBlock(BlockPos pos, IWorld world) {
         BlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof BlockLog || state.getBlock() instanceof BlockLiquid;
+        return state.getBlock() instanceof LogBlock || !state.isSolid();
     }
 
-    public boolean generate(World worldIn, Random rand, BlockPos position) {
-        position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
-        BlockPos height = getGround(position, worldIn);
+    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+        pos = pos.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
+        BlockPos height = getGround(pos, worldIn);
         for (int i = 0; i < 2 + rand.nextInt(5); i++) {
             generateAquaduct(worldIn, facing, height.offset(facing.rotateY(), aquaDist));
         }
         return true;
     }
 
-    private void generateAquaduct(World worldIn, Direction facing, BlockPos height) {
-        MinecraftServer server = worldIn.getMinecraftServer();
+    private void generateAquaduct(IWorld worldIn, Direction facing, BlockPos height) {
         BlockState dirt = worldIn.getBlockState(height.down(2));
-        if (!dirt.isFullBlock()) {
+        if (!dirt.isSolid()) {
             dirt = Blocks.SAND.getDefaultState();
         }
-        TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
-        Template template = templateManager.getTemplate(server, RatStructure.LARGE_AQUADUCT.structureLoc);
+        Random random = new Random(worldIn.getSeed());
+        ServerWorld serverworld = (ServerWorld)worldIn;
+        TemplateManager templateManager = serverworld.getStructureTemplateManager();
+        Template template = templateManager.getTemplate(RatStructure.LARGE_AQUADUCT.structureLoc);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));
+        settings.addProcessor(new RatsStructureProcessor(0.75F * random.nextFloat() + 0.75F));
         BlockPos pos = height.offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2);
-        settings.setReplacedBlock(Blocks.AIR);
-        template.addBlocksToWorld(worldIn, pos, new RatsStructureProcessor(0.75F * worldIn.rand.nextFloat() + 0.75F), settings, 2);
+        template.addBlocksToWorld(worldIn, pos, settings, 2);
         for (BlockPos underPos : BlockPos.getAllInBox(
                 height.down().offset(facing, -template.getSize().getZ() / 2).offset(facing.rotateYCCW(), -template.getSize().getX() / 2),
                 height.down(3).offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2)
-        )) {
-            if (!worldIn.getBlockState(underPos).isOpaqueCube() && !worldIn.isAirBlock(underPos.up())) {
-                worldIn.setBlockState(underPos, dirt);
-                worldIn.setBlockState(underPos.down(), dirt);
-                worldIn.setBlockState(underPos.down(2), dirt);
+        ).collect(Collectors.toSet())) {
+            if (!worldIn.getBlockState(underPos).isOpaqueCube(worldIn, underPos) && !worldIn.isAirBlock(underPos.up())) {
+                worldIn.setBlockState(underPos, dirt, 3);
+                worldIn.setBlockState(underPos.down(), dirt, 3);
+                worldIn.setBlockState(underPos.down(2), dirt, 3);
             }
         }
         for (BlockPos vinePos : BlockPos.getAllInBox(
                 height.offset(facing, -template.getSize().getZ() / 2).offset(facing.rotateYCCW(), -template.getSize().getX() / 2),
                 height.up(template.getSize().getY()).offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2)
-        )) {
-            if (worldIn.getBlockState(vinePos).isOpaqueCube()) {
-                for (Direction Direction : Direction.Plane.HORIZONTAL.facings()) {
-                    if (!worldIn.getBlockState(vinePos.offset(Direction)).isOpaqueCube() && worldIn.rand.nextInt(8) == 0) {
+        ).collect(Collectors.toSet())) {
+            if (worldIn.getBlockState(vinePos).isOpaqueCube(worldIn, vinePos)) {
+                for (Direction Direction : HORIZONTALS) {
+                    if (!worldIn.getBlockState(vinePos.offset(Direction)).isOpaqueCube(worldIn, vinePos) && random.nextInt(8) == 0) {
                         Direction opposFacing = Direction.getOpposite();
-                        BlockState BlockState = Blocks.VINE.getDefaultState().with(BlockVine.NORTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.NORTH)).with(BlockVine.EAST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.EAST)).with(BlockVine.SOUTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.SOUTH)).with(BlockVine.WEST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.WEST));
+                        BlockState BlockState = Blocks.VINE.getDefaultState().with(VineBlock.NORTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.NORTH)).with(VineBlock.EAST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.EAST)).with(VineBlock.SOUTH, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.SOUTH)).with(VineBlock.WEST, Boolean.valueOf(opposFacing == net.minecraft.util.Direction.WEST));
                         worldIn.setBlockState(vinePos.offset(Direction), BlockState, 2);
                     }
                 }

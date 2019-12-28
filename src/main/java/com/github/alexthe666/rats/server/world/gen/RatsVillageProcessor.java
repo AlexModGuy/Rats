@@ -2,23 +2,29 @@ package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.world.village.WorldGenPetShop;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.Dynamic;
+import com.mojang.datafixers.types.DynamicOps;
+import net.minecraft.block.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.template.ITemplateProcessor;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.gen.feature.template.IStructureProcessorType;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.StructureProcessor;
+import net.minecraft.world.gen.feature.template.Template;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class RatsVillageProcessor implements ITemplateProcessor {
+public class RatsVillageProcessor extends StructureProcessor {
 
     private Biome biome;
     private BlockPos blockPos;
@@ -33,58 +39,58 @@ public class RatsVillageProcessor implements ITemplateProcessor {
     }
 
     @Nullable
-    public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
-        if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {
-            ResourceLocation loot = blockInfoIn.blockState.getBlock() == Blocks.TRAPPED_CHEST ? WorldGenPetShop.UPSTAIRS_LOOT : WorldGenPetShop.LOOT;
-            Random rand = new Random(worldIn.getSeed() + pos.toLong());
-            CompoundNBT tag = blockInfoIn.tileentityData == null ? new CompoundNBT() : blockInfoIn.tileentityData;
-            tag.setString("LootTable", loot.toString());
-            tag.setLong("LootTableSeed", rand.nextLong());
+    public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Template.BlockInfo blockInfoIn2, PlacementSettings settings) {
+        Random random = settings.getRandom(pos);
+        if (blockInfoIn.state.getBlock() instanceof ChestBlock) {
+            ResourceLocation loot = blockInfoIn.state.getBlock() == Blocks.TRAPPED_CHEST ? WorldGenPetShop.UPSTAIRS_LOOT : WorldGenPetShop.LOOT;
+            CompoundNBT tag = blockInfoIn.nbt == null ? new CompoundNBT() : blockInfoIn.nbt;
+            tag.putString("LootTable", loot.toString());
+            tag.putLong("LootTableSeed", random.nextLong());
             Template.BlockInfo newInfo = new Template.BlockInfo(pos, Blocks.CHEST.getDefaultState(), tag);
             return newInfo;
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.DIAMOND_BLOCK) {//spawn ocelot
-            if (petShop.wolfPos.size() == 0 || petShop.wolfPos.size() < 2 && worldIn.rand.nextInt(1) == 0) {
+        } else if (blockInfoIn.state.getBlock() == Blocks.DIAMOND_BLOCK) {//spawn ocelot
+            if (petShop.wolfPos.size() == 0 || petShop.wolfPos.size() < 2 && random.nextInt(1) == 0) {
                 if (!petShop.wolfPos.contains(pos)) {
                     petShop.wolfPos.add(pos);
                 }
             }
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            //worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.GOLD_BLOCK) {//spawn rat cage
+        } else if (blockInfoIn.state.getBlock() == Blocks.GOLD_BLOCK) {//spawn rat cage
             if (!petShop.ratPos.contains(pos)) {
                 petShop.ratPos.add(pos);
             }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.QUARTZ_BLOCK) {//spawn rat or rabbit cage
+        } else if (blockInfoIn.state.getBlock() == Blocks.QUARTZ_BLOCK) {//spawn rat or rabbit cage
             if (!petShop.rabbitPos.contains(pos)) {
                 petShop.rabbitPos.add(pos);
             }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.IRON_BLOCK) {//spawn wolf cage
-            if (petShop.ocelotPos.size() == 0 || petShop.ocelotPos.size() < 2 && worldIn.rand.nextInt(3) == 0) {
+        } else if (blockInfoIn.state.getBlock() == Blocks.IRON_BLOCK) {//spawn wolf cage
+            if (petShop.ocelotPos.size() == 0 || petShop.ocelotPos.size() < 2 && random.nextInt(3) == 0) {
                 if (!petShop.ocelotPos.contains(pos)) {
                     petShop.ocelotPos.add(pos);
                 }
             }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.EMERALD_BLOCK) {//spawn parrot cage
+        } else if (blockInfoIn.state.getBlock() == Blocks.EMERALD_BLOCK) {//spawn parrot cage
             if (!petShop.parrotPos.contains(pos)) {
                 petShop.parrotPos.add(pos);
             }
             return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.COAL_BLOCK) {//spawn shopkeeper
+        } else if (blockInfoIn.state.getBlock() == Blocks.COAL_BLOCK) {//spawn shopkeeper
             if (!petShop.villagerPos.contains(pos)) {
                 petShop.villagerPos.add(pos);
             }
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            //worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
-        } else if (blockInfoIn.blockState.getBlock() == Blocks.LAPIS_BLOCK) {//spawn ocelot
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+        } else if (blockInfoIn.state.getBlock() == Blocks.LAPIS_BLOCK) {//spawn ocelot
+            //worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
         }
         {
-            BlockState state = getBiomeSpecificBlockState(blockInfoIn.blockState, biome);
-            if (state != blockInfoIn.blockState) {
+            BlockState state = getBiomeSpecificBlockState(blockInfoIn.state, biome);
+            if (state != blockInfoIn.state) {
                 return new Template.BlockInfo(pos, state, null);
             } else {
                 return blockInfoIn;
@@ -95,7 +101,7 @@ public class RatsVillageProcessor implements ITemplateProcessor {
     @SuppressWarnings("deprecation")
     protected BlockState getBiomeSpecificBlockState(BlockState blockstateIn, Biome biome) {
         net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID event = new net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID(biome, blockstateIn);
-        net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.post(event);
+        MinecraftForge.EVENT_BUS.post(event);
         int structureType = 0;
         if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY)) {
             structureType = 1;
@@ -105,22 +111,22 @@ public class RatsVillageProcessor implements ITemplateProcessor {
             structureType = 3;
         }
 
-        if (event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY)
+        if (event.getResult() == Event.Result.DENY)
             return event.getReplacement();
-        if (blockstateIn.getBlock() instanceof BlockDoor && blockstateIn.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER) {
-            Direction facing = blockstateIn.getValue(BlockDoor.FACING);
-            return biomeDoor(structureType).with(BlockDoor.FACING, facing);
+        if (blockstateIn.getBlock() instanceof DoorBlock && blockstateIn.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
+            Direction facing = blockstateIn.get(DoorBlock.FACING);
+            return biomeDoor(structureType).with(DoorBlock.FACING, facing);
         }
-        if (blockstateIn.getBlock() instanceof BlockDoor && blockstateIn.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-            Direction facing = blockstateIn.getValue(BlockDoor.FACING);
-            return biomeDoor(structureType).with(BlockDoor.FACING, facing).with(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER);
+        if (blockstateIn.getBlock() instanceof DoorBlock && blockstateIn.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER) {
+            Direction facing = blockstateIn.get(DoorBlock.FACING);
+            return biomeDoor(structureType).with(DoorBlock.FACING, facing).with(DoorBlock.HALF, DoubleBlockHalf.UPPER);
         }
         if (structureType == 1) {
-            if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
+            if (blockstateIn.getBlock() == Blocks.OAK_LOG || blockstateIn.getBlock() == Blocks.DARK_OAK_LOG) {
                 return Blocks.SANDSTONE.getDefaultState();
             }
             if (blockstateIn.getBlock() == Blocks.COBBLESTONE) {
-                return Blocks.SANDSTONE.getStateFromMeta(BlockSandStone.EnumType.DEFAULT.getMetadata());
+                return Blocks.SANDSTONE.getDefaultState();
             }
             if (blockstateIn.getBlock() == Blocks.DIRT) {
                 return Blocks.SAND.getDefaultState();
@@ -128,52 +134,51 @@ public class RatsVillageProcessor implements ITemplateProcessor {
             if (blockstateIn.getBlock() == Blocks.GRASS) {
                 return Blocks.SANDSTONE.getDefaultState();
             }
-            if (blockstateIn.getBlock() == Blocks.PLANKS) {
-                return Blocks.SANDSTONE.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.getMetadata());
+            if (blockstateIn.getBlock() == Blocks.OAK_PLANKS) {
+                return Blocks.CUT_SANDSTONE.getDefaultState();
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.SANDSTONE_STAIRS.getDefaultState().with(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SANDSTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, blockstateIn.get(StairsBlock.FACING));
             }
 
             if (blockstateIn.getBlock() == Blocks.STONE_STAIRS) {
-                return Blocks.SANDSTONE_STAIRS.getDefaultState().with(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SANDSTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, blockstateIn.get(StairsBlock.FACING));
             }
 
             if (blockstateIn.getBlock() == Blocks.GRAVEL) {
                 return Blocks.SANDSTONE.getDefaultState();
             }
         } else if (structureType == 3) {
-            if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
-                return Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
+            if (blockstateIn.getBlock() == Blocks.OAK_LOG || blockstateIn.getBlock() == Blocks.DARK_OAK_LOG) {
+                return Blocks.SPRUCE_LOG.getDefaultState().with(LogBlock.AXIS, blockstateIn.get(LogBlock.AXIS));
             }
-
-            if (blockstateIn.getBlock() == Blocks.PLANKS) {
-                return Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE);
+            if (blockstateIn.getBlock() == Blocks.OAK_PLANKS) {
+                return Blocks.SPRUCE_PLANKS.getDefaultState();
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, blockstateIn.get(StairsBlock.FACING));
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_FENCE) {
                 return Blocks.SPRUCE_FENCE.getDefaultState();
             }
         } else if (structureType == 2) {
-            if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
-                return Blocks.LOG2.getDefaultState().with(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA).with(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
+            if (blockstateIn.getBlock() == Blocks.OAK_LOG || blockstateIn.getBlock() == Blocks.DARK_OAK_LOG) {
+                return Blocks.ACACIA_LOG.getDefaultState().with(LogBlock.AXIS, blockstateIn.get(LogBlock.AXIS));
             }
 
-            if (blockstateIn.getBlock() == Blocks.PLANKS) {
-                return Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.ACACIA);
+            if (blockstateIn.getBlock() == Blocks.OAK_PLANKS) {
+                return Blocks.ACACIA_PLANKS.getDefaultState();
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_STAIRS) {
-                return Blocks.ACACIA_STAIRS.getDefaultState().with(BlockStairs.FACING, blockstateIn.getValue(BlockStairs.FACING));
+                return Blocks.ACACIA_STAIRS.getDefaultState().with(StairsBlock.FACING, blockstateIn.get(StairsBlock.FACING));
             }
 
             if (blockstateIn.getBlock() == Blocks.COBBLESTONE) {
-                return Blocks.LOG2.getDefaultState().with(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA).with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
+                return Blocks.ACACIA_LOG.getDefaultState();
             }
 
             if (blockstateIn.getBlock() == Blocks.OAK_FENCE) {
@@ -197,4 +202,13 @@ public class RatsVillageProcessor implements ITemplateProcessor {
         }
     }
 
+    @Override
+    protected IStructureProcessorType getType() {
+        return IStructureProcessorType.BLOCK_ROT;
+    }
+
+    @Override
+    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
+        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("rat_village_processor"), ops.createFloat(0))));
+    }
 }
