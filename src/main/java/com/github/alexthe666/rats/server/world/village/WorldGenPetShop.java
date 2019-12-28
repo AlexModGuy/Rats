@@ -1,28 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
-import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
-public class WorldGenPetShop extends WorldGenerator {
+public class WorldGenPetShop{}
+/*extends WorldGenerator {
 
     public static final ResourceLocation UPSTAIRS_LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop_upstairs");
     public static final ResourceLocation LOOT = new ResourceLocation(RatsMod.MODID, "pet_shop");
@@ -152,4 +131,4 @@ public class WorldGenPetShop extends WorldGenerator {
         rabbitPos.clear();
         return true;
     }
-}
+}*/

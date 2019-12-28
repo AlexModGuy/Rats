@@ -1,18 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-
-import java.util.List;
-import java.util.Random;
-
-public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village {
+public class VillageComponentPlagueDoctor {
+}/*extends VillagePieces.Village {
     int villagerCount = 0;
     private int averageGroundLevel = -1;
 
@@ -56,3 +45,4 @@ public class VillageComponentPlagueDoctor extends StructureVillagePieces.Village
         return getBiomeSpecificBlockState(state);
     }
 }
+*/

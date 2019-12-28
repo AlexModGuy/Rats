@@ -1,14 +1,7 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import net.minecraft.util.Direction;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-
-import java.util.List;
-import java.util.Random;
-
-public class VillageCreatorGarbageHeap implements VillagerRegistry.IVillageCreationHandler {
+public class VillageCreatorGarbageHeap{}
+/* implements VillagePieces.IVillageCreationHandler {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
@@ -25,4 +18,4 @@ public class VillageCreatorGarbageHeap implements VillagerRegistry.IVillageCreat
         return VillageComponentGarbageHeap.buildComponent(startPiece, pieces, random, p1, p2, p3, facing, p5);
     }
 
-}
+} */

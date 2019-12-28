@@ -1,17 +1,6 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import net.minecraft.block.state.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-
-import java.util.List;
-import java.util.Random;
-
-public class VillageComponentPetShop extends StructureVillagePieces.Village {
+public class VillageComponentPetShop{}/* extends VillagePieces.Village {
     int villagerCount = 0;
     private int averageGroundLevel = -1;
 
@@ -19,7 +8,7 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
         super();
     }
 
-    public VillageComponentPetShop(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, Direction facing) {
+    public VillageComponentPetShop(VillagePieces.Village startPiece, int p2, Random random, StructureBoundingBox structureBox, Direction facing) {
         super();
         this.villagerCount = 0;
         this.setCoordBaseMode(facing);
@@ -46,13 +35,13 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
         BlockPos blockpos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY + 1, this.boundingBox.minZ);
         Direction facing = this.getCoordBaseMode().getOpposite();
         BlockPos genPos = blockpos;
-        /*
+
         for(int i = this.boundingBox.minX; i < this.boundingBox.maxX; i++){
             for(int k = this.boundingBox.minZ; k < this.boundingBox.maxZ; k++){
                 world.setBlockState(new BlockPos(i, boundingBox.maxY, k), Blocks.GOLD_BLOCK.getDefaultState());
             }
         }
-        */
+
         if (facing == Direction.WEST || facing == Direction.EAST) {
             genPos = new BlockPos(this.boundingBox.minX, this.boundingBox.minY + 1, this.boundingBox.maxZ);
         }
@@ -64,3 +53,4 @@ public class VillageComponentPetShop extends StructureVillagePieces.Village {
         return getBiomeSpecificBlockState(state);
     }
 }
+*/

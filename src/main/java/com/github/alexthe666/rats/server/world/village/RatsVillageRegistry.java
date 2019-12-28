@@ -1,29 +1,22 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import com.github.alexthe666.rats.RatConfig;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraft.village.PointOfInterestType;
 
 public class RatsVillageRegistry {
-    public static final VillagerProfession PET_SHOP_OWNER = new VillagerProfession("rats:pet_shop_owner", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
-    public static final VillagerProfession PLAGUE_DOCTOR = new VillagerProfession("rats:plague_doctor", "rats:textures/entity/villager_pet_shop_owner.png", "rats:textures/entity/zombie_villager_pet_shop_owner.png");
+    public static final VillagerProfession PET_SHOP_OWNER = new VillagerProfession("rats:pet_shop_owner", PointOfInterestType.NITWIT, ImmutableSet.of(), ImmutableSet.of());
+    public static final VillagerProfession PLAGUE_DOCTOR = new VillagerProfession("rats:plague_doctor", PointOfInterestType.NITWIT, ImmutableSet.of(), ImmutableSet.of());
 
     public static void register() {
+        /*
         if (RatConfig.villageGarbageHeaps) {
             MapGenStructureIO.registerStructureComponent(VillageComponentGarbageHeap.class, "garbage_heap");
             VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorGarbageHeap());
         }
         if (RatConfig.villagePetShops) {
-            MapGenStructureIO.registerStructureComponent(VillageComponentPetShop.class, "pet_shop");
-            VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreatorPetShop());
+            .registerStructureComponent(VillageComponentPetShop.class, "pet_shop");
+            Villagers.instance().registerVillageCreationHandler(new VillageCreatorPetShop());
         }
         if (RatConfig.villagePlagueDoctors) {
             MapGenStructureIO.registerStructureComponent(VillageComponentPlagueDoctor.class, "plague_doctor_hut");
@@ -60,5 +53,6 @@ public class RatsVillageRegistry {
         doctor.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_STEW, new EntityVillager.PriceInfo(8, 1)));
         doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_DOCTOR_MASK, new EntityVillager.PriceInfo(15, 1)));
         doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PURIFYING_LIQUID, new EntityVillager.PriceInfo(12, 1)));
+        */
     }
 }

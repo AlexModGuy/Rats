@@ -1,24 +1,6 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.world.gen.RatsVillageProcessor;
-import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
-
-import java.util.Random;
-
-public class WorldGenGarbageHeap extends WorldGenerator {
+public class WorldGenGarbageHeap{} /* extends WorldGenerator {
 
     private static final ResourceLocation STRUCTURE = new ResourceLocation(RatsMod.MODID, "village_garbage_heap");
     private VillageComponentGarbageHeap component;
@@ -58,4 +40,4 @@ public class WorldGenGarbageHeap extends WorldGenerator {
         template.addBlocksToWorld(worldIn, genPos, new RatsVillageProcessor(position.up(3), null, settings, biome), settings, 2);
         return true;
     }
-}
+}*/

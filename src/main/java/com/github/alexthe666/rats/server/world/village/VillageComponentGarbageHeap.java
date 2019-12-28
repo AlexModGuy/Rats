@@ -1,17 +1,8 @@
 package com.github.alexthe666.rats.server.world.village;
 
-import net.minecraft.block.state.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
+public class VillageComponentGarbageHeap {}
+    /*extends StructureVillagePieces.Village {
 
-import java.util.List;
-import java.util.Random;
-
-public class VillageComponentGarbageHeap extends StructureVillagePieces.Village {
     int villagerCount = 0;
     private int averageGroundLevel = -1;
 
@@ -52,11 +43,13 @@ public class VillageComponentGarbageHeap extends StructureVillagePieces.Village 
                 world.setBlockState(new BlockPos(i, boundingBox.maxY, k), Blocks.GOLD_BLOCK.getDefaultState());
             }
         }*/
-        //world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().with(BlockHorizontal.FACING, facing));
-        return new WorldGenGarbageHeap(this, facing).generate(world, random, genPos);
+//world.setBlockState(new BlockPos(this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ), Blocks.PUMPKIN.getDefaultState().with(BlockHorizontal.FACING, facing));
+      /*  return new WorldGenGarbageHeap(this, facing).generate(world, random, genPos);
     }
 
     public BlockState getBiomeBlock(BlockState state) {
         return getBiomeSpecificBlockState(state);
     }
 }
+
+     */
