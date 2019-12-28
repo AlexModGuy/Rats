@@ -1,7 +1,12 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(RatsMod.MODID)
 public class RatsContainerRegistry {
 
     public static final ContainerType RAT_CONTAINER = register(new ContainerType(ContainerRat::new), "rat_container");

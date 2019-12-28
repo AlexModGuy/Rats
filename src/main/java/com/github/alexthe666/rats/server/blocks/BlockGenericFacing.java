@@ -18,10 +18,9 @@ public class BlockGenericFacing extends Block {
 
     public BlockGenericFacing(String name, Material mat, float hardness, float resistance, SoundType sound) {
         super(Block.Properties.create(mat).sound(sound).hardnessAndResistance(hardness, resistance));
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
         this.setRegistryName(RatsMod.MODID, name);
     }
-
 
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.with(FACING, rot.rotate(state.get(FACING)));

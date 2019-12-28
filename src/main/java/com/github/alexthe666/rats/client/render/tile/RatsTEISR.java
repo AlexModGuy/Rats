@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeSeparator;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,18 +12,10 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
     private RenderRatTrap renderRatTrap = new RenderRatTrap();
     private RenderAutoCurdler renderAutoCurdler = new RenderAutoCurdler();
     private RenderRatlantisPortal renderRatlantisPortal = new RenderRatlantisPortal();
-    private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
-    private RenderUpgradeSeparator renderUpgradeSeparator = new RenderUpgradeSeparator();
-    private TileEntityUpgradeCombiner dummyCombiner = new TileEntityUpgradeCombiner();
-    private TileEntityUpgradeSeparator dummySeparator = new TileEntityUpgradeSeparator();
+    //private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
+    //private RenderUpgradeSeparator renderUpgradeSeparator = new RenderUpgradeSeparator();
 
     public void renderByItem(ItemStack itemStackIn) {
-        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_COMBINER)) {
-            renderUpgradeCombiner.render(dummyCombiner, 0, 0, 0, 0, 0);
-        }
-        //if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_SEPARATOR)) {
-        //    renderUpgradeSeparator.render(dummySeparator, 0, 0, 0, 0.0F, 0, 0.0F);
-        //}
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE)) {
             renderRatHole.render(null, 0, 0, 0, 0, 0);
         }

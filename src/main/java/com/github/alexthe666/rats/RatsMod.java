@@ -25,12 +25,12 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(RatsMod.MODID)
+@Mod("rats")
 public class RatsMod {
     public static final Logger LOGGER = LogManager.getLogger();
-    public static final String MODID = "diversebiomes";
-    public static final String NAME = "Diverse Biomes";
-    public static final String VERSION = "1.0";
+    public static final String MODID = "rats";
+    public static final String NAME = "Rats";
+    public static final String VERSION = "4.0.0";
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
     public static ItemGroup TAB = new ItemGroup(MODID) {
@@ -66,11 +66,11 @@ public class RatsMod {
     public RatsMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(PROXY);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
     }
-
     public static <MSG> void sendMSGToServer(MSG message) {
         NETWORK_WRAPPER.sendToServer(message);
     }
@@ -98,5 +98,6 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncThrownBlock.class, MessageSyncThrownBlock::write, MessageSyncThrownBlock::read, MessageSyncThrownBlock.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
+        PROXY.init();
     }
 }

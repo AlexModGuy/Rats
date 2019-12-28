@@ -26,255 +26,255 @@ public class RatsItemRegistry {
     public static CustomToolMaterial BAGHNAKHS_MATERIAL = new CustomToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
     public static CustomToolMaterial PLAGUE_SCYTHE_MATERIAL = new CustomToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
-    public static Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
+    public static final Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
-    public static Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat");
+    public static final Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat");
 
-    public static Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false, "cooked_rat");
+    public static final Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false, "cooked_rat");
 
-    public static Item RAT_PELT = new ItemGeneric("rat_pelt");
+    public static final Item RAT_PELT = new ItemGeneric("rat_pelt");
 
-    public static Item CHEESE_STICK = new ItemCheeseStick();
+    public static final Item CHEESE_STICK = new ItemCheeseStick();
 
-    public static Item CHEF_TOQUE = new ItemChefToque();
+    public static final Item CHEF_TOQUE = new ItemChefToque();
 
-    public static Item RAT_FLUTE = new ItemRatFlute();
+    public static final Item RAT_FLUTE = new ItemRatFlute();
 
-    public static Item PIPER_HAT = new ItemPiperHat();
+    public static final Item PIPER_HAT = new ItemPiperHat();
 
-    public static Item STRING_CHEESE = new ItemStringCheese();
+    public static final Item STRING_CHEESE = new ItemStringCheese();
 
-    public static Item CREATIVE_CHEESE = new ItemCreativeCheese();
+    public static final Item CREATIVE_CHEESE = new ItemCreativeCheese();
 
-    public static Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, false, false, "assorted_vegetables");
+    public static final Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, false, false, "assorted_vegetables");
 
-    public static Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, false, false, "rat_burger");
+    public static final Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, false, false, "rat_burger");
 
-    public static Item RAT_SACK = new ItemRatSack();
+    public static final Item RAT_SACK = new ItemRatSack();
 
-    public static Item RAT_ARROW = new ItemRatArrow();
+    public static final Item RAT_ARROW = new ItemRatArrow();
 
-    public static Item RAT_CAPTURE_NET = new ItemRatCaptureNet();
+    public static final Item RAT_CAPTURE_NET = new ItemRatCaptureNet();
 
-    public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
+    public static final Item FEATHERY_WING = new ItemGeneric("feathery_wing");
 
-    public static Item DRAGON_WING = new ItemGeneric("dragon_wing");
+    public static final Item DRAGON_WING = new ItemGeneric("dragon_wing");
 
-    public static Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
+    public static final Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
 
-    public static Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
+    public static final Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
 
-    public static Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, false, false, "contaminated_food");
+    public static final Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, false, false, "contaminated_food");
 
-    public static Item PURIFYING_LIQUID = new ItemPurifyingLiquid();
+    public static final Item PURIFYING_LIQUID = new ItemPurifyingLiquid();
 
-    public static Item HERB_BUNDLE = new ItemPlagueHealer(1, 0.1F, "herb_bundle", 0.1F);
+    public static final Item HERB_BUNDLE = new ItemPlagueHealer(1, 0.1F, "herb_bundle", 0.1F);
 
-    public static Item TREACLE = new ItemPlagueHealer(2, 0.6F, "treacle", 0.25F);
+    public static final Item TREACLE = new ItemPlagueHealer(2, 0.6F, "treacle", 0.25F);
 
-    public static Item PLAGUE_LEECH = new ItemPlagueLeech();
+    public static final Item PLAGUE_LEECH = new ItemPlagueLeech();
 
-    public static Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
+    public static final Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
 
-    public static Item PLAGUE_SCYTHE = new ItemPlagueScythe();
+    public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
-    public static Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
+    public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
 
-    public static Item[] RAT_IGLOOS = new Item[16];
+    public static final Item[] RAT_IGLOOS = new Item[16];
 
-    public static Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
+    public static final Item RAT_WATER_BOTTLE = new ItemRatDecoration("rat_water_bottle");
 
-    public static Item RAT_SEED_BOWL = new ItemRatDecoration("rat_seed_bowl");
+    public static final Item RAT_SEED_BOWL = new ItemRatDecoration("rat_seed_bowl");
 
-    public static Item[] RAT_HAMMOCKS = new Item[16];
+    public static final Item[] RAT_HAMMOCKS = new Item[16];
 
-    public static Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
+    public static final Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
 
-    public static Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi");
+    public static final Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi");
 
-    public static Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true, "potato_pancake");
+    public static final Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true, "potato_pancake");
 
-    public static Item LITTLE_BLACK_SQUASH_BALLS = new ItemGeneric("little_black_squash_balls");
+    public static final Item LITTLE_BLACK_SQUASH_BALLS = new ItemGeneric("little_black_squash_balls");
 
-    public static Item LITTLE_BLACK_WORM = new ItemGeneric("little_black_worm");
+    public static final Item LITTLE_BLACK_WORM = new ItemGeneric("little_black_worm");
 
-    public static Item CENTIPEDE = new ItemGeneric("centipede");
+    public static final Item CENTIPEDE = new ItemGeneric("centipede");
 
-    public static Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes");
+    public static final Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes");
 
-    public static Item TINY_COIN = new ItemGeneric("tiny_coin");
+    public static final Item TINY_COIN = new ItemGeneric("tiny_coin");
 
-    public static Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
+    public static final Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
 
-    public static Item TOKEN_PIECE = new ItemGeneric("token_piece");
+    public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
-    public static Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
+    public static final Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
 
-    public static Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
+    public static final Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
 
-    public static Item FARMER_HAT = new ItemHat("farmer_hat", 4);
+    public static final Item FARMER_HAT = new ItemHat("farmer_hat", 4);
 
-    public static Item FISHERMAN_HAT = new ItemHat("fisherman_hat", 4);
+    public static final Item FISHERMAN_HAT = new ItemHat("fisherman_hat", 4);
 
-    public static Item RAT_FEZ = new ItemHat("rat_fez", 6);
+    public static final Item RAT_FEZ = new ItemHat("rat_fez", 6);
 
-    public static Item TOP_HAT = new ItemHat("top_hat", 7);
+    public static final Item TOP_HAT = new ItemHat("top_hat", 7);
 
-    public static Item SANTA_HAT = new ItemHat("santa_hat", 8);
+    public static final Item SANTA_HAT = new ItemHat("santa_hat", 8);
 
-    public static Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
+    public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
-    public static Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
+    public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
 
-    public static Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
+    public static final Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
 
-    public static Item PLAGUE_DOCTORATE = new ItemGeneric("plague_doctorate", 1);
+    public static final Item PLAGUE_DOCTORATE = new ItemGeneric("plague_doctorate", 1);
 
-    public static Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
+    public static final Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
 
-    public static Item RATGLOVE_PETALS = new ItemGeneric("ratglove_petals");
+    public static final Item RATGLOVE_PETALS = new ItemGeneric("ratglove_petals");
 
-    public static Item FERAL_RAT_CLAW = new ItemGeneric("feral_rat_claw");
+    public static final Item FERAL_RAT_CLAW = new ItemGeneric("feral_rat_claw");
 
-    public static Item FERAL_BAGH_NAKHS = new ItemBaghNakhs();
+    public static final Item FERAL_BAGH_NAKHS = new ItemBaghNakhs();
 
-    public static Item GEM_OF_RATLANTIS = new ItemGeneric("gem_of_ratlantis");
+    public static final Item GEM_OF_RATLANTIS = new ItemGeneric("gem_of_ratlantis");
 
-    public static Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
+    public static final Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
 
-    public static Item ANCIENT_SAWBLADE = new ItemGeneric("ancient_sawblade");
+    public static final Item ANCIENT_SAWBLADE = new ItemGeneric("ancient_sawblade");
 
-    public static Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
+    public static final Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
 
-    public static Item VIAL_OF_SENTIENCE = new ItemVialOfSentience();
+    public static final Item VIAL_OF_SENTIENCE = new ItemVialOfSentience();
 
-    public static Item PSIONIC_RAT_BRAIN = new ItemGeneric("psionic_rat_brain", 2);
+    public static final Item PSIONIC_RAT_BRAIN = new ItemGeneric("psionic_rat_brain", 2);
 
-    public static Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
+    public static final Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
 
-    public static Item PIRAT_CUTLASS = new ItemPiratCutlass();
+    public static final Item PIRAT_CUTLASS = new ItemPiratCutlass();
 
-    public static Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
+    public static final Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
 
-    public static Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
+    public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 
-    public static Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
+    public static final Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 
-    public static Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);
+    public static final Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);
 
-    public static Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);
+    public static final Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);
 
-    public static Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
+    public static final Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
 
-    public static Item RAT_UPGRADE_CREATIVE = new ItemRatUpgrade("rat_upgrade_creative", 3, 0);
+    public static final Item RAT_UPGRADE_CREATIVE = new ItemRatUpgrade("rat_upgrade_creative", 3, 0);
 
-    public static Item RAT_UPGRADE_SPEED = new ItemRatUpgrade("rat_upgrade_speed");
+    public static final Item RAT_UPGRADE_SPEED = new ItemRatUpgrade("rat_upgrade_speed");
 
-    public static Item RAT_UPGRADE_PLATTER = new ItemRatUpgrade("rat_upgrade_platter");
+    public static final Item RAT_UPGRADE_PLATTER = new ItemRatUpgrade("rat_upgrade_platter");
 
-    public static Item RAT_UPGRADE_HEALTH = new ItemRatUpgrade("rat_upgrade_health");
+    public static final Item RAT_UPGRADE_HEALTH = new ItemRatUpgrade("rat_upgrade_health");
 
-    public static Item RAT_UPGRADE_ARMOR = new ItemRatUpgrade("rat_upgrade_armor");
+    public static final Item RAT_UPGRADE_ARMOR = new ItemRatUpgrade("rat_upgrade_armor");
 
-    public static Item RAT_UPGRADE_STRENGTH = new ItemRatUpgrade("rat_upgrade_strength");
+    public static final Item RAT_UPGRADE_STRENGTH = new ItemRatUpgrade("rat_upgrade_strength");
 
-    public static Item RAT_UPGRADE_WARRIOR = new ItemRatUpgrade("rat_upgrade_warrior", 2, 3);
+    public static final Item RAT_UPGRADE_WARRIOR = new ItemRatUpgrade("rat_upgrade_warrior", 2, 3);
 
-    public static Item RAT_UPGRADE_GOD = new ItemRatUpgrade("rat_upgrade_god", 3, 3);
+    public static final Item RAT_UPGRADE_GOD = new ItemRatUpgrade("rat_upgrade_god", 3, 3);
 
-    public static Item RAT_UPGRADE_CHEF = new ItemRatUpgrade("rat_upgrade_chef", 2, 2);
+    public static final Item RAT_UPGRADE_CHEF = new ItemRatUpgrade("rat_upgrade_chef", 2, 2);
 
-    public static Item RAT_UPGRADE_CRAFTING = new ItemRatUpgrade("rat_upgrade_crafting", 0, 2);
+    public static final Item RAT_UPGRADE_CRAFTING = new ItemRatUpgrade("rat_upgrade_crafting", 0, 2);
 
-    public static Item RAT_UPGRADE_BLACKLIST = new ItemRatListUpgrade("rat_upgrade_blacklist", 0, 3, false);
+    public static final Item RAT_UPGRADE_BLACKLIST = new ItemRatListUpgrade("rat_upgrade_blacklist", 0, 3, false);
 
-    public static Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
+    public static final Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
 
-    public static Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
+    public static final Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
-    public static Item RAT_UPGRADE_DRAGON = new ItemRatUpgrade("rat_upgrade_dragon", 1, 5);
+    public static final Item RAT_UPGRADE_DRAGON = new ItemRatUpgrade("rat_upgrade_dragon", 1, 5);
 
-    public static Item RAT_UPGRADE_AQUATIC = new ItemRatUpgrade("rat_upgrade_aquatic", 0, 3);
+    public static final Item RAT_UPGRADE_AQUATIC = new ItemRatUpgrade("rat_upgrade_aquatic", 0, 3);
 
-    public static Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 3);
+    public static final Item RAT_UPGRADE_ENDER = new ItemRatUpgrade("rat_upgrade_ender", 1, 3);
 
-    public static Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 1);
+    public static final Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 1);
 
-    public static Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
+    public static final Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
 
-    public static Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 3);
+    public static final Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 3);
 
-    public static Item RAT_UPGRADE_BREEDER = new ItemRatUpgrade("rat_upgrade_breeder", 1, 2);
+    public static final Item RAT_UPGRADE_BREEDER = new ItemRatUpgrade("rat_upgrade_breeder", 1, 2);
 
-    public static Item RAT_UPGRADE_FISHERMAN = new ItemRatUpgrade("rat_upgrade_fisherman", 1, 2);
+    public static final Item RAT_UPGRADE_FISHERMAN = new ItemRatUpgrade("rat_upgrade_fisherman", 1, 2);
 
-    public static Item RAT_UPGRADE_ASBESTOS = new ItemRatUpgrade("rat_upgrade_asbestos", 0, 4);
+    public static final Item RAT_UPGRADE_ASBESTOS = new ItemRatUpgrade("rat_upgrade_asbestos", 0, 4);
 
-    public static Item RAT_UPGRADE_UNDERWATER = new ItemRatUpgrade("rat_upgrade_underwater", 0, 3);
+    public static final Item RAT_UPGRADE_UNDERWATER = new ItemRatUpgrade("rat_upgrade_underwater", 0, 3);
 
-    public static Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
+    public static final Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
 
-    public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
+    public static final Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
 
-    public static Item RAT_UPGRADE_ORE_DOUBLING = new ItemRatUpgradeOreDoubling();
+    public static final Item RAT_UPGRADE_ORE_DOUBLING = new ItemRatUpgradeOreDoubling();
 
-    public static Item RAT_UPGRADE_BASIC_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_basic_energy", 0, 2);
+    public static final Item RAT_UPGRADE_BASIC_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_basic_energy", 0, 2);
 
-    public static Item RAT_UPGRADE_ADVANCED_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_advanced_energy", 1, 2);
+    public static final Item RAT_UPGRADE_ADVANCED_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_advanced_energy", 1, 2);
 
-    public static Item RAT_UPGRADE_ELITE_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_elite_energy", 2, 2);
+    public static final Item RAT_UPGRADE_ELITE_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_elite_energy", 2, 2);
 
-    public static Item RAT_UPGRADE_EXTREME_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_extreme_energy", 3, 2);
+    public static final Item RAT_UPGRADE_EXTREME_ENERGY = new ItemRatUpgradeEnergy("rat_upgrade_extreme_energy", 3, 2);
 
-    public static Item RAT_UPGRADE_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_bucket", 0, 2);
+    public static final Item RAT_UPGRADE_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_bucket", 0, 2);
 
-    public static Item RAT_UPGRADE_BIG_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_big_bucket", 2, 2);
+    public static final Item RAT_UPGRADE_BIG_BUCKET = new ItemRatUpgradeBucket("rat_upgrade_big_bucket", 2, 2);
 
-    public static Item RAT_UPGRADE_MILKER = new ItemRatUpgradeBucket("rat_upgrade_milker", 0, 3);
+    public static final Item RAT_UPGRADE_MILKER = new ItemRatUpgradeBucket("rat_upgrade_milker", 0, 3);
 
-    public static Item RAT_UPGRADE_SHEARS = new ItemRatUpgradeBucket("rat_upgrade_shears", 0, 1);
+    public static final Item RAT_UPGRADE_SHEARS = new ItemRatUpgradeBucket("rat_upgrade_shears", 0, 1);
 
-    public static Item RAT_UPGRADE_ARISTOCRAT = new ItemRatUpgrade("rat_upgrade_aristocrat", 1, 1);
+    public static final Item RAT_UPGRADE_ARISTOCRAT = new ItemRatUpgrade("rat_upgrade_aristocrat", 1, 1);
 
-    public static Item RAT_UPGRADE_TNT = new ItemRatUpgrade("rat_upgrade_tnt", 1, 2);
+    public static final Item RAT_UPGRADE_TNT = new ItemRatUpgrade("rat_upgrade_tnt", 1, 2);
 
-    public static Item RAT_UPGRADE_TNT_SURVIVOR = new ItemRatUpgrade("rat_upgrade_tnt_survivor", 2, 4);
+    public static final Item RAT_UPGRADE_TNT_SURVIVOR = new ItemRatUpgrade("rat_upgrade_tnt_survivor", 2, 4);
 
-    public static Item RAT_UPGRADE_PLACER = new ItemRatUpgrade("rat_upgrade_placer", 2, 2);
+    public static final Item RAT_UPGRADE_PLACER = new ItemRatUpgrade("rat_upgrade_placer", 2, 2);
 
-    public static Item RAT_UPGRADE_VOODOO = new ItemRatUpgrade("rat_upgrade_voodoo", 2, 4);
+    public static final Item RAT_UPGRADE_VOODOO = new ItemRatUpgrade("rat_upgrade_voodoo", 2, 4);
 
-    public static Item RAT_UPGRADE_GEMCUTTER = new ItemRatUpgrade("rat_upgrade_gemcutter", 1, 1);
+    public static final Item RAT_UPGRADE_GEMCUTTER = new ItemRatUpgrade("rat_upgrade_gemcutter", 1, 1);
 
-    public static Item RAT_UPGRADE_ENCHANTER = new ItemRatUpgrade("rat_upgrade_enchanter", 1, 2);
+    public static final Item RAT_UPGRADE_ENCHANTER = new ItemRatUpgrade("rat_upgrade_enchanter", 1, 2);
 
-    public static Item RAT_UPGRADE_DISENCHANTER = new ItemRatUpgrade("rat_upgrade_disenchanter", 1, 1);
+    public static final Item RAT_UPGRADE_DISENCHANTER = new ItemRatUpgrade("rat_upgrade_disenchanter", 1, 1);
 
-    public static Item RAT_UPGRADE_CHRISTMAS = new ItemRatUpgrade("rat_upgrade_christmas", 2, 3);
+    public static final Item RAT_UPGRADE_CHRISTMAS = new ItemRatUpgrade("rat_upgrade_christmas", 2, 3);
 
-    public static Item RAT_UPGRADE_NO_FLUTE = new ItemRatUpgrade("rat_upgrade_no_flute", 0, 1);
+    public static final Item RAT_UPGRADE_NO_FLUTE = new ItemRatUpgrade("rat_upgrade_no_flute", 0, 1);
 
-    public static Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
+    public static final Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
 
-    public static Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
+    public static final Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
 
-    public static Item RAT_UPGRADE_FERAL_BITE = new ItemRatUpgrade("rat_upgrade_feral_bite");
+    public static final Item RAT_UPGRADE_FERAL_BITE = new ItemRatUpgrade("rat_upgrade_feral_bite");
 
-    public static Item RAT_UPGRADE_BUCCANEER = new ItemRatUpgrade("rat_upgrade_buccaneer", 1, 2);
+    public static final Item RAT_UPGRADE_BUCCANEER = new ItemRatUpgrade("rat_upgrade_buccaneer", 1, 2);
 
-    public static Item RAT_UPGRADE_RATINATOR = new ItemRatUpgrade("rat_upgrade_ratinator", 2, 3);
+    public static final Item RAT_UPGRADE_RATINATOR = new ItemRatUpgrade("rat_upgrade_ratinator", 2, 3);
 
-    public static Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
+    public static final Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
 
-    public static Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
+    public static final Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
 
-    public static Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
+    public static final Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
 
-    public static Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
+    public static final Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
 
-    public static Item RAT_NUGGET = new ItemGeneric("rat_nugget");
+    public static final Item RAT_NUGGET = new ItemGeneric("rat_nugget");
 
-    public static Item RAT_NUGGET_ORE = new ItemRatNuggetOre();
+    public static final Item RAT_NUGGET_ORE = new ItemRatNuggetOre();
 
     static {
         for (int i = 0; i < 16; i++) {
@@ -290,6 +290,7 @@ public class RatsItemRegistry {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
+        RatsMod.LOGGER.debug("Registered Items");
         try {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

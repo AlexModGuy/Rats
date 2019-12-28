@@ -4,9 +4,12 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(RatsMod.MODID)
 public class RatsTileEntityRegistry {
-
     public static TileEntityType<TileEntityRatHole> RAT_HOLE = registerTileEntity(TileEntityType.Builder.create(TileEntityRatHole::new, RatsBlockRegistry.RAT_HOLE), "rat_hole");
     public static TileEntityType<TileEntityRatTrap> RAT_TRAP = registerTileEntity(TileEntityType.Builder.create(TileEntityRatTrap::new, RatsBlockRegistry.RAT_TRAP), "rat_trap");
     public static TileEntityType<TileEntityMilkCauldron> MILK_CAULDRON = registerTileEntity(TileEntityType.Builder.create(TileEntityMilkCauldron::new, RatsBlockRegistry.MILK_CAULDRON), "milk_cauldron");
