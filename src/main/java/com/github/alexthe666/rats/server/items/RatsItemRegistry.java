@@ -15,8 +15,8 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
 
-@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(RatsMod.MODID)
+@Mod.EventBusSubscriber
 public class RatsItemRegistry {
 
     public static CustomArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new CustomArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
