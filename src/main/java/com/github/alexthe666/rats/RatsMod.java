@@ -2,6 +2,7 @@ package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.CommonProxy;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
@@ -64,7 +65,17 @@ public class RatsMod {
     }
 
     public RatsMod() {
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(PROXY);
+        MinecraftForge.EVENT_BUS.register(RatsItemRegistry.class);
+        MinecraftForge.EVENT_BUS.register(RatsBlockRegistry.class);
+        MinecraftForge.EVENT_BUS.addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsItemRegistry::registerItem);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlocks);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlockItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerTileEntities);
+        PROXY.init();
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
@@ -86,8 +97,6 @@ public class RatsMod {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(PROXY);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageAutoCurdlerFluid.class, MessageAutoCurdlerFluid::write, MessageAutoCurdlerFluid::read, MessageAutoCurdlerFluid.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffRat.class, MessageCheeseStaffRat::write, MessageCheeseStaffRat::read, MessageCheeseStaffRat.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffSync.class, MessageCheeseStaffSync::write, MessageCheeseStaffSync::read, MessageCheeseStaffSync.Handler::handle);
@@ -98,6 +107,5 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncThrownBlock.class, MessageSyncThrownBlock::write, MessageSyncThrownBlock::read, MessageSyncThrownBlock.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
-        PROXY.init();
     }
 }

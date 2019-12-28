@@ -33,7 +33,6 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
-    private static ItemStack BRAIN_STACK = new ItemStack(RatsBlockRegistry.BRAIN_BLOCK);
     private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer;
 
     public LayerRatHeldItem(IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer) {
@@ -307,7 +306,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
             GlStateManager.rotatef(180, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotatef(180, 0.0F, 1.0F, 0.0F);
             GlStateManager.scalef(0.9F, 0.9F, 0.9F);
-            minecraft.getItemRenderer().renderItem(BRAIN_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
+            minecraft.getItemRenderer().renderItem(new ItemStack(RatsBlockRegistry.BRAIN_BLOCK), entity, ItemCameraTransforms.TransformType.GROUND, false);
             GlStateManager.popMatrix();
         }
     }
