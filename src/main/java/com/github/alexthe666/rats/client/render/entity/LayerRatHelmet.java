@@ -39,6 +39,7 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
     }
 
     public void render(T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        GlStateManager.pushMatrix();
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();

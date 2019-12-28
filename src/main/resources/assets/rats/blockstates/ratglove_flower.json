@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:ratglove_flower"
+    "": {
+      "model": "rats:block/ratglove_flower"
     }
   }
 }

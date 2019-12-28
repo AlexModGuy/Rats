@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "rats:rat_crafting_table" }
+        "": { "model": "rats:block/rat_crafting_table" }
     }
 }

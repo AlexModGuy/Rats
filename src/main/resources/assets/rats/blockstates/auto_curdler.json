@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:auto_curdler"
+    "": {
+      "model": "rats:block/auto_curdler"
     }
   }
 }

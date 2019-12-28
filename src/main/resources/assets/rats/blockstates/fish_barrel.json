@@ -1,10 +1,10 @@
 {
   "variants": {
-    "facing=up": { "model": "rats:fish_barrel" },
-    "facing=down": { "model": "rats:fish_barrel", "x": 180},
-    "facing=north": { "model": "rats:fish_barrel", "x": 90},
-    "facing=south": { "model": "rats:fish_barrel", "x": 90, "y": 180 },
-    "facing=west":  { "model": "rats:fish_barrel", "x": 90, "y": 270 },
-    "facing=east":  { "model": "rats:fish_barrel", "x": 90, "y": 90 }
+    "facing=up": { "model": "rats:block/fish_barrel" },
+    "facing=down": { "model": "rats:block/fish_barrel", "x": 180},
+    "facing=north": { "model": "rats:block/fish_barrel", "x": 90},
+    "facing=south": { "model": "rats:block/fish_barrel", "x": 90, "y": 180 },
+    "facing=west":  { "model": "rats:block/fish_barrel", "x": 90, "y": 270 },
+    "facing=east":  { "model": "rats:block/fish_barrel", "x": 90, "y": 90 }
   }
 }

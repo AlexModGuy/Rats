@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:cauldron_cheese"
+    "": {
+      "model": "rats:block/cauldron_cheese"
     }
   }
 }

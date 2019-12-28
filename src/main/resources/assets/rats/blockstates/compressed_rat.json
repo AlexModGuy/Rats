@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "rats:compressed_rat" },
-        "facing=south": { "model": "rats:compressed_rat", "y": 180 },
-        "facing=west":  { "model": "rats:compressed_rat", "y": 270 },
-        "facing=east":  { "model": "rats:compressed_rat", "y": 90 }
+        "facing=north": { "model": "rats:block/compressed_rat" },
+        "facing=south": { "model": "rats:block/compressed_rat", "y": 180 },
+        "facing=west":  { "model": "rats:block/compressed_rat", "y": 270 },
+        "facing=east":  { "model": "rats:block/compressed_rat", "y": 90 }
     }
 }

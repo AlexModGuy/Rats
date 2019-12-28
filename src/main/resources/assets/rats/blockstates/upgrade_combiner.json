@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:upgrade_combiner"
+    "": {
+      "model": "rats:block/upgrade_combiner"
     }
   }
 }

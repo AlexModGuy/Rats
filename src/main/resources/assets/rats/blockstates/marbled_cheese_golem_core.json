@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:marbled_cheese_golem_core"
+    "": {
+      "model": "rats:block/marbled_cheese_golem_core"
     }
   }
 }

@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "rats:jack_o_ratern" },
-        "facing=south": { "model": "rats:jack_o_ratern", "y": 180 },
-        "facing=west":  { "model": "rats:jack_o_ratern", "y": 270 },
-        "facing=east":  { "model": "rats:jack_o_ratern", "y": 90 }
+        "facing=north": { "model": "rats:block/jack_o_ratern" },
+        "facing=south": { "model": "rats:block/jack_o_ratern", "y": 180 },
+        "facing=west":  { "model": "rats:block/jack_o_ratern", "y": 270 },
+        "facing=east":  { "model": "rats:block/jack_o_ratern", "y": 90 }
     }
 }

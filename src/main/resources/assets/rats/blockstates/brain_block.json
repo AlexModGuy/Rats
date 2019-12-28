@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "rats:brain_block" },
-        "facing=south": { "model": "rats:brain_block", "y": 180 },
-        "facing=west":  { "model": "rats:brain_block", "y": 270 },
-        "facing=east":  { "model": "rats:brain_block", "y": 90 }
+        "facing=north": { "model": "rats:block/brain_block" },
+        "facing=south": { "model": "rats:block/brain_block", "y": 180 },
+        "facing=west":  { "model": "rats:block/brain_block", "y": 270 },
+        "facing=east":  { "model": "rats:block/brain_block", "y": 90 }
     }
 }

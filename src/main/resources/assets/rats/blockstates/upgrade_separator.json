@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:upgrade_separator"
+    "": {
+      "model": "rats:block/upgrade_separator"
     }
   }
 }

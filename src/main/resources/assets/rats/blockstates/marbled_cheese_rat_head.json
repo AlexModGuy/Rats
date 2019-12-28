@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "rats:marbled_cheese_rat_head" },
-        "facing=south": { "model": "rats:marbled_cheese_rat_head", "y": 180 },
-        "facing=west":  { "model": "rats:marbled_cheese_rat_head", "y": 270 },
-        "facing=east":  { "model": "rats:marbled_cheese_rat_head", "y": 90 }
+        "facing=north": { "model": "rats:block/marbled_cheese_rat_head" },
+        "facing=south": { "model": "rats:block/marbled_cheese_rat_head", "y": 180 },
+        "facing=west":  { "model": "rats:block/marbled_cheese_rat_head", "y": 270 },
+        "facing=east":  { "model": "rats:block/marbled_cheese_rat_head", "y": 90 }
     }
 }

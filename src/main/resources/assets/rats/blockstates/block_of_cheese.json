@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "rats:block_of_cheese"
+    "": {
+      "model": "rats:block/block_of_cheese"
     }
   }
 }
