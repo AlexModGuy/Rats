@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -13,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -102,9 +102,9 @@ public class ItemRatSack extends Item {
                     if (tagInfo.contains("Rat")) {
                         ratCount++;
                         CompoundNBT ratTag = stack.getTag().getCompound(tagInfo);
-                        EntityRat rat = new EntityRat(context.getWorld());
+                        EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, context.getWorld());
                         BlockPos offset = context.getPos().offset(context.getFace());
-                        rat.readEntityFromNBT(ratTag);
+                        rat.readAdditional(ratTag);
                         rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
                         if (!context.getWorld().isRemote) {
                             context.getWorld().addEntity(rat);

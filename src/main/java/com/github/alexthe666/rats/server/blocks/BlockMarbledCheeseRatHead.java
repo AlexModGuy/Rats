@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.*;
@@ -87,7 +88,7 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
             }
 
             BlockPos blockpos = blockpattern$patternhelper.translateOffset(1, 2, 0).getPos();
-            EntityMarbleCheeseGolem entityirongolem = new EntityMarbleCheeseGolem(worldIn);
+            EntityMarbleCheeseGolem entityirongolem = new EntityMarbleCheeseGolem(RatsEntityRegistry.RATLANTEAN_AUTOMATON, worldIn);
             entityirongolem.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
             worldIn.addEntity(entityirongolem);
             for (ServerPlayerEntity serverplayerentity1 : worldIn.getEntitiesWithinAABB(ServerPlayerEntity.class, entityirongolem.getBoundingBox().grow(5.0D))) {

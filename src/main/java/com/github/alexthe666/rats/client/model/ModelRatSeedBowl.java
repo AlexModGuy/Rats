@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.entity.Entity;
 
 public class ModelRatSeedBowl <T extends Entity> extends EntityModel<T> {
     public RendererModel block;

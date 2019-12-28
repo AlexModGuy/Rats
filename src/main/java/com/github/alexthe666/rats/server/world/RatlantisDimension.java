@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.sun.istack.internal.Nullable;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -19,6 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class RatlantisDimension extends Dimension {

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
@@ -10,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,10 +29,10 @@ public class BlockGarbage extends FallingBlock {
     @Override
     public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
         if (random.nextFloat() <= 0.5) {
-            EntityRat rat = new EntityRat(worldIn);
+            EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
-            if (rat.getCanSpawnHere() && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
-                rat.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
+            if (rat.canSpawn(worldIn, SpawnReason.NATURAL) && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
+                rat.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.NATURAL, null, null);
                 if (!worldIn.isRemote) {
                     worldIn.addEntity(rat);
                 }

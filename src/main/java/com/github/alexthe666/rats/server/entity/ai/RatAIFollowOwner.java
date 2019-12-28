@@ -93,7 +93,7 @@ public class RatAIFollowOwner extends Goal {
                     }
                 }
                 if (!teleport) {
-                    this.rat.getNavigator().tryMoveToLivingEntity(this.owner, this.followSpeed);
+                    this.rat.getNavigator().tryMoveToEntityLiving(this.owner, this.followSpeed);
                 }
             }
 

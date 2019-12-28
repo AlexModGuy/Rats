@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityVialOfSentience;
-import net.minecraft.client.resources.I18n;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -11,6 +11,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ItemVialOfSentience extends Item {
         worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
         if (!worldIn.isRemote) {
-            EntityVialOfSentience entitypotion = new EntityVialOfSentience(worldIn, playerIn, itemstack1);
+            EntityVialOfSentience entitypotion = new EntityVialOfSentience(RatsEntityRegistry.VIAL_OF_SENTIENCE, worldIn);
             entitypotion.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
             worldIn.addEntity(entitypotion);
         }

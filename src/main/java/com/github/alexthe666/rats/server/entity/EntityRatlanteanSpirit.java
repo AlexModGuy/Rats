@@ -1,10 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.tomove.AnimationHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;

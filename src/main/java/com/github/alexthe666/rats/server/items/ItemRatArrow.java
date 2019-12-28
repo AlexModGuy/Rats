@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRatArrow;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -12,7 +13,6 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -59,9 +59,9 @@ public class ItemRatArrow extends ArrowItem {
         if (stack.getTag() != null && stack.getTag().getCompound("Rat") != null) {
             ratTag = stack.getTag().getCompound("Rat");
         }
-        EntityRat rat = new EntityRat(context.getWorld());
+        EntityRat rat = new EntityRat(RatsEntityRegistry.RAT,context.getWorld());
         BlockPos offset = context.getPos().offset(context.getFace());
-        rat.readEntityFromNBT(ratTag);
+        rat.readAdditional(ratTag);
         rat.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
         if (!context.getWorld().isRemote) {
             context.getWorld().addEntity(rat);
@@ -73,7 +73,7 @@ public class ItemRatArrow extends ArrowItem {
     }
 
     public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-        EntityRatArrow arrow = new EntityRatArrow(worldIn, shooter, stack);
+        EntityRatArrow arrow = new EntityRatArrow(RatsEntityRegistry.RAT_ARROW, worldIn, shooter, stack);
         return arrow;
     }
 

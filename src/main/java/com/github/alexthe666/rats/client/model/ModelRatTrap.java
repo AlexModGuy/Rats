@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
+import net.minecraft.entity.Entity;
 
 public class ModelRatTrap<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedRendererModel bottom;

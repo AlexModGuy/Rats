@@ -81,7 +81,7 @@ public class BlackDeathAIStrife extends Goal {
                 this.entity.getNavigator().clearPath();
                 ++this.strafingTime;
             } else {
-                this.entity.getNavigator().tryMoveToLivingEntity(LivingEntity, this.moveSpeedAmp);
+                this.entity.getNavigator().tryMoveToEntityLiving(LivingEntity, this.moveSpeedAmp);
                 this.strafingTime = -1;
             }
 
@@ -104,7 +104,7 @@ public class BlackDeathAIStrife extends Goal {
                     this.strafingBackwards = true;
                 }
 
-                this.entity.moveController.strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
+                this.entity.getMoveHelper().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
                 this.entity.faceEntity(LivingEntity, 30.0F, 30.0F);
             } else {
                 this.entity.getLookController().setLookPositionWithEntity(LivingEntity, 30.0F, 30.0F);

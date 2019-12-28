@@ -52,7 +52,7 @@ public class ModelPiratBoat <T extends Entity> extends EntityModel<T> {
         this.noWater.rotateAngleX = ((float) Math.PI / 2F);
     }
 
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
         EntityPiratBoat entityboat = (EntityPiratBoat) entityIn;
         this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);

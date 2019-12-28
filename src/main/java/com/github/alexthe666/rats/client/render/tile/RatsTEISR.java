@@ -21,23 +21,23 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
 
     public void renderByItem(ItemStack itemStackIn) {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_COMBINER)) {
-            renderUpgradeCombiner.render(dummyCombiner, 0, 0, 0, 0.0F, 0, 0.0F);
+            renderUpgradeCombiner.render(dummyCombiner, 0, 0, 0, 0, 0);
         }
         //if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.UPGRADE_SEPARATOR)) {
         //    renderUpgradeSeparator.render(dummySeparator, 0, 0, 0, 0.0F, 0, 0.0F);
         //}
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE)) {
-            renderRatHole.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+            renderRatHole.render(null, 0, 0, 0, 0, 0);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP)) {
             GL11.glScalef(1.2F, 1.2F, 1.2F);
-            renderRatTrap.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+            renderRatTrap.render(null, 0, 0, 0, 0, 0);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER)) {
-            renderAutoCurdler.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+            renderAutoCurdler.render(null, 0, 0, 0, 0, 0);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL)) {
-            renderRatlantisPortal.render(null, 0, 0, 0, 0.0F, 0, 0.0F);
+            renderRatlantisPortal.render(null, 0, 0, 0, 0, 0);
         }
 
     }

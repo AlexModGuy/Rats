@@ -17,6 +17,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -55,11 +57,6 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerVillagers(RegistryEvent.Register<VillagerProfession> event) {
         event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
-    }
-
-    @SubscribeEvent
-    public static void registerBiomes(RegistryEvent.Register<Biome> event) {
-        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
     }
 
     @SubscribeEvent
@@ -156,11 +153,26 @@ public class CommonProxy {
         }
     }
 
-    public void preInit() {
+    @SubscribeEvent
+    public static void registerSurfaces(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
+    }
+
+    @SubscribeEvent
+    public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
+    }
+
+    @SubscribeEvent
+    public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_DIM);
+    }
+
+        public void preInit() {
     }
 
     public void init() {
-
+        RatsWorldRegistry.register();
     }
 
     public void postInit() {

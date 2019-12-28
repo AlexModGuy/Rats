@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
@@ -18,7 +19,6 @@ import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
-import com.github.alexthe666.rats.server.tomove.AnimationHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

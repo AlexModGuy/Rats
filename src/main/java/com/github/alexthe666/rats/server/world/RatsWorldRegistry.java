@@ -25,6 +25,5 @@ public class RatsWorldRegistry {
         if (!RatConfig.disableRatlantis) {
             RATLANTIS_DIMENSION_TYPE = DimensionManager.registerDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
         }
-        StructureRatRoadPieces.registerVillagePieces();
     }
 }

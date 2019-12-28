@@ -2,14 +2,11 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRatCaptureNet;
-import net.minecraft.client.resources.I18n;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -37,7 +34,7 @@ public class ItemRatCaptureNet extends Item {
         context.getWorld().playSound(null, context.getPlayer().posX, context.getPlayer().posY, context.getPlayer().posZ, SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
         if (!context.getWorld().isRemote) {
-            EntityRatCaptureNet entitypotion = new EntityRatCaptureNet(context.getWorld(), context.getPlayer(), itemstack1);
+            EntityRatCaptureNet entitypotion = new EntityRatCaptureNet(RatsEntityRegistry.RAT_CAPTURE_NET, context.getWorld(), context.getPlayer(), itemstack1);
             entitypotion.shoot(context.getPlayer(), context.getPlayer().rotationPitch, context.getPlayer().rotationYaw, -20.0F, 0.5F, 1.0F);
             context.getWorld().addEntity(entitypotion);
         }

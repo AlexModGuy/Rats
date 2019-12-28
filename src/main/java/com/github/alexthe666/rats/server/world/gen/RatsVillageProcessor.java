@@ -1,15 +1,12 @@
 package com.github.alexthe666.rats.server.world.gen;
 
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.world.village.WorldGenPetShop;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.*;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
@@ -41,8 +38,8 @@ public class RatsVillageProcessor extends StructureProcessor {
     @Nullable
     public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Template.BlockInfo blockInfoIn2, PlacementSettings settings) {
         Random random = settings.getRandom(pos);
-        if (blockInfoIn.state.getBlock() instanceof ChestBlock) {
-            ResourceLocation loot = blockInfoIn.state.getBlock() == Blocks.TRAPPED_CHEST ? WorldGenPetShop.UPSTAIRS_LOOT : WorldGenPetShop.LOOT;
+      /*  if (blockInfoIn.state.getBlock() instanceof ChestBlock) {
+            ResourceLocation loot = new ResourceLocation("");//blockInfoIn.state.getBlock() == Blocks.TRAPPED_CHEST ? WorldGenPetShop.UPSTAIRS_LOOT : WorldGenPetShop.LOOT;
             CompoundNBT tag = blockInfoIn.nbt == null ? new CompoundNBT() : blockInfoIn.nbt;
             tag.putString("LootTable", loot.toString());
             tag.putLong("LootTableSeed", random.nextLong());
@@ -87,7 +84,7 @@ public class RatsVillageProcessor extends StructureProcessor {
         } else if (blockInfoIn.state.getBlock() == Blocks.LAPIS_BLOCK) {//spawn ocelot
             //worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
-        }
+        }*/
         {
             BlockState state = getBiomeSpecificBlockState(blockInfoIn.state, biome);
             if (state != blockInfoIn.state) {

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 
 public class ModelCube <T extends Entity> extends EntityModel<T> {
     public RendererModel head;
@@ -17,7 +17,7 @@ public class ModelCube <T extends Entity> extends EntityModel<T> {
         this.head.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
-    public void render(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.head.render(scale);
     }

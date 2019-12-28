@@ -24,7 +24,7 @@ public class RatAIWanderFlight extends Goal {
                 dist = 3;
             }
             target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
-            if (!rat.moveController.isUpdating()) {
+            if (!rat.getMoveHelper().isUpdating()) {
                 return rat.isDirectPathBetweenPoints(new Vec3d(target));
             }
         }
@@ -44,7 +44,7 @@ public class RatAIWanderFlight extends Goal {
             target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
         }
         if (rat.world.isAirBlock(target) || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
-            rat.moveController.setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);
+            rat.getMoveHelper().setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);
             if (rat.getAttackTarget() == null) {
                 rat.getLookController().setLookPosition((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 180.0F, 20.0F);
             }

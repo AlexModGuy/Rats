@@ -2,9 +2,9 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -48,7 +48,7 @@ public class ItemPlagueScythe extends SwordItem {
                 totalDmg += modifier.getAmount();
             }
             LivingEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
-            EntityPlagueShot shot = new EntityPlagueShot(LivingEntity.world, LivingEntity, totalDmg * 0.5F);
+            EntityPlagueShot shot = new EntityPlagueShot(RatsEntityRegistry.PLAGUE_SHOT, LivingEntity.world, LivingEntity, totalDmg * 0.5F);
             shot.shoot(LivingEntity, LivingEntity.rotationPitch, LivingEntity.rotationYaw, 0.0F, 0.8F, 1.0F);
             if (!LivingEntity.world.isRemote) {
                 LivingEntity.world.addEntity(shot);
