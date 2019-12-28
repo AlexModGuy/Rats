@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
@@ -71,7 +72,7 @@ public class RatsMod {
         MinecraftForge.EVENT_BUS.register(RatsBlockRegistry.class);
         MinecraftForge.EVENT_BUS.addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsItemRegistry::registerItem);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, RatsItemRegistry::registerItem);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlocks);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerBlockItems);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(RatsBlockRegistry::registerTileEntities);
