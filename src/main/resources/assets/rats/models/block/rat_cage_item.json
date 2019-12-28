@@ -1,11 +1,11 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"0": "rats:blocks/rat_cage_all",
-		"1": "rats:blocks/rat_cage_bottom",
-		"2": "rats:blocks/iron_bars",
-		"3": "rats:blocks/iron_bars_top",
-		"particle": "rats:blocks/rat_cage_all"
+		"0": "rats:block/rat_cage_all",
+		"1": "rats:block/rat_cage_bottom",
+		"2": "rats:block/iron_bars",
+		"3": "rats:block/iron_bars_top",
+		"particle": "rats:block/rat_cage_all"
 	},
 	"elements": [
 		{

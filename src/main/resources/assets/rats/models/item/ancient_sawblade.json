@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/ancient_sawblade"
+    "layer0": "rats:item/ancient_sawblade"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/token_fragment"
+    "layer0": "rats:item/token_fragment"
   }
 }

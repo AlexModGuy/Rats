@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/herb_mixture"
+    "layer0": "rats:item/herb_mixture"
   }
 }

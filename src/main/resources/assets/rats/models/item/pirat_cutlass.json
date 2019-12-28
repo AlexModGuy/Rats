@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "rats:items/pirat_cutlass"
+        "layer0": "rats:item/pirat_cutlass"
     },
     "display": {
         "thirdperson_righthand": {

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/cheese_cannonball"
+    "layer0": "rats:item/cheese_cannonball"
   }
 }

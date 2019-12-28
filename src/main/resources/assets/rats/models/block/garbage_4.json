@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "rats:blocks/garbage_4"
+    "all": "rats:block/garbage_4"
   }
 }

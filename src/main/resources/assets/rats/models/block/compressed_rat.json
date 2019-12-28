@@ -14,12 +14,12 @@
         }
     ],
     "textures": {
-        "particle": "rats:blocks/compressed_rat_front",
-        "down": "rats:blocks/compressed_rat_top",
-        "up": "rats:blocks/compressed_rat_top",
-        "north": "rats:blocks/compressed_rat_front",
-        "east": "rats:blocks/compressed_rat_side",
-        "south": "rats:blocks/compressed_rat_back",
-        "west": "rats:blocks/compressed_rat_side"
+        "particle": "rats:block/compressed_rat_front",
+        "down": "rats:block/compressed_rat_top",
+        "up": "rats:block/compressed_rat_top",
+        "north": "rats:block/compressed_rat_front",
+        "east": "rats:block/compressed_rat_side",
+        "south": "rats:block/compressed_rat_back",
+        "west": "rats:block/compressed_rat_side"
     }
 }

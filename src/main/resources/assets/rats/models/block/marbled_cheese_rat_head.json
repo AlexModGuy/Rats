@@ -1,10 +1,10 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"0": "rats:blocks/marbled_cheese",
-		"1": "minecraft:blocks/lapis_block",
-		"2": "rats:blocks/marbled_cheese_raw",
-		"particle": "rats:blocks/marbled_cheese"
+		"0": "rats:block/marbled_cheese",
+		"1": "minecraft:block/lapis_block",
+		"2": "rats:block/marbled_cheese_raw",
+		"particle": "rats:block/marbled_cheese"
 	},
 	"elements": [
 		{

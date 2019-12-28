@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/plague_doctorate"
+    "layer0": "rats:item/plague_doctorate"
   }
 }

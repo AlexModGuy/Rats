@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/tiny_coin"
+    "layer0": "rats:item/tiny_coin"
   }
 }

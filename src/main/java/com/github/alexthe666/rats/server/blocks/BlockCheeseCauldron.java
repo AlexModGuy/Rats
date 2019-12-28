@@ -22,6 +22,10 @@ public class BlockCheeseCauldron extends Block {
         this.setRegistryName(RatsMod.MODID, "cauldron_cheese");
     }
 
+    public boolean isSolid(BlockState state) {
+        return false;
+    }
+
     public boolean isOpaqueCube(BlockState state) {
         return false;
     }

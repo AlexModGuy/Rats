@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "rats:blocks/marbled_cheese_brick_mossy"
+    "all": "rats:block/marbled_cheese_brick_mossy"
   }
 }

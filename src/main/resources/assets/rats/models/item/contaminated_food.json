@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/contaminated_food"
+    "layer0": "rats:item/contaminated_food"
   }
 }

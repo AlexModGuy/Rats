@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/little_black_squash_balls"
+    "layer0": "rats:item/little_black_squash_balls"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/purifying_liquid"
+    "layer0": "rats:item/purifying_liquid"
   }
 }

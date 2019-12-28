@@ -11,6 +11,8 @@ import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
@@ -104,6 +106,22 @@ public class CommonProxy {
         */
     }
 
+
+    @SubscribeEvent
+    public static void registerSpawnEggs(RegistryEvent.Register<Item> event) {
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RAT, 0X30333E, 0XDAABA1, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_rat"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PIED_PIPER, 0XCABC42, 0X3B6063, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_piper"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RATLANTEAN_SPIRIT, 0XEDBD00, 0XFFE8AF, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_ratlantean_spirit"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RATLANTEAN_AUTOMATON, 0XE8E4D7, 0X72E955, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_ratlantean_automaton"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.FERAL_RATLANTEAN, 0X30333E, 0XECECEC, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_feral_ratlantean"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.NEO_RATLANTEAN, 0X30333E, 0X00EFEF, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_neo_ratlantean"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PIRAT, 0X30333E, 0XAF363A, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_pirat"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PLAGUE_DOCTOR, 0X2A292A, 0X515359, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_plague_doctor"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.BLACK_DEATH, 0X000000, 0X000000, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_black_death"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PLAGUE_CLOUD, 0X000000, 0X52574D, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_plague_cloud"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PLAGUE_BEAST, 0X000000, 0XECECEC, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_plague_beast"));
+
+    }
     /*
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {
         builder.entity(entityClass);

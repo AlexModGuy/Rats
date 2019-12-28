@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/rat_upgrade_disenchanter"
+    "layer0": "rats:item/rat_upgrade_disenchanter"
   }
 }

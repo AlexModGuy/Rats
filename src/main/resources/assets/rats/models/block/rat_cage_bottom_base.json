@@ -1,8 +1,8 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"1": "rats:blocks/rat_cage_bottom",
-		"particle": "rats:blocks/rat_cage_all"
+		"1": "rats:block/rat_cage_bottom",
+		"particle": "rats:block/rat_cage_all"
 	},
 	"elements": [
 		{

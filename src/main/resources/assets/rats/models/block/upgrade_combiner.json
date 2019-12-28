@@ -1,9 +1,9 @@
 {   "parent": "block/block",
     "textures": {
-        "particle": "rats:blocks/rat_upgrade_combiner_side",
-        "bottom": "rats:blocks/rat_upgrade_combiner_bottom",
-        "top": "rats:blocks/rat_upgrade_combiner_top",
-        "side": "rats:blocks/rat_upgrade_combiner_side"
+        "particle": "rats:block/rat_upgrade_combiner_side",
+        "bottom": "rats:block/rat_upgrade_combiner_bottom",
+        "top": "rats:block/rat_upgrade_combiner_top",
+        "side": "rats:block/rat_upgrade_combiner_side"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

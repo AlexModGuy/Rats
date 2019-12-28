@@ -67,10 +67,10 @@ public class RatsMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(PROXY);
         MinecraftForge.EVENT_BUS.addListener(this::setup);
-        PROXY.init();
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
+        PROXY.init();
     }
     public static <MSG> void sendMSGToServer(MSG message) {
         NETWORK_WRAPPER.sendToServer(message);

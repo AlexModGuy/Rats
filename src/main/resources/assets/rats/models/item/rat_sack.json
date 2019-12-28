@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/sack"
+    "layer0": "rats:item/sack"
   },
   "overrides": [
     {

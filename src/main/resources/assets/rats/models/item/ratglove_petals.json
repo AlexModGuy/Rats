@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/ratglove_petals"
+    "layer0": "rats:item/ratglove_petals"
   }
 }

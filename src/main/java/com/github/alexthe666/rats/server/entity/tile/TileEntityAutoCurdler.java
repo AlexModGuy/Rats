@@ -84,7 +84,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         }
         FluidStack def = null; //TODO
         LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack != null && (fluidStack.orElse(null).getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getUnlocalizedName().contains("Milk"));
+        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getUnlocalizedName().contains("Milk"));
     }
 
     public int getSizeInventory() {

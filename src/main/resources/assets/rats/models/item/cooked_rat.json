@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/cooked_rat"
+    "layer0": "rats:item/cooked_rat"
   }
 }

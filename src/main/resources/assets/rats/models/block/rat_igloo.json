@@ -1,10 +1,10 @@
 {
 	"textures": {
-		"0": "rats:blocks/rat_igloo_front",
-		"1": "rats:blocks/rat_igloo_side",
-		"2": "rats:blocks/rat_igloo_top",
-		"3": "rats:blocks/rat_tube_open",
-		"particle": "rats:blocks/rat_igloo_front"
+		"0": "rats:block/rat_igloo_front",
+		"1": "rats:block/rat_igloo_side",
+		"2": "rats:block/rat_igloo_top",
+		"3": "rats:block/rat_tube_open",
+		"particle": "rats:block/rat_igloo_front"
 	},
 	"elements": [
 		{

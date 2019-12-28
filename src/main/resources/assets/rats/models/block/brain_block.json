@@ -14,12 +14,12 @@
         }
     ],
     "textures": {
-        "particle": "rats:blocks/brain_front",
-        "down": "rats:blocks/brain_bottom",
-        "up": "rats:blocks/brain_top",
-        "north": "rats:blocks/brain_front",
-        "east": "rats:blocks/brain_side",
-        "south": "rats:blocks/brain_back",
-        "west": "rats:blocks/brain_side"
+        "particle": "rats:block/brain_front",
+        "down": "rats:block/brain_bottom",
+        "up": "rats:block/brain_top",
+        "north": "rats:block/brain_front",
+        "east": "rats:block/brain_side",
+        "south": "rats:block/brain_back",
+        "west": "rats:block/brain_side"
     }
 }

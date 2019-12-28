@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/vial_of_sentience"
+    "layer0": "rats:item/vial_of_sentience"
   }
 }

@@ -1,13 +1,13 @@
 {
     "parent": "block/cube",
     "textures": {
-        "particle": "rats:blocks/fish_barrel_top",
-        "down": "rats:blocks/fish_barrel_bottom",
-        "up": "rats:blocks/fish_barrel_top",
-        "north": "rats:blocks/fish_barrel_side",
-        "east": "rats:blocks/fish_barrel_side",
-        "south": "rats:blocks/fish_barrel_side",
-        "west": "rats:blocks/fish_barrel_side"
+        "particle": "rats:block/fish_barrel_top",
+        "down": "rats:block/fish_barrel_bottom",
+        "up": "rats:block/fish_barrel_top",
+        "north": "rats:block/fish_barrel_side",
+        "east": "rats:block/fish_barrel_side",
+        "south": "rats:block/fish_barrel_side",
+        "west": "rats:block/fish_barrel_side"
     }
 }
 

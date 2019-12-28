@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/feral_bagh_nakhs"
+    "layer0": "rats:item/feral_bagh_nakhs"
   },
   "display": {
     "thirdperson_righthand": {

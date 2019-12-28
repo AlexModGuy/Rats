@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/psionic_rat_brain"
+    "layer0": "rats:item/psionic_rat_brain"
   }
 }

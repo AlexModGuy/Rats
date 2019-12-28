@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/potato_pancake"
+    "layer0": "rats:item/potato_pancake"
   }
 }

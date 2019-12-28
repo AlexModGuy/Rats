@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/ratlantean_flame"
+    "layer0": "rats:item/ratlantean_flame"
   }
 }

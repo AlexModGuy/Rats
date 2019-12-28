@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "rats:items/cheese_stick"
+        "layer0": "rats:item/cheese_stick"
     }
 }

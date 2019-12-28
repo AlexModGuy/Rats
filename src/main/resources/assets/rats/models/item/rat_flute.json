@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "rats:items/rat_flute"
+        "layer0": "rats:item/rat_flute"
     },
     "display": {
         "thirdperson_righthand": {

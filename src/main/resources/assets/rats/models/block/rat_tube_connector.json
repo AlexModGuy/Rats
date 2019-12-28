@@ -1,8 +1,8 @@
 {
 	"textures": {
-		"0": "rats:blocks/rat_tube",
-		"1": "rats:blocks/rat_tube_open",
-		"particle": "rats:blocks/rat_tube"
+		"0": "rats:block/rat_tube",
+		"1": "rats:block/rat_tube_open",
+		"particle": "rats:block/rat_tube"
 	},
 	"elements": [
 		{

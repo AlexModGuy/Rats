@@ -5,11 +5,13 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.OcelotEntity;
@@ -31,10 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RatUtils {
 

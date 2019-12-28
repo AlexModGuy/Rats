@@ -51,6 +51,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -122,6 +123,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
         RenderingRegistry.registerEntityRenderingHandler(EntityRat.class, manager -> new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(EntityIllagerPiper.class, manager -> new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanSpirit.class, manager -> new RenderRatlateanSpirit());
@@ -158,9 +161,6 @@ public class ClientProxy extends CommonProxy {
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/
-
-
-        //ModelBakery.registerItemVariants(RatsItemRegistry.RAT_SACK, new ResourceLocation("iceandfire:rat_sack"), new ResourceLocation("iceandfire:rat_sack_1"), new ResourceLocation("iceandfire:rat_sack_2"), new ResourceLocation("iceandfire:rat_sack_3"));
     }
 
     @SubscribeEvent

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/feral_rat_claw"
+    "layer0": "rats:item/feral_rat_claw"
   }
 }

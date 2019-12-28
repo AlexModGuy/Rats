@@ -109,12 +109,20 @@ public class RatsBlockRegistry {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Block && ((Block) obj).getRegistryName() != null) {
-                    BlockItem blockItem = new BlockItem((Block) obj, new Item.Properties().group(RatsMod.TAB));
+                    Item.Properties props = new Item.Properties();
+                    if(!(obj instanceof INoTab)){
+                        props.group(RatsMod.TAB);
+                    }
+                    BlockItem blockItem = new BlockItem((Block) obj,props);
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
-                        BlockItem blockItem = new BlockItem(block, new Item.Properties().group(RatsMod.TAB));
+                        Item.Properties props = new Item.Properties();
+                        if(!(block instanceof INoTab)){
+                            props.group(RatsMod.TAB);
+                        }
+                        BlockItem blockItem = new BlockItem(block, props);
                         blockItem.setRegistryName(block.getRegistryName());
                         event.getRegistry().register(blockItem);
                     }

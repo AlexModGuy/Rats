@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/farmer_hat"
+    "layer0": "rats:item/farmer_hat"
   }
 }

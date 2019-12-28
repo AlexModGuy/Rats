@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "rats:items/plague_scythe"
+        "layer0": "rats:item/plague_scythe"
     }
 }

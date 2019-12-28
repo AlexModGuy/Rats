@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/assorted_vegetables"
+    "layer0": "rats:item/assorted_vegetables"
   }
 }

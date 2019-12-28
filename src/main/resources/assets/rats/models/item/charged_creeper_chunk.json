@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rats:items/charged_creeper_chunk"
+    "layer0": "rats:item/charged_creeper_chunk"
   }
 }
