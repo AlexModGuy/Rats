@@ -12,10 +12,11 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -36,6 +37,10 @@ public class EntityLaserPortal extends Entity {
 
     public EntityLaserPortal(EntityType type, World worldIn) {
         super(type, worldIn);
+    }
+
+    public EntityLaserPortal(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.LASER_PORTAL, worldIn);
     }
 
     public EntityLaserPortal(EntityType type, World worldIn, double x, double y, double z) {
@@ -164,13 +169,12 @@ public class EntityLaserPortal extends Entity {
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
-        return new SSpawnObjectPacket(this);
-    }
-
-
-    @Override
     protected void registerData() {
 
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

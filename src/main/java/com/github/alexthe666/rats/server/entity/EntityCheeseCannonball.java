@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -14,6 +15,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityCheeseCannonball extends ThrowableEntity {
     @Override
@@ -23,6 +26,10 @@ public class EntityCheeseCannonball extends ThrowableEntity {
 
     public EntityCheeseCannonball(EntityType type, World worldIn) {
         super(type, worldIn);
+    }
+
+    public EntityCheeseCannonball(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.CHEESE_CANNONBALL, worldIn);
     }
 
     public EntityCheeseCannonball(EntityType type, World worldIn, LivingEntity throwerIn) {
@@ -67,4 +74,11 @@ public class EntityCheeseCannonball extends ThrowableEntity {
             this.remove();
         }
     }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+
 }

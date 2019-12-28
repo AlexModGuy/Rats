@@ -116,12 +116,12 @@ public class ClientProxy extends CommonProxy {
 
     public void preInit() {
         //TinkersCompatBridge.loadTinkersClientCompat();
-        RatsGuiRegistry.register();
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void init() {
+        RatsGuiRegistry.register();
         MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);

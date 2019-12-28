@@ -8,10 +8,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
@@ -29,6 +32,10 @@ public class EntityRatCaptureNet extends PotionEntity {
     public EntityRatCaptureNet(EntityType type, World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
         this(type, worldIn);
         this.setPosition(x, y, z);
+    }
+
+    public EntityRatCaptureNet(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        super(RatsEntityRegistry.RAT_CAPTURE_NET, worldIn);
     }
 
     public ItemStack getPotion() {
@@ -63,5 +70,14 @@ public class EntityRatCaptureNet extends PotionEntity {
         if (!world.isRemote) {
             world.addEntity(itemEntity);
         }
+    }
+
+    public ItemStack getItem() {
+        return new ItemStack(RatsItemRegistry.RAT_CAPTURE_NET);
+    }
+
+        @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

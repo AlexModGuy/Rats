@@ -6,12 +6,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityRatlanteanFlame extends FireballEntity {
 
@@ -25,6 +28,10 @@ public class EntityRatlanteanFlame extends FireballEntity {
 
     public EntityRatlanteanFlame(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
         super(worldIn, x, y, z, accelX, accelY, accelZ);
+    }
+
+    public EntityRatlanteanFlame(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+        this(RatsEntityRegistry.RATLANTEAN_FLAME, world);
     }
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
@@ -85,5 +92,10 @@ public class EntityRatlanteanFlame extends FireballEntity {
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

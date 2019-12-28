@@ -6,10 +6,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityRatDragonFire extends AbstractFireballEntity {
 
@@ -24,6 +27,11 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
     public EntityRatDragonFire(EntityType type, World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
         super(type, x, y, z, accelX, accelY, accelZ, worldIn);
     }
+
+    public EntityRatDragonFire(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        super(RatsEntityRegistry.RAT_DRAGON_FIRE, worldIn);
+    }
+
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy).scale((double)velocity);
         this.setMotion(vec3d);
@@ -92,5 +100,10 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

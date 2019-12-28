@@ -8,6 +8,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -22,6 +23,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityLaserBeam extends AbstractArrowEntity {
 
@@ -43,6 +46,10 @@ public class EntityLaserBeam extends AbstractArrowEntity {
     public EntityLaserBeam(EntityType type, World worldIn, LivingEntity shooter) {
         super(type, shooter, worldIn);
         this.setDamage(RatConfig.neoRatlanteanAttack);
+    }
+
+    public EntityLaserBeam(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.LASER_BEAM, worldIn);
     }
 
     public boolean isInWater() {
@@ -142,5 +149,10 @@ public class EntityLaserBeam extends AbstractArrowEntity {
     @Override
     protected ItemStack getArrowStack() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

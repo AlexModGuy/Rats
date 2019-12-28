@@ -8,6 +8,7 @@ import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
@@ -15,6 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
@@ -22,6 +25,10 @@ public class EntityPurifyingLiquid extends PotionEntity {
 
     public EntityPurifyingLiquid(EntityType type, World worldIn) {
         super(type, worldIn);
+    }
+
+    public EntityPurifyingLiquid(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.PURIFYING_LIQUID, worldIn);
     }
 
     public EntityPurifyingLiquid(EntityType type, World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
@@ -78,5 +85,14 @@ public class EntityPurifyingLiquid extends PotionEntity {
             this.world.playEvent(i, new BlockPos(this), 0XBFDFE2);
             this.remove();
         }
+    }
+
+    public ItemStack getItem() {
+        return new ItemStack(RatsItemRegistry.PURIFYING_LIQUID);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

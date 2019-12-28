@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
@@ -16,6 +17,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityPlagueShot extends AbstractArrowEntity {
 
@@ -33,6 +36,10 @@ public class EntityPlagueShot extends AbstractArrowEntity {
     public EntityPlagueShot(EntityType type, World worldIn, LivingEntity shooter, double dmg) {
         super(type, shooter, worldIn);
         this.setDamage(dmg);
+    }
+
+    public EntityPlagueShot(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.PLAGUE_SHOT, worldIn);
     }
 
     public boolean isInWater() {
@@ -129,5 +136,10 @@ public class EntityPlagueShot extends AbstractArrowEntity {
     @Override
     protected ItemStack getArrowStack() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

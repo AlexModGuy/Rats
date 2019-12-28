@@ -8,11 +8,14 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityRatArrow extends AbstractArrowEntity {
 
@@ -26,6 +29,10 @@ public class EntityRatArrow extends AbstractArrowEntity {
     public EntityRatArrow(EntityType type, World worldIn, LivingEntity shooter, ItemStack stack) {
         super(type, shooter, worldIn);
         this.stack = stack;
+    }
+
+    public EntityRatArrow(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+        this(RatsEntityRegistry.RAT_ARROW, world);
     }
 
     @Override
@@ -73,4 +80,8 @@ public class EntityRatArrow extends AbstractArrowEntity {
         }
     }
 
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
 }

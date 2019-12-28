@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -18,6 +19,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityGolemBeam extends AbstractArrowEntity {
 
@@ -35,6 +38,10 @@ public class EntityGolemBeam extends AbstractArrowEntity {
     public EntityGolemBeam(EntityType type, World worldIn, LivingEntity shooter) {
         super(type, shooter, worldIn);
         this.setDamage(RatConfig.ratlanteanAutomatonAttack * 0.5F + 0.5F);
+    }
+
+    public EntityGolemBeam(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+        this(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, world);
     }
 
     public boolean isInWater() {
@@ -105,5 +112,10 @@ public class EntityGolemBeam extends AbstractArrowEntity {
     @Override
     protected ItemStack getArrowStack() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -27,6 +27,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityThrownBlock extends Entity {
     public LivingEntity shootingEntity;
@@ -38,6 +40,10 @@ public class EntityThrownBlock extends Entity {
 
     public EntityThrownBlock(EntityType type, World worldIn) {
         super(type, worldIn);
+    }
+
+    public EntityThrownBlock(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.THROWN_BLOCK, worldIn);
     }
 
     public EntityThrownBlock(EntityType type, World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
@@ -237,11 +243,6 @@ public class EntityThrownBlock extends Entity {
         return 1.0F;
     }
 
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return null;
-    }
-
     /**
      * Called when the entity is attacked.
      */
@@ -276,5 +277,10 @@ public class EntityThrownBlock extends Entity {
     @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender() {
         return 15728880;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

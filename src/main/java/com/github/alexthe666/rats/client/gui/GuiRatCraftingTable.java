@@ -146,7 +146,7 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
         int l = container.getCookProgressScaled(64);
         this.blit(i + 54, j + 21, 0, 211, l, 16);
-        if (((TileEntityRatCraftingTable) tileFurnace).hasRat) {
+        if (tileFurnace instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) tileFurnace).hasRat) {
             this.blit(i + 9, j, 176, 0, 21, 21);
         } else {
             this.blit(i + 8, j + 15, 198, 0, 21, 21);
@@ -155,6 +155,6 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
 
 
     public boolean shouldRenderButtons() {
-        return ((TileEntityRatCraftingTable) tileFurnace).hasMultipleRecipes();
+        return tileFurnace instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) tileFurnace).hasMultipleRecipes();
     }
 }

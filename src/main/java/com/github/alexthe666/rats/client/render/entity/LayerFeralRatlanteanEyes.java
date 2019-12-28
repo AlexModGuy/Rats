@@ -22,21 +22,18 @@ public class LayerFeralRatlanteanEyes extends LayerRenderer<EntityFeralRatlantea
     public void render(EntityFeralRatlantean rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.ratRenderer.bindTexture(TEXTURE_EYES);
         GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
         GlStateManager.disableLighting();
-        GlStateManager.depthMask(!rat.isInvisible());
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+        GlStateManager.depthFunc(514);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
         GlStateManager.enableLighting();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-        gamerenderer.setupFogColor(false);
+        gamerenderer.setupFogColor(true);
         this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         gamerenderer.setupFogColor(false);
-        this.func_215334_a(rat);
-        GlStateManager.depthMask(true);
+        this.ratRenderer.func_217758_e(rat);
         GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
+        GlStateManager.depthFunc(515);
     }
 
     public boolean shouldCombineTextures() {

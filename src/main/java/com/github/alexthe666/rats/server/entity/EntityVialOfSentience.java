@@ -5,10 +5,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
@@ -16,6 +19,10 @@ public class EntityVialOfSentience extends PotionEntity {
 
     public EntityVialOfSentience(EntityType type, World worldIn) {
         super(type, worldIn);
+    }
+
+    public EntityVialOfSentience(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.VIAL_OF_SENTIENCE, worldIn);
     }
 
     public ItemStack getPotion() {
@@ -49,5 +56,14 @@ public class EntityVialOfSentience extends PotionEntity {
             }
         }
         this.world.playEvent(2002, new BlockPos(this), 0XFEFE7E);
+    }
+
+    public ItemStack getItem() {
+        return new ItemStack(RatsItemRegistry.VIAL_OF_SENTIENCE);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

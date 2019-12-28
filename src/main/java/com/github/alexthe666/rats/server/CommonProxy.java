@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.events.ServerEvents;
 import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -190,6 +192,7 @@ public class CommonProxy {
 
     public void init() {
         RatsWorldRegistry.register();
+        MinecraftForge.EVENT_BUS.register(new ServerEvents());
     }
 
     public void postInit() {
