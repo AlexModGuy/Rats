@@ -235,9 +235,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             public boolean apply(@Nullable Entity entity) {
                 return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof OcelotEntity;
             }
-        }, 10.0F, 0.8D, 1.33D));
-        this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.33D, 3.0F, 1.0F));
-        this.goalSelector.addGoal(5, new RatAIFleeSun(this, 1.66D));
+        }, 10.0F, 0.8D, 1.225D));
+        this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
+        this.goalSelector.addGoal(5, new RatAIFleeSun(this, 1.225D));
         this.goalSelector.addGoal(5, this.sitGoal = new RatAISit(this));
         this.goalSelector.addGoal(6, new RatAIWander(this, 1.0D));
         this.goalSelector.addGoal(6, new RatAIWanderFlight(this));
@@ -429,7 +429,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
@@ -1121,7 +1121,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     runToPos = runToPos.up();
                     steps++;
                 }
-                this.getNavigator().tryMoveToXYZ(extraX, runToPos.getY(), extraZ, 1.33F);
+                this.getNavigator().tryMoveToXYZ(extraX, runToPos.getY(), extraZ, 1.225F);
             }
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {

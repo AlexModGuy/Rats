@@ -40,7 +40,7 @@ public class RatAIFleePosition extends Goal {
     }
 
     public void startExecuting() {
-        this.rat.getNavigator().setPath(this.path, 1.33D);
+        this.rat.getNavigator().setPath(this.path, 1.225D);
     }
 
     public void resetTask() {

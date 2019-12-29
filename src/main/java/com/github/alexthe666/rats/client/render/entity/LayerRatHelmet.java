@@ -46,74 +46,52 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
             if (armoritem.getEquipmentSlot() == EquipmentSlotType.HEAD) {
                 BipedModel a = defaultBipedModel;
                 a = getArmorModelHook(rat, itemstack, EquipmentSlotType.HEAD, a);
-                //((BipedModel)this.getEntityModel()).func_217148_a(a);
-                a.setLivingAnimations(rat, limbSwing, limbSwingAmount, partialTicks);
                 this.setModelSlotVisible(a, EquipmentSlotType.HEAD);
                 boolean flag = false;
-                if (itemstack.getItem() instanceof BannerItem) {
-                    ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-                    ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
-                    GlStateManager.translatef(0, -0.5F, -0.2F);
-                    GlStateManager.rotatef(180, 0, 0, 1);
-                    float sitProgress = rat.sitProgress / 20F;
-                    GlStateManager.rotatef(sitProgress * -40, 1, 0, 0);
-                    GlStateManager.translatef(0, 0, -sitProgress * 0.04F);
-                    GlStateManager.scalef(1.7F, 1.7F, 1.7F);
-                    Minecraft.getInstance().getItemRenderer().renderItem(itemstack, rat , ItemCameraTransforms.TransformType.FIXED, false);
-                } else {
-                    ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-                    ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
-                    ((ModelRat) this.renderer.getEntityModel()).neck.postRender(0.0625F);
-                    ((ModelRat) this.renderer.getEntityModel()).head.postRender(0.0625F);
-                    GlStateManager.translatef(0, 0.025F, -0.2F);
-                    GlStateManager.rotatef(180, 1, 0, 0);
-                    GlStateManager.rotatef(180, 0, 1, 0);
-                    GlStateManager.scalef(0.8F, 0.8F, 0.8F);
-                    Minecraft.getInstance().getItemRenderer().renderItem(itemstack, rat , ItemCameraTransforms.TransformType.FIXED, false);
-                }
-                GlStateManager.translatef(0, 0.025F, -0.035F);
+                ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
+                ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
+                ((ModelRat) this.renderer.getEntityModel()).neck.postRender(0.0625F);
+                ((ModelRat) this.renderer.getEntityModel()).head.postRender(0.0625F);
+                GlStateManager.translatef(0, -0.375F, -0.045F);
                 GlStateManager.rotatef(0, 1, 0, 0);
-                GlStateManager.scalef(0.425F, 0.425F, 0.425F);
+                GlStateManager.scalef(0.55F, 0.55F, 0.55F);
                 if (itemstack.getItem() instanceof ItemChefToque) {
                     GlStateManager.rotatef(-25, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.2F, 0.035F);
+                    GlStateManager.translatef(0, 0.1F, 0.3F);
                 }
                 if (itemstack.getItem() instanceof ItemPiperHat) {
                     GlStateManager.rotatef(-10, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.2F, -0.1F);
+                    GlStateManager.translatef(0, 0.1F, 0.1F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.PIRAT_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.3F, 0);
+                    GlStateManager.translatef(0, -0.125F, 0);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.45F, 0);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.FARMER_HAT || itemstack.getItem() == RatsItemRegistry.FISHERMAN_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.4F, 0);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK || itemstack.getItem() == RatsItemRegistry.BLACK_DEATH_MASK) {
                     GlStateManager.rotatef(-15, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.25F, 0);
-                    GlStateManager.scalef(1.5F, 1.5F, 1.5F);
+                    GlStateManager.translatef(0, 0.0F, 0);
+                    GlStateManager.scalef(1.5F, 1.2F, 1.5F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.RAT_FEZ) {
-                    GlStateManager.translatef(-0.2F, 0.46F, -0.1F);
+                    GlStateManager.translatef(-0.15F, -0.05F, -0.1F);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.TOP_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.38F, -0.1F);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.SANTA_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);
-                    GlStateManager.translatef(0, 0.275F, 0.0F);
+                    GlStateManager.translatef(0, 0, 0.1F);
                     GlStateManager.scalef(1.25F, 1.25F, 1.25F);
                 }
                 this.bindTexture(this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
@@ -123,16 +101,36 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
                     float f1 = (float)(i >> 8 & 255) / 255.0F;
                     float f2 = (float)(i & 255) / 255.0F;
                     GlStateManager.color4f(this.colorR * f, this.colorG * f1, this.colorB * f2, this.alpha);
-                    a.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                    a.render(rat, limbSwing, limbSwingAmount, ageInTicks, 0, 0, scale);
                     this.bindTexture(this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, "overlay"));
                 }
                 GlStateManager.color4f(this.colorR, this.colorG, this.colorB, this.alpha);
-                a.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                a.render(rat, limbSwing, limbSwingAmount, ageInTicks, 0, 0, scale);
                 if (itemstack.hasEffect()) {
-                    ArmorLayer.func_215338_a(this::bindTexture, rat, a, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+                    ArmorLayer.func_215338_a(this::bindTexture, rat, a, limbSwing, limbSwingAmount, partialTicks, ageInTicks, 0, 0, scale);
                 }
 
             }
+        }else if (itemstack.getItem() instanceof BannerItem) {
+            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
+            GlStateManager.translatef(0, -0.5F, -0.2F);
+            GlStateManager.rotatef(180, 0, 0, 1);
+            float sitProgress = rat.sitProgress / 20F;
+            GlStateManager.rotatef(sitProgress * -40, 1, 0, 0);
+            GlStateManager.translatef(0, 0, -sitProgress * 0.04F);
+            GlStateManager.scalef(1.7F, 1.7F, 1.7F);
+            Minecraft.getInstance().getItemRenderer().renderItem(itemstack, rat , ItemCameraTransforms.TransformType.FIXED, false);
+        } else {
+            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).neck.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).head.postRender(0.0625F);
+            GlStateManager.translatef(0, 0.025F, -0.2F);
+            GlStateManager.rotatef(180, 1, 0, 0);
+            GlStateManager.rotatef(180, 0, 1, 0);
+            GlStateManager.scalef(0.8F, 0.8F, 0.8F);
+            Minecraft.getInstance().getItemRenderer().renderItem(itemstack, rat , ItemCameraTransforms.TransformType.FIXED, false);
         }
 
 
