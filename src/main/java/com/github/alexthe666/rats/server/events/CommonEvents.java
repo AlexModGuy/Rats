@@ -45,6 +45,7 @@ import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 
@@ -290,7 +291,7 @@ public class CommonEvents {
                     } else if (RatUtils.isMilk(event.getItemStack())) {
                         LazyOptional<IFluidHandlerItem> fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
                         if (fluidHandler.isPresent() && fluidHandler.orElse(null) != null) {
-                            fluidHandler.orElse(null).drain(1000, true);
+                            fluidHandler.orElse(null).drain(1000, IFluidHandler.FluidAction.EXECUTE);
                         }
                     }
                 }

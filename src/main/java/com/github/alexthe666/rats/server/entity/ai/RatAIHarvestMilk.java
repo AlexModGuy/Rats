@@ -45,7 +45,7 @@ public class RatAIHarvestMilk extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)) {
             return false;
         }
-        if (this.entity.transportingFluid != null && this.entity.transportingFluid.amount >= this.entity.getMBTransferRate()) {
+        if (this.entity.transportingFluid != null && this.entity.transportingFluid.getAmount() >= this.entity.getMBTransferRate()) {
             return false;
         }
         resetTarget();
@@ -54,7 +54,7 @@ public class RatAIHarvestMilk extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetCow != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate());
+        return targetCow != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate());
     }
 
     public void resetTask() {
@@ -65,12 +65,12 @@ public class RatAIHarvestMilk extends Goal {
 
     @Override
     public void tick() {
-        if (this.targetCow != null && this.targetCow.isAlive() && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
+        if (this.targetCow != null && this.targetCow.isAlive() && (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate())) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetCow, 1D);
             if (entity.getDistance(targetCow) < 1.5D) {
                 if (this.entity.transportingFluid == null) {
                     FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
-                    if (milkWrapper.getFluid() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())) {
+                    if (milkWrapper.getFluid() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate())) {
                         this.entity.transportingFluid = milkWrapper.getFluid().copy();
                         if (!this.entity.world.isRemote) {
                             RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));

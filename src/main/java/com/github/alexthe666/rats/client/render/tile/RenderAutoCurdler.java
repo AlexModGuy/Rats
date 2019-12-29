@@ -22,7 +22,7 @@ public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler>
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/auto_curdler.png");
 
     public static void renderMilk(double x, double y, double z, float rotation, FluidStack fluidStack) {
-        float textureYPos = (0.6F * (fluidStack.amount / 5000F));
+        float textureYPos = (0.6F * (fluidStack.getAmount() / 5000F));
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
         GL11.glPushMatrix();
@@ -31,7 +31,7 @@ public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler>
         GL11.glTranslatef(-0.5F, 0.5F, -0.5F);
         GL11.glPushMatrix();
         AxisAlignedBB boundingBox = new AxisAlignedBB(0.25F, 0.6F - textureYPos, 0.25F, 0.75F, 0.5F, 0.75F);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getDefaultState().toString());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);

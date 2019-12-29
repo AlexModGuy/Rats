@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[28]" #mandatory
+loaderVersion="[28,)" #mandatory
 issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
 [[mods]] #mandatory
 modId="rats" #mandatory

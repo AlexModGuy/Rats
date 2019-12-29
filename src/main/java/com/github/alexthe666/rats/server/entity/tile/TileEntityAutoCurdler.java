@@ -24,13 +24,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
@@ -39,7 +39,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     private static final int[] SLOTS_TOP = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
     public int ticksExisted;
-    public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME * 5);
+    public FluidTank tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 5);
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
@@ -84,7 +84,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         }
         FluidStack def = null; //TODO
         LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getUnlocalizedName().contains("Milk"));
+        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().getFormattedText().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
     }
 
     public int getSizeInventory() {
@@ -191,8 +191,8 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         }
         if (curdlerStacks.get(0).getItem() == Items.MILK_BUCKET) {
             FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
-            if (tank.fill(milkWrapper.getFluid().copy(), false) != 0) {
-                tank.fill(milkWrapper.getFluid().copy(), true);
+            if (tank.fill(milkWrapper.getFluid().copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                tank.fill(milkWrapper.getFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
                 curdlerStacks.set(0, new ItemStack(Items.BUCKET));
             }
 
@@ -201,10 +201,10 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
             if (fluidStack != null) {
                 IFluidHandlerItem fluidHandler = (IFluidHandlerItem) FluidUtil.getFluidHandler(curdlerStacks.get(0));
-                if (fluidHandler.drain(Integer.MAX_VALUE, false) != null && fluidHandler.drain(Integer.MAX_VALUE, false).amount > 0) {
-                    if (tank.fill(fluidStack.orElse(def).copy(), false) != 0) {
-                        tank.fill(fluidStack.orElse(def).copy(), true);
-                        fluidHandler.drain(Integer.MAX_VALUE, true);
+                if (fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE) != null && fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE).getAmount() > 0) {
+                    if (tank.fill(fluidStack.orElse(def).copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                        tank.fill(fluidStack.orElse(def).copy(), IFluidHandler.FluidAction.EXECUTE);
+                        fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
                     }
                 }
             }
@@ -219,7 +219,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             } else if (this.getStackInSlot(1).isEmpty()) {
                 this.setInventorySlotContents(1, toAdd.copy());
             }
-            tank.drain(1000, true);
+            tank.drain(1000, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 
@@ -269,7 +269,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     }
 
     private boolean isMilkFluid(FluidStack fluid) {
-        return fluid.getUnlocalizedName().contains("milk") || fluid.getUnlocalizedName().contains("Milk");
+        return fluid.getTranslationKey().contains("milk") || fluid.getTranslationKey().contains("Milk");
     }
 
     public int getField(int id) {
@@ -289,7 +289,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         switch (id) {
             case 0:
                 if (tank.getFluid() != null) {
-                    this.tank.getFluid().amount = value;
+                    this.tank.getFluid().setAmount(value);
                 }
                 break;
             case 1:

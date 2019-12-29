@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     }
 
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getDefaultState().toString());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
@@ -80,7 +80,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         int screenH = (this.height - this.ySize) / 2;
         if (((TileEntityAutoCurdler) tileFurnace).tank.getFluid() != null) {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
-                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluid().getLocalizedName();
+                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluid().getDisplayName();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
                 net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, width, height, 120, font);
             }

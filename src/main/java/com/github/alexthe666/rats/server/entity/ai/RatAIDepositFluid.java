@@ -25,7 +25,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -49,7 +48,7 @@ public class RatAIDepositFluid extends Goal {
         if (!this.entity.canMove() || entity.getMBTransferRate() == 0 || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if (this.entity.transportingFluid == null || this.entity.transportingFluid.amount == 0) {
+        if (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() == 0) {
             return false;
         }
         resetTarget();
@@ -62,7 +61,7 @@ public class RatAIDepositFluid extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && (this.entity.transportingFluid != null && this.entity.transportingFluid.amount > 0);
+        return targetBlock != null && (this.entity.transportingFluid != null && this.entity.transportingFluid.getAmount() > 0);
     }
 
     public void resetTask() {
@@ -144,18 +143,19 @@ public class RatAIDepositFluid extends Goal {
                     if (this.entity.transportingFluid != null) {
                         int minusAmount = 0;
                         try {
-                            if (handler.orElse(null).getTankProperties().length > 0) {
-                                IFluidTankProperties firstTank = handler.orElse(null).getTankProperties()[0];
-                                if (handler.orElse(null).getTankProperties().length > 1) {
-                                    for (IFluidTankProperties otherTank : handler.orElse(null).getTankProperties()) {
-                                        if (copiedFluid != null && copiedFluid.isFluidEqual(otherTank.getContents())) {
+                            if (handler.orElse(null).getTanks() > 0) {
+                                FluidStack firstTank = handler.orElse(null).getFluidInTank(0);
+                                if (handler.orElse(null).getTanks() > 1) {
+                                    for(int i = 0; i < handler.orElse(null).getTanks(); i++){
+                                        FluidStack otherTank = handler.orElse(null).getFluidInTank(i);
+                                        if (copiedFluid != null && copiedFluid.isFluidEqual(otherTank)) {
                                             firstTank = otherTank;
                                         }
                                     }
                                 }
-                                if (firstTank.getContents() == null || (copiedFluid == null || copiedFluid.isFluidEqual(firstTank.getContents()))) {
-                                    if (handler.orElse(null).fill(copiedFluid, false) != 0) {
-                                        minusAmount = handler.orElse(null).fill(copiedFluid, true);
+                                if (firstTank.isEmpty() || (copiedFluid == null || copiedFluid.isFluidEqual(firstTank))) {
+                                    if (handler.orElse(null).fill(copiedFluid, IFluidHandler.FluidAction.SIMULATE) != 0) {
+                                        minusAmount = handler.orElse(null).fill(copiedFluid, IFluidHandler.FluidAction.EXECUTE);
                                     }
                                 }
 
@@ -168,16 +168,16 @@ public class RatAIDepositFluid extends Goal {
                             this.targetBlock = null;
                             this.resetTask();
                         } else {
-                            int total = copiedFluid.amount - minusAmount;
+                            int total = copiedFluid.getAmount() - minusAmount;
                             if (total <= 0) {
                                 this.entity.transportingFluid = null;
                             } else {
-                                this.entity.transportingFluid.amount = total;
+                                this.entity.transportingFluid.setAmount(total);
                             }
                             if (!this.entity.world.isRemote) {
                                 RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                             }
-                            SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_EMPTY : this.entity.transportingFluid.getFluid().getEmptySound();
+                            SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_EMPTY : SoundEvents.ITEM_BUCKET_EMPTY;//this.entity.transportingFluid.getFluid().getEmptySound();
                             this.entity.playSound(sound, 1, 1);
                             this.targetBlock = null;
                             this.resetTask();

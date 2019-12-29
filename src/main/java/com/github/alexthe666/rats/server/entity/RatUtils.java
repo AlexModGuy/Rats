@@ -52,7 +52,7 @@ public class RatUtils {
             return true;
         }
         LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack.orElse(null) != null && fluidStack.orElse(null).amount >= 1000 && (fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("Milk"));
+        return fluidStack.orElse(null) != null && fluidStack.orElse(null).getAmount() >= 1000 && (fluidStack.orElse(null).getFluid().getRegistryName().getPath().contains("milk") || fluidStack.orElse(null).getFluid().getRegistryName().getPath().contains("Milk"));
     }
 
     public static boolean isRatFood(ItemStack stack) {

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -14,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
@@ -63,12 +63,13 @@ public class RatsBlockRegistry {
     public static final Block JACK_O_RATERN = new BlockJackORatern();
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
-    public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
+
+   /* public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
         @Override
         public String getLocalizedName(FluidStack fs) {
             return LanguageMap.getInstance().translateKey("tile.rats.milk.name");
         }
-    }.setUnlocalizedName("rats.milk");
+    }.setUnlocalizedName("rats.milk");*/
 
 
 

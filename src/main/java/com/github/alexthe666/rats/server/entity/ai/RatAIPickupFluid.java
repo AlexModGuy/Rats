@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.EnumSet;
 
@@ -40,7 +39,7 @@ public class RatAIPickupFluid extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || !canPickUp() || entity.getAttackTarget() != null || entity.getMBTransferRate() == 0) {
             return false;
         }
-        if (this.entity.transportingFluid != null && this.entity.transportingFluid.amount >= this.entity.getMBTransferRate()) {
+        if (this.entity.transportingFluid != null && this.entity.transportingFluid.getAmount() >= this.entity.getMBTransferRate()) {
             return false;
         }
         resetTarget();
@@ -57,7 +56,7 @@ public class RatAIPickupFluid extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate());
+        return targetBlock != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate());
     }
 
     public void resetTask() {
@@ -90,30 +89,29 @@ public class RatAIPickupFluid extends Goal {
                 }
                 int currentAmount = 0;
                 if (this.entity.transportingFluid != null) {
-                    currentAmount = this.entity.transportingFluid.amount;
+                    currentAmount = this.entity.transportingFluid.getAmount();
                 }
                 int howMuchWeWant = this.entity.getMBTransferRate() - currentAmount;
 
                 FluidStack drainedStack = null;
                 try {
-                    int totalTankHeld = 0;
-                    if (handler.orElse(null).getTankProperties().length > 0) {
-                        IFluidTankProperties firstTank = handler.orElse(null).getTankProperties()[0];
-                        if (handler.orElse(null).getTankProperties().length > 1) {
-                            for (IFluidTankProperties otherTank : handler.orElse(null).getTankProperties()) {
-                                if (this.entity.transportingFluid != null && this.entity.transportingFluid.isFluidEqual(otherTank.getContents())) {
+                    if (handler.orElse(null).getTanks() > 0) {
+                        FluidStack firstTank = handler.orElse(null).getFluidInTank(0);
+                        if (handler.orElse(null).getTanks() > 1) {
+                            for(int i = 0; i < handler.orElse(null).getTanks(); i++){
+                                FluidStack otherTank = handler.orElse(null).getFluidInTank(i);
+                                if (this.entity.transportingFluid != null && this.entity.transportingFluid.isFluidEqual(otherTank)) {
                                     firstTank = otherTank;
                                 }
                             }
                         }
-                        if (firstTank.getContents() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.isFluidEqual(firstTank.getContents()))) {
-                            howMuchWeWant = Math.min(firstTank.getContents().amount, howMuchWeWant);
+                        if (firstTank.isEmpty() && (this.entity.transportingFluid == null || this.entity.transportingFluid.isFluidEqual(firstTank))) {
+                            howMuchWeWant = Math.min(firstTank.getAmount(), howMuchWeWant);
 
-                            if (handler.orElse(null).drain(howMuchWeWant, false) != null) {
-                                drainedStack = handler.orElse(null).drain(howMuchWeWant, true);
+                            if (handler.orElse(null).drain(howMuchWeWant, IFluidHandler.FluidAction.SIMULATE) != null) {
+                                drainedStack = handler.orElse(null).drain(howMuchWeWant, IFluidHandler.FluidAction.EXECUTE);
                             }
                         }
-
                     }
                 } catch (Exception e) {
                     //container is empty
@@ -125,12 +123,12 @@ public class RatAIPickupFluid extends Goal {
                     if (this.entity.transportingFluid == null) {
                         this.entity.transportingFluid = drainedStack.copy();
                     } else {
-                        this.entity.transportingFluid.amount += Math.max(drainedStack.amount, 0);
+                        this.entity.transportingFluid.setAmount(this.entity.transportingFluid.getAmount() + Math.max(drainedStack.getAmount(), 0));
                     }
                     if (!this.entity.world.isRemote) {
                         RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                     }
-                    SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_FILL : this.entity.transportingFluid.getFluid().getFillSound();
+                    SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_FILL : SoundEvents.ITEM_BUCKET_FILL;//this.entity.transportingFluid.getFluid().getFillSound();
                     this.entity.playSound(sound, 1, 1);
                     this.targetBlock = null;
                     this.resetTask();
