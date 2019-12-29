@@ -80,7 +80,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "minecraft:dye",
+                    "name": "minecraft:lapis_lazuli",
                     "weight": 1,
                     "functions": [
                         {
@@ -96,10 +96,6 @@
                                 "min": 0,
                                 "max": 2
                             }
-                        },
-                        {
-                            "function": "set_data",
-                            "data": 4
                         }
                     ]
                 }

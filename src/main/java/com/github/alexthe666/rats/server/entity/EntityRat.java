@@ -1694,7 +1694,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void travel(Vec3d vec3d) {
         if (!this.canMove()) {
-            //this.moveController.action = MovementController.Action.WAIT;
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
@@ -1715,6 +1714,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             });
         }
+        RatsMod.PROXY.setRefrencedRat(this);
     }
 
     public boolean canMove() {
@@ -1927,13 +1927,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     player.swingArm(hand);
                     return true;
                 } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
-                    RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
                     player.sendStatusMessage(new TranslationTextComponent("entity.rat.staff.bind", this.getName()), true);
                     return true;
                 } else if (itemstack.getItem() == Items.ARROW) {
-                    RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.shrink(1);
                     ItemStack ratArrowStack = new ItemStack(RatsItemRegistry.RAT_ARROW);
                     CompoundNBT compound = new CompoundNBT();

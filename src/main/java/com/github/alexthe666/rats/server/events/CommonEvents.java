@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
-import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,7 +22,6 @@ import net.minecraft.entity.monster.HuskEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -37,12 +35,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.conditions.RandomChance;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -50,87 +44,21 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Mod.EventBusSubscriber
-public class ServerEvents {
-
-    Predicate<Entity> UNTAMED_RAT_SELECTOR = new Predicate<Entity>() {
-        public boolean apply(@Nullable Entity p_apply_1_) {
-            return p_apply_1_ instanceof EntityRat && !((EntityRat) p_apply_1_).isTamed();
-        }
-    };
+@Mod.EventBusSubscriber(modid = RatsMod.MODID)
+public class CommonEvents {
 
     @SubscribeEvent
-    public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
-            event.setUseBlock(Event.Result.DENY);
-        }
-        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
-            if (!RatConfig.disableRatlantis) {
-                if (!event.getEntityPlayer().isCreative()) {
-                    event.getItemStack().shrink(1);
-                }
-                boolean canBuild = true;
-                BlockPos pos = event.getPos().offset(event.getFace());
-                for (int i = 0; i < 4; i++) {
-                    BlockState state = event.getWorld().getBlockState(pos.up(i));
-                    if (state.getBlockHardness(event.getWorld(), pos.up(i)) == -1.0F) {
-                        canBuild = false;
-                    }
-                }
-                if (canBuild) {
-                    event.getEntityPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
-                    event.getWorld().setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-                }
-            }
-        }
-        if (RatConfig.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && isMilk(event.getItemStack())) {
-            if (event.getWorld().getBlockState(event.getPos()).get(CauldronBlock.LEVEL) == 0) {
-                event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());
-                if (!event.getWorld().isRemote) {
-                    CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) event.getEntityPlayer(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
-                }
-                event.getEntityPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
-                if (!event.getEntityPlayer().isCreative()) {
-                    if (event.getItemStack().getItem() == Items.MILK_BUCKET) {
-                        event.getItemStack().shrink(1);
-                        event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
-                    } else if (isMilk(event.getItemStack())) {
-                        LazyOptional<IFluidHandlerItem> fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
-                        if(fluidHandler.isPresent() && fluidHandler.orElse(null) != null){
-                            fluidHandler.orElse(null).drain(1000, true);
-                        }
-                    }
-                }
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    private boolean isMilk(ItemStack stack) {
-        if (stack.getItem() == Items.MILK_BUCKET) {
-            return true;
-        }
-        LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack.orElse(null) != null && fluidStack.orElse(null).amount >= 1000 && (fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("Milk"));
-    }
-
-    @SubscribeEvent
-    public void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof OcelotEntity) {
-            OcelotEntity ocelot = (OcelotEntity) event.getTarget();
+    public static void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
+        if (RatUtils.isPredator(event.getTarget()) && event.getTarget() instanceof AnimalEntity) {
+            AnimalEntity ocelot = (AnimalEntity) event.getTarget();
             Item heldItem = event.getEntityPlayer().getHeldItem(event.getHand()).getItem();
             Random random = event.getWorld().rand;
             if (ocelot.getHealth() < ocelot.getMaxHealth()) {
@@ -182,7 +110,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onHitEntity(LivingAttackEvent event) {
+    public static void onHitEntity(LivingAttackEvent event) {
         if (event.getSource().getImmediateSource() instanceof LivingEntity && RatConfig.plagueSpread) {
             LivingEntity attacker = (LivingEntity) event.getSource().getImmediateSource();
             if (attacker.isPotionActive(RatsMod.PLAGUE_POTION) && !(event.getEntityLiving() instanceof EntityRat)) {
@@ -195,16 +123,16 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onPlayerPunch(AttackEntityEvent event) {
+    public static void onPlayerPunch(AttackEntityEvent event) {
         ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
         //TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof IronGolemEntity && RatConfig.golemsTargetRats) {
             IronGolemEntity golem = (IronGolemEntity) event.getEntity();
-            golem.targetSelector.addGoal(4, new NearestAttackableTargetGoal(golem, EntityRat.class, 10, false, false, UNTAMED_RAT_SELECTOR));
+            golem.targetSelector.addGoal(4, new NearestAttackableTargetGoal(golem, EntityRat.class, 10, false, false, RatUtils.UNTAMED_RAT_SELECTOR));
         }
         if (event.getEntity() != null && RatUtils.isPredator(event.getEntity()) && event.getEntity() instanceof AnimalEntity) {
             AnimalEntity animal = (AnimalEntity) event.getEntity();
@@ -223,7 +151,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+    public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
         ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
         /*if (TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack)) {
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
@@ -240,20 +168,20 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+    public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
         //TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
     }
 
     @SubscribeEvent
-    public void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
+    public static void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
         if (event.getEntity() instanceof EntityRat) {
             event.getCollisionBoxesList().removeIf(aabb -> ((EntityRat) event.getEntity()).canPhaseThroughBlock(event.getWorld(), new BlockPos(aabb.minX, aabb.minY, aabb.minZ)));
         }
     }
 
     @SubscribeEvent
-    public void onDrops(LivingDropsEvent event) {
+    public static void onDrops(LivingDropsEvent event) {
         if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof PlayerEntity && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
@@ -266,7 +194,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onLivingHeal(LivingHealEvent event) {
+    public static void onLivingHeal(LivingHealEvent event) {
         if (event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION) != null) {
             EffectInstance effect = event.getEntityLiving().getActivePotionEffect(RatsMod.PLAGUE_POTION);
             event.setCanceled(true);
@@ -274,7 +202,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onLivingHurt(LivingHurtEvent event) {
+    public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             AxisAlignedBB axisalignedbb = event.getEntityLiving().getBoundingBox().grow(RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance, RatConfig.ratVoodooDistance);
             List<EntityRat> list = event.getEntityLiving().world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
@@ -300,7 +228,7 @@ public class ServerEvents {
 
 
     @SubscribeEvent
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving().world.isRemote && (event.getEntityLiving().isPotionActive(RatsMod.PLAGUE_POTION) || event.getEntityLiving() instanceof EntityRat && ((EntityRat) event.getEntityLiving()).hasPlague())) {
             Random rand = event.getEntityLiving().getRNG();
             if (rand.nextInt(4) == 0) {
@@ -321,8 +249,59 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onChestGenerated(LootTableLoadEvent event) {
-        if (RatConfig.addLoot) {
+    public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
+        System.out.println("TODO fix this stuff");//TODO
+        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
+            event.setUseBlock(Event.Result.DENY);
+        }
+        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
+            if (!RatConfig.disableRatlantis) {
+                if (!event.getEntityPlayer().isCreative()) {
+                    event.getItemStack().shrink(1);
+                }
+                boolean canBuild = true;
+                BlockPos pos = event.getPos().offset(event.getFace());
+                for (int i = 0; i < 4; i++) {
+                    BlockState state = event.getWorld().getBlockState(pos.up(i));
+                    if (state.getBlockHardness(event.getWorld(), pos.up(i)) == -1.0F) {
+                        canBuild = false;
+                    }
+                }
+                if (canBuild) {
+                    event.getEntityPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
+                    event.getWorld().setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+                    event.getWorld().setBlockState(pos.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+                    event.getWorld().setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+                    event.getWorld().setBlockState(pos.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+                }
+            }
+        }
+        if (RatConfig.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && RatUtils.isMilk(event.getItemStack())) {
+            if (event.getWorld().getBlockState(event.getPos()).get(CauldronBlock.LEVEL) == 0) {
+                event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());
+                if (!event.getWorld().isRemote) {
+                    CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) event.getEntityPlayer(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
+                }
+                event.getEntityPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
+                if (!event.getEntityPlayer().isCreative()) {
+                    if (event.getItemStack().getItem() == Items.MILK_BUCKET) {
+                        event.getItemStack().shrink(1);
+                        event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
+                    } else if (RatUtils.isMilk(event.getItemStack())) {
+                        LazyOptional<IFluidHandlerItem> fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
+                        if (fluidHandler.isPresent() && fluidHandler.orElse(null) != null) {
+                            fluidHandler.orElse(null).drain(1000, true);
+                        }
+                    }
+                }
+                event.setCanceled(true);
+            }
+        }
+    }
+
+   /* @SubscribeEvent
+    public static void onChestGenerated(LootTableLoadEvent event) {
+        //if (false){//RatConfig.addLoot) {
             if (event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT)
                     || event.getName().equals(LootTables.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTables.CHESTS_JUNGLE_TEMPLE)
                     || event.getName().equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTables.CHESTS_STRONGHOLD_CROSSING)
@@ -350,6 +329,5 @@ public class ServerEvents {
                 event.getTable().addPool(builder.build());
             }
         }
-    }
-
+    }*/
 }

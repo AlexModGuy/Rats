@@ -5,15 +5,16 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.mojang.datafixers.util.Pair;
+import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -22,20 +23,37 @@ import net.minecraft.item.Items;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandler;
+
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 public class RatUtils {
+
+    public static final Predicate<Entity> UNTAMED_RAT_SELECTOR = new Predicate<Entity>() {
+        public boolean apply(@Nullable Entity p_apply_1_) {
+            return p_apply_1_ instanceof EntityRat && !((EntityRat) p_apply_1_).isTamed();
+        }
+    };
+
+    public static boolean isMilk(ItemStack stack) {
+        if (stack.getItem() == Items.MILK_BUCKET) {
+            return true;
+        }
+        LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
+        return fluidStack.orElse(null) != null && fluidStack.orElse(null).amount >= 1000 && (fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("milk") || fluidStack.orElse(null).getFluid().getUnlocalizedName().contains("Milk"));
+    }
 
     public static boolean isRatFood(ItemStack stack) {
         return (stack.getItem().isFood() || isSeeds(stack) || stack.getItem() == Items.WHEAT) && stack.getItem() != RatsItemRegistry.RAW_RAT && stack.getItem() != RatsItemRegistry.COOKED_RAT;
@@ -305,7 +323,7 @@ public class RatUtils {
     }
 
     public static boolean isPredator(Entity entity) {
-        return entity instanceof OcelotEntity;
+        return entity instanceof OcelotEntity || entity instanceof CatEntity || entity instanceof FoxEntity;
     }
 
     public static RatCommand wrapCommand(int newCommand) {

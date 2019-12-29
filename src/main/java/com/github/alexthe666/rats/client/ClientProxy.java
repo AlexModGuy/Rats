@@ -66,7 +66,7 @@ public class ClientProxy extends CommonProxy {
     private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
     public static BlockPos refrencedPos;
     public static Direction refrencedFacing;
-    protected static EntityRat refrencedRat;
+    public static EntityRat refrencedRat;
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {

@@ -54,10 +54,10 @@ public class ItemCheeseStick extends Item {
             } else {
                 RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
                 EntityRat boundRat = (EntityRat) rat;
+                RatsMod.PROXY.setRefrencedRat(boundRat);
                 context.getPlayer().swingArm(context.getHand());
             }
         }
-
         RatsMod.PROXY.openCheeseStaffGui();
 
             /*if (worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null) {

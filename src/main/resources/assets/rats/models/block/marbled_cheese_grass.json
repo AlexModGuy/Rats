@@ -3,9 +3,9 @@
     "textures": {
         "particle": "block/dirt",
         "bottom": "block/dirt",
-        "top": "block/grass_top",
-        "side": "block/grass_side",
-        "overlay": "block/grass_side_overlay",
+        "top": "block/grass_block_top",
+        "side": "block/grass_block_side",
+        "overlay": "block/grass_block_side_overlay",
         "overlay2": "rats:block/marbled_cheese_overlay"
 
     }
