@@ -89,7 +89,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.0.13'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.109'
     compile 'citadel:citadel:1.0.1:deobf'
 }
 

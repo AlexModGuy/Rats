@@ -25,8 +25,6 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/rat_crafting_table.png");
     private final PlayerInventory playerInventory;
     private final IInventory tileFurnace;
-    public ChangeCommandButton previousCommand;
-    public ChangeCommandButton nextCommand;
 
     public GuiRatCraftingTable(ContainerRatCraftingTable container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
@@ -40,12 +38,12 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         this.buttons.clear();
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        this.buttons.add(this.previousCommand = new ChangeCommandButton(1, i + 43, j + 56, false, (p_214132_1_) -> {
+        this.addButton(new ChangeCommandButton(1, i + 43, j + 56, false, (p_214132_1_) -> {
             TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) tileFurnace;
             ratTable.decreaseRecipe();
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) tileFurnace).getPos().toLong(), false));
         }));
-        this.buttons.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 56, true, (p_214132_1_) -> {
+        this.addButton(new ChangeCommandButton(2, i + 198, j + 56, true, (p_214132_1_) -> {
             TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) tileFurnace;
             ratTable.increaseRecipe();
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) tileFurnace).getPos().toLong(), true));

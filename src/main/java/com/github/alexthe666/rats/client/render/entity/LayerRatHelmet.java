@@ -8,11 +8,14 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.ArmorLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -24,6 +27,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends LayerRenderer<T, M> {
@@ -40,6 +44,18 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
 
     public void render(T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.pushMatrix();
+
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
+            renderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            ArmorLayer.func_215338_a(this::bindTexture, rat, renderer.getEntityModel(), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        }
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            renderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            renderEnchanted(this::bindTexture, rat, renderer.getEntityModel(), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 0, 1, 0);
+            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        }
+
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
@@ -108,6 +124,7 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
                 a.render(rat, limbSwing, limbSwingAmount, ageInTicks, 0, 0, scale);
                 if (itemstack.hasEffect()) {
                     ArmorLayer.func_215338_a(this::bindTexture, rat, a, limbSwing, limbSwingAmount, partialTicks, ageInTicks, 0, 0, scale);
+                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 }
 
             }
@@ -132,8 +149,6 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
             GlStateManager.scalef(0.8F, 0.8F, 0.8F);
             Minecraft.getInstance().getItemRenderer().renderItem(itemstack, rat , ItemCameraTransforms.TransformType.FIXED, false);
         }
-
-
         GlStateManager.popMatrix();
     }
 
@@ -198,5 +213,44 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
     protected void setModelVisible(BipedModel model) {
         model.setVisible(false);
 
+    }
+
+    protected static final ResourceLocation ENCHANTED_ITEM_GLINT_RES = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+
+    public static <T extends Entity> void renderEnchanted(Consumer<ResourceLocation> p_215338_0_, T p_215338_1_, EntityModel<T> p_215338_2_, float p_215338_3_, float p_215338_4_, float p_215338_5_, float p_215338_6_, float p_215338_7_, float p_215338_8_, float p_215338_9_, float r, float g, float b) {
+        float f = (float)p_215338_1_.ticksExisted + p_215338_5_;
+        p_215338_0_.accept(ENCHANTED_ITEM_GLINT_RES);
+        GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+        gamerenderer.setupFogColor(true);
+        GlStateManager.enableBlend();
+        GlStateManager.depthFunc(514);
+        GlStateManager.depthMask(false);
+        float f1 = 0.5F;
+        GlStateManager.color4f(0.5F, 0.5F, 0.5F, 1.0F);
+
+        for(int i = 0; i < 2; ++i) {
+            GlStateManager.disableLighting();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+            float f2 = 0.76F;
+            GlStateManager.color4f(r, g, b, 1.0F);
+            GlStateManager.matrixMode(5890);
+            GlStateManager.loadIdentity();
+            float f3 = 0.33333334F;
+            GlStateManager.scalef(0.33333334F, 0.33333334F, 0.33333334F);
+            GlStateManager.rotatef(30.0F - (float)i * 60.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.translatef(0.0F, f * (0.001F + (float)i * 0.003F) * 20.0F, 0.0F);
+            GlStateManager.matrixMode(5888);
+            p_215338_2_.render(p_215338_1_, p_215338_3_, p_215338_4_, p_215338_6_, p_215338_7_, p_215338_8_, p_215338_9_);
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        }
+
+        GlStateManager.matrixMode(5890);
+        GlStateManager.loadIdentity();
+        GlStateManager.matrixMode(5888);
+        GlStateManager.enableLighting();
+        GlStateManager.depthMask(true);
+        GlStateManager.depthFunc(515);
+        GlStateManager.disableBlend();
+        gamerenderer.setupFogColor(false);
     }
 }

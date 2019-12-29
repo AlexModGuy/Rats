@@ -25,9 +25,6 @@ import java.util.Arrays;
 public class GuiRat extends ContainerScreen<ContainerRat> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/rat_inventory.png");
     private static final ResourceLocation TEXTURE_BACKDROP = new ResourceLocation("rats:textures/gui/rat_inventory_backdrop.png");
-    public ChangeCommandButton previousCommand;
-    public ChangeCommandButton nextCommand;
-    public CommandPressButton pressButton;
     private int currentDisplayCommand = 0;
     private EntityRat rat;
     private float mousePosx;
@@ -82,15 +79,15 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.buttons.clear();
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        this.buttons.add(this.previousCommand = new ChangeCommandButton(1, i + 115, j + 54, false, (p_214132_1_) -> {
+        addButton(new ChangeCommandButton(1, i + 115, j + 54, false, (p_214132_1_) -> {
             currentDisplayCommand--;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        this.buttons.add(this.nextCommand = new ChangeCommandButton(2, i + 198, j + 54, true, (p_214132_1_) -> {
+        addButton(new ChangeCommandButton(2, i + 198, j + 54, true, (p_214132_1_) -> {
             currentDisplayCommand++;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        this.buttons.add(this.pressButton = new CommandPressButton(3, i + 122, j + 52, (p_214132_1_) -> {
+        addButton(new CommandPressButton(3, i + 122, j + 52, (p_214132_1_) -> {
             rat.setCommand(RatCommand.values()[currentDisplayCommand]);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentDisplayCommand));
         }));

@@ -16,8 +16,6 @@ public class GuiUpgradeCombiner extends ContainerScreen<ContainerUpgradeCombiner
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/upgrade_combiner.png");
     private final PlayerInventory playerInventory;
     private final IInventory tileFurnace;
-    public ChangeCommandButton previousCommand;
-    public ChangeCommandButton nextCommand;
 
     public GuiUpgradeCombiner(ContainerUpgradeCombiner container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
