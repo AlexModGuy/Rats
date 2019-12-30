@@ -25,7 +25,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -48,11 +48,12 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     public static final BooleanProperty OPEN_DOWN = BooleanProperty.create("open_down");
     public static final BooleanProperty[] ALL_OPEN_PROPS = new BooleanProperty[]{OPEN_DOWN, OPEN_UP, OPEN_NORTH, OPEN_SOUTH, OPEN_WEST, OPEN_EAST};
 
-    private static final VoxelShape UP_AABB = Block.makeCuboidShape(3, 13, 3, 13, 13, 13);
-    private static final VoxelShape UP_AABB_CONNECT_1 = Block.makeCuboidShape(3, 13, 3, 13, 16, 3);
-    private static final VoxelShape UP_AABB_CONNECT_2 = Block.makeCuboidShape(3, 13, 3, 3, 16, 13);
-    private static final VoxelShape UP_AABB_CONNECT_3 = Block.makeCuboidShape(13, 13, 3, 13, 16, 13);
-    private static final VoxelShape UP_AABB_CONNECT_4 = Block.makeCuboidShape(3, 13, 13, 13, 16, 13);
+    private static final VoxelShape UP_AABB = Block.makeCuboidShape(3, 12, 3, 13, 13, 13);
+    private static final VoxelShape UP_AABB_CONNECT_1 = Block.makeCuboidShape(3, 13, 3, 13, 16, 4);
+    private static final VoxelShape UP_AABB_CONNECT_2 = Block.makeCuboidShape(3, 13, 3, 4, 16, 13);
+    private static final VoxelShape UP_AABB_CONNECT_3 = Block.makeCuboidShape(12, 13, 3, 13, 16, 13);
+    private static final VoxelShape UP_AABB_CONNECT_4 = Block.makeCuboidShape(3, 13, 12, 13, 16, 13);
+
     private static final VoxelShape INTERACT_AABB_CENTER = Block.makeCuboidShape(3, 3, 3, 13, 13, 13);
     private static final VoxelShape INTERACT_AABB_UP = Block.makeCuboidShape(3, 13, 3, 13, 16, 13);
     private static final VoxelShape INTERACT_AABB_DOWN = Block.makeCuboidShape(3, 0F, 3, 13, 3, 13);
@@ -66,6 +67,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     private static Map<Direction, VoxelShape> AABB_CONNECTOR_2_MAP = new HashMap<>();
     private static Map<Direction, VoxelShape> AABB_CONNECTOR_3_MAP = new HashMap<>();
     private static Map<Direction, VoxelShape> AABB_CONNECTOR_4_MAP = new HashMap<>();
+    private static Map<String, VoxelShape> OVERALL_AABB_MAP = new HashMap();
 
     public BlockRatTube(String name) {
         super(Block.Properties.create(Material.GLASS).sound(SoundType.WOOD).hardnessAndResistance(0.9F, 0.0F));
@@ -84,7 +86,6 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
                 .with(OPEN_UP, Boolean.valueOf(false))
                 .with(OPEN_DOWN, Boolean.valueOf(false))
         );
-        //GameRegistry.registerTileEntity(TileEntityRatTube.class, "rat_tube");
     }
 
     public static VoxelShape rotateAABB(VoxelShape aabb, Direction facing) {
@@ -92,24 +93,33 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
             case UP:
                 return aabb;
             case DOWN:
-                return Block.makeCuboidShape(aabb.getBoundingBox().minX, 16 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().minZ, aabb.getBoundingBox().maxX, 16 - aabb.getBoundingBox().minY, aabb.getBoundingBox().maxZ);
+                return makeCuboidShapeNoResize(aabb.getBoundingBox().minX, 1 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().minZ, aabb.getBoundingBox().maxX, 1 - aabb.getBoundingBox().minY, aabb.getBoundingBox().maxZ);
             case NORTH:
-                return Block.makeCuboidShape(aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, 16 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ, 16 - aabb.getBoundingBox().minY);
+                return makeCuboidShapeNoResize(aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, 1 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ, 1 - aabb.getBoundingBox().minY);
             case SOUTH:
-                return Block.makeCuboidShape(aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, aabb.getBoundingBox().minY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ, aabb.getBoundingBox().maxY);
+                return makeCuboidShapeNoResize(aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, aabb.getBoundingBox().minY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ, aabb.getBoundingBox().maxY);
             case EAST:
-                return Block.makeCuboidShape(aabb.getBoundingBox().minY, aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, aabb.getBoundingBox().maxY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ);
+                return makeCuboidShapeNoResize(aabb.getBoundingBox().minY, aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, aabb.getBoundingBox().maxY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ);
             case WEST:
-                return Block.makeCuboidShape(16 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, 16 - aabb.getBoundingBox().minY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ);
+                return makeCuboidShapeNoResize(1 - aabb.getBoundingBox().maxY, aabb.getBoundingBox().minX, aabb.getBoundingBox().minZ, 1 - aabb.getBoundingBox().minY, aabb.getBoundingBox().maxX, aabb.getBoundingBox().maxZ);
         }
         return aabb;
     }
 
-    public List<VoxelShape> compileVoxelList(IWorldReader reader, BlockPos pos, BlockState state) {
+    public static VoxelShape makeCuboidShapeNoResize(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return VoxelShapes.create(x1, y1, z1, x2, y2, z2);
+    }
+
+    @Deprecated
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return super.getRenderShape(state, worldIn, pos);//getBoundingBox(state, worldIn, pos);
+    }
+
+    public List<VoxelShape> compileVoxelList(IBlockReader reader, BlockPos pos, BlockState state) {
         List<VoxelShape> aabbs = new ArrayList<>();
         aabbs.add(INTERACT_AABB_CENTER);
         if (state.getBlock() instanceof BlockRatTube) {
-            BlockState actualState = getActualState(state, reader, pos);
+            BlockState actualState = state;
             if (actualState.get(UP)) {
                 aabbs.add(INTERACT_AABB_UP);
             }
@@ -132,76 +142,84 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
         return aabbs;
     }
 
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        VoxelShape shape = VoxelShapes.empty();
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         if (state.getBlock() instanceof BlockRatTube) {
-            BlockState actualState = getActualState(state, worldIn, pos);
+            String key = "up:" + state.get(UP) + " down: " + state.get(DOWN) + " north: " + state.get(NORTH) +
+                    " east: " + state.get(EAST) + " south: " + state.get(SOUTH) + " west: " + state.get(WEST) +
+                    "up_open:" + state.get(OPEN_UP) + " down_open: " + state.get(OPEN_DOWN) + " north_open: " + state.get(OPEN_NORTH) +
+                    " east_open: " + state.get(OPEN_EAST) + " south_open: " + state.get(OPEN_SOUTH) + " west_open: " + state.get(OPEN_WEST);
+            if(OVERALL_AABB_MAP.get(key) == null){
+                VoxelShape shape = generateRatTubeState(state, worldIn, pos, context);
+                OVERALL_AABB_MAP.put(key, shape);
+                return shape;
+            }else{
+                return OVERALL_AABB_MAP.get(key);
+            }
+        }
+        return super.getShape(state, worldIn, pos, context);
+    }
+
+    public VoxelShape generateRatTubeState(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        VoxelShape shape = Block.makeCuboidShape(0, 0, 0, 0, 0, 0);
+        if (state.getBlock() instanceof BlockRatTube) {
+            BlockState actualState = state;
             if (!actualState.get(UP) && !actualState.get(OPEN_UP)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.UP, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.UP, AABB_MAP), IBooleanFunction.OR);
             }
             if (!actualState.get(DOWN) && !actualState.get(OPEN_DOWN)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.DOWN, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.DOWN, AABB_MAP), IBooleanFunction.OR);
             }
             if (!actualState.get(NORTH) && !actualState.get(OPEN_NORTH)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.NORTH, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.NORTH, AABB_MAP), IBooleanFunction.OR);
             }
             if (!actualState.get(SOUTH) && !actualState.get(OPEN_SOUTH)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.SOUTH, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.SOUTH, AABB_MAP), IBooleanFunction.OR);
             }
             if (!actualState.get(EAST) && !actualState.get(OPEN_EAST)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.EAST, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.EAST, AABB_MAP), IBooleanFunction.OR);
             }
             if (!actualState.get(WEST) && !actualState.get(OPEN_WEST)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB, Direction.WEST, AABB_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB, Direction.WEST, AABB_MAP), IBooleanFunction.OR);
             }
 
             if (actualState.get(UP)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.UP, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.UP, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.UP, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.UP, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.UP, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.UP, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.UP, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.UP, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
             if (actualState.get(DOWN)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.DOWN, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.DOWN, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.DOWN, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.DOWN, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.DOWN, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.DOWN, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.DOWN, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.DOWN, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
             if (actualState.get(NORTH)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.NORTH, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.NORTH, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.NORTH, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.NORTH, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.NORTH, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.NORTH, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.NORTH, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.NORTH, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
             if (actualState.get(SOUTH)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.SOUTH, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.SOUTH, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.SOUTH, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.SOUTH, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.SOUTH, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.SOUTH, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.SOUTH, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.SOUTH, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
             if (actualState.get(EAST)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.EAST, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.EAST, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.EAST, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.EAST, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.EAST, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.EAST, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.EAST, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.EAST, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
             if (actualState.get(WEST)) {
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.WEST, AABB_CONNECTOR_1_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.WEST, AABB_CONNECTOR_2_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.WEST, AABB_CONNECTOR_3_MAP), IBooleanFunction.ONLY_FIRST).simplify();
-                shape = VoxelShapes.combineAndSimplify(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.WEST, AABB_CONNECTOR_4_MAP), IBooleanFunction.ONLY_FIRST).simplify();
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_1, Direction.WEST, AABB_CONNECTOR_1_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_2, Direction.WEST, AABB_CONNECTOR_2_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_3, Direction.WEST, AABB_CONNECTOR_3_MAP), IBooleanFunction.OR);
+                shape = VoxelShapes.combine(shape, rotateWithMap(UP_AABB_CONNECT_4, Direction.WEST, AABB_CONNECTOR_4_MAP), IBooleanFunction.OR);
             }
         }
-        return shape;
-    }
-
-    public VoxelShape getBoundingBox(BlockState state, IWorldReader source, BlockPos pos) {
-        List<VoxelShape> aabbs = compileVoxelList(source, pos, state);
-        VoxelShape bb = Block.makeCuboidShape(0.5, 0.5, 0.5, 0.5, 0.5, 0.5);
-        for (VoxelShape box : aabbs) {
-            bb = VoxelShapes.combineAndSimplify(bb, box, IBooleanFunction.ONLY_FIRST).simplify();
-        }
-        return bb;
+        return shape.simplify();
     }
 
     public AxisAlignedBB translateToAABB(VoxelShape shape){
@@ -400,5 +418,40 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityRatTube();
+    }
+
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        BooleanProperty notOpen = null;
+        BooleanProperty connect = null;
+        switch (facing) {
+            case NORTH:
+                notOpen = OPEN_NORTH;
+                connect = NORTH;
+                break;
+            case SOUTH:
+                notOpen = OPEN_SOUTH;
+                connect = SOUTH;
+                break;
+            case EAST:
+                notOpen = OPEN_EAST;
+                connect = EAST;
+                break;
+            case WEST:
+                notOpen = OPEN_WEST;
+                connect = WEST;
+                break;
+            case DOWN:
+                notOpen = OPEN_DOWN;
+                connect = DOWN;
+                break;
+            default:
+                notOpen = OPEN_UP;
+                connect = UP;
+                break;
+        }
+        BlockState newState = stateIn;
+        newState = newState.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        newState = newState.with(notOpen, false);
+        return newState;
     }
 }

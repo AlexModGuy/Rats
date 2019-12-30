@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockUpgradeSeparator extends ContainerBlock {
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
+public class BlockUpgradeSeparator extends ContainerBlock implements IUsesTEISR {
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
     public BlockUpgradeSeparator() {
         super(Block.Properties.create(Material.ROCK).sound(SoundType.WOOD).hardnessAndResistance(5.0F, 0.0F).lightValue(4));

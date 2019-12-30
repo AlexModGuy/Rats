@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockAutoCurdler extends ContainerBlock {
+public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     private static final VoxelShape AABB = Block.makeCuboidShape(0, 0, 0, 16, 18, 16);

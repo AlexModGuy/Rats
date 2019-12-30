@@ -251,7 +251,6 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-        System.out.println("TODO fix this stuff");//TODO
         if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
             event.setUseBlock(Event.Result.DENY);
         }

@@ -2,20 +2,17 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
+import com.github.alexthe666.rats.server.items.ItemBlockTEISR;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -115,6 +112,9 @@ public class RatsBlockRegistry {
                         props.group(RatsMod.TAB);
                     }
                     BlockItem blockItem = new BlockItem((Block) obj,props);
+                    if(obj instanceof IUsesTEISR){
+                        blockItem = new ItemBlockTEISR((Block) obj, props);
+                    }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 } else if (obj instanceof Block[]) {
@@ -124,6 +124,9 @@ public class RatsBlockRegistry {
                             props.group(RatsMod.TAB);
                         }
                         BlockItem blockItem = new BlockItem(block, props);
+                        if(block instanceof IUsesTEISR){
+                            blockItem = new ItemBlockTEISR(block, props);
+                        }
                         blockItem.setRegistryName(block.getRegistryName());
                         event.getRegistry().register(blockItem);
                     }

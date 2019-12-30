@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEntityProvider {
+public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEntityProvider, INoTab {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 

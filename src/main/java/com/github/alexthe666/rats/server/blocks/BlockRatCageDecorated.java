@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityProvider {
+public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityProvider, INoTab {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     public static final RatCageDecoTrigger DECO_TRIGGER = CriteriaTriggers.register(new RatCageDecoTrigger());

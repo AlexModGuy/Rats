@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockRatlantisPortal extends ContainerBlock {
+public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     protected BlockRatlantisPortal() {
         super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).lightValue(15));

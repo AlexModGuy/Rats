@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockRatTrap extends ContainerBlock {
+public class BlockRatTrap extends ContainerBlock implements IUsesTEISR {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     private static final VoxelShape NS_AABB = Block.makeCuboidShape(3, 0, 0, 13, 4, 16);
     private static final VoxelShape EW_AABB = Block.makeCuboidShape(0, 0, 3, 16, 4, 13);
@@ -36,7 +36,7 @@ public class BlockRatTrap extends ContainerBlock {
     }
 
     public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
@@ -50,7 +50,7 @@ public class BlockRatTrap extends ContainerBlock {
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return state.get(FACING).getAxis() == Direction.Axis.X ? NS_AABB : EW_AABB;
+        return state.get(FACING).getAxis() == Direction.Axis.Z ? NS_AABB : EW_AABB;
     }
 
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {

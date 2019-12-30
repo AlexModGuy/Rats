@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,6 +29,10 @@ public class BlockCheeseCauldron extends Block {
 
     public boolean isFullCube(BlockState state) {
         return false;
+    }
+
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {

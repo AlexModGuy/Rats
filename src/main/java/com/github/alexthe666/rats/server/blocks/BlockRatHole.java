@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.fluid.IFluidState;
@@ -17,15 +14,17 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
-public class BlockRatHole extends ContainerBlock {
+public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
@@ -55,7 +54,28 @@ public class BlockRatHole extends ContainerBlock {
         shape = VoxelShapes.combineAndSimplify(shape, SOUTH_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
         shape = VoxelShapes.combineAndSimplify(shape, EAST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
         shape = VoxelShapes.combineAndSimplify(shape, WEST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        this.setRegistryName("rats:rat_hole");
         //GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
+    }
+
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    public boolean isSolid(BlockState state) {
+        return false;
+    }
+
+    public boolean isOpaqueCube(BlockState state) {
+        return false;
+    }
+
+    public boolean isFullCube(BlockState state) {
+        return false;
+    }
+
+    public int getMetaFromState(BlockState state) {
+        return 0;
     }
 
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
@@ -89,20 +109,20 @@ public class BlockRatHole extends ContainerBlock {
         return super.getStateForPlacement(context).with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
-    private VoxelShape getShape(BlockState state) {
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape1 = shape;
         if (state.getBlock() instanceof BlockRatHole) {
             if (state.get(NORTH)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_LEFT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_LEFT_AABB, IBooleanFunction.OR);
             }
             if (state.get(SOUTH)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_RIGHT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_RIGHT_AABB, IBooleanFunction.OR);
             }
             if (state.get(WEST)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_LEFT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_LEFT_AABB, IBooleanFunction.OR);
             }
             if (state.get(EAST)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_RIGHT_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_RIGHT_AABB, IBooleanFunction.OR);
             }
         }
         return shape1;
@@ -120,14 +140,6 @@ public class BlockRatHole extends ContainerBlock {
         return !cannotAttach(block) && p_220111_2_;
     }
 
-    public boolean isOpaqueCube(BlockState state) {
-        return false;
-    }
-
-    public boolean isFullCube(BlockState state) {
-        return false;
-    }
-
     public SoundType getSoundType(BlockState state) {
         /*if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityRatHole) {
             TileEntityRatHole te = (TileEntityRatHole) world.getTileEntity(pos);
@@ -141,5 +153,27 @@ public class BlockRatHole extends ContainerBlock {
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityRatHole();
+    }
+
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        BooleanProperty connect = null;
+        switch (facing) {
+            case NORTH:
+                connect = NORTH;
+                break;
+            case SOUTH:
+                connect = SOUTH;
+                break;
+            case EAST:
+                connect = EAST;
+                break;
+            case WEST:
+                connect = WEST;
+                break;
+        }
+        if(connect == null){
+            return stateIn;
+        }
+        return stateIn.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
     }
 }

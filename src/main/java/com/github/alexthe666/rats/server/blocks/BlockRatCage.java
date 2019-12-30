@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,10 +29,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -48,11 +51,11 @@ public class BlockRatCage extends Block {
     public static final IntegerProperty DOWN = IntegerProperty.create("down", 0, 2);
 
     private static final VoxelShape BOTTOM_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16F, 2F, 16F);
-    private static final VoxelShape TOP_AABB = Block.makeCuboidShape(0F, 16F, 0F, 16F, 16F, 16F);
-    private static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16F, 16F, 0F);
-    private static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0F, 0F, 16F, 16F, 16F, 16F);
-    private static final VoxelShape EAST_AABB = Block.makeCuboidShape(1F, 0F, 0F, 16F, 16F, 16F);
-    private static final VoxelShape WEST_AABB = Block.makeCuboidShape(0F, 0F, 0F, 0F, 16F, 16F);
+    private static final VoxelShape TOP_AABB = Block.makeCuboidShape(0F, 15F, 0F, 16F, 16F, 16F);
+    private static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16F, 16F, 1F);
+    private static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0F, 0F, 15F, 16F, 16F, 16F);
+    private static final VoxelShape EAST_AABB = Block.makeCuboidShape(15F, 0F, 0F, 16F, 16F, 16F);
+    private static final VoxelShape WEST_AABB = Block.makeCuboidShape(0F, 0F, 0F, 1F, 16F, 16F);
 
     public BlockRatCage(String name) {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0F, 0.0F));
@@ -125,26 +128,26 @@ public class BlockRatCage extends Block {
         return new ItemStack(RatsBlockRegistry.RAT_CAGE);
     }
 
-    private VoxelShape getShape(BlockState state) {
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape1 = Block.makeCuboidShape(0, 0, 0, 0, 0, 0);
-        if (state.getBlock() instanceof BlockRatHole) {
+        if (state.getBlock() instanceof BlockRatCage) {
             if (state.get(UP) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, TOP_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, TOP_AABB, IBooleanFunction.OR);
             }
             if (state.get(DOWN) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, BOTTOM_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, BOTTOM_AABB, IBooleanFunction.OR);
             }
             if (state.get(NORTH) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, NORTH_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, NORTH_AABB, IBooleanFunction.OR);
             }
             if (state.get(SOUTH) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, SOUTH_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, SOUTH_AABB, IBooleanFunction.OR);
             }
             if (state.get(WEST) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, WEST_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, WEST_AABB, IBooleanFunction.OR);
             }
             if (state.get(EAST) == 0) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, EAST_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+                shape1 = VoxelShapes.combine(shape1, EAST_AABB, IBooleanFunction.OR);
             }
         }
         return shape1;
@@ -230,6 +233,14 @@ public class BlockRatCage extends Block {
         return false;
     }
 
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    public boolean isSolid(BlockState state) {
+        return false;
+    }
+
     public boolean isOpaqueCube(BlockState state) {
         return false;
     }
@@ -238,16 +249,37 @@ public class BlockRatCage extends Block {
         return false;
     }
 
-    public int getMetaFromState(BlockState state) {
-        return 0;
-    }
-
     public ItemStack getContainedItem(World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityRatCageDecorated) {
             return ((TileEntityRatCageDecorated) te).getContainedItem();
         }
         return ItemStack.EMPTY;
+    }
+
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        IntegerProperty connect = null;
+        switch (facing) {
+            case NORTH:
+                connect = NORTH;
+                break;
+            case SOUTH:
+                connect = SOUTH;
+                break;
+            case EAST:
+                connect = EAST;
+                break;
+            case WEST:
+                connect = WEST;
+                break;
+            case DOWN:
+                connect = DOWN;
+                break;
+            default:
+                connect = UP;
+                break;
+        }
+        return stateIn.with(connect, Integer.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
     }
 
 }

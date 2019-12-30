@@ -23,7 +23,7 @@ public class RenderRatlantisPortal extends TileEntityRenderer<TileEntityRatlanti
     private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
     private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
-    public void render(TileEntityRatlantisPortal te, double x, double y, double z, float partialTicks, float aplha, int destroyProg) {
+    public void render(TileEntityRatlantisPortal tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
@@ -75,7 +75,7 @@ public class RenderRatlantisPortal extends TileEntityRenderer<TileEntityRatlanti
             GlStateManager.scalef(0.5F, 0.5F, 1.0F);
             float f2 = (float) (j + 1);
             float time = (Minecraft.getInstance().player.ticksExisted - 1 + (1 * partialTicks)) % 800.0F / 800.0F;
-            if (te == null) {
+            if (tileEntityIn == null) {
                 time = (Minecraft.getInstance().frameTimer.getIndex() - 1 + (1 * partialTicks)) % 3200F / 3200F;
             }
             GlStateManager.translatef(17.0F / f2 * time * (float)RANDOM.nextGaussian(), (2.0F + f2 / 1.5F) * time, 0.0F);
@@ -91,42 +91,42 @@ public class RenderRatlantisPortal extends TileEntityRenderer<TileEntityRatlanti
             float f4 = 0.98F;//(RANDOM.nextFloat() * 0.5F + 0.4F) * f1;
             float f5 = 0.79F;//(RANDOM.nextFloat() * 0.5F + 0.5F) * f1;
             float alpha2 = 0.7F;
-            if (te == null || te.shouldRenderFace(Direction.SOUTH)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.SOUTH)) {
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(Direction.NORTH)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.NORTH)) {
                 bufferbuilder.pos(x, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(Direction.EAST)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.EAST)) {
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(Direction.WEST)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.WEST)) {
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y + 1.0D, z).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(Direction.DOWN)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.DOWN)) {
                 bufferbuilder.pos(x, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x, y, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
             }
 
-            if (te == null || te.shouldRenderFace(Direction.UP)) {
+            if (tileEntityIn == null || tileEntityIn.shouldRenderFace(Direction.UP)) {
                 bufferbuilder.pos(x, y + (double) f, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + (double) f, z + 1.0D).color(f3, f4, f5, alpha2).endVertex();
                 bufferbuilder.pos(x + 1.0D, y + (double) f, z).color(f3, f4, f5, alpha2).endVertex();
