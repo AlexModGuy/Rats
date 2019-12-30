@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -32,6 +31,6 @@ public class ItemRatIgloo extends Item implements ICustomRendered, IRatCageDecor
 
     @Override
     public boolean canStay(World world, BlockPos pos, BlockRatCage cageBlock) {
-        return cageBlock.canFenceConnectTo(world.getBlockState(pos), false, Direction.DOWN) != 1;
+        return cageBlock.canFenceConnectTo(world.getBlockState(pos.down()), false, Direction.DOWN) != 1;
     }
 }

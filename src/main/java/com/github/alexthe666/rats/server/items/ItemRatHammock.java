@@ -31,6 +31,6 @@ public class ItemRatHammock extends Item implements ICustomRendered, IRatCageDec
 
     @Override
     public boolean canStay(World world, BlockPos pos, BlockRatCage cageBlock) {
-        return cageBlock.canFenceConnectTo(world.getBlockState(pos), false, Direction.UP) != 1;
+        return cageBlock.canFenceConnectTo(world.getBlockState(pos.offset(Direction.UP)), false, Direction.UP) != 1;
     }
 }

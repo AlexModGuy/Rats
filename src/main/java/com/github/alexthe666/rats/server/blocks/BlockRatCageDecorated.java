@@ -48,6 +48,7 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
     public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated) {
+            BlockState pre = state;
             TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
             if (te.getContainedItem() != null && te.getContainedItem().getItem() instanceof IRatCageDecoration && !((IRatCageDecoration) te.getContainedItem().getItem()).canStay(worldIn, pos, this)) {
                 ItemEntity ItemEntity = new ItemEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
@@ -55,13 +56,15 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
                     worldIn.addEntity(ItemEntity);
                 }
                 te.setContainedItem(ItemStack.EMPTY);
-                worldIn.setBlockState(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState());
+                BlockState decorated = RatsBlockRegistry.RAT_CAGE.getDefaultState();
+                decorated = decorated.with(NORTH, pre.get(NORTH)).with(EAST, pre.get(EAST)).with(SOUTH, pre.get(SOUTH)).with(WEST, pre.get(WEST)).with(UP, pre.get(UP)).with(DOWN, pre.get(DOWN));
+                worldIn.setBlockState(pos, decorated, 3);
             }
         }
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+        return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
 

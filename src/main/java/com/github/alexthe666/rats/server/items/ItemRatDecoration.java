@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatCageDecorated;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,15 +31,15 @@ public class ItemRatDecoration extends Item implements IRatCageDecoration {
         if (this == RatsItemRegistry.RAT_WATER_BOTTLE) {
             if (cageBlock instanceof BlockRatCageDecorated && world.getBlockState(pos).getBlock() instanceof BlockRatCageDecorated) {
                 Direction facing = world.getBlockState(pos).get(BlockRatCageDecorated.FACING);
-                return cageBlock.canFenceConnectTo(world.getBlockState(pos), false, facing) == 0;
+                return cageBlock.canFenceConnectTo(world.getBlockState(pos.offset(facing)), false, facing) == 0;
             }
             return true;
         }
         if (this == RatsItemRegistry.RAT_SEED_BOWL) {
-            return cageBlock.canFenceConnectTo(world.getBlockState(pos), false, Direction.DOWN) != 1;
+            return cageBlock.canFenceConnectTo(world.getBlockState(pos.down()), false, Direction.DOWN) != 1;
         }
         if (this == RatsItemRegistry.RAT_BREEDING_LANTERN) {
-            return cageBlock.canFenceConnectTo(world.getBlockState(pos), false, Direction.UP) == 0;
+            return cageBlock.canFenceConnectTo(world.getBlockState(pos.up()), false, Direction.UP) == 0;
         }
         return false;
     }
