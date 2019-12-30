@@ -73,7 +73,7 @@ public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityPr
     }
 
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated) {
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatCageDecorated && state.getBlock() != newState.getBlock()) {
             TileEntityRatCageDecorated te = (TileEntityRatCageDecorated) worldIn.getTileEntity(pos);
             if (te.getContainedItem() != null && !te.getContainedItem().isEmpty()) {
                 ItemEntity ItemEntity = new ItemEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, te.getContainedItem());
