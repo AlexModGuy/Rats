@@ -32,6 +32,7 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -67,6 +68,7 @@ public class ClientProxy extends CommonProxy {
     public static BlockPos refrencedPos;
     public static Direction refrencedFacing;
     public static EntityRat refrencedRat;
+    public static TileEntity refrencedTileEntity;
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
@@ -389,7 +391,7 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getInstance().particles.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
-            Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+          //  Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("saliva")) {
             Minecraft.getInstance().particles.addEffect(new ParticleSaliva(world, x, y, z, Fluids.WATER));
@@ -398,4 +400,13 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getInstance().particles.addEffect(new ParticleBlackDeath.DeathFactory(null).makeParticle(RatsParticleRegistry.PARTICLE_BLACK_DEATH, world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
     }
+
+    public TileEntity getRefrencedTE() {
+        return refrencedTileEntity;
+    }
+
+    public void setRefrencedTE(TileEntity te) {
+        refrencedTileEntity = te;
+    }
+
 }

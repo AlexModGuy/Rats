@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -61,20 +62,13 @@ public class RatsBlockRegistry {
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
 
-   /* public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {
-        @Override
-        public String getLocalizedName(FluidStack fs) {
-            return LanguageMap.getInstance().translateKey("tile.rats.milk.name");
-        }
-    }.setUnlocalizedName("rats.milk");*/
-
-
+    public static final Fluid MILK_FLUID = new MilkFluid();
 
     static {
-        //FluidRegistry.registerFluid(MILK_FLUID);
+        //Fluids.registerFluid(MILK_FLUID);
     }
 
-    private static Block[] initRatTubes(){
+    private static Block[] initRatTubes() {
         Block[] block = new Block[16];
         for (int i = 0; i < 16; i++) {
             block[i] = new BlockRatTube(DyeColor.byId(i).getName());
@@ -108,11 +102,11 @@ public class RatsBlockRegistry {
                 Object obj = f.get(null);
                 if (obj instanceof Block && ((Block) obj).getRegistryName() != null) {
                     Item.Properties props = new Item.Properties();
-                    if(!(obj instanceof INoTab)){
+                    if (!(obj instanceof INoTab)) {
                         props.group(RatsMod.TAB);
                     }
-                    BlockItem blockItem = new BlockItem((Block) obj,props);
-                    if(obj instanceof IUsesTEISR){
+                    BlockItem blockItem = new BlockItem((Block) obj, props);
+                    if (obj instanceof IUsesTEISR) {
                         blockItem = new ItemBlockTEISR((Block) obj, props);
                     }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
@@ -120,11 +114,11 @@ public class RatsBlockRegistry {
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
                         Item.Properties props = new Item.Properties();
-                        if(!(block instanceof INoTab)){
+                        if (!(block instanceof INoTab)) {
                             props.group(RatsMod.TAB);
                         }
                         BlockItem blockItem = new BlockItem(block, props);
-                        if(block instanceof IUsesTEISR){
+                        if (block instanceof IUsesTEISR) {
                             blockItem = new ItemBlockTEISR(block, props);
                         }
                         blockItem.setRegistryName(block.getRegistryName());
@@ -155,4 +149,8 @@ public class RatsBlockRegistry {
         }
     }
 
+    @SubscribeEvent
+    public static void registerFluids(RegistryEvent.Register<Fluid> event) {
+        event.getRegistry().register(MILK_FLUID);
+    }
 }

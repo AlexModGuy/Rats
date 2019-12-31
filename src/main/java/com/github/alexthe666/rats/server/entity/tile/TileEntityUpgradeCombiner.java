@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -14,8 +15,10 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
@@ -25,7 +28,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
+public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
 
     private static final int[] SLOTS_TOP = new int[]{0, 2};
     private static final int[] SLOTS_SIDE = new int[]{1};
@@ -34,14 +37,11 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     public float ratRotation;
     public float ratRotationPrev;
     public float tRot;
-    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
-            net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
-    private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
-    private int furnaceBurnTime;
-    private int currentItemBurnTime;
-    private int cookTime;
-    private int totalCookTime;
-    protected final IIntArray furnaceData = new IIntArray() {
+    public int furnaceBurnTime;
+    public int currentItemBurnTime;
+    public int cookTime;
+    public int totalCookTime;
+    public final IIntArray furnaceData = new IIntArray() {
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -78,6 +78,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
             return 4;
         }
     };
+    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
+            net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
+    private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
 
     public TileEntityUpgradeCombiner() {
         super(RatsTileEntityRegistry.UPGRADE_COMBINER);
@@ -118,6 +121,7 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
     }
 
     public void setInventorySlotContents(int index, ItemStack stack) {
+
         ItemStack itemstack = this.combinerStacks.get(index);
         boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
         this.combinerStacks.set(index, stack);
@@ -130,6 +134,9 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
             this.totalCookTime = this.getCookTime(stack);
             this.cookTime = 0;
             this.markDirty();
+        }
+        if(!world.isRemote){
+            RatsMod.sendMSGToAll(new MessageUpdateTileSlots(this.getPos().toLong(), this.getUpdateTag()));
         }
     }
 
@@ -221,43 +228,41 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
             }
         }
 
-        if (!this.world.isRemote) {
-            ItemStack fuel = this.combinerStacks.get(1);
-            if (this.isBurning() || !fuel.isEmpty() && !this.combinerStacks.get(0).isEmpty() && !this.combinerStacks.get(2).isEmpty()) {
-                if (!this.isBurning() && this.canSmelt()) {
-                    this.furnaceBurnTime = getItemBurnTime(fuel);
-                    this.currentItemBurnTime = this.furnaceBurnTime;
+        ItemStack fuel = this.combinerStacks.get(1);
+        if (this.isBurning() || !fuel.isEmpty() && !this.combinerStacks.get(0).isEmpty() && !this.combinerStacks.get(2).isEmpty()) {
+            if (!this.isBurning() && this.canSmelt()) {
+                this.furnaceBurnTime = getItemBurnTime(fuel);
+                this.currentItemBurnTime = this.furnaceBurnTime;
 
-                    if (this.isBurning()) {
-                        flag1 = true;
+                if (this.isBurning()) {
+                    flag1 = true;
 
-                        if (!fuel.isEmpty()) {
-                            Item item = fuel.getItem();
-                            fuel.shrink(1);
+                    if (!fuel.isEmpty()) {
+                        Item item = fuel.getItem();
+                        fuel.shrink(1);
 
-                            if (fuel.isEmpty()) {
-                                ItemStack item1 = item.getContainerItem(fuel);
-                                this.combinerStacks.set(1, item1);
-                            }
+                        if (fuel.isEmpty()) {
+                            ItemStack item1 = item.getContainerItem(fuel);
+                            this.combinerStacks.set(1, item1);
                         }
                     }
                 }
-
-                if (this.isBurning() && this.canSmelt()) {
-                    ++this.cookTime;
-
-                    if (this.cookTime == this.totalCookTime) {
-                        this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime(this.combinerStacks.get(0));
-                        this.smeltItem();
-                        flag1 = true;
-                    }
-                } else {
-                    this.cookTime = 0;
-                }
-            } else if (!this.isBurning() && this.cookTime > 0) {
-                this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
+
+            if (this.isBurning() && this.canSmelt()) {
+                ++this.cookTime;
+
+                if (this.cookTime == this.totalCookTime) {
+                    this.cookTime = 0;
+                    this.totalCookTime = this.getCookTime(this.combinerStacks.get(0));
+                    this.smeltItem();
+                    flag1 = true;
+                }
+            } else {
+                this.cookTime = 0;
+            }
+        } else if (!this.isBurning() && this.cookTime > 0) {
+            this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
         }
     }
 
@@ -308,6 +313,14 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
         }
         return false;
     }
+
+    public boolean canCombine(ItemStack combinerSlot, ItemStack toBeCombinedSlot) {
+        if (!combinerSlot.isEmpty() && combinerSlot.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED) {
+            return ItemRatCombinedUpgrade.canCombineWithUpgrade(combinerSlot, toBeCombinedSlot);
+        }
+        return false;
+    }
+
 
     public void openInventory(PlayerEntity player) {
     }
@@ -409,9 +422,29 @@ public class TileEntityUpgradeCombiner extends TileEntity implements ITickableTi
         return new TranslationTextComponent("container.upgrade_combiner");
     }
 
+    @Override
+    protected ITextComponent getDefaultName() {
+        return getDisplayName();
+    }
+
     @Nullable
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ContainerUpgradeCombiner(id, this, playerInventory, furnaceData);
+    protected Container createMenu(int id, PlayerInventory player) {
+        return new ContainerUpgradeCombiner(id, this, player, furnaceData);
     }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        read(packet.getNbtCompound());
+    }
+
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
+    }
+
 }

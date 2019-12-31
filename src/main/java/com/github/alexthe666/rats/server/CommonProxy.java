@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.world.BiomeRatlantis;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
@@ -14,6 +15,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -177,7 +179,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
-       // event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME);
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
     }
 
     @SubscribeEvent
@@ -211,6 +213,13 @@ public class CommonProxy {
     }
 
     public void setRefrencedRat(EntityRat rat) {
+    }
+
+    public TileEntity getRefrencedTE() {
+        return null;
+    }
+
+    public void setRefrencedTE(TileEntity te) {
     }
 
     public void setCheeseStaffContext(BlockPos pos, Direction facing) {

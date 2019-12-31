@@ -97,5 +97,6 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncThrownBlock.class, MessageSyncThrownBlock::write, MessageSyncThrownBlock::read, MessageSyncThrownBlock.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTileSlots.class, MessageUpdateTileSlots::write, MessageUpdateTileSlots::read, MessageUpdateTileSlots.Handler::handle);
     }
 }

@@ -35,7 +35,7 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
     private static final VoxelShape NS_LEFT_AABB = Block.makeCuboidShape(0, 0, 0, 4, 8, 16);
     private static final VoxelShape NS_RIGHT_AABB = Block.makeCuboidShape(12, 0, 0, 16, 8, 16);
     private static final VoxelShape EW_LEFT_AABB = Block.makeCuboidShape(0, 0, 0, 16, 8, 4);
-    private static final VoxelShape EW_RIGHT_AABB = Block.makeCuboidShape(0, 0, 0, 12, 8, 16);
+    private static final VoxelShape EW_RIGHT_AABB =  Block.makeCuboidShape(0, 0, 12, 16, 8, 16);
     private static final VoxelShape NORTH_CORNER_AABB = Block.makeCuboidShape(0, 0, 0, 4, 8, 4);
     private static final VoxelShape EAST_CORNER_AABB = Block.makeCuboidShape(12, 0, 0, 16, 8, 4);
     private static final VoxelShape SOUTH_CORNER_AABB = Block.makeCuboidShape(0, 0, 12, 4, 8, 16);
@@ -50,10 +50,10 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
                 .with(SOUTH, Boolean.valueOf(false))
                 .with(WEST, Boolean.valueOf(false))
         );
-        shape = VoxelShapes.combineAndSimplify(TOP_AABB, NORTH_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
-        shape = VoxelShapes.combineAndSimplify(shape, SOUTH_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
-        shape = VoxelShapes.combineAndSimplify(shape, EAST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
-        shape = VoxelShapes.combineAndSimplify(shape, WEST_CORNER_AABB, IBooleanFunction.ONLY_FIRST).simplify();
+        shape = VoxelShapes.combineAndSimplify(TOP_AABB, NORTH_CORNER_AABB, IBooleanFunction.OR).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, SOUTH_CORNER_AABB, IBooleanFunction.OR).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, EAST_CORNER_AABB, IBooleanFunction.OR).simplify();
+        shape = VoxelShapes.combineAndSimplify(shape, WEST_CORNER_AABB, IBooleanFunction.OR).simplify();
         this.setRegistryName("rats:rat_hole");
         //GameRegistry.registerTileEntity(TileEntityRatHole.class, "rats.rat_hole");
     }
@@ -109,20 +109,20 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
         return super.getStateForPlacement(context).with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape1 = shape;
         if (state.getBlock() instanceof BlockRatHole) {
             if (state.get(NORTH)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_LEFT_AABB, IBooleanFunction.OR);
+                shape1 = VoxelShapes.combine(shape1, EW_LEFT_AABB, IBooleanFunction.OR);
             }
             if (state.get(SOUTH)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, EW_RIGHT_AABB, IBooleanFunction.OR);
+                shape1 = VoxelShapes.combine(shape1, EW_RIGHT_AABB, IBooleanFunction.OR);
             }
             if (state.get(WEST)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_LEFT_AABB, IBooleanFunction.OR);
+                shape1 = VoxelShapes.combine(shape1, NS_LEFT_AABB, IBooleanFunction.OR);
             }
             if (state.get(EAST)) {
-                shape1 = VoxelShapes.combineAndSimplify(shape1, NS_RIGHT_AABB, IBooleanFunction.OR);
+                shape1 = VoxelShapes.combine(shape1, NS_RIGHT_AABB, IBooleanFunction.OR);
             }
         }
         return shape1;
@@ -137,7 +137,7 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
     private boolean canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
         Block block = p_220111_1_.getBlock();
         boolean flag = p_220111_1_.getMaterial() == this.material;
-        return !cannotAttach(block) && p_220111_2_;
+        return !cannotAttach(block) && p_220111_2_ && block != this;
     }
 
     public SoundType getSoundType(BlockState state) {

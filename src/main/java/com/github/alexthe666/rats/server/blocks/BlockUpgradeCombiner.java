@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -48,12 +49,14 @@ public class BlockUpgradeCombiner extends ContainerBlock implements IUsesTEISR {
     }
 
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isRemote) {
-            return true;
-        } else if(!player.isSneaking()){
-            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
-            if (inamedcontainerprovider != null) {
-                player.openContainer(inamedcontainerprovider);
+        if(!player.isSneaking()){
+            if(worldIn.isRemote){
+                RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
+            }else{
+                INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+                if (inamedcontainerprovider != null) {
+                    player.openContainer(inamedcontainerprovider);
+                }
             }
             return true;
         }

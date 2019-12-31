@@ -31,7 +31,7 @@ public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler>
         GL11.glTranslatef(-0.5F, 0.5F, -0.5F);
         GL11.glPushMatrix();
         AxisAlignedBB boundingBox = new AxisAlignedBB(0.25F, 0.6F - textureYPos, 0.25F, 0.75F, 0.5F, 0.75F);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getDefaultState().toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(fluidStack.getFluid().getAttributes().getStillTexture());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);

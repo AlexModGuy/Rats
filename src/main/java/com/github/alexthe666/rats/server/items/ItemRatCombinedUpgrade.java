@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +12,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -29,10 +27,10 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
-        CompoundNBT CompoundNBT1 = combiner.getTag();
-        if (CompoundNBT1 != null && !CompoundNBT1.getCompound("Items").isEmpty()) {
+        CompoundNBT tag = combiner.getTag();
+        if (tag != null && tag.contains("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+            ItemStackHelper.loadAllItems(tag, nonnulllist);
             for (ItemStack contained : nonnulllist) {
                 if (!(stack.getItem() instanceof ItemRatUpgrade) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())) {
                     return false;
@@ -53,11 +51,11 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
             tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc"));
         }
         tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc"));
-        CompoundNBT CompoundNBT1 = stack.getTag();
+        CompoundNBT tag = stack.getTag();
 
-        if (CompoundNBT1 != null && !CompoundNBT1.getCompound("Items").isEmpty()) {
+        if (tag != null && tag.contains("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+            ItemStackHelper.loadAllItems(tag, nonnulllist);
             int i = 0;
             int j = 0;
             for (ItemStack itemstack : nonnulllist) {
@@ -65,7 +63,7 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
                     ++j;
                     if (i <= 4) {
                         ++i;
-                        tooltip.add(new StringTextComponent(String.format("%s", itemstack.getDisplayName())));
+                        tooltip.add(new StringTextComponent(String.format("%s", itemstack.getDisplayName().getFormattedText())));
                     }
                 }
             }
@@ -79,11 +77,11 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
         if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             return true;
         }
-        CompoundNBT CompoundNBT1 = stack.getTag();
+        CompoundNBT tag = stack.getTag();
         boolean flag = false;
-        if (CompoundNBT1 != null && !CompoundNBT1.getCompound("Items").isEmpty()) {
+        if (tag != null && tag.contains("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+            ItemStackHelper.loadAllItems(tag, nonnulllist);
             flag = !nonnulllist.isEmpty();
         }
         return flag;

@@ -69,7 +69,7 @@ public class ItemRatListUpgrade extends ItemRatUpgrade {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         CompoundNBT CompoundNBT1 = stack.getTag();
 
-        if (CompoundNBT1 != null && !CompoundNBT1.getCompound("Items").isEmpty()) {
+        if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
             NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
             int i = 0;

@@ -39,14 +39,18 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
         this.addButton(new ChangeCommandButton(1, i + 43, j + 56, false, (p_214132_1_) -> {
-            TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) tileFurnace;
-            ratTable.decreaseRecipe();
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) tileFurnace).getPos().toLong(), false));
+            if(RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
+                TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE();
+                ratTable.decreaseRecipe();
+                RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).getPos().toLong(), false));
+            }
         }));
         this.addButton(new ChangeCommandButton(2, i + 198, j + 56, true, (p_214132_1_) -> {
-            TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) tileFurnace;
-            ratTable.increaseRecipe();
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) tileFurnace).getPos().toLong(), true));
+            if(RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
+                TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE();
+                ratTable.increaseRecipe();
+                RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).getPos().toLong(), true));
+            }
         }));
     }
 
@@ -65,8 +69,8 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         int screenW = (this.width - 248) / 2;
         int screenH = (this.height - 166) / 2;
         List<ItemStack> drawnIngredients = new ArrayList<>();
-        if (tileFurnace instanceof TileEntityRatCraftingTable) {
-            IRecipe recipe = ((TileEntityRatCraftingTable) tileFurnace).getSelectedRecipe();
+        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
+            IRecipe recipe = ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).getSelectedRecipe();
             int renderingIndex = 0;
             if (recipe != null) {
                 for (int i = 0; i < recipe.getIngredients().size(); i++) {
@@ -144,7 +148,7 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
         int l = container.getCookProgressScaled(64);
         this.blit(i + 54, j + 21, 0, 211, l, 16);
-        if (tileFurnace instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) tileFurnace).hasRat) {
+        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).hasRat) {
             this.blit(i + 9, j, 176, 0, 21, 21);
         } else {
             this.blit(i + 8, j + 15, 198, 0, 21, 21);
@@ -153,6 +157,6 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
 
 
     public boolean shouldRenderButtons() {
-        return tileFurnace instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) tileFurnace).hasMultipleRecipes();
+        return RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).hasMultipleRecipes();
     }
 }

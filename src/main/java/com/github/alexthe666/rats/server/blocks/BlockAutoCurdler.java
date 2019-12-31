@@ -60,12 +60,14 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isRemote) {
-            return true;
-        } else if(!player.isSneaking()){
-            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
-            if (inamedcontainerprovider != null) {
-                player.openContainer(inamedcontainerprovider);
+        if(!player.isSneaking()){
+            if(worldIn.isRemote){
+                RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
+            }else{
+                INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+                if (inamedcontainerprovider != null) {
+                    player.openContainer(inamedcontainerprovider);
+                }
             }
             return true;
         }
@@ -84,6 +86,10 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
         return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
+    public boolean isSolid(BlockState state) {
+        return false;
+    }
+
     public boolean isOpaqueCube(BlockState state) {
         return false;
     }
@@ -93,7 +99,7 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     }
 
     public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {

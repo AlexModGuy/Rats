@@ -18,6 +18,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.util.Direction;
@@ -53,7 +55,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private IRecipe selectedRecipe = null;
     private int selectedRecipeIndex = 0;
     private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
-    protected final IIntArray furnaceData = new IIntArray() {
+    public final IIntArray furnaceData = new IIntArray() {
         public int get(int index) {
             switch(index) {
                 case 2:
@@ -483,5 +485,17 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
         return new ContainerRatCraftingTable(id, this, playerInventory, furnaceData);
+    }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT tag = new CompoundNBT();
+        this.write(tag);
+        return new SUpdateTileEntityPacket(pos, 1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        read(packet.getNbtCompound());
     }
 }

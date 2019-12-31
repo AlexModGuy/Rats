@@ -33,7 +33,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
             if (item.getItem() instanceof ItemRatCombinedUpgrade) {
                 CompoundNBT CompoundNBT1 = item.getTag();
                 int spawnedItem = 0;
-                if (CompoundNBT1 != null && !CompoundNBT1.getCompound("Items").isEmpty()) {
+                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
                     NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                     ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                     for (ItemStack itemstack : nonnulllist) {

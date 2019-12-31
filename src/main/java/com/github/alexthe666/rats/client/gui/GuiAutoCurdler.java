@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.gui;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -29,6 +30,9 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     public ChangeCommandButton previousCommand;
     public ChangeCommandButton nextCommand;
     public ITextComponent name;
+    private int cookTime;
+    private int totalCookTime;
+
     public GuiAutoCurdler(ContainerAutoCurdler container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
         this.playerInventory = inv;
@@ -37,7 +41,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     }
 
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluidStack.getFluid().getDefaultState().toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(fluidStack.getFluid().getAttributes().getStillTexture());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
@@ -78,10 +82,10 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         this.font.drawString(this.getTitle().getFormattedText(), 8, this.ySize - 94 + 2, 4210752);
         int screenW = (this.width - this.xSize) / 2;
         int screenH = (this.height - this.ySize) / 2;
-        if (((TileEntityAutoCurdler) tileFurnace).tank.getFluid() != null) {
+        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
-                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluid().getDisplayName();
-                String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler) tileFurnace).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
+                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getFormattedText();
+                String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
                 net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, width, height, 120, font);
             }
         }
@@ -95,8 +99,8 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
         int l = ((ContainerAutoCurdler)container).getCookProgressionScaled();
         this.blit(i + 63, j + 35, 176, 0, l + 1, 16);
-        if (((TileEntityAutoCurdler) tileFurnace).tank.getFluid() != null) {
-            FluidTank tank = ((TileEntityAutoCurdler) tileFurnace).tank;
+        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
+            FluidTank tank = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank;
             int textureYPos = (int) (57 * (tank.getFluidAmount() / (float) tank.getCapacity()));
             renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
             this.getMinecraft().getTextureManager().bindTexture(TEXTURE);

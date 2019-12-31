@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
@@ -38,7 +39,7 @@ public class ContainerUpgradeCombiner extends Container {
     }
 
     public ContainerUpgradeCombiner(int i, PlayerInventory playerInventory) {
-        this(i, new Inventory(3), playerInventory, new IntArray(4));
+        this(i, new Inventory(4), playerInventory, new IntArray(4));
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -48,37 +49,36 @@ public class ContainerUpgradeCombiner extends Container {
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
-
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-
             if (index == 2) {
-                if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
+                if (!this.mergeItemStack(itemstack1, 3, 38, true)) {
                     return ItemStack.EMPTY;
                 }
+
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
                 if (itemstack1.getItem() instanceof ItemRatCombinedUpgrade) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack1.getItem() instanceof ItemRatUpgrade) {
-                    if (!this.mergeItemStack(itemstack1, 2, 3, false)) {
-                        return ItemStack.EMPTY;
-                    }
                 } else if (TileEntityUpgradeCombiner.getItemBurnTime(itemstack1) > 0) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 3 && index < 30) {
-                    if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
+                } else if (itemstack1.getItem() instanceof ItemRatUpgrade) {
+                    if (!this.mergeItemStack(itemstack1, 2, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 4, 30, false)) {
+                } else if (index >= 3 && index < 30) {
+                    if (!this.mergeItemStack(itemstack1, 30, 38, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 30 && index < 38 && !this.mergeItemStack(itemstack1, 3, 30, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 4, 39, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 3, 38, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -98,18 +98,17 @@ public class ContainerUpgradeCombiner extends Container {
         return itemstack;
     }
 
-
     public int getCookProgressScaled(int pixels) {
-        int i = this.vars.get(2);
-        int j = this.vars.get(3);
+        int i = ((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).cookTime;
+        int j = ((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).totalCookTime;
         return j != 0 && i != 0 ? i * pixels / j : 0;
     }
 
     public int getBurnLeftScaled(int pixels) {
-        int i = this.vars.get(1);
+        int i = ((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).currentItemBurnTime;
         if (i == 0) {
             i = 200;
         }
-        return this.vars.get(0) * pixels / i;
+        return ((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).furnaceBurnTime * pixels / i;
     }
 }

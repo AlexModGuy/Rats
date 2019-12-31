@@ -44,10 +44,10 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
     private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
-    private int cookTime;
-    private int totalCookTime;
+    public int cookTime;
+    public int totalCookTime;
     private int prevFluid = 0;
-    protected final IIntArray furnaceData = new IIntArray() {
+    public final IIntArray furnaceData = new IIntArray() {
         public int get(int index) {
             switch(index) {
                 case 2:
@@ -155,7 +155,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     }
 
     public boolean isBurning() {
-        return this.tank.getFluidAmount() >= 1000 && tank.getFluid() != null && isMilkFluid(tank.getFluid());
+        return this.tank.getFluidAmount() >= 1000 && isMilkFluid(tank.getFluid());
     }
 
     public void tick() {
@@ -171,28 +171,31 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         boolean flag = this.isBurning();
         boolean flag1 = false;
 
-        if (!this.world.isRemote) {
-            if (this.isBurning()) {
-                if (this.canSmelt()) {
-                    ++this.cookTime;
+        if (this.isBurning()) {
+            //System.out.println(cookTime);
+            if (this.canSmelt()) {
+                ++this.cookTime;
 
-                    if (this.cookTime == this.totalCookTime) {
-                        this.cookTime = 0;
-                        this.totalCookTime = RatConfig.milkCauldronTime;
-                        this.smeltItem();
-                        flag1 = true;
-                    }
-                } else {
+                if (this.cookTime == this.totalCookTime) {
                     this.cookTime = 0;
+                    this.totalCookTime = RatConfig.milkCauldronTime;
+                    this.smeltItem();
+                    flag1 = true;
                 }
-            } else if (!this.isBurning() && this.cookTime > 0) {
-                this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
+            } else {
+                this.cookTime = 0;
             }
+        } else if (!this.isBurning() && this.cookTime > 0) {
+            this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
         }
         if (curdlerStacks.get(0).getItem() == Items.MILK_BUCKET) {
             FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
-            if (tank.fill(milkWrapper.getFluid().copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
-                tank.fill(milkWrapper.getFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
+            FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);
+            if(milkFluid.isEmpty()){
+                milkFluid = new FluidStack(RatsBlockRegistry.MILK_FLUID, 1000);
+            }
+            if (tank.fill(milkFluid.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                tank.fill(milkFluid.copy(), IFluidHandler.FluidAction.EXECUTE);
                 curdlerStacks.set(0, new ItemStack(Items.BUCKET));
             }
 

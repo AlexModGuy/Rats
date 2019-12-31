@@ -18,7 +18,7 @@ public class RatsWorldRegistry {
     public static final SurfaceBuilder<SurfaceBuilderConfig> RATLANTIS_SURFACE = new DefaultSurfaceBuilder(SurfaceBuilderConfig::deserialize);
     public static final ModDimension RATLANTIS_DIM = new RatlantisModDimension(RatlantisDimension::new).setRegistryName("rats:ratlantis");
     public static DimensionType RATLANTIS_DIMENSION_TYPE;
-    public static final Biome RATLANTIS_BIOME = new BiomeRatlantis();
+    public static Biome RATLANTIS_BIOME;
 
     static {
         RATLANTIS_SURFACE.setRegistryName("rats:ratlantis_surface");

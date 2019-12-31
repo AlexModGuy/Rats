@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockReader;
 public class BlockRatgloveFlower extends BushBlock {
 
     public BlockRatgloveFlower() {
-        super(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).hardnessAndResistance(0F, 0.0F));
+        super(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().sound(SoundType.PLANT).lightValue(1));
         this.setRegistryName(RatsMod.MODID, "ratglove_flower");
     }
 
