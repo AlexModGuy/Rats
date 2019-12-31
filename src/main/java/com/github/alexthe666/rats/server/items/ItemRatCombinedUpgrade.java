@@ -1,9 +1,16 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.inventory.ContainerRatUpgrade;
+import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -14,6 +21,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -91,6 +99,19 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
         if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             ItemStack itemStackIn = player.getHeldItem(hand);
             if (!player.isSneaking()) {
+                RatsMod.PROXY.setRefrencedItem(itemStackIn);
+                if(!worldIn.isRemote){
+                    NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                        @Override
+                        public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+                            return new ContainerRatUpgrade(p_createMenu_1_, new InventoryRatUpgrade(itemStackIn), p_createMenu_2_);
+                        }
+                        @Override
+                        public ITextComponent getDisplayName() {
+                            return ItemRatCombinedUpgrade.this.getDisplayName(itemStackIn);
+                        }
+                    });
+                }
                 //player.openGui(RatsMod.INSTANCE, 3, worldIn, 0, 0, 0);
                 return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
             }

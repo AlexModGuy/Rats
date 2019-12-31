@@ -1,9 +1,11 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.inventory.ContainerEmpty;
 import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,9 +16,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -41,23 +41,18 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     };
     private static final int[] SLOTS_TOP = new int[]{2, 3, 4, 5, 6, 7, 8, 9, 10};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
+    private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
     private static List<IRecipe> EMPTY_LIST = new ArrayList<>();
     public int prevCookTime;
     public boolean hasRat;
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private NonNullList<ItemStack> inventory = NonNullList.withSize(11, ItemStack.EMPTY);
-    private int cookTime;
+    public int cookTime;
     private int totalCookTime = 200;
-    private String furnaceCustomName;
-    private boolean canSwapRecipe;
-    private List<IRecipe> currentApplicableRecipes = new ArrayList<>();
-    private IRecipe selectedRecipe = null;
-    private int selectedRecipeIndex = 0;
-    private static final IRecipeSerializer[] RECIPES_TO_SCAN = new IRecipeSerializer[]{IRecipeSerializer.CRAFTING_SHAPED, IRecipeSerializer.CRAFTING_SHAPED};
     public final IIntArray furnaceData = new IIntArray() {
         public int get(int index) {
-            switch(index) {
+            switch (index) {
                 case 2:
                     return TileEntityRatCraftingTable.this.cookTime;
                 case 3:
@@ -68,7 +63,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         }
 
         public void set(int index, int value) {
-            switch(index) {
+            switch (index) {
                 case 2:
                     TileEntityRatCraftingTable.this.cookTime = value;
                     break;
@@ -82,26 +77,14 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
             return 4;
         }
     };
+    private String furnaceCustomName;
+    private boolean canSwapRecipe;
+    private List<IRecipe> currentApplicableRecipes = new ArrayList<>();
+    private IRecipe selectedRecipe = null;
+    private int selectedRecipeIndex = 0;
 
     public TileEntityRatCraftingTable() {
         super(RatsTileEntityRegistry.RAT_CRAFTING_TABLE);
-    }
-
-    private static List<IRecipe> findMatchingRecipesFor(ItemStack stack) {
-        List<IRecipe> matchingRecipes = EMPTY_LIST;
-        if (!stack.isEmpty()) {
-            matchingRecipes = new ArrayList<>();
-            List<IRecipe> allRecipes = new ArrayList<IRecipe>();
-            for(IRecipeSerializer serializer : RECIPES_TO_SCAN){
-                //TODO
-            }
-            for (IRecipe recipe : allRecipes) {
-                if (recipe.canFit(3, 3) && recipe.getRecipeOutput().isItemEqual(stack)) {
-                    matchingRecipes.add(recipe);
-                }
-            }
-        }
-        return matchingRecipes;
     }
 
     public static boolean hasIngredients(IRecipe recipe, NonNullList<ItemStack> stacks) {
@@ -185,7 +168,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
                 if (!doesListContainStack(countedIngredients, counted)) {
                     if (!counted.isEmpty() && counted.getItem() != Items.AIR) {
                         for (int j = 0; j < recipe.getIngredients().size(); j++) {
-                            if (doesArrayContainStack(((Ingredient)recipe.getIngredients().get(j)).getMatchingStacks(), counted)) {
+                            if (doesArrayContainStack(((Ingredient) recipe.getIngredients().get(j)).getMatchingStacks(), counted)) {
                                 count++;
                             }
                         }
@@ -215,6 +198,22 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
             }
         }
         return false;
+    }
+
+    private List<IRecipe> findMatchingRecipesFor(ItemStack stack) {
+
+
+        List<IRecipe> matchingRecipes = EMPTY_LIST;
+        if (!stack.isEmpty()) {
+            matchingRecipes = new ArrayList<>();
+            RecipeManager manager = this.world.getRecipeManager();
+            for (IRecipe<?> irecipe : manager.getRecipes()) {
+                if (irecipe.getType() == IRecipeType.CRAFTING && irecipe.canFit(3, 3) && irecipe.getRecipeOutput().isItemEqual(stack)) {
+                    matchingRecipes.add(irecipe);
+                }
+            }
+        }
+        return matchingRecipes;
     }
 
     public int getSizeInventory() {
@@ -280,6 +279,9 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
             this.selectedRecipeIndex = 0;
             this.markDirty();
         }
+        if(!world.isRemote){
+            RatsMod.sendMSGToAll(new MessageUpdateTileSlots(this.getPos().toLong(), this.getUpdateTag()));
+        }
     }
 
     public int getCookTime(ItemStack stack) {
@@ -324,7 +326,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         boolean flag = false;
         hasRat = false;
         this.prevCookTime = cookTime;
-        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) pos.getX(), (double) pos.getY() + 1, (double) pos.getZ(), (double) pos.getX() + 1, (double) pos.getY() + 2, (double) pos.getZ() + 1))) {
+        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(pos.getX(), (double) pos.getY() + 1, pos.getZ(), (double) pos.getX() + 1, (double) pos.getY() + 2, (double) pos.getZ() + 1))) {
             if (rat.isTamed() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
                 hasRat = true;
             }
@@ -431,6 +433,10 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         if (!compound.getString("CustomName").isEmpty()) {
             this.furnaceCustomName = compound.getString("CustomName");
         }
+        this.currentApplicableRecipes.clear();
+        this.currentApplicableRecipes = findMatchingRecipesFor(this.inventory.get(0));
+        this.selectedRecipe = null;
+        this.selectedRecipeIndex = 0;
     }
 
     public CompoundNBT write(CompoundNBT compound) {
@@ -489,13 +495,15 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT tag = new CompoundNBT();
-        this.write(tag);
-        return new SUpdateTileEntityPacket(pos, 1, tag);
+        return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
         read(packet.getNbtCompound());
+    }
+
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
 }

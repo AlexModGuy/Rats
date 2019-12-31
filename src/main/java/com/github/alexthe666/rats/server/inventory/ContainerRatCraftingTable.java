@@ -1,5 +1,8 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -7,6 +10,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
@@ -42,10 +46,9 @@ public class ContainerRatCraftingTable extends Container {
         return this.tileRatCraftingTable.isUsableByPlayer(playerIn);
     }
 
-    /*public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
-
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
@@ -64,7 +67,7 @@ public class ContainerRatCraftingTable extends Container {
                     return ItemStack.EMPTY;
                 }
             }else {
-                if (!this.mergeItemStack(itemstack1, 2, 11, false)) {
+                if (!this.mergeItemStack(itemstack1, 0, 11, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -73,18 +76,20 @@ public class ContainerRatCraftingTable extends Container {
             } else {
                 slot.onSlotChanged();
             }
+
             if (itemstack1.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
+
             slot.onTake(playerIn, itemstack1);
         }
 
         return itemstack;
-    }*/
+    }
 
 
     public int getCookProgressScaled(int pixels) {
-        int i = vars.get(0);
+        int i = ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).cookTime;
         int j = 200;
         return j != 0 && i != 0 ? i * pixels / j : 0;
     }

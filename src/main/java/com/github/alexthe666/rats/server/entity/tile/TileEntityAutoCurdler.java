@@ -82,7 +82,6 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         if (stack.getItem() == Items.MILK_BUCKET) {
             return true;
         }
-        FluidStack def = null; //TODO
         LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
         return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().getFormattedText().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
     }

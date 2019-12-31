@@ -69,6 +69,7 @@ public class ClientProxy extends CommonProxy {
     public static Direction refrencedFacing;
     public static EntityRat refrencedRat;
     public static TileEntity refrencedTileEntity;
+    public static ItemStack refrencedItem;
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
@@ -407,6 +408,14 @@ public class ClientProxy extends CommonProxy {
 
     public void setRefrencedTE(TileEntity te) {
         refrencedTileEntity = te;
+    }
+
+    public ItemStack getRefrencedItem() {
+        return refrencedItem;
+    }
+
+    public void setRefrencedItem(ItemStack stack) {
+        refrencedItem = stack;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.inventory;
 
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -10,23 +11,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerRatUpgrade extends Container {
 
-    private ItemStack stack;
     public IInventory inventory;
     private IInventory inventoryPlayer;
 
-    //public ContainerRatUpgrade(PlayerEntity player, InventoryPlayer playerInventory, InventoryRatUpgrade itemInventory) {
-    public ContainerRatUpgrade(int id, IInventory tileInventory, PlayerInventory playerInventory) {
+    public ContainerRatUpgrade(int id, IInventory itemInventory, PlayerInventory playerInventory) {
         super(RatsContainerRegistry.RAT_UPGRADE_CONTAINER, id);
-        InventoryRatUpgrade itemInventory = (InventoryRatUpgrade)tileInventory;
         int numRows = itemInventory.getSizeInventory() / 9;
         this.inventory = itemInventory;
         this.inventoryPlayer = playerInventory;
         itemInventory.openInventory(playerInventory.player);
-        this.stack = itemInventory.upgradeStack;
         int i = (numRows - 4) * 18;
         for (int j = 0; j < numRows; ++j) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlot(new SlotRatListUpgrade(inventory, itemInventory.upgradeStack, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new SlotRatListUpgrade(inventory, RatsMod.PROXY.getRefrencedItem(), k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
         for (int l = 0; l < 3; ++l) {
@@ -54,4 +51,27 @@ public class ContainerRatUpgrade extends Container {
         this.inventory.closeInventory(playerIn);
     }
 
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (index < 36) {
+                if (!this.mergeItemStack(itemstack1, 36, this.inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, 36, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+
+        return itemstack;
+    }
 }

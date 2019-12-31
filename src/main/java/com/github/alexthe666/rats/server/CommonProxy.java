@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
@@ -226,5 +227,12 @@ public class CommonProxy {
     }
 
     public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
+    }
+
+    public ItemStack getRefrencedItem() {
+        return ItemStack.EMPTY;
+    }
+
+    public void setRefrencedItem(ItemStack stack) {
     }
 }
