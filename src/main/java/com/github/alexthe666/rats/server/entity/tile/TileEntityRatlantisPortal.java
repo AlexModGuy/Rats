@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.EndPortalTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -34,6 +35,6 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
     }
 
     public boolean shouldRenderFace(Direction p_184313_1_) {
-        return this.getBlockState().isSideInvisible(this.getBlockState(), p_184313_1_);
+        return !Block.hasSolidSide(this.getBlockState(), this.getWorld(), this.pos, p_184313_1_);
     }
 }

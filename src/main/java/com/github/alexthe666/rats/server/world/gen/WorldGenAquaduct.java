@@ -24,12 +24,10 @@ import java.util.stream.Collectors;
 
 public class WorldGenAquaduct extends Feature<NoFeatureConfig> {
 
-    public Direction facing;
     int aquaDist = 0;
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST, Direction.SOUTH};
-    public WorldGenAquaduct(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_, Direction facing) {
+    public WorldGenAquaduct(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
         super(p_i49873_1_);
-        this.facing = facing;
     }
 
     public static Rotation getRotationFromFacing(Direction facing) {
@@ -65,6 +63,7 @@ public class WorldGenAquaduct extends Feature<NoFeatureConfig> {
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         pos = pos.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         BlockPos height = getGround(pos, worldIn);
+        Direction facing = HORIZONTALS[rand.nextInt(HORIZONTALS.length - 1)];
         for (int i = 0; i < 2 + rand.nextInt(5); i++) {
             generateAquaduct(worldIn, facing, height.offset(facing.rotateY(), aquaDist));
         }
@@ -77,8 +76,8 @@ public class WorldGenAquaduct extends Feature<NoFeatureConfig> {
             dirt = Blocks.SAND.getDefaultState();
         }
         Random random = new Random(worldIn.getSeed());
-        ServerWorld serverworld = (ServerWorld)worldIn;
-        TemplateManager templateManager = serverworld.getStructureTemplateManager();
+        ServerWorld serverWorld = (ServerWorld)worldIn.getWorld();
+        TemplateManager templateManager = serverWorld.getStructureTemplateManager();
         Template template = templateManager.getTemplate(RatStructure.LARGE_AQUADUCT.structureLoc);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));
         settings.addProcessor(new RatsStructureProcessor(0.75F * random.nextFloat() + 0.75F));

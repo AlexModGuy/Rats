@@ -15,57 +15,60 @@ import java.util.function.Function;
 
 public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
 
-    private static float height = 100;
-    private static float width = 5;
+    private static final float HEIGHT = 100;
+    private static final float WIDTH = 5;
     private PerlinNoise perlin1;
     private PerlinNoise perlin2;
     private boolean init = false;
+
     public RatlantisSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> p_i51305_1_) {
         super(p_i51305_1_);
 
     }
 
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+    }
+
     @Override
     public void buildSurface(Random rand, IChunk chunkIn, Biome biomeIn, int chunkX, int chunkZ, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
         if(!init){
-            init = true;
             perlin1 = new PerlinNoise(seed);
             perlin2 = new PerlinNoise(seed + 100L);
+            init = true;
         }
-        int x = chunkX << 4;
-        int z = chunkZ << 4;
-        for (int i = x; i < x + 16; i++) {
-            for (int k = z; k < z + 16; k++) {
-                float dis = perlin2.turbulence2(i / 150F, k / 150F, 10) * 300 + 200;
-                float heightBase = height - (dis / (float) width) + (perlin1.turbulence2(i / 50F, k / 50F, 4F) * 5F);
-                for (int y = 0; y < 256; y++) {
-                    Block i4 = Blocks.AIR;
-                    if (heightBase > 67) {
-                        if (y < 2 + rand.nextInt(2)) {
-                            i4 = Blocks.BEDROCK;
-                        } else if (y < heightBase - 3) {
-                            i4 = Blocks.STONE;
-                        } else if (y < heightBase - 1) {
-                            i4 = Blocks.DIRT;
-                        } else if (y < heightBase) {
-                            i4 = Blocks.GRASS;
-                        }
-                    } else {
-                        if (y < 2 + rand.nextInt(2)) {
-                            i4 = Blocks.BEDROCK;
-                        } else if (y < heightBase - 6 + rand.nextInt(3)) {
-                            i4 = Blocks.STONE;
-                        } else if (y < heightBase - 3) {
-                            i4 = Blocks.SANDSTONE;
-                        } else if (y < heightBase) {
-                            i4 = Blocks.SAND;
-                        } else if (y <= 64) {
-                            i4 = Blocks.WATER;
-                        }
-                    }
-                    chunkIn.setBlockState(new BlockPos(i - x, y, k - z), i4.getDefaultState(), false);
+        int i = chunkX;
+        int k = chunkZ;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        float dis = perlin2.turbulence2(i / 150F, k / 150F, 10) * 300 + 200;
+        float heightBase = HEIGHT - (dis / WIDTH) + (perlin1.turbulence2(i / 50F, k / 50F, 4F) * 5F);
+        for (int y = 0; y < 256; y++) {
+            blockpos$mutableblockpos.setPos(i, y, k);
+            Block i4 = Blocks.AIR;
+            if (heightBase > 67) {
+                if (y < 2 + rand.nextInt(2)) {
+                    i4 = Blocks.BEDROCK;
+                } else if (y < heightBase - 3) {
+                    i4 = Blocks.STONE;
+                } else if (y < heightBase - 2) {
+                    i4 = Blocks.DIRT;
+                } else if (y < heightBase - 1) {
+                    i4 = Blocks.GRASS_BLOCK;
+                }
+            } else {
+                if (y < 2 + rand.nextInt(2)) {
+                    i4 = Blocks.BEDROCK;
+                } else if (y < heightBase - 6 + rand.nextInt(3)) {
+                    i4 = Blocks.STONE;
+                } else if (y < heightBase - 3) {
+                    i4 = Blocks.SANDSTONE;
+                } else if (y < heightBase) {
+                    i4 = Blocks.SAND;
+                } else if (y <= 64) {
+                    i4 = Blocks.WATER;
                 }
             }
+            chunkIn.setBlockState(blockpos$mutableblockpos, i4.getDefaultState(), false);
         }
     }
 }

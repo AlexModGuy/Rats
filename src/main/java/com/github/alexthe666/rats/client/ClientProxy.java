@@ -383,7 +383,7 @@ public class ClientProxy extends CommonProxy {
             return;
         }
         if (name.equals("rat_ghost")) {
-            Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+           // Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("rat_lightning")) {
             Minecraft.getInstance().particles.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));

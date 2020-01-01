@@ -18,18 +18,23 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
+
+import static com.github.alexthe666.rats.server.world.RatsWorldRegistry.RATLANTIS_DIM;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(RatsMod.MODID)
@@ -184,15 +189,20 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
-      //  event.getRegistry().register(RatsWorldRegistry.RATLANTIS_DIM);
+    public static void registerDimensionTypes(RegisterDimensionsEvent event) {
+        RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
     }
 
-        public void preInit() {
+    @SubscribeEvent
+    public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
+        event.getRegistry().register(RATLANTIS_DIM);
+    }
+
+    public void preInit() {
     }
 
     public void init() {
-        RatsWorldRegistry.register();
+        //RatsWorldRegistry.register();
     }
 
     public void postInit() {

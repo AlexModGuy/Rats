@@ -26,12 +26,10 @@ import java.util.stream.Collectors;
 
 public class WorldGenRatRuin extends Feature<NoFeatureConfig> {
 
-    public Direction facing;
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST, Direction.SOUTH};
 
-    public WorldGenRatRuin(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_, Direction facing) {
+    public WorldGenRatRuin(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
         super(p_i49873_1_);
-        this.facing = facing;
 
     }
 
@@ -74,6 +72,7 @@ public class WorldGenRatRuin extends Feature<NoFeatureConfig> {
     }
 
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos position, NoFeatureConfig config) {
+        Direction facing = HORIZONTALS[rand.nextInt(HORIZONTALS.length - 1)];
         RatStructure model = RatStructure.HUT;
         int chance = rand.nextInt(99) + 1;
         BlockPos offsetPos = BlockPos.ZERO;
@@ -136,7 +135,7 @@ public class WorldGenRatRuin extends Feature<NoFeatureConfig> {
         } else {
             model = RatStructure.COLOSSUS;
         }
-        ServerWorld world = (ServerWorld)worldIn;
+        ServerWorld world = (ServerWorld)worldIn.getWorld();
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         BlockPos height = getGround(position, world);
         BlockState dirt = worldIn.getBlockState(height.down(2));

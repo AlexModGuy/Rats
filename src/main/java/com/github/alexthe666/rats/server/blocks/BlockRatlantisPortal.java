@@ -3,23 +3,23 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
+import com.github.alexthe666.rats.server.world.RatlantisTeleporter;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,14 +29,19 @@ import java.util.Random;
 public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     protected BlockRatlantisPortal() {
-        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).lightValue(15));
+        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).lightValue(15).doesNotBlockMovement());
         this.setRegistryName(RatsMod.MODID, "ratlantis_portal");
         //GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
     }
 
+    public BlockRenderType getRenderType(BlockState p_149645_1_) {
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-        if (!RatConfig.disableRatlantis) {
+        if (!RatConfig.disableRatlantis && !worldIn.isRemote) {
+            MinecraftServer server = worldIn.getServer();
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
                 if ((entity instanceof ServerPlayerEntity)) {
                     ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
@@ -44,25 +49,46 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                         thePlayer.timeUntilPortal = 10;
                     } else if (thePlayer.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.changeDimension(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
+                        teleportEntity(thePlayer, server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE), pos);
                     } else {
                         thePlayer.timeUntilPortal = 10;
-                        thePlayer.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
+                        teleportEntity(thePlayer, server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension)), pos);
                     }
                 }
                 if (!(entity instanceof PlayerEntity)) {
                     if (entity.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
+                        teleportEntity(entity, server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE), pos);
                     } else {
                         entity.timeUntilPortal = 10;
-                        entity.changeDimension(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
+                        teleportEntity(entity, server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension)), pos);
                     }
                 }
             }
         }
     }
 
+    private Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint) {
+        if (entity instanceof ServerPlayerEntity) {
+            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+            player.teleport(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
+            return player;
+        }
+
+        entity.detach();
+        entity.dimension = endpointWorld.dimension.getType();
+
+        Entity teleportedEntity = entity.getType().create(endpointWorld);
+        if (teleportedEntity == null) {
+            return entity;
+        }
+        teleportedEntity.copyDataFromOld(entity);
+        teleportedEntity.setLocationAndAngles(endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
+        teleportedEntity.setRotationYawHead(entity.rotationYaw);
+        endpointWorld.func_217460_e(teleportedEntity);
+        new RatlantisTeleporter(endpointWorld).func_222268_a(entity, 0.0F);
+        return teleportedEntity;
+    }
 
     public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!this.canSurviveAt(worldIn, pos)) {
