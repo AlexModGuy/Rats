@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
@@ -18,35 +19,36 @@ import java.util.Random;
 public class RatsStructureProcessor extends StructureProcessor {
 
     private static final BlockState AIR = Blocks.AIR.getDefaultState();
-    private float integrity = 1F;
+    private final float integrity;
 
     public RatsStructureProcessor(float integrity) {
         this.integrity = integrity;
     }
 
+    public RatsStructureProcessor(Dynamic<?> p_i51333_1_) {
+        this(p_i51333_1_.get("integrity").asFloat(1.0F));
+    }
+
+
     public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Template.BlockInfo blockInfoIn2, PlacementSettings settings) {
         Random random = settings.getRandom(pos);
         if (random.nextFloat() <= integrity) {
-            if (worldIn.getBlockState(pos).getBlock() == Blocks.VINE) {
-                return null;
-            }
             if (blockInfoIn.state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK) {
                 BlockState state2 = RatStructure.getRandomCrackedBlock(null, random);
                 return new Template.BlockInfo(pos, state2, null);
             }
-            return blockInfoIn;
         }
-        return null;
+        return blockInfoIn;
     }
 
     @Override
     protected IStructureProcessorType getType() {
-        return IStructureProcessorType.BLOCK_ROT;
+        return RatlantisStructureRegistry.RAT_RUINS_PROCESSOR;
     }
 
     @Override
     protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("rats_processor"), ops.createFloat(this.integrity))));
+        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("integrity"), ops.createFloat(this.integrity))));
     }
 
 }

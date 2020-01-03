@@ -22,11 +22,11 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class WorldGenAquaduct extends Feature<NoFeatureConfig> {
+public class FeatureAquaduct extends Feature<NoFeatureConfig> {
 
     int aquaDist = 0;
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST, Direction.SOUTH};
-    public WorldGenAquaduct(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
+    public FeatureAquaduct(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
         super(p_i49873_1_);
     }
 

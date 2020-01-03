@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
@@ -159,6 +160,12 @@ public class CommonProxy {
             RatConfig.bakeServer(config);
         }
     }
+
+    @SubscribeEvent
+    public static void registerWorldGenFeatures(RegistryEvent.Register<Feature<?>> event) {
+        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS);
+    }
+
 
     @SubscribeEvent
     public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {

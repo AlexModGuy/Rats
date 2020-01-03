@@ -2,8 +2,7 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.world.gen.WorldGenAquaduct;
-import com.github.alexthe666.rats.server.world.gen.WorldGenRatRuin;
+import com.github.alexthe666.rats.server.world.gen.FeatureAquaduct;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -24,14 +23,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BiomeRatlantis extends Biome {
 
     public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
-    public static final WorldGenAquaduct AQUADUCT = new WorldGenAquaduct(NoFeatureConfig::deserialize);
-    public static final WorldGenRatRuin RAT_RUINS = new WorldGenRatRuin(NoFeatureConfig::deserialize);
+    public static final FeatureAquaduct AQUADUCT = new FeatureAquaduct(NoFeatureConfig::deserialize);
+    //public static final FeatureRatlantisRuin RAT_RUINS = new FeatureRatlantisRuin(NoFeatureConfig::deserialize);
 
     public BiomeRatlantis() {
         super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).depth(1).waterFogColor(270131).parent((String)null));
         this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
         this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
         this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
+        this.addStructure(RatsWorldRegistry.RAT_RUINS, new NoFeatureConfig());
+        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(RatsWorldRegistry.RAT_RUINS, new NoFeatureConfig(), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         DefaultBiomeFeatures.addCarvers(this);
         DefaultBiomeFeatures.addStructures(this);
         DefaultBiomeFeatures.addLakes(this);
@@ -66,8 +67,8 @@ public class BiomeRatlantis extends Biome {
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.PIRAT, 20, 1, 1));
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.RATLANTEAN_SPIRIT, 50, 1, 1));
         this.setRegistryName("ratlantis");
-        this.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Biome.createDecoratedFeature(RAT_RUINS, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(128)));
-        this.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Biome.createDecoratedFeature(AQUADUCT, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(128)));
+        //this.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, Biome.createDecoratedFeature(RAT_RUINS, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(64)));
+        //this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(AQUADUCT, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(128)));
         //addFlower(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState(), 30);
     }
 
