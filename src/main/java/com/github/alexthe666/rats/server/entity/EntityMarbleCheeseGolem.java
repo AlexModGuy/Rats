@@ -320,7 +320,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             return false;
         }
 
-        public void updateTask() {
+        public void tick() {
             BlockPos blockpos = new BlockPos(EntityMarbleCheeseGolem.this);
 
             for (int i = 0; i < 3; ++i) {
@@ -362,7 +362,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
         public void resetTask() {
         }
 
-        public void updateTask() {
+        public void tick() {
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {

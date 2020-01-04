@@ -340,7 +340,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
         public void resetTask() {
         }
 
-        public void updateTask() {
+        public void tick() {
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
@@ -364,7 +364,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
             return false;
         }
 
-        public void updateTask() {
+        public void tick() {
             BlockPos blockpos = new BlockPos(EntityNeoRatlantean.this);
 
             for (int i = 0; i < 3; ++i) {

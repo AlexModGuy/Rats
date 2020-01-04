@@ -927,7 +927,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double d0 = 0D;
             double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
             double d2 = 0D;
-            this.world.addParticle(ParticleTypes.EFFECT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.getHeldItemMainhand().isEmpty()) {
             this.tryCooking();

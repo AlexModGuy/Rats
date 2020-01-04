@@ -28,6 +28,9 @@ public class ParticleLightning extends SpriteTexturedParticle {
         this.particleAlpha = 1F;
         this.maxAge = (int) (6.0D / (Math.random() * 0.8D + 0.2D));
         type = worldIn.rand.nextBoolean();
+        this.motionX *= 0.125D;
+        this.motionY *= 0.125D;
+        this.motionZ *= 0.125D;
     }
 
     public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {

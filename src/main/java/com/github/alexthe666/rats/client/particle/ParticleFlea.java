@@ -44,7 +44,7 @@ public class ParticleFlea extends SpriteTexturedParticle {
         float f3 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
         float f4 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
         float f5 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
-        float width = particleScale * 0.09F;
+        float width = particleScale * 1;
         int i = this.getBrightnessForRender(partialTicks);
         int j = i >> 16 & 65535;
         int k = i & 65535;

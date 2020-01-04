@@ -67,7 +67,7 @@ public class EntityPlagueShot extends AbstractArrowEntity {
             if (rand.nextBoolean()) {
                 RatsMod.PROXY.addParticle("black_death", x, y + 0.5D, z, d0, d1, d2);
             } else {
-                this.world.addParticle(ParticleTypes.EFFECT, x, y + 0.5D, z, d0, d1, d2);
+                this.world.addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 0.5D, z, d0, d1, d2);
 
             }
         }

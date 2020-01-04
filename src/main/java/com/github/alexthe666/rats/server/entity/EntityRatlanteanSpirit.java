@@ -165,7 +165,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
             return false;
         }
 
-        public void updateTask() {
+        public void tick() {
             BlockPos blockpos = new BlockPos(EntityRatlanteanSpirit.this);
 
             for (int i = 0; i < 3; ++i) {
@@ -203,7 +203,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         public void resetTask() {
         }
 
-        public void updateTask() {
+        public void tick() {
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {

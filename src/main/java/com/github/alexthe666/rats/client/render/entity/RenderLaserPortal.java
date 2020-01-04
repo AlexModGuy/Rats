@@ -45,7 +45,7 @@ public class RenderLaserPortal extends EntityRenderer<EntityLaserPortal> {
         GlStateManager.rotatef(90, 1, 0, 0);
         GlStateManager.rotatef(90 + entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0F, 0, 1F);
         GlStateManager.rotatef(entity.ticksExisted * 10, 0, 1, 0);
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
         MODEL_NEO_RATLANTEAN.floatyPivot.render(0.0625F);
         GlStateManager.popMatrix();
         if (this.renderOutlines) {

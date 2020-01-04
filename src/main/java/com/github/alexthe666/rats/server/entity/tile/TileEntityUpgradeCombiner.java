@@ -224,7 +224,7 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
                 RatsMod.PROXY.addParticle("upgrade_combiner", extraX,
                         extraY,
                         extraZ,
-                        -0.1F, -0.1F, 0F);
+                        0F, 0F, 0F);
             }
         }
 

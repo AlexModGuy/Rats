@@ -240,7 +240,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
             return false;
         }
 
-        public void updateTask() {
+        public void tick() {
             BlockPos blockpos = new BlockPos(EntityPlagueCloud.this);
 
             for (int i = 0; i < 3; ++i) {

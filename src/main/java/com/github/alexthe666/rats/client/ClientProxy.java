@@ -31,7 +31,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -45,7 +44,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -357,24 +355,6 @@ public class ClientProxy extends CommonProxy {
         refrencedFacing = facing;
     }
 
-    @SubscribeEvent
-    public static void registerParticles(final RegistryEvent.Register<ParticleType<?>> event) {
-        try {
-            for (Field f : RatsParticleRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof ParticleType) {
-                    event.getRegistry().register((ParticleType) obj);
-                } else if (obj instanceof ParticleType[]) {
-                    for (ParticleType particle : (ParticleType[]) obj) {
-                        event.getRegistry().register(particle);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
@@ -383,7 +363,7 @@ public class ClientProxy extends CommonProxy {
             return;
         }
         if (name.equals("rat_ghost")) {
-           // Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+           Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("rat_lightning")) {
             Minecraft.getInstance().particles.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));
@@ -392,13 +372,13 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getInstance().particles.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
-          //  Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+          Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("saliva")) {
             Minecraft.getInstance().particles.addEffect(new ParticleSaliva(world, x, y, z, Fluids.WATER));
         }
         if (name.equals("black_death")) {
-            Minecraft.getInstance().particles.addEffect(new ParticleBlackDeath.DeathFactory(null).makeParticle(RatsParticleRegistry.PARTICLE_BLACK_DEATH, world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleBlackDeath(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
     }
 
