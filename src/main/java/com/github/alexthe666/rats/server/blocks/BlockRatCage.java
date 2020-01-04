@@ -225,7 +225,7 @@ public class BlockRatCage extends Block {
                         ratCount++;
                     }
                 }
-                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rat.cage.deposit", ratCount), true);
+                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.cage.deposit", ratCount), true);
                 return true;
             } else {
                 int ratCount = 0;
@@ -236,7 +236,7 @@ public class BlockRatCage extends Block {
                     }
                     ratCount++;
                 }
-                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rat.cage.withdrawal", ratCount), true);
+                playerIn.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.cage.withdrawal", ratCount), true);
                 return true;
             }
         }

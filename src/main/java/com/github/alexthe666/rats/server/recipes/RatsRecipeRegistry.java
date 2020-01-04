@@ -19,10 +19,11 @@ public class RatsRecipeRegistry {
     public static List<SharedRecipe> RAT_ARCHEOLOGIST_RECIPES = new ArrayList<>();
     public static List<SharedRecipe> RAT_GEMCUTTER_RECIPES = new ArrayList<>();
 
-    public static final BannerPattern RAT_PATTERN = addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
-    public static final BannerPattern CHEESE_PATTERN = addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
-    public static final BannerPattern RAT_AND_CROSSBONES_PATTERN = addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
-    public static void preRegister() {
+    public static BannerPattern RAT_PATTERN = addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
+    public static BannerPattern CHEESE_PATTERN = addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
+    public static BannerPattern RAT_AND_CROSSBONES_PATTERN = addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
+
+   public static void preRegister() {
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.ASSORTED_VEGETABLES), new ItemStack(RatsItemRegistry.CONFIT_BYALDI)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CHEESE), new ItemStack(RatsItemRegistry.STRING_CHEESE, 4)));
         RAT_CHEF_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.CENTIPEDE), new ItemStack(RatsItemRegistry.POTATO_KNISHES)));
@@ -45,6 +46,7 @@ public class RatsRecipeRegistry {
     }
 
     public static void register() {
+        preRegister();
         CAULDRON_RECIPES.add(new SharedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAW)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.SKELETON_SKULL), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)));

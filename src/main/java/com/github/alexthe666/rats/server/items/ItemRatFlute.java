@@ -89,7 +89,7 @@ public class ItemRatFlute extends Item {
         tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1"));
         if (stack.getTag() != null) {
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(stack.getTag().getInt("Command"), 0, RatCommand.values().length - 1)];
-            tooltip.add(new TranslationTextComponent("entity.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())));
+            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())));
 
         }
     }

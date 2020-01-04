@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "rats:rattrap"
+            "item": "rats:rat_trap"
         },
         "title": {
             "translate": "advancements.rats.rattrap.title"

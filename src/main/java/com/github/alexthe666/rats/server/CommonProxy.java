@@ -87,33 +87,6 @@ public class CommonProxy {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        /*
-        registerSpawnable(EntityEntryBuilder.<EntityRat>create(), event, EntityRat.class, "rat", 1, 0X30333E, 0XDAABA1);
-        registerSpawnable(EntityEntryBuilder.<EntityIllagerPiper>create(), event, EntityIllagerPiper.class, "illager_piper", 2, 0XCABC42, 0X3B6063);
-        registerSpawnable(EntityEntryBuilder.<EntityRatlanteanSpirit>create(), event, EntityRatlanteanSpirit.class, "ratlantean_spirit", 3, 0XEDBD00, 0XFFE8AF);
-        registerUnspawnable(EntityEntryBuilder.<EntityRatlanteanFlame>create(), event, EntityRatlanteanFlame.class, "ratlantean_flame", 4);
-        registerSpawnable(EntityEntryBuilder.<EntityMarbleCheeseGolem>create(), event, EntityMarbleCheeseGolem.class, "marbled_cheese_golem", 5, 0XE8E4D7, 0X72E955);
-        registerUnspawnable(EntityEntryBuilder.<EntityGolemBeam>create(), event, EntityGolemBeam.class, "marbled_cheese_golem_beam", 6);
-        registerSpawnable(EntityEntryBuilder.<EntityFeralRatlantean>create(), event, EntityFeralRatlantean.class, "feral_ratlantean", 7, 0X30333E, 0XECECEC);
-        registerSpawnable(EntityEntryBuilder.<EntityNeoRatlantean>create(), event, EntityNeoRatlantean.class, "neo_ratlantean", 8, 0X30333E, 0X00EFEF);
-        registerUnspawnable(EntityEntryBuilder.<EntityLaserBeam>create(), event, EntityLaserBeam.class, "laser_beam", 9);
-        registerUnspawnable(EntityEntryBuilder.<EntityLaserPortal>create(), event, EntityLaserPortal.class, "neo_ratlantean_portal", 10);
-        registerUnspawnable(EntityEntryBuilder.<EntityThrownBlock>create(), event, EntityThrownBlock.class, "thrown_block", 11);
-        registerUnspawnable(EntityEntryBuilder.<EntityVialOfSentience>create(), event, EntityVialOfSentience.class, "vial_of_sentience", 12);
-        registerUnspawnable(EntityEntryBuilder.<EntityPiratBoat>create(), event, EntityPiratBoat.class, "pirat_boat", 13);
-        registerSpawnable(EntityEntryBuilder.<EntityPirat>create(), event, EntityPirat.class, "pirat", 14, 0X30333E, 0XAF363A);
-        registerUnspawnable(EntityEntryBuilder.<EntityCheeseCannonball>create(), event, EntityCheeseCannonball.class, "cheese_cannonball", 15);
-        registerSpawnable(EntityEntryBuilder.<EntityPlagueDoctor>create(), event, EntityPlagueDoctor.class, "plague_doctor", 16, 0X2A292A, 0X515359);
-        registerUnspawnable(EntityEntryBuilder.<EntityPurifyingLiquid>create(), event, EntityPurifyingLiquid.class, "purifying_liquid", 17);
-        registerSpawnable(EntityEntryBuilder.<EntityBlackDeath>create(), event, EntityBlackDeath.class, "black_death", 18, 0X000000, 0X000000);
-        registerSpawnable(EntityEntryBuilder.<EntityPlagueCloud>create(), event, EntityPlagueCloud.class, "plague_cloud", 19, 0X000000, 0X52574D);
-        registerSpawnable(EntityEntryBuilder.<EntityPlagueCloud>create(), event, EntityPlagueBeast.class, "plague_beast", 20, 0X000000, 0XECECEC);
-        registerUnspawnable(EntityEntryBuilder.<EntityPlagueShot>create(), event, EntityPlagueShot.class, "plague_shot", 21);
-        registerUnspawnable(EntityEntryBuilder.<EntityRatCaptureNet>create(), event, EntityRatCaptureNet.class, "rat_capture_net", 22);
-        registerUnspawnable(EntityEntryBuilder.<EntityRatDragonFire>create(), event, EntityRatDragonFire.class, "rat_dragon_fire", 23);
-        registerUnspawnable(EntityEntryBuilder.<EntityRatArrow>create(), event, EntityRatArrow.class, "rat_arrow", 24);
-        EntitySpawnPlacementRegistry.setPlacementType(EntityPirat.class, LivingEntity.SpawnPlacementType.IN_WATER);
-        */
     }
 
 
@@ -130,7 +103,10 @@ public class CommonProxy {
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.BLACK_DEATH, 0X000000, 0X000000, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_black_death"));
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PLAGUE_CLOUD, 0X000000, 0X52574D, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_plague_cloud"));
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.PLAGUE_BEAST, 0X000000, 0XECECEC, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_plague_beast"));
-
+        //TODO: Forge needs to update loom code so that these don't crash the game
+       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_banner_pattern"));
+       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
+       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
     }
     /*
     public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {

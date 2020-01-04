@@ -39,6 +39,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
@@ -1318,16 +1319,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public ItemStack getCookingResultFor(ItemStack stack) {
-        FurnaceRecipe irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, null, this.world).orElse(null);
+        IInventory iinventory = new Inventory(stack);
+        FurnaceRecipe irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, iinventory, this.world).orElse(null);
+
+        SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
+        if (recipe != null) {
+            return recipe.getOutput().copy();
+        }
         if(irecipe != null && !irecipe.getRecipeOutput().isEmpty()){
             ItemStack burntItem = irecipe.getRecipeOutput().copy();
-            SharedRecipe recipe = RatsRecipeRegistry.getRatChefRecipe(stack);
-            if (recipe != null) {
-                burntItem = recipe.getOutput().copy();
-            }
-            return burntItem;
+           return burntItem;
         }
-       return ItemStack.EMPTY;
+        return ItemStack.EMPTY;
     }
 
     public ItemStack getArcheologyResultFor(ItemStack stack) {
@@ -1929,7 +1932,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
                     itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
-                    player.sendStatusMessage(new TranslationTextComponent("entity.rat.staff.bind", this.getName()), true);
+                    player.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.bind", this.getName()), true);
                     return true;
                 } else if (itemstack.getItem() == Items.ARROW) {
                     itemstack.shrink(1);
@@ -1953,7 +1956,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     return true;
                 } else {
                     if (player.getPassengers().size() < 3) {
-                        player.sendStatusMessage(new TranslationTextComponent("entity.rat.dismount_instructions"), true);
+                        player.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.dismount_instructions"), true);
                         this.startRiding(player, true);
                     }
                     return true;

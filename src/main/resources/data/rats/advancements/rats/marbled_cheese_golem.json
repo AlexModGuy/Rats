@@ -17,7 +17,7 @@
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
                 "entity": {
-                    "type": "rats:marbled_cheese_golem"
+                    "type": "rats:ratlantean_automaton"
                 }
             }
         }

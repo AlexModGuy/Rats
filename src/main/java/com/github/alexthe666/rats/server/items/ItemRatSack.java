@@ -70,7 +70,7 @@ public class ItemRatSack extends Item {
                 if (tagInfo.contains("Rat")) {
                     CompoundNBT ratTag = stack.getTag().getCompound(tagInfo);
                     ratCount++;
-                    String ratName = I18n.format("entity.rat.name");
+                    String ratName = I18n.format("entity.rats.rat.name");
                     if (!ratTag.getString("CustomName").isEmpty()) {
                         ratName = ratTag.getString("CustomName");
                     }
@@ -114,7 +114,7 @@ public class ItemRatSack extends Item {
             }
             if (ratCount > 0) {
                 context.getPlayer().swingArm(context.getHand());
-                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rat.sack.release", ratCount), true);
+                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.sack.release", ratCount), true);
                 stack.setTag(new CompoundNBT());
             }
         }

@@ -50,7 +50,7 @@ public class ItemCheeseStick extends Item {
         if (!context.getWorld().isRemote) {
             if (rat == null || !(rat instanceof EntityRat)) {
                 RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true));
-                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rat.staff.no_rat"), true);
+                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.no_rat"), true);
             } else {
                 RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
                 EntityRat boundRat = (EntityRat) rat;
@@ -61,7 +61,7 @@ public class ItemCheeseStick extends Item {
         RatsMod.PROXY.openCheeseStaffGui();
 
             /*if (worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null) {
-                player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.cannot_use_block"), true);
+                player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.cannot_use_block"), true);
                 return EnumActionResult.PASS;
             } else {
                 /* IItemHandler itemHandler = worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
@@ -69,25 +69,25 @@ public class ItemCheeseStick extends Item {
                 if (player.isSneaking()) {
                     if (boundRat.pickupPos != null) {
                         boundRat.pickupPos = null;
-                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_take_items", rat.getName(), blockName), true);
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.not_take_items", rat.getName(), blockName), true);
                         return EnumActionResult.SUCCESS;
                     } else {
                         boundRat.pickupPos = pos;
-                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.take_items", rat.getName(), blockName), true);
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.take_items", rat.getName(), blockName), true);
                         return EnumActionResult.SUCCESS;
                     }
                 } else {
                     if (boundRat.depositPos != null) {
                         boundRat.depositPos = null;
                         boundRat.depositFacing = Direction.UP;
-                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.not_deposit_items", rat.getName(), blockName), true);
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.not_deposit_items", rat.getName(), blockName), true);
                         return EnumActionResult.SUCCESS;
                     } else {
                         boundRat.depositPos = pos;
                         boundRat.depositFacing = facing;
 
                         ITextComponent directionName = new TextComponentTranslation("rats.direction." + facing.getName()).appendText(" ").appendSibling(new TextComponentTranslation("rats.direction.slot"));
-                        player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.deposit_items", rat.getName(), blockName).appendText(" ").appendSibling(directionName), true);
+                        player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.deposit_items", rat.getName(), blockName).appendText(" ").appendSibling(directionName), true);
                         return EnumActionResult.SUCCESS;
                     }
                 }*/

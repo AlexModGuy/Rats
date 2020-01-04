@@ -16,11 +16,11 @@ public enum RatCommand {
     }
 
     public String getTranslateName() {
-        return "entity.rat.command." + this.name().toLowerCase();
+        return "entity.rats.rat.command." + this.name().toLowerCase();
     }
 
     public String getTranslateDescription() {
-        return "entity.rat.command." + this.name().toLowerCase() + ".desc";
+        return "entity.rats.rat.command." + this.name().toLowerCase() + ".desc";
     }
 
 }

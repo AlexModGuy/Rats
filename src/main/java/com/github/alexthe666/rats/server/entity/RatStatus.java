@@ -12,7 +12,7 @@ public enum RatStatus {
     }
 
     public String getTranslateName() {
-        return "entity.rat.status." + this.name().toLowerCase();
+        return "entity.rats.rat.status." + this.name().toLowerCase();
     }
 
     public boolean canBeOverriden(EntityRat rat) {

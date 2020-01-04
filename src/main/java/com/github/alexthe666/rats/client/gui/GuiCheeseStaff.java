@@ -82,7 +82,7 @@ public class GuiCheeseStaff extends Screen {
         this.buttons.clear();
         int i = (this.width) / 2;
         int j = (this.height - 166) / 2;
-        String topText = I18n.format("entity.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
+        String topText = I18n.format("entity.rats.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
         int maxLength = Math.max(150, font.getStringWidth(topText) + 20);
         this.addButton(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
@@ -90,19 +90,19 @@ public class GuiCheeseStaff extends Screen {
             Minecraft.getInstance().displayGuiScreen(null);
             init();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rats.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 1));
             Minecraft.getInstance().displayGuiScreen(null);
             init();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rats.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setHomePosAndDistance(pos, 32);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 2));
             init();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rat.staff.un_set_home_point"), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.detachHome();
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 3));

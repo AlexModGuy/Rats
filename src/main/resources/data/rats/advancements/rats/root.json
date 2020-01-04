@@ -9,7 +9,7 @@
         "description": {
             "translate": "advancements.rats.root.description"
         },
-        "background": "rats:textures/blocks/cheese.png",
+        "background": "rats:textures/block/cheese.png",
         "show_toast": true,
         "announce_to_chat": true,
         "hidden" : false

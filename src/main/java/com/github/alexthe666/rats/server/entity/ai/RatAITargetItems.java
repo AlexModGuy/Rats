@@ -127,9 +127,9 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
                             rat.setCommand(RatCommand.FOLLOW);
                         }
                     } else {
-                        String untameableText = "entity.rat.untameable";
+                        String untameableText = "entity.rats.rat.untameable";
                         if (rat.getOwner() != null && !rat.getOwnerId().equals(targetPlayer.getUniqueID())) {
-                            untameableText = "entity.rat.tamed_by_other";
+                            untameableText = "entity.rats.rat.tamed_by_other";
                         }
                         if (!rat.isOwner(targetPlayer)) {
                             targetPlayer.sendStatusMessage(new TranslationTextComponent(untameableText), true);
