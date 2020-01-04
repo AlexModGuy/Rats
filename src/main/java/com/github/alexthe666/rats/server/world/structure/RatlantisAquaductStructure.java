@@ -14,34 +14,34 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.function.Function;
 
-public class RatlantisRuinsStructure extends ScatteredStructure<NoFeatureConfig> {
-    public RatlantisRuinsStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i51440_1_) {
+public class RatlantisAquaductStructure extends ScatteredStructure<NoFeatureConfig> {
+    public RatlantisAquaductStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i51440_1_) {
         super(p_i51440_1_);
-        this.setRegistryName("rats:ratlantis_ruins_structure");
+        this.setRegistryName("rats:ratlantis_aquaduct_structure");
     }
 
     public String getStructureName() {
-        return "RatlantisRuins";
+        return "RatlantisAquaduct";
     }
 
     public int getSize() {
         return 4;
     }
 
-    public Structure.IStartFactory getStartFactory() {
-        return RatlantisRuinsStructure.Start::new;
+    public IStartFactory getStartFactory() {
+        return RatlantisAquaductStructure.Start::new;
     }
 
     protected int getSeedModifier() {
-        return 123456789;
+        return 12345678;
     }
 
     protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {
-        return 3;//16
+        return 6;//16
     }
 
     protected int getBiomeFeatureSeparation(ChunkGenerator<?> chunkGenerator) {
-        return 2;//8
+        return 4;//8
     }
 
     public static class Start extends StructureStart {
@@ -52,7 +52,7 @@ public class RatlantisRuinsStructure extends ScatteredStructure<NoFeatureConfig>
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
             BlockPos blockpos = new BlockPos(chunkX * 16, 64, chunkZ * 16);
-            RatlantisRuinsPiece.func_204760_a(templateManagerIn, blockpos, rotation, this.components, this.rand);
+            RatlantisAquaductPiece.func_204760_a(templateManagerIn, blockpos, rotation, this.components, this.rand);
             this.recalculateStructureSize();
         }
     }

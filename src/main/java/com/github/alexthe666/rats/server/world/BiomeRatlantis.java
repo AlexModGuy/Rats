@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.world.gen.FeatureAquaduct;
+import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -23,8 +23,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BiomeRatlantis extends Biome {
 
     public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
-    public static final FeatureAquaduct AQUADUCT = new FeatureAquaduct(NoFeatureConfig::deserialize);
-    //public static final FeatureRatlantisRuin RAT_RUINS = new FeatureRatlantisRuin(NoFeatureConfig::deserialize);
 
     public BiomeRatlantis() {
         super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).depth(1).waterFogColor(270131).parent((String)null));
@@ -33,6 +31,9 @@ public class BiomeRatlantis extends Biome {
         this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
         this.addStructure(RatsWorldRegistry.RAT_RUINS, new NoFeatureConfig());
         this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(RatsWorldRegistry.RAT_RUINS, new NoFeatureConfig(), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+        this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(RatlantisStructureRegistry.MARBLE_PILE, new NoFeatureConfig(), Placement.CHANCE_PASSTHROUGH, new ChanceConfig(16)));
+        //this.addStructure(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig());
+        //this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig(), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         DefaultBiomeFeatures.addCarvers(this);
         DefaultBiomeFeatures.addStructures(this);
         DefaultBiomeFeatures.addLakes(this);

@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.BiomeRatlantis;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
+import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.inventory.container.ContainerType;
@@ -163,7 +164,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Feature<?>> event) {
-        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS);
+        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.RATLANTIS_AQUADUCTS);
     }
 
 
@@ -203,6 +204,7 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
         event.getRegistry().register(RATLANTIS_DIM);
+        RatlantisStructureRegistry.register();
     }
 
     public void preInit() {

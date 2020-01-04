@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.world.structure;
 import com.github.alexthe666.rats.server.world.gen.RatStructure;
 import com.github.alexthe666.rats.server.world.gen.RatsStructureProcessor;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -18,13 +17,12 @@ import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.storage.loot.LootTables;
 
 import java.util.List;
 import java.util.Random;
 
 public class RatlantisRuinsPiece {
-    private static final BlockPos STRUCTURE_OFFSET = new BlockPos(4, 0, 15);
+    private static final BlockPos STRUCTURE_OFFSET = new BlockPos(0, 0, 0);
 
     public static void func_204760_a(TemplateManager p_204760_0_, BlockPos p_204760_1_, Rotation p_204760_2_, List<StructurePiece> p_204760_3_, Random p_204760_4_) {
         RatStructure model;
@@ -124,22 +122,13 @@ public class RatlantisRuinsPiece {
             this.setup(lvt_2_1_, this.templatePosition, lvt_3_1_);
         }
 
-        protected void handleDataMarker(String p_186175_1_, BlockPos p_186175_2_, IWorld p_186175_3_, Random p_186175_4_, MutableBoundingBox p_186175_5_) {
-            if ("map_chest".equals(p_186175_1_)) {
-                LockableLootTileEntity.setLootTable(p_186175_3_, p_186175_4_, p_186175_2_.down(), LootTables.CHESTS_SHIPWRECK_MAP);
-            } else if ("treasure_chest".equals(p_186175_1_)) {
-                LockableLootTileEntity.setLootTable(p_186175_3_, p_186175_4_, p_186175_2_.down(), LootTables.CHESTS_SHIPWRECK_TREASURE);
-            } else if ("supply_chest".equals(p_186175_1_)) {
-                LockableLootTileEntity.setLootTable(p_186175_3_, p_186175_4_, p_186175_2_.down(), LootTables.CHESTS_SHIPWRECK_SUPPLY);
-            }
-
-        }
+        protected void handleDataMarker(String p_186175_1_, BlockPos p_186175_2_, IWorld p_186175_3_, Random p_186175_4_, MutableBoundingBox p_186175_5_) { }
 
         public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox bb, ChunkPos chunkCoords) {
-            this.placeSettings.func_215219_b().addProcessor(new RatsStructureProcessor(0.75F + random.nextFloat() * 0.75F));
+            this.placeSettings.addProcessor(new RatsStructureProcessor(0.75F + random.nextFloat() * 0.75F));
             BlockPos inital = this.templatePosition.add(this.template.getSize().getX() / 2, 0, this.template.getSize().getZ() / 2);
-            int lvt_8_1_ = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, chunkCoords.asBlockPos().getX(), chunkCoords.asBlockPos().getZ()) - random.nextInt(4);
-            BlockPos pos = new BlockPos(chunkCoords.asBlockPos().getX(), lvt_8_1_, chunkCoords.asBlockPos().getZ());
+            int lvt_8_1_ = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, inital.getX(), inital.getZ()) - random.nextInt(4);
+            BlockPos pos = new BlockPos(inital.getX(), lvt_8_1_, inital.getZ());
             while(world.getBlockState(pos.down()).getMaterial().isLiquid() && pos.getY() > 3){
                 pos = pos.down();
             }

@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.world.gen.RatsPlagueHutProcessor;
-import com.github.alexthe666.rats.server.world.gen.FeatureRatlantisRuin;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -54,7 +53,7 @@ public class WorldGenPlagueDoctor {
         villagerPos = null;
 
         TemplateManager templateManager = ((ServerWorld)worldIn).getStructureTemplateManager();
-        PlacementSettings settings = new PlacementSettings().setRotation(FeatureRatlantisRuin.getRotationFromFacing(facing));
+        PlacementSettings settings = new PlacementSettings();
         Template template = templateManager.getTemplate(STRUCTURE);
         Biome biome = worldIn.getBiome(position);
         BlockPos genPos = position.offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2);
