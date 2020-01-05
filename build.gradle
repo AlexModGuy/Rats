@@ -13,6 +13,12 @@ repositories{
         name = "CurseForge"
         url = "https://minecraft.curseforge.com/api/maven/"
     }
+    maven {
+        url = "https://maven.blamejared.com"
+    }
+    maven {
+        url = "https://dvs1.progwml6.com/files/maven"
+    }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
@@ -91,6 +97,8 @@ minecraft {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.1.111'
     compile 'citadel:citadel:1.0.1:deobf'
+    compileOnly "mezz.jei:jei-1.14.4:6.0.0.20:api"
+    runtimeOnly "mezz.jei:jei-1.14.4:6.0.0.20"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
