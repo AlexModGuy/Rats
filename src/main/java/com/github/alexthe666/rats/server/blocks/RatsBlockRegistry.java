@@ -84,9 +84,11 @@ public class RatsBlockRegistry {
                 Object obj = f.get(null);
                 if (obj instanceof Block && ((Block) obj).getRegistryName() != null) {
                     event.getRegistry().register((Block) obj);
+                    System.out.println(((Block) obj).getRegistryName().getPath());
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
                         event.getRegistry().register(block);
+                        System.out.println(block.getRegistryName().getPath());
                     }
                 }
             }
