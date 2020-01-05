@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "rats:rat_tube_white",
+    "rats:rat_tube_orange",
+    "rats:rat_tube_magenta",
+    "rats:rat_tube_light_blue",
+    "rats:rat_tube_yellow",
+    "rats:rat_tube_lime",
+    "rats:rat_tube_pink",
+    "rats:rat_tube_gray",
+    "rats:rat_tube_light_gray",
+    "rats:rat_tube_cyan",
+    "rats:rat_tube_purple",
+    "rats:rat_tube_blue",
+    "rats:rat_tube_brown",
+    "rats:rat_tube_green",
+    "rats:rat_tube_red",
+    "rats:rat_tube_black"
+  ]
+}

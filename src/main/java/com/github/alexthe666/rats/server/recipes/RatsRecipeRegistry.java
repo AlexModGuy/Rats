@@ -52,60 +52,10 @@ public class RatsRecipeRegistry {
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.SKELETON_SKULL), new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BLUE_ORCHID), new ItemStack(RatsBlockRegistry.RATGLOVE_FLOWER)));
         /*
-        OreDictionary.registerOre("foodCheese", RatsItemRegistry.CHEESE);
-        OreDictionary.registerOre("listAllmeatraw", RatsItemRegistry.RAW_RAT);
-        OreDictionary.registerOre("foodRatraw", RatsItemRegistry.RAW_RAT);
-        OreDictionary.registerOre("listAllmeatcooked", RatsItemRegistry.COOKED_RAT);
-        OreDictionary.registerOre("foodRatcooked", RatsItemRegistry.COOKED_RAT);
-        OreDictionary.registerOre("blockCheese", RatsBlockRegistry.BLOCK_OF_CHEESE);
-        OreDictionary.registerOre("foodVegetable", Items.POTATO);
-        OreDictionary.registerOre("foodVegetable", Items.CARROT);
-        OreDictionary.registerOre("foodVegetable", Items.BEETROOT);
-        OreDictionary.registerOre("foodVegetable", Blocks.PUMPKIN);
-        if (RatConfig.disablePlastic) {
-            OreDictionary.registerOre("plasticOrGlass", Blocks.GLASS_PANE);
-            OreDictionary.registerOre("plasticOrBottle", Items.GLASS_BOTTLE);
-        } else {
-            OreDictionary.registerOre("plasticOrGlass", RatsItemRegistry.RAW_PLASTIC);
-            OreDictionary.registerOre("plasticOrBottle", RatsItemRegistry.PLASTIC_WASTE);
-            OreDictionary.registerOre("plastic", RatsItemRegistry.RAW_PLASTIC);
-            OreDictionary.registerOre("ingotPlastic", RatsItemRegistry.RAW_PLASTIC);
-        }
-        OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
-        OreDictionary.registerOre("listAllseed", Items.WHEAT_SEEDS);
-        OreDictionary.registerOre("listAllseed", Items.PUMPKIN_SEEDS);
-        OreDictionary.registerOre("listAllseed", Items.BEETROOT_SEEDS);
-        OreDictionary.registerOre("listAllseed", Items.MELON_SEEDS);
-        OreDictionary.registerOre("flower", new ItemStack(Blocks.RED_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("flower", new ItemStack(Blocks.YELLOW_FLOWER, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("fish", new ItemStack(Items.FISH, 1, OreDictionary.WILDCARD_VALUE));
-        if (RatConfig.disableRatlantis) {
-            OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.CHUNKY_CHEESE_TOKEN);
-        } else {
-            OreDictionary.registerOre("tokenOrIdolFlag", RatsItemRegistry.IDOL_OF_RATLANTIS);
-        }
-        for (Block block : RatsBlockRegistry.RAT_TUBE_COLOR) {
-            OreDictionary.registerOre("ratTube", block);
-        }
-        for (Item item : RatsItemRegistry.RAT_IGLOOS) {
-            OreDictionary.registerOre("ratIgloo", item);
-        }
-        for (Item item : RatsItemRegistry.RAT_HAMMOCKS) {
-            OreDictionary.registerOre("ratHammock", item);
-        }
-        for (EnumDyeColor color : EnumDyeColor.values()) {
-            String woolColor = color.getTranslationKey();
-            woolColor = woolColor.substring(0, 1).toUpperCase() + woolColor.substring(1).toLowerCase();
-            OreDictionary.registerOre("wool" + woolColor, new ItemStack(Blocks.WOOL, 1, color.getMetadata()));
-        }
-        OreDictionary.registerOre("woolLightBlue", new ItemStack(Blocks.WOOL, 1, 3));
-        OreDictionary.registerOre("ratPoop", RatsItemRegistry.RAT_NUGGET);
-
         GameRegistry.addSmelting(RatsItemRegistry.RAW_RAT, new ItemStack(RatsItemRegistry.COOKED_RAT), 0.4F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_RAW, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE), 0.1F);
         GameRegistry.addSmelting(RatsBlockRegistry.MARBLED_CHEESE_BRICK, new ItemStack(RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED), 0.1F);
         GameRegistry.addSmelting(RatsItemRegistry.PLASTIC_WASTE, new ItemStack(RatsItemRegistry.RAW_PLASTIC), 0.5F);*/
-
         RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Blocks.WHITE_WOOL)));
         RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.LEATHER)));
         RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)));

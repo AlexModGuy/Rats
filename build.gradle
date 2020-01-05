@@ -14,10 +14,12 @@ repositories{
         url = "https://minecraft.curseforge.com/api/maven/"
     }
     maven {
-        url = "https://maven.blamejared.com"
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
-        url = "https://dvs1.progwml6.com/files/maven"
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -95,10 +97,10 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.111'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.0'
     compile 'citadel:citadel:1.0.1:deobf'
-    compileOnly "mezz.jei:jei-1.14.4:6.0.0.20:api"
-    runtimeOnly "mezz.jei:jei-1.14.4:6.0.0.20"
+    compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.11:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.11")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

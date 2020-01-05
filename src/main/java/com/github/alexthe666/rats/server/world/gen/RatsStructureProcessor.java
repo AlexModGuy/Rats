@@ -14,7 +14,6 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class RatsStructureProcessor extends StructureProcessor {
@@ -31,7 +30,7 @@ public class RatsStructureProcessor extends StructureProcessor {
     }
 
 
-    public Template.BlockInfo process(IWorldReader worldReader, BlockPos pos, Template.BlockInfo infoIn1, Template.BlockInfo infoIn2, PlacementSettings settings, @Nullable Template template) {
+    public Template.BlockInfo process(IWorldReader worldReader, BlockPos pos, Template.BlockInfo infoIn1, Template.BlockInfo infoIn2, PlacementSettings settings) {
         Random random = settings.getRandom(infoIn2.pos);
         if (random.nextFloat() <= integrity) {
             if (infoIn2.state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK) {

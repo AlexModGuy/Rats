@@ -4,7 +4,7 @@
       "type": "iceandfire_not_loaded"
     }
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "CAC",
     "DFD",
