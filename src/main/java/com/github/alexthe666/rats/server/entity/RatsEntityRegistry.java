@@ -2,8 +2,10 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(RatsMod.MODID)
@@ -39,5 +41,9 @@ public class RatsEntityRegistry {
         ResourceLocation nameLoc = new ResourceLocation(RatsMod.MODID, entityName);
 
         return (EntityType) builder.build(entityName).setRegistryName(nameLoc);
+    }
+
+    static{
+        EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);
     }
 }

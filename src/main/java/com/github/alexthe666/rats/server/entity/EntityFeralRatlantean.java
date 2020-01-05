@@ -57,6 +57,7 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {

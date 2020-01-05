@@ -1,11 +1,13 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -92,6 +94,11 @@ public class EntityRatlanteanFlame extends FireballEntity {
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(RatsItemRegistry.RATLANTEAN_FLAME);
     }
 
     @Override

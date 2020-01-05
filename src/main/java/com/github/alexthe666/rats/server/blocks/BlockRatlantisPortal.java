@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
-import com.github.alexthe666.rats.server.world.RatlantisTeleporter;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -19,12 +18,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
@@ -47,7 +48,8 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                     ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
                     if (thePlayer.timeUntilPortal > 0) {
                         thePlayer.timeUntilPortal = 10;
-                    } else if (thePlayer.dimension.getId() != RatConfig.ratlantisDimensionId) {
+                    }
+                    else if (thePlayer.dimension != RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE) {
                         thePlayer.timeUntilPortal = 10;
                         teleportEntity(thePlayer, server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE), pos);
                     } else {
@@ -69,6 +71,20 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
     }
 
     private Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint) {
+        if(entity.dimension != RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE){
+            endpoint = new BlockPos(0, 112, 0);
+            placeInPortal(entity, endpointWorld);
+        }else{
+            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedLocation() != null) {
+                BlockPos bedPos = ((PlayerEntity) entity).getBedLocation();
+                endpoint = bedPos;
+                entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
+            } else {
+                BlockPos height = entity.world.getHeight(Heightmap.Type.WORLD_SURFACE, entity.getPosition());
+                endpoint = height;
+                entity.setLocationAndAngles(height.getX() + 0.5D, height.getY() + 0.5D, height.getZ() + 0.5D, entity.rotationYaw, 0.0F);
+            }
+        }
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             player.teleport(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
@@ -86,9 +102,29 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
         teleportedEntity.setLocationAndAngles(endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
         teleportedEntity.setRotationYawHead(entity.rotationYaw);
         endpointWorld.func_217460_e(teleportedEntity);
-        new RatlantisTeleporter(endpointWorld).func_222268_a(entity, 0.0F);
         return teleportedEntity;
     }
+
+    public void placeInPortal(Entity entity, ServerWorld serverWorld) {
+        entity.setPositionAndRotation(0, 110, 0, 0, 0);
+        entity.setMotion(0, 0, 0);
+        BlockPos portalBottom = new BlockPos(1, 111, 1);
+        for (BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            serverWorld.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+            serverWorld.setBlockState(pos.up(4), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+        }
+        for (int i = 1; i < 4; i++) {
+            serverWorld.setBlockState(portalBottom.add(2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(-2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+        }
+        serverWorld.setBlockState(portalBottom, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+        serverWorld.setBlockState(portalBottom.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        serverWorld.setBlockState(portalBottom.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        serverWorld.setBlockState(portalBottom.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
+    }
+
 
     public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!this.canSurviveAt(worldIn, pos)) {

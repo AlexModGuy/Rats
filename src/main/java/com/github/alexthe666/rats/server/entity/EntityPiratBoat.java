@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -66,9 +67,11 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
     protected void switchNavigator(int type) {
         if (type == 1) {//land
             this.navigator = new GroundPathNavigator(this, world);
+            this.moveController = new MovementController(this);
             this.navigatorType = 1;
         } else {//sea
             this.navigator = new PiratBoatPathNavigate(this, world);
+            this.moveController = new MoveHelperController(this);
             this.navigatorType = 0;
         }
     }
@@ -202,7 +205,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
                 LivingEntity riding = (LivingEntity) this.getControllingPassenger();
                 this.moveStrafing = riding.moveStrafing;
                 this.moveForward = riding.moveForward;
-                this.moveRelative(0.10F, new Vec3d(moveStrafing, 0, moveForward));
+                this.moveRelative(1, new Vec3d(moveStrafing, 0, moveForward));
                 this.rotationYaw = riding.rotationYaw;
                 this.rotationYawHead = riding.rotationYawHead;
                 this.prevRotationYaw = riding.prevRotationYaw;
@@ -234,7 +237,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(0.1D);
+        this.getAttribute(SWIM_SPEED).setBaseValue(1.6D);
     }
 
     public void applyEntityCollision(Entity entityIn) {
@@ -387,7 +390,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         return this.isInWater();
     }
 
-    private BoatEntity.Status getBoatStatus() {
+    public BoatEntity.Status getBoatStatus() {
         BoatEntity.Status BoatEntity$status = this.getUnderwaterStatus();
 
         if (BoatEntity$status != null) {
@@ -437,22 +440,22 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         double d0 = (double)-0.04F;
         double d1 = this.hasNoGravity() ? 0.0D : (double)-0.04F;
         double d2 = 0.0D;
-        float momentum = 0.05F;
+        float momentum = 0.45F;
         if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
-            this.waterLevel = this.getBoundingBox().minY + (double)this.getHeight();
-            this.setPosition(this.posX, (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.101D, this.posZ);
+            this.waterLevel = this.getBoundingBox().minY;
+            this.setPosition(this.posX, (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.501D, this.posZ);
             this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
             this.lastYd = 0.0D;
             this.status = BoatEntity.Status.IN_WATER;
         } else {
             if (this.status == BoatEntity.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.getBoundingBox().minY) / (double)this.getHeight();
+                d2 = (this.waterLevel - this.getBoundingBox().minY) / (double)this.getHeight() * 2.5F;
                 momentum = 0.9F;
             } else if (this.status == BoatEntity.Status.UNDER_FLOWING_WATER) {
                 d1 = -7.0E-4D;
                 momentum = 0.9F;
             } else if (this.status == BoatEntity.Status.UNDER_WATER) {
-                d2 = (double)0.01F;
+                d2 = (double)2.9F;
                 momentum = 0.45F;
             } else if (this.status == BoatEntity.Status.IN_AIR) {
                 momentum = 0.9F;
@@ -484,19 +487,47 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean {
         return false;
     }
 
-    public void travel(Vec3d p_213352_1_) {
-        /*if (this.isServerWorld() && (this.isInWater() || status == BoatEntity.Status.IN_WATER)) {
-            float forwards = forward;
-            float strafes = strafe * 0.5F;
-            this.moveRelative(0, new Vec3d(forwards, vertical, strafes));
-            this.motionX *= 0.8999999761581421D;
-            this.motionY *= 0.8999999761581421D;
-            this.motionZ *= 0.8999999761581421D;
-            this.move(MoverType.SELF, this.motionX, this.isInWater() ? this.motionY : 0, this.motionZ);
-        } else {
-        }*/
-        super.travel(p_213352_1_);
+    public void travel(Vec3d vec) {
+        super.travel(vec);
 
+    }
+
+    static class MoveHelperController extends MovementController {
+        private final EntityPiratBoat turtle;
+
+        MoveHelperController(EntityPiratBoat turtleIn) {
+            super(turtleIn);
+            this.turtle = turtleIn;
+        }
+
+        public void tick() {
+            double d0 = this.posX - this.turtle.posX;
+            double d1 = this.posY - this.turtle.posY;
+            double d2 = this.posZ - this.turtle.posZ;
+            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+            if (d3 < (double)2.5000003E-7F) {
+                this.mob.setMoveForward(0.0F);
+            } else {
+                float f = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                this.turtle.rotationYaw = this.limitAngle(this.turtle.rotationYaw, f, 10.0F);
+                this.turtle.renderYawOffset = this.turtle.rotationYaw;
+                this.turtle.rotationYawHead = this.turtle.rotationYaw;
+                float f1 = 1;//(float)(this.speed * this.turtle.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
+                if (this.turtle.isInWater()) {
+                    this.turtle.setAIMoveSpeed(f1 * 1F);
+                    float f2 = -((float)(MathHelper.atan2(d1, (double)MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double)(180F / (float)Math.PI)));
+                    f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85.0F, 85.0F);
+                    this.turtle.rotationPitch = this.limitAngle(this.turtle.rotationPitch, f2, 5.0F);
+                    float f3 = MathHelper.cos(this.turtle.rotationPitch * ((float)Math.PI / 180F));
+                    float f4 = MathHelper.sin(this.turtle.rotationPitch * ((float)Math.PI / 180F));
+                    this.turtle.moveForward = f3 * f1;
+                    this.turtle.moveVertical = -f4 * f1;
+                } else {
+                    this.turtle.setAIMoveSpeed(f1 * 1F);
+                }
+
+            }
+        }
     }
 
 }

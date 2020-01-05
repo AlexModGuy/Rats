@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.server.item.CustomToolMaterial;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
@@ -310,5 +311,6 @@ public class RatsItemRegistry {
             throw new RuntimeException(e);
         }
         RatsUpgradeConflictRegistry.init();
+        RatsRecipeRegistry.register();
     }
 }

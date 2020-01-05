@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityPirat;
+import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -77,6 +78,10 @@ public class PiratAIStrife extends Goal {
                 ++this.strafingTime;
             } else {
                 this.entity.getNavigator().tryMoveToEntityLiving(LivingEntity, this.moveSpeedAmp);
+                this.entity.getMoveHelper().setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, moveSpeedAmp);
+                if(entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntityPiratBoat){
+                    ((EntityPiratBoat)this.entity.getRidingEntity()).getMoveHelper().setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, moveSpeedAmp);
+                }
                 this.strafingTime = -1;
             }
 

@@ -8,6 +8,7 @@ public class RatsVillageRegistry {
     public static final VillagerProfession PET_SHOP_OWNER = new VillagerProfession("rats:pet_shop_owner", PointOfInterestType.NITWIT, ImmutableSet.of(), ImmutableSet.of());
     public static final VillagerProfession PLAGUE_DOCTOR = new VillagerProfession("rats:plague_doctor", PointOfInterestType.NITWIT, ImmutableSet.of(), ImmutableSet.of());
 
+
     public static void register() {
         /*
         if (RatConfig.villageGarbageHeaps) {
@@ -41,6 +42,8 @@ public class RatsVillageRegistry {
         career.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_HAMMOCKS[0], new EntityVillager.PriceInfo(5, 1)));
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_IGLOOS[0], new EntityVillager.PriceInfo(6, 1)));
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_UPGRADE_BASIC, new EntityVillager.PriceInfo(25, 1)));
+
+
         VillagerRegistry.VillagerCareer doctor = new VillagerRegistry.VillagerCareer(PLAGUE_DOCTOR, "plague_doctor");
         doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.BONE, new EntityVillager.PriceInfo(25, 1)));
         doctor.addTrade(1, new EntityVillager.ListItemForEmeralds(Items.ROTTEN_FLESH, new EntityVillager.PriceInfo(3, 17)));

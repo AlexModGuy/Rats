@@ -12,20 +12,17 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.pathfinding.NodeProcessor;
-import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Random;
 
 public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlantean, IMob {
 
@@ -35,6 +32,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public EntityPirat(EntityType type, World worldIn) {
         super(type, worldIn);
+        this.setPathPriority(PathNodeType.WATER, 0.0F);
         waterBased = true;
         Arrays.fill(this.inventoryArmorDropChances, 0.2F);
         Arrays.fill(this.inventoryHandsDropChances, 0.2F);
@@ -48,6 +46,21 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
 
     protected void switchNavigator(int type) {
+    }
+
+    public static boolean canSpawn(EntityType<EntityPirat> p_223332_0_, IWorld p_223332_1_, SpawnReason p_223332_2_, BlockPos p_223332_3_, Random p_223332_4_) {
+        Biome biome = p_223332_1_.getBiome(p_223332_3_);
+        boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && func_223323_a(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == SpawnReason.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).isTagged(FluidTags.WATER));
+        return p_223332_4_.nextInt(15) == 0 && flag;
+    }
+
+    public static boolean func_223323_a(IWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {
+        if (p_223323_0_.getLightFor(LightType.SKY, p_223323_1_) > p_223323_2_.nextInt(16)) {
+            return false;
+        } else {
+            int lvt_3_1_ = p_223323_0_.getWorld().isThundering() ? p_223323_0_.getNeighborAwareLightSubtracted(p_223323_1_, 10) : p_223323_0_.getLight(p_223323_1_);
+            return lvt_3_1_ <= p_223323_2_.nextInt(6);
+        }
     }
 
     protected void registerGoals() {
@@ -165,6 +178,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.setCombatTask();
     }
 
+    @Override
     public boolean handleWaterMovement() {
         if (this.getRidingEntity() instanceof EntityPiratBoat) {
             this.inWater = false;
@@ -183,10 +197,12 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     public void updateRiding(Entity riding) {
-
+        super.updateRiding(riding);
+        this.setPosition(riding.posX, riding.posY + 0.5D, riding.posZ);
     }
 
     public void updateRidden() {
+        super.updateRidden();
         Entity entity = this.getRidingEntity();
         if (this.isPassenger() && !entity.isAlive()) {
             this.stopRiding();
@@ -233,73 +249,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         }
 
         public void tick() {
-            if (this.action == MovementController.Action.STRAFE) {
-                float f = (float) EntityPirat.this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
-                float f1 = (float) this.speed * f;
-                float f2 = this.moveForward;
-                float f3 = this.moveStrafe;
-                float f4 = MathHelper.sqrt(f2 * f2 + f3 * f3);
-
-                if (f4 < 1.0F) {
-                    f4 = 1.0F;
-                }
-
-                f4 = f1 / f4;
-                f2 = f2 * f4;
-                f3 = f3 * f4;
-                float f5 = MathHelper.sin(EntityPirat.this.rotationYaw * 0.017453292F);
-                float f6 = MathHelper.cos(EntityPirat.this.rotationYaw * 0.017453292F);
-                float f7 = f2 * f6 - f3 * f5;
-                float f8 = f3 * f6 + f2 * f5;
-                PathNavigator pathnavigate = EntityPirat.this.getNavigator();
-
-                if (pathnavigate != null) {
-                    NodeProcessor nodeprocessor = pathnavigate.getNodeProcessor();
-
-                    if (nodeprocessor != null) {
-                        PathNodeType type = nodeprocessor.getPathNodeType(EntityPirat.this.world, MathHelper.floor(EntityPirat.this.posX + (double) f7), MathHelper.floor(EntityPirat.this.posY), MathHelper.floor(EntityPirat.this.posZ + (double) f8));
-                        if (type != PathNodeType.WALKABLE && type != PathNodeType.WATER) {
-                            this.moveForward = 1.0F;
-                            this.moveStrafe = 0.0F;
-                            f1 = f;
-                        }
-                    }
-                }
-
-                EntityPirat.this.setAIMoveSpeed(f1);
-                EntityPirat.this.setMoveForward(this.moveForward);
-                EntityPirat.this.setMoveStrafing(this.moveStrafe);
-                this.action = MovementController.Action.WAIT;
-            } else if (this.action == MovementController.Action.MOVE_TO) {
-                this.action = MovementController.Action.WAIT;
-                double d0 = this.posX - EntityPirat.this.posX;
-                double d1 = this.posZ - EntityPirat.this.posZ;
-                double d2 = this.posY - EntityPirat.this.posY;
-                double d3 = d0 * d0 + d2 * d2 + d1 * d1;
-
-                if (d3 < 2.500000277905201E-7D) {
-                    EntityPirat.this.setMoveForward(0.0F);
-                    return;
-                }
-
-                float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
-                EntityPirat.this.rotationYaw = this.limitAngle(EntityPirat.this.rotationYaw, f9, 90.0F);
-                EntityPirat.this.setAIMoveSpeed((float) (this.speed * EntityPirat.this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-                EntityPirat.this.setMoveForward(EntityPirat.this.getAIMoveSpeed());
-
-                if (d2 > (double) EntityPirat.this.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, EntityPirat.this.getWidth())) {
-                    EntityPirat.this.getJumpController().setJumping();
-                    this.action = MovementController.Action.JUMPING;
-                }
-            } else if (this.action == MovementController.Action.JUMPING) {
-                EntityPirat.this.setAIMoveSpeed((float) (this.speed * EntityPirat.this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-
-                if (EntityPirat.this.onGround) {
-                    this.action = MovementController.Action.WAIT;
-                }
-            } else {
-                EntityPirat.this.setMoveForward(0.0F);
-            }
+         super.tick();
         }
     }
 }

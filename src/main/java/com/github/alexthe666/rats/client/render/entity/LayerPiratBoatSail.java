@@ -45,7 +45,7 @@ public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPira
             GlStateManager.translatef(0, 0.1F, -0.6F);
             GlStateManager.scalef(0.75F, 0.75F, 0.75F);
             GlStateManager.disableLighting();
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
             ratRenderer.bindTexture(TEXTURE_PIRATE_CANNON_FIRE);
             MODEL_PIRAT_CANNON.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.enableLighting();

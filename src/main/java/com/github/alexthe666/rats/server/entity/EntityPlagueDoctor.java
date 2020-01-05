@@ -1,24 +1,26 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.villager.RatsVillagerTrades;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffer;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -159,12 +161,10 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
 
     @Override
     protected void func_213713_b(MerchantOffer p_213713_1_) {
-
-    }
-
-    @Override
-    protected void populateTradeData() {
-
+        if (p_213713_1_.func_222221_q()) {
+            int i = 3 + this.rand.nextInt(4);
+            this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
+        }
     }
 
     public void func_213726_g(@Nullable BlockPos p_213726_1_) {
@@ -223,6 +223,48 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
 
         private boolean func_220846_a(BlockPos p_220846_1_, double p_220846_2_) {
             return !p_220846_1_.withinDistance(this.plagueDoctor.getPositionVec(), p_220846_2_);
+        }
+    }
+
+    protected void populateTradeData() {
+        VillagerTrades.ITrade[] level1 = RatsVillagerTrades.PLAGUE_DOCTOR_TRADES.get(1);
+        VillagerTrades.ITrade[] level2 = RatsVillagerTrades.PLAGUE_DOCTOR_TRADES.get(2);
+        if (level1 != null && level2 != null) {
+            MerchantOffers merchantoffers = this.getOffers();
+            this.addTrades(merchantoffers, level1, 5);
+            int i = this.rand.nextInt(level2.length);
+            VillagerTrades.ITrade villagertrades$itrade = level2[i];
+            MerchantOffer merchantoffer = villagertrades$itrade.getOffer(this, this.rand);
+            if (merchantoffer != null) {
+                merchantoffers.add(merchantoffer);
+            }
+
+        }
+    }
+
+    public boolean processInteract(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        boolean flag = itemstack.getItem() == Items.NAME_TAG;
+        if (flag) {
+            itemstack.interactWithEntity(player, this, hand);
+            return true;
+        } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.func_213716_dX() && !this.isChild()) {
+            if (hand == Hand.MAIN_HAND) {
+                player.addStat(Stats.TALKED_TO_VILLAGER);
+            }
+
+            if (this.getOffers().isEmpty()) {
+                return super.processInteract(player, hand);
+            } else {
+                if (!this.world.isRemote) {
+                    this.setCustomer(player);
+                    this.func_213707_a(player, this.getDisplayName(), 1);
+                }
+
+                return true;
+            }
+        } else {
+            return super.processInteract(player, hand);
         }
     }
 }

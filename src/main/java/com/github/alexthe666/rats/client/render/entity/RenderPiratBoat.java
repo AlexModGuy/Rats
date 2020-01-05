@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 @OnlyIn(Dist.CLIENT)
 public class RenderPiratBoat extends MobRenderer<EntityPiratBoat, ModelPiratBoat<EntityPiratBoat>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/boat/boat_oak.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/boat/spruce.png");
 
     public RenderPiratBoat() {
         super(Minecraft.getInstance().getRenderManager(), new ModelPiratBoat(), 0.65F);

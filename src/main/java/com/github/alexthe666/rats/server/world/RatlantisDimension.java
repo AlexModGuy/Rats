@@ -96,7 +96,7 @@ public class RatlantisDimension extends Dimension {
 
     @Override @OnlyIn(Dist.CLIENT)
     public float getCloudHeight() {
-        return 8.0f;
+        return 128.0f;
     }
 
     @Override @Nullable

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityCheeseCannonball extends ThrowableEntity {
+public class EntityCheeseCannonball extends ThrowableEntity implements IRendersAsItem {
     @Override
     protected void registerData() {
 
@@ -81,4 +82,8 @@ public class EntityCheeseCannonball extends ThrowableEntity {
     }
 
 
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL);
+    }
 }
