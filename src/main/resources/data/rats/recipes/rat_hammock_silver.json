@@ -2,16 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "type": "forge:ore_dict",
-      "ore": "ratHammock"
+      "tag": "rats:rat_hammock"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "dyeLightGray"
+      "tag": "forge:dyes/light_gray"
     }
   ],
   "result": {
-    "item": "rats:rat_hammock_silver",
+    "item": "rats:rat_hammock_light_gray",
     "count": 1
   }
 }

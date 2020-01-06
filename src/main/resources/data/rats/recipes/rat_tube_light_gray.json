@@ -7,16 +7,14 @@
   ],
   "key": {
     "T": {
-      "type": "forge:ore_dict",
-      "ore": "ratTube"
+      "tag": "rats:rat_tube"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "dyeLightGray"
+      "tag": "forge:dyes/light_gray"
     }
   },
   "result": {
-    "item": "rats:rat_tube_silver",
+    "item": "rats:rat_tube_light_gray",
     "count": 8
   }
 }

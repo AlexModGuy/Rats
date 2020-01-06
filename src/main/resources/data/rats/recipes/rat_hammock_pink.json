@@ -2,12 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "type": "forge:ore_dict",
-      "ore": "ratHammock"
+      "tag": "rats:rat_hammock"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "dyePink"
+      "tag": "forge:dyes/pink"
     }
   ],
   "result": {

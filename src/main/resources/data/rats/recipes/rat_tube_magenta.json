@@ -7,12 +7,10 @@
   ],
   "key": {
     "T": {
-      "type": "forge:ore_dict",
-      "ore": "ratTube"
+      "tag": "rats:rat_tube"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "dyeMagenta"
+      "tag": "forge:dyes/magenta"
     }
   },
   "result": {

@@ -6,20 +6,17 @@
   ],
   "key": {
     "W": {
-      "type": "forge:ore_dict",
-      "ore": "woolSilver"
+      "item": "minecraft:light_gray_wool"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "string"
+      "tag": "forge:string"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     }
   },
   "result": {
-    "item": "rats:rat_hammock_silver",
+    "item": "rats:rat_hammock_light_gray",
     "count": 1
 
   }

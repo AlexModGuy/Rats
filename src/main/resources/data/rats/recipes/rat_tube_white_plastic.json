@@ -7,8 +7,7 @@
   ],
   "key": {
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "plasticOrGlass"
+      "tag": "forge:plastic"
     }
   },
   "result": {

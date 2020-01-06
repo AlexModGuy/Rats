@@ -6,16 +6,14 @@
   ],
   "key": {
     "W": {
-      "type": "forge:ore_dict",
-      "ore": "woolLightBlue"
+      "item": "minecraft:light_blue_wool"
+
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "string"
+"tag": "forge:string"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     }
   },
   "result": {

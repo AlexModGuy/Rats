@@ -1,9 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "iceandfire_not_loaded"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "BBB",

@@ -2,16 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "type": "forge:ore_dict",
-      "ore": "ratIgloo"
+"tag": "rats:rat_igloo"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "dyeLightGray"
+      "tag": "forge:dyes/light_gray"
     }
   ],
   "result": {
-    "item": "rats:rat_igloo_silver",
+    "item": "rats:rat_igloo_light_gray",
     "count": 1
   }
 }

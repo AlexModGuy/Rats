@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": [
+    {
+      "item": "rats:raw_rat"
+    }
+  ],
+  "result": "rats:cooked_rat",
+  "experience": 0.2,
+  "cookingtime": 600
+}
