@@ -7,12 +7,10 @@
   ],
   "key": {
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "plankWood"
+      "item": "minecraft:barrel"
     },
     "F": {
-      "type": "forge:ore_dict",
-      "ore": "fish"
+      "tag": "forge:fish"
     }
   },
   "result": {

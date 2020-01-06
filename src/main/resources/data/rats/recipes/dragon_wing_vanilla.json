@@ -12,12 +12,10 @@
   ],
   "key": {
     "B": {
-      "item": "minecraft:blaze_rod",
-      "data": 0
+      "item": "minecraft:blaze_rod"
     },
     "L": {
-      "item": "minecraft:leather",
-      "data": 0
+      "item": "minecraft:leather"
     }
   },
   "result": {

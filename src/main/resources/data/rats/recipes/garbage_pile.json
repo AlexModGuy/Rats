@@ -6,8 +6,7 @@
   ],
   "key": {
     "R": {
-      "item": "rats:contaminated_food",
-      "data": 0
+      "item": "rats:contaminated_food"
     }
   },
   "result": {

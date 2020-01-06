@@ -11,12 +11,10 @@
       "data": 0
     },
     "S": {
-      "item": "minecraft:string",
-      "data": 0
+      "tag": "forge:string"
     },
     "F": {
-      "type": "forge:ore_dict",
-      "ore": "fish"
+      "tag": "forge:fish"
     }
   },
   "result": {

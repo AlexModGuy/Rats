@@ -11,8 +11,7 @@
       "data": 0
     },
     "F": {
-      "type": "forge:ore_dict",
-      "ore": "flower"
+      "tag": "forge:flower"
     }
   },
   "result": {

@@ -7,16 +7,13 @@
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "sugarcane"
+      "item": "minecraft:sugar_cane"
     },
     "T": {
-      "item": "minecraft:hardened_clay",
-      "data": 0
+      "item": "minecraft:hardened_clay"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "nuggetIron"
+      "tag": "forge:nuggets/iron"
     }
   },
   "result": {

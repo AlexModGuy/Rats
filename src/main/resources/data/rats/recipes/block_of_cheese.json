@@ -6,8 +6,7 @@
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     }
   },
   "result": {

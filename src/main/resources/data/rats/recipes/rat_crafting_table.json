@@ -7,12 +7,11 @@
   ],
   "key": {
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "blockCheese"
+      "tag": "forge:cheese_block"
+
     },
     "T": {
-      "type": "forge:ore_dict",
-      "ore": "workbench"
+      "tag": "forge:workbench"
     }
   },
   "result": {

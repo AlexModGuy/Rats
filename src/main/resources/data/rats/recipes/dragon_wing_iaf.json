@@ -13,12 +13,10 @@
   ],
   "key": {
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "boneDragon"
+      "tag": "iceandfire:dragon_bone"
     },
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "fireDragonScaleBlock"
+      "tag": "iceandfire:fire_dragon_scales"
     }
   },
   "result": {

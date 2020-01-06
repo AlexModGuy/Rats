@@ -6,12 +6,10 @@
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "tag": "forge:rods/wooden"
     }
   },
   "result": {

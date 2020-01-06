@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "rats:herb_bundle"
@@ -15,8 +15,6 @@
     }
   ],
   "result": {
-    "item": "rats:plague_stew",
-    "data": 0,
-    "count": 1
+    "item": "rats:plague_stew"
   }
 }

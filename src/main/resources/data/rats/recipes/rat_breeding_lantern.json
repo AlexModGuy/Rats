@@ -7,15 +7,13 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "string"
+      "tag": "forge:string"
     },
     "L": {
       "item": "minecraft:redstone_lamp"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dyeRed"
+      "tag": "forge:dyes/red"
     }
   },
   "result": {

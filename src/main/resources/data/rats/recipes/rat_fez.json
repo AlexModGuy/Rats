@@ -7,12 +7,10 @@
   ],
   "key": {
     "W": {
-      "item": "minecraft:wool",
-      "data": 14
+      "item": "minecraft:red_wool"
     },
     "S": {
-      "item": "rats:string_cheese",
-      "data": 0
+      "item": "rats:string_cheese"
     }
   },
   "result": {

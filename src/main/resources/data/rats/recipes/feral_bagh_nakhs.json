@@ -7,12 +7,10 @@
   ],
   "key": {
     "C": {
-      "item": "rats:feral_rat_claw",
-      "data": 0
+      "item": "rats:feral_rat_claw"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "string"
+      "tag": "forge:string"
     },
     "R": {
       "item": "minecraft:rotten_flesh"

@@ -6,12 +6,10 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "slabWood"
+      "tag": "minecraft:wooden_slabs"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "D": {
       "item": "minecraft:iron_trapdoor",
@@ -19,6 +17,6 @@
     }
   },
   "result": {
-    "item": "rats:rattrap"
+    "item": "rats:rat_trap"
   }
 }

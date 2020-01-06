@@ -1,14 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "EEE",
+    " E ",
     "EPE",
-    "EEE"
+    " E "
   ],
   "key": {
     "E": {
-      "type": "forge:ore_dict",
-      "ore": "gemEmerald"
+      "tag": "forge:gems/emerald"
     },
     "P": {
       "item": "rats:ratglove_petals"

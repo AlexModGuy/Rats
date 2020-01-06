@@ -5,13 +5,11 @@
   ],
   "key": {
     "C": {
-      "item": "rats:marbled_cheese",
-      "data": 0
+      "item": "rats:marbled_cheese"
     }
   },
   "result": {
     "item": "rats:marbled_cheese_slab",
-    "data": 0,
     "count": 6
   }
 }

@@ -7,12 +7,10 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "W": {
-      "type": "forge:ore_dict",
-      "ore": "cropWheat"
+      "tag": "forge:crops/wheat"
     },
     "B": {
       "item": "minecraft:iron_bars"
