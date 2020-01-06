@@ -7,8 +7,7 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "blockGlass"
+      "tag": "forge:glass"
     },
     "B": {
       "item": "minecraft:bucket",

@@ -7,16 +7,14 @@
   ],
   "key": {
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "plasticOrBottle"
+      "tag": "forge:plastic"
     },
     "W": {
-      "type": "forge:ore_dict",
-      "ore": "listAllwater"
+      "item": "minecraft:water_bucket"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "nuggetIron"
+      "tag": "forge:nuggets/iron"
+
     }
   },
   "result": {

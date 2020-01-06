@@ -23,12 +23,10 @@
       "data": 0
     },
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "bone"
+      "tag": "forge:bones"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "tokenOrIdolFlag"
+      "item": "rats:idol_of_ratlantis"
     },
     "M": {
       "item": "rats:marbled_cheese_raw",

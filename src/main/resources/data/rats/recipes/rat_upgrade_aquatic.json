@@ -15,8 +15,7 @@
       "data": 0
     },
     "M": {
-      "type": "forge:ore_dict",
-      "ore": "fish"
+      "tag": "forge:fish"
     }
   },
   "result": {

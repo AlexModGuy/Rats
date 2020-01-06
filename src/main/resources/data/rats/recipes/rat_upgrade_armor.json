@@ -7,12 +7,10 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "blockIron"
+      "tag": "forge:storage_blocks/iron"
     },
     "S": {
       "item": "minecraft:shield",

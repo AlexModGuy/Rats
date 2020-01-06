@@ -10,8 +10,7 @@
       "item": "minecraft:fishing_rod"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "fish"
+      "tag": "forge:fish"
     },
     "B": {
       "item": "rats:fish_barrel",

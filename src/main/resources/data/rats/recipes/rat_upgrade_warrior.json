@@ -7,12 +7,10 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "blockDiamond"
+      "tag": "forge:storage_blocks/diamond"
     },
     "W": {
       "item": "minecraft:diamond_sword",

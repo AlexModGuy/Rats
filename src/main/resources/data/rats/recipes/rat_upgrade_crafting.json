@@ -7,12 +7,10 @@
   ],
   "key": {
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     },
     "W": {
-      "type": "forge:ore_dict",
-      "ore": "plankWood"
+      "tag": "minecraft:planks"
     },
     "P": {
       "item": "minecraft:stone_pickaxe",
@@ -23,8 +21,7 @@
       "data": 0
     },
     "T": {
-      "type": "forge:ore_dict",
-      "ore": "workbench"
+      "tag": "forge:workbench"
     },
     "S": {
       "item": "rats:rat_upgrade_basic",

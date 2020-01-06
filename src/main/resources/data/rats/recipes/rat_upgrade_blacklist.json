@@ -7,8 +7,7 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "dyeBlack"
+      "tag": "forge:dyes/black"
     },
     "U": {
       "item": "rats:rat_upgrade_basic",

@@ -7,8 +7,7 @@
   ],
   "key": {
     "V": {
-      "type": "forge:ore_dict",
-      "ore": "ratPoop"
+      "tag": "rats:rat_poop"
     }
   },
   "result": {

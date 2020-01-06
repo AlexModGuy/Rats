@@ -7,20 +7,16 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "ingotGold"
+      "tag": "forge:ingots/gold"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "blockRedstone"
+      "tag": "forge:storage_blocks/redstone"
     },
     "U": {
-      "item": "rats:rat_upgrade_basic_energy",
-      "data": 0
+      "item": "rats:rat_upgrade_basic_energy"
     }
   },
   "result": {

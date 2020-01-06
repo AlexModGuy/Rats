@@ -7,12 +7,10 @@
   ],
   "key": {
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "gemLapis"
+      "tag": "forge:gems/lapis"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     },
     "F": {
       "item": "rats:feathery_wing",

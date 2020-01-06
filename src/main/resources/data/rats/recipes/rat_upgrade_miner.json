@@ -7,12 +7,10 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     },
     "P": {
       "item": "minecraft:diamond_pickaxe"

@@ -10,8 +10,7 @@
       "item": "minecraft:spider_eye"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "dustGlowstone"
+      "tag": "forge:dusts/glowstone"
     },
     "P": {
       "item": "minecraft:poisonous_potato",

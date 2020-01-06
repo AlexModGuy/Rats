@@ -7,12 +7,10 @@
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "forge:dusts/redstone"
     },
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "blockRedstone"
+      "tag": "forge:storage_blocks/redstone"
     },
     "U": {
       "item": "rats:rat_upgrade_basic",

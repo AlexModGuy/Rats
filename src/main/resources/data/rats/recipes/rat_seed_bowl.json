@@ -7,12 +7,10 @@
   ],
   "key": {
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "plasticOrGlass"
+      "tag": "forge:plastic"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "listAllseed"
+      "tag": "forge:seeds"
     }
   },
   "result": {

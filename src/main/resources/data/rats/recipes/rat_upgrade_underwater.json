@@ -7,16 +7,13 @@
   ],
   "key": {
     "F": {
-      "item": "minecraft:fish",
-      "data": 3
+      "item": "minecraft:pufferfish"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "gravel"
+      "tag": "forge:gravel"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "sand"
+      "tag": "forge:sand"
     },
     "B": {
       "item": "minecraft:water_bucket",

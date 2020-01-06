@@ -17,8 +17,7 @@
       "data": 0
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "fireDragonScaleBlock"
+      "tag": "iceandfire:dragon_scales_block"
     },
     "W": {
       "item": "rats:rat_upgrade_warrior",

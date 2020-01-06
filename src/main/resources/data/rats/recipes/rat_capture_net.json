@@ -7,16 +7,13 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "nuggetIron"
+      "tag": "forge:nuggets/iron"
     },
     "W": {
-      "item": "minecraft:web",
-      "data": 0
+      "item": "minecraft:cobweb"
     },
     "S": {
-      "item": "rats:rat_sack",
-      "data": 0
+      "item": "rats:rat_sack"
     }
   },
   "result": {

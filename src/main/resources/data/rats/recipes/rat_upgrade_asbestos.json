@@ -7,12 +7,10 @@
   ],
   "key": {
     "W": {
-      "item": "minecraft:wool",
-      "data": 0
+      "item": "minecraft:white_wool"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "blockGlass"
+      "tag": "forge:glass"
     },
     "B": {
       "item": "minecraft:lava_bucket",

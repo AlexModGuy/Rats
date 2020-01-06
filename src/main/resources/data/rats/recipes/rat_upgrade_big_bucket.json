@@ -7,15 +7,14 @@
   ],
   "key": {
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "B": {
       "item": "minecraft:bucket",
       "data": 0
     },
     "S": {
-      "item": "minecraft:slime",
+      "item": "minecraft:slime_ball",
       "data": 0
     },
     "U": {

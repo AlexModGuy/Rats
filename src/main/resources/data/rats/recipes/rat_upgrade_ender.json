@@ -7,8 +7,7 @@
   ],
   "key": {
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "enderpearl"
+      "tag": "forge:ender_pearls"
     },
     "E": {
       "item": "minecraft:ender_eye",

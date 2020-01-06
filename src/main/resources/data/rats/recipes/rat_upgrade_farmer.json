@@ -10,8 +10,7 @@
       "item": "minecraft:iron_hoe"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "listAllseed"
+      "tag": "forge:seeds"
     },
     "H": {
       "item": "minecraft:hay_block",

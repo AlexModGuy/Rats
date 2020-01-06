@@ -7,8 +7,7 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "item": "minecraft:book"
     },
     "L": {
       "item": "minecraft:stone_slab",
@@ -23,7 +22,7 @@
       "data": 0
     },
     "E": {
-      "item": "minecraft:enchanting_table"
+      "item": "minecraft:grindstone"
     }
   },
   "result": {

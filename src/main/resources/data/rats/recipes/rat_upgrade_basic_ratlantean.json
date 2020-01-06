@@ -10,8 +10,7 @@
       "item": "rats:marbled_cheese_raw"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemEmerald"
+      "tag": "forge:gems/emerald"
     }
   },
   "result": {

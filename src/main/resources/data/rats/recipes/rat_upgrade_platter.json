@@ -7,12 +7,10 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "foodCheese"
+      "tag": "forge:cheese"
     },
     "P": {
       "item": "minecraft:heavy_weighted_pressure_plate",

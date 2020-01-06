@@ -10,12 +10,10 @@
       "item": "minecraft:redstone_torch"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "ingotGold"
+      "tag": "forge:ingots/gold"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "forge:dusts/redstone"
     },
     "U": {
       "item": "rats:rat_upgrade_basic",

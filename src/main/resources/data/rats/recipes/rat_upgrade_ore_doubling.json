@@ -7,20 +7,16 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "blockIron"
+      "tag": "forge:storage_blocks/iron"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "blockCoal"
+      "tag": "forge:storage_blocks/coal"
     },
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "ratPoop"
+      "tag": "rats:rat_poop"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "U": {
       "item": "rats:rat_upgrade_basic",

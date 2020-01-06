@@ -10,8 +10,7 @@
       "item": "minecraft:clay_ball"
     },
     "E": {
-      "type": "forge:ore_dict",
-      "ore": "dyeRed"
+      "tag": "forge:dyes/red"
     },
     "U": {
       "item": "rats:rat_upgrade_basic",

@@ -3,19 +3,20 @@
   "pattern": [
     "FEF",
     "DUD",
-    "FEF"
+    "FSF"
   ],
   "key": {
     "F": {
       "item": "minecraft:flint"
     },
+    "S": {
+      "item": "minecraft:stonecutter"
+    },
     "E": {
-      "type": "forge:ore_dict",
-      "ore": "gemEmerald"
+      "tag": "forge:gems/emerald"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "tag": "forge:gems/diamond"
     },
     "U": {
       "item": "rats:rat_upgrade_basic"
