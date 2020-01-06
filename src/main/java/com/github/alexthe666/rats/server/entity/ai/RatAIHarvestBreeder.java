@@ -58,7 +58,7 @@ public class RatAIHarvestBreeder extends Goal {
     @Override
     public void tick() {
         if (this.targetSheep != null && this.targetSheep.isAlive() && !this.entity.getHeldItemMainhand().isEmpty()) {
-            this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1D);
+            this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1.25D);
             if (entity.getDistance(targetSheep) < 1.5D) {
                 if (targetSheep instanceof AnimalEntity && !((AnimalEntity) targetSheep).isInLove()) {
                     ((AnimalEntity) targetSheep).setInLove(null);

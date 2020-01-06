@@ -88,8 +88,9 @@ public class RatAIDepositInInventory extends Goal {
         return true;
     }
 
-    private BlockPos getMovePos() {
-        return this.targetBlock.offset(this.entity.depositFacing);
+    private Vec3d getMovePos() {
+        BlockPos minusVec = this.targetBlock.offset(this.entity.depositFacing).subtract(this.targetBlock);
+        return new Vec3d(targetBlock).add(minusVec.getX() * 0.25D, minusVec.getY() * 0.25D, minusVec.getZ() * 0.25D);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class RatAIDepositInInventory extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);
@@ -139,12 +140,12 @@ public class RatAIDepositInInventory extends Goal {
                     }
                 }
             } else {
-                this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
+                this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
                 double distance = Math.sqrt(this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D));
-                if (distance < 2.5 && distance >= 1.86 && canSeeChest() && te instanceof IInventory) {
+                if (distance < 2.5 && distance > 1.5 && canSeeChest() && te instanceof IInventory) {
                     toggleChest((IInventory) te, true);
                 }
-                if (distance < 1.86 && canSeeChest()) {
+                if (distance <= 1.5 && canSeeChest()) {
                     if (te instanceof IInventory) {
                         toggleChest((IInventory) te, false);
                     }

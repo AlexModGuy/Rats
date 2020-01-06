@@ -151,7 +151,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public float prevFlyingPitch;
     public BlockPos jukeboxPos;
     public boolean isFleeing = false;
-    public FluidStack transportingFluid = null;
+    public FluidStack transportingFluid = FluidStack.EMPTY;
     /*
        0 = tamed navigator
        1 = wild navigator

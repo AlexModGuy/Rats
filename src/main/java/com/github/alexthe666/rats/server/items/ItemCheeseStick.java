@@ -43,7 +43,7 @@ public class ItemCheeseStick extends Item {
         Entity rat = null;
         ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
         if (stack.getTag().getUniqueId("RatUUID") != null) {
-            if (context.getWorld().isRemote() && context.getWorld() instanceof ServerWorld) {
+            if (!context.getWorld().isRemote() && context.getWorld() instanceof ServerWorld) {
                 rat = ((ServerWorld)context.getWorld()).getEntityByUuid(stack.getTag().getUniqueId("RatUUID"));
             }
         }

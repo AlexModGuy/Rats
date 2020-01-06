@@ -39,7 +39,7 @@ public class RatAIPickupFluid extends Goal {
         if (!this.entity.canMove() || !this.entity.isTamed() || !canPickUp() || entity.getAttackTarget() != null || entity.getMBTransferRate() == 0) {
             return false;
         }
-        if (this.entity.transportingFluid != null && this.entity.transportingFluid.getAmount() >= this.entity.getMBTransferRate()) {
+        if (!this.entity.transportingFluid.isEmpty() && this.entity.transportingFluid.getAmount() >= this.entity.getMBTransferRate()) {
             return false;
         }
         resetTarget();
@@ -56,7 +56,7 @@ public class RatAIPickupFluid extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate());
+        return targetBlock != null && (this.entity.transportingFluid.isEmpty() || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate());
     }
 
     public void resetTask() {
@@ -80,7 +80,7 @@ public class RatAIPickupFluid extends Goal {
     public void tick() {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
-            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
+            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
             double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
             if (distance <= 2.89F && canSeeChest()) {
                 LazyOptional<IFluidHandler> handler = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN);
@@ -88,7 +88,7 @@ public class RatAIPickupFluid extends Goal {
                     return;
                 }
                 int currentAmount = 0;
-                if (this.entity.transportingFluid != null) {
+                if (!this.entity.transportingFluid.isEmpty()) {
                     currentAmount = this.entity.transportingFluid.getAmount();
                 }
                 int howMuchWeWant = this.entity.getMBTransferRate() - currentAmount;
@@ -100,12 +100,12 @@ public class RatAIPickupFluid extends Goal {
                         if (handler.orElse(null).getTanks() > 1) {
                             for(int i = 0; i < handler.orElse(null).getTanks(); i++){
                                 FluidStack otherTank = handler.orElse(null).getFluidInTank(i);
-                                if (this.entity.transportingFluid != null && this.entity.transportingFluid.isFluidEqual(otherTank)) {
+                                if (!this.entity.transportingFluid.isEmpty() && this.entity.transportingFluid.isFluidEqual(otherTank)) {
                                     firstTank = otherTank;
                                 }
                             }
                         }
-                        if (firstTank.isEmpty() && (this.entity.transportingFluid == null || this.entity.transportingFluid.isFluidEqual(firstTank))) {
+                        if (firstTank.isEmpty() && (this.entity.transportingFluid.isEmpty() || this.entity.transportingFluid.isFluidEqual(firstTank))) {
                             howMuchWeWant = Math.min(firstTank.getAmount(), howMuchWeWant);
 
                             if (handler.orElse(null).drain(howMuchWeWant, IFluidHandler.FluidAction.SIMULATE) != null) {
@@ -120,7 +120,7 @@ public class RatAIPickupFluid extends Goal {
                     this.targetBlock = null;
                     this.resetTask();
                 } else {
-                    if (this.entity.transportingFluid == null) {
+                    if (this.entity.transportingFluid.isEmpty()) {
                         this.entity.transportingFluid = drainedStack.copy();
                     } else {
                         this.entity.transportingFluid.setAmount(this.entity.transportingFluid.getAmount() + Math.max(drainedStack.getAmount(), 0));
@@ -128,7 +128,7 @@ public class RatAIPickupFluid extends Goal {
                     if (!this.entity.world.isRemote) {
                         RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                     }
-                    SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_FILL : SoundEvents.ITEM_BUCKET_FILL;//this.entity.transportingFluid.getFluid().getFillSound();
+                    SoundEvent sound = this.entity.transportingFluid.isEmpty() ? SoundEvents.ITEM_BUCKET_FILL : SoundEvents.ITEM_BUCKET_FILL;//this.entity.transportingFluid.getFluid().getFillSound();
                     this.entity.playSound(sound, 1, 1);
                     this.targetBlock = null;
                     this.resetTask();

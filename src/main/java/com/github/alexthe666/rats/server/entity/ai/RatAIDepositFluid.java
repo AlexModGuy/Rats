@@ -48,7 +48,7 @@ public class RatAIDepositFluid extends Goal {
         if (!this.entity.canMove() || entity.getMBTransferRate() == 0 || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.TRANSPORT && this.entity.getCommand() != RatCommand.GATHER && this.entity.getCommand() != RatCommand.HUNT && this.entity.getCommand() != RatCommand.HARVEST || entity.getAttackTarget() != null) {
             return false;
         }
-        if (this.entity.transportingFluid == null || this.entity.transportingFluid.getAmount() == 0) {
+        if (this.entity.transportingFluid.isEmpty() || this.entity.transportingFluid.getAmount() == 0) {
             return false;
         }
         resetTarget();
@@ -61,7 +61,7 @@ public class RatAIDepositFluid extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return targetBlock != null && (this.entity.transportingFluid != null && this.entity.transportingFluid.getAmount() > 0);
+        return targetBlock != null && (!this.entity.transportingFluid.isEmpty() && this.entity.transportingFluid.getAmount() > 0);
     }
 
     public void resetTask() {
@@ -81,8 +81,9 @@ public class RatAIDepositFluid extends Goal {
         return true;
     }
 
-    private BlockPos getMovePos() {
-        return this.targetBlock.offset(this.entity.depositFacing);
+    private Vec3d getMovePos() {
+        BlockPos minusVec = this.targetBlock.offset(this.entity.depositFacing).subtract(this.targetBlock);
+        return new Vec3d(targetBlock).add(minusVec.getX() * 0.25D, minusVec.getY() * 0.25D, minusVec.getZ() * 0.25D);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class RatAIDepositFluid extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);
@@ -132,7 +133,7 @@ public class RatAIDepositFluid extends Goal {
                     }
                 }
             } else {
-                this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1D);
+                this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
                 double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
                 if (distance < 3.4 && canSeeChest() && te != null) {
                     FluidStack copiedFluid = this.entity.transportingFluid.copy();
@@ -140,7 +141,7 @@ public class RatAIDepositFluid extends Goal {
                     if (handler.orElse(null) == null) {
                         return;
                     }
-                    if (this.entity.transportingFluid != null) {
+                    if (!this.entity.transportingFluid.isEmpty()) {
                         int minusAmount = 0;
                         try {
                             if (handler.orElse(null).getTanks() > 0) {
@@ -170,14 +171,14 @@ public class RatAIDepositFluid extends Goal {
                         } else {
                             int total = copiedFluid.getAmount() - minusAmount;
                             if (total <= 0) {
-                                this.entity.transportingFluid = null;
+                                this.entity.transportingFluid = FluidStack.EMPTY;
                             } else {
                                 this.entity.transportingFluid.setAmount(total);
                             }
                             if (!this.entity.world.isRemote) {
                                 RatsMod.sendMSGToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
                             }
-                            SoundEvent sound = this.entity.transportingFluid == null ? SoundEvents.ITEM_BUCKET_EMPTY : SoundEvents.ITEM_BUCKET_EMPTY;//this.entity.transportingFluid.getFluid().getEmptySound();
+                            SoundEvent sound = this.entity.transportingFluid.isEmpty() ? SoundEvents.ITEM_BUCKET_EMPTY : SoundEvents.ITEM_BUCKET_EMPTY;//this.entity.transportingFluid.getFluid().getEmptySound();
                             this.entity.playSound(sound, 1, 1);
                             this.targetBlock = null;
                             this.resetTask();

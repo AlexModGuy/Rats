@@ -106,10 +106,10 @@ public class RatAIHarvestMine extends Goal {
             if (rayPos == null) {
                 rayPos = this.targetBlock;
             }
-            if (this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
+            if (this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D)) {
                 rayPos = this.targetBlock;
             } else {
-                this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1D);
+                this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
             if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
                 BlockState block = this.entity.world.getBlockState(rayPos);

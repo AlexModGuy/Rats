@@ -103,13 +103,13 @@ public class RatAIHarvestTrees extends Goal {
     @Override
     public void tick() {
         if (this.targetBlock != null) {
-            if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D)) {
+            if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D)) {
                 RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vec3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false, entity);
                 if (rayTrace instanceof BlockRayTraceResult) {
                     BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
                     BlockPos pos = blockRayTraceResult.getPos();
                     BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
-                    this.entity.getNavigator().tryMoveToXYZ(sidePos.getX() + 0.5D, sidePos.getY() + 0.5D, sidePos.getZ() + 0.5D, 1D);
+                    this.entity.getNavigator().tryMoveToXYZ(sidePos.getX() + 0.5D, sidePos.getY() + 0.5D, sidePos.getZ() + 0.5D, 1.25D);
                 }
             }
             if (isBlockLog(this.entity.world, this.targetBlock)) {

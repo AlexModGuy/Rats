@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.items;
 
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -14,7 +14,9 @@ public class ItemRatUpgradeBucket extends ItemRatUpgrade {
     }
 
     public static ItemStack getBucketFromFluid(FluidStack ingredient) {
-        Fluid fluid = ingredient.getFluid();
+        if(ingredient == null || ingredient.isEmpty()){
+            return new ItemStack(Items.BUCKET);
+        }
         ItemStack filledBucket = FluidUtil.getFilledBucket(ingredient);
         return filledBucket;
     }

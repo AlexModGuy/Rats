@@ -83,7 +83,7 @@ public class GuiCheeseStaff extends Screen {
         int i = (this.width) / 2;
         int j = (this.height - 166) / 2;
         String topText = I18n.format("entity.rats.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
-        int maxLength = Math.max(150, font.getStringWidth(topText) + 20);
+        int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText) + 20);
         this.addButton(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
@@ -158,7 +158,7 @@ public class GuiCheeseStaff extends Screen {
         GlStateManager.popMatrix();
     }
 
-    public boolean doesGuiPauseGame() {
+    public boolean isPauseScreen() {
         return false;
     }
 }

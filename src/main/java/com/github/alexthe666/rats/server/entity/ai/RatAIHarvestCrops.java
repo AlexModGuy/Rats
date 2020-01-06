@@ -80,7 +80,7 @@ public class RatAIHarvestCrops extends Goal {
     public void tick() {
         if (this.targetBlock != null) {
             BlockState block = this.entity.world.getBlockState(this.targetBlock);
-            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1D);
+            this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
             if (block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD) {
                 if (block.getBlock() instanceof CropsBlock && !((CropsBlock) block.getBlock()).isMaxAge(block)) {
                     this.targetBlock = null;
