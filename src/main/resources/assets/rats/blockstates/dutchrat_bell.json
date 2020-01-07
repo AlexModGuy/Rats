@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,attachment=floor": { "model": "rats:block/dutchrat_bell_floor" },
+    "facing=south,attachment=floor": { "model": "rats:block/dutchrat_bell_floor", "y": 180 },
+    "facing=east,attachment=floor":  { "model": "rats:block/dutchrat_bell_floor", "y": 90 },
+    "facing=west,attachment=floor":  { "model": "rats:block/dutchrat_bell_floor", "y": 270 },
+    "facing=north,attachment=ceiling": { "model": "rats:block/dutchrat_bell_ceiling" },
+    "facing=south,attachment=ceiling": { "model": "rats:block/dutchrat_bell_ceiling", "y": 180 },
+    "facing=east,attachment=ceiling":  { "model": "rats:block/dutchrat_bell_ceiling", "y": 90 },
+    "facing=west,attachment=ceiling":  { "model": "rats:block/dutchrat_bell_ceiling", "y": 270 },
+    "facing=east,attachment=single_wall": { "model": "rats:block/dutchrat_bell_wall" },
+    "facing=west,attachment=single_wall": { "model": "rats:block/dutchrat_bell_wall", "y": 180 },
+    "facing=south,attachment=single_wall":  { "model": "rats:block/dutchrat_bell_wall", "y": 90 },
+    "facing=north,attachment=single_wall":  { "model": "rats:block/dutchrat_bell_wall", "y": 270 },
+    "facing=east,attachment=double_wall": { "model": "rats:block/dutchrat_bell_between_walls" },
+    "facing=west,attachment=double_wall": { "model": "rats:block/dutchrat_bell_between_walls", "y": 180 },
+    "facing=north,attachment=double_wall":  { "model": "rats:block/dutchrat_bell_between_walls", "y": 90 },
+    "facing=south,attachment=double_wall":  { "model": "rats:block/dutchrat_bell_between_walls", "y": 270 }
+  }
+}

@@ -3,8 +3,7 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
 import com.github.alexthe666.rats.server.items.ItemBlockTEISR;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluid;
@@ -61,6 +60,20 @@ public class RatsBlockRegistry {
     public static final Block JACK_O_RATERN = new BlockJackORatern();
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
+    public static final Block PIRAT_PLANKS = new Block(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_planks");
+    public static final Block PIRAT_LOG = new LogBlock(MaterialColor.GREEN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).lightValue(3).hardnessAndResistance(2.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_log");
+    public static final Block STRIPPED_PIRAT_LOG = new LogBlock(MaterialColor.GREEN, Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F).sound(SoundType.WOOD)).setRegistryName("rats:stripped_pirat_log");
+    public static final Block PIRAT_WOOD = new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_wood");
+    public static final Block STRIPPED_PIRAT_WOOD = new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F).sound(SoundType.WOOD)).setRegistryName("rats:stripped_pirat_wood");
+    public static final Block PIRAT_PRESSURE_PLATE = new BlockGenericPressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_pressure_plate");
+    public static final Block PIRAT_TRAPDOOR = new BlockGenericTrapDoor(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_trapdoor");
+    public static final Block PIRAT_STAIRS = new BlockGenericStairs(PIRAT_PLANKS.getDefaultState(), Block.Properties.from(PIRAT_PLANKS), "pirat_stairs");
+    public static final Block PIRAT_BUTTON = new BlockGenericButton(Block.Properties.create(Material.MISCELLANEOUS).lightValue(3).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_button");
+    public static final Block PIRAT_SLAB = new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_slab");
+    public static final Block PIRAT_FENCE_GATE = new FenceGateBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_fence_gate");
+    public static final Block PIRAT_FENCE = new FenceBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_fence");
+    public static final Block PIRAT_DOOR = new BlockGenericDoor(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_door");
+    public static final Block DUTCHRAT_BELL = new BlockDutchratBell();
 
     public static final Fluid MILK_FLUID = new MilkFluid();
 

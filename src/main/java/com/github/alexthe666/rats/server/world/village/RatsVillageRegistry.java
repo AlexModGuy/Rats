@@ -30,14 +30,14 @@ public class RatsVillageRegistry {
         career.addTrade(2, new EntityVillager.EmeraldForItems(RatsItemRegistry.RAW_RAT, new EntityVillager.PriceInfo(1, 7)));
         career.addTrade(2, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.CHEESE, new EntityVillager.PriceInfo(10, 3)));
         career.addTrade(2, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.COOKED_RAT, new EntityVillager.PriceInfo(4, 6)));
-        career.addTrade(2, new EntityVillager.ItemAndEmeraldToItem(Item.getItemFromBlock(RatsBlockRegistry.GARBAGE_PILE), new EntityVillager.PriceInfo(6, 1), RatsItemRegistry.PLASTIC_WASTE, new EntityVillager.PriceInfo(4, 1)));
+        career.addTrade(2, new EntityVillager.ItemAndEmeraldToItem(Item.getItemFromBlock(RatsBlockRegister.GARBAGE_PILE), new EntityVillager.PriceInfo(6, 1), RatsItemRegistry.PLASTIC_WASTE, new EntityVillager.PriceInfo(4, 1)));
         career.addTrade(2, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.FEATHERY_WING, new EntityVillager.PriceInfo(2, 1)));
-        career.addTrade(3, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegistry.RAT_CAGE), new EntityVillager.PriceInfo(5, 2)));
-        career.addTrade(3, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegistry.GARBAGE_PILE), new EntityVillager.PriceInfo(7, 1)));
+        career.addTrade(3, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegister.RAT_CAGE), new EntityVillager.PriceInfo(5, 2)));
+        career.addTrade(3, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegister.GARBAGE_PILE), new EntityVillager.PriceInfo(7, 1)));
         career.addTrade(3, new EntityVillager.EmeraldForItems(RatsItemRegistry.RAW_PLASTIC, new EntityVillager.PriceInfo(1, 7)));
         career.addTrade(3, new EntityVillager.EmeraldForItems(RatsItemRegistry.RAT_FLUTE, new EntityVillager.PriceInfo(1, 4)));
-        career.addTrade(4, new EntityVillager.ListItemForEmeralds(new ItemStack(RatsBlockRegistry.RAT_TUBE_COLOR[0]), new EntityVillager.PriceInfo(8, 4)));
-        career.addTrade(4, new EntityVillager.EmeraldForItems(Item.getItemFromBlock(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN), new EntityVillager.PriceInfo(1, 4)));
+        career.addTrade(4, new EntityVillager.ListItemForEmeralds(new ItemStack(RatsBlockRegister.RAT_TUBE_COLOR[0]), new EntityVillager.PriceInfo(8, 4)));
+        career.addTrade(4, new EntityVillager.EmeraldForItems(Item.getItemFromBlock(RatsBlockRegister.RAT_CAGE_BREEDING_LANTERN), new EntityVillager.PriceInfo(1, 4)));
         career.addTrade(4, new EntityVillager.EmeraldForItems(RatsItemRegistry.RAT_SEED_BOWL, new EntityVillager.PriceInfo(1, 4)));
         career.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_HAMMOCKS[0], new EntityVillager.PriceInfo(5, 1)));
         career.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.RAT_IGLOOS[0], new EntityVillager.PriceInfo(6, 1)));
@@ -51,7 +51,7 @@ public class RatsVillageRegistry {
         doctor.addTrade(1, new EntityVillager.EmeraldForItems(Items.POISONOUS_POTATO, new EntityVillager.PriceInfo(4, 2)));
         doctor.addTrade(1, new EntityVillager.ItemAndEmeraldToItem(Item.getItemFromBlock(Blocks.RED_FLOWER), new EntityVillager.PriceInfo(1, 2), RatsItemRegistry.HERB_BUNDLE, new EntityVillager.PriceInfo(5, 1)));
         doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.TREACLE, new EntityVillager.PriceInfo(1, 4)));
-        doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegistry.GARBAGE_PILE), new EntityVillager.PriceInfo(1, 2)));
+        doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegister.GARBAGE_PILE), new EntityVillager.PriceInfo(1, 2)));
         doctor.addTrade(3, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_LEECH, new EntityVillager.PriceInfo(3, 3)));
         doctor.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_STEW, new EntityVillager.PriceInfo(8, 1)));
         doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_DOCTOR_MASK, new EntityVillager.PriceInfo(15, 1)));

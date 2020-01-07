@@ -57,24 +57,24 @@ public class RatsVillageProcessor extends StructureProcessor {
             if (!petShop.ratPos.contains(pos)) {
                 petShop.ratPos.add(pos);
             }
-            return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
+            return new Template.BlockInfo(pos, RatsBlockRegister.RAT_CAGE.getDefaultState(), null);
         } else if (blockInfoIn.state.getBlock() == Blocks.QUARTZ_BLOCK) {//spawn rat or rabbit cage
             if (!petShop.rabbitPos.contains(pos)) {
                 petShop.rabbitPos.add(pos);
             }
-            return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
+            return new Template.BlockInfo(pos, RatsBlockRegister.RAT_CAGE.getDefaultState(), null);
         } else if (blockInfoIn.state.getBlock() == Blocks.IRON_BLOCK) {//spawn wolf cage
             if (petShop.ocelotPos.size() == 0 || petShop.ocelotPos.size() < 2 && random.nextInt(3) == 0) {
                 if (!petShop.ocelotPos.contains(pos)) {
                     petShop.ocelotPos.add(pos);
                 }
             }
-            return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
+            return new Template.BlockInfo(pos, RatsBlockRegister.RAT_CAGE.getDefaultState(), null);
         } else if (blockInfoIn.state.getBlock() == Blocks.EMERALD_BLOCK) {//spawn parrot cage
             if (!petShop.parrotPos.contains(pos)) {
                 petShop.parrotPos.add(pos);
             }
-            return new Template.BlockInfo(pos, RatsBlockRegistry.RAT_CAGE.getDefaultState(), null);
+            return new Template.BlockInfo(pos, RatsBlockRegister.RAT_CAGE.getDefaultState(), null);
         } else if (blockInfoIn.state.getBlock() == Blocks.COAL_BLOCK) {//spawn shopkeeper
             if (!petShop.villagerPos.contains(pos)) {
                 petShop.villagerPos.add(pos);

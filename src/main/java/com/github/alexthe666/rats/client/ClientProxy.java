@@ -16,10 +16,7 @@ import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
@@ -36,7 +33,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GrassColors;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,7 +48,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.Map;
 
@@ -158,7 +153,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatCageBreedingLantern.class, new RenderRatCageDecorated());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeCombiner.class, new RenderUpgradeCombiner());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeSeparator.class, new RenderUpgradeSeparator());
-        /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDutchratBell.class, new RenderDutchratBell());
+  /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/
@@ -167,89 +163,64 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void onBlockColors(ColorHandlerEvent.Block event) {
         RatsMod.LOGGER.info("loaded in block colorizer");
-        event.getBlockColors().register(new IBlockColor() {
-            @Override
-            public int getColor(BlockState state, @Nullable IEnviromentBlockReader worldIn, @Nullable BlockPos pos, int colorIn) {
-                Block block = state.getBlock();
-                int meta = 0;
-                for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
-                    if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
-                        meta = i;
-                    }
+        event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
+            Block block = state.getBlock();
+            int meta = 0;
+            for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
+                if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
+                    meta = i;
                 }
-                DyeColor color = DyeColor.byId(meta);
-                return color.getFireworkColor();
             }
+            DyeColor color = DyeColor.byId(meta);
+            return color.getFireworkColor();
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
-        event.getBlockColors().register(new IBlockColor() {
-            @Override
-            public int getColor(BlockState state, @Nullable IEnviromentBlockReader worldIn, @Nullable BlockPos pos, int colorIn) {
-                return worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D);
-            }
-        }, RatsBlockRegistry.MARBLED_CHEESE_GRASS);
+        event.getBlockColors().register((state, worldIn, pos, colorIn) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), RatsBlockRegistry.MARBLED_CHEESE_GRASS);
     }
 
     @SubscribeEvent
     public static void onItemColors(ColorHandlerEvent.Item event) {
         RatsMod.LOGGER.info("loaded in item colorizer");
-        event.getItemColors().register(new IItemColor() {
-            @Override
-            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
-                return GrassColors.get(0.5D, 1.0D);
-            }
-        }, Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
-        event.getItemColors().register(new IItemColor() {
-            @Override
-            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
-                Block block = Block.getBlockFromItem(p_getColor_1_.getItem());
-                int meta = 0;
-                for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
-                    if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
-                        meta = i;
-                    }
+        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> GrassColors.get(0.5D, 1.0D), Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
+        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
+            Block block = Block.getBlockFromItem(p_getColor_1_.getItem());
+            int meta = 0;
+            for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
+                if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
+                    meta = i;
                 }
-                DyeColor color = DyeColor.byId(meta);
-                return color.getFireworkColor();
             }
+            DyeColor color = DyeColor.byId(meta);
+            return color.getFireworkColor();
         }, RatsBlockRegistry.RAT_TUBE_COLOR);
-        event.getItemColors().register(new IItemColor() {
-            @Override
-            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
+        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
+            int meta = 0;
+            for (int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++) {
+                if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_IGLOOS[i]) {
+                    meta = i;
+                }
+            }
+            DyeColor color = DyeColor.byId(meta);
+            return color.getFireworkColor();
+        }, RatsItemRegistry.RAT_IGLOOS);
+        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
+            if (p_getColor_2_ == 0) {
                 int meta = 0;
-                for (int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++) {
-                    if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_IGLOOS[i]) {
+                for (int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++) {
+                    if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]) {
                         meta = i;
                     }
                 }
                 DyeColor color = DyeColor.byId(meta);
                 return color.getFireworkColor();
-            }
-        }, RatsItemRegistry.RAT_IGLOOS);
-        event.getItemColors().register(new IItemColor() {
-            @Override
-            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
-                if (p_getColor_2_ == 0) {
-                    int meta = 0;
-                    for (int i = 0; i < RatsItemRegistry.RAT_HAMMOCKS.length; i++) {
-                        if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_HAMMOCKS[i]) {
-                            meta = i;
-                        }
-                    }
-                    DyeColor color = DyeColor.byId(meta);
-                    return color.getFireworkColor();
-                } else {
-                    return -1;
-                }
+            } else {
+                return -1;
             }
         }, RatsItemRegistry.RAT_HAMMOCKS);
-        event.getItemColors().register(new IItemColor() {
-            @Override
-            public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {
-                if (p_getColor_2_ == 1) {
-                    return NuggetColorRegister.getNuggetColor(p_getColor_1_);
-                } else {
-                    return -1;
-                }
+        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
+            if (p_getColor_2_ == 1) {
+                return NuggetColorRegister.getNuggetColor(p_getColor_1_);
+            } else {
+                return -1;
             }
         }, RatsItemRegistry.RAT_NUGGET_ORE);
     }

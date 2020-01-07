@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "rats:block/stripped_pirat_log" },
+        "axis=z":   { "model": "rats:block/stripped_pirat_log", "x": 90 },
+        "axis=x":   { "model": "rats:block/stripped_pirat_log", "x": 90, "y": 90 }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "rats:block/stripped_pirat_log_top",
+        "side": "rats:block/stripped_pirat_log"
+    }
+}

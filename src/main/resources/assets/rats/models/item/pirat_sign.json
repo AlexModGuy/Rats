@@ -1,0 +1,6 @@
+{
+    "parent": "rats:item/generated",
+    "textures": {
+        "layer0": "item/pirat_sign"
+    }
+}

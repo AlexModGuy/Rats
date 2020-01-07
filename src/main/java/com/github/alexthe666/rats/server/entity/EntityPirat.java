@@ -51,16 +51,11 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     public static boolean canSpawn(EntityType<EntityPirat> p_223332_0_, IWorld p_223332_1_, SpawnReason p_223332_2_, BlockPos p_223332_3_, Random p_223332_4_) {
         Biome biome = p_223332_1_.getBiome(p_223332_3_);
         boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && func_223323_a(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == SpawnReason.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).isTagged(FluidTags.WATER));
-        return p_223332_4_.nextInt(15) == 0 && flag;
+        return p_223332_4_.nextInt(150) == 0 && flag;
     }
 
     public static boolean func_223323_a(IWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {
-        if (p_223323_0_.getLightFor(LightType.SKY, p_223323_1_) > p_223323_2_.nextInt(16)) {
-            return false;
-        } else {
-            int lvt_3_1_ = p_223323_0_.getWorld().isThundering() ? p_223323_0_.getNeighborAwareLightSubtracted(p_223323_1_, 10) : p_223323_0_.getLight(p_223323_1_);
-            return lvt_3_1_ <= p_223323_2_.nextInt(6);
-        }
+        return p_223323_0_.getLightFor(LightType.SKY, p_223323_1_) > 10;
     }
 
     protected void registerGoals() {

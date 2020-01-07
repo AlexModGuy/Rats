@@ -44,6 +44,10 @@ public class RatsEntityRegistry {
     }
 
     static{
+        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::func_223315_a);
+        EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::func_223315_a);
+        EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::func_223315_a);
+        EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);
     }
 }
