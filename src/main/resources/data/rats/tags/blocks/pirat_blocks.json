@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "rats:pirat_button",
+    "rats:pirat_door",
+    "rats:pirat_fence",
+    "rats:pirat_fence_gate",
+    "rats:pirat_log",
+    "rats:pirat_planks",
+    "rats:pirat_pressure_plate",
+    "rats:pirat_slab",
+    "rats:pirat_stairs",
+    "rats:pirat_trapdoor",
+    "rats:pirat_wood",
+    "rats:stripped_pirat_log",
+    "rats:stripped_pirat_wood"
+  ]
+}

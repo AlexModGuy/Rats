@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
 import com.github.alexthe666.rats.server.items.ItemPiperHat;
@@ -83,6 +84,14 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
                     GlStateManager.rotatef(-5, 1, 0, 0);
                     GlStateManager.translatef(0, -0.125F, 0);
                     GlStateManager.scalef(1.425F, 1.425F, 1.425F);
+                }
+                if(itemstack.getItem() == RatsItemRegistry.GHOST_PIRAT_HAT){
+                    float piratScale = rat instanceof EntityGhostPirat ? 1.1F : 1.425F;
+                    float piratTranslate = rat instanceof EntityGhostPirat ? 0.05F : -0.125F;
+                    GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.3F);
+                    GlStateManager.rotatef(-5, 1, 0, 0);
+                    GlStateManager.translatef(0, piratTranslate, 0);
+                    GlStateManager.scalef(piratScale, piratScale, piratScale);
                 }
                 if (itemstack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
                     GlStateManager.rotatef(-5, 1, 0, 0);

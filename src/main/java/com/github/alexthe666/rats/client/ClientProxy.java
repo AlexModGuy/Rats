@@ -145,6 +145,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityRatCaptureNet.class, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(EntityRatDragonFire.class, manager -> new RenderNothing());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatArrow.class, manager -> new RenderRatArrow());
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostPirat.class, manager -> new RenderGhostPirat());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAutoCurdler.class, new RenderAutoCurdler());
@@ -297,8 +298,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelRatFez(1.0F);
         } else if (index == 7) {
             return new ModelTopHat(1.0F);
-        } else {
+        } else if(index == 8){
             return new ModelSantaHat(1.0F);
+        }else{
+            return new ModelGhostPiratHat(1.0F);
         }
     }
 

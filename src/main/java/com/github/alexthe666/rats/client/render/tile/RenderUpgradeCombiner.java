@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanSpirit;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
+import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -33,6 +34,8 @@ public class RenderUpgradeCombiner extends TileEntityRenderer<TileEntityUpgradeC
         this.bindTexture(TEXTURE);
         GlStateManager.disableCull();
         GlStateManager.scalef(1.7F, 1.7F, 1.7F);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
         MODEL_SPIRIT.render(null, 0, 0.0F, f, 0.0F, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
     }

@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -13,13 +14,16 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEntity, IRatlantean {
 
@@ -177,5 +181,14 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
 
     protected float getSoundPitch() {
         return super.getSoundPitch() * 0.4F;
+    }
+
+    public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+        return rand.nextInt(4) == 0 && canSpawnAtPos(world, pos) && MobEntity.func_223315_a(entityType, world, reason, pos, rand);
+    }
+
+    private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
+        BlockState down = world.getBlockState(pos.down());
+        return !BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
     }
 }

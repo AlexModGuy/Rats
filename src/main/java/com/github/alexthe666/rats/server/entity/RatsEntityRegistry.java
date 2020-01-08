@@ -35,6 +35,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatCaptureNet> RAT_CAPTURE_NET = registerEntity(EntityType.Builder.create(EntityRatCaptureNet::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatCaptureNet::new), "rat_capture_net");
     public static final EntityType<EntityRatDragonFire> RAT_DRAGON_FIRE = registerEntity(EntityType.Builder.create(EntityRatDragonFire::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatDragonFire::new), "rat_dragon_fire");
     public static final EntityType<EntityRatArrow> RAT_ARROW = registerEntity(EntityType.Builder.create(EntityRatArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatArrow::new), "rat_arrow");
+    public static final EntityType<EntityGhostPirat> GHOST_PIRAT = registerEntity(EntityType.Builder.create(EntityGhostPirat::new, EntityClassification.MONSTER).size(1.0F, 0.75F), "ghost_pirat");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
@@ -46,8 +47,9 @@ public class RatsEntityRegistry {
     static{
         EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::func_223315_a);
-        EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::func_223315_a);
+        EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::canSpawn);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);
+        EntitySpawnPlacementRegistry.register(GHOST_PIRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGhostPirat::canSpawn);
     }
 }

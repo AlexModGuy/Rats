@@ -23,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -46,6 +47,7 @@ public class RatUtils {
             return p_apply_1_ instanceof EntityRat && !((EntityRat) p_apply_1_).isTamed();
         }
     };
+    public static final ResourceLocation PIRAT_ONLY_BLOCKS = new ResourceLocation("rats", "pirat_blocks");
 
     public static boolean isMilk(ItemStack stack) {
         if (stack.getItem() == Items.MILK_BUCKET) {

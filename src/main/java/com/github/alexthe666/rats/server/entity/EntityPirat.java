@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Random;
 
-public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlantean, IMob {
+public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlantean, IMob, IPirat {
 
     private PiratAIStrife aiArrowAttack;
     private MeleeAttackGoal aiAttackOnCollide;

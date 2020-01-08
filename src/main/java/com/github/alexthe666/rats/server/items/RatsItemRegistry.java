@@ -154,9 +154,17 @@ public class RatsItemRegistry {
 
     public static final Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
 
-    public static final Item PIRAT_CUTLASS = new ItemPiratCutlass();
+    public static final Item PIRAT_CUTLASS = new ItemPiratCutlass(false);
 
     public static final Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
+
+    public static final Item GHOST_PIRAT_HAT = new ItemHat("ghost_pirat_hat", 9);
+
+    public static final Item GHOST_PIRAT_ECTOPLASM = new ItemGeneric("ghost_pirat_ectoplasm");
+
+    public static final Item GHOST_PIRAT_CUTLASS = new ItemPiratCutlass(true);
+
+    public static final Item DUTCHRAT_WHEEL = new ItemGeneric("dutchrat_wheel");
 
     public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 

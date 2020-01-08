@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class EntityPiratBoat extends MobEntity implements IRatlantean {
+public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
     public static final ItemStack BANNER = generateBanner();
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityPiratBoat.class, DataSerializers.BOOLEAN);

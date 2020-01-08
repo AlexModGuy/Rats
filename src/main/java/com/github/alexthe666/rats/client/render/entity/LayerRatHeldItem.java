@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -48,7 +49,6 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
         if (!itemstack.isEmpty()) {
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             GlStateManager.pushMatrix();
-
             if (this.renderer.getEntityModel().isChild) {
                 GlStateManager.translatef(0.0F, 0.625F, 0.0F);
                 GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
@@ -80,6 +80,12 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
                 if (entity.holdsItemInHandUpgrade()) {
                     GlStateManager.translatef(0.15F, -0.075F, 0);
                 }
+            }
+            if(entity instanceof EntityGhostPirat){
+                GlStateManager.disableLighting();
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+                GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
             }
             minecraft.getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.GROUND, false);
             GlStateManager.popMatrix();

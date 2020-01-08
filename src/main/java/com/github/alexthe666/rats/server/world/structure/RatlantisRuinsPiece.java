@@ -106,7 +106,7 @@ public class RatlantisRuinsPiece {
             this.field_204756_e = new ResourceLocation(p_i50445_2_.getString("Template"));
             this.rotation = Rotation.valueOf(p_i50445_2_.getString("Rot"));
             this.func_204754_a(p_i50445_1_);
-            this.template = p_i50445_1_.getTemplate(RatStructure.FORUM.structureLoc);
+            this.template = p_i50445_1_.getTemplate(RatStructure.PILLAR_LEANING.structureLoc);
             this.random = new Random();
         }
 

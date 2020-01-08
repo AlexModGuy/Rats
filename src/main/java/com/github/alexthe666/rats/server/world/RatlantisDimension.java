@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class RatlantisDimension extends Dimension {
-    public static final BlockPos SPAWN = new BlockPos(100, 50, 0);;
+    public static final BlockPos SPAWN = new BlockPos(0, 110, 0);
 
     public RatlantisDimension(final World worldIn, final DimensionType dimension) {
         super(worldIn, dimension);
@@ -39,8 +39,10 @@ public class RatlantisDimension extends Dimension {
      }
 
     @Override
-    public float calculateCelestialAngle(final long p_76563_1_, final float p_76563_3_) {
-        return 0.0f;
+    public float calculateCelestialAngle(long worldTime, float partialTicks) {
+        double d0 = MathHelper.frac((double)worldTime / 24000.0D - 0.25D);
+        double d1 = 0.5D - Math.cos(d0 * Math.PI) / 2.0D;
+        return (float)(d0 * 2.0D + d1) / 3.0F;
     }
 
     @Override @Nullable
