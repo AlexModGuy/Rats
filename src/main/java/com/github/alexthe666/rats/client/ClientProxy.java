@@ -146,6 +146,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityRatDragonFire.class, manager -> new RenderNothing());
         RenderingRegistry.registerEntityRenderingHandler(EntityRatArrow.class, manager -> new RenderRatArrow());
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostPirat.class, manager -> new RenderGhostPirat());
+        RenderingRegistry.registerEntityRenderingHandler(EntityDutchrat.class, manager -> new RenderDutchrat());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAutoCurdler.class, new RenderAutoCurdler());
@@ -338,6 +339,9 @@ public class ClientProxy extends CommonProxy {
         }
         if (name.equals("rat_ghost")) {
            Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+        }
+        if (name.equals("pirat_ghost")) {
+            Minecraft.getInstance().particles.addEffect(new ParticlePiratGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("rat_lightning")) {
             Minecraft.getInstance().particles.addEffect(new ParticleLightning(world, x, y, z, (float) motX, (float) motY, (float) motZ));

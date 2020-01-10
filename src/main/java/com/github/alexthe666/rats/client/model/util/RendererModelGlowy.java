@@ -30,6 +30,7 @@ public class RendererModelGlowy extends RendererModel {
         GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
         gamerenderer.setupFogColor(true);
         super.render(scale);
+        //GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
         gamerenderer.setupFogColor(false);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();

@@ -168,7 +168,7 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
 
-    public ResourceLocation getArmorResource(net.minecraft.entity.Entity entity, ItemStack stack, EquipmentSlotType slot, @javax.annotation.Nullable String type) {
+    public static ResourceLocation getArmorResource(net.minecraft.entity.Entity entity, ItemStack stack, EquipmentSlotType slot, @javax.annotation.Nullable String type) {
         ArmorItem item = (ArmorItem)stack.getItem();
         String texture = item.getArmorMaterial().getName();
         String domain = "minecraft";

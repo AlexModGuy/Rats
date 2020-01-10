@@ -36,6 +36,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatDragonFire> RAT_DRAGON_FIRE = registerEntity(EntityType.Builder.create(EntityRatDragonFire::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatDragonFire::new), "rat_dragon_fire");
     public static final EntityType<EntityRatArrow> RAT_ARROW = registerEntity(EntityType.Builder.create(EntityRatArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatArrow::new), "rat_arrow");
     public static final EntityType<EntityGhostPirat> GHOST_PIRAT = registerEntity(EntityType.Builder.create(EntityGhostPirat::new, EntityClassification.MONSTER).size(1.0F, 0.75F), "ghost_pirat");
+    public static final EntityType<EntityDutchrat> DUTCHRAT = registerEntity(EntityType.Builder.create(EntityDutchrat::new, EntityClassification.MONSTER).size(2.0F, 2.75F), "dutchrat");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
