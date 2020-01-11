@@ -1,6 +1,9 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
@@ -15,6 +18,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -28,6 +32,7 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
     private List<LivingEntity> entitiesAtRing;
     private boolean field_213948_i;
     private int field_213949_j;
+    private int ticksToExplode = -1;
 
     public TileEntityDutchratBell() {
         super(RatsTileEntityRegistry.DUTCHRAT_BELL);
@@ -56,11 +61,32 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
             this.field_213943_a = 0;
         }
 
-        if (this.field_213943_a >= 5 && this.field_213949_j == 0 && this.hasRaidersNearby()) {
+        if (this.field_213943_a >= 5 && this.field_213949_j == 0) {
             this.field_213948_i = true;
             this.func_222833_c();
+            if(world.isDaytime()){
+                AxisAlignedBB bb = new AxisAlignedBB(this.pos.getX() - 10, this.pos.getY() - 10, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 10, this.pos.getZ() + 10);
+                for(PlayerEntity players : world.getEntitiesWithinAABB(PlayerEntity.class, bb)){
+                    players.sendStatusMessage(new TranslationTextComponent("entity.rats.dutchrat.daytime"), true);
+                }
+            }else if(ticksToExplode == -1){
+                EntityDutchrat dutchrat = new EntityDutchrat(RatsEntityRegistry.DUTCHRAT, world);
+                dutchrat.setPosition(this.pos.getX() + 0.5D, this.pos.getY() + 10D, this.pos.getZ() + 0.5D);
+                dutchrat.setHomePosAndDistance(pos, 20);
+                dutchrat.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+                if(!world.isRemote){
+                    world.addEntity(dutchrat);
+                }
+                ticksToExplode = 0;
+            }
         }
-
+        if(ticksToExplode > -1){
+            ticksToExplode++;
+        }
+        if(ticksToExplode == 100){
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1, false);
+            world.destroyBlock(pos, false);
+        }
         if (this.field_213948_i) {
             if (this.field_213949_j < 40) {
                 ++this.field_213949_j;

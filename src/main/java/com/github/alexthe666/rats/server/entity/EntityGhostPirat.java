@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -42,6 +43,16 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
             }
         }));
         this.targetSelector.addGoal(2, new RatAIHurtByTarget(this));
+    }
+
+    public boolean canDigHoles() {
+        return false;
+    }
+
+    protected void switchNavigator(int type) {
+        this.moveController = new MovementController(this);
+        this.navigator = new RatPathPathNavigateGround(this, world);
+        this.navigatorType = 1;
     }
 
     protected void registerAttributes() {

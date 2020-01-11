@@ -22,7 +22,9 @@ public class RenderDutchrat extends MobRenderer<EntityDutchrat, ModelFlyingDutch
         this.addLayer(new LayerDutchratHelmet(this));
         this.addLayer(new HeldItemLayer(this) {
             public void render(LivingEntity LivingEntityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-                super.render(LivingEntityIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+                if(LivingEntityIn instanceof EntityDutchrat && !((EntityDutchrat) LivingEntityIn).hasThrownSword()){
+                    super.render(LivingEntityIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+                }
             }
 
             protected void translateToHand(HandSide p_191361_1_) {
@@ -37,6 +39,7 @@ public class RenderDutchrat extends MobRenderer<EntityDutchrat, ModelFlyingDutch
                 GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.scalef(1.5F, 1.5F, 1.5F);
                 GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
+                GlStateManager.enableLighting();
             }
         });
     }

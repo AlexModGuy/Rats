@@ -874,7 +874,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         } else if (!inTrap && deadInTrapProgress > 0.0F) {
             deadInTrapProgress -= 1F;
         }
-        if (digCooldown <= 0 && RatConfig.ratsDigBlocks && !this.isTamed()) {
+        if (digCooldown <= 0 && RatConfig.ratsDigBlocks && this.canDigHoles()) {
             findDigTarget();
             digTarget();
         }
@@ -1276,6 +1276,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distanceSq(this.posX, this.posY, this.posZ, true) > 15.0D * 15.0D || this.world.getBlockState(this.jukeboxPos).getBlock() != Blocks.JUKEBOX)) {
             this.setDancing(false);
         }
+    }
+
+    public boolean canDigHoles() {
+        return !this.isTamed();
     }
 
     private boolean inCageLogic() {

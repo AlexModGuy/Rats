@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
@@ -18,18 +18,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityRatlanteanFlame extends FireballEntity {
+public class EntityRatlanteanFlame extends AbstractFireballEntity {
 
     public EntityRatlanteanFlame(EntityType type, World worldIn) {
         super(type, worldIn);
     }
 
     public EntityRatlanteanFlame(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
-        super(worldIn, shooter, accelX, accelY, accelZ);
+        super(RatsEntityRegistry.RATLANTEAN_FLAME, shooter.posX, shooter.posY, shooter.posZ, accelX, accelY, accelZ, worldIn);
     }
 
-    public EntityRatlanteanFlame(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
-        super(worldIn, x, y, z, accelX, accelY, accelZ);
+    public EntityRatlanteanFlame(EntityType type, World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
+        super(type, x, y, z, accelX, accelY, accelZ, worldIn);
     }
 
     public EntityRatlanteanFlame(FMLPlayMessages.SpawnEntity spawnEntity, World world) {

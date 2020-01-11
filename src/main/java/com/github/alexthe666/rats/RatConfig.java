@@ -16,6 +16,8 @@ public class RatConfig {
     public static float ratlanteanAutomatonAttack = 6F;
     public static float neoRatlanteanHealth = 300F;
     public static float neoRatlanteanAttack = 8F;
+    public static float dutchratHealth = 400F;
+    public static float dutchratAttack = 8F;
     public static boolean ratsSpawnLikeMonsters = true;
     public static boolean cheesemaking = true;
     public static boolean plagueRats = true;

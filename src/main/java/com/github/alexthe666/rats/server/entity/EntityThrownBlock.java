@@ -7,10 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -122,6 +119,7 @@ public class EntityThrownBlock extends Entity {
         } else {
             this.remove();
         }
+        this.move(MoverType.SELF, this.getMotion());
     }
 
     public boolean canEntityBeSeen(Entity entityIn) {

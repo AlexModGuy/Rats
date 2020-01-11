@@ -42,7 +42,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             return entity.isAlive() && !(entity instanceof IRatlantean);
         }
     };
-    private final ServerBossInfo bossInfo = (new ServerBossInfo(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS));
+    private final ServerBossInfo bossInfo = (new ServerBossInfo(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS));
     private int blockBreakCounter;
     private int animationTick;
     private boolean useRangedAttack = false;

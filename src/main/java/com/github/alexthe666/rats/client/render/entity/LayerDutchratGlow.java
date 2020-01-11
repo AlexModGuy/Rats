@@ -31,6 +31,7 @@ public class LayerDutchratGlow extends LayerRenderer<EntityDutchrat, ModelFlying
         this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.enableLighting();
         GL11.glPopMatrix();
+        this.ratRenderer.func_217758_e(rat);
 
         GL11.glPushMatrix();
         this.ratRenderer.bindTexture(GLOW_2);
@@ -41,9 +42,10 @@ public class LayerDutchratGlow extends LayerRenderer<EntityDutchrat, ModelFlying
         gamerenderer.setupFogColor(true);
         this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         gamerenderer.setupFogColor(false);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         this.ratRenderer.func_217758_e(rat);
-        GlStateManager.disableLighting();
         GlStateManager.disableBlend();
+        GlStateManager.disableLighting();
         GL11.glPopMatrix();
     }
 
