@@ -13,6 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -113,11 +114,11 @@ public class ItemGenericFood extends Item {
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (this == RatsItemRegistry.RAT_BURGER) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_burger.desc"));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_burger.desc").applyTextStyle(TextFormatting.GRAY));
         }
         if (this == RatsItemRegistry.CONTAMINATED_FOOD) {
-            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc0"));
-            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc1"));
+            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc0").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc1").applyTextStyle(TextFormatting.GRAY));
         }
     }
 }

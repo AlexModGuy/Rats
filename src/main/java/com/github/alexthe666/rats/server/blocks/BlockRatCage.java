@@ -11,7 +11,6 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,6 +31,8 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -83,9 +84,9 @@ public class BlockRatCage extends Block {
         this.setRegistryName(RatsMod.MODID, name);
     }
 
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("tile.rats.rat_cage.desc0"));
-        tooltip.add(I18n.format("tile.rats.rat_cage.desc1"));
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tile.rats.rat_cage.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tile.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));
     }
 
     public BlockRenderLayer getRenderLayer() {

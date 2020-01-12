@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -77,7 +77,7 @@ public class ItemRatFlute extends Item {
                     }
                 }
                 player.swingArm(hand);
-                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount), true);
+                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).applyTextStyle(TextFormatting.GRAY), true);
                 worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_FLUTE, SoundCategory.NEUTRAL, 1, 1.25F);
             }
         }
@@ -85,11 +85,11 @@ public class ItemRatFlute extends Item {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc0"));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1"));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1").applyTextStyle(TextFormatting.GRAY));
         if (stack.getTag() != null) {
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(stack.getTag().getInt("Command"), 0, RatCommand.values().length - 1)];
-            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())));
+            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())).applyTextStyle(TextFormatting.GRAY));
 
         }
     }

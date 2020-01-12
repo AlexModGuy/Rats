@@ -12,6 +12,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -42,7 +43,7 @@ public class ItemCheeseStick extends Item {
         RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
         Entity rat = null;
         ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
-        if (stack.getTag().getUniqueId("RatUUID") != null) {
+        if (stack.getTag() != null && stack.getTag().hasUniqueId("RatUUID")) {
             if (!context.getWorld().isRemote() && context.getWorld() instanceof ServerWorld) {
                 rat = ((ServerWorld)context.getWorld()).getEntityByUuid(stack.getTag().getUniqueId("RatUUID"));
             }
@@ -95,7 +96,7 @@ public class ItemCheeseStick extends Item {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc0"));
-        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc1"));
+        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc1").applyTextStyle(TextFormatting.GRAY));
     }
 }

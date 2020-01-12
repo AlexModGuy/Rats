@@ -2,8 +2,10 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PotionEntity;
+import net.minecraft.entity.projectile.ProjectileItemEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -15,7 +17,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
-public class EntityVialOfSentience extends PotionEntity {
+public class EntityVialOfSentience extends ProjectileItemEntity implements IRendersAsItem {
 
     public EntityVialOfSentience(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -23,6 +25,14 @@ public class EntityVialOfSentience extends PotionEntity {
 
     public EntityVialOfSentience(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
         this(RatsEntityRegistry.VIAL_OF_SENTIENCE, worldIn);
+    }
+
+    public EntityVialOfSentience(World worldIn, LivingEntity throwerIn) {
+        super(RatsEntityRegistry.VIAL_OF_SENTIENCE, throwerIn, worldIn);
+    }
+
+    public EntityVialOfSentience(World worldIn, double x, double y, double z) {
+        super(RatsEntityRegistry.VIAL_OF_SENTIENCE, x, y, z, worldIn);
     }
 
     public ItemStack getPotion() {
@@ -56,6 +66,11 @@ public class EntityVialOfSentience extends PotionEntity {
             }
         }
         this.world.playEvent(2002, new BlockPos(this), 0XFEFE7E);
+    }
+
+    @Override
+    protected Item func_213885_i() {
+        return RatsItemRegistry.VIAL_OF_SENTIENCE;
     }
 
     public ItemStack getItem() {

@@ -5,7 +5,9 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
+import com.github.alexthe666.rats.server.message.MessageSwingArm;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,6 +37,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -42,7 +45,6 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -155,8 +157,9 @@ public class CommonEvents {
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
         ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
         /*if (TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack)) {
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
         }*/
+        RatsCustomEvents.onPlayerSwing(event.getPlayer(), itemstack);
+        RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
         if (event.getEntityPlayer().isSneaking() && !event.getEntityPlayer().getPassengers().isEmpty()) {
             for (Entity passenger : event.getEntityPlayer().getPassengers()) {
                 if (passenger instanceof EntityRat) {
@@ -252,7 +255,25 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
-            event.setUseBlock(Event.Result.DENY);
+            event.setCanceled(true);
+            RatsMod.PROXY.setCheeseStaffContext(event.getPos(), event.getFace());
+            Entity rat = null;
+            ItemStack stack = event.getPlayer().getHeldItem(event.getHand());
+            if (stack.getTag() != null && stack.getTag().hasUniqueId("RatUUID")) {
+                if (!event.getWorld().isRemote() && event.getWorld() instanceof ServerWorld) {
+                    rat = ((ServerWorld) event.getWorld()).getEntityByUuid(stack.getTag().getUniqueId("RatUUID"));
+                }
+            }
+            event.getPlayer().swingArm(event.getHand());
+            if (!event.getWorld().isRemote) {
+                if (rat != null && rat instanceof EntityRat) {
+                    RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+                    EntityRat boundRat = (EntityRat) rat;
+                    RatsMod.PROXY.setRefrencedRat(boundRat);
+                    event.getPlayer().swingArm(event.getHand());
+                }
+            }
+            RatsMod.PROXY.openCheeseStaffGui();
         }
         if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
             if (!RatConfig.disableRatlantis) {

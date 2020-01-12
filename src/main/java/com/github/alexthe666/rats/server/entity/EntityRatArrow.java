@@ -42,40 +42,42 @@ public class EntityRatArrow extends AbstractArrowEntity {
 
     protected void onHit(RayTraceResult raytraceResultIn) {
         super.onHit(raytraceResultIn);
-        Entity entity = null;
-        BlockPos pos = null;
-        if(raytraceResultIn instanceof EntityRayTraceResult){
-            entity = ((EntityRayTraceResult)raytraceResultIn).getEntity();
-            pos = new BlockPos(((EntityRayTraceResult)raytraceResultIn).getEntity());
-        }
-        EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
-        CompoundNBT ratTag = new CompoundNBT();
-        if (stack.getTag() != null && !stack.getTag().getCompound("Rat").isEmpty()) {
-            ratTag = stack.getTag().getCompound("Rat");
-        }
-        rat.readAdditional(ratTag);
-        if(raytraceResultIn instanceof BlockRayTraceResult){
-            pos = ((BlockRayTraceResult)raytraceResultIn).getPos();
-
-        }
-        if (pos == null) {
-            pos = new BlockPos(raytraceResultIn.getHitVec());
-        } else {
-            if (raytraceResultIn instanceof BlockRayTraceResult && ((BlockRayTraceResult)raytraceResultIn).getFace() != null) {
-                pos = pos.offset(((BlockRayTraceResult)raytraceResultIn).getFace());
+        if(raytraceResultIn.getType() != RayTraceResult.Type.MISS) {
+            Entity entity = null;
+            BlockPos pos = null;
+            if (raytraceResultIn instanceof EntityRayTraceResult) {
+                entity = ((EntityRayTraceResult) raytraceResultIn).getEntity();
+                pos = new BlockPos(((EntityRayTraceResult) raytraceResultIn).getEntity());
             }
-        }
-        rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-        if (!world.isRemote) {
-            world.addEntity(rat);
-        }
-        if (entity != null && entity instanceof LivingEntity && !rat.isOnSameTeam(entity)) {
-            rat.setAttackTarget((LivingEntity) entity);
-        }
-        if (this.inGround) {
-            this.remove();
+            EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
+            CompoundNBT ratTag = new CompoundNBT();
+            if (stack.getTag() != null && !stack.getTag().getCompound("Rat").isEmpty()) {
+                ratTag = stack.getTag().getCompound("Rat");
+            }
+            rat.readAdditional(ratTag);
+            if (raytraceResultIn instanceof BlockRayTraceResult) {
+                pos = ((BlockRayTraceResult) raytraceResultIn).getPos();
+
+            }
+            if (pos == null) {
+                pos = new BlockPos(raytraceResultIn.getHitVec());
+            } else {
+                if (raytraceResultIn instanceof BlockRayTraceResult && ((BlockRayTraceResult) raytraceResultIn).getFace() != null) {
+                    pos = pos.offset(((BlockRayTraceResult) raytraceResultIn).getFace());
+                }
+            }
+            rat.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
             if (!world.isRemote) {
-                this.entityDropItem(getArrowStack(), 0.0F);
+                world.addEntity(rat);
+            }
+            if (entity != null && entity instanceof LivingEntity && !rat.isOnSameTeam(entity)) {
+                rat.setAttackTarget((LivingEntity) entity);
+            }
+            if (this.inGround) {
+                this.remove();
+                if (!world.isRemote) {
+                    this.entityDropItem(getArrowStack(), 0.0F);
+                }
             }
         }
     }

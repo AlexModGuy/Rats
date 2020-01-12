@@ -11,6 +11,7 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,18 +40,18 @@ public class ItemHat extends ArmorItem {
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
-            tooltip.add(new TranslationTextComponent("item.rats.archeologist_hat.desc"));
+            tooltip.add(new TranslationTextComponent("item.rats.archeologist_hat.desc").applyTextStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK) {
-            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc"));
+            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").applyTextStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.BLACK_DEATH_MASK) {
-            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc"));
-            tooltip.add(new TranslationTextComponent("item.rats.black_death_mask.desc"));
+            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.black_death_mask.desc").applyTextStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.RAT_FEZ) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc0"));
-            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc1"));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc0").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc1").applyTextStyle(TextFormatting.GRAY));
         }
     }
 

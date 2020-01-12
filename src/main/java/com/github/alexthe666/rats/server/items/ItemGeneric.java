@@ -5,6 +5,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -28,7 +29,7 @@ public class ItemGeneric extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc" + i));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc" + i).applyTextStyle(TextFormatting.GRAY));
             }
         }
     }

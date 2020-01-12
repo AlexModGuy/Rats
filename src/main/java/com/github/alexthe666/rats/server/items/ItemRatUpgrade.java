@@ -1,14 +1,15 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -50,11 +51,11 @@ public class ItemRatUpgrade extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + i + ".desc"));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + i + ".desc").applyTextStyle(TextFormatting.GRAY));
 
             }
         } else {
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc"));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
         }
     }
 }

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.villager.RatsVillagerTrades;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -138,7 +137,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         double d2 = d0 - this.posY;
         double d3 = target.posZ + target.getMotion().z - this.posZ;
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3);
-        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(RatsEntityRegistry.PURIFYING_LIQUID, this.world, this, new ItemStack(RatsItemRegistry.PURIFYING_LIQUID));
+        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(this.world, this);
         entitypotion.rotationPitch -= -20.0F;
         entitypotion.shoot(d1, d2 + (double) (f * 0.2F), d3, 0.75F, 8.0F);
         this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);

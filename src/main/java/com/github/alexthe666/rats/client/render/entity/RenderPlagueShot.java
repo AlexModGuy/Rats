@@ -19,7 +19,7 @@ public class RenderPlagueShot extends EntityRenderer<EntityPlagueShot> {
         super(Minecraft.getInstance().getRenderManager());
     }
 
-    public void render(EntityPlagueShot entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntityPlagueShot entity, double x, double y, double z, float entityYaw, float partialTicks) {
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
         GlStateManager.disableCull();

@@ -3,9 +3,11 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieVillagerEntity;
-import net.minecraft.entity.projectile.PotionEntity;
+import net.minecraft.entity.projectile.ProjectileItemEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -21,7 +23,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
-public class EntityPurifyingLiquid extends PotionEntity {
+public class EntityPurifyingLiquid extends ProjectileItemEntity implements IRendersAsItem {
 
     public EntityPurifyingLiquid(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -31,15 +33,14 @@ public class EntityPurifyingLiquid extends PotionEntity {
         this(RatsEntityRegistry.PURIFYING_LIQUID, worldIn);
     }
 
-    public EntityPurifyingLiquid(EntityType type, World worldIn, LivingEntity throwerIn, ItemStack potionDamageIn) {
-        this(type, worldIn);
-        this.owner = throwerIn;
+    public EntityPurifyingLiquid(World worldIn, LivingEntity throwerIn) {
+        super(RatsEntityRegistry.PURIFYING_LIQUID, throwerIn, worldIn);
     }
 
-    public EntityPurifyingLiquid(EntityType type, World worldIn, double x, double y, double z, ItemStack potionDamageIn) {
-        this(type, worldIn);
-        this.setPosition(x, y, z);
+    public EntityPurifyingLiquid(World worldIn, double x, double y, double z) {
+        super(RatsEntityRegistry.PURIFYING_LIQUID, x, y, z, worldIn);
     }
+
 
     public ItemStack getPotion() {
         return new ItemStack(RatsItemRegistry.PURIFYING_LIQUID);
@@ -87,8 +88,18 @@ public class EntityPurifyingLiquid extends PotionEntity {
         }
     }
 
+    @Override
+    protected Item func_213885_i() {
+        return RatsItemRegistry.PURIFYING_LIQUID;
+    }
+
     public ItemStack getItem() {
         return new ItemStack(RatsItemRegistry.PURIFYING_LIQUID);
+    }
+
+    @Override
+    protected void registerData() {
+
     }
 
     @Override

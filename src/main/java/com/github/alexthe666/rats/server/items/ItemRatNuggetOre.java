@@ -19,6 +19,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -70,7 +71,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_nugget_ore.desc"));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_nugget_ore.desc").applyTextStyle(TextFormatting.GRAY));
     }
 
     public ITextComponent getDisplayName(ItemStack stack) {
@@ -81,7 +82,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
         } else {
             oreName += " ";
         }
-        return new TranslationTextComponent(this.getTranslationKey(stack), oreName);
+        return new TranslationTextComponent(this.getTranslationKey(stack), oreName).applyTextStyle(TextFormatting.GRAY);
     }
 
     @Override

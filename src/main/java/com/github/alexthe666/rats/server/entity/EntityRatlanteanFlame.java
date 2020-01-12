@@ -25,7 +25,7 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
     }
 
     public EntityRatlanteanFlame(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
-        super(RatsEntityRegistry.RATLANTEAN_FLAME, shooter.posX, shooter.posY, shooter.posZ, accelX, accelY, accelZ, worldIn);
+        super(RatsEntityRegistry.RATLANTEAN_FLAME, shooter.posX, shooter.posY + shooter.getHeight() * 0.5D, shooter.posZ, accelX, accelY, accelZ, worldIn);
     }
 
     public EntityRatlanteanFlame(EntityType type, World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {

@@ -17,6 +17,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -78,17 +79,17 @@ public class ItemRatSack extends Item {
                 }
             }
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contains", ratCount));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contains", ratCount).applyTextStyle(TextFormatting.GRAY));
         if (!ratNames.isEmpty()) {
             for (int i = 0; i < ratNames.size(); i++) {
                 if (i < 3) {
-                    tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contain_rat", ratNames.get(i)));
+                    tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contain_rat", ratNames.get(i)).applyTextStyle(TextFormatting.GRAY));
                 } else {
                     break;
                 }
             }
             if (ratNames.size() > 3) {
-                tooltip.add(new TranslationTextComponent("item.rats.rat_sack.and_more"));
+                tooltip.add(new TranslationTextComponent("item.rats.rat_sack.and_more").applyTextStyle(TextFormatting.GRAY));
             }
         }
     }

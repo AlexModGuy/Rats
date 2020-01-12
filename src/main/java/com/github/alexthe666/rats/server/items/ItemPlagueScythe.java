@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -28,7 +29,7 @@ public class ItemPlagueScythe extends SwordItem {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc"));
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
     }
 
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
@@ -50,9 +51,8 @@ public class ItemPlagueScythe extends SwordItem {
             LivingEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
             EntityPlagueShot shot = new EntityPlagueShot(RatsEntityRegistry.PLAGUE_SHOT, LivingEntity.world, LivingEntity, totalDmg * 0.5F);
             shot.shoot(LivingEntity, LivingEntity.rotationPitch, LivingEntity.rotationYaw, 0.0F, 0.8F, 1.0F);
-            if (!LivingEntity.world.isRemote) {
-                LivingEntity.world.addEntity(shot);
-            }
+            LivingEntity.world.addEntity(shot);
+
         }
         return super.onItemUseFinish(stack, worldIn, LivingEntity);
     }

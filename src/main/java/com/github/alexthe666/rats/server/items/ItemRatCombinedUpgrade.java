@@ -19,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -56,9 +57,9 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc"));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").applyTextStyle(TextFormatting.GRAY));
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc"));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").applyTextStyle(TextFormatting.GRAY));
         CompoundNBT tag = stack.getTag();
 
         if (tag != null && tag.contains("Items", 9)) {

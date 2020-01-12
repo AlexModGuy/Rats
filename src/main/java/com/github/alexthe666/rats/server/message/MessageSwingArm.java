@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.rats.server.events.RatsCustomEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -21,7 +23,7 @@ public class MessageSwingArm {
             PlayerEntity player = context.get().getSender();
             if(player != null) {
                 //TODO: Wait for tinkers construct update
-                //TinkersCompatBridge.onPlayerSwing(player, player.getHeldItem(Hand.MAIN_HAND));
+                RatsCustomEvents.onPlayerSwing(player, player.getHeldItem(Hand.MAIN_HAND));
             }
         }
     }

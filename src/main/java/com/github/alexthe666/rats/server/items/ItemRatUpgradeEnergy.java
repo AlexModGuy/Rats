@@ -1,11 +1,11 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatConfig;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -36,8 +36,8 @@ public class ItemRatUpgradeEnergy extends ItemRatUpgrade {
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         int transferRate = getRFTransferRate(stack.getItem());
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc0"));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc1"));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.transfer_rate", transferRate));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.transfer_rate", transferRate).applyTextStyle(TextFormatting.GRAY));
     }
 }
