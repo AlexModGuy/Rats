@@ -468,6 +468,7 @@
   "entity.rats.rat_capture_net": "Rat Capture Net",
   "entity.rats.ghost_pirat": "Ghost Pirat",
   "entity.rats.dutchrat": "Flying Dutchrat",
+  "entity.rats.dutchrat.daytime": "The Flying Dutchrat can only manifest at night.",
   "entity.rats.dutchrat_sword": "Flying Dutchrat Sword",
   "container.rat_crafting_table": "Rat Crafting Table",
   "container.rat_crafting_table.required": "Required Items",

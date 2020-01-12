@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "FEF",
+    "FGF"
+  ],
+  "key": {
+    "W": {
+      "item": "rats:pirat_log"
+    },
+    "F": {
+      "item": "rats:pirat_fence"
+    },
+    "E": {
+      "item": "rats:ghost_pirat_ectoplasm"
+    },
+    "G": {
+      "item": "rats:gem_of_ratlantis"
+    }
+
+  },
+  "result": {
+    "item": "rats:dutchrat_bell"
+  }
+}

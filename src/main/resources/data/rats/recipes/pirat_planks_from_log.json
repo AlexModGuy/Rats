@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "D"
+  ],
+  "key": {
+    "D": {
+      "item": "rats:pirat_log"
+    }
+  },
+  "result": {
+    "item": "rats:pirat_planks",
+    "count": 4
+  }
+}

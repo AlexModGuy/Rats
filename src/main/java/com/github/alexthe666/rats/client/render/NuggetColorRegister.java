@@ -76,7 +76,7 @@ public class NuggetColorRegister {
                 }
             }
             int[] largest = frame[0];
-            bufferedImage.setRGB(0, i * iconHeight, iconWidth, iconHeight, largest, 0, iconWidth);
+            bufferedImage.setRGB(0, i * iconHeight, iconWidth, iconHeight, largest, 0, 0);
         }
         return bufferedImage;
     }

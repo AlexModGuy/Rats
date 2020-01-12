@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
@@ -48,6 +49,8 @@ public class RatUtils {
         }
     };
     public static final ResourceLocation PIRAT_ONLY_BLOCKS = new ResourceLocation("rats", "pirat_blocks");
+    public static final ResourceLocation SEED_ITEMS = new ResourceLocation("forge", "seeds");
+    public static final ResourceLocation CHEESE_ITEMS = new ResourceLocation("forge", "cheese");
 
     public static boolean isMilk(ItemStack stack) {
         if (stack.getItem() == Items.MILK_BUCKET) {
@@ -67,18 +70,7 @@ public class RatUtils {
 
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
-        return false;
-        /*
-        TODO: Seeds
-        if (item instanceof ItemSeeds && item != Items.NETHER_WART) {
-            return true;
-        }
-        NonNullList<ItemStack> listAllseed = OreDictionary.getOres("listAllseed");
-        NonNullList<ItemStack> listAllSeeds = OreDictionary.getOres("listAllSeeds");
-        NonNullList<ItemStack> seed = OreDictionary.getOres("seed");
-        NonNullList<ItemStack> seeds = OreDictionary.getOres("seeds");
-        return listAllseed.contains(stack) || listAllSeeds.contains(stack) || seed.contains(stack) || seeds.contains(stack);
-         */
+        return ItemTags.getCollection().getOrCreate(RatUtils.SEED_ITEMS).contains(item);
     }
 
     public static boolean doesContainFood(IInventory inventory) {
@@ -340,8 +332,7 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return cheese.getItem() == RatsItemRegistry.CHEESE; //TODO: Cheese
-        // || OreDictionary.getOres("foodCheese", false).contains(cheese);
+        return ItemTags.getCollection().getOrCreate(RatUtils.CHEESE_ITEMS).contains(cheese.getItem());
     }
 
     @Nullable

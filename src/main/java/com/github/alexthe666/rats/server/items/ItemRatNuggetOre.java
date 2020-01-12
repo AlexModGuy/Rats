@@ -15,8 +15,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-import java.util.Map;
-
 public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     private static final ItemStack IRON_INGOT = new ItemStack(Items.IRON_INGOT);
@@ -28,8 +26,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public static ItemStack getIngot(ItemStack poopItem, ItemStack fallback) {
         if (poopItem.getTag() != null) {
-            CompoundNBT poopTag = poopItem.getTag().getCompound("IngotItem");
-
+            CompoundNBT poopTag = poopItem.getTag().getCompound("OreItem");
             ItemStack oreItem = ItemStack.read(poopTag);
             return oreItem.isEmpty() ? fallback : oreItem;
         }
@@ -38,13 +35,13 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public ITextComponent getDisplayName(ItemStack stack) {
         String oreName = getIngot(stack, IRON_INGOT).getDisplayName().getFormattedText();
-        String removedString = I18n.format("item.rats.rat_nugget_remove_tag.name");
+        String removedString = I18n.format("item.rats.rat_nugget_remove_tag");
         if (oreName.contains(removedString)) {
             oreName = oreName.replace(removedString, "");
         } else {
             oreName += " ";
         }
-        return new TranslationTextComponent(this.getTranslationKey(stack) + ".name", oreName);
+        return new TranslationTextComponent(this.getTranslationKey(stack), oreName);
     }
 
     @Override
@@ -61,17 +58,14 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            for (Map.Entry<ItemStack, ItemStack> entry : RatsNuggetRegistry.ORE_TO_INGOTS.entrySet()) {
-                ItemStack oreStack = entry.getKey();
-                ItemStack ingotStack = entry.getValue();
+            RatsNuggetRegistry.init();
+            for (ItemStack entry : RatsNuggetRegistry.ORE_TO_INGOTS) {
+                ItemStack oreStack = entry;
                 ItemStack stack = new ItemStack(this);
                 CompoundNBT poopTag = new CompoundNBT();
                 CompoundNBT oreTag = new CompoundNBT();
                 oreStack.write(oreTag);
-                CompoundNBT ingotTag = new CompoundNBT();
-                ingotStack.write(ingotTag);
                 poopTag.put("OreItem", oreTag);
-                poopTag.put("IngotItem", ingotTag);
                 stack.setTag(poopTag);
                 ItemStack poopyStack = new ItemStack(this, 1);
                 poopyStack.setTag(poopTag);

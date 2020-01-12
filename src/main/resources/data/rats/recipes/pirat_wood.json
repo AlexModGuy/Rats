@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DD",
+    "DD"
+  ],
+  "key": {
+    "D": {
+      "item": "rats:pirat_log"
+    }
+  },
+  "result": {
+    "item": "rats:pirat_wood",
+    "count": 3
+  }
+}

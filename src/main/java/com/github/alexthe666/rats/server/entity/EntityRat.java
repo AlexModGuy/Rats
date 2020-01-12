@@ -894,10 +894,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     CompoundNBT poopTag = new CompoundNBT();
                     CompoundNBT oreTag = new CompoundNBT();
                     ItemRatUpgradeOreDoubling.getProcessedOre(this.getHeldItem(Hand.MAIN_HAND)).write(oreTag);
-                    CompoundNBT ingotTag = new CompoundNBT();
-                    ItemRatUpgradeOreDoubling.getProcessedIngot(this.getHeldItem(Hand.MAIN_HAND)).write(ingotTag);
                     poopTag.put("OreItem", oreTag);
-                    poopTag.put("IngotItem", ingotTag);
                     pooStack.setTag(poopTag);
                 }
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {

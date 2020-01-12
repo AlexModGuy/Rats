@@ -11,12 +11,12 @@ public class ItemRatUpgradeOreDoubling extends ItemRatUpgrade {
 
     public static boolean isProcessable(ItemStack stack) {
         ItemStack one = new ItemStack(stack.getItem(), 1);
-        return RatsNuggetRegistry.ORE_TO_INGOTS.get(one) != null;
+        return RatsNuggetRegistry.ORE_TO_INGOTS.contains(one);
     }
 
     public static ItemStack getProcessedIngot(ItemStack stack) {
         ItemStack one = new ItemStack(stack.getItem(), 1);
-        return RatsNuggetRegistry.ORE_TO_INGOTS.get(one);
+        return one;
     }
 
     public static ItemStack getProcessedOre(ItemStack stack) {

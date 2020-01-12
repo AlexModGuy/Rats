@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "rats:pirat_log",
+    "rats:stripped_pirat_log",
+    "rats:pirat_wood",
+    "rats:stripped_pirat_wood"
+  ]
+}

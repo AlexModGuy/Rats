@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    "DUD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "tag": "minecraft:planks"
+    },
+    "U": {
+      "item": "rats:ghost_pirat_ectoplasm",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:pirat_planks",
+    "count": 8
+  }
+}

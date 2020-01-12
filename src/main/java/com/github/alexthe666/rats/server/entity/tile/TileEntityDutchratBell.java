@@ -64,20 +64,22 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
         if (this.field_213943_a >= 5 && this.field_213949_j == 0) {
             this.field_213948_i = true;
             this.func_222833_c();
-            if(world.isDaytime()){
-                AxisAlignedBB bb = new AxisAlignedBB(this.pos.getX() - 10, this.pos.getY() - 10, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 10, this.pos.getZ() + 10);
-                for(PlayerEntity players : world.getEntitiesWithinAABB(PlayerEntity.class, bb)){
-                    players.sendStatusMessage(new TranslationTextComponent("entity.rats.dutchrat.daytime"), true);
+            if(!world.isRemote) {
+                if (world.isDaytime()) {
+                    AxisAlignedBB bb = new AxisAlignedBB(this.pos.getX() - 10, this.pos.getY() - 10, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 10, this.pos.getZ() + 10);
+                    for (PlayerEntity players : world.getEntitiesWithinAABB(PlayerEntity.class, bb)) {
+                        players.sendStatusMessage(new TranslationTextComponent("entity.rats.dutchrat.daytime"), true);
+                    }
+                } else if (ticksToExplode == -1) {
+                    EntityDutchrat dutchrat = new EntityDutchrat(RatsEntityRegistry.DUTCHRAT, world);
+                    dutchrat.setPosition(this.pos.getX() + 0.5D, this.pos.getY() + 10D, this.pos.getZ() + 0.5D);
+                    dutchrat.setHomePosAndDistance(pos, 20);
+                    dutchrat.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+                    if (!world.isRemote) {
+                        world.addEntity(dutchrat);
+                        ticksToExplode = 0;
+                    }
                 }
-            }else if(ticksToExplode == -1){
-                EntityDutchrat dutchrat = new EntityDutchrat(RatsEntityRegistry.DUTCHRAT, world);
-                dutchrat.setPosition(this.pos.getX() + 0.5D, this.pos.getY() + 10D, this.pos.getZ() + 0.5D);
-                dutchrat.setHomePosAndDistance(pos, 20);
-                dutchrat.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
-                if(!world.isRemote){
-                    world.addEntity(dutchrat);
-                }
-                ticksToExplode = 0;
             }
         }
         if(ticksToExplode > -1){

@@ -261,7 +261,7 @@ public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntit
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityDutchrat rat) {
         float idleSpeed = 0.1F;
         float idleDegree = 0.1F;
-        float walkSpeed = 0.1F;
+        float walkSpeed = 0.6F;
         float walkDegree = 0.3F;
         this.bob(body1, idleSpeed, idleDegree * 7F, false, f2, 1);
         this.bob(rightArm1, idleSpeed, idleDegree * 3.5F, false, f2, 1);
