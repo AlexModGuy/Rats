@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.events;
 
 import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -13,7 +14,7 @@ import net.minecraft.util.SoundEvents;
 public class RatsCustomEvents {
     
     public static void onPlayerSwing(PlayerEntity player, ItemStack heldItem) {
-        if (player.swingProgress == 0) {
+        if (player.swingProgress == 0 && heldItem.getItem() == RatsItemRegistry.PLAGUE_SCYTHE) {
             Multimap<String, AttributeModifier> dmg = heldItem.getAttributeModifiers(EquipmentSlotType.MAINHAND);
             double totalDmg = 0;
             for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
