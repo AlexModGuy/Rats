@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public class ItemRatUpgradeOreDoubling extends ItemRatUpgrade {
@@ -10,8 +11,8 @@ public class ItemRatUpgradeOreDoubling extends ItemRatUpgrade {
 
 
     public static boolean isProcessable(ItemStack stack) {
-        ItemStack one = new ItemStack(stack.getItem(), 1);
-        return RatsNuggetRegistry.ORE_TO_INGOTS.contains(one);
+        boolean b = RatsNuggetRegistry.ORE_TO_INGOTS.contains(Block.getBlockFromItem(stack.getItem()));
+        return b;
     }
 
     public static ItemStack getProcessedIngot(ItemStack stack) {

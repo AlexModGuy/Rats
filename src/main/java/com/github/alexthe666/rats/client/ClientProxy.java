@@ -377,4 +377,6 @@ public class ClientProxy extends CommonProxy {
         refrencedItem = stack;
     }
 
+    public World getWorld(){ return Minecraft.getInstance().world; }
+
 }

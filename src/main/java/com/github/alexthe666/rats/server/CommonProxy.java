@@ -22,6 +22,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
@@ -236,4 +237,6 @@ public class CommonProxy {
 
     public void setRefrencedItem(ItemStack stack) {
     }
+
+    public World getWorld(){ return null; }
 }

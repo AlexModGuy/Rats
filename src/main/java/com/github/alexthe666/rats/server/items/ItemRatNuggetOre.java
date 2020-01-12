@@ -2,39 +2,79 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.crafting.FurnaceRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
-    private static final ItemStack IRON_INGOT = new ItemStack(Items.IRON_INGOT);
+    private static final ItemStack IRON_INGOT = new ItemStack(Blocks.IRON_ORE);
 
     public ItemRatNuggetOre() {
         super(new Item.Properties().group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, "rat_nugget_ore");
     }
 
-    public static ItemStack getIngot(ItemStack poopItem, ItemStack fallback) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack itemstack = playerIn.getHeldItem(handIn);
+        if (!playerIn.isCreative()) {
+            itemstack.shrink(1);
+        }
+        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_COMPOSTER_READY, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        ItemStack poopStack = getIngot(itemstack, IRON_INGOT, worldIn);
+        IInventory iinventory = new Inventory(poopStack);
+        FurnaceRecipe irecipe = Minecraft.getInstance().world.getRecipeManager().getRecipe(IRecipeType.SMELTING, iinventory, Minecraft.getInstance().world).orElse(null);
+        ItemStack burntItem = poopStack;
+        if(irecipe != null && !irecipe.getRecipeOutput().isEmpty()){
+            burntItem = irecipe.getRecipeOutput().copy();
+        }
+        if(burntItem != poopStack){
+            ItemStack dropStack = new ItemStack(burntItem.getItem(), 2);
+            if(!playerIn.addItemStackToInventory(dropStack)){
+                playerIn.dropItem(dropStack, false);
+            }
+        }
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemstack);
+    }
+
+    public static ItemStack getIngot(ItemStack poopItem, ItemStack fallback, @Nullable World world) {
         if (poopItem.getTag() != null) {
             CompoundNBT poopTag = poopItem.getTag().getCompound("OreItem");
             ItemStack oreItem = ItemStack.read(poopTag);
-            return oreItem.isEmpty() ? fallback : oreItem;
+            if(oreItem.isEmpty()){
+                return fallback;
+            }else{
+                return oreItem;
+            }
         }
         return fallback;
     }
 
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("item.rats.rat_nugget_ore.desc"));
+    }
+
     public ITextComponent getDisplayName(ItemStack stack) {
-        String oreName = getIngot(stack, IRON_INGOT).getDisplayName().getFormattedText();
+        String oreName = getIngot(stack, IRON_INGOT, RatsMod.PROXY.getWorld()).getDisplayName().getFormattedText();
         String removedString = I18n.format("item.rats.rat_nugget_remove_tag");
         if (oreName.contains(removedString)) {
             oreName = oreName.replace(removedString, "");
@@ -59,8 +99,8 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
             RatsNuggetRegistry.init();
-            for (ItemStack entry : RatsNuggetRegistry.ORE_TO_INGOTS) {
-                ItemStack oreStack = entry;
+            for (Block entry : RatsNuggetRegistry.ORE_TO_INGOTS) {
+                ItemStack oreStack = new ItemStack(entry);
                 ItemStack stack = new ItemStack(this);
                 CompoundNBT poopTag = new CompoundNBT();
                 CompoundNBT oreTag = new CompoundNBT();

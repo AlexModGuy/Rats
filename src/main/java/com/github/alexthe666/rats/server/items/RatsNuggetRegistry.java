@@ -1,54 +1,21 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.item.Item;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
 
 public class RatsNuggetRegistry {
-    public static ArrayList<ItemStack> ORE_TO_INGOTS = new ArrayList<>();
+    public static ArrayList<Block> ORE_TO_INGOTS = new ArrayList<>();
     private static boolean init = false;
 
     public static void init() {
         ORE_TO_INGOTS.clear();
         init = false;
         if (!init) {
-            Random random = new Random();
-            RecipeManager manager = new RecipeManager();
-            for (ResourceLocation loc : ItemTags.getCollection().getRegisteredTags()) {
-                if (loc.toString().contains("forge:ores")) {
-                    Collection<Item> items = ItemTags.getCollection().getOrCreate(loc).getAllElements();
-                    ItemStack first = ItemStack.EMPTY;
-                    try {
-                        for (Item item : items) {
-                            if (first == ItemStack.EMPTY) {
-                                first = new ItemStack(item);
-                            }
-                        }
-                    } catch (Exception e) {
-                        RatsMod.LOGGER.warn("Could not make rat nugget for " + loc.getPath());
-                    }
-                    ORE_TO_INGOTS.add(first);
-
-                }
-            }
-            for (ItemStack entry : ORE_TO_INGOTS) {
-                ItemStack oreStack = entry;
-                ItemStack stack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 1);
-                CompoundNBT poopTag = new CompoundNBT();
-                CompoundNBT oreTag = new CompoundNBT();
-                oreStack.write(oreTag);
-                CompoundNBT ingotTag = new CompoundNBT();
-                poopTag.put("OreItem", oreTag);
-                poopTag.put("IngotItem", ingotTag);
-                stack.setTag(poopTag);
+            for (Block oreBlock : Tags.Blocks.ORES.getAllElements()) {
+                ORE_TO_INGOTS.add(oreBlock);
             }
         /*for (String oreName : OreDictionary.getOreNames()) {
             if (oreName.contains("ore") && !OreDictionary.getOres(oreName).isEmpty()) {
@@ -86,8 +53,8 @@ public class RatsNuggetRegistry {
 
     public static int getNuggetMeta(ItemStack ore) {
         int count = 0;
-        for (ItemStack entry : ORE_TO_INGOTS) {
-            if (entry.isItemEqual(ore)) {
+        for (Block entry : ORE_TO_INGOTS) {
+            if (Block.getBlockFromItem(ore.getItem()) == entry) {
                 break;
             }
             count++;
