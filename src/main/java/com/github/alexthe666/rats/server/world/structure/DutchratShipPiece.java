@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.structure;
 
+import com.github.alexthe666.rats.server.world.gen.RatsDutchratShipProcessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.StructureMode;
@@ -65,13 +66,13 @@ public class DutchratShipPiece {
 
         private void func_204754_a(TemplateManager p_204754_1_) {
             Template lvt_2_1_ = p_204754_1_.getTemplateDefaulted(this.field_204756_e);
-            PlacementSettings lvt_3_1_ = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
+            PlacementSettings lvt_3_1_ = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK).addProcessor(new RatsDutchratShipProcessor());
             this.setup(lvt_2_1_, this.templatePosition, lvt_3_1_);
         }
 
         protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
             if(function.equals("load_second_half")){
-                PlacementSettings settings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
+                PlacementSettings settings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK).addProcessor(new RatsDutchratShipProcessor());
                 Template secondTemplate = manager.getTemplateDefaulted(PART_2);
                 if(secondTemplate.addBlocksToWorld(worldIn, pos, settings, 2)){
                     for(Template.BlockInfo template$blockinfo : secondTemplate.func_215381_a(pos, settings, Blocks.STRUCTURE_BLOCK)) {
