@@ -85,8 +85,8 @@ public class BlockRatCage extends Block {
     }
 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tile.rats.rat_cage.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tile.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));
     }
 
     public BlockRenderLayer getRenderLayer() {

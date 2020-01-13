@@ -82,7 +82,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
         } else {
             oreName += " ";
         }
-        return new TranslationTextComponent(this.getTranslationKey(stack), oreName).applyTextStyle(TextFormatting.GRAY);
+        return new TranslationTextComponent(this.getTranslationKey(stack), oreName);
     }
 
     @Override

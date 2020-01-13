@@ -16,6 +16,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>
     private static final ResourceLocation TEXTURE_TOGA = new ResourceLocation("rats:textures/entity/rat/toga.png");
     private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png");
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
+    private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
     private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRenderer;
 
@@ -77,6 +78,34 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>
         if (rat.hasToga()) {
             this.ratRenderer.bindTexture(TEXTURE_TOGA);
             this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        }
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
+            boolean flag = rat.isInvisible();
+            GlStateManager.depthMask(!flag);
+            this.bindTexture(TEXTURE_GHOST);
+            GlStateManager.matrixMode(5890);
+            GlStateManager.loadIdentity();
+            float f = (float)rat.ticksExisted + partialTicks;
+            GlStateManager.translatef(f * 0.01F, f * 0.01F, 0.0F);
+            GlStateManager.matrixMode(5888);
+            GlStateManager.enableBlend();
+            float f1 = 0.5F;
+            GlStateManager.color4f(0.5F, 0.5F, 0.5F, 0.8F);
+            GlStateManager.disableLighting();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+            this.getEntityModel().setModelAttributes(this.ratRenderer.getEntityModel());
+            GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+            gamerenderer.setupFogColor(true);
+            this.ratRenderer.getEntityModel().renderNoWiskers(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            gamerenderer.setupFogColor(false);
+            this.ratRenderer.func_217758_e(rat);
+            GlStateManager.matrixMode(5890);
+            GlStateManager.loadIdentity();
+            GlStateManager.matrixMode(5888);
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
+            GlStateManager.depthMask(true);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 

@@ -184,7 +184,7 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
     }
 
     public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return rand.nextInt(4) == 0 && canSpawnAtPos(world, pos) && MobEntity.func_223315_a(entityType, world, reason, pos, rand);
+        return rand.nextInt(8) == 0 && canSpawnAtPos(world, pos) && MobEntity.func_223315_a(entityType, world, reason, pos, rand);
     }
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {

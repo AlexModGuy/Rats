@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.world.BiomeRatlantis;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.inventory.container.ContainerType;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,6 +38,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static com.github.alexthe666.rats.server.world.RatsWorldRegistry.RATLANTIS_DIM;
 
@@ -174,6 +177,27 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
+        if (RatConfig.spawnRats) {
+            for (Biome biome : Biome.BIOMES) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    List<Biome.SpawnListEntry> spawnList = RatConfig.ratsSpawnLikeMonsters ? biome.getSpawns(EntityClassification.MONSTER) : biome.getSpawns(EntityClassification.CREATURE);
+                    spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
+                }
+            }
+        }
+        if (RatConfig.spawnPiper) {
+            for (Biome biome : Biome.BIOMES) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
+                    if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
+                        //3 times as likely to spawn in dark forests
+                        spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate * 3, 1, 1));
+                    } else {
+                        spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
+                    }
+                }
+            }
+        }
     }
 
     @SubscribeEvent

@@ -45,7 +45,7 @@ public class BlockGarbage extends FallingBlock {
 
 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tile.rats.garbage_pile.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.garbage_pile.desc").applyTextStyle(TextFormatting.GRAY));
     }
 
     public int getDustColor(BlockState state) {

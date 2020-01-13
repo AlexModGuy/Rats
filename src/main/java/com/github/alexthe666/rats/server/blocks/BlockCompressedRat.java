@@ -36,7 +36,7 @@ public class BlockCompressedRat extends HorizontalBlock {
     }
 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tile.rats.compressed_rat.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.compressed_rat.desc").applyTextStyle(TextFormatting.GRAY));
     }
 
 }

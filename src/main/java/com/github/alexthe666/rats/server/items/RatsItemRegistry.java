@@ -283,6 +283,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
 
+    public static final Item RAT_UPGRADE_ETHEREAL = new ItemRatUpgrade("rat_upgrade_ethereal", 1, 2);
+
     public static final Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
 
     public static final Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");

@@ -43,8 +43,8 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     }
 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tile.rats.auto_curdler.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tile.rats.auto_curdler.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.auto_curdler.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.auto_curdler.desc1").applyTextStyle(TextFormatting.GRAY));
     }
 
 

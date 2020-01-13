@@ -411,9 +411,9 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     }
 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tile.rats.rat_tube.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tile.rats.rat_tube.desc1").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tile.rats.rat_tube.desc2").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc2").applyTextStyle(TextFormatting.GRAY));
     }
 
     @Nullable

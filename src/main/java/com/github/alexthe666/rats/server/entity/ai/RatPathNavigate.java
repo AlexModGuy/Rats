@@ -24,11 +24,11 @@ public class RatPathNavigate extends GroundPathNavigator {
     }
 
 
-    protected PathFinder getPathFinder() {
+    protected PathFinder getPathFinder(int p_179679_1_) {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         this.nodeProcessor.setCanSwim(true);
-        return new RatPathFinder(this.nodeProcessor, 64, (EntityRat) entity);
+        return new RatPathFinder(this.nodeProcessor, p_179679_1_, (EntityRat) entity);
     }
 
     public Path getPathToPos(BlockPos pos, int idk) {

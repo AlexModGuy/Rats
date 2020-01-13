@@ -158,6 +158,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
        2 = flight navigator
        3 = tube navigator
        4 = aquatic navigator
+       5 = ethereal navigator
      */
     protected int navigatorType;
     private boolean inTube;
@@ -369,6 +370,39 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
+    public static boolean func_223315_a(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
+        BlockPos blockpos = p_223315_3_.down();
+        return p_223315_2_ == SpawnReason.SPAWNER || p_223315_1_.getBlockState(blockpos).canEntitySpawn(p_223315_1_, blockpos, p_223315_0_) && p_223315_4_.nextInt(10) == 0 && spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
+    }
+
+    private static boolean spawnCheck(IWorld world, BlockPos pos, Random rand){
+        int spawnRoll = RatConfig.ratSpawnDecrease;
+        if (RatUtils.canSpawnInDimension(world)) {
+            if (RatConfig.ratsSpawnLikeMonsters) {
+                if (world.getDifficulty() == Difficulty.PEACEFUL) {
+                    spawnRoll *= 2;
+                }
+                if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
+                    BlockState BlockState = world.getBlockState((pos).down());
+                    return isValidLightLevel(world, rand, pos) && BlockState.canEntitySpawn(world, pos.down(), RatsEntityRegistry.RAT);
+                }
+            } else {
+                spawnRoll /= 2;
+                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0);
+            }
+        }
+        return false;
+    }
+
+    protected static boolean isValidLightLevel(IWorld world, Random rand, BlockPos pos) {
+        if (world.getLightFor(LightType.SKY, pos) > rand.nextInt(32)) {
+            return false;
+        } else {
+            int i = world.getLight(pos);
+            return i <= rand.nextInt(8);
+        }
+    }
+
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         int spawnRoll = RatConfig.ratSpawnDecrease;
         if (RatUtils.canSpawnInDimension(world)) {
@@ -461,6 +495,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.moveController = new RatAquaticMoveHelper(this);
             this.navigator = new AquaticRatPathNavigate(this, world);
             this.navigatorType = 4;
+        } else if (type == 5) {//ethereal
+            this.moveController = new RatEtherealMoveHelper(this);
+            this.navigator = new EtherealRatPathNavigate(this, world);
+            this.navigatorType = 5;
         }
     }
 
@@ -836,6 +874,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             } else {
                 this.flyingPitch = 0;
             }
+        } else if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
+            if (!this.inTube()) {
+                this.flyingPitch = 0;
+            }
+            if (navigatorType != 5) {
+                switchNavigator(5);
+            }
+            noClip = true;
         } else {
             if (!this.inTube()) {
                 this.flyingPitch = 0;
@@ -1272,6 +1318,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distanceSq(this.posX, this.posY, this.posZ, true) > 15.0D * 15.0D || this.world.getBlockState(this.jukeboxPos).getBlock() != Blocks.JUKEBOX)) {
             this.setDancing(false);
+        }
+        if (noClip && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
+            noClip = false;
         }
     }
 
@@ -2602,5 +2651,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean isDead(){
         return dead;
+    }
+
+    public boolean hasNoGravity() {
+        return hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL) || super.hasNoGravity();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getBrightnessForRender() {
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)){
+            return 240;
+        }else{
+            return super.getBrightnessForRender();
+        }
     }
 }
