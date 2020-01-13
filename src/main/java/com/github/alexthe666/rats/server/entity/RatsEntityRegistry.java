@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.registries.ObjectHolder;
@@ -38,6 +39,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityGhostPirat> GHOST_PIRAT = registerEntity(EntityType.Builder.create(EntityGhostPirat::new, EntityClassification.MONSTER).size(1.0F, 0.75F), "ghost_pirat");
     public static final EntityType<EntityDutchrat> DUTCHRAT = registerEntity(EntityType.Builder.create(EntityDutchrat::new, EntityClassification.MONSTER).size(2.0F, 2.75F), "dutchrat");
     public static final EntityType<EntityDutchratSword> DUTCHRAT_SWORD = registerEntity(EntityType.Builder.create(EntityDutchratSword::new, EntityClassification.MISC).size(0.95F, 0.95F).setCustomClientFactory(EntityDutchratSword::new), "dutchrat_sword");
+    public static final EntityType<EntityRatfish> RATFISH = registerEntity(EntityType.Builder.create(EntityRatfish::new, EntityClassification.WATER_CREATURE).size(0.45F, 0.45F), "ratfish");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
@@ -53,5 +55,6 @@ public class RatsEntityRegistry {
         EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);
         EntitySpawnPlacementRegistry.register(GHOST_PIRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGhostPirat::canSpawn);
+        EntitySpawnPlacementRegistry.register(RATFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
     }
 }

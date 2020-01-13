@@ -3,7 +3,7 @@
   "pattern": [
     "AUB",
     "UIU",
-    "BUA"
+    "CUD"
   ],
   "key": {
     "I": {
@@ -15,6 +15,14 @@
     },
     "B": {
       "item": "rats:psionic_rat_brain",
+      "data": 0
+    },
+    "C": {
+      "item": "rats:dutchrat_wheel",
+      "data": 0
+    },
+    "D": {
+      "item": "rats:plague_scythe",
       "data": 0
     },
     "U": {

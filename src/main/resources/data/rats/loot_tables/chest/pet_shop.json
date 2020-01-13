@@ -619,7 +619,7 @@
         },
         {
           "type": "item",
-          "name": "rats:rat_tube_silver",
+          "name": "rats:rat_tube_light_gray",
           "weight": 1,
           "functions": [
             {
@@ -846,7 +846,7 @@
         },
         {
           "type": "item",
-          "name": "rats:rat_igloo_silver",
+          "name": "rats:rat_igloo_light_gray",
           "weight": 1,
           "functions": [
             {
@@ -1071,7 +1071,7 @@
         },
         {
           "type": "item",
-          "name": "rats:rat_hammock_silver",
+          "name": "rats:rat_hammock_light_gray",
           "weight": 1,
           "functions": [
             {

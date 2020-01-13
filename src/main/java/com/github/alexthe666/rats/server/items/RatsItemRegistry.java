@@ -4,9 +4,12 @@ import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
 import com.github.alexthe666.citadel.server.item.CustomToolMaterial;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
+import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
@@ -165,6 +168,10 @@ public class RatsItemRegistry {
     public static final Item GHOST_PIRAT_CUTLASS = new ItemPiratCutlass(true);
 
     public static final Item DUTCHRAT_WHEEL = new ItemGeneric("dutchrat_wheel");
+
+    public static final Item RATFISH = new ItemGenericFood(1, 0.35F, false, false, false, "ratfish");
+
+    public static final Item RATFISH_BUCKET = new FishBucketItem(RatsEntityRegistry.RATFISH, Fluids.WATER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("ratfish_bucket");
 
     public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 
