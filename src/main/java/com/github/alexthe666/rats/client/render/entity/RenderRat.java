@@ -55,7 +55,7 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
 
     protected void renderModel(EntityRat rat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         boolean flag = this.isVisible(rat);
-        boolean flag1 = !flag && !rat.isInvisibleToPlayer(Minecraft.getInstance().player);
+        boolean flag1 = !flag && !rat.isInvisibleToPlayer(Minecraft.getInstance().player) || rat.getRespawnCountdown() > 0;
         if (flag || flag1) {
             if (!this.bindEntityTexture(rat)) {
                 return;

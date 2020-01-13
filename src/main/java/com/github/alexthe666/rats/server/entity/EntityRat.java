@@ -110,6 +110,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> RESPAWN_COUNTDOWN = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -458,6 +459,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.register(DANCING, Boolean.valueOf(false));
         this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
         this.dataManager.register(HELD_RF, Integer.valueOf(0));
+        this.dataManager.register(RESPAWN_COUNTDOWN, Integer.valueOf(0));
 
     }
 
@@ -518,6 +520,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         compound.putInt("CoinCooldown", coinCooldown);
         compound.putInt("CheeseFeedings", cheeseFeedings);
         compound.putInt("TransportingRF", this.getHeldRF());
+        compound.putInt("RespawnCountdown", this.getRespawnCountdown());
         compound.putInt("Command", this.getCommandInteger());
         compound.putInt("ColorVariant", this.getColorVariant());
         compound.putBoolean("Plague", this.hasPlague());
@@ -571,6 +574,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         eatenItems = compound.getInt("EatenItems");
         cheeseFeedings = compound.getInt("CheeseFeedings");
         this.setHeldRF(compound.getInt("TransportingRF"));
+        this.setRespawnCountdown(compound.getInt("RespawnCountdown"));
         this.setCommandInteger(compound.getInt("Command"));
         this.setPlague(compound.getBoolean("Plague"));
         this.setDancing(compound.getBoolean("Dancing"));
@@ -714,6 +718,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.set(HELD_RF, Integer.valueOf(rf));
     }
 
+    public int getRespawnCountdown() {
+        return Integer.valueOf(this.dataManager.get(RESPAWN_COUNTDOWN).intValue());
+    }
+
+    public void setRespawnCountdown(int respawn) {
+        this.dataManager.set(RESPAWN_COUNTDOWN, Integer.valueOf(respawn));
+    }
+
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
@@ -777,6 +789,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     @Override
     public void livingTick() {
         this.setRatStatus(RatStatus.IDLE);
+        if(this.getRespawnCountdown() > 0){
+            this.setRespawnCountdown(this.getRespawnCountdown() - 1);
+        }
         if (this.getUpgradeSlot() != prevUpgrade) {
             this.onUpgradeChanged();
         }
@@ -1828,6 +1843,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.attackEntityFrom(DamageSource.IN_WALL, Float.MAX_VALUE);
     }
 
+    protected boolean canDropLoot() {
+        return super.canDropLoot() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL);
+    }
+
     protected void onDeathUpdate() {
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
@@ -1873,7 +1892,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     }
                 }
             }
-
+            spawnAngelCopy();
             this.remove();
             for (int k = 0; k < 20; ++k) {
                 double d2 = this.rand.nextGaussian() * 0.02D;
@@ -1895,7 +1914,25 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
             this.setOwnerId(null);
         }
+
         super.remove();
+    }
+
+    public void spawnAngelCopy(){
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL)) {
+            EntityRat copy = new EntityRat(RatsEntityRegistry.RAT, world);
+            CompoundNBT nbt = new CompoundNBT();
+            this.writeAdditional(nbt);
+            copy.readAdditional(nbt);
+            copy.setHealth(copy.getMaxHealth());
+            if(copy.getOwner() != null){
+                copy.copyLocationAndAnglesFrom(copy.getOwner());
+            }else{
+                copy.copyLocationAndAnglesFrom(this);
+            }
+            copy.setRespawnCountdown(1200);
+            world.addEntity(copy);
+        }
     }
 
     public void updateRidden() {
@@ -2422,7 +2459,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
 
     public boolean isAIDisabled() {
-        return super.isAIDisabled();
+        return super.isAIDisabled() || this.getRespawnCountdown() > 0;
     }
 
     public void setTubeTarget(BlockPos targetPosition) {
@@ -2574,6 +2611,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
+        if(this.getRespawnCountdown() > 0){
+            return true;
+        }
         if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
             return true;
         }
@@ -2593,6 +2633,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return source.getTrueSource() == null || source.getTrueSource() instanceof LivingEntity && !isOwner((LivingEntity) source.getTrueSource());
         }
         return super.isInvulnerableTo(source);
+    }
+
+    public boolean isInvulnerable() {
+        return super.isInvulnerable() || this.getRespawnCountdown() > 0;
     }
 
     @OnlyIn(Dist.CLIENT)

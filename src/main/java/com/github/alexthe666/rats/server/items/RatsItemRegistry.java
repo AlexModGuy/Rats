@@ -127,6 +127,8 @@ public class RatsItemRegistry {
 
     public static final Item SANTA_HAT = new ItemHat("santa_hat", 8);
 
+    public static final Item HALO_HAT = new ItemHat("halo_hat", 10);
+
     public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
@@ -272,6 +274,8 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_NO_FLUTE = new ItemRatUpgrade("rat_upgrade_no_flute", 0, 1);
 
     public static final Item RAT_UPGRADE_CARRAT = new ItemRatUpgrade("rat_upgrade_carrat", 1, 1);
+
+    public static final Item RAT_UPGRADE_ANGEL = new ItemRatUpgrade("rat_upgrade_angel", 2, 1);
 
     public static final Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
 
