@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GCG",
+    "CUC",
+    "AAA"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:carrot"
+    },
+    "G": {
+      "item": "minecraft:golden_carrot"
+    },
+    "A": {
+      "item": "rats:assorted_vegetables"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_carrat"
+  }
+}

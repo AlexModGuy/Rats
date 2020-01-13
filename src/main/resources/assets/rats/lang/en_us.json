@@ -329,6 +329,8 @@
   "item.rats.rat_upgrade_ethereal": "Rat Upgrade: Ethereal",
   "item.rats.rat_upgrade_ethereal0.desc": "Rat can phase through blocks",
   "item.rats.rat_upgrade_ethereal1.desc": "Rat can float through the air",
+  "item.rats.rat_upgrade_carrat": "Rat Upgrade: Carrat",
+  "item.rats.rat_upgrade_carrat0.desc": "Right click rat when hungry to eat!",
   "item.rats.rat_flute": "Rat Flute",
   "item.rats.rat_flute.desc0": "Commands all tamed rats within the local area",
   "item.rats.rat_flute.desc1": "Sneak and use to change command",

@@ -1750,6 +1750,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
+            vec3d = Vec3d.ZERO;
         }
         super.travel(vec3d);
     }
@@ -1964,6 +1965,20 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return true;
         }
         if (!super.processInteract(player, hand)) {
+            if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CARRAT)){
+                if(player.getFoodStats().needFood()){
+                    player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel() + 1);
+                    player.getFoodStats().setFoodSaturationLevel(player.getFoodStats().getSaturationLevel() + 0.1F);
+                    player.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+                    for(int i = 0; i < 8; i++) {
+                        double d0 = this.rand.nextGaussian() * 0.02D;
+                        double d1 = this.rand.nextGaussian() * 0.02D;
+                        double d2 = this.rand.nextGaussian() * 0.02D;
+                        this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.CARROT)), this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    }
+                    return true;
+                }
+            }
             if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
                 if (itemstack.getItem() == RatsItemRegistry.RAT_SACK) {
                     CompoundNBT compound = itemstack.getTag();

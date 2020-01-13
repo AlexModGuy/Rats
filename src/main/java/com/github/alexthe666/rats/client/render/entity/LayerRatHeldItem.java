@@ -34,6 +34,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
+    private static ItemStack CARROT_STACK = new ItemStack(Blocks.FERN);
     private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer;
 
     public LayerRatHeldItem(IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer) {
@@ -302,6 +303,16 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
             GlStateManager.rotatef(180, 1.0F, 0.0F, 0.0F);
             GlStateManager.scalef(2, 2, 2);
             minecraft.getItemRenderer().renderItem(TNT_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
+            GlStateManager.popMatrix();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CARRAT)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translatef(0F, -0.05F, 0.5F);
+            GlStateManager.rotatef(90, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scalef(2, 2, 2);
+            minecraft.getItemRenderer().renderItem(CARROT_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
             GlStateManager.popMatrix();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
