@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
@@ -30,7 +30,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
         double d0 = 0.5D;
         for (ItemEntity ItemEntity : world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
             ItemStack item = ItemEntity.getItem();
-            if (item.getItem() instanceof ItemRatCombinedUpgrade) {
+            if (item.getItem() instanceof ItemRatUpgradeCombined) {
                 CompoundNBT CompoundNBT1 = item.getTag();
                 int spawnedItem = 0;
                 if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {

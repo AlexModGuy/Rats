@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.inventory.ContainerRatUpgrade;
+import com.github.alexthe666.rats.server.inventory.ContainerRatUpgradeJuryRigged;
 import com.github.alexthe666.rats.server.inventory.InventoryRatUpgrade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -27,26 +27,14 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
+public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
 
-    private boolean whitelist;
-
-    public ItemRatCombinedUpgrade(String name) {
-        super(name, 1, 1, 1);
+    public ItemRatUpgradeJuryRigged(String name) {
+        super(name, 1, 1, 3);
     }
 
     public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
-        CompoundNBT tag = combiner.getTag();
-        if (tag != null && tag.contains("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(tag, nonnulllist);
-            for (ItemStack contained : nonnulllist) {
-                if (!(stack.getItem() instanceof ItemRatUpgrade) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())) {
-                    return false;
-                }
-            }
-        }
-        return combiner.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED || combiner.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE;
+        return false;
     }
 
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
@@ -56,14 +44,13 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").applyTextStyle(TextFormatting.GRAY));
-        }
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged0.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged1.desc").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").applyTextStyle(TextFormatting.GRAY));
         CompoundNBT tag = stack.getTag();
 
         if (tag != null && tag.contains("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(tag, nonnulllist);
             int i = 0;
             int j = 0;
@@ -83,42 +70,41 @@ public class ItemRatCombinedUpgrade extends ItemRatUpgrade {
     }
 
     public boolean hasEffect(ItemStack stack) {
-        if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            return true;
-        }
         CompoundNBT tag = stack.getTag();
         boolean flag = false;
         if (tag != null && tag.contains("Items", 9)) {
-            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(tag, nonnulllist);
-            flag = !nonnulllist.isEmpty();
+            flag = !nonnulllist.get(0).isEmpty() && !nonnulllist.get(1).isEmpty();
         }
         return flag;
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
-        if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            ItemStack itemStackIn = player.getHeldItem(hand);
-            if (!player.isSneaking()) {
-                RatsMod.PROXY.setRefrencedItem(itemStackIn);
-                if(!worldIn.isRemote){
-                    NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
-                        @Override
-                        public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
-                            return new ContainerRatUpgrade(p_createMenu_1_, new InventoryRatUpgrade(itemStackIn), p_createMenu_2_);
-                        }
-                        @Override
-                        public ITextComponent getDisplayName() {
-                            return ItemRatCombinedUpgrade.this.getDisplayName(itemStackIn);
-                        }
-                    });
-                }
-                //player.openGui(RatsMod.INSTANCE, 3, worldIn, 0, 0, 0);
-                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
-            }
-            return new ActionResult<ItemStack>(ActionResultType.PASS, itemStackIn);
-        } else {
-            return super.onItemRightClick(worldIn, player, hand);
+        ItemStack itemStackIn = player.getHeldItem(hand);
+        CompoundNBT tag = itemStackIn.getTag();
+        boolean flag = false;
+        if (tag != null && tag.contains("Items", 9)) {
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
+            ItemStackHelper.loadAllItems(tag, nonnulllist);
+            flag = !nonnulllist.get(0).isEmpty() && !nonnulllist.get(1).isEmpty();
         }
+        if (!player.isSneaking() && !flag) {
+            RatsMod.PROXY.setRefrencedItem(itemStackIn);
+            if (!worldIn.isRemote) {
+                NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                    @Override
+                    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+                        return new ContainerRatUpgradeJuryRigged(p_createMenu_1_, new InventoryRatUpgrade(itemStackIn), p_createMenu_2_);
+                    }
+
+                    @Override
+                    public ITextComponent getDisplayName() {
+                        return ItemRatUpgradeJuryRigged.this.getDisplayName(itemStackIn);
+                    }
+                });
+            }
+        }
+            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }
 }

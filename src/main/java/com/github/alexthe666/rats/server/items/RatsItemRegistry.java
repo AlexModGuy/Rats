@@ -187,6 +187,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_CREATIVE = new ItemRatUpgrade("rat_upgrade_creative", 3, 0);
 
+    public static final Item RAT_UPGRADE_JURY_RIGGED = new ItemRatUpgradeJuryRigged("rat_upgrade_jury_rigged");
+
     public static final Item RAT_UPGRADE_SPEED = new ItemRatUpgrade("rat_upgrade_speed");
 
     public static final Item RAT_UPGRADE_PLATTER = new ItemRatUpgrade("rat_upgrade_platter");
@@ -275,7 +277,7 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_CARRAT = new ItemRatUpgrade("rat_upgrade_carrat", 1, 1);
 
-    public static final Item RAT_UPGRADE_ANGEL = new ItemRatUpgrade("rat_upgrade_angel", 2, 1);
+    public static final Item RAT_UPGRADE_ANGEL = new ItemRatUpgrade("rat_upgrade_angel", 2, 2);
 
     public static final Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
 
@@ -293,9 +295,9 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
 
-    public static final Item RAT_UPGRADE_COMBINED = new ItemRatCombinedUpgrade("rat_upgrade_combined");
+    public static final Item RAT_UPGRADE_COMBINED = new ItemRatUpgradeCombined("rat_upgrade_combined");
 
-    public static final Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatCombinedUpgrade("rat_upgrade_combined_creative");
+    public static final Item RAT_UPGRADE_COMBINED_CREATIVE = new ItemRatUpgradeCombined("rat_upgrade_combined_creative");
 
     public static final Item RAT_NUGGET = new ItemGeneric("rat_nugget");
 

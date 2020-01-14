@@ -1923,13 +1923,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             EntityRat copy = new EntityRat(RatsEntityRegistry.RAT, world);
             CompoundNBT nbt = new CompoundNBT();
             this.writeAdditional(nbt);
+            nbt.putBoolean("NoAI", false);
+            nbt.putShort("HurtTime", (short)0);
+            nbt.putInt("HurtByTimestamp", 0);
+            nbt.putShort("DeathTime", (short)0);
             copy.readAdditional(nbt);
             copy.setHealth(copy.getMaxHealth());
-            if(copy.getOwner() != null){
-                copy.copyLocationAndAnglesFrom(copy.getOwner());
-            }else{
-                copy.copyLocationAndAnglesFrom(this);
-            }
+            copy.copyLocationAndAnglesFrom(this);
             copy.setRespawnCountdown(1200);
             world.addEntity(copy);
         }
@@ -1979,6 +1979,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
+        if(this.getRespawnCountdown() > 0){
+            return false;
+        }
         if (itemstack.getItem() == RatsItemRegistry.RAT_TOGA) {
             if (!this.hasToga()) {
                 if (!player.isCreative()) {
@@ -2472,17 +2475,31 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public ItemStack getUpgrade(Item item) {
         ItemStack stack = getUpgradeSlot();
-        if (stack.getItem() == item) {
-            return stack;
-        }
-        if (stack.getItem() instanceof ItemRatCombinedUpgrade) {
-            CompoundNBT CompoundNBT1 = stack.getTag();
-            if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                for (ItemStack stack1 : nonnulllist) {
-                    if (stack1.getItem() == item) {
-                        return stack1;
+        if(!stack.isEmpty()) {
+            if (stack.getItem() == item) {
+                return stack;
+            }
+            if (stack.getItem() instanceof ItemRatUpgradeCombined) {
+                CompoundNBT CompoundNBT1 = stack.getTag();
+                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                    for (ItemStack stack1 : nonnulllist) {
+                        if (stack1.getItem() == item) {
+                            return stack1;
+                        }
+                    }
+                }
+            }
+            if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
+                CompoundNBT CompoundNBT1 = stack.getTag();
+                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
+                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                    for (ItemStack stack1 : nonnulllist) {
+                        if (stack1.getItem() == item) {
+                            return stack1;
+                        }
                     }
                 }
             }

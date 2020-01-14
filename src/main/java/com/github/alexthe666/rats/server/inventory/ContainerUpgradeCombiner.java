@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.inventory;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
-import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -59,7 +59,7 @@ public class ContainerUpgradeCombiner extends Container {
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (itemstack1.getItem() instanceof ItemRatCombinedUpgrade) {
+                if (itemstack1.getItem() instanceof ItemRatUpgradeCombined) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }

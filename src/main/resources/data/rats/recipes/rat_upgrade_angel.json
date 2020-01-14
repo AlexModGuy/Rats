@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GHG",
+    "WUW",
+    "GTG"
+  ],
+  "key": {
+    "U": {
+      "item": "rats:rat_upgrade_basic",
+      "data": 0
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "H": {
+      "item": "rats:halo_hat"
+    },
+    "W": {
+      "item": "rats:feathery_wing"
+    },
+    "T": {
+      "item": "minecraft:totem_of_undying"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_angel"
+  }
+}

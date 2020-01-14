@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
-import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
@@ -309,14 +309,14 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
 
     public boolean canSmelt() {
         if (!this.combinerStacks.get(0).isEmpty() && this.combinerStacks.get(0).getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED) {
-            return ItemRatCombinedUpgrade.canCombineWithUpgrade(this.combinerStacks.get(0), this.combinerStacks.get(2));
+            return ItemRatUpgradeCombined.canCombineWithUpgrade(this.combinerStacks.get(0), this.combinerStacks.get(2));
         }
         return false;
     }
 
     public boolean canCombine(ItemStack combinerSlot, ItemStack toBeCombinedSlot) {
         if (!combinerSlot.isEmpty() && combinerSlot.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED) {
-            return ItemRatCombinedUpgrade.canCombineWithUpgrade(combinerSlot, toBeCombinedSlot);
+            return ItemRatUpgradeCombined.canCombineWithUpgrade(combinerSlot, toBeCombinedSlot);
         }
         return false;
     }
@@ -333,11 +333,11 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
         if (index == 3) {
             return false;
         } else if (index == 2) {
-            return stack.getItem() instanceof ItemRatUpgrade && !(stack.getItem() instanceof ItemRatCombinedUpgrade);
+            return stack.getItem() instanceof ItemRatUpgrade && !(stack.getItem() instanceof ItemRatUpgradeCombined);
         } else if (index == 1) {
             return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS;
         } else {
-            return stack.getItem() instanceof ItemRatCombinedUpgrade;
+            return stack.getItem() instanceof ItemRatUpgradeCombined;
         }
     }
 
