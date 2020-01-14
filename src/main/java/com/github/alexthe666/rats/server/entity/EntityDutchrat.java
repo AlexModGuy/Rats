@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -20,6 +21,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -120,7 +122,11 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             }
         }
         if (this.getAttackTarget() != null) {
-            this.useRangedAttack = this.getDistance(this.getAttackTarget()) > 10;
+            if(this.useRangedAttack){
+                this.useRangedAttack = this.getDistance(this.getAttackTarget()) <= 50;
+            }else{
+                this.useRangedAttack = this.getDistance(this.getAttackTarget()) > 50;
+            }
         }
         if (this.useRangedAttack && this.getAnimation() != ANIMATION_THROW  && !this.hasThrownSword() && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())) {
             this.setAnimation(ANIMATION_THROW);
@@ -311,5 +317,32 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
                }
             }
         }
+    }
+
+    public void playAmbientSound() {
+        if (!this.world.isRemote) {
+            if (this.getAnimation() == this.NO_ANIMATION) {
+                this.setAnimation(ANIMATION_SPEAK);
+            }
+            super.playAmbientSound();
+        }
+    }
+
+    protected void playHurtSound(DamageSource source) {
+        if (this.getAnimation() == this.NO_ANIMATION && !this.world.isRemote) {
+            this.setAnimation(ANIMATION_SPEAK);
+        }
+        super.playHurtSound(source);
+    }
+    protected SoundEvent getAmbientSound() {
+        return RatsSoundRegistry.DUTCHRAT_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return RatsSoundRegistry.DUTCHRAT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return RatsSoundRegistry.DUTCHRAT_DIE;
     }
 }

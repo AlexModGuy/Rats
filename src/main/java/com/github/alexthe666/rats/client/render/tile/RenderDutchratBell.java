@@ -24,7 +24,7 @@ public class RenderDutchratBell extends TileEntityRenderer<TileEntityDutchratBel
         float f1 = 0.0F;
         float f2 = 0.0F;
         if (tileEntityIn.field_213944_b) {
-            float f3 = MathHelper.sin(f / (float)Math.PI) / (4.0F + f / 3.0F);
+            float f3 = MathHelper.sin(f / (float)Math.PI) / (0.1F + f / 3.0F);
             if (tileEntityIn.field_213945_c == Direction.NORTH) {
                 f1 = -f3;
             } else if (tileEntityIn.field_213945_c == Direction.SOUTH) {

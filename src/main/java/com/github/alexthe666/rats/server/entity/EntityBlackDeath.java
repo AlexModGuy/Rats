@@ -260,6 +260,9 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
 
     public void livingTick() {
         super.livingTick();
+        if(this.getAttackTarget() != null && this.getAttackTarget() instanceof EntityRat && ((EntityRat) this.getAttackTarget()).hasPlague()){
+            this.setAttackTarget(null);
+        }
         if (ratCooldown > 0) {
             ratCooldown--;
         }

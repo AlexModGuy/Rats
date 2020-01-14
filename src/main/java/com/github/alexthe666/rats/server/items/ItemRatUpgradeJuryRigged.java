@@ -33,10 +33,6 @@ public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
         super(name, 1, 1, 3);
     }
 
-    public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
-        return false;
-    }
-
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (stack.getTag() == null) {
             stack.setTag(new CompoundNBT());

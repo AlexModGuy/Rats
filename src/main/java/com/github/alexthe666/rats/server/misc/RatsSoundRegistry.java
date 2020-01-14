@@ -64,6 +64,14 @@ public class RatsSoundRegistry {
     public static final SoundEvent RAT_POOP = createSoundEvent("rat_poop");
     @ObjectHolder("rat_santa")
     public static final SoundEvent RAT_SANTA = createSoundEvent("rat_santa");
+    @ObjectHolder("dutchrat_bell")
+    public static final SoundEvent DUTCHRAT_BELL = createSoundEvent("dutchrat_bell");
+    @ObjectHolder("dutchrat_idle")
+    public static final SoundEvent DUTCHRAT_IDLE = createSoundEvent("dutchrat_idle");
+    @ObjectHolder("dutchrat_hurt")
+    public static final SoundEvent DUTCHRAT_HURT = createSoundEvent("dutchrat_hurt");
+    @ObjectHolder("dutchrat_die")
+    public static final SoundEvent DUTCHRAT_DIE = createSoundEvent("dutchrat_die");
 
 
     private static SoundEvent createSoundEvent(final String soundName) {

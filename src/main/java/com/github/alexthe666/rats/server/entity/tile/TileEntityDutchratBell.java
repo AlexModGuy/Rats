@@ -56,14 +56,14 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
             ++this.field_213943_a;
         }
 
-        if (this.field_213943_a >= 50) {
+        if (this.field_213943_a >= 100) {
             this.field_213944_b = false;
             this.field_213943_a = 0;
         }
 
         if (this.field_213943_a >= 5 && this.field_213949_j == 0) {
             this.field_213948_i = true;
-            this.func_222833_c();
+            //this.func_222833_c();
             if(!world.isRemote) {
                 if (world.isDaytime()) {
                     AxisAlignedBB bb = new AxisAlignedBB(this.pos.getX() - 10, this.pos.getY() - 10, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 10, this.pos.getZ() + 10);

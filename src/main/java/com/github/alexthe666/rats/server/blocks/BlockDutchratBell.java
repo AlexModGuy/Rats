@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityDutchratBell;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.BellBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -68,7 +69,13 @@ public class BlockDutchratBell extends BellBlock {
     }
 
     private void playRingSound(World worldIn, BlockPos pos) {
-        worldIn.playSound((PlayerEntity)null, pos, SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 2.0F, 1.0F);
+        if(worldIn.isDaytime()){
+            worldIn.playSound((PlayerEntity)null, pos, SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 2.0F, 1.0F);
+
+        }else{
+            worldIn.playSound((PlayerEntity)null, pos, RatsSoundRegistry.DUTCHRAT_BELL, SoundCategory.BLOCKS, 2.0F, 1.0F);
+
+        }
     }
 
     @Nullable

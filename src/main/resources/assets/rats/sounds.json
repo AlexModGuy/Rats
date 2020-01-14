@@ -1,4 +1,35 @@
 {
+  "dutchrat_die": {
+    "category": "neutral",
+    "sounds": [
+      "rats:dutchrat_hurt_0",
+      "rats:dutchrat_hurt_1"
+    ]
+  },
+  "dutchrat_hurt": {
+    "category": "neutral",
+    "sounds": [
+      "rats:dutchrat_hurt_0",
+      "rats:dutchrat_hurt_1"
+    ]
+  },
+  "dutchrat_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:dutchrat_idle_0",
+      "rats:dutchrat_idle_1",
+      "rats:dutchrat_idle_2",
+      "rats:dutchrat_idle_3",
+      "rats:dutchrat_idle_4",
+      "rats:dutchrat_idle_5"
+    ]
+  },
+  "dutchrat_bell": {
+    "category": "neutral",
+    "sounds": [
+      "rats:dutchrat_bell"
+    ]
+  },
   "rat_santa": {
     "category": "neutral",
     "sounds": [
