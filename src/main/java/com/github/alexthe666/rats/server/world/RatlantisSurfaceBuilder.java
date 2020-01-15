@@ -20,7 +20,7 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
     private PerlinNoise perlin1;
     private PerlinNoise perlin2;
     private boolean init = false;
-    private long prevSeed = -1;
+    private static long prevSeed = -1;
 
     public RatlantisSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> p_i51305_1_) {
         super(p_i51305_1_);

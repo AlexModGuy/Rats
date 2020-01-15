@@ -1497,11 +1497,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (disenchant && heldItem.isEnchanted()) {
             burntItem = heldItem.copy();
-            if (burntItem.getTag() != null && burntItem.getTag().contains("ench", 9)) {
-                if (!burntItem.getTag().getList("ench", 10).isEmpty()) {
-                    burntItem.getTag().put("ench", new CompoundNBT());
-                }
-            }
+            burntItem.getEnchantmentTagList().clear();
         }
         if (burntItem.isEmpty()) {
             cookingProgress = 0;

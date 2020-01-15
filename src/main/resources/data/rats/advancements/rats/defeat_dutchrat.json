@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:dutchrat_wheel"
+        },
+        "title": {
+            "translate": "advancements.rats.dutchrat_wheel.title"
+        },
+        "description": {
+            "translate": "advancements.rats.dutchrat_wheel.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/ghost_pirat",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:dutchrat"
+                }
+            }
+        }
+    }
+}

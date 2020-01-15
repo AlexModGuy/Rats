@@ -109,6 +109,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
                 double extraY = 1.7F + posY;
                 EntityDutchratSword sword = new EntityDutchratSword(RatsEntityRegistry.DUTCHRAT_SWORD, world, extraX, extraY, extraZ, this);
                 world.addEntity(sword);
+                this.useRangedAttack = rand.nextBoolean();
             }
             this.setThrownSword(true);
         }
@@ -119,13 +120,6 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             if(ticksSinceThrownSword > 60){
                 this.setThrownSword(false);
                 this.ticksSinceThrownSword = 0;
-            }
-        }
-        if (this.getAttackTarget() != null) {
-            if(this.useRangedAttack){
-                this.useRangedAttack = this.getDistance(this.getAttackTarget()) <= 50;
-            }else{
-                this.useRangedAttack = this.getDistance(this.getAttackTarget()) > 50;
             }
         }
         if (this.useRangedAttack && this.getAnimation() != ANIMATION_THROW  && !this.hasThrownSword() && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())) {

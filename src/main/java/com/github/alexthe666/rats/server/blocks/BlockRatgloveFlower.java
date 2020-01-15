@@ -14,7 +14,7 @@ public class BlockRatgloveFlower extends BushBlock {
     }
 
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT;
+        return state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT;
     }
 
     public Block.OffsetType getOffsetType() {
