@@ -176,6 +176,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
                 world.addEntity(rat);
             }
             rat.setTamed(true);
+            rat.setTamedByPlayerFlag(false);
             rat.setOwnerId(this.getUniqueID());
             rat.setCommand(RatCommand.FOLLOW);
             if (this.getAttackTarget() != null) {

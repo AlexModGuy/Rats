@@ -88,7 +88,7 @@ public class RatAIHarvestCrops extends Goal {
                     return;
                 }
                 double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                if (distance < 2.25F) {
+                if (distance < 4.25F) {
                     LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(targetBlock)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
@@ -101,11 +101,12 @@ public class RatAIHarvestCrops extends Goal {
                         for (ItemStack drop : drops) {
                             this.entity.entityDropItem(drop, 0);
                         }
-                        this.entity.world.destroyBlock(targetBlock, false);
-                        if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof CropsBlock) {
-                            this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
-                        }
-                        this.entity.fleePos = this.targetBlock;
+
+                    }
+                    this.entity.fleePos = this.targetBlock;
+                    this.entity.world.destroyBlock(targetBlock, false);
+                    if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof CropsBlock) {
+                        this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
                     }
                     this.targetBlock = null;
                     this.resetTask();

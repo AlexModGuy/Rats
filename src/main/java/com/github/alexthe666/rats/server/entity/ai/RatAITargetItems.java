@@ -103,7 +103,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
             this.resetTask();
             this.goalOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 2 && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             EntityRat rat = (EntityRat) this.goalOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             int extractSize = rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? this.targetEntity.getItem().getCount() : 1;
@@ -123,6 +123,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
                         if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0 || rat.cheeseFeedings >= 15) {
                             rat.world.setEntityState(rat, (byte) 83);
                             rat.setTamed(true);
+                            rat.setTamedByPlayerFlag(true);
                             rat.setOwnerId(targetPlayer.getUniqueID());
                             rat.setCommand(RatCommand.FOLLOW);
                         }

@@ -1,15 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "RR",
-    "RR"
+    "DDD",
+    "DRD",
+    "DDD"
   ],
   "key": {
     "R": {
       "item": "rats:contaminated_food"
+    },
+    "D": {
+      "item": "minecraft:dirt"
     }
   },
   "result": {
-    "item": "rats:garbage_pile"
+    "item": "rats:garbage_pile",
+    "count": 8
   }
 }

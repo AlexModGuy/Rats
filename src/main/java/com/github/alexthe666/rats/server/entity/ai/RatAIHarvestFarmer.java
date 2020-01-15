@@ -74,7 +74,7 @@ public class RatAIHarvestFarmer extends Goal {
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (block.getBlock().isFertile(block, entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 2.5F) {
+                    if (distance < 4.5F) {
                         if (holdingSeeds()) {
                             ItemStack seedStack = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
                             seedStack.setCount(1);
@@ -85,10 +85,12 @@ public class RatAIHarvestFarmer extends Goal {
                         }
                         this.targetBlock = null;
                         this.resetTask();
+                        return;
                     }
                 } else {
                     this.targetBlock = null;
                     this.resetTask();
+                    return;
                 }
             }
             if (holdingBonemeal()) {
@@ -96,7 +98,7 @@ public class RatAIHarvestFarmer extends Goal {
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (canPlantBeBonemealed(targetBlock, block)) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 2.5F) {
+                    if (distance < 4.5F) {
                         if (holdingBonemeal()) {
                             this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                             if (block.getBlock() instanceof IGrowable) {
@@ -111,17 +113,19 @@ public class RatAIHarvestFarmer extends Goal {
                         }
                         this.targetBlock = null;
                         this.resetTask();
+                        return;
                     }
                 } else {
                     this.targetBlock = null;
                     this.resetTask();
+                    return;
                 }
             } else if (holdingBlock()) {
                 BlockItem itemBlock = ((BlockItem) entity.getHeldItem(Hand.MAIN_HAND).getItem());
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (entity.world.isAirBlock(targetBlock.up())) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 2.5F) {
+                    if (distance < 4.5F) {
                         if (holdingBlock()) {
                             BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(targetBlock), new Vec3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
                             ItemUseContext itemusecontext = new ItemUseContext(null, Hand.MAIN_HAND, raytrace);
@@ -136,10 +140,12 @@ public class RatAIHarvestFarmer extends Goal {
                         }
                         this.targetBlock = null;
                         this.resetTask();
+                        return;
                     }
                 } else {
                     this.targetBlock = null;
                     this.resetTask();
+                    return;
                 }
             }
 

@@ -41,8 +41,8 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PLACER, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BREEDER, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN, new Item[0]);
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED, RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_RATINATOR, new Item[]{RatsItemRegistry.RAT_UPGRADE_ARMOR});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_PSYCHIC, new Item[0]);
@@ -64,6 +64,10 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, PROCESSING_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DRAGON, new Item[]{RatsItemRegistry.RAT_UPGRADE_FLIGHT, RatsItemRegistry.RAT_UPGRADE_ASBESTOS});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ETHEREAL, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ANGEL, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CARRAT, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED, RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
     }
 
     public static boolean doesConflict(Item first, Item second) {

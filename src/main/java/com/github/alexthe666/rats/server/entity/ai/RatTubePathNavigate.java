@@ -3,13 +3,19 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.pathfinding.AStar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RatTubePathNavigate extends GroundPathNavigator {
     public BlockPos targetPosition;
@@ -18,21 +24,21 @@ public class RatTubePathNavigate extends GroundPathNavigator {
         super(LivingEntityIn, worldIn);
     }
 
-    protected PathFinder getPathFinder() {
-        this.nodeProcessor = new RatTubeNodeProcessor();
-        this.nodeProcessor.setCanEnterDoors(true);
-        return new RatTubePathFinder(this.nodeProcessor, 64, (EntityRat) entity);
-    }
-
-
     public Path getPathToPos(BlockPos pos, int idk) {
         this.targetPosition = pos;
-        return super.getPathToPos(pos, idk);
+        return generatePath();
+    }
+
+    protected PathFinder getPathFinder(int p_179679_1_) {
+        this.nodeProcessor = new RatWalkNodeProcessor();
+        this.nodeProcessor.setCanEnterDoors(true);
+        this.nodeProcessor.setCanSwim(true);
+        return new PathFinder(this.nodeProcessor, p_179679_1_);
     }
 
     public Path getPathToLivingEntity(Entity entityIn, int idk) {
         this.targetPosition = new BlockPos(entityIn);
-        return super.getPathToEntityLiving(entityIn, idk);
+        return generatePath();
     }
 
     public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
@@ -46,8 +52,16 @@ public class RatTubePathNavigate extends GroundPathNavigator {
         }
     }
 
-    public void clearPath() {
-        super.clearPath();
+    private Path generatePath(){
+        BlockPos startPos = new BlockPos(this.getEntityPosition());
+        AStar aStar = new AStar(startPos, targetPosition, 1000, false);
+        BlockPos[] pathBlocks = aStar.getPath(world);
+        PathPoint[] fromPos = new PathPoint[pathBlocks.length - 1];
+        for (int i = 1; i < pathBlocks.length; i++) {
+            fromPos[i - 1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
+        }
+        List<PathPoint> pathPointList = new ArrayList<>(Arrays.asList(fromPos));
+        return new Path(pathPointList, targetPosition, false);
     }
 
     public void tick() {
@@ -57,10 +71,6 @@ public class RatTubePathNavigate extends GroundPathNavigator {
 
     protected boolean canNavigate() {
         return ((EntityRat) entity).inTube();
-    }
-
-    protected void pathFollow() {
-        super.pathFollow();
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {

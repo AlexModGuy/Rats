@@ -19,10 +19,10 @@ public class EtherealRatPathNavigate extends FlyingPathNavigator {
     }
 
     protected PathFinder getPathFinder(int p_179679_1_) {
-        this.nodeProcessor = new EtherealRatWalkNodeProcessor();
+        this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         this.nodeProcessor.setCanSwim(true);
-        return new RatPathFinder(this.nodeProcessor, p_179679_1_, (EntityRat) entity);
+        return new PathFinder(this.nodeProcessor, p_179679_1_);
     }
 
     public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {

@@ -64,12 +64,15 @@ public class RatAIHarvestFisherman extends Goal {
     public void tick() {
         if (this.targetBlock != null) {
             if (entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+                if(hasReachedWater){
+                    this.entity.getNavigator().clearPath();
+                }
                 if (!hasReachedWater) {
                     this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 }
                 if (isShore(this.targetBlock, entity.world)) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 2.5F) {
+                    if (distance < 4.5F) {
                         // this.targetBlock = null;
                         //  this.resetTask();
                         if (throwCooldown == 0) {

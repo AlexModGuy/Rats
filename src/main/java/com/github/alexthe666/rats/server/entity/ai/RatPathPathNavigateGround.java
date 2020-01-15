@@ -25,7 +25,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
         this.nodeProcessor = new RatWalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         this.nodeProcessor.setCanSwim(true);
-        return new RatPathFinder(this.nodeProcessor, p_179679_1_, (EntityRat) entity);
+        return new PathFinder(this.nodeProcessor, p_179679_1_);
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {

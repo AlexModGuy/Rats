@@ -44,10 +44,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.UseAction;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
@@ -105,6 +102,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private static final DataParameter<Boolean> TOGA = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAGUE = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> VISUAL_FLAG = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> TAMED_BY_PLAYER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
@@ -184,6 +182,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private int rangedAttackCooldownDragon = 0;
     private int visualCooldown = 0;
     private int poopCooldown = 0;
+    public List<BlockPos> openRatTubes = new ArrayList<>();
 
     public EntityRat(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -273,32 +272,40 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.removeGoal(this.aiHarvest);
         this.goalSelector.removeGoal(this.aiDeposit);
         this.goalSelector.removeGoal(this.aiPickup);
-        if (this.aiHarvest == null) {
-            aiHarvest = new RatAIHarvestCrops(this);
-        }
+        boolean flag = false;
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !(aiHarvest instanceof RatAIHarvestMine)) {
             aiHarvest = new RatAIHarvestMine(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !(aiHarvest instanceof RatAIHarvestFarmer)) {
             aiHarvest = new RatAIHarvestFarmer(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !(aiHarvest instanceof RatAIHarvestFisherman)) {
             aiHarvest = new RatAIHarvestFisherman(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER) && !(aiHarvest instanceof RatAIHarvestMilk)) {
             aiHarvest = new RatAIHarvestMilk(this);
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) && !(aiHarvest instanceof RatAIHarvestShears)) {
             aiHarvest = new RatAIHarvestShears(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) && !(aiHarvest instanceof RatAIHarvestPlacer)) {
             aiHarvest = new RatAIHarvestPlacer(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER) && !(aiHarvest instanceof RatAIHarvestBreeder)) {
             aiHarvest = new RatAIHarvestBreeder(this);
+            flag = true;
+        }
+        if (this.aiHarvest == null || !flag) {
+            aiHarvest = new RatAIHarvestCrops(this);
         }
         if (this.getMBTransferRate() > 0) {
             aiDeposit = new RatAIPickupFluid(this);
@@ -338,7 +345,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         if (RatConfig.ratsSpawnLikeMonsters) {
-            return !this.isTamed() && !this.isChild();
+            return (!this.isTamed() || !this.wasTamedByPlayer()) && !this.isChild();
         } else {
             return super.canDespawn(distanceToClosestPlayer);
         }
@@ -454,6 +461,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.register(TOGA, Boolean.valueOf(false));
         this.dataManager.register(PLAGUE, Boolean.valueOf(false));
         this.dataManager.register(VISUAL_FLAG, Boolean.valueOf(false));
+        this.dataManager.register(TAMED_BY_PLAYER, Boolean.valueOf(true));
         this.dataManager.register(COMMAND, Integer.valueOf(0));
         this.dataManager.register(COLOR_VARIANT, Integer.valueOf(0));
         this.dataManager.register(DANCING, Boolean.valueOf(false));
@@ -524,6 +532,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         compound.putInt("Command", this.getCommandInteger());
         compound.putInt("ColorVariant", this.getColorVariant());
         compound.putBoolean("Plague", this.hasPlague());
+        compound.putBoolean("TamedByPlayer", this.wasTamedByPlayer());
         compound.putBoolean("VisualFlag", this.getVisualFlag());
         compound.putBoolean("Dancing", this.isDancing());
         compound.putBoolean("Toga", this.hasToga());
@@ -577,6 +586,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.setRespawnCountdown(compound.getInt("RespawnCountdown"));
         this.setCommandInteger(compound.getInt("Command"));
         this.setPlague(compound.getBoolean("Plague"));
+        this.setTamedByPlayerFlag(compound.getBoolean("TamedByPlayer"));
         this.setDancing(compound.getBoolean("Dancing"));
         this.setVisualFlag(compound.getBoolean("VisualFlag"));
         this.setToga(compound.getBoolean("Toga"));
@@ -677,6 +687,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public boolean hasPlague() {
         return this.dataManager.get(PLAGUE).booleanValue();
     }
+
+
+    public void setTamedByPlayerFlag(boolean plague) {
+        this.dataManager.set(TAMED_BY_PLAYER, Boolean.valueOf(plague));
+    }
+
+    public boolean wasTamedByPlayer() {
+        return this.dataManager.get(TAMED_BY_PLAYER).booleanValue();
+    }
+
 
     public boolean isMale() {
         return this.dataManager.get(IS_MALE).booleanValue();
@@ -976,8 +996,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
-            if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
+        //TODO
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST && !this.shouldDepositItem(getHeldItemMainhand()))) {
+            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
             }
@@ -1904,11 +1925,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             EntityIllagerPiper illagerPiper = (EntityIllagerPiper) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
             this.setOwnerId(null);
+            this.setTamedByPlayerFlag(false);
         }
         if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath illagerPiper = (EntityBlackDeath) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
             this.setOwnerId(null);
+            this.setTamedByPlayerFlag(false);
         }
 
         super.remove();
@@ -2673,6 +2696,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             return false;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER) && !this.getGemcutterResultFor(item).isEmpty()) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && (item.getItem() == Items.BONE_MEAL || item.getItem() instanceof BlockNamedItem)) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BREEDER) && this.getCommand() == RatCommand.HARVEST) {
+            return false;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) && this.getCommand() == RatCommand.HARVEST) {
             return false;
         }
         return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || !ItemRatUpgradeOreDoubling.isProcessable(item);

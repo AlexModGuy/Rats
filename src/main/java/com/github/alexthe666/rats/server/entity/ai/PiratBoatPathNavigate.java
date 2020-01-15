@@ -14,7 +14,6 @@ public class PiratBoatPathNavigate extends SwimmerPathNavigator {
     }
 
     protected boolean isInLiquid() {
-        //TODO this.entity.isOverWater()
         return this.entity.isInWater() || this.boat.getBoatStatus() != BoatEntity.Status.ON_LAND && this.boat.getBoatStatus() != BoatEntity.Status.IN_AIR;
     }
 }
