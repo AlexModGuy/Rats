@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
-import com.github.alexthe666.rats.server.items.ItemBlockTEISR;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -120,7 +119,7 @@ public class RatsBlockRegistry {
                     }
                     BlockItem blockItem = new BlockItem((Block) obj, props);
                     if (obj instanceof IUsesTEISR) {
-                        blockItem = new ItemBlockTEISR((Block) obj, props);
+                        RatsMod.PROXY.setupTEISR(props);
                     }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
@@ -130,10 +129,10 @@ public class RatsBlockRegistry {
                         if (!(block instanceof INoTab)) {
                             props.group(RatsMod.TAB);
                         }
-                        BlockItem blockItem = new BlockItem(block, props);
                         if (block instanceof IUsesTEISR) {
-                            blockItem = new ItemBlockTEISR(block, props);
+                            RatsMod.PROXY.setupTEISR(props);
                         }
+                        BlockItem blockItem = new BlockItem(block, props);
                         blockItem.setRegistryName(block.getRegistryName());
                         event.getRegistry().register(blockItem);
                     }

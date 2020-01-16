@@ -250,4 +250,7 @@ public class CommonProxy {
     public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){}
     public void handlePacketCheeseStaffRat(int entityId, boolean clear){}
     public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){}
+
+    public void setupTEISR(Item.Properties props) {
+    }
 }

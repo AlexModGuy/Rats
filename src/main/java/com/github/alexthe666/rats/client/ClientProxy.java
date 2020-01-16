@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
@@ -52,6 +53,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
@@ -424,5 +426,14 @@ public class ClientProxy extends CommonProxy {
             TileEntity te = world.getTileEntity(pos);
             te.read(tag);
         }
+    }
+
+    public void setupTEISR(Item.Properties props) {
+        props.setTEISR(ClientProxy::getTEISR);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> getTEISR() {
+        return com.github.alexthe666.rats.client.render.tile.RatsTEISR::new;
     }
 }
