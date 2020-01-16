@@ -51,7 +51,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-@Mod.EventBusSubscriber
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
     public static final ModelResourceLocation RAT_NUGGET_MODEL = new ModelResourceLocation(new ResourceLocation(RatsMod.MODID, "rat_nugget_ore"), "inventory");
     @OnlyIn(Dist.CLIENT)
