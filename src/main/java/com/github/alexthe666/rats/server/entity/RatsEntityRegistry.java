@@ -7,9 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.registries.ObjectHolder;
 
-@ObjectHolder(RatsMod.MODID)
 public class RatsEntityRegistry {
 
     public static final EntityType<EntityRat> RAT = registerEntity(EntityType.Builder.create(EntityRat::new, EntityClassification.CREATURE).size(0.49F, 0.49F), "rat");

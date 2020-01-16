@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
-import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
 import net.minecraft.entity.player.PlayerEntity;

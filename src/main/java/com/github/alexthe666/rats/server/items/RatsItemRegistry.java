@@ -15,12 +15,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(RatsMod.MODID)
 public class RatsItemRegistry {
 
     public static CustomArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new CustomArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
@@ -30,7 +28,6 @@ public class RatsItemRegistry {
     public static CustomToolMaterial BAGHNAKHS_MATERIAL = new CustomToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
     public static CustomToolMaterial PLAGUE_SCYTHE_MATERIAL = new CustomToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
 
-    @ObjectHolder(RatsMod.MODID + ":" + "cheese")
     public static final Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
     public static final Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat");

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.inventory;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;

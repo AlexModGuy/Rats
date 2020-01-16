@@ -14,13 +14,11 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
 
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(RatsMod.MODID)
 public class RatsBlockRegistry {
 
     public static final Block BLOCK_OF_CHEESE = new BlockCheese();

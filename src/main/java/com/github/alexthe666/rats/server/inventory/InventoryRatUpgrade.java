@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.inventory;
 
-import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;

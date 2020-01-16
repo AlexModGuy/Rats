@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityPurifyingLiquid;
 import com.github.alexthe666.rats.server.entity.EntityRatCaptureNet;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;

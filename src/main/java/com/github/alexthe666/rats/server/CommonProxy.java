@@ -35,7 +35,6 @@ import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -43,7 +42,6 @@ import java.util.List;
 import static com.github.alexthe666.rats.server.world.RatsWorldRegistry.RATLANTIS_DIM;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(RatsMod.MODID)
 public class CommonProxy {
 
     @SubscribeEvent
