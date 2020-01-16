@@ -117,10 +117,10 @@ public class RatsBlockRegistry {
                     if (!(obj instanceof INoTab)) {
                         props.group(RatsMod.TAB);
                     }
-                    BlockItem blockItem = new BlockItem((Block) obj, props);
                     if (obj instanceof IUsesTEISR) {
                         RatsMod.PROXY.setupTEISR(props);
                     }
+                    BlockItem blockItem = new BlockItem((Block) obj, props);
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 } else if (obj instanceof Block[]) {
