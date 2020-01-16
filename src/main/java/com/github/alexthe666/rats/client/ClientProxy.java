@@ -54,7 +54,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
     public static final ModelResourceLocation RAT_NUGGET_MODEL = new ModelResourceLocation(new ResourceLocation(RatsMod.MODID, "rat_nugget_ore"), "inventory");
     @OnlyIn(Dist.CLIENT)
@@ -68,6 +68,7 @@ public class ClientProxy extends CommonProxy {
     public static ItemStack refrencedItem;
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
       /*  for (int i = 0; i < 16; i++) {
             ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
@@ -113,6 +114,7 @@ public class ClientProxy extends CommonProxy {
         }*/
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void preInit() {
         //TinkersCompatBridge.loadTinkersClientCompat();
     }
@@ -168,6 +170,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public static void onBlockColors(ColorHandlerEvent.Block event) {
         RatsMod.LOGGER.info("loaded in block colorizer");
         event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
@@ -185,6 +188,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public static void onItemColors(ColorHandlerEvent.Item event) {
         RatsMod.LOGGER.info("loaded in item colorizer");
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> GrassColors.get(0.5D, 1.0D), Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
@@ -282,6 +286,7 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public boolean shouldRenderNameplates() {
         return Minecraft.getInstance().currentScreen == null || !(Minecraft.getInstance().currentScreen instanceof GuiRat) && !(Minecraft.getInstance().currentScreen instanceof GuiCheeseStaff);
     }
@@ -321,16 +326,19 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public EntityRat getRefrencedRat() {
         return refrencedRat;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void setRefrencedRat(EntityRat rat) {
         refrencedRat = rat;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void setCheeseStaffContext(BlockPos pos, Direction facing) {
         refrencedPos = pos;
@@ -367,24 +375,30 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public TileEntity getRefrencedTE() {
         return refrencedTileEntity;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void setRefrencedTE(TileEntity te) {
         refrencedTileEntity = te;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public ItemStack getRefrencedItem() {
         return refrencedItem;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void setRefrencedItem(ItemStack stack) {
         refrencedItem = stack;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public World getWorld(){ return Minecraft.getInstance().world; }
 
+    @OnlyIn(Dist.CLIENT)
     public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){
         BlockPos pos = BlockPos.fromLong(blockPos);
         World world = Minecraft.getInstance().world;
@@ -394,13 +408,15 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void handlePacketCheeseStaffRat(int entityId, boolean clear){
         Entity e = Minecraft.getInstance().player.world.getEntityByID(entityId);
         if (e instanceof EntityRat) {
-            RatsMod.PROXY.setRefrencedRat((EntityRat) e);
+            setRefrencedRat((EntityRat) e);
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){
         BlockPos pos = BlockPos.fromLong(blockPos);
         World world = Minecraft.getInstance().world;
