@@ -116,7 +116,7 @@ public class RatAIHarvestMine extends Goal {
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                     double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
-                    if (distance < 2.5F) {
+                    if (distance < 4.5F) {
                         entity.world.setEntityState(entity, (byte) 85);
                         entity.crafting = true;
                         if (block == prevMiningState) {
@@ -126,13 +126,13 @@ public class RatAIHarvestMine extends Goal {
                             entity.world.setEntityState(entity, (byte) 86);
                             entity.crafting = false;
                         }
-                        if (distance < 0.6F) {
+                        if (distance < 1.5F) {
                             this.entity.setMotion(0, 0, 0);
                             entity.getNavigator().clearPath();
                             //entity.moveController.action = MovementController.Action.WAIT;
                         }
                         breakingTime++;
-                        int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);
+                        int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 50);
                         int i = (int) ((float) this.breakingTime / hardness * 10.0F);
                         if (breakingTime % 5 == 0) {
                             entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
