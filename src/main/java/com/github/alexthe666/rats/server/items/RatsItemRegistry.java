@@ -317,7 +317,6 @@ public class RatsItemRegistry {
 
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
-        System.out.println("ABCDEFGHIJKLMNOP");
         try {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

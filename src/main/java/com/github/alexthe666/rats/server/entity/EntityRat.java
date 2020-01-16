@@ -996,8 +996,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        //TODO
-        System.out.println(this.shouldDepositItem(getHeldItemMainhand()));
         if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
                 && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
                 && this.shouldDepositItem(getHeldItemMainhand())) {
