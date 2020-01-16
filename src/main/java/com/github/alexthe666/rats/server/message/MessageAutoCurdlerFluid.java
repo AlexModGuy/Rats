@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
-import net.minecraft.client.Minecraft;
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -26,12 +23,7 @@ public class MessageAutoCurdlerFluid {
 
         public static void handle(MessageAutoCurdlerFluid message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            BlockPos pos = BlockPos.fromLong(message.blockPos);
-            World world = Minecraft.getInstance().world;
-            if (context.get() != null && world != null && world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
-                TileEntityAutoCurdler table = (TileEntityAutoCurdler) world.getTileEntity(pos);
-                table.tank.setFluid(message.fluid);
-            }
+            RatsMod.PROXY.handlePacketAutoCurdlerFluid(message.blockPos, message.fluid);
         }
     }
 

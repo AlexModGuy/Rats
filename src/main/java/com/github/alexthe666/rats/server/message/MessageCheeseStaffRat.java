@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -28,10 +25,7 @@ public class MessageCheeseStaffRat {
             if (message.clear) {
                 RatsMod.PROXY.setRefrencedRat(null);
             } else {
-                Entity e = Minecraft.getInstance().player.world.getEntityByID(message.entityId);
-                if (e instanceof EntityRat) {
-                    RatsMod.PROXY.setRefrencedRat((EntityRat) e);
-                }
+                RatsMod.PROXY.handlePacketCheeseStaffRat(message.entityId, message.clear);
             }
         }
     }

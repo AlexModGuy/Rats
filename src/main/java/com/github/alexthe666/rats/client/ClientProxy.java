@@ -28,6 +28,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -41,6 +42,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -383,4 +385,28 @@ public class ClientProxy extends CommonProxy {
 
     public World getWorld(){ return Minecraft.getInstance().world; }
 
+    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){
+        BlockPos pos = BlockPos.fromLong(blockPos);
+        World world = Minecraft.getInstance().world;
+        if ( world != null && world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
+            TileEntityAutoCurdler table = (TileEntityAutoCurdler) world.getTileEntity(pos);
+            table.tank.setFluid(fluid);
+        }
+    }
+
+    public void handlePacketCheeseStaffRat(int entityId, boolean clear){
+        Entity e = Minecraft.getInstance().player.world.getEntityByID(entityId);
+        if (e instanceof EntityRat) {
+            RatsMod.PROXY.setRefrencedRat((EntityRat) e);
+        }
+    }
+
+    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){
+        BlockPos pos = BlockPos.fromLong(blockPos);
+        World world = Minecraft.getInstance().world;
+        if (world.getTileEntity(pos) != null) {
+            TileEntity te = world.getTileEntity(pos);
+            te.read(tag);
+        }
+    }
 }

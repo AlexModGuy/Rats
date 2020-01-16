@@ -1,12 +1,9 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
-import net.minecraft.client.Minecraft;
+import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -37,12 +34,7 @@ public class MessageUpdateTileSlots {
 
         public static void handle(MessageUpdateTileSlots message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            BlockPos pos = BlockPos.fromLong(message.blockPos);
-            World world = Minecraft.getInstance().world;
-            if (world.getTileEntity(pos) != null) {
-                TileEntity te = world.getTileEntity(pos);
-                te.read(message.tag);
-            }
+            RatsMod.PROXY.handlePacketUpdateTileSlots(message.blockPos, message.tag);
         }
     }
 

@@ -17,6 +17,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -33,6 +34,7 @@ import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -113,25 +115,7 @@ public class CommonProxy {
        // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
        // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
     }
-    /*
-    public static void registerSpawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id, int mainColor, int subColor) {
-        builder.entity(entityClass);
-        builder.id(new ResourceLocation(RatsMod.MODID, name), id);
-        builder.name(name);
-        builder.egg(mainColor, subColor);
-        builder.tracker(64, 1, true);
-        event.getRegistry().register(builder.build());
-    }
 
-    public static void registerUnspawnable(EntityEntryBuilder builder, RegistryEvent.Register<EntityEntry> event, Class<? extends Entity> entityClass, String name, int id) {
-        builder.entity(entityClass);
-        builder.id(new ResourceLocation(RatsMod.MODID, name), id);
-        builder.name(name);
-        builder.tracker(64, 1, true);
-        event.getRegistry().register(builder.build());
-    }
-
-     */
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
         final ModConfig config = event.getConfig();
@@ -262,4 +246,8 @@ public class CommonProxy {
     }
 
     public World getWorld(){ return null; }
+
+    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){}
+    public void handlePacketCheeseStaffRat(int entityId, boolean clear){}
+    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){}
 }
