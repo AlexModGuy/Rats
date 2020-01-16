@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -45,7 +44,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
         worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_COMPOSTER_READY, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         ItemStack poopStack = getIngot(itemstack, IRON_INGOT, worldIn);
         IInventory iinventory = new Inventory(poopStack);
-        FurnaceRecipe irecipe = Minecraft.getInstance().world.getRecipeManager().getRecipe(IRecipeType.SMELTING, iinventory, Minecraft.getInstance().world).orElse(null);
+        FurnaceRecipe irecipe = worldIn.getRecipeManager().getRecipe(IRecipeType.SMELTING, iinventory, worldIn).orElse(null);
         ItemStack burntItem = poopStack;
         if(irecipe != null && !irecipe.getRecipeOutput().isEmpty()){
             burntItem = irecipe.getRecipeOutput().copy();
