@@ -19,6 +19,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+@OnlyIn(
+        value = Dist.CLIENT,
+        _interface = IRendersAsItem.class
+)
 public class EntityCheeseCannonball extends ThrowableEntity implements IRendersAsItem {
     @Override
     protected void registerData() {

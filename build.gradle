@@ -109,7 +109,7 @@ jar {
         attributes([
                 "Specification-Title": "rats",
                 "Specification-Vendor": "rats",
-                "Specification-Version": "1", // We are version 1 of ourselves
+                "Specification-Version": "4.0.0", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"rats",
