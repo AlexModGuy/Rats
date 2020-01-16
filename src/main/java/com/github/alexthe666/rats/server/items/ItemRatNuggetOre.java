@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.ICustomRendered;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -78,7 +77,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public ITextComponent getDisplayName(ItemStack stack) {
         String oreName = getIngot(stack, IRON_INGOT, RatsMod.PROXY.getWorld()).getDisplayName().getFormattedText();
-        String removedString = I18n.format("item.rats.rat_nugget_remove_tag");
+        String removedString = new TranslationTextComponent("item.rats.rat_nugget_remove_tag").getFormattedText(); //I18n.format("");
         if (oreName.contains(removedString)) {
             oreName = oreName.replace(removedString, "");
         } else {
