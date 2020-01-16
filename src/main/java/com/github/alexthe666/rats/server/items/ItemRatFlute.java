@@ -19,6 +19,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -84,6 +86,7 @@ public class ItemRatFlute extends Item {
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc0").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1").applyTextStyle(TextFormatting.GRAY));

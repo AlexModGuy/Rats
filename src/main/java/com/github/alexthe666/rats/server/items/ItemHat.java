@@ -38,6 +38,7 @@ public class ItemHat extends ArmorItem {
         this.name = name;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
             tooltip.add(new TranslationTextComponent("item.rats.archeologist_hat.desc").applyTextStyle(TextFormatting.GRAY));

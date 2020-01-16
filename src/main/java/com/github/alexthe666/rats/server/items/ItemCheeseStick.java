@@ -16,6 +16,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -95,6 +97,7 @@ public class ItemCheeseStick extends Item {
         return ActionResultType.SUCCESS;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc0").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc1").applyTextStyle(TextFormatting.GRAY));

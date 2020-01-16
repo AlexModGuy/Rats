@@ -22,6 +22,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -39,6 +41,7 @@ public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged0.desc").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged1.desc").applyTextStyle(TextFormatting.GRAY));

@@ -37,6 +37,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -84,6 +86,7 @@ public class BlockRatCage extends Block {
         this.setRegistryName(RatsMod.MODID, name);
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));

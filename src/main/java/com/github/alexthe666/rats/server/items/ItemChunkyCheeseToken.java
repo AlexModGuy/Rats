@@ -10,6 +10,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.text.NumberFormat;
@@ -22,6 +24,7 @@ public class ItemChunkyCheeseToken extends Item {
         this.setRegistryName(RatsMod.MODID, "chunky_cheese_token");
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String formattedChance = NumberFormat.getNumberInstance().format(RatConfig.tokenDropRate);
         tooltip.add(new TranslationTextComponent("item.rats.chunky_cheese_token.desc0", formattedChance).applyTextStyle(TextFormatting.GRAY));

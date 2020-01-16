@@ -26,6 +26,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -42,6 +44,7 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
         //GameRegistry.registerTileEntity(TileEntityAutoCurdler.class, "rats.auto_curdler");
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("block.rats.auto_curdler.desc0").applyTextStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("block.rats.auto_curdler.desc1").applyTextStyle(TextFormatting.GRAY));
