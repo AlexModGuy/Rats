@@ -332,6 +332,5 @@ public class RatsItemRegistry {
             throw new RuntimeException(e);
         }
         RatsUpgradeConflictRegistry.init();
-        RatsRecipeRegistry.register();
     }
 }
