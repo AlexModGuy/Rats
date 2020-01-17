@@ -263,8 +263,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             }
         }));
-        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new RatAIOwnerHurtByTarget(this));
+        this.targetSelector.addGoal(3, new RatAIOwnerHurtTarget(this));
         this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, new Class[0]));
     }
 
@@ -2769,5 +2769,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }else{
             return super.getBrightnessForRender();
         }
+    }
+
+    public boolean isAttackCommand() {
+        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
     }
 }

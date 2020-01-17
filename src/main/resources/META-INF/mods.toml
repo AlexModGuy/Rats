@@ -8,9 +8,7 @@ displayName="Rats" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/rats" #optional
 logoFile="rats_logo.png" #optional
 authors="Alexthe666" #optional
-description='''
-What are we going to do today Pinky?
-'''
+description='''What are we going to do today Pinky?'''
 [[dependencies.rats]] #optional
     # the modid of the dependency
     modId="citadel" #mandatory
