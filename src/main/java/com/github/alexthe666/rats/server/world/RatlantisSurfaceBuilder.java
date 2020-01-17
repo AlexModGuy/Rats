@@ -17,10 +17,9 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
     private static final float HEIGHT = 100;
     private static final float WIDTH = 5;
-    private PerlinNoise perlin1;
-    private PerlinNoise perlin2;
-    private boolean init = false;
-    private static long prevSeed = -1;
+    private PerlinNoise perlin1 = new PerlinNoise(100);
+    private PerlinNoise perlin2 = new PerlinNoise(200);
+    private long prevSeed = -1;
 
     public RatlantisSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> p_i51305_1_) {
         super(p_i51305_1_);
@@ -33,10 +32,9 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
     @Override
     public void buildSurface(Random rand, IChunk chunkIn, Biome biomeIn, int chunkX, int chunkZ, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
-        if(!init || seed != prevSeed){
-            perlin1 = new PerlinNoise(seed);
-            perlin2 = new PerlinNoise(seed + 100L);
-            init = true;
+        if(prevSeed != seed){
+            perlin1 = new PerlinNoise(rand.nextLong());
+            perlin2 = new PerlinNoise(rand.nextLong());
             prevSeed = seed;
         }
         int i = chunkX;
