@@ -57,6 +57,7 @@ public class RatsVillageRegistry {
         doctor.addTrade(2, new EntityVillager.ListItemForEmeralds(Item.getItemFromBlock(RatsBlockRegistry.GARBAGE_PILE), new EntityVillager.PriceInfo(1, 2)));
         doctor.addTrade(3, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_LEECH, new EntityVillager.PriceInfo(3, 3)));
         doctor.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_STEW, new EntityVillager.PriceInfo(1, 8)));
+        doctor.addTrade(4, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_ESSENCE, new EntityVillager.PriceInfo(1, 4)));
         doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PLAGUE_DOCTOR_MASK, new EntityVillager.PriceInfo(1, 15)));
         doctor.addTrade(5, new EntityVillager.ListItemForEmeralds(RatsItemRegistry.PURIFYING_LIQUID, new EntityVillager.PriceInfo(1, 12)));
     }
