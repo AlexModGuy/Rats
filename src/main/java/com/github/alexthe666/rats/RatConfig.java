@@ -6,7 +6,7 @@ public class RatConfig {
     public boolean spawnRats = true;
     public boolean spawnPiper = true;
     public int ratSpawnRate = 80;
-    public int ratSpawnDecrease = 5;
+    public int ratSpawnDecrease = 2;
     public int piperSpawnDecrease = 1;
     public int piperSpawnRate = 6;
     public float piperHatDropRate = 0.09F;
@@ -101,7 +101,7 @@ public class RatConfig {
         this.maxDestroyedLeaves = config.getInt("Rat Upgrade Lumberjack: Max Tree Blocks", "all", 10000, 0, Integer.MAX_VALUE, "How many blocks the Lumberjack Rat is able to destroy when felling a tree. Be careful when changing this to a large number.");
         this.blackDeathHealth = config.getFloat("Black Death Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Black Death Max Health");
         this.blackDeathAttack = config.getFloat("Black Death Automaton Attack Damage", "all", 4F, 0F, Float.MAX_VALUE, "Black Death Attack Damage");
-        this.ratsDespawn = config.getBoolean("Rat Immediate Despawn Distance", "all", true, "True if wild, untamed rats can despawn.");
+        this.ratsDespawn = config.getBoolean("Can Rats Despawn", "all", true, "True if wild, untamed rats can despawn.");
         this.ratDespawnFarDistance = config.getFloat("Rat Immediate Despawn Distance", "all", 96F, 0F, Float.MAX_VALUE, "Distance that untamed rats will immediately despawn. For Vanilla mobs, this is 128 blocks.");
         this.ratDespawnCloseDistance = config.getFloat("Rat Potential Despawn Distance", "all", 20F, 0F, Float.MAX_VALUE, "Distance that untamed rats could possibly despawn. For Vanilla mobs, this is 32 blocks.");
         this.ratDespawnRandomChance = config.getInt("Rat Potential Despawn Chance", "all", 400, 1, Integer.MAX_VALUE, "When a rat is farther than its potential despawn distance, a random roll is taken to see if it despawns. Lower this number will make rats more likely to despawn.");

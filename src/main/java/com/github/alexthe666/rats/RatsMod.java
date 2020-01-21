@@ -99,27 +99,6 @@ public class RatsMod {
         PROXY.preInit();
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         logger = event.getModLog();
-        if (RatsMod.CONFIG_OPTIONS.spawnRats) {
-            for (Biome biome : Biome.REGISTRY) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    List<Biome.SpawnListEntry> spawnList = RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters ? biome.getSpawnableList(EnumCreatureType.MONSTER) : biome.getSpawnableList(EnumCreatureType.CREATURE);
-                    spawnList.add(new Biome.SpawnListEntry(EntityRat.class, RatsMod.CONFIG_OPTIONS.ratSpawnRate, 1, 3));
-                }
-            }
-        }
-        if (RatsMod.CONFIG_OPTIONS.spawnPiper) {
-            for (Biome biome : Biome.REGISTRY) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    List<Biome.SpawnListEntry> spawnList = biome.getSpawnableList(EnumCreatureType.MONSTER);
-                    if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
-                        //3 times as likely to spawn in dark forests
-                        spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate * 3, 1, 1));
-                    } else {
-                        spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate, 1, 1));
-                    }
-                }
-            }
-        }
         RatsAdvancementRegistry.INSTANCE.init();
         RatsRecipeRegistry.preRegister();
         CraftTweakerCompatBridge.loadTweakerCompat();
@@ -144,6 +123,27 @@ public class RatsMod {
         PROXY.postInit();
         RatsNuggetRegistry.init();
         TinkersCompatBridge.loadTinkersPostInitCompat();
+        if (RatsMod.CONFIG_OPTIONS.spawnRats) {
+            for (Biome biome : Biome.REGISTRY) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    List<Biome.SpawnListEntry> spawnList = RatsMod.CONFIG_OPTIONS.ratsSpawnLikeMonsters ? biome.getSpawnableList(EnumCreatureType.MONSTER) : biome.getSpawnableList(EnumCreatureType.CREATURE);
+                    spawnList.add(new Biome.SpawnListEntry(EntityRat.class, RatsMod.CONFIG_OPTIONS.ratSpawnRate, 1, 3));
+                }
+            }
+        }
+        if (RatsMod.CONFIG_OPTIONS.spawnPiper) {
+            for (Biome biome : Biome.REGISTRY) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    List<Biome.SpawnListEntry> spawnList = biome.getSpawnableList(EnumCreatureType.MONSTER);
+                    if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
+                        //3 times as likely to spawn in dark forests
+                        spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate * 3, 1, 1));
+                    } else {
+                        spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate, 1, 1));
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -367,13 +367,20 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     return this.isValidLightLevel() && iblockstate.canEntitySpawn(this);
                 }
             } else {
-                spawnRoll /= 2;
-                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) && super.getCanSpawnHere();
+                spawnRoll = MathHelper.floor(spawnRoll * 0.25F);
+                return (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) && getCanSpawnHereAnimal();
             }
         }
         return false;
     }
 
+    public boolean getCanSpawnHereAnimal(){
+        int i = MathHelper.floor(this.posX);
+        int j = MathHelper.floor(this.getEntityBoundingBox().minY);
+        int k = MathHelper.floor(this.posZ);
+        BlockPos blockpos = new BlockPos(i, j, k);
+        return this.world.getLight(blockpos) > 8 && super.getCanSpawnHere();
+    }
 
     @Override
     public boolean canBreatheUnderwater() {
