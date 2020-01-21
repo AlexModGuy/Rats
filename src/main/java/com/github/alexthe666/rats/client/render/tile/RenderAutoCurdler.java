@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelAutoCurdler;
 import com.github.alexthe666.rats.client.model.ModelRatTrap;
+import com.github.alexthe666.rats.server.blocks.BlockAutoCurdler;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
@@ -29,14 +30,16 @@ public class RenderAutoCurdler extends TileEntitySpecialRenderer<TileEntityAutoC
     public void render(TileEntityAutoCurdler entity, double x, double y, double z, float f, int f1, float alpha) {
         float rotation = 0;
         if (entity != null && entity.getWorld() != null && entity instanceof TileEntityAutoCurdler) {
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.NORTH) {
-                rotation = 180;
-            }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.EAST) {
-                rotation = -90;
-            }
-            if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.WEST) {
-                rotation = 90;
+            if(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockAutoCurdler) {
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.NORTH) {
+                    rotation = 180;
+                }
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.EAST) {
+                    rotation = -90;
+                }
+                if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockRatTrap.FACING) == EnumFacing.WEST) {
+                    rotation = 90;
+                }
             }
             if (entity.tank.getFluidAmount() > 0) {
                 renderMilk(x, y, z, rotation, entity.tank.getFluid());
