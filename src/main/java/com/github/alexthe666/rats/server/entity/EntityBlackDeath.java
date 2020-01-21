@@ -230,6 +230,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
                 }
                 rat.setTamed(true);
                 rat.setOwnerId(this.getUniqueID());
+                rat.setOwnerMonster(true);
                 rat.setCommand(RatCommand.FOLLOW);
                 if (this.getAttackTarget() != null) {
                     rat.setAttackTarget(this.getAttackTarget());

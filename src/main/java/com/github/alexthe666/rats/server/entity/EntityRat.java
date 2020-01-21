@@ -88,6 +88,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR_VARIANT = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> OWNER_NOT_PLAYER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
@@ -318,9 +319,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     protected boolean canDespawn() {
         if (RatsMod.CONFIG_OPTIONS.ratsDespawn) {
-            return !this.isTamed() && !this.isChild();
+            return (!this.isTamed() || this.isOwnerMonster()) && !this.isChild();
         } else {
-            return super.canDespawn();
+            return false;
         }
     }
 
@@ -415,6 +416,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.register(DANCING, Boolean.valueOf(false));
         this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
         this.dataManager.register(HELD_RF, Integer.valueOf(0));
+        this.dataManager.register(OWNER_NOT_PLAYER, Boolean.valueOf(false));
 
     }
 
@@ -483,6 +485,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         compound.setBoolean("VisualFlag", this.getVisualFlag());
         compound.setBoolean("Dancing", this.isDancing());
         compound.setBoolean("Toga", this.hasToga());
+        compound.setBoolean("OwnerMonster", this.isOwnerMonster());
         compound.setBoolean("IsMale", this.isMale());
         compound.setInteger("WildTrust", wildTrust);
         if (ratInventory != null) {
@@ -547,6 +550,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.setVisualFlag(compound.getBoolean("VisualFlag"));
         this.setToga(compound.getBoolean("Toga"));
         this.setMale(compound.getBoolean("IsMale"));
+        this.setOwnerMonster(compound.getBoolean("OwnerMonster"));
         this.setColorVariant(compound.getInteger("ColorVariant"));
         if (ratInventory != null) {
             NBTTagList nbttaglist = compound.getTagList("Items", 10);
@@ -684,6 +688,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.set(HELD_RF, Integer.valueOf(rf));
     }
 
+    public boolean isOwnerMonster() {
+        return this.dataManager.get(OWNER_NOT_PLAYER).booleanValue();
+    }
+
+    public void setOwnerMonster(boolean monster) {
+        this.dataManager.set(OWNER_NOT_PLAYER, Boolean.valueOf(monster));
+    }
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
@@ -929,11 +940,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || !this.shouldDepositItem(getHeldItemMainhand()))) {
-            if (this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
-                this.setAnimation(ANIMATION_EAT);
-                this.setRatStatus(RatStatus.EATING);
-            }
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST) && this.shouldDepositItem(getHeldItemMainhand())) {
+            this.setAnimation(ANIMATION_EAT);
+            this.setRatStatus(RatStatus.EATING);
         }
         if (this.hasPlague() && rand.nextFloat() < 0.3F) {
             double d0 = 0D;
@@ -1317,9 +1326,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             if (mother.isTamed()) {
                 baby.setTamed(true);
                 baby.setOwnerId(mother.getOwnerId());
+                baby.setOwnerMonster(false);
             } else if (father.isTamed()) {
                 baby.setTamed(true);
                 baby.setOwnerId(father.getOwnerId());
+                baby.setOwnerMonster(false);
             }
             world.spawnEntity(baby);
         }
@@ -1905,6 +1916,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
         if (itemstack.getItem() == RatsItemRegistry.CREATIVE_CHEESE && this.canBeTamed()) {
             this.setTamed(true);
+            this.setOwnerMonster(false);
             this.world.setEntityState(this, (byte) 83);
             this.setTamedBy(player);
             return true;

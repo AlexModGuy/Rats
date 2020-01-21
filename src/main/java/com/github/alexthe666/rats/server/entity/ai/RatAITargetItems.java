@@ -122,6 +122,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
                             rat.world.setEntityState(rat, (byte) 83);
                             rat.setTamed(true);
                             rat.setOwnerId(targetPlayer.getUniqueID());
+                            rat.setOwnerMonster(false);
                             rat.setCommand(RatCommand.FOLLOW);
                         }
                     } else {
