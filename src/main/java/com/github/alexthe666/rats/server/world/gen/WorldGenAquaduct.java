@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
@@ -55,7 +56,7 @@ public class WorldGenAquaduct extends WorldGenerator {
 
     private static boolean canHeightSkipBlock(BlockPos pos, World world) {
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof BlockLog || state.getBlock() instanceof BlockLiquid;
+        return state.getBlock() instanceof BlockLog || state.getBlock() instanceof BlockLeaves || state.getBlock() instanceof BlockLiquid;
     }
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
