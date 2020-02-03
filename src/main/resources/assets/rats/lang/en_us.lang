@@ -64,6 +64,7 @@ tile.rats.upgrade_separator.desc=Throw a combined rat upgrade on top to shatter 
 tile.rats.fish_barrel.name=Barrel of Fish
 tile.rats.milk.name=Milk
 tile.rats.brain_block.name=Brain Block
+tile.rats.rat_lantern.name=Rat Lantern
 item.rats.cheese.name=Cheese
 item.rats.raw_rat.name=Raw Rat
 item.rats.cooked_rat.name=Cooked Rat

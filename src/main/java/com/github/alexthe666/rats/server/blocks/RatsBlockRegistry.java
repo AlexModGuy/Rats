@@ -104,6 +104,8 @@ public class RatsBlockRegistry {
     public static Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":upgrade_separator")
     public static Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_lantern")
+    public static Block RAT_LANTERN = new BlockRatLantern();
 
 
     public static Fluid MILK_FLUID = new Fluid("milk", new ResourceLocation("rats", "blocks/milk"), new ResourceLocation("rats", "blocks/milk_flowing"), new ResourceLocation("rats", "blocks/milk_flowing")) {

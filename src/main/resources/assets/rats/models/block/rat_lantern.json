@@ -1,0 +1,79 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"0": "rats:blocks/rat_lantern_1",
+		"1": "rats:blocks/rat_lantern_2",
+		"2": "rats:blocks/rat_tube_open",
+		"3": "rats:blocks/rat_lantern_top",
+		"particle": "rats:blocks/rat_lantern_1"
+	},
+	"elements": [
+		{
+			"name": "latern",
+			"from": [3, 5, 3],
+			"to": [13, 15, 13],
+			"faces": {
+				"north": {"uv": [0, 0, 10, 10], "texture": "#1"},
+				"east": {"uv": [0, 0, 10, 10], "texture": "#0"},
+				"south": {"uv": [0, 0, 10, 10], "texture": "#1"},
+				"west": {"uv": [0, 0, 10, 10], "texture": "#0"},
+				"up": {"uv": [0, 0, 10, 10], "texture": "#3"},
+				"down": {"uv": [0, 0, 10, 10], "texture": "#3"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [6, 15, 6],
+			"to": [10, 16, 10],
+			"faces": {
+				"north": {"uv": [10, 15, 14, 16], "texture": "#0"},
+				"east": {"uv": [13, 12, 14, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [10, 12, 14, 13], "texture": "#0"},
+				"west": {"uv": [10, 12, 11, 16], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [10, 12, 14, 16], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "dangley",
+			"from": [5, 1, 5],
+			"to": [11, 5, 11],
+			"faces": {
+				"north": {"uv": [10, 0, 16, 4], "texture": "#0"},
+				"east": {"uv": [10, 0, 16, 4], "texture": "#0"},
+				"south": {"uv": [10, 0, 16, 4], "texture": "#0"},
+				"west": {"uv": [10, 0, 16, 4], "texture": "#0"},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#2"},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#2"}
+			}
+		},
+		{
+			"name": "dangley_mid_1",
+			"from": [4, 0, 8],
+			"to": [12, 5, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 10, 8, 15], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 5], "texture": "#missing"},
+				"south": {"uv": [0, 10, 8, 15], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 5], "texture": "#missing"},
+				"up": {"uv": [0, 0, 8, 0], "texture": "#missing"},
+				"down": {"uv": [0, 0, 8, 0], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "dangley_mid_2",
+			"from": [4, 0, 8],
+			"to": [12, 5, 8],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 10, 8, 15], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 5], "texture": "#missing"},
+				"south": {"uv": [0, 10, 8, 15], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 5], "texture": "#missing"},
+				"up": {"uv": [0, 0, 8, 0], "texture": "#missing"},
+				"down": {"uv": [0, 0, 8, 0], "texture": "#missing"}
+			}
+		}
+	]
+}
