@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -12,6 +13,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -67,4 +70,15 @@ public class BlockGarbage extends BlockFalling {
         return entityIn instanceof EntityRat;
     }
 
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        if(rand.nextFloat() <= 0.01F){
+            double d0 = (double) ((float) pos.getX() + rand.nextFloat());
+            double d1 = (double) ((float) pos.getY() + 2 + rand.nextFloat());
+            double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
+            if(worldIn.isRemote){
+                RatsMod.PROXY.spawnParticle("fly", d0, d1, d2, 0, 0, 0);
+            }
+        }
+    }
 }

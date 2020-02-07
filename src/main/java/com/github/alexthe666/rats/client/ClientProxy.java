@@ -404,5 +404,8 @@ public class ClientProxy extends CommonProxy {
         if (name.equals("black_death")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleBlackDeath(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
+        if (name.equals("fly")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleFly(world, x, y, z, 0, 0, 0));
+        }
     }
 }
