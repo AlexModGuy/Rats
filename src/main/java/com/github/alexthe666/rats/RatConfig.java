@@ -5,6 +5,8 @@ import net.minecraftforge.common.config.Configuration;
 public class RatConfig {
     public boolean spawnRats = true;
     public boolean spawnPiper = true;
+    public int defaultRatRadius = 16;
+    public int maxRatRadius = 32;
     public int ratSpawnRate = 80;
     public int ratSpawnDecrease = 2;
     public int piperSpawnDecrease = 1;
@@ -60,6 +62,8 @@ public class RatConfig {
     public void init(Configuration config) {
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
         this.ratSpawnDecrease = config.getInt("Rat Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
+        this.defaultRatRadius = config.getInt("Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
+        this.maxRatRadius = config.getInt("Max Rat Radius", "all", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
         this.plagueRats = config.getBoolean("Plague Rats", "all", true, "True if plague rats are to spawn naturally");
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
         this.piperSpawnDecrease = config.getInt("Piper Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");

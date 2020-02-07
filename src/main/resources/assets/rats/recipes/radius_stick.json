@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " R",
+    "S "
+  ],
+  "key": {
+    "R": {
+      "item": "rats:plague_essence"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  },
+  "result": {
+    "item": "rats:radius_stick"
+  }
+}

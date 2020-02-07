@@ -80,12 +80,13 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
     }
 
     protected double getTargetDistance() {
-        return 16D;
+        return rat.getSearchRadius();
     }
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+        AxisAlignedBB bb = new AxisAlignedBB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
+        return bb.offset(rat.getSearchCenter());
     }
 
     @Override

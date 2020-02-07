@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RatAIHarvestFarmer extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -149,7 +148,8 @@ public class RatAIHarvestFarmer extends EntityAIBase {
     private void resetTarget() {
         if (holdingBonemeal()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+            int RADIUS = this.entity.getSearchRadius();
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS))) {
                 if (canPlantBeBonemealed(pos, this.entity.world.getBlockState(pos))) {
                     allBlocks.add(pos);
                 }
@@ -160,7 +160,8 @@ public class RatAIHarvestFarmer extends EntityAIBase {
             }
         } else if(holdingSeeds()){
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+            int RADIUS = this.entity.getSearchRadius();
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS))) {
                 if (entity.world.getBlockState(pos).getBlock().isFertile(entity.world, pos) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }
@@ -175,7 +176,8 @@ public class RatAIHarvestFarmer extends EntityAIBase {
             if(this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() != null && this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock){
                 block = ((ItemBlock)this.entity.getHeldItem(EnumHand.MAIN_HAND).getItem()).getBlock();
             }
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+            int RADIUS = this.entity.getSearchRadius();
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS))) {
                 if (entity.world.mayPlace(block, pos, false, EnumFacing.UP, (Entity)null) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }

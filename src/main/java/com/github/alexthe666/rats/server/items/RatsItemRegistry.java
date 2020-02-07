@@ -35,6 +35,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":cheese_stick")
     public static Item CHEESE_STICK = new ItemCheeseStick();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":radius_stick")
+    public static Item RADIUS_STICK = new ItemRadiusStick();
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":chef_toque")
     public static Item CHEF_TOQUE = new ItemChefToque();
 

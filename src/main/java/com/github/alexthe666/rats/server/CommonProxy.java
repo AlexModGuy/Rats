@@ -211,6 +211,9 @@ public class CommonProxy {
     public void openCheeseStaffGui() {
     }
 
+    public void openRadiusStaffGui() {
+    }
+
     public EntityRat getRefrencedRat() {
         return null;
     }

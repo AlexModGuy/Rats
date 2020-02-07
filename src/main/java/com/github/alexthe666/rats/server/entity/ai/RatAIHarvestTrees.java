@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public class RatAIHarvestTrees extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final RatAIHarvestTrees.BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -63,7 +62,8 @@ public class RatAIHarvestTrees extends EntityAIBase {
     private void resetTarget() {
         World world = entity.world;
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS / 2, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS / 2, RADIUS))) {
+        int RADIUS = this.entity.getSearchRadius();
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS / 2, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS / 2, RADIUS))) {
             if (isBlockLog(world, pos)) {
                 BlockPos topOfLog = new BlockPos(pos);
                 while (!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()) {

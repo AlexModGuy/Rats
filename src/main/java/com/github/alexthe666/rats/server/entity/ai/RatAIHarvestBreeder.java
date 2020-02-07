@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nullable;
@@ -23,7 +24,6 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class RatAIHarvestBreeder extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetSheep = null;
     private boolean reachedSheep = false;
@@ -83,7 +83,9 @@ public class RatAIHarvestBreeder extends EntityAIBase {
                 return entity != null && entity instanceof EntityAnimal && !entity.isChild() && !((EntityAnimal) entity).isInLove() && ((EntityAnimal) entity).getGrowingAge() == 0 && RatAIHarvestBreeder.canBreedMob(((EntityAnimal) entity), RatAIHarvestBreeder.this.entity.getHeldItemMainhand());
             }
         };
-        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) perRatPredicate);
+        int radius = this.entity.getSearchRadius();
+        AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
+        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, bb, (com.google.common.base.Predicate<? super EntityLiving>) perRatPredicate);
         EntityLivingBase closestSheep = null;
         for(EntityLivingBase base : list) {
             if(closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)){

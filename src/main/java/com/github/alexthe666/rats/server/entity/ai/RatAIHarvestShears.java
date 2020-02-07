@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
@@ -24,7 +25,6 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class RatAIHarvestShears extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetSheep = null;
     private boolean reachedSheep = false;
@@ -87,7 +87,9 @@ public class RatAIHarvestShears extends EntityAIBase {
     }
 
     private void resetTarget() {
-        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) SHEAR_PREDICATE);
+        int radius = this.entity.getSearchRadius();
+        AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
+        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, bb, (com.google.common.base.Predicate<? super EntityLiving>) SHEAR_PREDICATE);
         EntityLivingBase closestSheep = null;
         for(EntityLivingBase base : list) {
             if(closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)){

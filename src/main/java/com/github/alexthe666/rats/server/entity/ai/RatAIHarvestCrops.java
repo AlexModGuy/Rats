@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RatAIHarvestCrops extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -48,7 +47,8 @@ public class RatAIHarvestCrops extends EntityAIBase {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+        int RADIUS = this.entity.getSearchRadius();
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS))) {
             IBlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof BlockCrops && ((BlockCrops) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof BlockCrops) && block.getBlock() instanceof BlockBush || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof BlockStem)) {
                 Item item = block.getBlock().getItemDropped(block, entity.getRNG(), 0);

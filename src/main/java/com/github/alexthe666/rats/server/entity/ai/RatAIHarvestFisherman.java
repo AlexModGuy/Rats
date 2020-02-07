@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Random;
 
 public class RatAIHarvestFisherman extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final RatAIHarvestFisherman.BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -114,7 +113,8 @@ public class RatAIHarvestFisherman extends EntityAIBase {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS))) {
+        int RADIUS = this.entity.getSearchRadius();
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS))) {
             if (isShore(pos, this.entity.world)) {
                 allBlocks.add(pos);
             }

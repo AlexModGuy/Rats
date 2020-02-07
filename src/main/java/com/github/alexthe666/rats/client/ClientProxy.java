@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
+import com.github.alexthe666.rats.client.gui.GuiRadiusStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.*;
@@ -351,6 +352,14 @@ public class ClientProxy extends CommonProxy {
     public void openCheeseStaffGui() {
         if (refrencedRat != null) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void openRadiusStaffGui() {
+        if (refrencedRat != null) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiRadiusStaff(refrencedRat));
         }
     }
 

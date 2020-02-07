@@ -14,7 +14,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
     private boolean stop = false;
 
     public RatAIRaidCrops(EntityRat entity) {
-        super(entity, 1.0F, 20);
+        super(entity, 1.0F, entity.getSearchRadius());
         this.entity = entity;
     }
 

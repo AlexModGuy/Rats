@@ -20,6 +20,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -36,7 +37,6 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class RatAIHarvestMilk extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetCow = null;
     private boolean reachedCow = false;
@@ -102,7 +102,9 @@ public class RatAIHarvestMilk extends EntityAIBase {
     }
 
     private void resetTarget() {
-        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, this.entity.getEntityBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super EntityLiving>) COW_PREDICATE);
+        int radius = this.entity.getSearchRadius();
+        AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
+        List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, bb, (com.google.common.base.Predicate<? super EntityLiving>) COW_PREDICATE);
         EntityLivingBase closestCow = null;
         for(EntityLivingBase base : list) {
             if(closestCow == null || base.getDistanceSq(entity) < closestCow.getDistanceSq(entity)){

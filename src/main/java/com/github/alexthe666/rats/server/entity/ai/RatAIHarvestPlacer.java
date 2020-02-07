@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RatAIHarvestPlacer extends EntityAIBase {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
 

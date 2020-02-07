@@ -21,7 +21,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
     private final EntityRat entity;
 
     public RatAIRaidChests(EntityRat entity) {
-        super(entity, 1.0F, 20);
+        super(entity, 1.0F, entity.getSearchRadius());
         this.entity = entity;
     }
 

@@ -15,6 +15,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
+import crafttweaker.api.block.BlockPatternOr;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -91,6 +92,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private static final DataParameter<Boolean> OWNER_NOT_PLAYER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<BlockPos> RADIUS_CENTER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -424,6 +427,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
         this.dataManager.register(HELD_RF, Integer.valueOf(0));
         this.dataManager.register(OWNER_NOT_PLAYER, Boolean.valueOf(false));
+        this.dataManager.register(RADIUS_CENTER, this.getPosition());
+        this.dataManager.register(SEARCH_RADIUS, RatsMod.CONFIG_OPTIONS.defaultRatRadius);
 
     }
 
@@ -480,6 +485,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             compound.setInteger("HomePosY", getHomePosition().getY());
             compound.setInteger("HomePosZ", getHomePosition().getZ());
         }
+        if(getSearchRadiusCenter() != null){
+            compound.setInteger("RadiusPosX", getSearchRadiusCenter().getX());
+            compound.setInteger("RadiusPosY", getSearchRadiusCenter().getY());
+            compound.setInteger("RadiusPosZ", getSearchRadiusCenter().getZ());
+        }
+        compound.setInteger("SearchRadius", getSearchRadius());
         compound.setInteger("CookingProgress", cookingProgress);
         compound.setInteger("DigCooldown", digCooldown);
         compound.setInteger("BreedCooldown", breedCooldown);
@@ -543,6 +554,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (compound.hasKey("HomePosX") && compound.hasKey("HomePosY") && compound.hasKey("HomePosZ")) {
             setHomePosAndDistance(new BlockPos(compound.getInteger("HomePosX"), compound.getInteger("HomePosY"), compound.getInteger("HomePosZ")), compound.getInteger("HomeDistance"));
         }
+        if (compound.hasKey("RadiusPosX") && compound.hasKey("RadiusPosY") && compound.hasKey("RadiusPosZ")) {
+            setSearchRadiusCenter(new BlockPos(compound.getInteger("RadiusPosX"), compound.getInteger("RadiusPosY"), compound.getInteger("RadiusPosZ")));
+        }
+        setSearchRadius(compound.getInteger("SearchRadius"));
         cookingProgress = compound.getInteger("CookingProgress");
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
@@ -701,6 +716,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void setOwnerMonster(boolean monster) {
         this.dataManager.set(OWNER_NOT_PLAYER, Boolean.valueOf(monster));
+    }
+
+    public int getSearchRadius() {
+        return Integer.valueOf(this.dataManager.get(SEARCH_RADIUS).intValue());
+    }
+
+    public void setSearchRadius(int radius) {
+        this.dataManager.set(SEARCH_RADIUS, Integer.valueOf(radius));
+    }
+
+    public BlockPos getSearchRadiusCenter() {
+        return this.dataManager.get(RADIUS_CENTER);
+    }
+
+    public void setSearchRadiusCenter(BlockPos radius) {
+        this.dataManager.set(RADIUS_CENTER, radius);
     }
 
     public RatCommand getCommand() {
@@ -1947,7 +1978,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     this.setDead();
                     player.swingArm(hand);
                     return true;
-                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
+                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK || itemstack.getItem() == RatsItemRegistry.RADIUS_STICK) {
                     RatsMod.PROXY.setRefrencedRat(this);
                     itemstack.getTagCompound().setUniqueId("RatUUID", this.getPersistentID());
                     player.swingArm(hand);
@@ -2614,5 +2645,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }
         return super.isOnSameTeam(entityIn);
+    }
+
+    public BlockPos getSearchCenter() {
+        if(getSearchRadiusCenter() == null){
+            return this.getPosition();
+        }else{
+            return getSearchRadiusCenter();
+        }
     }
 }

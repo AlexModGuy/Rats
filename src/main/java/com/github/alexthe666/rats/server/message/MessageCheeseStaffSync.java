@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
@@ -17,16 +18,18 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
     public long posLg;
     public int facingID;
     public int control;
+    public int extraData;
 
     public MessageCheeseStaffSync() {
 
     }
 
-    public MessageCheeseStaffSync(int entityId, BlockPos pos, EnumFacing facing, int control) {
+    public MessageCheeseStaffSync(int entityId, BlockPos pos, EnumFacing facing, int control, int extraData) {
         this.entityId = entityId;
         this.posLg = pos.toLong();
         this.facingID = facing.ordinal();
         this.control = control;
+        this.extraData = extraData;
     }
 
     @Override
@@ -47,6 +50,16 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
                     break;
                 case 3://detach homepoint
                     rat.detachHome();
+                    break;
+                case 4://set radius home point
+                    rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
+                    break;
+                case 5://set radius scale
+                    rat.setSearchRadius(message.extraData);
+                    break;
+                case 6://reset radius
+                    rat.setSearchRadiusCenter(null);
+                    rat.setSearchRadius(RatsMod.CONFIG_OPTIONS.defaultRatRadius);
                     break;
             }
         }
@@ -71,6 +84,16 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
                 case 3://detach homepoint
                     rat.detachHome();
                     break;
+                case 4://set radius home point
+                    rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
+                    break;
+                case 5://set radius scale
+                    rat.setSearchRadius(message.extraData);
+                    break;
+                case 6://reset radius
+                    rat.setSearchRadiusCenter(null);
+                    rat.setSearchRadius(RatsMod.CONFIG_OPTIONS.defaultRatRadius);
+                    break;
             }
         }
     }
@@ -81,6 +104,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
         posLg = buf.readLong();
         facingID = buf.readInt();
         control = buf.readInt();
+        extraData = buf.readInt();
     }
 
     @Override
@@ -89,6 +113,7 @@ public class MessageCheeseStaffSync extends AbstractMessage<MessageCheeseStaffSy
         buf.writeLong(posLg);
         buf.writeInt(facingID);
         buf.writeInt(control);
+        buf.writeInt(extraData);
     }
 
 }

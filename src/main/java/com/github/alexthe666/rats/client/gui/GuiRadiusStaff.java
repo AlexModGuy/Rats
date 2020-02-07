@@ -7,7 +7,9 @@ import com.github.alexthe666.rats.server.message.MessageCheeseStaffSync;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,22 +21,46 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GuiCheeseStaff extends GuiScreen {
+public class GuiRadiusStaff extends GuiScreen {
 
     protected static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/cheese_staff.png");
-    private EntityRat rat;
+    private final GuiPageButtonList.GuiResponder sliderResponder;
+    private final GuiSlider.FormatHelper formatHelper;
+    private final EntityRat rat;
+    private int sliderValue;
+    private int prevSliderValue = sliderValue;
 
-    public GuiCheeseStaff(EntityRat rat) {
+    public GuiRadiusStaff(EntityRat rat) {
         super();
         this.rat = rat;
+        sliderValue = rat.getSearchRadius();
+        prevSliderValue = sliderValue;
         initGui();
+        sliderResponder = new GuiPageButtonList.GuiResponder() {
+            @Override
+            public void setEntryValue(int id, boolean value) {
+
+            }
+
+            @Override
+            public void setEntryValue(int id, float value) {
+                GuiRadiusStaff.this.setSliderValue(id, value);
+            }
+
+            @Override
+            public void setEntryValue(int id, String value) {
+
+            }
+        };
+        formatHelper = new GuiSlider.FormatHelper() {
+            @Override
+            public String getText(int id, String name, float value) {
+                return name + ": " + (int)Math.round(value);
+            }
+        };
     }
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityRat entity) {
@@ -76,57 +102,43 @@ public class GuiCheeseStaff extends GuiScreen {
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
+    private void setSliderValue(int id, float value) {
+        this.sliderValue = (int)Math.round(value);
+        if(prevSliderValue != sliderValue){
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), BlockPos.ORIGIN, EnumFacing.UP, 5, sliderValue));
+            rat.setSearchRadius((int)Math.round(sliderValue));
+        }
+        prevSliderValue = sliderValue;
+    }
+
     public void initGui() {
         super.initGui();
         this.buttonList.clear();
         int i = (this.width) / 2;
         int j = (this.height - 166) / 2;
-        String topText = I18n.format("entity.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
+        String topText = I18n.format("entity.rat.staff.set_radius_loc", getPosName());
+        String secondText = I18n.format("entity.rat.staff.reset_radius");
         int maxLength = Math.max(150, Minecraft.getMinecraft().fontRenderer.getStringWidth(topText) + 20);
         this.buttonList.add(new GuiButton(0, i - maxLength / 2, j + 60, maxLength, 20, topText));
-        this.buttonList.add(new GuiButton(1, i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rat.staff.mark_block_pickup", getPosName())));
-        this.buttonList.add(new GuiButton(2, i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rat.staff.set_home_point", getPosName())));
-        this.buttonList.add(new GuiButton(3, i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rat.staff.un_set_home_point")));
-        this.buttonList.get(0).enabled = !isNoInventoryAtPos();
-        this.buttonList.get(1).enabled = !isNoInventoryAtPos();
-        this.buttonList.get(2).enabled = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.hasHome();
-        this.buttonList.get(3).enabled = rat.hasHome();
+        this.buttonList.add(new GuiSlider(sliderResponder, 1, i - 150 / 2, j + 85, I18n.format("entity.rat.staff.radius"), 1, RatsMod.CONFIG_OPTIONS.maxRatRadius, sliderValue, formatHelper){
+
+        });
+        this.buttonList.add(new GuiButton(2, i - maxLength / 2, j + 110, maxLength, 20, secondText));
     }
 
     private String getPosName() {
-        if (ClientProxy.refrencedPos != null) {
-            IBlockState state = rat.world.getBlockState(ClientProxy.refrencedPos);
-            List<String> namelist = null;
-            ItemStack pick = state.getBlock().getItem(Minecraft.getMinecraft().world, ClientProxy.refrencedPos, state);
-            try {
-                namelist = pick.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL);
-            } catch (Throwable ignored) {
-            }
-            if(namelist != null && !namelist.isEmpty()){
-                return namelist.get(0);
-            }
-        }
-        return "";
+        return "(" + ClientProxy.refrencedPos.getX() + ", " + ClientProxy.refrencedPos.getY() + ", " + ClientProxy.refrencedPos.getZ() + ")";
     }
 
-    private boolean isNoInventoryAtPos() {
-        BlockPos pos = ClientProxy.refrencedPos;
-        if (pos != null) {
-            World worldIn = rat.world;
-            return worldIn.getTileEntity(pos) == null;
-        }
-        return true;
-    }
-
-    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if(mc != null){
-            try{
+        if (mc != null) {
+            try {
                 this.drawDefaultBackground();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
+
         super.drawScreen(mouseX, mouseY, partialTicks);
         int i = (this.width - 248) / 2 + 10;
         int j = (this.height - 166) / 2 + 8;
@@ -143,28 +155,19 @@ public class GuiCheeseStaff extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button.enabled && button.id == 0) {//deposit
+        if (button.enabled && button.id == 0) {//set radius point
             BlockPos pos = ClientProxy.refrencedPos;
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0, 0));
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 4, 0));
+            rat.setSearchRadiusCenter(pos);
         }
-        if (button.enabled && button.id == 1) {//pickup
-            BlockPos pos = ClientProxy.refrencedPos;
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 1, 0));
-            Minecraft.getMinecraft().displayGuiScreen(null);
+        if (button.enabled && button.id == 2) {//reset
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), BlockPos.ORIGIN, EnumFacing.UP, 6, 0));
+            rat.setSearchRadiusCenter(null);
+            rat.setSearchRadius(RatsMod.CONFIG_OPTIONS.defaultRatRadius);
         }
-        if (button.enabled && button.id == 2) {//homepoint
-            BlockPos pos = ClientProxy.refrencedPos;
-            rat.setHomePosAndDistance(pos, 32);
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 2, 0));
-        }
-        if (button.enabled && button.id == 3) {//unset homepoint
-            BlockPos pos = ClientProxy.refrencedPos;
-            rat.detachHome();
-            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, EnumFacing.UP, 0, 3));
-        }
-        initGui();
+        //initGui();
     }
 
 
 }
+

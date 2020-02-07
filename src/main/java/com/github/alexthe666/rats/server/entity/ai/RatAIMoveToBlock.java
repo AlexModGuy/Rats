@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
@@ -84,7 +85,7 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
     private boolean searchForDestination() {
         int i = this.searchLength;
         int j = 1;
-        BlockPos blockpos = new BlockPos(this.creature);
+        BlockPos blockpos = new BlockPos(((EntityRat)creature).getSearchCenter());
 
         for (int k = 0; k <= 1; k = k > 0 ? -k : 1 - k) {
             for (int l = 0; l < i; ++l) {
@@ -92,7 +93,7 @@ public abstract class RatAIMoveToBlock extends EntityAIBase {
                     for (int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
                         BlockPos blockpos1 = blockpos.add(i1, k - 1, j1);
 
-                        if (this.creature.isWithinHomeDistanceFromPosition(blockpos1) && this.shouldMoveTo(this.creature.world, blockpos1)) {
+                        if (this.shouldMoveTo(this.creature.world, blockpos1)) {
                             this.destinationBlock = blockpos1;
                             return true;
                         }
