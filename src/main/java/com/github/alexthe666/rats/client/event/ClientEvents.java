@@ -2,22 +2,24 @@ package com.github.alexthe666.rats.client.event;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.ClientProxy;
+import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.entity.LayerPlague;
+import com.github.alexthe666.rats.client.render.entity.RenderRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.ilexiconn.llibrary.LLibrary;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.model.ModelChest;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityChestRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -42,6 +44,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Project;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -50,18 +54,69 @@ import java.util.Set;
 
 public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
+    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
+    private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("rats:textures/blocks/rat_radius.png");
+    private static final ModelRat MAIN_MENU_RAT = new ModelRat(0.0F);
+    private static final ResourceLocation MAIN_MENU_RAT_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_blue.png");
+    public static int left_height = 39;
+    public static int right_height = 39;
     private int updateCounter = 0;
     private int playerHealth = 0;
     private int lastPlayerHealth = 0;
     private long healthUpdateCounter = 0;
     private long lastSystemTime = 0;
     private Random rand = new Random();
-    public static int left_height = 39;
-    public static int right_height = 39;
     private float synesthesiaProgress = 0;
     private float prevSynesthesiaProgress = 0;
     private float maxSynesthesiaProgress = 40;
-    private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
+    private int ticksMenuExisted = 0;
+    private float prevRatXPosition = 0;
+    private float ratXPosition = 0;
+
+    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        float f3 = (float) (Minecraft.getSystemTime() % 3000L) / 3000.0F;
+
+        double maxX = boundingBox.maxX * 0.125F;
+        double minX = boundingBox.minX * 0.125F;
+        double maxY = boundingBox.maxY * 0.125F;
+        double minY = boundingBox.minY * 0.125F;
+        double maxZ = boundingBox.maxZ * 0.125F;
+        double minZ = boundingBox.minZ * 0.125F;
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
+
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
+
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
+        tessellator.draw();
+    }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -80,10 +135,10 @@ public class ClientEvents {
 
         if (health < this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Minecraft.getSystemTime();
-            this.healthUpdateCounter = (long) (this.updateCounter + 20);
+            this.healthUpdateCounter = this.updateCounter + 20;
         } else if (health > this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Minecraft.getSystemTime();
-            this.healthUpdateCounter = (long) (this.updateCounter + 10);
+            this.healthUpdateCounter = this.updateCounter + 10;
         }
 
         if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L) {
@@ -102,7 +157,7 @@ public class ClientEvents {
         int healthRows = MathHelper.ceil((healthMax + absorb) / 2.0F / 10.0F);
         int rowHeight = Math.max(10 - (healthRows - 2), 3);
 
-        this.rand.setSeed((long) (updateCounter * 312871));
+        this.rand.setSeed(updateCounter * 312871);
 
         int left = width / 2 - 91;
         int top = height - left_height;
@@ -203,83 +258,105 @@ public class ClientEvents {
         }
     }
 
-    private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("rats:textures/blocks/rat_radius.png");
-
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onRenderWorld(RenderWorldLastEvent event) {
-            if (Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
-                if (RatsMod.PROXY.getRefrencedRat() != null) {
-                    Vec3d renderCenter = new Vec3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
-                    double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
-                    AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    GlStateManager.enableNormalize();
-                    GlStateManager.enableBlend();
-                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(RADIUS_TEXTURE);
-                    GlStateManager.disableCull();
-                    GlStateManager.depthMask(false);
-                    GlStateManager.pushMatrix();
-                    Entity viewEntity = Minecraft.getMinecraft().getRenderViewEntity();
-                    double px = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * event.getPartialTicks();
-                    double py = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * event.getPartialTicks();
-                    double pz = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * event.getPartialTicks();
-                    GlStateManager.translate(-px, -py, -pz);
-                    GlStateManager.translate(renderCenter.x, renderCenter.y, renderCenter.z);
-                    renderMovingAABB(aabb, event.getPartialTicks());
-                    GlStateManager.popMatrix();
-                    GlStateManager.depthMask(true);
-                    GlStateManager.enableCull();
-                    GlStateManager.disableBlend();
-                    GlStateManager.disableNormalize();
-                }
+        if (RatsMod.CONFIG_OPTIONS.customMainMenu && Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
+            if (RatsMod.PROXY.getRefrencedRat() != null) {
+                Vec3d renderCenter = new Vec3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
+                double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
+                AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.enableNormalize();
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                Minecraft.getMinecraft().getTextureManager().bindTexture(RADIUS_TEXTURE);
+                GlStateManager.disableCull();
+                GlStateManager.depthMask(false);
+                GlStateManager.pushMatrix();
+                Entity viewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+                double px = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * event.getPartialTicks();
+                double py = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * event.getPartialTicks();
+                double pz = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * event.getPartialTicks();
+                GlStateManager.translate(-px, -py, -pz);
+                GlStateManager.translate(renderCenter.x, renderCenter.y, renderCenter.z);
+                renderMovingAABB(aabb, event.getPartialTicks());
+                GlStateManager.popMatrix();
+                GlStateManager.depthMask(true);
+                GlStateManager.enableCull();
+                GlStateManager.disableBlend();
+                GlStateManager.disableNormalize();
             }
+        }
     }
 
-    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
-        float f3 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F;
+    private static final ResourceLocation CHEST_TEXTURE = new ResourceLocation("textures/entity/chest/normal.png");
+    private static final ModelChest LEFT_CHEST_MODEL = new ModelChest();
+    private static final ModelChest RIGHT_CHEST_MODEL = new ModelChest();
+    private float leftChestAngle = 0;
+    private float rightChestAngle = 0;
 
-        double maxX = boundingBox.maxX * 0.125F;
-        double minX = boundingBox.minX * 0.125F;
-        double maxY = boundingBox.maxY * 0.125F;
-        double minY = boundingBox.minY * 0.125F;
-        double maxZ = boundingBox.maxZ * 0.125F;
-        double minZ = boundingBox.minZ * 0.125F;
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX,  f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
+    @SubscribeEvent
+    public void onGuiOpened(GuiScreenEvent.DrawScreenEvent.Post event) {
+        if (event.getGui() instanceof GuiMainMenu) {
+            ticksMenuExisted++;
+            float partialAndFullTicks = ticksMenuExisted - 1 + event.getRenderPartialTicks();
+            float scale = 30;
+            float chestScale = 45;
+            ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+            prevRatXPosition = ratXPosition;
+            ratXPosition = (float) Math.sin(ticksMenuExisted * 0.025F) * 200;
+            int renderRatPos = sr.getScaledWidth() / 2 + (int) (ratXPosition * 0.85F);
+            int renderLeftChestPos = sr.getScaledWidth() / 2 - 200;
+            int renderRightChestPos = sr.getScaledWidth() / 2 + 170;
+            int j = event.getGui().height / 4 + 85;
+            float z = 0;
+            float rotation = prevRatXPosition > ratXPosition ? -90 : 90;
+            if(ratXPosition > 150){
+                rightChestAngle = (ratXPosition - 150) / 50F;
+            }else{
+                rightChestAngle = 0;
+            }
+            if(ratXPosition < -150){
+                leftChestAngle = (Math.abs(ratXPosition) - 150) / 50F;
+            }else{
+                leftChestAngle = 0;
+            }
+            GL11.glPushMatrix();
+            GL11.glTranslatef(renderLeftChestPos, j + 5, 60);
+            GL11.glPushMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(CHEST_TEXTURE);
+            GL11.glScalef(chestScale, chestScale, chestScale);
+            GL11.glRotatef(135, 0, 1, 0);
+            GL11.glRotatef(-15, 0, 0, 1);
+            GL11.glRotatef(15, 1, 0, 0);
+            LEFT_CHEST_MODEL.renderAll();
+            LEFT_CHEST_MODEL.chestLid.rotateAngleX =  -(leftChestAngle * ((float)Math.PI / 2F));
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
+            GL11.glPushMatrix();
+            GL11.glTranslatef(renderRightChestPos, j, 60);
+            GL11.glPushMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(CHEST_TEXTURE);
+            GL11.glScalef(-chestScale, chestScale, chestScale);
+            GL11.glRotatef(-135, 0, 1, 0);
+            GL11.glRotatef(15, 0, 0, 1);
+            GL11.glRotatef(15, 1, 0, 0);
+            RIGHT_CHEST_MODEL.renderAll();
+            RIGHT_CHEST_MODEL.chestLid.rotateAngleX =  -(rightChestAngle * ((float)Math.PI / 2F));
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        tessellator.draw();
+            GL11.glPushMatrix();
+            GL11.glTranslatef(renderRatPos, j, 300.0F);
+            GL11.glPushMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(MAIN_MENU_RAT_TEXTURE);
+            GL11.glScalef(-scale, scale, scale);
+            GL11.glRotatef(rotation, 0, 1, 0);
+            MAIN_MENU_RAT.animateForMenu(partialAndFullTicks, 1);
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+        }
     }
-
 }

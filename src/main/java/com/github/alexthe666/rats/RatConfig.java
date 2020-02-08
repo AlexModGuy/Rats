@@ -58,8 +58,10 @@ public class RatConfig {
     public int ratRFTransferExtreme = 100000;
     public double ratVoodooDistance = 32;
     public boolean addLoot = true;
+    public boolean customMainMenu = true;
 
     public void init(Configuration config) {
+        this.customMainMenu = config.getBoolean("Custom Main Menu", "all", true, "True if rats has a custom main menu");
         this.spawnRats = config.getBoolean("Spawn Rats", "all", true, "True if rats are to spawn naturally");
         this.ratSpawnDecrease = config.getInt("Rat Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.defaultRatRadius = config.getInt("Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");

@@ -475,6 +475,25 @@ public class ModelRat extends AdvancedModelBase {
         }
     }
 
+    public void animateForMenu(float f, float f1){
+        this.resetToDefaultPose();
+        float speedRun = 0.2F;
+        float degreeRun = 0.4F;
+        this.bob(this.body1, speedRun, degreeRun * 5F, false, f, f1);
+        this.walk(this.body1, speedRun, degreeRun, false, 0, 0, f, f1);
+        this.walk(this.body2, speedRun, degreeRun * 0.5F, false, 1, -0.1F, f, f1);
+        this.walk(this.neck, speedRun, degreeRun * 0.5F, false, 2, 0, f, f1);
+        this.walk(this.tail1, speedRun, degreeRun, false, -1, 0, f, f1);
+        this.walk(this.tail2, speedRun, degreeRun * 0.5F, false, -2, 0, f, f1);
+        this.walk(this.leftThigh, speedRun, degreeRun * 2F, true, 0, 0, f, f1);
+        this.walk(this.rightThigh, speedRun, degreeRun * 2F, true, 0, 0, f, f1);
+        this.walk(this.rightFoot, speedRun, degreeRun * 2F, true, 3, -0.1F, f, f1);
+        this.walk(this.leftFoot, speedRun, degreeRun * 2F, true, 3, -0.1F, f, f1);
+        this.swing(this.body1, speedRun, degreeRun, false, 1, 0, f, f1);
+        this.body1.render(0.0625F);
+
+    }
+
     private void rotateFrom(AdvancedModelRenderer renderer, float degX, float degY, float degZ) {
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
