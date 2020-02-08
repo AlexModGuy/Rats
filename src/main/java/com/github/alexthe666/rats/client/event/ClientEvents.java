@@ -322,11 +322,12 @@ public class ClientEvents {
             }else{
                 leftChestAngle = 0;
             }
+            GlStateManager.enableDepth();
             GL11.glPushMatrix();
             GL11.glTranslatef(renderLeftChestPos, j + 5, 60);
             GL11.glPushMatrix();
             Minecraft.getMinecraft().getTextureManager().bindTexture(CHEST_TEXTURE);
-            GL11.glScalef(chestScale, chestScale, chestScale);
+            GL11.glScalef(-chestScale, chestScale, chestScale);
             GL11.glRotatef(135, 0, 1, 0);
             GL11.glRotatef(-15, 0, 0, 1);
             GL11.glRotatef(15, 1, 0, 0);
