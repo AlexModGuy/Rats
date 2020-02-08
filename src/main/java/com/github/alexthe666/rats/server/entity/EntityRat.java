@@ -89,6 +89,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     private static final DataParameter<Boolean> OWNER_NOT_PLAYER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> HAS_CUSTOM_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<BlockPos> RADIUS_CENTER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
@@ -423,6 +424,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.register(HELD_RF, Integer.valueOf(0));
         this.dataManager.register(OWNER_NOT_PLAYER, Boolean.valueOf(false));
         this.dataManager.register(RADIUS_CENTER, this.getPosition());
+        this.dataManager.register(HAS_CUSTOM_RADIUS, Boolean.valueOf(false));
         this.dataManager.register(SEARCH_RADIUS, RatsMod.CONFIG_OPTIONS.defaultRatRadius);
 
     }
@@ -485,6 +487,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             compound.setInteger("RadiusPosY", getSearchRadiusCenter().getY());
             compound.setInteger("RadiusPosZ", getSearchRadiusCenter().getZ());
         }
+        compound.setBoolean("CustomSearchZone", hasCustomSearchZone());
         compound.setInteger("SearchRadius", getSearchRadius());
         compound.setInteger("CookingProgress", cookingProgress);
         compound.setInteger("DigCooldown", digCooldown);
@@ -546,13 +549,15 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             compound.setInteger("HomePosZ", getHomePosition().getZ());
         }
          */
+
         if (compound.hasKey("HomePosX") && compound.hasKey("HomePosY") && compound.hasKey("HomePosZ")) {
             setHomePosAndDistance(new BlockPos(compound.getInteger("HomePosX"), compound.getInteger("HomePosY"), compound.getInteger("HomePosZ")), compound.getInteger("HomeDistance"));
         }
         if (compound.hasKey("RadiusPosX") && compound.hasKey("RadiusPosY") && compound.hasKey("RadiusPosZ")) {
             setSearchRadiusCenter(new BlockPos(compound.getInteger("RadiusPosX"), compound.getInteger("RadiusPosY"), compound.getInteger("RadiusPosZ")));
         }
-        setSearchRadius(compound.getInteger("SearchRadius"));
+        this.setCustomSearchZone(compound.getBoolean("CustomSearchZone"));
+        this.setSearchRadius(compound.getInteger("SearchRadius"));
         cookingProgress = compound.getInteger("CookingProgress");
         digCooldown = compound.getInteger("DigCooldown");
         breedCooldown = compound.getInteger("BreedCooldown");
@@ -713,6 +718,14 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.dataManager.set(OWNER_NOT_PLAYER, Boolean.valueOf(monster));
     }
 
+    public boolean hasCustomSearchZone() {
+        return this.dataManager.get(HAS_CUSTOM_RADIUS).booleanValue();
+    }
+
+    public void setCustomSearchZone(boolean customSearchZone) {
+        this.dataManager.set(HAS_CUSTOM_RADIUS, Boolean.valueOf(customSearchZone));
+    }
+
     public int getSearchRadius() {
         return Integer.valueOf(this.dataManager.get(SEARCH_RADIUS).intValue());
     }
@@ -726,7 +739,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public void setSearchRadiusCenter(BlockPos radius) {
-        this.dataManager.set(RADIUS_CENTER, radius);
+        if(radius == null){
+            this.setCustomSearchZone(false);
+        }else{
+            this.setCustomSearchZone(true);
+            this.dataManager.set(RADIUS_CENTER, radius);
+        }
     }
 
     public RatCommand getCommand() {
@@ -747,6 +765,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public boolean isAttackCommand() {
         return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
+    }
+
+    public boolean isHarvestCommand() {
+        return getCommandInteger() == 4 || getCommandInteger() == 5;
     }
 
     public EntitySenses getSenses() {
@@ -2653,7 +2675,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public BlockPos getSearchCenter() {
-        if(getSearchRadiusCenter() == null){
+        if(getSearchRadiusCenter() == null || !this.hasCustomSearchZone()){
             return this.getPosition();
         }else{
             return getSearchRadiusCenter();

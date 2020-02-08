@@ -54,7 +54,12 @@ public class RatAIWander extends EntityAIWanderAvoidWater {
             if (rat.waterBased) {
                 vec3d = RatUtils.generateRandomWaterPos(this.rat, this.rat.isTamed() ? 5 : 10, 7, null, true);
             } else {
-                vec3d = RandomPositionGenerator.findRandomTarget(this.rat, this.rat.isTamed() ? 5 : 10, 7);
+                if(rat.isHarvestCommand() && rat.hasHome()){
+                    BlockPos home = rat.getHomePosition();
+                    vec3d = new Vec3d(home);
+                }else{
+                    vec3d = RandomPositionGenerator.findRandomTarget(this.rat, this.rat.isTamed() ? 5 : 10, 7);
+                }
 
             }
         }
