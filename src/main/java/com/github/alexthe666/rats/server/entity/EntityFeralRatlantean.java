@@ -79,7 +79,7 @@ public class EntityFeralRatlantean extends EntityMob implements IAnimatedEntity,
     public void onLivingUpdate() {
         super.onLivingUpdate();
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget())) {
+        if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 4 && this.canEntityBeSeen(this.getAttackTarget())) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(rand.nextBoolean() ? ANIMATION_BITE : ANIMATION_SLASH);
             }
