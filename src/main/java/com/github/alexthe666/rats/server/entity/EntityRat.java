@@ -41,10 +41,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -2302,6 +2299,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
 
             }
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && this.getCommand() == RatCommand.HARVEST){
+            Item item = stack.getItem();
+            if(item instanceof ItemSeeds || item instanceof ItemSeedFood || item instanceof ItemBlock || item == Items.DYE && EnumDyeColor.byDyeDamage(stack.getMetadata()) == EnumDyeColor.WHITE){
+                return true;
+            }
+            return false;
         }
         return true;
     }
