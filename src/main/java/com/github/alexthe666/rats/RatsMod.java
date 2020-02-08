@@ -45,7 +45,7 @@ import java.util.List;
 public class RatsMod {
     public static final String MODID = "rats";
     public static final String NAME = "Rats";
-    public static final String VERSION = "3.2.5";
+    public static final String VERSION = "3.2.6";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static CreativeTabs TAB = new CreativeTabs(MODID) {
         @Override

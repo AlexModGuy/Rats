@@ -2207,7 +2207,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }
         if(this.getRNG().nextFloat() < 0.025F){
-            this.setColorVariant(this.getRNG().nextBoolean() ? 9 : 5);
+            this.setColorVariant(this.getRNG().nextBoolean() ? 9 : 4);
         }
         return livingdata;
     }
