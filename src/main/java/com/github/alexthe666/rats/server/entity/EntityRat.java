@@ -257,9 +257,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.removeTask(this.aiHarvest);
         this.tasks.removeTask(this.aiDeposit);
         this.tasks.removeTask(this.aiPickup);
-        if (this.aiHarvest == null) {
-            aiHarvest = new RatAIHarvestCrops(this);
-        }
+        aiHarvest = new RatAIHarvestCrops(this);
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
         }
