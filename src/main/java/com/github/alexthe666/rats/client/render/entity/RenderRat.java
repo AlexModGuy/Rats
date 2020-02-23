@@ -70,7 +70,7 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
             } else {
                 model = RAT_MODEL;
             }
-            this.entityModel.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            model.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             if (flag1) {
                 GlStateManager.unsetProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
             }
