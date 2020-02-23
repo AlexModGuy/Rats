@@ -2,13 +2,17 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
+import com.github.alexthe666.rats.server.items.ItemRatTube;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -19,23 +23,19 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class BlockRatTube extends ContainerBlock implements ICustomRendered {
+public class BlockRatTube extends ContainerBlock implements ICustomRendered, INoTab {
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
@@ -73,9 +73,9 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
     private static Map<Direction, VoxelShape> AABB_CONNECTOR_4_MAP = new HashMap<>();
     private static Map<String, VoxelShape> OVERALL_AABB_MAP = new HashMap();
 
-    public BlockRatTube(String name) {
+    public BlockRatTube() {
         super(Block.Properties.create(Material.GLASS).sound(SoundType.WOOD).hardnessAndResistance(0.9F, 0.0F));
-        this.setRegistryName(RatsMod.MODID, "rat_tube_" + name);
+        this.setRegistryName(RatsMod.MODID, "rat_tube");
         this.setDefaultState(this.stateContainer.getBaseState()
                 .with(NORTH, Boolean.valueOf(false))
                 .with(EAST, Boolean.valueOf(false))
@@ -356,7 +356,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem) {
+        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem || playerIn.getHeldItem(hand).getItem() instanceof ItemRatTube) {
             return false;
         } else {
             Direction side = hit.getFace();
@@ -412,12 +412,45 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc1").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc2").applyTextStyle(TextFormatting.GRAY));
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatTube) {
+            TileEntityRatTube te = (TileEntityRatTube) worldIn.getTileEntity(pos);
+            te.setColor(getColorFromStack(stack));
+        }
     }
+
+    public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+        return getTubeItem(worldIn, pos);
+    }
+
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+
+    }
+
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        if (tileentity instanceof TileEntityRatTube && !player.isCreative()) {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), getTubeItem(worldIn, pos));
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
+    }
+
+    private static ItemStack getTubeItem(IBlockReader worldIn, BlockPos pos){
+        int color = 0;
+        if (worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityRatTube) {
+            TileEntityRatTube te = (TileEntityRatTube) worldIn.getTileEntity(pos);
+            color = te.getColor();
+        }
+        Item item = RatsItemRegistry.RAT_TUBES[MathHelper.clamp(color, 0, 15)];
+        return new ItemStack(item);
+    }
+    private int getColorFromStack(ItemStack stack) {
+        if(stack.getItem() instanceof ItemRatTube){
+            return ((ItemRatTube)stack.getItem()).color.ordinal();
+        }
+        return 0;
+    }
+
 
     @Nullable
     @Override

@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "rat_tube_magenta",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:rat_tube_magenta"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

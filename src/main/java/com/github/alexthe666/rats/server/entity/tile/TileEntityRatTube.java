@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -12,11 +13,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import javax.annotation.Nullable;
+
 public class TileEntityRatTube extends TileEntity implements ITickableTileEntity {
 
     private static BooleanProperty[] allOpenVars = new BooleanProperty[]{BlockRatTube.OPEN_DOWN, BlockRatTube.OPEN_EAST, BlockRatTube.OPEN_NORTH, BlockRatTube.OPEN_SOUTH, BlockRatTube.OPEN_UP, BlockRatTube.OPEN_WEST};
     public Direction opening = null;
     public boolean isNode = false;
+    private int color;
 
     public TileEntityRatTube() {
         super(RatsTileEntityRegistry.RAT_TUBE);
@@ -36,7 +40,14 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
         }
     }
 
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
+    }
 
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
+    }
 
     private void updateRat(EntityRat rat) {
 
@@ -74,6 +85,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
     public CompoundNBT write(CompoundNBT compound) {
         compound.putBoolean("Node", isNode);
         compound.putInt("OpenSide", opening == null ? -1 : opening.ordinal());
+        compound.putInt("TubeColor", color);
         return super.write(compound);
     }
 
@@ -85,6 +97,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
         } else {
             opening = Direction.values()[MathHelper.clamp(i, 0, Direction.values().length - 1)];
         }
+        color = compound.getInt("TubeColor");
         super.read(compound);
     }
 
@@ -96,5 +109,13 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
             opening = null;
             isNode = false;
         }
+    }
+
+    public int getColor(){
+        return color;
+    }
+
+    public void setColor(int colorIn){
+        this.color = colorIn;
     }
 }

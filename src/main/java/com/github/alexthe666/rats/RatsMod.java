@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
-import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -31,7 +30,7 @@ public class RatsMod {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "rats";
     public static final String NAME = "Rats";
-    public static final String VERSION = "4.0.0";
+    public static final String VERSION = "4.0.1";
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
     public static ItemGroup TAB = new ItemGroup(MODID) {

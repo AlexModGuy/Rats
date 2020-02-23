@@ -15,13 +15,11 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
@@ -58,7 +55,6 @@ import java.util.concurrent.Callable;
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
-    public static final ModelResourceLocation RAT_NUGGET_MODEL = new ModelResourceLocation(new ResourceLocation(RatsMod.MODID, "rat_nugget_ore"), "inventory");
     @OnlyIn(Dist.CLIENT)
     private static final RatsTEISR TEISR = new RatsTEISR();
     @OnlyIn(Dist.CLIENT)
@@ -176,12 +172,10 @@ public class ClientProxy extends CommonProxy {
     public static void onBlockColors(ColorHandlerEvent.Block event) {
         RatsMod.LOGGER.info("loaded in block colorizer");
         event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
-            Block block = state.getBlock();
             int meta = 0;
-            for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
-                if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
-                    meta = i;
-                }
+            if(worldIn.getTileEntity(pos) instanceof TileEntityRatTube){
+                TileEntityRatTube tube = (TileEntityRatTube)worldIn.getTileEntity(pos);
+                meta = tube.getColor();
             }
             DyeColor color = DyeColor.byId(meta);
             return color.getFireworkColor();
@@ -194,17 +188,18 @@ public class ClientProxy extends CommonProxy {
     public static void onItemColors(ColorHandlerEvent.Item event) {
         RatsMod.LOGGER.info("loaded in item colorizer");
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> GrassColors.get(0.5D, 1.0D), Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
+
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
-            Block block = Block.getBlockFromItem(p_getColor_1_.getItem());
             int meta = 0;
-            for (int i = 0; i < RatsBlockRegistry.RAT_TUBE_COLOR.length; i++) {
-                if (block == RatsBlockRegistry.RAT_TUBE_COLOR[i]) {
+            for (int i = 0; i < RatsItemRegistry.RAT_TUBES.length; i++) {
+                if (p_getColor_1_.getItem() == RatsItemRegistry.RAT_TUBES[i]) {
                     meta = i;
+                    break;
                 }
             }
             DyeColor color = DyeColor.byId(meta);
             return color.getFireworkColor();
-        }, RatsBlockRegistry.RAT_TUBE_COLOR);
+        }, RatsItemRegistry.RAT_TUBES);
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
             int meta = 0;
             for (int i = 0; i < RatsItemRegistry.RAT_IGLOOS.length; i++) {

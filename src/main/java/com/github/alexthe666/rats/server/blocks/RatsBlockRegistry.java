@@ -7,7 +7,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
@@ -32,7 +31,7 @@ public class RatsBlockRegistry {
     public static final Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
     public static final Block AUTO_CURDLER = new BlockAutoCurdler();
     public static final Block RAT_TRAP = new BlockRatTrap();
-    public static final Block[] RAT_TUBE_COLOR = initRatTubes();
+    public static final Block RAT_TUBE_COLOR = new BlockRatTube();
     public static final Block GARBAGE_PILE = new BlockGarbage();
     public static final Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
@@ -77,15 +76,6 @@ public class RatsBlockRegistry {
     static {
         //Fluids.registerFluid(MILK_FLUID);
     }
-
-    private static Block[] initRatTubes() {
-        Block[] block = new Block[16];
-        for (int i = 0; i < 16; i++) {
-            block[i] = new BlockRatTube(DyeColor.byId(i).getName());
-        }
-        return block;
-    }
-
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

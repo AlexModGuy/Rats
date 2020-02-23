@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.FishBucketItem;
@@ -81,6 +80,8 @@ public class RatsItemRegistry {
     public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
     public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
+
+    public static final Item[] RAT_TUBES = new Item[16];
 
     public static final Item[] RAT_IGLOOS = new Item[16];
 
@@ -302,11 +303,11 @@ public class RatsItemRegistry {
 
     static {
         for (int i = 0; i < 16; i++) {
+            RAT_TUBES[i] = new ItemRatTube(DyeColor.byId(i));
+        }
+        for (int i = 0; i < 16; i++) {
             RAT_IGLOOS[i] = new ItemRatIgloo(DyeColor.byId(i));
         }
-    }
-
-    static {
         for (int i = 0; i < 16; i++) {
             RAT_HAMMOCKS[i] = new ItemRatHammock(DyeColor.byId(i));
         }
