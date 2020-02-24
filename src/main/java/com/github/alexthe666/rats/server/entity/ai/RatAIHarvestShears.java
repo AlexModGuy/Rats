@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nullable;
@@ -80,7 +81,9 @@ public class RatAIHarvestShears extends Goal {
     }
 
     private void resetTarget() {
-        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, this.entity.getBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super LivingEntity>) SHEAR_PREDICATE);
+        int radius = this.entity.getSearchRadius();
+        AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
+        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, bb, (com.google.common.base.Predicate<? super LivingEntity>) SHEAR_PREDICATE);
         LivingEntity closestSheep = null;
         for (LivingEntity base : list) {
             if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {

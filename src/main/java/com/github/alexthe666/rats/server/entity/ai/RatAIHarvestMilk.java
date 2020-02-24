@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
@@ -23,7 +24,6 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class RatAIHarvestMilk extends Goal {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private Entity targetCow = null;
     private boolean reachedCow = false;
@@ -93,7 +93,9 @@ public class RatAIHarvestMilk extends Goal {
     }
 
     private void resetTarget() {
-        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, this.entity.getBoundingBox().grow(RADIUS), (com.google.common.base.Predicate<? super LivingEntity>) COW_PREDICATE);
+        int radius = this.entity.getSearchRadius();
+        AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
+        List<LivingEntity> list = this.entity.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, bb, (com.google.common.base.Predicate<? super LivingEntity>) COW_PREDICATE);
         LivingEntity closestCow = null;
         for (LivingEntity base : list) {
             if (closestCow == null || base.getDistanceSq(entity) < closestCow.getDistanceSq(entity)) {

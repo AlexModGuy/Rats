@@ -18,7 +18,7 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
     private final EntityRat entity;
 
     public RatAIEnterTrap(EntityRat entity) {
-        super(entity, 1.0F, 20);
+        super(entity, 1.0F, entity.getSearchRadius());
         this.entity = entity;
         this.distanceCheck = 2.5D;
     }

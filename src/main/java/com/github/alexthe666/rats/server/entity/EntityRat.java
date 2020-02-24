@@ -109,6 +109,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private static final DataParameter<Integer> DANCE_MOVES = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> HELD_RF = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> RESPAWN_COUNTDOWN = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> HAS_CUSTOM_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<BlockPos> RADIUS_CENTER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -273,6 +276,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.removeGoal(this.aiDeposit);
         this.goalSelector.removeGoal(this.aiPickup);
         boolean flag = false;
+        aiHarvest = new RatAIHarvestCrops(this);
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
             flag = true;
@@ -468,6 +472,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.register(DANCE_MOVES, Integer.valueOf(0));
         this.dataManager.register(HELD_RF, Integer.valueOf(0));
         this.dataManager.register(RESPAWN_COUNTDOWN, Integer.valueOf(0));
+        this.dataManager.register(RADIUS_CENTER, this.getPosition());
+        this.dataManager.register(HAS_CUSTOM_RADIUS, Boolean.valueOf(false));
+        this.dataManager.register(SEARCH_RADIUS, RatConfig.defaultRatRadius);
 
     }
 
@@ -522,6 +529,19 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
+        compound.putFloat("HomeDistance", getMaximumHomeDistance());
+        if(getHomePosition() != null){
+            compound.putInt("HomePosX", getHomePosition().getX());
+            compound.putInt("HomePosY", getHomePosition().getY());
+            compound.putInt("HomePosZ", getHomePosition().getZ());
+        }
+        if(getSearchRadiusCenter() != null){
+            compound.putInt("RadiusPosX", getSearchRadiusCenter().getX());
+            compound.putInt("RadiusPosY", getSearchRadiusCenter().getY());
+            compound.putInt("RadiusPosZ", getSearchRadiusCenter().getZ());
+        }
+        compound.putBoolean("CustomSearchZone", hasCustomSearchZone());
+        compound.putInt("SearchRadius", getSearchRadius());
         compound.putInt("CookingProgress", cookingProgress);
         compound.putInt("DigCooldown", digCooldown);
         compound.putInt("BreedCooldown", breedCooldown);
@@ -575,6 +595,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
+        if (compound.contains("HomePosX") && compound.contains("HomePosY") && compound.contains("HomePosZ")) {
+            setHomePosAndDistance(new BlockPos(compound.getInt("HomePosX"), compound.getInt("HomePosY"), compound.getInt("HomePosZ")), compound.getInt("HomeDistance"));
+        }
+        if (compound.contains("RadiusPosX") && compound.contains("RadiusPosY") && compound.contains("RadiusPosZ")) {
+            setSearchRadiusCenter(new BlockPos(compound.getInt("RadiusPosX"), compound.getInt("RadiusPosY"), compound.getInt("RadiusPosZ")));
+        }
+        this.setCustomSearchZone(compound.getBoolean("CustomSearchZone"));
+        this.setSearchRadius(compound.getInt("SearchRadius"));
         cookingProgress = compound.getInt("CookingProgress");
         digCooldown = compound.getInt("DigCooldown");
         breedCooldown = compound.getInt("BreedCooldown");
@@ -2054,7 +2082,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     this.remove();
                     player.swingArm(hand);
                     return true;
-                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK) {
+                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK || itemstack.getItem() == RatsItemRegistry.RADIUS_STICK) {
                     itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
                     player.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.bind", this.getName()), true);
@@ -2773,5 +2801,42 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public boolean isAttackCommand() {
         return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
+    }
+
+    public boolean hasCustomSearchZone() {
+        return this.dataManager.get(HAS_CUSTOM_RADIUS).booleanValue();
+    }
+
+    public void setCustomSearchZone(boolean customSearchZone) {
+        this.dataManager.set(HAS_CUSTOM_RADIUS, Boolean.valueOf(customSearchZone));
+    }
+
+    public int getSearchRadius() {
+        return Integer.valueOf(this.dataManager.get(SEARCH_RADIUS).intValue());
+    }
+
+    public void setSearchRadius(int radius) {
+        this.dataManager.set(SEARCH_RADIUS, Integer.valueOf(radius));
+    }
+
+    public BlockPos getSearchRadiusCenter() {
+        return this.dataManager.get(RADIUS_CENTER);
+    }
+
+    public void setSearchRadiusCenter(BlockPos radius) {
+        if(radius == null){
+            this.setCustomSearchZone(false);
+        }else{
+            this.setCustomSearchZone(true);
+            this.dataManager.set(RADIUS_CENTER, radius);
+        }
+    }
+
+    public BlockPos getSearchCenter() {
+        if (getSearchRadiusCenter() == null || !this.hasCustomSearchZone()) {
+            return this.getPosition();
+        } else {
+            return getSearchRadiusCenter();
+        }
     }
 }

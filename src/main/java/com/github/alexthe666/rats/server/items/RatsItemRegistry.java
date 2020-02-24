@@ -37,6 +37,8 @@ public class RatsItemRegistry {
 
     public static final Item CHEESE_STICK = new ItemCheeseStick();
 
+    public static final Item RADIUS_STICK = new ItemRadiusStick();
+
     public static final Item CHEF_TOQUE = new ItemChefToque();
 
     public static final Item RAT_FLUTE = new ItemRatFlute();

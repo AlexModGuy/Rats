@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
+import com.github.alexthe666.rats.client.gui.GuiRadiusStaff;
 import com.github.alexthe666.rats.client.gui.GuiRat;
 import com.github.alexthe666.rats.client.gui.RatsGuiRegistry;
 import com.github.alexthe666.rats.client.model.*;
@@ -430,5 +431,13 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> getTEISR() {
         return com.github.alexthe666.rats.client.render.tile.RatsTEISR::new;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void openRadiusStaffGui() {
+        if (refrencedRat != null) {
+            Minecraft.getInstance().displayGuiScreen(new GuiRadiusStaff(refrencedRat));
+        }
     }
 }

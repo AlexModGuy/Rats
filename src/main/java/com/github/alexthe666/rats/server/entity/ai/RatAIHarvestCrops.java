@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RatAIHarvestCrops extends Goal {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -51,7 +50,8 @@ public class RatAIHarvestCrops extends Goal {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+        int RADIUS = entity.getSearchRadius();
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             BlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof StemBlock)) {
                 LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);

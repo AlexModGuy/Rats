@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RatAIHarvestFarmer extends Goal {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -153,9 +152,10 @@ public class RatAIHarvestFarmer extends Goal {
     }
 
     private void resetTarget() {
+        int RADIUS = entity.getSearchRadius();
         if (holdingBonemeal()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (canPlantBeBonemealed(pos, this.entity.world.getBlockState(pos))) {
                     allBlocks.add(pos);
                 }
@@ -166,7 +166,7 @@ public class RatAIHarvestFarmer extends Goal {
             }
         } else if (holdingSeeds()) {
             List<BlockPos> allBlocks = new ArrayList<>();
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (entity.world.getBlockState(pos).getBlock().isFertile(entity.world.getBlockState(pos), entity.world, pos) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }
@@ -181,7 +181,7 @@ public class RatAIHarvestFarmer extends Goal {
             if (this.entity.getHeldItem(Hand.MAIN_HAND).getItem() != null && this.entity.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BlockItem) {
                 block = ((BlockItem) this.entity.getHeldItem(Hand.MAIN_HAND).getItem()).getBlock();
             }
-            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
                     allBlocks.add(pos);
                 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,12 +17,14 @@ public class MessageCheeseStaffSync {
     public long posLg;
     public int facingID;
     public int control;
+    public int extraData;
 
     public MessageCheeseStaffSync(int entityId, long pos, int facing, int control) {
         this.entityId = entityId;
         this.posLg = pos;
         this.facingID = facing;
         this.control = control;
+        this.extraData = 0;
     }
 
     public MessageCheeseStaffSync(int entityId, BlockPos pos, Direction facing, int control) {
@@ -29,6 +32,24 @@ public class MessageCheeseStaffSync {
         this.posLg = pos.toLong();
         this.facingID = facing.ordinal();
         this.control = control;
+        this.extraData = 0;
+    }
+
+    public MessageCheeseStaffSync(int entityId, long pos, int facing, int control, int extraData) {
+        this.entityId = entityId;
+        this.posLg = pos;
+        this.facingID = facing;
+        this.control = control;
+        this.extraData = extraData;
+    }
+
+
+    public MessageCheeseStaffSync(int entityId, BlockPos pos, Direction facing, int control, int extraData) {
+        this.entityId = entityId;
+        this.posLg = pos.toLong();
+        this.facingID = facing.ordinal();
+        this.control = control;
+        this.extraData = extraData;
     }
 
     public static class Handler {
@@ -56,6 +77,16 @@ public class MessageCheeseStaffSync {
                         case 3://detach homepoint
                             rat.detachHome();
                             break;
+                        case 4://set radius home point
+                            rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
+                            break;
+                        case 5://set radius scale
+                            rat.setSearchRadius(message.extraData);
+                            break;
+                        case 6://reset radius
+                            rat.setSearchRadiusCenter(null);
+                            rat.setSearchRadius(RatConfig.defaultRatRadius);
+                            break;
                     }
                 }
             }
@@ -63,7 +94,7 @@ public class MessageCheeseStaffSync {
     }
 
     public static MessageCheeseStaffSync read(PacketBuffer packetBuffer) {
-        return new MessageCheeseStaffSync(packetBuffer.readInt(), packetBuffer.readLong(), packetBuffer.readInt(), packetBuffer.readInt());
+        return new MessageCheeseStaffSync(packetBuffer.readInt(), packetBuffer.readLong(), packetBuffer.readInt(), packetBuffer.readInt(), packetBuffer.readInt());
     }
 
     public static void write(MessageCheeseStaffSync message, PacketBuffer buf) {
@@ -71,6 +102,7 @@ public class MessageCheeseStaffSync {
         buf.writeLong(message.posLg);
         buf.writeInt(message.facingID);
         buf.writeInt(message.control);
+        buf.writeInt(message.extraData);
     }
 
 }

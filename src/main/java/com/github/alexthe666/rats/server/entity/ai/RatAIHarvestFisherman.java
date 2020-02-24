@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RatAIHarvestFisherman extends Goal {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private final RatAIHarvestFisherman.BlockSorter targetSorter;
     private BlockPos targetBlock = null;
@@ -112,7 +111,8 @@ public class RatAIHarvestFisherman extends Goal {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getPosition().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+        int RADIUS = entity.getSearchRadius();
+        for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             if (isShore(pos, this.entity.world)) {
                 allBlocks.add(pos);
             }

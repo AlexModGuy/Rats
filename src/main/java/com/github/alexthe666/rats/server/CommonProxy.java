@@ -252,4 +252,7 @@ public class CommonProxy {
 
     public void setupTEISR(Item.Properties props) {
     }
+
+    public void openRadiusStaffGui() {
+    }
 }

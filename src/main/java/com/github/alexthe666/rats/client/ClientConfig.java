@@ -57,6 +57,8 @@ public class ClientConfig {
     public final ForgeConfigSpec.IntValue ratRFTransferExtreme;
     public final ForgeConfigSpec.DoubleValue ratVoodooDistance;
     public final ForgeConfigSpec.BooleanValue addLoot;
+    public final ForgeConfigSpec.IntValue defaultRatRadius;
+    public final ForgeConfigSpec.IntValue maxRatRadius;
 
     public ClientConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -115,7 +117,8 @@ public class ClientConfig {
         this.ratRFTransferExtreme = buildInt(builder, "Rat RF Transfer Rate Extreme (kRF)", "all", 100000, 1, Integer.MAX_VALUE, "How much kRF (1000 RF) a rat with an extreme energy transfer upgrade can transport at a time.");
         this.ratVoodooDistance = buildDouble(builder, "Voodoo Doll Rat distance", "all", 32F, 0F, Float.MAX_VALUE, "How far away from players the Rat Upgrade: Voodoo Doll is effective.");
         this.addLoot = buildBoolean(builder, "Add Loot", "all", true, "True if loot from rats can spawn in chests");
-
+        this.defaultRatRadius = buildInt(builder, "Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
+        this.maxRatRadius = buildInt(builder, "Max Rat Radius", "all", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

@@ -19,7 +19,6 @@ import net.minecraft.util.math.Vec3d;
 import java.util.EnumSet;
 
 public class RatAIHarvestPlacer extends Goal {
-    private static final int RADIUS = 16;
     private final EntityRat entity;
     private BlockPos targetBlock = null;
 
