@@ -20,11 +20,8 @@ public class RatsWorldRegistry {
     public static final Structure<NoFeatureConfig> RAT_RUINS = new RatlantisRuinsStructure(NoFeatureConfig::deserialize);
     public static final Structure<NoFeatureConfig> FLYING_DUTCHRAT = new DutchratShipStructure(NoFeatureConfig::deserialize);
     public static final Structure<NoFeatureConfig> RATLANTIS_AQUADUCTS = new RatlantisAquaductStructure(NoFeatureConfig::deserialize);
+
     static {
         RATLANTIS_SURFACE.setRegistryName("rats:ratlantis_surface");
-    }
-
-    public static void register() {
-
     }
 }

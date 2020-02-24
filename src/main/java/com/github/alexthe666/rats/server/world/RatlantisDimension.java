@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -31,7 +30,6 @@ public class RatlantisDimension extends Dimension {
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
         OverworldGenSettings settings = ChunkGeneratorType.SURFACE.createSettings();
-        settings.setDefaultBlock(RatsBlockRegistry.MARBLED_CHEESE.getDefaultState());
         settings.setDefaultBlock(RatsBlockRegistry.MARBLED_CHEESE.getDefaultState());
         SingleBiomeProviderSettings providerSettings = new SingleBiomeProviderSettings();
         providerSettings.setBiome(RatsWorldRegistry.RATLANTIS_BIOME);
@@ -88,12 +86,12 @@ public class RatlantisDimension extends Dimension {
 
     @Override
     public boolean canRespawnHere() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isSurfaceWorld() {
-        return true;
+        return false;
     }
 
     @Override @OnlyIn(Dist.CLIENT)
@@ -122,11 +120,5 @@ public class RatlantisDimension extends Dimension {
     @Override @OnlyIn(Dist.CLIENT)
     public boolean doesXZShowFog(final int p_76568_1_, final int p_76568_2_) {
         return false;
-    }
-
-    @Override
-    public void onWorldSave() {
-        final CompoundNBT compoundnbt = new CompoundNBT();
-        this.world.getWorldInfo().setDimensionData(this.world.getDimension().getType(), compoundnbt);
     }
 }

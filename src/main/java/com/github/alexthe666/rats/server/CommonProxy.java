@@ -186,11 +186,8 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerDimensionTypes(RegisterDimensionsEvent event) {
-        if(!DimensionManager.getRegistry().containsKey(new ResourceLocation("rats:ratlantis"))){
-            RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.registerDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
-        }else{
-            RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.getRegistry().getOrDefault(new ResourceLocation("rats:ratlantis"));
-        }
+        RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
+
     }
 
     @SubscribeEvent
