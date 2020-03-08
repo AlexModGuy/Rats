@@ -238,7 +238,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) || entity instanceof OcelotEntity;
+                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative() || entity instanceof OcelotEntity;
             }
         }, 10.0F, 0.8D, 1.225D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
