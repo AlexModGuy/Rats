@@ -45,15 +45,6 @@
       "rats:rat_poop_2"
     ]
   },
-  "mice_on_venus": {
-    "category": "record",
-    "sounds": [
-      {
-        "name": "minecraft:music/game/piano3",
-        "stream": true
-      }
-    ]
-  },
   "black_death_die": {
     "category": "neutral",
     "sounds": [
@@ -80,15 +71,7 @@
       "rats:black_death_idle_4"
     ]
   },
-  "living_mice": {
-    "category": "record",
-    "sounds": [
-      {
-        "name": "minecraft:music/game/hal2",
-        "stream": true
-      }
-    ]
-  },
+
   "rat_laser": {
     "category": "neutral",
     "sounds": [
