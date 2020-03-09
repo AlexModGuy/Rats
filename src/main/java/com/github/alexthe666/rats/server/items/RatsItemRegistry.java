@@ -177,6 +177,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 
+    public static final Item RATTLING_GUN = new ItemRattlingGun();
+
     public static final Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 
     public static final Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);

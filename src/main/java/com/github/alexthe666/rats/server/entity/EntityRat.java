@@ -2023,6 +2023,17 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.stopRiding();
             }
         }
+        if (riding != null && riding.isPassenger(this) && riding instanceof EntityRattlingGun) {
+            float radius = 0.9F;
+            float angle = (0.01745329251F * (((EntityRattlingGun) riding).renderYawOffset + 150F));
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
+            double extraZ = (double) (radius * MathHelper.cos(angle));
+            double extraY = 1.3215D;
+            this.rotationYaw = ((EntityRattlingGun) riding).rotationYawHead;
+            this.rotationYawHead = ((EntityRattlingGun) riding).rotationYawHead;
+            this.prevRotationYaw = ((EntityRattlingGun) riding).rotationYawHead;
+            this.setPosition(riding.posX + extraX, riding.posY + extraY, riding.posZ + extraZ);
+        }
     }
 
     public boolean processInteract(PlayerEntity player, Hand hand) {
