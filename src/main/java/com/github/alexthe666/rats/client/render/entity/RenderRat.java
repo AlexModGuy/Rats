@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.ModelPinkie;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -93,13 +94,25 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
 
     protected void preRenderCallback(EntityRat rat, float partialTickTime) {
         GL11.glScaled(0.6F, 0.6F, 0.6F);
-        if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity() instanceof PlayerEntity) {
-            Entity riding = rat.getRidingEntity();
-            if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
-                EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
-                if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
-                    ((BipedModel) ((LivingRenderer) playerRender).getEntityModel()).bipedHead.postRender(0.0625F);
-                    GlStateManager.translatef(0.0F, -0.7F, 0.25F);
+        if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1) {
+            if(rat.getRidingEntity() instanceof PlayerEntity){
+                Entity riding = rat.getRidingEntity();
+                if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
+                    EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
+                    if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
+                        ((BipedModel) ((LivingRenderer) playerRender).getEntityModel()).bipedHead.postRender(0.0625F);
+                        GlStateManager.translatef(0.0F, -0.7F, 0.25F);
+                    }
+                }
+            }
+            if(rat.getRidingEntity() instanceof EntityRattlingGun){
+                Entity riding = rat.getRidingEntity();
+                if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
+                    EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
+                    if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
+                        RenderRattlingGun.GUN_MODEL.pivot.postRender(0.0625F);
+                    //GlStateManager.translatef(0.0F, -0.7F, 0.25F);
+                    }
                 }
             }
         } else {

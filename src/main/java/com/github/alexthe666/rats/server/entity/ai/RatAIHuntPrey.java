@@ -15,10 +15,10 @@ public class RatAIHuntPrey<T extends LivingEntity> extends NearestAttackableTarg
     }
 
     public boolean shouldExecute() {
-        return !rat.isInCage() && rat.shouldHunt() && rat.getHeldItem(Hand.MAIN_HAND).isEmpty() && super.shouldExecute();
+        return !rat.isInCage() && (rat.shouldHuntAnimal() || rat.shouldHuntMonster()) && rat.getHeldItem(Hand.MAIN_HAND).isEmpty() && super.shouldExecute();
     }
 
     public boolean shouldContinueExecuting() {
-        return rat.shouldHunt() && super.shouldContinueExecuting();
+        return (rat.shouldHuntAnimal() || rat.shouldHuntMonster()) && super.shouldContinueExecuting();
     }
 }

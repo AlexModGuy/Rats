@@ -64,9 +64,6 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         passenger.setPosition(this.posX, this.posY + 1.45D, this.posZ);
-        if (passenger instanceof LivingEntity) {
-            ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
-        }
     }
 
     @Override
@@ -79,8 +76,8 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
         return this.dataManager.get(FIRING).booleanValue();
     }
 
-    public void setFiring(boolean male) {
-        this.dataManager.set(FIRING, Boolean.valueOf(male));
+    public void setFiring(boolean firing) {
+        this.dataManager.set(FIRING, Boolean.valueOf(firing));
     }
 
     protected void onDeathUpdate() {
@@ -99,10 +96,10 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                 }
             }
             if (!this.world.isRemote) {
-                for (int j = 0; j < rand.nextInt(3); j++) {
+                for (int j = 0; j < 1 + rand.nextInt(2); j++) {
                     this.entityDropItem(new ItemStack(Items.STICK), 0.0F);
                 }
-                for (int j = 0; j < rand.nextInt(3); j++) {
+                for (int j = 0; j < 3 + rand.nextInt(7); j++) {
                     this.entityDropItem(new ItemStack(Items.IRON_INGOT), 0.0F);
                 }
             }
@@ -133,12 +130,17 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
             fireCooldown--;
         }
         prevFire = this.isFiring();
+        this.renderYawOffset = this.rotationYaw;
         if (this.getControllingPassenger() != null) {
             if (this.getControllingPassenger() instanceof LivingEntity) {
                 LivingEntity riding = (LivingEntity) this.getControllingPassenger();
-                this.rotationYaw = riding.rotationYaw;
-                this.rotationYawHead = riding.rotationYawHead;
-                this.prevRotationYaw = riding.prevRotationYaw;
+               if (this.getControllingPassenger() instanceof EntityRat) {
+                    EntityRat rat = (EntityRat)this.getControllingPassenger();
+                    if(rat.getAttackTarget() != null && rat.getAttackTarget().getEntityId() != this.getEntityId()){
+                        this.faceEntity(rat.getAttackTarget(), 30, 30);
+                        this.shoot(rat);
+                    }
+                }
             }
         }
         this.doBlockCollisions();
@@ -190,6 +192,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
             if (this.getControllingPassenger() instanceof EntityRat) {
                 if (((EntityRat) this.getControllingPassenger()).isOwner(player)) {
                     ((EntityRat) this.getControllingPassenger()).dismountEntity(this);
+                    ((EntityRat) this.getControllingPassenger()).startRiding(player);
                     return true;
                 }
             }
@@ -207,22 +210,23 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                 double d0 = target.posX - this.posX;
                 double d2 = target.posZ - this.posZ;
                 float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
-                this.renderYawOffset = this.rotationYaw = f % 360;
+                this.renderYawOffset = f % 360;
+                this.rotationYaw = f % 360;
+                this.rotationYawHead = f % 360;
             }
-            EntityCheeseCannonball cannonball = new EntityCheeseCannonball(RatsEntityRegistry.CHEESE_CANNONBALL, world, pirat);
+            EntityRattlingGunBullet cannonball = new EntityRattlingGunBullet(RatsEntityRegistry.RATTLING_GUN_BULLET, world, pirat);
             float radius = 1.6F;
             float angle = (0.01745329251F * (this.renderYawOffset));
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 0.8 + posY;
-            double d0 = target.posY + (double) target.getEyeHeight();
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX + rand.nextFloat() * 0.2F - 0.1;
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ + rand.nextFloat() * 0.2F - 0.1;
+            double extraY = 1.35 + posY + rand.nextFloat() * 0.1F - 0.05;
+            double d0 = target.posY + (double) target.getEyeHeight()/2;
             double d1 = target.posX - extraX;
             double d3 = target.posZ - extraZ;
             double d2 = d0 - extraY;
-            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.65F;
-            float velocity = this.getDistance(target) * 0.045F;
+            float velocity = 2.2F;
             cannonball.setPosition(extraX, extraY, extraZ);
-            cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0.4F);
+            cannonball.shoot(d1, d2, d3, velocity, 0.4F);
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
                 this.world.addEntity(cannonball);

@@ -93,7 +93,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
         return false;
     }
 
-    public boolean shouldHunt() {
+    public boolean shouldHuntAnimal() {
         return true;
     }
 

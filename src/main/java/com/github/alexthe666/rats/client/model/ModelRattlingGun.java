@@ -2,9 +2,9 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
-import net.minecraft.entity.Entity;
+import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 
-public class ModelRattlingGun<T extends Entity> extends AdvancedEntityModel<T> {
+public class ModelRattlingGun<T extends EntityRattlingGun> extends AdvancedEntityModel<T> {
     public AdvancedRendererModel base1;
     public AdvancedRendererModel pivot;
     public AdvancedRendererModel backleg;
@@ -125,12 +125,25 @@ public class ModelRattlingGun<T extends Entity> extends AdvancedEntityModel<T> {
         this.gun1.addChild(this.gun2);
         this.base1.addChild(this.rightleg);
         this.behind.addChild(this.handle1);
+        this.updateDefaultPose();
     }
 
     @Override
     public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.base1.render(f5);
         this.pivot.render(f5);
+    }
+
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        this.resetToDefaultPose();
+        if(entityIn.isFiring()){
+            this.gun1.rotateAngleZ = ageInTicks;
+            this.handle1.rotateAngleX = ageInTicks * 0.5F;
+        }else{
+            this.gun1.rotateAngleZ = 0;
+            this.handle1.rotateAngleX = 0;
+
+        }
     }
 
     public void setRotateAngle(AdvancedRendererModel AdvancedRendererModel, float x, float y, float z) {

@@ -229,7 +229,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         }
     }
 
-    public boolean shouldHunt() {
+    public boolean shouldHuntAnimal() {
         return true;
     }
 

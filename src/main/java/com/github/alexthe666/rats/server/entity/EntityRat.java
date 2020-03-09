@@ -32,6 +32,7 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -262,7 +263,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     if (entity instanceof TameableEntity && ((TameableEntity) entity).isTamed()) {
                         return false;
                     }
-                    return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof PlayerEntity) || EntityRat.this.hasPlague()) && !entity.isChild();
+                    if(EntityRat.this.shouldHuntMonster()){
+                        return entity instanceof IMob;
+                    }else{
+                        return entity != null && !(entity instanceof EntityRat) && !(entity instanceof PlayerEntity) && !entity.isChild();
+                    }
                 }
             }
         }));
@@ -1027,7 +1032,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
                 && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
                 && this.shouldDepositItem(getHeldItemMainhand())) {
-            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT || this.getHealth() < this.getMaxHealth()) {
+            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
             }
@@ -2029,9 +2034,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
             double extraZ = (double) (radius * MathHelper.cos(angle));
             double extraY = 1.3215D;
-            this.rotationYaw = ((EntityRattlingGun) riding).rotationYawHead;
-            this.rotationYawHead = ((EntityRattlingGun) riding).rotationYawHead;
-            this.prevRotationYaw = ((EntityRattlingGun) riding).rotationYawHead;
             this.setPosition(riding.posX + extraX, riding.posY + extraY, riding.posZ + extraZ);
         }
     }
@@ -2315,8 +2317,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return RAT_TEXTURES[MathHelper.clamp(this.getColorVariant(), 0, RAT_TEXTURES.length - 1)];
     }
 
-    public boolean shouldHunt() {
-        return this.getCommandInteger() == 3 && this.getHealth() >= this.getMaxHealth() / 2F || !this.isTamed() && this.hasPlague();
+    public boolean shouldHuntAnimal() {
+        return this.getCommandInteger() == 3 || !this.isTamed() && this.hasPlague();
+    }
+
+    public boolean shouldHuntMonster() {
+        return this.getCommandInteger() == 7;
     }
 
     private static void removeClickEvents(ITextComponent p_207712_0_) {
@@ -2811,7 +2817,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isAttackCommand() {
-        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
+        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3 || getCommandInteger() == 7;
     }
 
     public boolean hasCustomSearchZone() {

@@ -39,6 +39,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityDutchratSword> DUTCHRAT_SWORD = registerEntity(EntityType.Builder.create(EntityDutchratSword::new, EntityClassification.MISC).size(0.95F, 0.95F).setCustomClientFactory(EntityDutchratSword::new), "dutchrat_sword");
     public static final EntityType<EntityRatfish> RATFISH = registerEntity(EntityType.Builder.create(EntityRatfish::new, EntityClassification.WATER_CREATURE).size(0.45F, 0.45F), "ratfish");
     public static final EntityType<EntityRattlingGun> RATTLING_GUN = registerEntity(EntityType.Builder.create(EntityRattlingGun::new, EntityClassification.MISC).size(1.5F, 1.6F), "rattling_gun");
+    public static final EntityType<EntityRattlingGunBullet> RATTLING_GUN_BULLET = registerEntity(EntityType.Builder.create(EntityRattlingGunBullet::new, EntityClassification.MISC).size(0.25F, 0.25F), "rattling_gun_bullet");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){

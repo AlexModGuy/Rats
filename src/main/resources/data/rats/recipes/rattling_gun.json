@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GPG",
+    "BDB",
+    "SSS"
+  ],
+  "key": {
+    "P": {
+      "item": "rats:plague_essence",
+      "data": 0
+    },
+    "B": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "rats:rattling_gun"
+  }
+}
