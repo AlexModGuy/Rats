@@ -313,8 +313,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelSantaHat(1.0F);
         }else if(index == 9){
             return new ModelGhostPiratHat(1.0F);
-        }else{
+        }else  if(index == 10){
             return new ModelHaloHat(0.5F);
+        }else{
+            return new ModelPartyHat(1.0F);
         }
     }
 

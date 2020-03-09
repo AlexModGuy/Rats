@@ -129,6 +129,14 @@ public class RatsItemRegistry {
 
     public static final Item HALO_HAT = new ItemHat("halo_hat", 10);
 
+    public static final Item PARTY_HAT_1 = new ItemHat("party_hat_1", 11);
+
+    public static final Item PARTY_HAT_2 = new ItemHat("party_hat_2", 11);
+
+    public static final Item PARTY_HAT_3 = new ItemHat("party_hat_3", 11);
+
+    public static final Item PARTY_HAT_4 = new ItemHat("party_hat_4", 11);
+
     public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
