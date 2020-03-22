@@ -261,7 +261,7 @@ public class ClientEvents {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if (RatsMod.CONFIG_OPTIONS.customMainMenu && Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
+        if (Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
                 Vec3d renderCenter = new Vec3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
                 double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
@@ -298,7 +298,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onGuiOpened(GuiScreenEvent.DrawScreenEvent.Post event) {
-        if (event.getGui() instanceof GuiMainMenu) {
+        if (RatsMod.CONFIG_OPTIONS.customMainMenu && event.getGui() instanceof GuiMainMenu) {
             ticksMenuExisted++;
             float partialAndFullTicks = ticksMenuExisted - 1 + event.getRenderPartialTicks();
             float scale = 30;
