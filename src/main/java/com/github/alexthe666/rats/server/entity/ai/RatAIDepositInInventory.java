@@ -145,9 +145,8 @@ public class RatAIDepositInInventory extends EntityAIBase {
                     }
                     IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.entity.depositFacing);
                     ItemStack duplicate = this.entity.getHeldItem(EnumHand.MAIN_HAND).copy();
-                    if (ItemHandlerHelper.insertItem(handler, duplicate, true).isEmpty()) {
-                        ItemHandlerHelper.insertItem(handler, duplicate, false);
-                        this.entity.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+                    if (duplicate.getCount() != ItemHandlerHelper.insertItem(handler, duplicate, true).getCount()) {
+                        this.entity.setHeldItem(EnumHand.MAIN_HAND, ItemHandlerHelper.insertItem(handler, duplicate, false));
                         this.targetBlock = null;
                         this.resetTask();
                     }
