@@ -87,13 +87,15 @@ public class RatAIHarvestBreeder extends EntityAIBase {
         AxisAlignedBB bb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius).offset(entity.getSearchCenter());
         List<EntityLiving> list = this.entity.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, bb, (com.google.common.base.Predicate<? super EntityLiving>) perRatPredicate);
         EntityLivingBase closestSheep = null;
-        for(EntityLivingBase base : list) {
-            if(closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)){
-                closestSheep = base;
+        if(list.size() >= 2) {
+            for (EntityLivingBase base : list) {
+                if (closestSheep == null || base.getDistanceSq(entity) < closestSheep.getDistanceSq(entity)) {
+                    closestSheep = base;
+                }
             }
-        }
-        if (closestSheep != null) {
-            this.targetSheep = closestSheep;
+            if (closestSheep != null) {
+                this.targetSheep = closestSheep;
+            }
         }
     }
 
