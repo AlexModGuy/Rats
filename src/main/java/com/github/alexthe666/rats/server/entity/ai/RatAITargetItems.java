@@ -102,7 +102,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             this.resetTask();
             this.taskOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1 && shouldKeepGathering()) {
             EntityRat rat = (EntityRat) this.taskOwner;
             ItemStack duplicate = this.targetEntity.getItem().copy();
             int extractSize = rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) ? this.targetEntity.getItem().getCount() : 1;
@@ -144,6 +144,10 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     public void makeUpdate() {
         this.mustUpdate = true;
+    }
+
+    private boolean shouldKeepGathering(){
+        return rat.getHeldItemMainhand().isEmpty() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && rat.getHeldItemMainhand().getCount() < 64;
     }
 
     @Override
