@@ -20,9 +20,14 @@ import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.github.alexthe666.rats.server.world.village.RatsVillageRegistry;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 @Mod(modid = RatsMod.MODID, name = RatsMod.NAME, dependencies = "required-after:llibrary@[" + RatsMod.LLIBRARY_VERSION + ",)", version = RatsMod.VERSION, guiFactory = "com.github.alexthe666.rats.client.gui.RatsGuiFactory")
 public class RatsMod {
@@ -71,6 +77,7 @@ public class RatsMod {
     public static Configuration config;
     public static RatConfig CONFIG_OPTIONS = new RatConfig();
     public static boolean iafLoaded;
+    public static DamageSource ratTrapDamage;
 
     public static void loadConfig() {
         File configFile = new File(Loader.instance().getConfigDir(), "rats.cfg");
@@ -116,6 +123,13 @@ public class RatsMod {
         RatsRecipeRegistry.register();
         RatsWorldRegistry.register();
         RatsVillageRegistry.register();
+        ratTrapDamage = new DamageSource("rat_trap_damage") {
+            @Override
+            public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+                String s = "death.rat_trap_damage";
+                return new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName());
+            }
+        };
     }
 
     @EventHandler

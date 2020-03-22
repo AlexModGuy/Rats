@@ -1839,7 +1839,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public void setKilledInTrap() {
         isDeadInTrap = true;
-        this.attackEntityFrom(DamageSource.IN_WALL, Float.MAX_VALUE);
+        this.attackEntityFrom(RatsMod.ratTrapDamage, Float.MAX_VALUE);
     }
 
     protected void onDeathUpdate() {
@@ -2587,7 +2587,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
-        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+        if(source == DamageSource.IN_WALL){
+            return true;
+        }
+        if ((source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
         if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR))) {
