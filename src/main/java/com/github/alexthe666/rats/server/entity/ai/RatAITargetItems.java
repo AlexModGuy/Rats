@@ -48,7 +48,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
                 if (rat.isTargetCommand()) {
                     return item != null && !stack.isEmpty() && rat.canRatPickupItem(stack);
                 }
-                return !stack.isEmpty() && RatUtils.shouldRaidItem(stack) && rat.canRatPickupItem(stack);
+                return !stack.isEmpty() && (RatUtils.shouldRaidItem(stack) || rat.isTamed()) && rat.canRatPickupItem(stack);
             }
         };
         this.setMutexBits(0);

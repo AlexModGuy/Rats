@@ -7,19 +7,23 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.util.EnumHand;
 
-public class RatAIHuntPrey<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<EntityLivingBase> {
+public class RatAIHuntAnimals<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<EntityLivingBase> {
     private final EntityRat rat;
 
-    public RatAIHuntPrey(EntityRat entityIn, Predicate<? super EntityLivingBase> targetSelector) {
+    public RatAIHuntAnimals(EntityRat entityIn, Predicate<? super EntityLivingBase> targetSelector) {
         super(entityIn, EntityLivingBase.class, 10, true, false, targetSelector);
         this.rat = entityIn;
     }
 
     public boolean shouldExecute() {
-        return !rat.isInCage() && rat.shouldHunt() && ((EntityRat)taskOwner).isAttackCommand() && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && super.shouldExecute();
+        return !rat.isInCage() && shouldHunt() && ((EntityRat)taskOwner).isAttackCommand() && rat.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && super.shouldExecute();
     }
 
     public boolean shouldContinueExecuting() {
-        return rat.shouldHunt() && super.shouldContinueExecuting();
+        return shouldHunt() && super.shouldContinueExecuting();
+    }
+
+    private boolean shouldHunt(){
+        return rat.shouldHuntAnimals() || rat.shouldHuntMonsters();
     }
 }

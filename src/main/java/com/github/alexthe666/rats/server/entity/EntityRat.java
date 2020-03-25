@@ -15,7 +15,6 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
-import crafttweaker.api.block.BlockPatternOr;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -30,6 +29,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -234,7 +234,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(1, new RatAIHuntPrey(this, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(1, new RatAIHuntAnimals(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
@@ -242,7 +242,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     if (entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
                         return false;
                     }
-                    return entity != null && !(entity instanceof EntityRat) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof EntityPlayer) || EntityRat.this.hasPlague()) && !entity.isChild();
+                    if(EntityRat.this.shouldHuntMonsters()){
+                        return entity instanceof IMob;
+                    }else if(EntityRat.this.shouldHuntAnimals()){
+                        return entity != null && !(entity instanceof EntityRat) && !(entity instanceof IMob) && !entity.isOnSameTeam(EntityRat.this) && (!(entity instanceof EntityPlayer) || EntityRat.this.hasPlague()) && !entity.isChild();
+                    }
+                    return false;
                 }
             }
         }));
@@ -764,7 +769,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean isAttackCommand() {
-        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3;
+        return getCommandInteger() == 0 || getCommandInteger() == 2 || getCommandInteger() == 3 || getCommandInteger() == 7;
     }
 
     public boolean isHarvestCommand() {
@@ -1005,7 +1010,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand())) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || this.shouldDepositItem(getHeldItemMainhand()))) {
+        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST && this.getCommand() != RatCommand.HUNT_ANIMALS && this.getCommand() != RatCommand.HUNT_MONSTERS || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand())) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || this.shouldDepositItem(getHeldItemMainhand()))) {
             this.setAnimation(ANIMATION_EAT);
             this.setRatStatus(RatStatus.EATING);
         }
@@ -2227,8 +2232,12 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return RAT_TEXTURES[MathHelper.clamp(this.getColorVariant(), 0, RAT_TEXTURES.length - 1)];
     }
 
-    public boolean shouldHunt() {
-        return this.getCommandInteger() == 3 && this.getHealth() >= this.getMaxHealth() / 2F || !this.isTamed() && this.hasPlague();
+    public boolean shouldHuntAnimals() {
+        return this.getCommandInteger() == 3 || !this.isTamed() && this.hasPlague();
+    }
+
+    public boolean shouldHuntMonsters() {
+        return this.getCommandInteger() == 7 || !this.isTamed() && this.hasPlague();
     }
 
     public String getName() {
