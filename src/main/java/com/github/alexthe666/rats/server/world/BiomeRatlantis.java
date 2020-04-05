@@ -70,6 +70,7 @@ public class BiomeRatlantis extends Biome {
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.PIRAT, 20, 1, 1));
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.RATLANTEAN_SPIRIT, 50, 1, 1));
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.GHOST_PIRAT, 75, 1, 5));
+        this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(RatsEntityRegistry.RATLANTEAN_RATBOT, 15, 1, 5));
         this.setRegistryName("ratlantis_biome");
         //this.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, Biome.createDecoratedFeature(RAT_RUINS, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(64)));
         //this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(AQUADUCT, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_PASSTHROUGH, new ChanceConfig(128)));

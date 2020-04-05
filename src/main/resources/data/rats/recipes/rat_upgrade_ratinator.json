@@ -1,13 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "IAI",
-    "AUA",
+    "ICI",
+    "BUB",
     "IAI"
   ],
   "key": {
     "A": {
-      "item": "rats:arcane_technology"
+      "item": "rats:charged_ratbot_barrel"
+    },
+    "B": {
+      "item": "rats:ratbot_barrel"
+    },
+    "C": {
+      "item": "rats:marbled_cheese_rat_head"
     },
     "U": {
       "item": "rats:rat_upgrade_basic_ratlantean"

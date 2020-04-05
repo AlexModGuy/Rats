@@ -40,6 +40,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatfish> RATFISH = registerEntity(EntityType.Builder.create(EntityRatfish::new, EntityClassification.WATER_CREATURE).size(0.45F, 0.45F), "ratfish");
     public static final EntityType<EntityRattlingGun> RATTLING_GUN = registerEntity(EntityType.Builder.create(EntityRattlingGun::new, EntityClassification.MISC).size(1.5F, 1.6F), "rattling_gun");
     public static final EntityType<EntityRattlingGunBullet> RATTLING_GUN_BULLET = registerEntity(EntityType.Builder.create(EntityRattlingGunBullet::new, EntityClassification.MISC).size(0.25F, 0.25F), "rattling_gun_bullet");
+    public static final EntityType<EntityRatlanteanRatbot> RATLANTEAN_RATBOT = registerEntity(EntityType.Builder.create(EntityRatlanteanRatbot::new, EntityClassification.MONSTER).size(1.2F, 1.3F), "ratlantean_ratbot");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
@@ -55,6 +56,7 @@ public class RatsEntityRegistry {
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);
         EntitySpawnPlacementRegistry.register(GHOST_PIRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGhostPirat::canSpawn);
         EntitySpawnPlacementRegistry.register(RATFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
+        EntitySpawnPlacementRegistry.register(RATLANTEAN_RATBOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanRatbot::canSpawn);
 
     }
 }

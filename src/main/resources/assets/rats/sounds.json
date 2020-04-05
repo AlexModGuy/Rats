@@ -1,4 +1,12 @@
 {
+  "ratlantean_ratbot_idle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:ratlantean_ratbot_idle_0",
+      "rats:ratlantean_ratbot_idle_1",
+      "rats:ratlantean_ratbot_idle_2"
+    ]
+  },
   "dutchrat_die": {
     "category": "neutral",
     "sounds": [

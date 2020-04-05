@@ -21,6 +21,7 @@ public class RatsTileEntityRegistry {
     public static TileEntityType<TileEntityUpgradeCombiner> UPGRADE_COMBINER = registerTileEntity(TileEntityType.Builder.create(TileEntityUpgradeCombiner::new, RatsBlockRegistry.UPGRADE_COMBINER), "upgrade_combiner");
     public static TileEntityType<TileEntityAutoCurdler> AUTO_CURDLER = registerTileEntity(TileEntityType.Builder.create(TileEntityAutoCurdler::new, RatsBlockRegistry.AUTO_CURDLER), "auto_curdler");
     public static TileEntityType<TileEntityDutchratBell> DUTCHRAT_BELL = registerTileEntity(TileEntityType.Builder.create(TileEntityDutchratBell::new, RatsBlockRegistry.DUTCHRAT_BELL), "dutchrat_bell");
+    public static TileEntityType<TileEntityRatlanteanAutomatonHead> AUTOMATON_HEAD = registerTileEntity(TileEntityType.Builder.create(TileEntityRatlanteanAutomatonHead::new, RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD), "ratlantean_automaton_head");
 
     public static TileEntityType registerTileEntity(TileEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(RatsMod.MODID, entityName);

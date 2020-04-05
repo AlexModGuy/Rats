@@ -152,6 +152,21 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
         animator.endKeyframe();
     }
 
+    public void renderHead(float f5, float ticksExisted){
+        this.resetToDefaultPose();
+        ear1.rotationPointZ = 3;
+        ear2.rotationPointZ = 3;
+        float idleSpeed = 0.1F;
+        float idleDegree = 0.7F;
+        this.bob(headBase, idleSpeed, idleDegree, 0, 0, false, ticksExisted, 1);
+        this.bob(ear2, idleSpeed, idleDegree, -1, 0, false, ticksExisted, 1);
+        this.bob(ear1, idleSpeed, idleDegree, -1, 0, false, ticksExisted, 1);
+        this.walk(headBase, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0, ticksExisted, 1);
+        this.swing(ear1, idleSpeed * 0.4F, idleDegree * 0.4F, false, 0, 0, ticksExisted, 1);
+        this.swing(ear2, idleSpeed * 0.4F, idleDegree * 0.4F, true, 0, 0, ticksExisted, 1);
+        this.headBase.render(f5);
+       }
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityMarbleCheeseGolem rat) {
         this.blade.rotateAngleX = (float) Math.toRadians(MathHelper.wrapDegrees(f2 * 50));
         float idleSpeed = 0.3F;

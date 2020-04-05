@@ -12,6 +12,7 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
     private RenderRatTrap renderRatTrap = new RenderRatTrap();
     private RenderAutoCurdler renderAutoCurdler = new RenderAutoCurdler();
     private RenderRatlantisPortal renderRatlantisPortal = new RenderRatlantisPortal();
+    private RenderRatlanteanAutomatonHead renderRatlanteanAutomatonHead = new RenderRatlanteanAutomatonHead();
     //private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
     //private RenderUpgradeSeparator renderUpgradeSeparator = new RenderUpgradeSeparator();
 
@@ -29,6 +30,8 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL)) {
             renderRatlantisPortal.render(null, 0, 0, 0, 0, 0);
         }
-
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)) {
+            renderRatlanteanAutomatonHead.render(null, 0, 0, 0, 0, 0);
+        }
     }
 }

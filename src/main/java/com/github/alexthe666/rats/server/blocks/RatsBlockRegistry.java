@@ -54,6 +54,7 @@ public class RatsBlockRegistry {
     public static final Block COMPRESSED_RAT = new BlockCompressedRat();
     public static final Block BRAIN_BLOCK = new BlockBrain();
     public static final Block JACK_O_RATERN = new BlockJackORatern();
+    public static final Block BLOCK_OF_BLUE_CHEESE = new BlockGeneric("block_of_blue_cheese", Material.WOOL, 2.0F, 0F, SoundType.SLIME);
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
     public static final Block PIRAT_PLANKS = new Block(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_planks");

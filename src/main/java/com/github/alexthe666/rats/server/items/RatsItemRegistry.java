@@ -79,6 +79,10 @@ public class RatsItemRegistry {
 
     public static final Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
 
+    public static final Item RAT_SKULL = new ItemGeneric("rat_skull");
+
+    public static final Item GOLDEN_RAT_SKULL = new ItemGeneric("golden_rat_skull");
+
     public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
     public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
@@ -114,6 +118,8 @@ public class RatsItemRegistry {
     public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
     public static final Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
+
+    public static final Item BLUE_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "blue_cheese");
 
     public static final Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
 
@@ -182,6 +188,10 @@ public class RatsItemRegistry {
     public static final Item RATFISH = new ItemGenericFood(1, 0.35F, false, false, false, "ratfish");
 
     public static final Item RATFISH_BUCKET = new FishBucketItem(RatsEntityRegistry.RATFISH, Fluids.WATER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("ratfish_bucket");
+
+    public static final Item RATBOT_BARREL = new ItemGeneric("ratbot_barrel");
+
+    public static final Item CHARGED_RATBOT_BARREL = new ItemGeneric("charged_ratbot_barrel");
 
     public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CRC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:cheese"
+    },
+    "R": {
+      "item": "rats:contaminated_food"
+    }
+  },
+  "result": {
+    "item": "rats:blue_cheese",
+    "count": 8
+  }
+}

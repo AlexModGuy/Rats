@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.blocks;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.*;
@@ -13,21 +14,20 @@ import net.minecraft.block.pattern.BlockPatternBuilder;
 import net.minecraft.block.pattern.BlockStateMatcher;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.CachedBlockInfo;
-import net.minecraft.util.Direction;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockMarbledCheeseRatHead extends HorizontalBlock {
+public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTEISR {
 
-    private static final VoxelShape HALF_AABB = Block.makeCuboidShape(0F, 0F, 0F, 16, 8, 16);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+
     private static final Predicate<BlockState> IS_MARBLE = new Predicate<BlockState>() {
         public boolean apply(@Nullable BlockState p_apply_1_) {
             return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW
@@ -46,13 +46,26 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
     private BlockPattern golemPattern;
 
     public BlockMarbledCheeseRatHead() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5F, 0));
-        this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).lightValue(5).hardnessAndResistance(2.5F, 0));
+        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         this.setRegistryName(RatsMod.MODID, "marbled_cheese_rat_head");
+
     }
 
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.with(FACING, rot.rotate(state.get(FACING)));
+    }
+
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+    }
+
+    public boolean isSolid(BlockState state) {
+        return false;
     }
 
     public boolean isOpaqueCube(BlockState state) {
@@ -61,10 +74,6 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
 
     public boolean isFullCube(BlockState state) {
         return false;
-    }
-
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return HALF_AABB;
     }
 
     public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
@@ -105,11 +114,11 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(HORIZONTAL_FACING);
+        builder.add(FACING);
     }
 
 
@@ -127,5 +136,11 @@ public class BlockMarbledCheeseRatHead extends HorizontalBlock {
         }
 
         return this.golemPattern;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityRatlanteanAutomatonHead();
     }
 }

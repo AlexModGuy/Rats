@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GSG",
+    "GGG"
+  ],
+  "key": {
+    "S": {
+      "item": "rats:ratbot_barrel"
+    },
+    "G": {
+      "tag": "forge:storage_blocks/redstone"
+    }
+  },
+  "result": {
+    "item": "rats:charged_ratbot_barrel",
+    "count": 1
+  }
+}

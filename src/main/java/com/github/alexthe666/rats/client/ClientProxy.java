@@ -155,6 +155,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityRatfish.class, manager -> new RenderRatfish());
         RenderingRegistry.registerEntityRenderingHandler(EntityRattlingGun.class, manager -> new RenderRattlingGun());
         RenderingRegistry.registerEntityRenderingHandler(EntityRattlingGunBullet.class, manager -> new RenderRattlingGunBullet());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRatlanteanRatbot.class, manager -> new RenderRatlanteanRatbot());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatHole.class, new RenderRatHole());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatTrap.class, new RenderRatTrap());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAutoCurdler.class, new RenderAutoCurdler());
@@ -164,7 +165,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeCombiner.class, new RenderUpgradeCombiner());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityUpgradeSeparator.class, new RenderUpgradeSeparator());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDutchratBell.class, new RenderDutchratBell());
-  /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRatlanteanAutomatonHead.class, new RenderRatlanteanAutomatonHead());
+ /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/

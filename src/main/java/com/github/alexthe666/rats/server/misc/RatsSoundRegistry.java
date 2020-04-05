@@ -39,6 +39,7 @@ public class RatsSoundRegistry {
     public static final SoundEvent DUTCHRAT_IDLE = createSoundEvent("dutchrat_idle");
     public static final SoundEvent DUTCHRAT_HURT = createSoundEvent("dutchrat_hurt");
     public static final SoundEvent DUTCHRAT_DIE = createSoundEvent("dutchrat_die");
+    public static final SoundEvent RATLANTEAN_RATBOT_IDLE = createSoundEvent("ratlantean_ratbot_idle");
 
 
     private static SoundEvent createSoundEvent(final String soundName) {

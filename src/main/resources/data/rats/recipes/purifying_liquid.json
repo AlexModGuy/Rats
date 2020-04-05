@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:golden_apple"
+      "item": "rats:golden_rat_skull"
     },
     {
       "tag": "forge:gems/diamond"

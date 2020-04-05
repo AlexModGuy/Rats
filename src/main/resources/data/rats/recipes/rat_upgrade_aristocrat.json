@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DHD",
+    "SHS",
     "GUG",
     "DED"
   ],
@@ -15,6 +15,9 @@
     },
     "H": {
       "item": "rats:top_hat"
+    },
+    "S": {
+      "item": "rats:golden_rat_skull"
     },
     "D": {
       "item": "minecraft:golden_carrot"
