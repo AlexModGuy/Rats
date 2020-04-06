@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "CRC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "rats:ghost_pirat_ectoplasm"
+    },
+    "R": {
+      "item": "rats:pirat_cutlass"
+    }
+  },
+  "result": {
+    "item": "rats:ghost_pirat_cutlass",
+    "count": 1
+  }
+}

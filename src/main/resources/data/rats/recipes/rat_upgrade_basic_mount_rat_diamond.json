@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DRD",
+    "RSR",
+    "DRD"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:cheese"
+    },
+    "D": {
+      "item": "rats:rat_diamond"
+    },
+    "S": {
+      "item": "minecraft:saddle",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_basic_mount"
+  }
+}

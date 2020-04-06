@@ -36,10 +36,13 @@ public class RatsRecipeRegistry {
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.FIRE_CHARGE), new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.IRON_SWORD), new ItemStack(RatsItemRegistry.PIRAT_CUTLASS)));
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.RABBIT_HIDE), new ItemStack(RatsItemRegistry.RAT_PELT)));
-        RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.PHANTOM_MEMBRANE), new ItemStack(RatsItemRegistry.GHOST_PIRAT_ECTOPLASM)));
+       RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.PHANTOM_MEMBRANE), new ItemStack(RatsItemRegistry.GHOST_PIRAT_ECTOPLASM)));
+       RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.TROPICAL_FISH), new ItemStack(RatsItemRegistry.RATFISH)));
+       RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.DISPENSER), new ItemStack(RatsItemRegistry.RATBOT_BARREL)));
         if (RatConfig.disableRatlantis) {
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BEACON), new ItemStack(RatsItemRegistry.ARCANE_TECHNOLOGY)));
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.DRAGON_BREATH), new ItemStack(RatsItemRegistry.PSIONIC_RAT_BRAIN)));
+            RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.CONDUIT), new ItemStack(RatsItemRegistry.DUTCHRAT_WHEEL)));
         }
         RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(Items.DIAMOND), new ItemStack(RatsItemRegistry.RAT_DIAMOND, 4)));
         RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(Items.COAL), new ItemStack(RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS)));

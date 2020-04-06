@@ -14,12 +14,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.HuskEntity;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -222,6 +224,18 @@ public class CommonEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onLivingUpdate(LivingSetAttackTargetEvent event) {
+        if(event.getTarget() instanceof EntityRat){
+            EntityRat rat = (EntityRat)event.getTarget();
+            if(event.getEntityLiving() instanceof IMob && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDEAD)){
+                event.getEntityLiving().setRevengeTarget(null);
+                if(event.getEntityLiving() instanceof MobEntity){
+                    ((MobEntity)event.getEntityLiving()).setAttackTarget(null);
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {

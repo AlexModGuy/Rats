@@ -11,7 +11,7 @@
         },
         "frame": "challenge"
     },
-    "parent": "rats:rats/marbled_cheese_golem",
+    "parent": "rats:rats/ratlantean_ratbot",
     "criteria": {
         "rat_upgrade_basic": {
             "trigger": "minecraft:inventory_changed",

@@ -1910,6 +1910,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     i -= j;
                     this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
                 }
+                if (rand.nextInt(100) == 0) {
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_SKULL), 0.0F);
+                }
                 if (rand.nextInt(RatConfig.tokenDropRate) == 0) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
                 }

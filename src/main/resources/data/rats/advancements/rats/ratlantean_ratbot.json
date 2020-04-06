@@ -1,0 +1,60 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:charged_ratbot_barrel"
+        },
+        "title": {
+            "translate": "advancements.rats.ratlantean_ratbot.title"
+        },
+        "description": {
+            "translate": "advancements.rats.ratlantean_ratbot.description"
+        }
+    },
+    "parent": "rats:rats/ratlantis",
+    "criteria": {
+        "item_1": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:charged_ratbot_barrel"
+                    }
+                ]
+            }
+        },
+        "item_2": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:ratbot_barrel"
+                    }
+                ]
+            }
+        },
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:ratlantean_ratbot"
+                }
+            }
+        },
+        "killed_by": {
+            "trigger": "minecraft:player_hurt_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:ratlantean_ratbot"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "item_1",
+            "item_2",
+            "killed",
+            "killed_by"
+        ]
+    ]
+}

@@ -114,7 +114,7 @@ public class ModelRatlanteanRatbot<T extends EntityRatlanteanRatbot> extends Adv
         this.leftHand.setRotationPoint(0.4F, 2.0F, -0.3F);
         this.leftHand.addBox(-0.5F, 0.0F, -1.5F, 1, 1, 2, scale);
         this.gear = new AdvancedRendererModel(this, 40, -3);
-        this.gear.setRotationPoint(0.0F, -3.0F, 3.0F);
+        this.gear.setRotationPoint(0.0F, -3.0F, 2.5F);
         this.gear.addBox(0.0F, -5.0F, -4.0F, 0, 5, 8, 0.0F);
         this.body2.addChild(this.neck);
         this.snout.addChild(this.nose);

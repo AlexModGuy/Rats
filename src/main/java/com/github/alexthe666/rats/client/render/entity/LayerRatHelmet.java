@@ -119,6 +119,10 @@ public class LayerRatHelmet<T extends EntityRat, M extends ModelRat<T>> extends 
                     GlStateManager.translatef(0, 0, 0.1F);
                     GlStateManager.scalef(1.25F, 1.25F, 1.25F);
                 }
+                if (itemstack.getItem() == RatsItemRegistry.PARTY_HAT_1 || itemstack.getItem() == RatsItemRegistry.PARTY_HAT_2 || itemstack.getItem() == RatsItemRegistry.PARTY_HAT_3 || itemstack.getItem() == RatsItemRegistry.PARTY_HAT_4) {
+                    GlStateManager.translatef(0, 0.075F, -0.05F);
+                    GlStateManager.scalef(1.25F, 1.25F, 1.25F);
+                }
                 this.bindTexture(this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
                 if (armoritem instanceof net.minecraft.item.IDyeableArmorItem) { // Allow this for anything, not only cloth
                     int i = ((DyeableArmorItem)armoritem).getColor(itemstack);

@@ -79,7 +79,7 @@ public class RatsItemRegistry {
 
     public static final Item PLAGUE_STEW = new ItemPlagueHealer(4, 0.3F, "plague_stew", 1.0F);
 
-    public static final Item RAT_SKULL = new ItemGeneric("rat_skull");
+    public static final Item RAT_SKULL = new ItemGeneric("rat_skull", 1);
 
     public static final Item GOLDEN_RAT_SKULL = new ItemGeneric("golden_rat_skull");
 
@@ -299,7 +299,11 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_ANGEL = new ItemRatUpgrade("rat_upgrade_angel", 2, 2);
 
+    public static final Item RAT_UPGRADE_UNDEAD = new ItemRatUpgrade("rat_upgrade_undead", 2, 2);
+
     public static final Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
+
+    public static final Item RAT_UPGRADE_BASIC_MOUNT = new ItemRatUpgrade("rat_upgrade_basic_mount");
 
     public static final Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
 

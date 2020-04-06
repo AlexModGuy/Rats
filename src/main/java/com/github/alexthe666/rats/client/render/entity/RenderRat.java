@@ -38,6 +38,7 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
     private static final ResourceLocation DRAGON_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_dragon_upgrade.png");
     private static final ResourceLocation CARRAT_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_carrat_upgrade.png");
     private static final ResourceLocation ETHEREAL_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat.png");
+    private static final ResourceLocation UNDEAD_UPGRADE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_skeleton.png");
     private static final ResourceLocation JULIAN = new ResourceLocation("rats:textures/entity/rat/patreon/rat_julian.png");
     private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
     private static final ResourceLocation SHARVA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_sharva.png");
@@ -129,6 +130,9 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
         } else {
             if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
                 return ETHEREAL_UPGRADE_TEXTURE;
+            }
+            if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDEAD)) {
+                return UNDEAD_UPGRADE_TEXTURE;
             }
             if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CARRAT)) {
                 return CARRAT_UPGRADE_TEXTURE;

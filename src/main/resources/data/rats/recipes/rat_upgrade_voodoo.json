@@ -3,7 +3,7 @@
   "pattern": [
     "BHB",
     "DUD",
-    "BDB"
+    "BSB"
   ],
   "key": {
     "H": {
@@ -17,6 +17,9 @@
     },
     "U": {
       "item": "rats:rat_upgrade_health"
+    },
+    "S": {
+      "item": "rats:rat_skull"
     }
   },
   "result": {
