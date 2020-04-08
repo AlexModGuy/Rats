@@ -38,7 +38,7 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ResourceLocation SHIZUKA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_shizuka.png");
     private static final ResourceLocation SHARVA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_sharva.png");
     private static final ResourceLocation DINO = new ResourceLocation("rats:textures/entity/rat/patreon/rat_dino.png");
-    private static final ResourceLocation RATATLA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_ratatla.png");
+    private static final ResourceLocation RATALA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_ratala.png");
     private static final ResourceLocation FRIAR = new ResourceLocation("rats:textures/entity/rat/patreon/rat_friar.png");
 
     public RenderRat() {
@@ -131,8 +131,8 @@ public class RenderRat extends RenderLiving<EntityRat> {
                 if (str.contains("dino") || str.contains("Dino")) {
                     return DINO;
                 }
-                if (str.contains("ratatla") || str.contains("Ratatla")) {
-                    return RATATLA;
+                if (str.contains("ratala") || str.contains("Ratala")) {
+                    return RATALA;
                 }
                 if (str.contains("friar") || str.contains("Friar")) {
                     return FRIAR;
