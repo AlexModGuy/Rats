@@ -255,13 +255,15 @@ public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
+        int tailBehavior = rat.getTailBehaviorForMount();
         if (rat.getRidingEntity() != null && rat.getRidingEntity() instanceof LivingEntity) {
             maxTailRotation = (float) Math.toRadians(30);
             LivingEntity rider = (LivingEntity) rat.getRidingEntity();
             f12 = (float) Math.toRadians(-15) + rider.limbSwingAmount;
-            this.walk(this.tail1, speedIdle, degreeIdle, false, -1, 0, rider.limbSwing, rider.limbSwingAmount);
-            this.walk(this.tail2, speedIdle, degreeIdle * 0.5F, false, -2, 0, rider.limbSwing, rider.limbSwingAmount);
-
+            if(tailBehavior == 0){
+                this.walk(this.tail1, speedIdle, degreeIdle, false, -1, 0, rider.limbSwing, rider.limbSwingAmount);
+                this.walk(this.tail2, speedIdle, degreeIdle * 0.5F, false, -2, 0, rider.limbSwing, rider.limbSwingAmount);
+            }
         }
         if (f12 > maxTailRotation) {
             f12 = maxTailRotation;
@@ -320,6 +322,17 @@ public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
             progressRotation(tail2, rat.sitProgress, 0.20943951023931953F, 0.6108652381980153F, 0.0F, 20F);
             progressRotation(tail1, rat.sitProgress, 0.4F, 0.17453292519943295F, 0.6981317007977318F, 20F);
         }
+        if(tailBehavior == 1){
+            progressRotation(tail1, rat.sitProgress, -0.5F, 0, 0, 20F);
+        }
+        if(tailBehavior == 2){
+            progressRotation(tail1, rat.sitProgress, 1.0F, 0, 0, 20F);
+            progressRotation(tail2, rat.sitProgress, -0.1F, 0, 0, 20F);
+        }
+        if(tailBehavior == 3){
+            progressRotation(tail1, rat.sitProgress, 1.3F, 0, 0, 20F);
+            progressRotation(tail2, rat.sitProgress, -0.2F, 0, 0, 20F);
+        }
         progressPosition(body1, rat.sitProgress, 0, 16F, 0, 20F);
         progressPosition(leftThigh, rat.sitProgress, 2.5F, 0, 4.5F, 20F);
         progressPosition(rightThigh, rat.sitProgress, -2.5F, 0, 4.5F, 20F);
@@ -358,8 +371,10 @@ public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
                 this.walk(this.leftHand, speedIdle, degreeIdle * 0.5F, true, 0, -0.1F, f2, 1);
             }
         }
-        this.tail1.rotateAngleX += f12;
-        this.tail2.rotateAngleX -= f12 / 2F;
+        if(tailBehavior == 0){
+            this.tail1.rotateAngleX += f12;
+            this.tail2.rotateAngleX -= f12 / 2F;
+        }
         float ulatingScale = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
         if (!rat.isDeadInTrap) {
             if (RatsMod.PROXY.shouldRenderNameplates() && rat.getAnimation() != EntityRat.ANIMATION_IDLE_SCRATCH) {

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "IUI",
+    "IEI"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "P": {
+      "item": "minecraft:pumpkin"
+    },
+    "E": {
+      "tag": "forge:storage_blocks/emerald"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    },
+    "I": {
+      "tag": "forge:storage_blocks/iron"
+
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_golem_mount"
+  }
+}

@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 
@@ -22,6 +23,12 @@ public class RatAIAttackMelee extends MeleeAttackGoal {
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {
-        return 1.5F;
+        if(rat.isRidingSpecialMount()){
+            Entity entity = rat.getRidingEntity();
+            if(entity != null){
+                return (double)(entity.getWidth() * 2.0F * entity.getWidth() * 2.0F + attackTarget.getWidth());
+            }
+        }
+        return 1.5D;
     }
 }

@@ -305,6 +305,12 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_BASIC_MOUNT = new ItemRatUpgrade("rat_upgrade_basic_mount");
 
+    public static final Item RAT_UPGRADE_CHICKEN_MOUNT = new ItemRatUpgradeMount("rat_upgrade_chicken_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_CHICKEN);
+
+    public static final Item RAT_UPGRADE_GOLEM_MOUNT = new ItemRatUpgradeMount("rat_upgrade_golem_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_GOLEM);
+
+    public static final Item RAT_UPGRADE_BEAST_MOUNT = new ItemRatUpgradeMount("rat_upgrade_beast_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_BEAST);
+
     public static final Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
 
     public static final Item RAT_UPGRADE_FERAL_BITE = new ItemRatUpgrade("rat_upgrade_feral_bite");

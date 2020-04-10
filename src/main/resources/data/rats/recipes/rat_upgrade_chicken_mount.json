@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "WUW",
+    "CEC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chicken"
+    },
+    "E": {
+      "item": "minecraft:egg"
+    },
+    "S": {
+      "tag": "forge:seeds"
+    },
+    "W": {
+      "item": "rats:feathery_wing"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_chicken_mount"
+  }
+}

@@ -225,7 +225,18 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingUpdate(LivingSetAttackTargetEvent event) {
+    public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event) {
+        if(event.getTarget() instanceof EntityRatMountBase) {
+            EntityRat rat = ((EntityRatMountBase)event.getTarget()).getRat();
+            if(rat != null){
+                if(event.getEntityLiving() instanceof IMob && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDEAD)){
+                    event.getEntityLiving().setRevengeTarget(null);
+                    if(event.getEntityLiving() instanceof MobEntity){
+                        ((MobEntity)event.getEntityLiving()).setAttackTarget(null);
+                    }
+                }
+            }
+        }
         if(event.getTarget() instanceof EntityRat){
             EntityRat rat = (EntityRat)event.getTarget();
             if(event.getEntityLiving() instanceof IMob && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDEAD)){

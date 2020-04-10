@@ -186,6 +186,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private int rangedAttackCooldownDragon = 0;
     private int visualCooldown = 0;
     private int poopCooldown = 0;
+    public int mountRespawnCooldown = 0;
     public List<BlockPos> openRatTubes = new ArrayList<>();
 
     public EntityRat(EntityType type, World worldIn) {
@@ -236,7 +237,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         aiDeposit = new RatAIDepositInInventory(this);
         this.goalSelector.addGoal(0, new RatAIAttackMelee(this, 1.45D, true));
         this.goalSelector.addGoal(1, new RatAISwimming(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
                 return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative() || entity instanceof OcelotEntity;
@@ -552,6 +552,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         compound.putInt("BreedCooldown", breedCooldown);
         compound.putInt("CoinCooldown", coinCooldown);
         compound.putInt("CheeseFeedings", cheeseFeedings);
+        compound.putInt("MountCooldown", mountRespawnCooldown);
         compound.putInt("TransportingRF", this.getHeldRF());
         compound.putInt("RespawnCountdown", this.getRespawnCountdown());
         compound.putInt("Command", this.getCommandInteger());
@@ -614,6 +615,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         coinCooldown = compound.getInt("CoinCooldown");
         wildTrust = compound.getInt("WildTrust");
         eatenItems = compound.getInt("EatenItems");
+        mountRespawnCooldown = compound.getInt("MountCooldown");
         cheeseFeedings = compound.getInt("CheeseFeedings");
         this.setHeldRF(compound.getInt("TransportingRF"));
         this.setRespawnCountdown(compound.getInt("RespawnCountdown"));
@@ -805,6 +807,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
+        if(this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType()) {
+            if(this.getRidingEntity() instanceof EntityRatMountBase){
+                if(entityIn instanceof LivingEntity){
+                    ((EntityRatMountBase) this.getRidingEntity()).setAttackTarget((LivingEntity)entityIn);
+                }
+                return ((EntityRatMountBase) this.getRidingEntity()).attackEntityAsMob(entityIn);
+            }
+        }
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
@@ -1176,6 +1186,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.setAttackTarget(null);
             }
         }
+        if (this.getAttackTarget() != null && this.isRidingSpecialMount() && this.getAttackTarget().isRidingOrBeingRiddenBy(this)) {
+            this.setAttackTarget(null);
+        }
+        if(this.getAttackTarget() != null && this.getAttackTarget().getEntityId() == this.getEntityId()){
+            this.setAttackTarget(null);
+        }
         if (this.isTamed() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
             TileEntity te = world.getTileEntity(new BlockPos(this).down());
             if (te != null && te instanceof TileEntityRatCraftingTable && !world.isRemote) {
@@ -1391,6 +1407,26 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (noClip && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
             noClip = false;
+        }
+        if(getMountEntityType() != null && !this.isPassenger() && mountRespawnCooldown == 0){
+            Entity entity = getMountEntityType().create(this.world);
+            entity.copyLocationAndAnglesFrom(this);
+            if(!world.isRemote){
+                world.addEntity(entity);
+            }
+            for(int k = 0; k < 20; ++k) {
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                this.world.addParticle(ParticleTypes.POOF, this.posX + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), this.posY + (double)(this.rand.nextFloat() * this.getHeight()), this.posZ + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), d2, d0, d1);
+            }
+            if(entity instanceof MobEntity){
+                ((MobEntity) entity).onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
+            }
+            this.startRiding(entity, true);
+        }
+        if(mountRespawnCooldown > 0){
+            mountRespawnCooldown--;
         }
     }
 
@@ -1999,7 +2035,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.setMotion(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
-                this.updateRiding(entity);
+                if(this.getRidingEntity() instanceof EntityRatMountBase){
+                    super.updateRidden();
+                }else{
+                    this.updateRiding(entity);
+                }
             }
         }
     }
@@ -2793,13 +2833,16 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
-        if (entityIn instanceof TameableEntity) {
-            TameableEntity tameable = (TameableEntity) entityIn;
-            if (tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())) {
-                return true;
+        if(entityIn != null){
+            if (entityIn instanceof TameableEntity) {
+                TameableEntity tameable = (TameableEntity) entityIn;
+                if (tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())) {
+                    return true;
+                }
             }
+            return super.isOnSameTeam(entityIn);
         }
-        return super.isOnSameTeam(entityIn);
+        return false;
     }
 
     public boolean isDead(){
@@ -2858,5 +2901,71 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         } else {
             return getSearchRadiusCenter();
         }
+    }
+
+    @Nullable
+    private EntityType getMountEntityType(){
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT)){
+            return RatsEntityRegistry.RAT_MOUNT_CHICKEN;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT)){
+            return RatsEntityRegistry.RAT_MOUNT_GOLEM;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT)){
+            return RatsEntityRegistry.RAT_MOUNT_BEAST;
+        }
+        return null;
+    }
+
+    @Override
+    public double getDistanceSq(double x, double y, double z) {
+        double d0 = this.posX - x;
+        double d1 = this.posY - y;
+        double d2 = this.posZ - z;
+        if(this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType()){
+            d0 = this.getRidingEntity().posX - x;
+            d1 = this.getRidingEntity().posY - y;
+            d2 = this.getRidingEntity().posZ - z;
+        }
+        return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+
+    @Override
+    public double getDistanceSq(Vec3d p_195048_1_) {
+        double d0 = this.posX - p_195048_1_.x;
+        double d1 = this.posY - p_195048_1_.y;
+        double d2 = this.posZ - p_195048_1_.z;
+        if(this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType()){
+            d0 = this.getRidingEntity().posX - p_195048_1_.x;
+            d1 = this.getRidingEntity().posY - p_195048_1_.y;
+            d2 = this.getRidingEntity().posZ - p_195048_1_.z;
+        }
+        return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+
+
+    public boolean isRidingSpecialMount(){
+        return this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType();
+    }
+
+    public int getTailBehaviorForMount(){
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT) && isRidingSpecialMount()){
+            return 1;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT) && isRidingSpecialMount()){
+            return 2;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT) && isRidingSpecialMount()){
+            return 3;
+        }
+        return 0;//normal (down + riding)
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if(isRidingSpecialMount() && isRidingOrBeingRiddenBy(target)){
+            return false;
+        }
+        return true;
     }
 }

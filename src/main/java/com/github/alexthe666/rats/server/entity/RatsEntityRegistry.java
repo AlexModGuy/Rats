@@ -41,6 +41,9 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRattlingGun> RATTLING_GUN = registerEntity(EntityType.Builder.create(EntityRattlingGun::new, EntityClassification.MISC).size(1.5F, 1.6F), "rattling_gun");
     public static final EntityType<EntityRattlingGunBullet> RATTLING_GUN_BULLET = registerEntity(EntityType.Builder.create(EntityRattlingGunBullet::new, EntityClassification.MISC).size(0.25F, 0.25F), "rattling_gun_bullet");
     public static final EntityType<EntityRatlanteanRatbot> RATLANTEAN_RATBOT = registerEntity(EntityType.Builder.create(EntityRatlanteanRatbot::new, EntityClassification.MONSTER).size(1.2F, 1.3F), "ratlantean_ratbot");
+    public static final EntityType<EntityRatGolemMount> RAT_MOUNT_GOLEM = registerEntity(EntityType.Builder.create(EntityRatGolemMount::new, EntityClassification.MISC).size(1.25F, 2.75F), "rat_mount_golem");
+    public static final EntityType RAT_MOUNT_CHICKEN = registerEntity(EntityType.Builder.create(EntityRatChickenMount::new, EntityClassification.MISC).size(0.65F, 0.75F), "rat_mount_chicken");
+    public static final EntityType RAT_MOUNT_BEAST = registerEntity(EntityType.Builder.create(EntityRatBeastMount::new, EntityClassification.MISC).size(1.85F, 1.2F), "rat_mount_beast");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){

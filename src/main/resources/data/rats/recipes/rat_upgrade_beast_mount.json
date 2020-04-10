@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DSD",
+    "DUD",
+    "DPD"
+  ],
+  "key": {
+    "S": {
+      "item": "rats:rat_skull"
+    },
+    "P": {
+      "item": "rats:plague_essence"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    },
+    "D": {
+      "item": "rats:feral_rat_claw"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_beast_mount"
+  }
+}
