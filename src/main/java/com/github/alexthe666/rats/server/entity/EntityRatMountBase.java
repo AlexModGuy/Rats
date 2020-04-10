@@ -99,6 +99,9 @@ public class EntityRatMountBase extends MobEntity {
     public void tick() {
         super.tick();
         EntityRat rat = this.getRat();
+        if(this.getAttackTarget() != null && this.isOnSameTeam(this.getAttackTarget())){
+            this.setAttackTarget(null);
+        }
         if(this.getAttackTarget() != null && this.getAttackTarget().getEntityId() == this.getEntityId()){
             this.setAttackTarget(null);
         }
@@ -106,10 +109,13 @@ public class EntityRatMountBase extends MobEntity {
             this.setAttackTarget(null);
         }
         if(rat != null && rat.hasUpgrade(upgrade)){
+            if(this.getAttackTarget() != null && rat.getAttackTarget() != this.getAttackTarget()){
+                this.setAttackTarget(null);
+            }
             if(rat.getAttackTarget() != null && rat.getAttackTarget() != this){
                 this.setAttackTarget(rat.getAttackTarget());
             }
-            if(this.getRevengeTarget() != null && rat.getRevengeTarget() != this){
+            if(this.getRevengeTarget() != null && rat.getRevengeTarget() != this && !this.isOnSameTeam(this.getRevengeTarget())){
                 rat.setRevengeTarget(this.getRevengeTarget());
                 rat.setAttackTarget(this.getRevengeTarget());
             }
@@ -142,6 +148,10 @@ public class EntityRatMountBase extends MobEntity {
                 this.world.addParticle(mechanical ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
         }
+    }
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        return super.isOnSameTeam(entityIn) || this.getRat() != null && this.getRat().isOnSameTeam(entityIn);
     }
 
     static class MoveHelperController extends MovementController {

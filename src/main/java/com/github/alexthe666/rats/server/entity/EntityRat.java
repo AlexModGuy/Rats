@@ -2233,7 +2233,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public void fall(float distance, float damageMultiplier) {
-        if (!this.hasFlight() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube()) {
+        if (!this.hasFlight() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube() && !this.isPassenger()) {
             super.fall(distance, damageMultiplier);
         }
     }
@@ -2840,6 +2840,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     return true;
                 }
             }
+            if(entityIn instanceof EntityRatMountBase && ((EntityRatMountBase) entityIn).getRat() != null){
+                return this.isOnSameTeam(((EntityRatMountBase) entityIn).getRat());
+            }
             return super.isOnSameTeam(entityIn);
         }
         return false;
@@ -2914,6 +2917,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT)){
             return RatsEntityRegistry.RAT_MOUNT_BEAST;
         }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT)){
+            return RatsEntityRegistry.RAT_MOUNT_AUTOMATON;
+        }
         return null;
     }
 
@@ -2957,6 +2963,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT) && isRidingSpecialMount()){
             return 3;
+        }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT) && isRidingSpecialMount()){
+            return 4;
+        }
+        if(this.isPassenger() && this.getRidingEntity() instanceof EntityRattlingGun){
+            return 5;
         }
         return 0;//normal (down + riding)
     }
