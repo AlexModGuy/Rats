@@ -58,7 +58,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     @Override
     public boolean shouldExecute() {
-        if (!rat.canMove() || this.goalOwner.isPassenger() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
+        if (!rat.canMove() || this.goalOwner.isPassenger() && !rat.isRidingSpecialMount() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
         if (!this.mustUpdate) {

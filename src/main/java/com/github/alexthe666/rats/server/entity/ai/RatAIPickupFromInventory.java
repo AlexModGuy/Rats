@@ -85,10 +85,10 @@ public class RatAIPickupFromInventory extends Goal {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
             double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-            if (distance < 6.25F && distance > 2.72F && canSeeChest() && entity instanceof IInventory) {
+            if (distance < 6.25F * this.entity.getRatDistanceModifier() && distance > 2.72F * this.entity.getRatDistanceModifier() && canSeeChest() && entity instanceof IInventory) {
                 toggleChest((IInventory) entity, true);
             }
-            if (distance <= 2.89F && canSeeChest()) {
+            if (distance <= 2.89F * this.entity.getRatDistanceModifier() && canSeeChest()) {
                 if (entity instanceof IInventory) {
                     toggleChest((IInventory) entity, false);
                 }

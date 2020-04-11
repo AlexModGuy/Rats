@@ -299,7 +299,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     if (EntityRat.this.shouldHuntMonster()) {
                         return entity instanceof IMob;
                     } else {
-                        return entity != null && !(entity instanceof EntityRat) && !(entity instanceof PlayerEntity) && !entity.isChild();
+                        return entity != null && !(entity instanceof EntityRat) && !(entity instanceof EntityRatMountBase) && !(entity instanceof PlayerEntity) && !entity.isChild();
                     }
                 }
             }
@@ -1043,7 +1043,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
                 && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
                 && this.shouldDepositItem(getHeldItemMainhand())) {
-            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getHealth() < this.getMaxHealth()) {
+            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getCommand() != RatCommand.HUNT_MONSTERS || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
             }
@@ -2363,7 +2363,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean shouldHuntAnimal() {
-        return this.getCommandInteger() == 3 || !this.isTamed() && this.hasPlague();
+        return this.getCommandInteger() == 3;
     }
 
     public boolean shouldHuntMonster() {
@@ -2967,5 +2967,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return !isRidingSpecialMount() || !isRidingOrBeingRiddenBy(target);
     }
 
-
+    public double getRatDistanceModifier() {
+        if(this.isRidingSpecialMount()){
+            Entity entity = this.getRidingEntity();
+            if(entity != null){
+                return 1.5D;
+            }
+        }
+        return 1D;
+    }
 }

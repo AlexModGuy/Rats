@@ -69,7 +69,7 @@ public class RatAIHarvestMilk extends Goal {
     public void tick() {
         if (this.targetCow != null && this.targetCow.isAlive() && (this.entity.transportingFluid.isEmpty() || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate())) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetCow, 1.25D);
-            if (entity.getDistance(targetCow) < 1.5D) {
+            if (entity.getDistance(targetCow) < 1.5D * this.entity.getRatDistanceModifier()) {
                 if (this.entity.transportingFluid.isEmpty()) {
                     FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
                     FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);

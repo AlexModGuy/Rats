@@ -117,7 +117,7 @@ public class RatAIHarvestTrees extends Goal {
                 if (distance < 2.5F) {
                     entity.world.setEntityState(entity, (byte) 85);
                     entity.crafting = true;
-                    if (distance < 0.6F) {
+                    if (distance < 0.6F * entity.getRatDistanceModifier()) {
                         this.entity.setMotion(0, 0, 0);
                         entity.getNavigator().clearPath();
                         //entity.moveController.action = MovementController.Action.WAIT;

@@ -73,7 +73,7 @@ public class RatAIHarvestFarmer extends Goal {
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (block.getBlock().isFertile(block, entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 4.5F) {
+                    if (distance < 4.5F * this.entity.getRatDistanceModifier()) {
                         if (holdingSeeds()) {
                             ItemStack seedStack = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
                             seedStack.setCount(1);

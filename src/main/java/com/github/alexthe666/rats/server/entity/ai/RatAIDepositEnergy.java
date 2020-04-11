@@ -94,10 +94,10 @@ public class RatAIDepositEnergy extends Goal {
                     if (RatUtils.canRatBreakBlock(this.entity.world, rayPos, this.entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                         double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
                         SoundType soundType = block.getBlock().getSoundType(block, this.entity.world, rayPos, null);
-                        if (distance < 6F) {
+                        if (distance < 6F * entity.getRatDistanceModifier()) {
                             this.entity.world.setEntityState(this.entity, (byte) 85);
                             this.entity.crafting = true;
-                            if (distance < 0.6F) {
+                            if (distance < 0.6F * entity.getRatDistanceModifier()) {
                                 this.entity.setMotion(0, 0, 0);
                                 this.entity.getNavigator().clearPath();
                                 //this.entity.moveController.action = MovementController.Action.WAIT;

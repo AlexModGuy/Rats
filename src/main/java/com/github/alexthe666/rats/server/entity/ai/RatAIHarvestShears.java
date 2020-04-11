@@ -65,7 +65,7 @@ public class RatAIHarvestShears extends Goal {
     public void tick() {
         if (this.targetSheep != null && this.targetSheep.isAlive() && this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1.25D);
-            if (entity.getDistance(targetSheep) < 1.5D) {
+            if (entity.getDistance(targetSheep) < 1.5D * this.entity.getRatDistanceModifier()) {
                 if (targetSheep instanceof IShearable) {
                     java.util.List<ItemStack> drops = ((IShearable) targetSheep).onSheared(new ItemStack(Items.SHEARS), this.entity.world, targetSheep.getPosition(), 0);
                     for (ItemStack stack : drops) {

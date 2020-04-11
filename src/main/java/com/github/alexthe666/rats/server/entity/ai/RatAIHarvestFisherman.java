@@ -71,7 +71,7 @@ public class RatAIHarvestFisherman extends Goal {
                 }
                 if (isShore(this.targetBlock, entity.world)) {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 4.5F) {
+                    if (distance < 4.5F * this.entity.getRatDistanceModifier()) {
                         // this.targetBlock = null;
                         //  this.resetTask();
                         if (throwCooldown == 0) {

@@ -258,8 +258,8 @@ public class CommonEvents {
                     entitySize = Math.max(1, (int) event.getEntityLiving().getBoundingBox().getAverageEdgeLength());
                 }
                 for (int i = 0; i < entitySize; i++) {
-                    float motionX = rand.nextFloat() * 0.2F - 0.1F;
-                    float motionZ = rand.nextFloat() * 0.2F - 0.1F;
+                    float motionX = rand.nextFloat() * 0.1F - 0.05F;
+                    float motionZ = rand.nextFloat() * 0.1F - 0.05F;
                     RatsMod.PROXY.addParticle("flea", event.getEntityLiving().posX + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
                             event.getEntityLiving().posY + (double) (rand.nextFloat() * event.getEntityLiving().getHeight()),
                             event.getEntityLiving().posZ + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
