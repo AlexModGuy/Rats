@@ -58,6 +58,9 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
     }
 
     protected void onHit(RayTraceResult raytraceResultIn) {
+        if(raytraceResultIn instanceof EntityRayTraceResult && getShooter() != null && getShooter().isOnSameTeam(((EntityRayTraceResult) raytraceResultIn).getEntity())){
+            return;
+        }
         if (raytraceResultIn instanceof EntityRayTraceResult && ((EntityRayTraceResult) raytraceResultIn).getEntity() instanceof PlayerEntity) {
             this.damageShield((PlayerEntity) ((EntityRayTraceResult) raytraceResultIn).getEntity(), (float) this.getDamage());
         }

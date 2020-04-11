@@ -48,9 +48,9 @@ public class RatConfig {
     public static int maxDestroyedLeaves = 10000;
     public static float blackDeathHealth = 400F;
     public static float blackDeathAttack = 4F;
-    public static double ratDespawnFarDistance = 96F;
-    public static double ratDespawnCloseDistance = 20F;
-    public static int ratDespawnRandomChance = 400;
+    public static double ratDespawnFarDistance = 144F;
+    public static double ratDespawnCloseDistance = 32F;
+    public static int ratDespawnRandomChance = 800;
     public static boolean ratFartNoises = true;
     public static int ratRFTransferBasic = 100;
     public static int ratRFTransferAdvanced = 500;

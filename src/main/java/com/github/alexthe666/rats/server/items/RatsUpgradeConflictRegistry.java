@@ -15,6 +15,7 @@ public class RatsUpgradeConflictRegistry {
     private static Item[] TRANSPORT_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY, RatsItemRegistry.RAT_UPGRADE_ADVANCED_ENERGY, RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY, RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY, RatsItemRegistry.RAT_UPGRADE_BUCKET, RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET};
     private static Item[] EXPLOSION_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_TNT, RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR, RatsItemRegistry.RAT_UPGRADE_BUCCANEER};
     private static Item[] PROCESSING_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_CHEF, RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST, RatsItemRegistry.RAT_UPGRADE_GEMCUTTER, RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, RatsItemRegistry.RAT_UPGRADE_ENCHANTER, RatsItemRegistry.RAT_UPGRADE_DISENCHANTER};
+    private static Item[] MOUNT_CONFLICTS = new Item[]{RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT, RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT, RatsItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT, RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT};
 
     public static void init() {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BASIC, new Item[0]);
@@ -68,6 +69,10 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ANGEL, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CARRAT, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED, new Item[]{RatsItemRegistry.RAT_UPGRADE_COMBINED, RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT, MOUNT_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT, MOUNT_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT, MOUNT_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT, MOUNT_CONFLICTS);
     }
 
     public static boolean doesConflict(Item first, Item second) {

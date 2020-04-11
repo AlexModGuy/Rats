@@ -48,7 +48,9 @@ public class ContainerRatUpgrade extends Container {
     @Override
     public void onContainerClosed(PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
-        this.inventory.closeInventory(playerIn);
+        if(inventory instanceof InventoryRatUpgrade){
+            this.inventory.closeInventory(playerIn);
+        }
     }
 
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {

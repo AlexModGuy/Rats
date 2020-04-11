@@ -66,6 +66,9 @@ public class EntityCheeseCannonball extends ThrowableEntity implements IRendersA
     }
 
     protected void onImpact(RayTraceResult result) {
+        if(result instanceof EntityRayTraceResult && getThrower() != null && getThrower().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
+            return;
+        }
         if (!this.world.isRemote) {
             if (result instanceof EntityRayTraceResult) {
                 EntityRayTraceResult entityResult = (EntityRayTraceResult)result;

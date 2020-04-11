@@ -10,12 +10,15 @@ import net.minecraft.item.ItemStack;
 public class SlotRatListUpgrade extends Slot {
     public ItemStack upgrade;
 
-    public SlotRatListUpgrade(IInventory playerInventory, ItemStack upgrade, int id, int x, int y) {
-        super(playerInventory, id, x, y);
+    public SlotRatListUpgrade(IInventory inventory, ItemStack upgrade, int id, int x, int y) {
+        super(inventory, id, x, y);
         this.upgrade = upgrade;
     }
 
     public boolean isItemValid(ItemStack stack) {
+        if(upgrade.isEmpty()){
+            return super.isItemValid(stack);
+        }
         return upgrade.getItem() instanceof ItemRatListUpgrade || stack.getItem() instanceof ItemRatUpgrade && stack.getItem() != upgrade.getItem() && ItemRatUpgradeCombined.canCombineWithUpgrade(upgrade, stack);
     }
 }

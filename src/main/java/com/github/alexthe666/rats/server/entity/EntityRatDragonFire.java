@@ -71,6 +71,9 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
     }
 
     protected void onImpact(RayTraceResult result) {
+        if(result instanceof EntityRayTraceResult && shootingEntity != null && shootingEntity.isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
+            return;
+        }
         if (!this.world.isRemote) {
             if (result.getType() == RayTraceResult.Type.ENTITY) {
                 Entity entity = ((EntityRayTraceResult)result).getEntity();

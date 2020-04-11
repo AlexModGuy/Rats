@@ -13,6 +13,7 @@ import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -75,7 +76,15 @@ public class EntityRatMountBase extends MobEntity {
         return null;
     }
 
-    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        EntityRat rat = getRat();
+        if(rat != null){
+            return rat.isInvulnerableTo(source);
+        }
+        return super.isInvulnerableTo(source);
+    }
+
+        @Override
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
@@ -151,6 +160,9 @@ public class EntityRatMountBase extends MobEntity {
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
+        if(entityIn == null){
+            return false;
+        }
         return super.isOnSameTeam(entityIn) || this.getRat() != null && this.getRat().isOnSameTeam(entityIn);
     }
 

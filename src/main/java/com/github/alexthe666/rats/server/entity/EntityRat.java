@@ -378,7 +378,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     this.remove();
                 }
                 double closeDist = RatConfig.ratDespawnCloseDistance * RatConfig.ratDespawnCloseDistance;
-                if (this.idleTime > 300 && this.rand.nextInt(RatConfig.ratDespawnRandomChance) == 0 && d0 > closeDist && this.canDespawn(d0)) {
+                if (this.idleTime > 600 && this.rand.nextInt(RatConfig.ratDespawnRandomChance) == 0 && d0 > closeDist && this.canDespawn(d0)) {
                     this.remove();
                 } else if (d0 < closeDist) {
                     this.idleTime = 0;
@@ -389,7 +389,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public static boolean func_223315_a(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
         BlockPos blockpos = p_223315_3_.down();
-        return p_223315_2_ == SpawnReason.SPAWNER || p_223315_1_.getBlockState(blockpos).canEntitySpawn(p_223315_1_, blockpos, p_223315_0_) && p_223315_4_.nextInt(10) == 0 && spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
+        return p_223315_2_ == SpawnReason.SPAWNER ||  spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
     }
 
     private static boolean spawnCheck(IWorld world, BlockPos pos, Random rand){
@@ -400,8 +400,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     spawnRoll *= 2;
                 }
                 if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
-                    BlockState BlockState = world.getBlockState((pos).down());
-                    return isValidLightLevel(world, rand, pos) && BlockState.canEntitySpawn(world, pos.down(), RatsEntityRegistry.RAT);
+                    boolean light = isValidLightLevel(world, rand, pos);
+                    System.out.println(pos);
+                    return true;
                 }
             } else {
                 spawnRoll /= 2;
@@ -415,7 +416,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (world.getLightFor(LightType.SKY, pos) > rand.nextInt(32)) {
             return false;
         } else {
-            int i = world.getLight(pos);
+            int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(pos, 10) : world.getLight(pos);
             return i <= rand.nextInt(8);
         }
     }
@@ -894,7 +895,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 switchNavigator(2);
             }
             if (canMove()) {
-                if (this.moveController.getY() > this.posY) {
+                if (this.moveController.getY() > this.posY && !this.isPassenger()) {
                     this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
                 }
             } else if (!onGround) {
@@ -2735,7 +2736,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return super.isPotionApplicable(potioneffectIn);
     }
 
-    public boolean isInvulnerableTo(DamageSource source) {
+    public boolean isInvulnerabledddddTo(DamageSource source) {
         if(this.getRespawnCountdown() > 0){
             return true;
         }
@@ -2980,4 +2981,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         return true;
     }
+
+
 }
