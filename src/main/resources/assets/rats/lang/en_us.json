@@ -125,6 +125,7 @@
   "item.rats.ratbot_barrel": "Ratbot Barrel",
   "item.rats.charged_ratbot_barrel": "Charged Ratbot Barrel",
   "item.rats.rattling_gun": "Rattling Gun",
+  "item.rats.rattling_gun.desc": "Place a rat on the gunner's seat by right clicking with a rat on your shoulder",
   "item.rats.rat_nugget_remove_tag": "Ore",
   "item.rats.rat_nugget_ore.desc": "§oRight click to find out what's inside...",
   "item.rats.cheese_stick.desc0": "Use on a rat to bind it",
