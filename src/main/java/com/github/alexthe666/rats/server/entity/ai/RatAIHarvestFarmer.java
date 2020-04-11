@@ -182,7 +182,7 @@ public class RatAIHarvestFarmer extends Goal {
                 block = ((BlockItem) this.entity.getHeldItem(Hand.MAIN_HAND).getItem()).getBlock();
             }
             for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-                if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
+                if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, pos) && entity.world.isAirBlock(pos.up())) {
                     allBlocks.add(pos);
                 }
             }
