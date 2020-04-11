@@ -346,12 +346,10 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
         if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == Direction.UP)
-                return handlers[0].cast();
-            else if (facing == Direction.DOWN)
+             if (facing == Direction.DOWN)
                 return handlers[1].cast();
             else
-                return handlers[2].cast();
+                return handlers[0].cast();
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return holder.cast();
