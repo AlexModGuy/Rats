@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry;
 import com.github.alexthe666.rats.server.entity.villager.RatsVillagerTrades;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -11,6 +12,7 @@ import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.pathfinding.GroundPathNavigator;
@@ -244,6 +246,9 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
+        if (player instanceof ServerPlayerEntity) {
+            RatsAdvancementRegistry.PLAGUE_DOCTOR_TRIGGER.trigger((ServerPlayerEntity)player, this);
+        }
         if (flag) {
             itemstack.interactWithEntity(player, this, hand);
             return true;

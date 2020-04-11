@@ -17,7 +17,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "rats:rattrap"
+                        "item": "rats:rat_trap"
                     }
                 ]
             }
