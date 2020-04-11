@@ -473,12 +473,10 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
         if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == Direction.UP)
-                return handlers[0].cast();
-            else if (facing == Direction.DOWN)
+            if (facing == Direction.DOWN)
                 return handlers[1].cast();
             else
-                return handlers[2].cast();
+                return handlers[0].cast();
         }
         return super.getCapability(capability, facing);
     }
