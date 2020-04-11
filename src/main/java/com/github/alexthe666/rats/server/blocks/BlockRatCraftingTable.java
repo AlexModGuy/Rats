@@ -21,7 +21,6 @@ public class BlockRatCraftingTable extends ContainerBlock {
     public BlockRatCraftingTable() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.SLIME).hardnessAndResistance(2.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "rat_crafting_table");
-        //        GameRegistry.registerTileEntity(TileEntityRatCraftingTable.class, "rats.rat_crafting_table");
     }
 
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
