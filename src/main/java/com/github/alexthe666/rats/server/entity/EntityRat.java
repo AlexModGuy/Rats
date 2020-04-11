@@ -232,7 +232,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return rat.getPosition();
     }
 
-    public static boolean func_223315_a(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
+    public static boolean canEntityTypeSpawn(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
         BlockPos blockpos = p_223315_3_.down();
         return p_223315_2_ == SpawnReason.SPAWNER || spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
     }
@@ -245,9 +245,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     spawnRoll *= 2;
                 }
                 if (spawnRoll == 0 || rand.nextInt(spawnRoll) == 0) {
-                    boolean light = isValidLightLevel(world, rand, pos);
-                    System.out.println(pos);
-                    return true;
+                    return isValidLightLevel(world, rand, pos);
                 }
             } else {
                 spawnRoll /= 2;
@@ -422,6 +420,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
     }
 
+    @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         int spawnRoll = RatConfig.ratSpawnDecrease;
         if (RatUtils.canSpawnInDimension(world)) {

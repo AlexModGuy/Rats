@@ -11,6 +11,7 @@ import net.minecraft.world.gen.Heightmap;
 public class RatsEntityRegistry {
 
     public static final EntityType<EntityRat> RAT = registerEntity(EntityType.Builder.create(EntityRat::new, EntityClassification.CREATURE).size(0.49F, 0.49F), "rat");
+    public static final EntityType<EntityRatSpawner> RAT_SPAWNER = registerEntity(EntityType.Builder.create(EntityRatSpawner::new, EntityClassification.MONSTER).size(0.7F, 1.8F), "rat_spawner");
     public static final EntityType<EntityIllagerPiper> PIED_PIPER = registerEntity(EntityType.Builder.create(EntityIllagerPiper::new, EntityClassification.MONSTER).size(0.7F, 1.8F), "pied_piper");
     public static final EntityType<EntityRatlanteanSpirit> RATLANTEAN_SPIRIT = registerEntity(EntityType.Builder.create(EntityRatlanteanSpirit::new, EntityClassification.MONSTER).size(0.5F, 0.5F), "ratlantean_spirit");
     public static final EntityType<EntityRatlanteanFlame> RATLANTEAN_FLAME = registerEntity(EntityType.Builder.create(EntityRatlanteanFlame::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatlanteanFlame::new), "ratlantean_spirit_flame");
@@ -53,7 +54,8 @@ public class RatsEntityRegistry {
     }
 
     static{
-        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::func_223315_a);
+        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatSpawner::func_223325_c);
+        EntitySpawnPlacementRegistry.register(RAT_SPAWNER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::canEntityTypeSpawn);
         EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::func_223325_c);
         EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::canSpawn);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
