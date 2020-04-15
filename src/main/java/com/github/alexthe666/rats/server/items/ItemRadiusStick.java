@@ -60,7 +60,9 @@ public class ItemRadiusStick extends Item {
                 player.swingArm(hand);
             }
         }
-        RatsMod.PROXY.openRadiusStaffGui();
+        if(worldIn.isRemote) {
+            RatsMod.PROXY.openRadiusStaffGui();
+        }
         return EnumActionResult.SUCCESS;
     }
 

@@ -60,7 +60,9 @@ public class ItemCheeseStick extends Item {
                 player.swingArm(hand);
             }
         }
-        RatsMod.PROXY.openCheeseStaffGui();
+        if(worldIn.isRemote){
+            RatsMod.PROXY.openCheeseStaffGui();
+        }
 
             /*if (worldIn.getTileEntity(pos) == null || worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) == null) {
                 player.sendStatusMessage(new TextComponentTranslation("entity.rat.staff.cannot_use_block"), true);
