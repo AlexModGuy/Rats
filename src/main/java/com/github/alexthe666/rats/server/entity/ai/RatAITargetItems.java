@@ -45,10 +45,11 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             @Override
             public boolean apply(@Nullable EntityItem item) {
                 ItemStack stack = item.getItem();
-                if (rat.isTargetCommand()) {
-                    return item != null && !stack.isEmpty() && rat.canRatPickupItem(stack);
+                if (rat.isItemTargetCommand()) {
+                    return !stack.isEmpty() && rat.canRatPickupItem(stack);
+                }else{
+                    return !stack.isEmpty() && RatUtils.shouldRaidItem(stack) && rat.canRatPickupItem(stack);
                 }
-                return !stack.isEmpty() && (RatUtils.shouldRaidItem(stack) || rat.isTamed()) && rat.canRatPickupItem(stack);
             }
         };
         this.setMutexBits(0);

@@ -452,7 +452,9 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return cheese.getItem() == RatsItemRegistry.CHEESE || OreDictionary.getOres("foodCheese", false).contains(cheese);
+        NonNullList<ItemStack> cheeseOre = OreDictionary.getOres("foodCheese", false);
+        ItemStack singleStack = new ItemStack(cheese.getItem(), 1, cheese.getMetadata());
+        return singleStack.getItem() == RatsItemRegistry.CHEESE || OreDictionary.containsMatch(false, cheeseOre, singleStack);
     }
 
     @Nullable

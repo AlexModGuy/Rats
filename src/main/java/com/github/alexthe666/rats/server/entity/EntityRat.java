@@ -172,6 +172,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         switchNavigator(1);
         this.setSize(0.49F, 0.49F);
         initInventory();
+        setupDynamicAI();
     }
 
     public static BlockPos getPositionRelativetoGround(EntityRat rat, World world, double x, double z, Random rng) {
@@ -261,6 +262,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.removeTask(this.aiDeposit);
         this.tasks.removeTask(this.aiPickup);
         aiHarvest = new RatAIHarvestCrops(this);
+        aiDeposit = new RatAIDepositInInventory(this);
+        aiPickup = new RatAIPickupFromInventory(this);
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
         }
@@ -291,9 +294,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         } else if (this.getRFTransferRate() > 0) {
             aiDeposit = new RatAIPickupEnergy(this);
             aiPickup = new RatAIDepositEnergy(this);
-        } else {
-            aiDeposit = new RatAIDepositInInventory(this);
-            aiPickup = new RatAIPickupFromInventory(this);
         }
         this.tasks.addTask(3, this.aiHarvest);
         this.tasks.addTask(4, this.aiDeposit);
@@ -616,11 +616,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (compound.hasKey("CustomName", 8)) {
             this.setCustomNameTag(compound.getString("CustomName"));
         }
+        setupDynamicAI();
 
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-
         if (this.isEntityInvulnerable(source) || source == DamageSource.IN_WALL && this.isRiding()) {
             return false;
         } else {
@@ -631,7 +631,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
 
             if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
-                amount = (amount + 1.0F) / 2.0F;
+                amount = (amount + 1.0F) / 3.0F;
             }
 
             return super.attackEntityFrom(source, amount);
@@ -774,6 +774,10 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     public boolean isHarvestCommand() {
         return getCommandInteger() == 4 || getCommandInteger() == 5;
+    }
+
+    public boolean isItemTargetCommand() {
+        return getCommandInteger() == 3 || getCommandInteger() == 4 || getCommandInteger() == 5 || getCommandInteger() == 7;
     }
 
     public EntitySenses getSenses() {
@@ -2058,7 +2062,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public int getTalkInterval() {
-        if (this.hasPlague() && this.isTamed()) {
+        if (this.hasPlague() || this.isTamed()) {
             return 200;
         }
         return super.getTalkInterval();
@@ -2103,7 +2107,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }
-        setupDynamicAI();
     }
 
     public void fall(float distance, float damageMultiplier) {
@@ -2440,15 +2443,6 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             }
         }
         return false;
-    }
-
-    private boolean inTubeFast() {
-        return inTube;
-    }
-
-
-    public boolean isAIDisabled() {
-        return super.isAIDisabled();
     }
 
     public void setTubeTarget(BlockPos targetPosition) {
