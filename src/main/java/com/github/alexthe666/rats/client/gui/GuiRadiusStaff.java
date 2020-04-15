@@ -87,7 +87,11 @@ public class GuiRadiusStaff extends GuiScreen {
         entity.rotationPitch = 0;
         entity.prevRotationYawHead = 0;
         entity.rotationYawHead = 0;
-        rendermanager.renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        try{
+            rendermanager.renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        }catch (Exception e){
+            RatsMod.logger.warn("Could not render rat do to interference with vanilla code by another mod");
+        }
         rendermanager.setRenderShadow(true);
         entity.renderYawOffset = f2;
         entity.rotationYaw = f3;
