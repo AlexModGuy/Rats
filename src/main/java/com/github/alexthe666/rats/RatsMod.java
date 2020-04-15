@@ -149,7 +149,7 @@ public class RatsMod {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawnableList(EnumCreatureType.MONSTER);
-                    if(!spawnList.isEmpty()){
+                    if(!spawnList.isEmpty() && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)){
                         if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
                             //3 times as likely to spawn in dark forests
                             spawnList.add(new Biome.SpawnListEntry(EntityIllagerPiper.class, RatsMod.CONFIG_OPTIONS.piperSpawnRate * 3, 1, 1));
