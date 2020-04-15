@@ -169,6 +169,7 @@ public class TileEntityAutoCurdler extends TileEntity implements ITickable, ISid
                     if (tank.fill(fluidStack.copy(), false) != 0) {
                         tank.fill(fluidStack.copy(), true);
                         fluidHandler.drain(Integer.MAX_VALUE, true);
+                        curdlerStacks.set(0, fluidHandler.getContainer());
                     }
                 }
             }

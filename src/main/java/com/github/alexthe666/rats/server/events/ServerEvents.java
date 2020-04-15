@@ -114,6 +114,7 @@ public class ServerEvents {
                         fluidHandler.drain(1000, true);
                     }
                 }
+                event.setUseItem(Event.Result.DENY);
                 event.setCanceled(true);
             }
         }

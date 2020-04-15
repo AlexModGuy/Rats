@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
+import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,6 +15,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +27,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
@@ -74,7 +79,35 @@ public class BlockAutoCurdler extends BlockContainer {
         if (playerIn.isSneaking()) {
             return false;
         } else {
-            playerIn.openGui(RatsMod.INSTANCE, 5, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            ItemStack stack = playerIn.getHeldItem(hand);
+            boolean flag = false;
+            if(TileEntityAutoCurdler.isMilk(stack) && worldIn.getTileEntity(pos) instanceof TileEntityAutoCurdler){
+                TileEntityAutoCurdler te = (TileEntityAutoCurdler)worldIn.getTileEntity(pos);
+                FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+                if (fluidStack != null && !worldIn.isRemote) {
+                    IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack);
+                    if (fluidHandler.drain(Integer.MAX_VALUE, false) != null && fluidHandler.drain(Integer.MAX_VALUE, false).amount > 0) {
+                        if (te.tank.fill(fluidStack.copy(), false) != 0) {
+                            te.tank.fill(fluidStack.copy(), true);
+                            if(!playerIn.isCreative()){
+                                fluidHandler.drain(Integer.MAX_VALUE, true);
+                                if (stack.getItem() == Items.MILK_BUCKET) {
+                                    stack.shrink(1);
+                                    playerIn.addItemStackToInventory(new ItemStack(Items.BUCKET));
+                                }
+                            }
+                            flag = true;
+                        }
+                    }
+                    if(flag){
+                        RatsMod.NETWORK_WRAPPER.sendToAll(new MessageAutoCurdlerFluid(pos.toLong(), te.tank.getFluid()));
+                    }
+                }
+                return true;
+            }
+            if(!flag){
+                playerIn.openGui(RatsMod.INSTANCE, 5, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            }
             return true;
         }
     }
