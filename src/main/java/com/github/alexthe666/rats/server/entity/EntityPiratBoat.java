@@ -275,7 +275,7 @@ public class EntityPiratBoat extends EntityMob implements IRatlantean {
     }
 
     public void shoot(EntityPirat pirat) {
-        world.updateEntityWithOptionalForce(this, true);
+        //world.updateEntityWithOptionalForce(this, true);
 
         EntityLivingBase target = pirat.getAttackTarget();
         if (target == null) {

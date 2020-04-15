@@ -233,8 +233,9 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
             double d2 = target.posZ - this.posZ;
             float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
             this.renderYawOffset = this.rotationYaw = f % 360;
-            if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPiratBoat) {
-                ((EntityPiratBoat) this.getRidingEntity()).shoot(this);
+            Entity ridingEntity = this.getRidingEntity();
+            if (ridingEntity instanceof EntityPiratBoat) {
+                ((EntityPiratBoat) ridingEntity).shoot(this);
             }
             attackCooldown = 70;
         }
