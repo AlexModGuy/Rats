@@ -24,9 +24,15 @@ public class NuggetColorRegister {
             BufferedImage texture = null;
             int color = 0XFFFFFF;
             try {
-                BufferedImage bufferedimage = getBufferedImage(getTextureAtlas(poopStack));
-                Color texColour = getAverageColour(bufferedimage);
-                color = texColour.getRGB();
+                TextureAtlasSprite sprite = getTextureAtlas(poopStack);
+                if(sprite != null){
+                    BufferedImage bufferedimage = getBufferedImage(sprite);
+                    if(bufferedimage != null) {
+                        Color texColour = getAverageColour(bufferedimage);
+                        color = texColour.getRGB();
+                    }
+                }
+
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
