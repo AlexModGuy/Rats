@@ -59,6 +59,9 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
+        if(rat.getAttackTarget() != null){
+            return false;
+        }
         if (!this.mustUpdate) {
             long worldTime = this.taskOwner.world.getWorldTime() % 10;
             if (this.rat.getIdleTime() >= 100 && worldTime != 0) {

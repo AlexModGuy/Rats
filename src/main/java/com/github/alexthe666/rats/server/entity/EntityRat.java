@@ -233,8 +233,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         this.tasks.addTask(7, new RatAIFleePosition(this));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(1, new RatAIHuntAnimals(this, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(0, new RatAIHuntAnimals(this, new Predicate<EntityLivingBase>() {
             public boolean apply(@Nullable EntityLivingBase entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof EntityPlayer && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
@@ -251,6 +250,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }));
+        this.targetTasks.addTask(1, new RatAITargetItems(this, false));
         this.targetTasks.addTask(2, new RatAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(3, new RatAIOwnerHurtTarget(this));
         this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false));
