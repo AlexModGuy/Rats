@@ -37,6 +37,10 @@ public class GuiHandler implements IGuiHandler {
         if (ID == 5 && tile != null && tile instanceof TileEntityAutoCurdler) {
             return new ContainerAutoCurdler((TileEntityAutoCurdler) tile, player);
         }
+        if (ID == 6) {
+            EnumHand hand = EnumHand.MAIN_HAND;
+            return new ContainerRatUpgradeJuryRigged(player, player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
+        }
         return null;
     }
 
@@ -60,6 +64,10 @@ public class GuiHandler implements IGuiHandler {
         }
         if (ID == 5 && tile != null && tile instanceof TileEntityAutoCurdler) {
             return new GuiAutoCurdler((TileEntityAutoCurdler) tile, player.inventory);
+        }
+        if (ID == 6) {
+            EnumHand hand = EnumHand.MAIN_HAND;
+            return new GuiRatUpgradeJuryRigged(player.inventory, new InventoryRatUpgrade(player.getHeldItem(hand)));
         }
         return null;
     }

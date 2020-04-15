@@ -2458,7 +2458,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (stack.getItem() == item) {
             return stack;
         }
-        if (stack.getItem() instanceof ItemRatCombinedUpgrade) {
+        if (stack.getItem() instanceof ItemRatCombinedUpgrade || stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
             NBTTagCompound nbttagcompound1 = stack.getTagCompound();
             if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);

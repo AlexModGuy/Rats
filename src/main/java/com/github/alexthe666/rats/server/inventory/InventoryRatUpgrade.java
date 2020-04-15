@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.inventory;
 
 import com.github.alexthe666.rats.server.items.ItemRatCombinedUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatListUpgrade;
+import com.github.alexthe666.rats.server.items.ItemRatUpgradeJuryRigged;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -102,6 +103,9 @@ public class InventoryRatUpgrade implements ISidedInventory {
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         if (upgradeStack.getItem() instanceof ItemRatCombinedUpgrade) {
             return ItemRatCombinedUpgrade.canCombineWithUpgrade(upgradeStack, stack);
+        }
+        if (upgradeStack.getItem() instanceof ItemRatUpgradeJuryRigged) {
+            return ItemRatUpgradeJuryRigged.canCombineWithUpgrade(upgradeStack, stack);
         }
         return !(stack.getItem() instanceof ItemRatListUpgrade);
     }

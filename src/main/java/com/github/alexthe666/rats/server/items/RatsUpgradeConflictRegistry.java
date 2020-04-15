@@ -64,6 +64,7 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, PROCESSING_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DRAGON, new Item[]{RatsItemRegistry.RAT_UPGRADE_FLIGHT, RatsItemRegistry.RAT_UPGRADE_ASBESTOS});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED, new Item[0]);
     }
 
     public static boolean doesConflict(Item first, Item second) {

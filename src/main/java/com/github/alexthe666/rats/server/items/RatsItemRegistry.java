@@ -236,6 +236,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_POISON = new ItemRatUpgrade("rat_upgrade_poison", 0, 4);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_damage_protection")
     public static Item RAT_UPGRADE_DAMAGE_PROTECTION = new ItemRatUpgrade("rat_upgrade_damage_protection", 2, 4);
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_jury_rigged")
+    public static Item RAT_UPGRADE_JURY_RIGGED = new ItemRatUpgradeJuryRigged("rat_upgrade_jury_rigged");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_ore_doubling")
     public static Item RAT_UPGRADE_ORE_DOUBLING = new ItemRatUpgradeOreDoubling();
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_basic_energy")
