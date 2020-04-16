@@ -7,9 +7,13 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -17,6 +21,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
@@ -60,32 +65,18 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
         return RatsMod.PROXY.shouldRenderNameplates() && super.canRenderName(entity);
     }
 
-    protected void renderModel(EntityRat rat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        boolean flag = this.isVisible(rat);
-        boolean flag1 = !flag && !rat.isInvisibleToPlayer(Minecraft.getInstance().player) || rat.getRespawnCountdown() > 0;
-        if (flag || flag1) {
-            if (!this.bindEntityTexture(rat)) {
-                return;
-            }
-
-            if (flag1) {
-                GlStateManager.setProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-            }
-            EntityModel model;
-            if (rat.isChild()) {
-                model = PINKIE_MODEL;
-            } else {
-                model = RAT_MODEL;
-            }
-            model.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            if (flag1) {
-                GlStateManager.unsetProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-            }
+    public void render(EntityRat entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        if (entityIn.isChild()) {
+            entityModel = PINKIE_MODEL;
+        } else {
+            entityModel = RAT_MODEL;
         }
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+
     }
 
 
-    public boolean shouldRender(EntityRat rat, ICamera camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityRat rat, ClippingHelperImpl camera, double camX, double camY, double camZ) {
         if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof LivingEntity) {
             if (((LivingEntity) rat.getRidingEntity()).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.CHEF_TOQUE) {
                 return false;
@@ -94,16 +85,16 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
         return super.shouldRender(rat, camera, camX, camY, camZ);
     }
 
-    protected void preRenderCallback(EntityRat rat, float partialTickTime) {
-        GL11.glScaled(0.6F, 0.6F, 0.6F);
+    protected void preRenderCallback(EntityRat rat, MatrixStack matrixStackIn, float partialTickTime) {
+        matrixStackIn.scale(0.6F, 0.6F, 0.6F);
         if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1) {
             if(rat.getRidingEntity() instanceof PlayerEntity){
                 Entity riding = rat.getRidingEntity();
                 if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
                     EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
                     if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
-                        ((BipedModel) ((LivingRenderer) playerRender).getEntityModel()).bipedHead.postRender(0.0625F);
-                        GlStateManager.translatef(0.0F, -0.7F, 0.25F);
+                        ((BipedModel) ((LivingRenderer) playerRender).getEntityModel()).bipedHead.translateRotate(matrixStackIn);
+                        matrixStackIn.translate(0.0F, -0.7F, 0.25F);
                     }
                 }
             }
@@ -112,14 +103,14 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
                 if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
                     EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
                     if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
-                        RenderRattlingGun.GUN_MODEL.pivot.postRender(0.0625F);
+                        RenderRattlingGun.GUN_MODEL.pivot.translateRotate(matrixStackIn);
                     //GlStateManager.translatef(0.0F, -0.7F, 0.25F);
                     }
                 }
             }
         } else {
             float f7 = rat.prevFlyingPitch + (rat.flyingPitch - rat.prevFlyingPitch) * partialTickTime;
-            GL11.glRotatef(rat.flyingPitch, 1, 0, 0);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, rat.flyingPitch, true));
         }
 
     }

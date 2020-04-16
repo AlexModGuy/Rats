@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatGolemMount;
 import com.github.alexthe666.rats.server.entity.EntityRatGolemMount;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -18,8 +19,8 @@ public class RenderRatGolemMount extends MobRenderer<EntityRatGolemMount, ModelR
         return TEXTURE;
     }
 
-    protected void preRenderCallback(EntityRatGolemMount rat, float partialTickTime) {
-        super.preRenderCallback(rat, partialTickTime);
+    protected void preRenderCallback(EntityRatGolemMount rat, MatrixStack matrixStackIn, float partialTickTime) {
+        super.preRenderCallback(rat, matrixStackIn, partialTickTime);
 
     }
 }

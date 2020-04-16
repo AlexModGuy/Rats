@@ -4,14 +4,17 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelMarbledCheeseGolem<T extends EntityDutchrat> extends AdvancedEntityModel<T> {
+public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends AdvancedEntityModel<T> {
     public AdvancedModelBox body;
     public AdvancedModelBox headBase;
     public AdvancedModelBox armLeft1;
@@ -119,11 +122,6 @@ public class ModelMarbledCheeseGolem<T extends EntityDutchrat> extends AdvancedE
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-    }
-
-    @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(body, headBase, armLeft1, armRight1);
     }
@@ -155,8 +153,12 @@ public class ModelMarbledCheeseGolem<T extends EntityDutchrat> extends AdvancedE
         animator.endKeyframe();
     }
 
-    public void renderHead(float ticksExisted){
+    public void renderHead(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha){
         this.resetToDefaultPose();
+        headBase.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+    }
+
+    public void setTERotationAngles(float ticksExisted){
         ear1.rotationPointZ = 3;
         ear2.rotationPointZ = 3;
         float idleSpeed = 0.1F;

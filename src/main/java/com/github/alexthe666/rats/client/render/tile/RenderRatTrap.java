@@ -3,9 +3,17 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.client.model.ModelRatTrap;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -13,10 +21,14 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderRatTrap extends TileEntityRenderer<TileEntityRatTrap> {
     private static final ModelRatTrap MODEL_RAT_TRAP = new ModelRatTrap();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/rat_trap.png");
+    private static final RenderType TEXTURE = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_trap.png"));
+
+    public RenderRatTrap(TileEntityRendererDispatcher rendererDispatcherIn) {
+        super(rendererDispatcherIn);
+    }
 
     @Override
-    public void render(TileEntityRatTrap entity, double x, double y, double z, float aplha, int destroyProg) {
+    public void render(TileEntityRatTrap entity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         float rotation = 0;
         float shutProgress = 0;
         ItemStack bait = ItemStack.EMPTY;
@@ -33,24 +45,26 @@ public class RenderRatTrap extends TileEntityRenderer<TileEntityRatTrap> {
             shutProgress = entity.shutProgress;
             bait = entity.getBait();
         }
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180, 1, 0, 0);
-        GL11.glRotatef(rotation, 0, 1F, 0);
-        GL11.glPushMatrix();
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-        MODEL_RAT_TRAP.render(0.0625F, shutProgress);
+        matrixStackIn.push();
+        matrixStackIn.translate(0.5D, 1.5D, 0.5D);
+        matrixStackIn.push();
+
+        matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, rotation, true));
+        matrixStackIn.push();
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
+        MODEL_RAT_TRAP.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+
         if (!bait.isEmpty()) {
-            GL11.glScalef(0.4F, 0.4F, 0.4F);
-            GL11.glTranslated(0, 3.4F, -0.5F);
-            GL11.glRotatef(90, 1F, 0, 0);
-            GL11.glRotatef(180, 0, 1F, 0);
-            Minecraft.getInstance().getItemRenderer().renderItem(bait, ItemCameraTransforms.TransformType.FIXED);
+            matrixStackIn.scale(0.4F, 0.4F, 0.4F);
+            matrixStackIn.translate(0, 3.4F, -0.5F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
+            Minecraft.getInstance().getItemRenderer().renderItem(bait, ItemCameraTransforms.TransformType.FIXED, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         }
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        matrixStackIn.pop();
+        matrixStackIn.pop();
+        matrixStackIn.pop();
 
     }
 }

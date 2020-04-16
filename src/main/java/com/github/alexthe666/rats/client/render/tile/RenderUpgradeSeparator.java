@@ -2,26 +2,47 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeSeparator;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 public class RenderUpgradeSeparator extends TileEntityRenderer<TileEntityUpgradeSeparator> {
     private static ItemStack RENDER_STACK = new ItemStack(RatsItemRegistry.ANCIENT_SAWBLADE);
 
+    public RenderUpgradeSeparator(TileEntityRendererDispatcher rendererDispatcherIn) {
+        super(rendererDispatcherIn);
+    }
+
     @Override
-    public void render(TileEntityUpgradeSeparator te, double x, double y, double z, float alpha, int destroyProg) {
-        GlStateManager.pushMatrix();
-        float f = te.ratRotationPrev + (te.ratRotation - te.ratRotationPrev) * Minecraft.getInstance().getRenderPartialTicks();
-        GlStateManager.translatef((float) x + 0.5F, (float) (y + 1 + (Math.sin(f * 0.3F) * 0.1F)), (float) z + 0.5F);
-        GlStateManager.rotatef(f * 1.5F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.disableCull();
-        GlStateManager.translatef(0, 0, -0.2F);
-        GlStateManager.rotatef(90, 1.0F, 0.0F, 0.0F);
+    public void render(TileEntityUpgradeSeparator entity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        matrixStackIn.push();
+        matrixStackIn.translate(0.5D, 1.5D, 0.5D);
+        float f = (float) entity.ratRotationPrev + Minecraft.getInstance().getRenderPartialTicks();
+        matrixStackIn.translate(0.0F, 3F + MathHelper.sin(f * 0.1F) * 0.1F, 0.0F);
+        float f1;
+
+        for (f1 = entity.ratRotation - entity.ratRotationPrev; f1 >= (float) Math.PI; f1 -= ((float) Math.PI * 2F)) {
+        }
+
+        while (f1 < -(float) Math.PI) {
+            f1 += ((float) Math.PI * 2F);
+        }
+        float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getRenderPartialTicks();;
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * (180F / (float) Math.PI), true));
+        matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90, true));
+
         GlStateManager.scalef(1.7F, 1.7F, 1.7F);
-        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.GROUND);
+        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.GROUND, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         GlStateManager.popMatrix();
     }
 }

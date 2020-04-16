@@ -1,15 +1,19 @@
 package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelAutoCurdler;
+import com.github.alexthe666.rats.server.blocks.BlockAutoCurdler;
 import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -19,24 +23,27 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler> {
     private static final ModelAutoCurdler MODEL_AUTO_CURDLER = new ModelAutoCurdler();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/model/auto_curdler.png");
+    private static final RenderType TEXTURE = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/auto_curdler.png"));
 
-    public static void renderMilk(double x, double y, double z, float rotation, FluidStack fluidStack) {
+    public RenderAutoCurdler(TileEntityRendererDispatcher rendererDispatcherIn) {
+        super(rendererDispatcherIn);
+    }
+    
+
+    public static void renderMilk(MatrixStack matrixStackIn, FluidStack fluidStack) {
         float textureYPos = (0.6F * (fluidStack.getAmount() / 5000F));
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180, 1, 0, 0);
-        GL11.glRotatef(rotation, 0, 1F, 0);
-        GL11.glTranslatef(-0.5F, 0.5F, -0.5F);
-        GL11.glPushMatrix();
+        matrixStackIn.push();
+        matrixStackIn.push();
+        matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
+        matrixStackIn.translate(-0.5F, 0.5F, -0.5F);
+        matrixStackIn.push();
         AxisAlignedBB boundingBox = new AxisAlignedBB(0.25F, 0.6F - textureYPos, 0.25F, 0.75F, 0.5F, 0.75F);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(fluidStack.getFluid().getAttributes().getStillTexture());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(fluidStack.getFluid().getAttributes().getStillTexture()).apply(fluidStack.getFluid().getAttributes().getStillTexture());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
         double avgY = boundingBox.maxY - boundingBox.minY;
         double avgX = Math.abs(boundingBox.maxX - boundingBox.minX);
         double avgZ = Math.abs(boundingBox.maxZ - boundingBox.minZ);
@@ -50,68 +57,54 @@ public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler>
         float f4_alt_x = (float) Math.min(sprite.getMaxV(), f3 + avgX * Math.abs(sprite.getMaxV() - sprite.getMinV()));//sprite.getMaxU();
         float f4_alt_z = (float) Math.min(sprite.getMaxV(), f3 + avgZ * Math.abs(sprite.getMaxV() - sprite.getMinV()));//sprite.getMaxU();
 //back
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex((double) f2_alt_x, (double) f3).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex((double) f1, (double) f3).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex((double) f1, (double) f4_alt).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex((double) f2_alt_x, (double) f4_alt).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex( f2_alt_x,  f3).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex( f1,  f3).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex( f1,  f4_alt).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex( f2_alt_x,  f4_alt).normal(0.0F, 0.0F, -1.0F).endVertex();
         //front
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex((double) f1, (double) f4_alt).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex((double) f2_alt_x, (double) f4_alt).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex((double) f2_alt_x, (double) f3).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex((double) f1, (double) f3).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex( f1,  f4_alt).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex( f2_alt_x,  f4_alt).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex( f2_alt_x,  f3).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex( f1,  f3).normal(0.0F, 0.0F, 1.0F).endVertex();
         //tops
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex((double) f1, (double) f4_alt_z).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex((double) f2_alt_x, (double) f4_alt_z).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex((double) f2_alt_x, (double) f3).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex((double) f1, (double) f3).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex( f1,  f4_alt_z).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex( f2_alt_x,  f4_alt_z).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex( f2_alt_x,  f3).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex( f1,  f3).normal(0.0F, -1.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex((double) f1, (double) f4_alt_z).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex((double) f2_alt_x, (double) f4_alt_z).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex((double) f2_alt_x, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex( f1,  f4_alt_z).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex( f2_alt_x,  f4_alt_z).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex( f2_alt_x,  f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex( f1,  f3).normal(0.0F, 1.0F, 0.0F).endVertex();
         //sides
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex((double) f2_alt_z, (double) f4_alt).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex((double) f2_alt_z, (double) f3).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex((double) f1, (double) f3).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex((double) f1, (double) f4_alt).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex( f2_alt_z,  f4_alt).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex( f2_alt_z,  f3).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex( f1,  f3).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex( f1,  f4_alt).normal(-1.0F, 0.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex((double) f2_alt_z, (double) f4_alt).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex((double) f2_alt_z, (double) f3).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex((double) f1, (double) f3).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex((double) f1, (double) f4_alt).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex( f2_alt_z,  f4_alt).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex( f2_alt_z,  f3).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex( f1,  f3).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex( f1,  f4_alt).normal(1.0F, 0.0F, 0.0F).endVertex();
         tessellator.draw();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        matrixStackIn.pop();
+        matrixStackIn.pop();
+        matrixStackIn.pop();
     }
 
     @Override
-    public void render(TileEntityAutoCurdler entity, double x, double y, double z, float alpha, int destroyProg) {
-        float rotation = 0;
-        if (entity != null && entity.getWorld() != null && entity instanceof TileEntityAutoCurdler) {
-            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.NORTH) {
-                rotation = 180;
-            }
-            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.EAST) {
-                rotation = -90;
-            }
-            if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.WEST) {
-                rotation = 90;
-            }
-            if (entity.tank.getFluidAmount() > 0) {
-                renderMilk(x, y, z, rotation, entity.tank.getFluid());
-            }
-        }
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180, 1, 0, 0);
-        GL11.glRotatef(rotation, 0, 1F, 0);
-        GL11.glPushMatrix();
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-        MODEL_AUTO_CURDLER.render(0.0625F);
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+    public void render(TileEntityAutoCurdler tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn){
+
+        BlockState blockstate = tileEntityIn.getBlockState();
+        matrixStackIn.push();
+        matrixStackIn.translate(0.5D, 1.5D, 0.5D);
+        float f = blockstate.get(BlockAutoCurdler.FACING).rotateY().getHorizontalAngle() + 90;
+        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-f));
+        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(180));
+
+        renderMilk(matrixStackIn, tileEntityIn.tank.getFluid());
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
+        MODEL_AUTO_CURDLER.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+        matrixStackIn.pop();
     }
 }

@@ -41,7 +41,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     }
 
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
-        ResourceLocation res = fluidStack.getFluid().getAttributes().getStillTexture();
+        TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(fluidStack.getFluid().getAttributes().getStillTexture()).apply(fluidStack.getFluid().getAttributes().getStillTexture());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
@@ -85,7 +85,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getFormattedText();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
-                net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, width, height, 120, font);
+                renderTooltip(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, font);
             }
         }
     }

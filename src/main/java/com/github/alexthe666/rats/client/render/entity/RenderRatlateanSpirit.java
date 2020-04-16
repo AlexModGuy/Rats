@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanSpirit;
 import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -22,10 +23,10 @@ public class RenderRatlateanSpirit<T extends MobEntity> extends MobRenderer<T, M
         return entity instanceof EntityPlagueCloud ? TEXTURE_CLOUD : TEXTURE;
     }
 
-    protected void preRenderCallback(MobEntity LivingEntityIn, float partialTickTime) {
+    protected void preRenderCallback(MobEntity LivingEntityIn, MatrixStack stack, float partialTickTime) {
         doPortalEffect(LivingEntityIn, partialTickTime);
         float scale = LivingEntityIn instanceof EntityPlagueCloud ? 2 : 1.5F;
-        GlStateManager.scalef(scale, scale, scale);
+        stack.scale(scale, scale, scale);
     }
 
     public void doPortalEffect(Entity entity, float partialTicks) {

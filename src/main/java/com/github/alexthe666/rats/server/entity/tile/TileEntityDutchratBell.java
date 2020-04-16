@@ -162,9 +162,9 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
             }).count();
             this.entitiesAtRing.stream().filter(this::isNearbyRaider).forEach((p_222831_4_) -> {
                 float f = 1.0F;
-                float f1 = MathHelper.sqrt((p_222831_4_.posX - (double)blockpos.getX()) * (p_222831_4_.posX - (double)blockpos.getX()) + (p_222831_4_.posZ - (double)blockpos.getZ()) * (p_222831_4_.posZ - (double)blockpos.getZ()));
-                double d0 = (double)((float)blockpos.getX() + 0.5F) + (double)(1.0F / f1) * (p_222831_4_.posX - (double)blockpos.getX());
-                double d1 = (double)((float)blockpos.getZ() + 0.5F) + (double)(1.0F / f1) * (p_222831_4_.posZ - (double)blockpos.getZ());
+                float f1 = MathHelper.sqrt((p_222831_4_.getPosX() - (double)blockpos.getX()) * (p_222831_4_.getPosX() - (double)blockpos.getX()) + (p_222831_4_.getPosZ() - (double)blockpos.getZ()) * (p_222831_4_.getPosZ() - (double)blockpos.getZ()));
+                double d0 = (double)((float)blockpos.getX() + 0.5F) + (double)(1.0F / f1) * (p_222831_4_.getPosX() - (double)blockpos.getX());
+                double d1 = (double)((float)blockpos.getZ() + 0.5F) + (double)(1.0F / f1) * (p_222831_4_.getPosZ() - (double)blockpos.getZ());
                 int j = MathHelper.clamp((i - 21) / -2, 3, 15);
 
                 for(int k = 0; k < j; ++k) {

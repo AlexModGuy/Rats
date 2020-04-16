@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatFish;
 import com.github.alexthe666.rats.server.entity.EntityRatfish;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -22,8 +23,8 @@ public class RenderRatfish extends MobRenderer<EntityRatfish, ModelRatFish<Entit
         return TEXTURE;
     }
 
-    protected void applyRotations(EntityRatfish entityLiving, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
+    protected void applyRotations(EntityRatfish entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.applyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
         float f = 4.3F * MathHelper.sin(0.6F * ageInTicks);
         GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);
         if (!entityLiving.isInWater()) {

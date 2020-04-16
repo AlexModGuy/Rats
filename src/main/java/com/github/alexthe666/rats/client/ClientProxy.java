@@ -129,7 +129,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT, manager -> new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIED_PIPER, manager -> new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_FLAME, manager -> new RenderRatlanteanFlame());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_FLAME, manager -> new SpriteRenderer(manager, Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON, manager -> new RenderMarbledCheeseGolem());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, manager -> new RenderGolemBeam());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.FERAL_RATLANTEAN, manager -> new RenderFeralRatlantean());
