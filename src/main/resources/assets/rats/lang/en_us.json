@@ -49,7 +49,7 @@
   "block.rats.upgrade_separator": "Rat Upgrade Separator",
   "block.rats.upgrade_separator.desc": "Throw a combined rat upgrade on top to shatter it",
   "block.rats.fish_barrel": "Barrel of Fish",
-  "block.rats.milk": "Milk",
+  "block.rats.milk.name": "Milk",
   "block.rats.pirat_planks": "Ghost Pirat Planks",
   "block.rats.pirat_log": "Ghost Pirat Log",
   "block.rats.stripped_pirat_log": "Stripped Ghost Pirat Log",

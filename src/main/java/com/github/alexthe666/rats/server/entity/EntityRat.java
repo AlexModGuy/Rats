@@ -333,6 +333,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER) && !(aiHarvest instanceof RatAIHarvestMilk)) {
             aiHarvest = new RatAIHarvestMilk(this);
+            flag = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) && !(aiHarvest instanceof RatAIHarvestShears)) {
             aiHarvest = new RatAIHarvestShears(this);

@@ -104,6 +104,8 @@ public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
                 });
             }
         }
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }
+
+
 }
