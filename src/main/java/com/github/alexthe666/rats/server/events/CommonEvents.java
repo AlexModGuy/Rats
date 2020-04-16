@@ -61,29 +61,29 @@ public class CommonEvents {
     public static void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
         if (RatUtils.isPredator(event.getTarget()) && event.getTarget() instanceof AnimalEntity) {
             AnimalEntity ocelot = (AnimalEntity) event.getTarget();
-            Item heldItem = event.getEntityPlayer().getHeldItem(event.getHand()).getItem();
+            Item heldItem = event.getPlayer().getHeldItem(event.getHand()).getItem();
             Random random = event.getWorld().rand;
             if (ocelot.getHealth() < ocelot.getMaxHealth()) {
                 if (heldItem == RatsItemRegistry.RAW_RAT) {
                     ocelot.heal(4);
-                    event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                    event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                    event.getWorld().playSound(null, ocelot.getPosX(), ocelot.getPosY(), ocelot.getPosZ(), SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                    event.getWorld().playSound(null, ocelot.getPosX(), ocelot.getPosY(), ocelot.getPosZ(), SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, ocelot.getPosX() + random.nextDouble() - random.nextDouble(), ocelot.getPosY() + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.getPosZ() + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
                 if (heldItem == RatsItemRegistry.COOKED_RAT) {
                     ocelot.heal(8);
-                    event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                    event.getWorld().playSound(null, ocelot.posX, ocelot.posY, ocelot.posZ, SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                    event.getWorld().playSound(null, ocelot.getPosX(), ocelot.getPosY(), ocelot.getPosZ(), SoundEvents.ENTITY_LLAMA_EAT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                    event.getWorld().playSound(null, ocelot.getPosX(), ocelot.getPosY(), ocelot.getPosZ(), SoundEvents.ENTITY_CAT_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     for (int i = 0; i < 3; i++) {
-                        event.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, ocelot.posX + random.nextDouble() - random.nextDouble(), ocelot.posY + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.posZ + random.nextDouble() - random.nextDouble(), 0, 0, 0);
+                        event.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, ocelot.getPosX() + random.nextDouble() - random.nextDouble(), ocelot.getPosY() + 0.5 + random.nextDouble() - random.nextDouble(), ocelot.getPosZ() + random.nextDouble() - random.nextDouble(), 0, 0, 0);
                     }
                 }
             }
         }
         if (event.getTarget() instanceof VillagerEntity) {
-            ItemStack heldItem = event.getEntityPlayer().getHeldItem(event.getHand());
+            ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());
             if (heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((VillagerEntity) event.getTarget()).isChild()) {
                 VillagerEntity villager = (VillagerEntity) event.getTarget();
                 EntityPlagueDoctor doctor = new EntityPlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR, event.getWorld());
@@ -97,13 +97,13 @@ public class CommonEvents {
                 if (villager.hasCustomName()) {
                     doctor.setCustomName(villager.getCustomName());
                 }
-                event.getEntityPlayer().swingArm(event.getHand());
-                if (!event.getEntityPlayer().isCreative()) {
+                event.getPlayer().swingArm(event.getHand());
+                if (!event.getPlayer().isCreative()) {
                     heldItem.shrink(1);
                 }
             }
         }
-        if (event.getEntityPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)) {
+        if (event.getPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)) {
             if (event.getTarget() instanceof LivingEntity && !((LivingEntity) event.getTarget()).isPotionActive(RatsMod.PLAGUE_POTION)) {
                 ((LivingEntity) event.getTarget()).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 6000));
                 event.getTarget().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
@@ -126,8 +126,8 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerPunch(AttackEntityEvent event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
-        //TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
+        ItemStack itemstack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+        //TinkersCompatBridge.onPlayerSwing(event.getPlayer(), itemstack);
     }
 
     @SubscribeEvent
@@ -149,16 +149,16 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
-        /*if (TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack)) {
+        ItemStack itemstack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+        /*if (TinkersCompatBridge.onPlayerSwing(event.getPlayer(), itemstack)) {
         }*/
         RatsCustomEvents.onPlayerSwing(event.getPlayer(), itemstack);
         RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
-        if (event.getEntityPlayer().isSneaking() && !event.getEntityPlayer().getPassengers().isEmpty()) {
-            for (Entity passenger : event.getEntityPlayer().getPassengers()) {
+        if (event.getPlayer().isShiftKeyDown() && !event.getPlayer().getPassengers().isEmpty()) {
+            for (Entity passenger : event.getPlayer().getPassengers()) {
                 if (passenger instanceof EntityRat) {
                     passenger.stopRiding();
-                    passenger.setPosition(event.getEntityPlayer().posX, event.getEntityPlayer().posY, event.getEntityPlayer().posZ);
+                    passenger.setPosition(event.getPlayer().getPosX(), event.getPlayer().getPosY(), event.getPlayer().getPosZ());
                     RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatDismount(passenger.getEntityId()));
                 }
             }
@@ -167,8 +167,8 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        ItemStack itemstack = event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND);
-        //TinkersCompatBridge.onPlayerSwing(event.getEntityPlayer(), itemstack);
+        ItemStack itemstack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+        //TinkersCompatBridge.onPlayerSwing(event.getPlayer(), itemstack);
     }
 
     @SubscribeEvent
@@ -181,13 +181,13 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onDrops(LivingDropsEvent event) {
         if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof PlayerEntity && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
-            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.PIPER_HAT)));
+            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
-        if (event.getEntityLiving() instanceof CreeperEntity && ((CreeperEntity) event.getEntityLiving()).getPowered()) {
-            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.CHARGED_CREEPER_CHUNK, event.getLootingLevel() + 1 + event.getEntityLiving().world.rand.nextInt(2))));
+        if (event.getEntityLiving() instanceof CreeperEntity && ((CreeperEntity) event.getEntityLiving()).func_225509_J__()) {
+            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.CHARGED_CREEPER_CHUNK, event.getLootingLevel() + 1 + event.getEntityLiving().world.rand.nextInt(2))));
         }
         if (event.getSource().getTrueSource() instanceof EntityRat && ((EntityRat) event.getSource().getTrueSource()).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)) {
-            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(RatsItemRegistry.TINY_COIN)));
+            event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.TINY_COIN)));
         }
     }
 
@@ -260,9 +260,9 @@ public class CommonEvents {
                 for (int i = 0; i < entitySize; i++) {
                     float motionX = rand.nextFloat() * 0.1F - 0.05F;
                     float motionZ = rand.nextFloat() * 0.1F - 0.05F;
-                    RatsMod.PROXY.addParticle("flea", event.getEntityLiving().posX + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
-                            event.getEntityLiving().posY + (double) (rand.nextFloat() * event.getEntityLiving().getHeight()),
-                            event.getEntityLiving().posZ + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
+                    RatsMod.PROXY.addParticle("flea", event.getEntityLiving().getPosX() + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
+                            event.getEntityLiving().getPosY() + (double) (rand.nextFloat() * event.getEntityLiving().getHeight()),
+                            event.getEntityLiving().getPosZ() + (double) (rand.nextFloat() * event.getEntityLiving().getWidth() * 2F) - (double) event.getEntityLiving().getWidth(),
                             motionX, 0.0F, motionZ);
                 }
             }
@@ -271,7 +271,7 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
+        if (event.getPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK || event.getPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
             event.setCanceled(true);
             RatsMod.PROXY.setCheeseStaffContext(event.getPos(), event.getFace());
             Entity rat = null;
@@ -292,9 +292,9 @@ public class CommonEvents {
             }
             RatsMod.PROXY.openCheeseStaffGui();
         }
-        if (event.getEntityPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getEntityPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
+        if (event.getPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
             if (!RatConfig.disableRatlantis) {
-                if (!event.getEntityPlayer().isCreative()) {
+                if (!event.getPlayer().isCreative()) {
                     event.getItemStack().shrink(1);
                 }
                 boolean canBuild = true;
@@ -306,7 +306,7 @@ public class CommonEvents {
                     }
                 }
                 if (canBuild) {
-                    event.getEntityPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
+                    event.getPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
                     event.getWorld().setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
                     event.getWorld().setBlockState(pos.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
                     event.getWorld().setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
@@ -318,13 +318,13 @@ public class CommonEvents {
             if (event.getWorld().getBlockState(event.getPos()).get(CauldronBlock.LEVEL) == 0) {
                 event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());
                 if (!event.getWorld().isRemote) {
-                    CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) event.getEntityPlayer(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
+                    CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) event.getPlayer(), event.getPos(), new ItemStack(RatsBlockRegistry.MILK_CAULDRON));
                 }
-                event.getEntityPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
-                if (!event.getEntityPlayer().isCreative()) {
+                event.getPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
+                if (!event.getPlayer().isCreative()) {
                     if (event.getItemStack().getItem() == Items.MILK_BUCKET) {
                         event.getItemStack().shrink(1);
-                        event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
+                        event.getPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
                     } else if (RatUtils.isMilk(event.getItemStack())) {
                         LazyOptional<IFluidHandlerItem> fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
                         if (fluidHandler.isPresent() && fluidHandler.orElse(null) != null) {

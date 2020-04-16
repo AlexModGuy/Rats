@@ -60,7 +60,7 @@ public class PiratAIStrife extends Goal {
         LivingEntity LivingEntity = this.entity.getAttackTarget();
 
         if (LivingEntity != null) {
-            double d0 = this.entity.getDistanceSq(LivingEntity.posX, LivingEntity.getBoundingBox().minY, LivingEntity.posZ);
+            double d0 = this.entity.getDistanceSq(LivingEntity.getPosX(), LivingEntity.getBoundingBox().minY, LivingEntity.getPosZ());
             boolean flag = this.entity.getEntitySenses().canSee(LivingEntity);
             boolean flag1 = this.seeTime > 0;
             if (flag != flag1) {
@@ -78,9 +78,9 @@ public class PiratAIStrife extends Goal {
                 ++this.strafingTime;
             } else {
                 this.entity.getNavigator().tryMoveToEntityLiving(LivingEntity, this.moveSpeedAmp);
-                this.entity.getMoveHelper().setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, moveSpeedAmp);
+                this.entity.getMoveHelper().setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY(), LivingEntity.getPosZ(), moveSpeedAmp);
                 if(entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntityPiratBoat){
-                    ((EntityPiratBoat)this.entity.getRidingEntity()).getMoveHelper().setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, moveSpeedAmp);
+                    ((EntityPiratBoat)this.entity.getRidingEntity()).getMoveHelper().setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY(), LivingEntity.getPosZ(), moveSpeedAmp);
                 }
                 this.strafingTime = -1;
             }

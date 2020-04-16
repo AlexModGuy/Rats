@@ -40,7 +40,7 @@ public class RatTubeMoveHelper extends MovementController {
 
             if (pathnavigate != null) {
                 NodeProcessor nodeprocessor = pathnavigate.getNodeProcessor();
-                if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.rat.world, MathHelper.floor(this.rat.posX + (double) f7), MathHelper.floor(this.rat.posY), MathHelper.floor(this.rat.posZ + (double) f8)) != PathNodeType.WALKABLE) {
+                if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.rat.world, MathHelper.floor(this.rat.getPosX() + (double) f7), MathHelper.floor(this.rat.getPosY()), MathHelper.floor(this.rat.getPosZ() + (double) f8)) != PathNodeType.WALKABLE) {
                     this.moveForward = 1.0F;
                     this.moveStrafe = 0.0F;
                     f1 = f;
@@ -53,9 +53,9 @@ public class RatTubeMoveHelper extends MovementController {
             this.action = MovementController.Action.WAIT;
         } else if (this.action == MovementController.Action.MOVE_TO) {
             this.action = MovementController.Action.WAIT;
-            double d0 = this.posX - this.rat.posX;
-            double d1 = this.posZ - this.rat.posZ;
-            double d2 = this.posY - this.rat.posY;
+            double d0 = this.getX() - this.rat.getPosX();
+            double d1 = this.getY() - this.rat.getPosZ();
+            double d2 = this.getZ() - this.rat.getPosY();
             double d3 = d0 * d0 + d2 * d2 + d1 * d1;
             if (d3 < 2.500000277905201E-7D) {
                 this.rat.setMoveForward(0.0F);

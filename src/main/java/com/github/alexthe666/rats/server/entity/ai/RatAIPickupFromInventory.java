@@ -150,9 +150,9 @@ public class RatAIPickupFromInventory extends Goal {
         }
 
         private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
+            double deltaX = this.entity.getPosX() - (pos.getX() + 0.5);
+            double deltaY = this.entity.getPosY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
+            double deltaZ = this.entity.getPosZ() - (pos.getZ() + 0.5);
             return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         }
     }

@@ -36,12 +36,12 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
         boolean inCage = rat.isInCage() || rat.inTube();
         if (inCage) {
             if (rat.inTube()) {
-                vec3d = RatUtils.generateRandomCagePos(this.rat, 30, 10, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), rat.waterBased);
+                vec3d = RatUtils.generateRandomCagePos(this.rat, 30, 10, new Vec3d(-this.rat.getPosX(), -this.rat.getPosY(), -this.rat.getPosZ()), rat.waterBased);
                 if (vec3d == null) {
                     vec3d = RatUtils.generateRandomCageOrTubePos(this.rat, 20, 20, null, false);
                 }
             } else {
-                vec3d = RatUtils.generateRandomTubePos(this.rat, 15, 3, new Vec3d(-this.rat.posX, -this.rat.posY, -this.rat.posZ), rat.waterBased);
+                vec3d = RatUtils.generateRandomTubePos(this.rat, 15, 3, new Vec3d(-this.rat.getPosX(), -this.rat.getPosY(), -this.rat.getPosZ()), rat.waterBased);
                 if (vec3d == null) {
                     vec3d = RatUtils.findRandomCageOrTubeTarget(this.rat, 15, 2);
                 }

@@ -153,21 +153,18 @@ public class RatUtils {
         int i3 = MathHelper.ceil(bb.maxY);
         int j3 = MathHelper.floor(bb.minZ);
         int k3 = MathHelper.ceil(bb.maxZ);
-        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
+        BlockPos.Mutable blockpos$pooledmutableblockpos = new BlockPos.Mutable();
 
         for (int l3 = j2; l3 < k2; ++l3) {
             for (int i4 = l2; i4 < i3; ++i4) {
                 for (int j4 = j3; j4 < k3; ++j4) {
                     BlockState BlockState1 = world.getBlockState(blockpos$pooledmutableblockpos.setPos(l3, i4, j4));
                     if (BlockState1.getBlock() == RatsBlockRegistry.RAT_HOLE || BlockState1.getBlock() == RatsBlockRegistry.RAT_CAGE) {
-                        blockpos$pooledmutableblockpos.close();
                         return true;
                     }
                 }
             }
         }
-
-        blockpos$pooledmutableblockpos.close();
         return false;
     }
 
@@ -346,7 +343,7 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -368,20 +365,20 @@ public class RatUtils {
                 if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
-                    if (rat.posX > (double) blockpos.getX()) {
+                    if (rat.getPosX() > (double) blockpos.getX()) {
                         l -= random.nextInt(searchWidth / 2);
                     } else {
                         l += random.nextInt(searchWidth / 2);
                     }
 
-                    if (rat.posZ > (double) blockpos.getZ()) {
+                    if (rat.getPosZ() > (double) blockpos.getZ()) {
                         j1 -= random.nextInt(searchWidth / 2);
                     } else {
                         j1 += random.nextInt(searchWidth / 2);
                     }
                 }
 
-                BlockPos blockpos1 = new BlockPos((double) l + rat.posX, (double) i1 + rat.posY, (double) j1 + rat.posZ);
+                BlockPos blockpos1 = new BlockPos((double) l + rat.getPosX(), (double) i1 + rat.getPosY(), (double) j1 + rat.getPosZ());
 
                 if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && (rat.world.getBlockState(blockpos1).getBlock() == RatsBlockRegistry.RAT_CAGE || rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube)) {
                     blockpos1 = findLowestRatCage(blockpos1, rat);
@@ -399,7 +396,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.posX, (double) i + rat.posY, (double) j + rat.posZ);
+            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
@@ -412,7 +409,7 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -434,20 +431,20 @@ public class RatUtils {
                 if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
-                    if (rat.posX > (double) blockpos.getX()) {
+                    if (rat.getPosX() > (double) blockpos.getX()) {
                         l -= random.nextInt(searchWidth / 2);
                     } else {
                         l += random.nextInt(searchWidth / 2);
                     }
 
-                    if (rat.posZ > (double) blockpos.getZ()) {
+                    if (rat.getPosZ() > (double) blockpos.getZ()) {
                         j1 -= random.nextInt(searchWidth / 2);
                     } else {
                         j1 += random.nextInt(searchWidth / 2);
                     }
                 }
 
-                BlockPos blockpos1 = new BlockPos((double) l + rat.posX, (double) i1 + rat.posY, (double) j1 + rat.posZ);
+                BlockPos blockpos1 = new BlockPos((double) l + rat.getPosX(), (double) i1 + rat.getPosY(), (double) j1 + rat.getPosZ());
 
                 if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && rat.world.getBlockState(blockpos1).getBlock() == RatsBlockRegistry.RAT_CAGE) {
                     blockpos1 = findLowestRatCage(blockpos1, rat);
@@ -465,7 +462,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.posX, (double) i + rat.posY, (double) j + rat.posZ);
+            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
@@ -478,7 +475,7 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.posX), (double) MathHelper.floor(rat.posY), (double) MathHelper.floor(rat.posZ), true) + 4.0D;
+            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
             double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
             flag = d0 < d1 * d1;
         } else {
@@ -500,20 +497,20 @@ public class RatUtils {
                 if (rat.detachHome() && searchWidth > 1) {
                     BlockPos blockpos = rat.getHomePosition();
 
-                    if (rat.posX > (double) blockpos.getX()) {
+                    if (rat.getPosX() > (double) blockpos.getX()) {
                         l -= random.nextInt(searchWidth / 2);
                     } else {
                         l += random.nextInt(searchWidth / 2);
                     }
 
-                    if (rat.posZ > (double) blockpos.getZ()) {
+                    if (rat.getPosZ() > (double) blockpos.getZ()) {
                         j1 -= random.nextInt(searchWidth / 2);
                     } else {
                         j1 += random.nextInt(searchWidth / 2);
                     }
                 }
 
-                BlockPos blockpos1 = new BlockPos((double) l + rat.posX, (double) i1 + rat.posY, (double) j1 + rat.posZ);
+                BlockPos blockpos1 = new BlockPos((double) l + rat.getPosX(), (double) i1 + rat.getPosY(), (double) j1 + rat.getPosZ());
 
                 if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube) {
                     blockpos1 = findLowestRatCage(blockpos1, rat);
@@ -531,7 +528,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.posX, (double) i + rat.posY, (double) j + rat.posZ);
+            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
@@ -618,7 +615,7 @@ public class RatUtils {
         boolean flag;
 
         if (p_191379_0_.detachHome()) {
-            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.posX), (double) MathHelper.floor(p_191379_0_.posY), (double) MathHelper.floor(p_191379_0_.posZ), true) + 4.0D;
+            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.getPosX()), (double) MathHelper.floor(p_191379_0_.getPosY()), (double) MathHelper.floor(p_191379_0_.getPosZ()), true) + 4.0D;
             double d1 = (double) (p_191379_0_.getMaximumHomeDistance() + (float) p_191379_1_);
             flag = d0 < d1 * d1;
         } else {
@@ -640,20 +637,20 @@ public class RatUtils {
                 if (p_191379_0_.detachHome() && p_191379_1_ > 1) {
                     BlockPos blockpos = p_191379_0_.getHomePosition();
 
-                    if (p_191379_0_.posX > (double) blockpos.getX()) {
+                    if (p_191379_0_.getPosX() > (double) blockpos.getX()) {
                         l -= random.nextInt(p_191379_1_ / 2);
                     } else {
                         l += random.nextInt(p_191379_1_ / 2);
                     }
 
-                    if (p_191379_0_.posZ > (double) blockpos.getZ()) {
+                    if (p_191379_0_.getPosZ() > (double) blockpos.getZ()) {
                         j1 -= random.nextInt(p_191379_1_ / 2);
                     } else {
                         j1 += random.nextInt(p_191379_1_ / 2);
                     }
                 }
 
-                BlockPos blockpos1 = new BlockPos((double) l + p_191379_0_.posX, (double) i1 + p_191379_0_.posY, (double) j1 + p_191379_0_.posZ);
+                BlockPos blockpos1 = new BlockPos((double) l + p_191379_0_.getPosX(), (double) i1 + p_191379_0_.getPosY(), (double) j1 + p_191379_0_.getPosZ());
 
                 if ((!flag || p_191379_0_.isWithinHomeDistanceFromPosition(blockpos1)) && pathnavigate.canEntityStandOnPos(blockpos1)) {
                     if (!p_191379_4_) {
@@ -678,7 +675,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + p_191379_0_.posX, (double) i + p_191379_0_.posY, (double) j + p_191379_0_.posZ);
+            return new Vec3d((double) k1 + p_191379_0_.getPosX(), (double) i + p_191379_0_.getPosY(), (double) j + p_191379_0_.getPosZ());
         } else {
             return null;
         }

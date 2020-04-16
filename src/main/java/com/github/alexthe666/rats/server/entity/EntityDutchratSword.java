@@ -54,16 +54,16 @@ public class EntityDutchratSword extends Entity {
            // this.remove();
         }
         if(ticksExisted > 5){
-            RayTraceResult raytraceresult = ProjectileHelper.func_221266_a(this, true, this.ticksExisted >= 25, this.getCreator(), RayTraceContext.BlockMode.COLLIDER);
+            RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, true, this.ticksExisted >= 25, this.getCreator(), RayTraceContext.BlockMode.COLLIDER);
             if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                 this.onImpact(raytraceresult);
             }
         }
 
         if (world.isRemote) {
-            RatsMod.PROXY.addParticle("pirat_ghost", this.posX + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
-                    this.posY + (double) (this.rand.nextFloat() * this.getHeight()),
-                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+            RatsMod.PROXY.addParticle("pirat_ghost", this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+                    this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
                     0.0F, 0.0F, 0.0F);
         }
 
@@ -77,9 +77,9 @@ public class EntityDutchratSword extends Entity {
             }
         }
         if (target != null) {
-            double d0 = target.posX - this.posX;
-            double d1 = target.posY - this.posY;
-            double d2 = target.posZ - this.posZ;
+            double d0 = target.getPosX() - this.getPosX();
+            double d1 = target.getPosY() - this.getPosY();
+            double d2 = target.getPosZ() - this.getPosZ();
             double d3 =  MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
             double speed = 0.1D;
             this.setMotion(this.getMotion().add(d0 / d3 * speed, d1 / d3 * speed, d2 / d3 * speed));
@@ -104,7 +104,7 @@ public class EntityDutchratSword extends Entity {
             }
         }
         if(hit){
-            world.createExplosion(this.getCreator(), this.posX, this.posY, this.posZ, 2.0F, Explosion.Mode.NONE);
+            world.createExplosion(this.getCreator(), this.getPosX(), this.getPosY(), this.getPosZ(), 2.0F, Explosion.Mode.NONE);
             this.remove();
         }
     }

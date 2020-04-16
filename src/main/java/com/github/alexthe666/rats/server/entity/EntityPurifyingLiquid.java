@@ -94,7 +94,7 @@ public class EntityPurifyingLiquid extends ProjectileItemEntity implements IRend
     }
 
     @Override
-    protected Item func_213885_i() {
+    protected Item getDefaultItem() {
         return RatsItemRegistry.PURIFYING_LIQUID;
     }
 

@@ -146,15 +146,15 @@ public class RatExplosion extends Explosion {
             if (!entity.isImmuneToExplosions()) {
                 double d12 = (double)(MathHelper.sqrt(entity.getDistanceSq(new Vec3d(this.x, this.y, this.z))) / f3);
                 if (d12 <= 1.0D) {
-                    double d5 = entity.posX - this.x;
-                    double d7 = entity.posY + (double)entity.getEyeHeight() - this.y;
-                    double d9 = entity.posZ - this.z;
+                    double d5 = entity.getPosX() - this.x;
+                    double d7 = entity.getPosY() + (double)entity.getEyeHeight() - this.y;
+                    double d9 = entity.getPosZ() - this.z;
                     double d13 = (double)MathHelper.sqrt(d5 * d5 + d7 * d7 + d9 * d9);
                     if (d13 != 0.0D) {
                         d5 = d5 / d13;
                         d7 = d7 / d13;
                         d9 = d9 / d13;
-                        double d14 = (double)func_222259_a(vec3d, entity);
+                        double d14 = (double)getBlockDensity(vec3d, entity);
                         double d10 = (1.0D - d12) * d14;
                         entity.attackEntityFrom(this.getDamageSource(), (float)((int)((d10 * d10 + d10) / 2.0D * 7.0D * (double)f3 + 1.0D)));
                         double d11 = d10;

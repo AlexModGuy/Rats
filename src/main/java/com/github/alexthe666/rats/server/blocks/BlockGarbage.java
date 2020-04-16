@@ -18,6 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,8 +33,8 @@ public class BlockGarbage extends FallingBlock {
     }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
-        if (random.nextFloat() <= 0.15) {
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (rand.nextFloat() <= 0.15) {
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
             if (rat.canSpawn(worldIn, SpawnReason.NATURAL) && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {

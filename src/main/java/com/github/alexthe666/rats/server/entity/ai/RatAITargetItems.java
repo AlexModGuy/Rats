@@ -92,7 +92,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     @Override
     public void startExecuting() {
-        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ, 1);
+        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
         super.startExecuting();
     }
 

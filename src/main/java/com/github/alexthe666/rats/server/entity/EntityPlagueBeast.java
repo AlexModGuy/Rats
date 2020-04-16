@@ -63,7 +63,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         double d0 = 0D;
         double d1 = this.rand.nextGaussian() * 0.05D + 0.5D;
         double d2 = 0D;
-        this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+        this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
         if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
             if (death.getAttackTarget() != null && death.getAttackTarget().isAlive()) {
@@ -73,9 +73,9 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
                 int maxRatStuff = 360 / Math.max(death.getBeastsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getBeastsSummoned(), 1);
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX;
-                double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
-                BlockPos runToPos = new BlockPos(extraX, death.posY, extraZ);
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.getPosX();
+                double extraZ = (double) (radius * MathHelper.cos(angle)) + death.getPosZ();
+                BlockPos runToPos = new BlockPos(extraX, death.getPosY(), extraZ);
                 int steps = 0;
                 while (world.getBlockState(runToPos).isOpaqueCube(world, runToPos) && steps < 10) {
                     runToPos = runToPos.up();

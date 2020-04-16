@@ -59,9 +59,9 @@ public class EntityPlagueShot extends AbstractArrowEntity {
         double d0 = 0;
         double d1 = 0.01D;
         double d2 = 0D;
-        double x = this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
-        double y = this.posY + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
-        double z = this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double x = this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double y = this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
+        double z = this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
         float f = (this.getWidth() + this.getHeight() + this.getWidth()) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
@@ -75,16 +75,16 @@ public class EntityPlagueShot extends AbstractArrowEntity {
     }
 
     public double particleDistSq(double toX, double toY, double toZ) {
-        double d0 = posX - toX;
-        double d1 = posY - toY;
-        double d2 = posZ - toZ;
+        double d0 = getPosX() - toX;
+        double d1 = getPosY() - toY;
+        double d2 = getPosZ() - toZ;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
 
     public void playSound(SoundEvent soundIn, float volume, float pitch) {
         if (!this.isSilent() && soundIn != SoundEvents.ENTITY_ARROW_HIT && soundIn != SoundEvents.ENTITY_ARROW_HIT_PLAYER) {
-            this.world.playSound(null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, this.getSoundCategory(), volume, pitch);
         }
     }
 

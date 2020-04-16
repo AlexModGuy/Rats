@@ -51,7 +51,7 @@ public class EntityCheeseCannonball extends ThrowableEntity implements IRendersA
             double d0 = 0.08D;
 
             for (int i = 0; i < 18; ++i) {
-                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.CHEESE)), this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.CHEESE)), this.getPosX(), this.getPosY(), this.getPosZ(), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
     }
@@ -76,7 +76,7 @@ public class EntityCheeseCannonball extends ThrowableEntity implements IRendersA
                     ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
                 }
             }
-            Explosion explosion = new RatNukeExplosion(world, getThrower() == null ? this : getThrower(), this.posX, this.posY, this.posZ, 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, getThrower() == null ? this : getThrower()));
+            Explosion explosion = new RatNukeExplosion(world, getThrower() == null ? this : getThrower(), this.getPosX(), this.getPosY(), this.getPosZ(), 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, getThrower() == null ? this : getThrower()));
             explosion.doExplosionA();
             explosion.doExplosionB(true);
             this.remove();

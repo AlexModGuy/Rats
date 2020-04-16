@@ -40,7 +40,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
         if (!playerIn.isCreative()) {
             itemstack.shrink(1);
         }
-        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_COMPOSTER_READY, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.BLOCK_COMPOSTER_READY, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         ItemStack poopStack = getIngot(itemstack, IRON_INGOT, worldIn);
         IInventory iinventory = new Inventory(poopStack);
         FurnaceRecipe irecipe = worldIn.getRecipeManager().getRecipe(IRecipeType.SMELTING, iinventory, worldIn).orElse(null);

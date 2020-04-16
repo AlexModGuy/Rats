@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -140,7 +141,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.VIAL_OF_SENTIENCE, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIRAT_BOAT, manager -> new RenderPiratBoat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.CHEESE_CANNONBALL, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIRAT, manager -> new RenderPirat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_DOCTOR, manager -> new RenderPlagueDoctor());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PURIFYING_LIQUID, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.BLACK_DEATH, manager -> new RenderBlackDeath());
@@ -150,7 +150,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_CAPTURE_NET, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_DRAGON_FIRE, manager -> new RenderNothing());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_ARROW, manager -> new RenderRatArrow());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.GHOST_PIRAT, manager -> new RenderGhostPirat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DUTCHRAT, manager -> new RenderDutchrat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DUTCHRAT_SWORD, manager -> new RenderDutchratSword());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATFISH, manager -> new RenderRatfish());
@@ -160,17 +159,19 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_GOLEM, manager -> new RenderRatGolemMount());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_CHICKEN, manager -> new RenderRatChickenMount());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BEAST, manager -> new RenderRatBeastMount());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIRAT, manager -> new RenderPirat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_AUTOMATON, manager -> new RenderRatAutomatonMount());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RATLANTIS_PORTAL, manager -> new RenderRatlantisPortal());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_DECORATED, manager -> new RenderRatCageDecorated());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN, manager -> new RenderRatCageDecorated());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell());
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.GHOST_PIRAT, manager -> new RenderGhostPirat());
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RATLANTIS_PORTAL, manager -> new RenderRatlantisPortal(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_DECORATED, manager -> new RenderRatCageDecorated(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN, manager -> new RenderRatCageDecorated(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
  /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
         Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
@@ -245,7 +246,7 @@ public class ClientProxy extends CommonProxy {
 
     @OnlyIn(Dist.CLIENT)
     public void postInit() {
-        for (Map.Entry<EntityType<? extends Entity>, EntityRenderer<? extends Entity>> entry : Minecraft.getInstance().getRenderManager().renderers.entrySet()) {
+        for (Map.Entry<EntityType<?>, EntityRenderer<?>> entry : Minecraft.getInstance().getRenderManager().renderers.entrySet()) {
             EntityRenderer render = entry.getValue();
             if (render instanceof LivingRenderer) {
                 ((LivingRenderer) render).addLayer(new LayerPlague((LivingRenderer) render));

@@ -69,7 +69,7 @@ public class ItemCheeseStick extends Item {
             } else {
                 /* IItemHandler itemHandler = worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
                 String blockName = worldIn.getBlockState(pos).getBlock().getLocalizedName();
-                if (player.isSneaking()) {
+                if (player.isShiftKeyDown()) {
                     if (boundRat.pickupPos != null) {
                         boundRat.pickupPos = null;
                         player.sendStatusMessage(new TextComponentTranslation("entity.rats.rat.staff.not_take_items", rat.getName(), blockName), true);

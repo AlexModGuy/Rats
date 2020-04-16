@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -92,11 +92,6 @@ public class BlockRatCage extends Block {
         tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));
     }
 
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(NORTH, EAST, WEST, SOUTH, DOWN, UP);
     }
@@ -114,7 +109,7 @@ public class BlockRatCage extends Block {
         BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
         BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
         BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-        return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
+        return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
     public int canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
@@ -157,7 +152,7 @@ public class BlockRatCage extends Block {
         return shape1;
     }
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         if (playerIn.getHeldItem(hand).getItem() instanceof IRatCageDecoration && !this.hasTileEntity(state)) {
             if (((IRatCageDecoration) playerIn.getHeldItem(hand).getItem()).canStay(worldIn, pos, this)) {
                 Direction limitedFacing = playerIn.getHorizontalFacing().getOpposite();
@@ -190,14 +185,14 @@ public class BlockRatCage extends Block {
                     }
                 }
 
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
         if (this.hasTileEntity(state)) {
             ItemStack stack = this.getContainedItem(worldIn, pos);
             boolean clearIt = true;
             if (stack != ItemStack.EMPTY) {
-                clearIt = playerIn.isSneaking();
+                clearIt = playerIn.isShiftKeyDown();
             }
             if (clearIt) {
                 BlockState pre = worldIn.getBlockState(pos);
@@ -230,29 +225,25 @@ public class BlockRatCage extends Block {
                     }
                 }
                 playerIn.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.cage.deposit", ratCount), true);
-                return true;
+                return ActionResultType.SUCCESS;
             } else {
                 int ratCount = 0;
                 List<EntityRat> list = worldIn.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1));
                 for (EntityRat rat : list) {
                     if (!rat.isChild()) {
-                        rat.setPosition(playerIn.posX, playerIn.posY, playerIn.posZ);
+                        rat.setPosition(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ());
                     }
                     ratCount++;
                 }
                 playerIn.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.cage.withdrawal", ratCount), true);
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    public boolean isSolid(BlockState state) {
-        return false;
     }
 
     public boolean isOpaqueCube(BlockState state) {
@@ -293,7 +284,7 @@ public class BlockRatCage extends Block {
                 connect = UP;
                 break;
         }
-        return stateIn.with(connect, Integer.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        return stateIn.with(connect, Integer.valueOf(this.canFenceConnectTo(facingState, facingState.canBeConnectedTo(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
     }
 
 }

@@ -23,7 +23,7 @@ public class RatAIWanderFlight extends Goal {
             if (rat.isInCage()) {
                 dist = 3;
             }
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
             if (!rat.getMoveHelper().isUpdating()) {
                 return rat.isDirectPathBetweenPoints(new Vec3d(target));
             }
@@ -41,7 +41,7 @@ public class RatAIWanderFlight extends Goal {
             if (rat.isInCage()) {
                 dist = 3;
             }
-            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+            target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
         }
         if (rat.world.isAirBlock(target) || rat.world.getBlockState(target).getBlock() instanceof BlockRatCage) {
             rat.getMoveHelper().setMoveTo((double) target.getX() + 0.5D, (double) target.getY() + 0.5D, (double) target.getZ() + 0.5D, 0.25D);

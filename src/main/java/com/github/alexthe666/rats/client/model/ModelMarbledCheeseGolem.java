@@ -159,6 +159,7 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
     }
 
     public void setTERotationAngles(float ticksExisted){
+        this.resetToDefaultPose();
         ear1.rotationPointZ = 3;
         ear2.rotationPointZ = 3;
         float idleSpeed = 0.1F;

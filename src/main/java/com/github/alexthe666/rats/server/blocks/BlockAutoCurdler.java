@@ -13,10 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -64,8 +61,8 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if(!player.isSneaking()){
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        if(!player.isShiftKeyDown()){
             if(worldIn.isRemote){
                 RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
             }else{
@@ -74,9 +71,9 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
                     player.openContainer(inamedcontainerprovider);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -89,10 +86,6 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-    }
-
-    public boolean isSolid(BlockState state) {
-        return false;
     }
 
     public boolean isOpaqueCube(BlockState state) {

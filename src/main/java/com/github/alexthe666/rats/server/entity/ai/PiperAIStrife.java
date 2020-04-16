@@ -67,7 +67,7 @@ public class PiperAIStrife extends Goal {
         LivingEntity LivingEntity = this.entity.getAttackTarget();
 
         if (LivingEntity != null) {
-            double d0 = this.entity.getDistanceSq(LivingEntity.posX, LivingEntity.getBoundingBox().minY, LivingEntity.posZ);
+            double d0 = this.entity.getDistanceSq(LivingEntity.getPosX(), LivingEntity.getBoundingBox().minY, LivingEntity.getPosZ());
             boolean flag = this.entity.getEntitySenses().canSee(LivingEntity);
             boolean flag1 = this.seeTime > 0;
 

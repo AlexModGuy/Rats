@@ -13,10 +13,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
-public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
+public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_plague_overlay.png");
     private static final ResourceLocation TEXTURE_LUMBERJACK = new ResourceLocation("rats:textures/entity/rat/rat_lumberjack_upgrade.png");
     private static final ResourceLocation TEXTURE_TOGA = new ResourceLocation("rats:textures/entity/rat/toga.png");
@@ -24,9 +25,9 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
     private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
-    private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRenderer;
+    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRenderer;
 
-    public LayerRatPlague(IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRendererIn) {
+    public LayerRatPlague(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRendererIn) {
         super(ratRendererIn);
         this.ratRenderer = ratRendererIn;
     }

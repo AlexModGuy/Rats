@@ -64,9 +64,9 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
         double d0 = this.hurtTime > 0 ? 1 : 0;
         double d1 = 0.01D;
         double d2 = 0D;
-        double x = this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
-        double y = this.posY + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
-        double z = this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double x = this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
+        double y = this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()) - (double) this.getHeight();
+        double z = this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth();
         float f = (this.getWidth() + this.getHeight() + this.getWidth()) * 0.333F + 0.5F;
         if (particleDistSq(x, y, z) < f * f) {
             if (rand.nextBoolean()) {
@@ -85,9 +85,9 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
                 int maxRatStuff = 360 / Math.max(death.getCloudsSummoned(), 1);
                 int ratIndex = this.getEntityId() % Math.max(death.getCloudsSummoned(), 1);
                 float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.posX;
-                double extraZ = (double) (radius * MathHelper.cos(angle)) + death.posZ;
-                this.moveController.setMoveTo(extraX, death.posY + 2 + rand.nextInt(2), extraZ, 1.0F);
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.getPosX();
+                double extraZ = (double) (radius * MathHelper.cos(angle)) + death.getPosZ();
+                this.moveController.setMoveTo(extraX, death.getPosY() + 2 + rand.nextInt(2), extraZ, 1.0F);
             }
         }
         if (this.getAttackTarget() != null && !this.getAttackTarget().isAlive()) {
@@ -104,9 +104,9 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
     }
 
     public double particleDistSq(double toX, double toY, double toZ) {
-        double d0 = (double) posX - toX;
-        double d1 = (double) posY - toY;
-        double d2 = (double) posZ - toZ;
+        double d0 = (double) getPosX() - toX;
+        double d1 = (double) getPosY() - toY;
+        double d2 = (double) getPosZ() - toZ;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
@@ -203,7 +203,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityPlagueCloud.this.posX, this.posY - EntityPlagueCloud.this.posY, this.posZ - EntityPlagueCloud.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityPlagueCloud.this.getPosX(), this.getY() - EntityPlagueCloud.this.getPosY(), this.getZ() - EntityPlagueCloud.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -216,8 +216,8 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
                         EntityPlagueCloud.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityPlagueCloud.this.renderYawOffset = EntityPlagueCloud.this.rotationYaw;
                     } else {
-                        double d4 = EntityPlagueCloud.this.getAttackTarget().posX - EntityPlagueCloud.this.posX;
-                        double d5 = EntityPlagueCloud.this.getAttackTarget().posZ - EntityPlagueCloud.this.posZ;
+                        double d4 = EntityPlagueCloud.this.getAttackTarget().getPosX() - EntityPlagueCloud.this.getPosX();
+                        double d5 = EntityPlagueCloud.this.getAttackTarget().getPosZ() - EntityPlagueCloud.this.getPosZ();
                         EntityPlagueCloud.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityPlagueCloud.this.renderYawOffset = EntityPlagueCloud.this.rotationYaw;
                     }
@@ -283,7 +283,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityPlagueCloud.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1.0D, LivingEntity.posZ, 0.5D);
+                EntityPlagueCloud.this.moveController.setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY() + 1.0D, LivingEntity.getPosZ(), 0.5D);
 
             }
             if (LivingEntity.getDistanceSq(this.parentEntity) < 5.0D) {

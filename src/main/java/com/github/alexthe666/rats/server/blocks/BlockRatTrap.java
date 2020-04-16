@@ -87,7 +87,7 @@ public class BlockRatTrap extends ContainerBlock implements IUsesTEISR {
     }
 
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityRatTrap) {
@@ -95,14 +95,14 @@ public class BlockRatTrap extends ContainerBlock implements IUsesTEISR {
             if (ratTrap.isShut) {
                 ratTrap.isShut = false;
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1F, 1F);
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if (ratTrap.getBait().isEmpty() && RatUtils.isRatFood(itemstack)) {
                 ratTrap.setBaitStack(itemstack.copy());
                 if (!playerIn.isCreative()) {
                     itemstack.setCount(0);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if (!ratTrap.getBait().isEmpty()) {
                 if (!RatUtils.isRatFood(itemstack)) {
@@ -112,11 +112,11 @@ public class BlockRatTrap extends ContainerBlock implements IUsesTEISR {
                     worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, ratTrap.getBait()));
                 }
                 ratTrap.setBaitStack(ItemStack.EMPTY);
-                return true;
+                return ActionResultType.SUCCESS;
 
             }
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 
     public boolean hasComparatorInputOverride(BlockState state) {

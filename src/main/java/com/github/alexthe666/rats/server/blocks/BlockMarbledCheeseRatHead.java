@@ -52,20 +52,12 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
 
     }
 
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.with(FACING, rot.rotate(state.get(FACING)));
     }
 
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-    }
-
-    public boolean isSolid(BlockState state) {
-        return false;
     }
 
     public boolean isOpaqueCube(BlockState state) {

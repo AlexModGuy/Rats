@@ -13,21 +13,22 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 
-public class LayerRatEyes extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
+public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png");
     private static final ResourceLocation TEXTURE_PLAGUE = new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png");
     private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png");
     private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png");
     private static final ResourceLocation TEXTURE_NONBELIEVER = new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png");
     private static final ResourceLocation TEXTURE_DRAGON = new ResourceLocation("rats:textures/entity/rat/rat_eye_dragon_upgrade.png");
-    private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRenderer;
+    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRenderer;
 
-    public LayerRatEyes(IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRendererIn) {
+    public LayerRatEyes(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRendererIn) {
         super(ratRendererIn);
         this.ratRenderer = ratRendererIn;
     }

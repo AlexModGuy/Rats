@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -281,9 +281,6 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         return !(sideState.getBlock() instanceof BlockRatTube);
     }
 
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
 
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
@@ -308,12 +305,12 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         BlockState blockstate4 = iblockreader.getBlockState(blockpos5);
         BlockState blockstate5 = iblockreader.getBlockState(blockpos6);
         return state
-                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
-                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
-                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
-                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
-                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.func_224755_d(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
-                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.func_224755_d(iblockreader, blockpos6, Direction.UP), Direction.UP)));
+                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
+                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
+                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
+                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
+                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.canBeConnectedTo(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
+                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.canBeConnectedTo(iblockreader, blockpos6, Direction.UP), Direction.UP)));
 
     }
 
@@ -334,12 +331,12 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         BlockState blockstate4 = iblockreader.getBlockState(blockpos5);
         BlockState blockstate5 = iblockreader.getBlockState(blockpos6);
         return super.getStateForPlacement(context)
-                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
-                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
-                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
-                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
-                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.func_224755_d(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
-                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.func_224755_d(iblockreader, blockpos6, Direction.UP), Direction.UP)));
+                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
+                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
+                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
+                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
+                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.canBeConnectedTo(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
+                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.canBeConnectedTo(iblockreader, blockpos6, Direction.UP), Direction.UP)));
     }
 
     private boolean canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
@@ -355,9 +352,9 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem || playerIn.getHeldItem(hand).getItem() instanceof ItemRatTube) {
-            return false;
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+        if (playerIn.isShiftKeyDown() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem || playerIn.getHeldItem(hand).getItem() instanceof ItemRatTube) {
+            return ActionResultType.PASS;
         } else {
             Direction side = hit.getFace();
             BooleanProperty changing;
@@ -401,7 +398,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
                         .with(OPEN_DOWN, Boolean.valueOf(false)));
                 updateTEOpening(worldIn, pos, side, false);
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
     }
 
@@ -488,7 +485,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
                 break;
         }
         BlockState newState = stateIn;
-        newState = newState.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        newState = newState.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.canBeConnectedTo(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
         newState = newState.with(notOpen, false);
         return newState;
     }

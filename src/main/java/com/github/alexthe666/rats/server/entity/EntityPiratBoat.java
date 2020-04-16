@@ -109,7 +109,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
 
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
-        passenger.setPosition(this.posX, this.posY + 0.45D, this.posZ);
+        passenger.setPosition(this.getPosX(), this.getPosY() + 0.45D, this.getPosZ());
         if (passenger instanceof LivingEntity) {
             ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
         }
@@ -141,7 +141,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 while (i > 0) {
                     int j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
                 }
             }
             if (!this.world.isRemote) {
@@ -163,7 +163,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.EXPLOSION, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
+                this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
         }
     }
@@ -286,8 +286,8 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         }
         if (target != null) {
             {
-                double d0 = target.posX - this.posX;
-                double d2 = target.posZ - this.posZ;
+                double d0 = target.getPosX() - this.getPosX();
+                double d2 = target.getPosZ() - this.getPosZ();
                 float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.renderYawOffset = this.rotationYaw = f % 360;
             }
@@ -295,12 +295,12 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
             //cannonball.ignoreEntity = this;
             float radius = 1.6F;
             float angle = (0.01745329251F * (this.renderYawOffset));
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 0.8 + posY;
-            double d0 = target.posY + (double) target.getEyeHeight();
-            double d1 = target.posX - extraX;
-            double d3 = target.posZ - extraZ;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 0.8 + getPosY();
+            double d0 = target.getPosY() + (double) target.getEyeHeight();
+            double d1 = target.getPosX() - extraX;
+            double d3 = target.getPosZ() - extraZ;
             double d2 = d0 - extraY;
             float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.65F;
             float velocity = this.getDistance(target) * 0.045F;
@@ -327,17 +327,17 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 
-        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
             label161:
             for(int k1 = k; k1 < l; ++k1) {
                 float f = 0.0F;
 
                 for(int l1 = i; l1 < j; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutableblockpos.setPos(l1, k1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
+                        blockpos$pooledmutable.setPos(l1, k1, i2);
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            f = Math.max(f, ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos));
+                            f = Math.max(f, ifluidstate.getActualHeight(this.world, blockpos$pooledmutable));
                         }
 
                         if (f >= 1.0F) {
@@ -347,7 +347,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 }
 
                 if (f < 1.0F) {
-                    float f2 = (float)blockpos$pooledmutableblockpos.getY() + f;
+                    float f2 = (float)blockpos$pooledmutable.getY() + f;
                     return f2;
                 }
             }
@@ -361,20 +361,21 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         AxisAlignedBB axisalignedbb = this.getBoundingBox();
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.minY - 0.5D);
-        int l = MathHelper.ceil(axisalignedbb.maxY + 0.001D);
+        int k = MathHelper.floor(axisalignedbb.minY);
+        int l = MathHelper.ceil(axisalignedbb.minY + 0.001D);
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         this.waterLevel = Double.MIN_VALUE;
-        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+
+        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
             for(int k1 = i; k1 < j; ++k1) {
                 for(int l1 = k; l1 < l; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
+                        blockpos$pooledmutable.setPos(k1, l1, i2);
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            float f = (float)l1 + ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos);
+                            float f = (float)l1 + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable);
                             this.waterLevel = Math.max((double)f, this.waterLevel);
                             flag |= axisalignedbb.minY < (double)f;
                         }
@@ -383,7 +384,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
             }
         }
 
-        return flag || this.isOverWater();
+        return flag || isOverWater();
     }
 
     private boolean isOverWater() {
@@ -414,13 +415,14 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
-        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+
+        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
             for(int k1 = i; k1 < j; ++k1) {
                 for(int l1 = k; l1 < l; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutableblockpos);
-                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutableblockpos.getY() + ifluidstate.func_215679_a(this.world, blockpos$pooledmutableblockpos))) {
+                        blockpos$pooledmutable.setPos(k1, l1, i2);
+                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
+                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutable.getY() + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable))) {
                             if (!ifluidstate.isSource()) {
                                 BoatEntity.Status boatentity$status = BoatEntity.Status.UNDER_FLOWING_WATER;
                                 return boatentity$status;
@@ -443,7 +445,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         float momentum = 0.45F;
         if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
             this.waterLevel = this.getBoundingBox().minY;
-            this.setPosition(this.posX, (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.501D, this.posZ);
+            this.setPosition(this.getPosX(), (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.501D, this.getPosZ());
             this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
             this.lastYd = 0.0D;
             this.status = BoatEntity.Status.IN_WATER;
@@ -501,9 +503,9 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         }
 
         public void tick() {
-            double d0 = this.posX - this.turtle.posX;
-            double d1 = this.posY - this.turtle.posY;
-            double d2 = this.posZ - this.turtle.posZ;
+            double d0 = this.getX() - this.turtle.getPosX();
+            double d1 = this.getY() - this.turtle.getPosY();
+            double d2 = this.getZ() - this.turtle.getPosZ();
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
             if (d3 < (double)2.5000003E-7F) {
                 this.mob.setMoveForward(0.0F);

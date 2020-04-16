@@ -71,9 +71,9 @@ public class EntityLaserPortal extends Entity {
             faceTarget();
         }
         if (world.isRemote && scaleOfPortal >= 0.5F) {
-            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
-                    this.posY + (double) (this.rand.nextFloat() * this.getHeight()),
-                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+            RatsMod.PROXY.addParticle("rat_lightning", this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+                    this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
                     0.0F, 0.0F, 0.0F);
         }
         scaleOfPortalPrev = scaleOfPortal;
@@ -91,8 +91,8 @@ public class EntityLaserPortal extends Entity {
             }
         }
         if (facingTarget != null) {
-            double d0 = this.posX - facingTarget.posX;
-            double d2 = this.posZ - facingTarget.posZ;
+            double d0 = this.getPosX() - facingTarget.getPosX();
+            double d2 = this.getPosZ() - facingTarget.getPosZ();
             float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
             this.rotationYaw = f % 360;
         }
@@ -114,18 +114,18 @@ public class EntityLaserPortal extends Entity {
                 target = closest;
             }
             if (target != null) {
-                double d0 = this.posX - target.posX;
-                double d1 = this.posY - (target.posY);
-                double d2 = this.posZ - target.posZ;
+                double d0 = this.getPosX() - target.getPosX();
+                double d1 = this.getPosY() - (target.getPosY());
+                double d2 = this.getPosZ() - target.getPosZ();
                 double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
                 float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.rotationYaw = f % 360;
-                double targetRelativeX = target.posX - this.posX;
-                double targetRelativeY = target.posY + target.getHeight() / 2 - this.posY - 1.0F;
-                double targetRelativeZ = target.posZ - this.posZ;
+                double targetRelativeX = target.getPosX() - this.getPosX();
+                double targetRelativeY = target.getPosY() + target.getHeight() / 2 - this.getPosY() - 1.0F;
+                double targetRelativeZ = target.getPosZ() - this.getPosZ();
                 EntityLaserBeam beam = new EntityLaserBeam(RatsEntityRegistry.LASER_BEAM, world, this.getCreator());
                 this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
-                beam.setPosition(this.posX, this.posY + 1.0F, this.posZ);
+                beam.setPosition(this.getPosX(), this.getPosY() + 1.0F, this.getPosZ());
                 beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
                 if (!world.isRemote) {
                     world.addEntity(beam);

@@ -55,7 +55,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
             rat.currentTubeNode = 0;
             rat.tubePathway = new AStar(new BlockPos(rat), target, 1000).getPath(world);
         }else{
-            if(rat.tubePathway[rat.tubePathway.length - 1].distanceSq(rat.posX, rat.posY, rat.posZ) < 2){
+            if(rat.tubePathway[rat.tubePathway.length - 1].distanceSq(rat.getPosX(), rat.getPosY(), rat.getPosZ()) < 2){
                 rat.currentTubeNode = 0;
                 rat.tubePathway = new AStar(new BlockPos(rat), target, 1000).getPath(world);
             }

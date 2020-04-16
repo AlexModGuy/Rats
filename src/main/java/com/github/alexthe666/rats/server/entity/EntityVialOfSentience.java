@@ -75,7 +75,7 @@ public class EntityVialOfSentience extends ProjectileItemEntity implements IRend
     }
 
     @Override
-    protected Item func_213885_i() {
+    protected Item getDefaultItem() {
         return RatsItemRegistry.VIAL_OF_SENTIENCE;
     }
 

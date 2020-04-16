@@ -67,9 +67,9 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         this.setNoGravity(true);
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (world.isRemote) {
-            RatsMod.PROXY.addParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
-                    this.posY + (double) (this.rand.nextFloat() * this.getHeight()),
-                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
+            RatsMod.PROXY.addParticle("rat_ghost", this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
+                    this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
                     0.92F, 0.82, 0.0F);
         }
     }
@@ -127,7 +127,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityRatlanteanSpirit.this.posX, this.posY - EntityRatlanteanSpirit.this.posY, this.posZ - EntityRatlanteanSpirit.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityRatlanteanSpirit.this.getPosX(), this.getY() - EntityRatlanteanSpirit.this.getPosY(), this.getZ() - EntityRatlanteanSpirit.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityRatlanteanSpirit.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -140,8 +140,8 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
                         EntityRatlanteanSpirit.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityRatlanteanSpirit.this.renderYawOffset = EntityRatlanteanSpirit.this.rotationYaw;
                     } else {
-                        double d4 = EntityRatlanteanSpirit.this.getAttackTarget().posX - EntityRatlanteanSpirit.this.posX;
-                        double d5 = EntityRatlanteanSpirit.this.getAttackTarget().posZ - EntityRatlanteanSpirit.this.posZ;
+                        double d4 = EntityRatlanteanSpirit.this.getAttackTarget().getPosX() - EntityRatlanteanSpirit.this.getPosX();
+                        double d5 = EntityRatlanteanSpirit.this.getAttackTarget().getPosZ() - EntityRatlanteanSpirit.this.getPosZ();
                         EntityRatlanteanSpirit.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityRatlanteanSpirit.this.renderYawOffset = EntityRatlanteanSpirit.this.rotationYaw;
                     }
@@ -207,7 +207,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
             double d0 = 64.0D;
             if (LivingEntity.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityRatlanteanSpirit.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY, LivingEntity.posZ, 0.5D);
+                EntityRatlanteanSpirit.this.moveController.setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY(), LivingEntity.getPosZ(), 0.5D);
 
             }
             if (LivingEntity.getDistanceSq(this.parentEntity) < 4096.0D) {
@@ -216,14 +216,12 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
 
                 if (this.attackTimer == 20) {
                     double d1 = 4.0D;
-                    double d2 = LivingEntity.posX - (this.parentEntity.posX);
-                    double d3 = LivingEntity.posY + (double) (LivingEntity.getHeight()) - (this.parentEntity.posY + (double) (this.parentEntity.getHeight() / 2.0F));
-                    double d4 = LivingEntity.posZ - (this.parentEntity.posZ);
+                    double d2 = LivingEntity.getPosX() - (this.parentEntity.getPosX());
+                    double d3 = LivingEntity.getPosY() + (double) (LivingEntity.getHeight()) - (this.parentEntity.getPosY() + (double) (this.parentEntity.getHeight() / 2.0F));
+                    double d4 = LivingEntity.getPosZ() - (this.parentEntity.getPosZ());
                     world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
                     EntityRatlanteanFlame entitylargefireball = new EntityRatlanteanFlame(world, this.parentEntity, d2, d3, d4);
-                    entitylargefireball.posX = this.parentEntity.posX;
-                    entitylargefireball.posY = this.parentEntity.posY + (double) (this.parentEntity.getHeight() / 2.0F);
-                    entitylargefireball.posZ = this.parentEntity.posZ;
+                    entitylargefireball.setPosition(this.parentEntity.getPosX(), this.parentEntity.getPosY() + (double) (this.parentEntity.getHeight() / 2.0F), this.parentEntity.getPosZ());
                     world.addEntity(entitylargefireball);
                     this.attackTimer = -10;
                 }

@@ -31,24 +31,23 @@ public class BlockDutchratBell extends BellBlock {
     }
 
     @Override
-    public boolean ring(World worldIn, BlockState state, @Nullable TileEntity p_220130_3_, BlockRayTraceResult p_220130_4_, @Nullable PlayerEntity ringingPlayer, boolean p_220130_6_) {
-        Direction direction = p_220130_4_.getFace();
-        BlockPos blockpos = p_220130_4_.getPos();
-        boolean flag = !p_220130_6_ || this.func_220129_a(state, direction, p_220130_4_.getHitVec().y - (double)blockpos.getY());
-        if (!worldIn.isRemote && p_220130_3_ instanceof TileEntityDutchratBell && flag) {
-            ((TileEntityDutchratBell)p_220130_3_).func_213939_a(direction);
-            this.playRingSound(worldIn, blockpos);
-            if (ringingPlayer != null) {
-                ringingPlayer.addStat(Stats.BELL_RING);
+    public boolean func_226884_a_(World p_226884_1_, BlockState p_226884_2_, BlockRayTraceResult p_226884_3_, @Nullable PlayerEntity p_226884_4_, boolean p_226884_5_) {
+        Direction direction = p_226884_3_.getFace();
+        BlockPos blockpos = p_226884_3_.getPos();
+        boolean flag = !p_226884_5_ || this.canRingFrom(p_226884_2_, direction, p_226884_3_.getHitVec().y - (double)blockpos.getY());
+        if (flag) {
+            boolean flag1 = this.func_226885_a_(p_226884_1_, blockpos, direction);
+            if (flag1 && p_226884_4_ != null) {
+                p_226884_4_.addStat(Stats.BELL_RING);
             }
 
             return true;
         } else {
-            return true;
+            return false;
         }
     }
 
-    private boolean func_220129_a(BlockState p_220129_1_, Direction p_220129_2_, double p_220129_3_) {
+    private boolean canRingFrom(BlockState p_220129_1_, Direction p_220129_2_, double p_220129_3_) {
         if (p_220129_2_.getAxis() != Direction.Axis.Y && !(p_220129_3_ > (double)0.8124F)) {
             Direction direction = p_220129_1_.get(field_220133_a);
             BellAttachment bellattachment = p_220129_1_.get(BlockStateProperties.BELL_ATTACHMENT);

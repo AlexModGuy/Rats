@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
@@ -88,8 +89,8 @@ public class DutchratShipPiece {
             }
         }
 
-        public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox bb, ChunkPos chunkCoords) {
-            boolean prev = super.addComponentParts(world, random, bb, chunkCoords);
+        public boolean func_225577_a_(IWorld p_225577_1_, ChunkGenerator<?> p_225577_2_, Random p_225577_3_, MutableBoundingBox p_225577_4_, ChunkPos p_225577_5_) {
+            boolean prev = super.func_225577_a_(p_225577_1_, p_225577_2_, p_225577_3_, p_225577_4_, p_225577_5_);
             return prev;
         }
     }

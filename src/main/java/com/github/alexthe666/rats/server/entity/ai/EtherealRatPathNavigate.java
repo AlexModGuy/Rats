@@ -27,9 +27,9 @@ public class EtherealRatPathNavigate extends FlyingPathNavigator {
 
     public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
-            rat.getMoveHelper().setMoveTo(entityIn.posX, entityIn.posY + entityIn.getHeight(), entityIn.posZ, speedIn);
+            rat.getMoveHelper().setMoveTo(entityIn.getPosX(), entityIn.getPosY() + entityIn.getHeight(), entityIn.getPosZ(), speedIn);
         }
-        Path path = this.getPathToEntityLiving(entityIn, 0);
+        Path path = this.getPathToEntity(entityIn, 0);
         return path != null && this.setPath(path, speedIn);
     }
 

@@ -55,7 +55,7 @@ public class ItemRatFlute extends Item {
         if (itemStackIn.getTag() != null) {
             int commandInt = itemStackIn.getTag().getInt("Command");
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(commandInt, 0, RatCommand.values().length - 1)];
-            if (player.isSneaking()) {
+            if (player.isShiftKeyDown()) {
                 commandInt++;
                 if (commandInt > RatCommand.values().length - 1) {
                     commandInt = 0;
@@ -67,7 +67,7 @@ public class ItemRatFlute extends Item {
             } else {
                 player.getCooldownTracker().setCooldown(this, 60);
                 float chunksize = 16 * RatConfig.ratFluteDistance;
-                List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, (new AxisAlignedBB(player.posX, player.posY, player.posZ, player.posX + 1.0D, player.posY + 1.0D, player.posZ + 1.0D)).grow(chunksize, 256, chunksize));
+                List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, (new AxisAlignedBB(player.getPosX(), player.getPosY(), player.getPosZ(), player.getPosX() + 1.0D, player.getPosY() + 1.0D, player.getPosZ() + 1.0D)).grow(chunksize, 256, chunksize));
                 Iterator<Entity> itr = list.iterator();
                 int ratCount = 0;
                 while (itr.hasNext()) {

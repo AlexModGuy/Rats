@@ -45,13 +45,13 @@ public class RatPathNavigate extends GroundPathNavigator {
         return super.getPathToPos(pos, idk);
     }
 
-    public Path getPathToEntityLiving(Entity entityIn, int i) {
+    public Path getPathToEntity(Entity entityIn, int i) {
         this.targetPosition = new BlockPos(entityIn);
-        return super.getPathToEntityLiving(entityIn, i);
+        return super.getPathToEntity(entityIn, i);
     }
 
-    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
-        Path path = this.getPathToEntityLiving(entityIn, 0);
+    public boolean tryMoveToEntity(Entity entityIn, double speedIn) {
+        Path path = this.getPathToEntity(entityIn, 0);
 
         if (path != null) {
             return this.setPath(path, speedIn);
@@ -92,7 +92,7 @@ public class RatPathNavigate extends GroundPathNavigator {
             }
         } else if (targetPosition != null) {
             double d0 = 1;
-            if (this.entity.getDistanceSq(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ()) >= d0 && (this.entity.posY <= (double) this.targetPosition.getY() || this.entity.getDistanceSq(this.targetPosition.getX(), MathHelper.floor(this.entity.posY), this.targetPosition.getZ()) >= d0)) {
+            if (this.entity.getDistanceSq(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ()) >= d0 && (this.entity.getPosY() <= (double) this.targetPosition.getY() || this.entity.getDistanceSq(this.targetPosition.getX(), MathHelper.floor(this.entity.getPosY()), this.targetPosition.getZ()) >= d0)) {
                 this.entity.getMoveHelper().setMoveTo((double) this.targetPosition.getX(), (double) this.targetPosition.getY(), (double) this.targetPosition.getZ(), this.speed);
             } else {
                 this.targetPosition = null;

@@ -63,11 +63,10 @@ public class ParticleLightning extends SpriteTexturedParticle {
             vector3f.mul(f4);
             vector3f.add(f, f1, f2);
         }
-
-        float f7 = this.getMinU();
-        float f8 = this.getMaxU();
-        float f5 = this.getMinV();
-        float f6 = this.getMaxV();
+        float f7 = 0;
+        float f8 = 1;
+        float f5 = 0;
+        float f6 = 1;
         if (type) {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE_0);
         } else {

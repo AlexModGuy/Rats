@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -24,27 +25,22 @@ public class RenderGhostPirat extends RenderRat {
         this.addLayer(new LayerGhostPirat(this));
     }
 
-    protected void renderModel(EntityRat rat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        GlStateManager.pushMatrix();
-        super.renderModel(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-        GlStateManager.popMatrix();
-    }
 
-    protected void preRenderCallback(EntityRat rat, float partialTickTime) {
-        super.preRenderCallback(rat, partialTickTime);
+    protected void preRenderCallback(EntityRat rat, MatrixStack stack, float partialTickTime) {
+        super.preRenderCallback(rat, stack, partialTickTime);
         this.shadowSize = 0.35F;
-        GL11.glScaled(2.0F, 2.0F, 2.0F);
+        stack.scale(2.0F, 2.0F, 2.0F);
     }
 
     public ResourceLocation getEntityTexture(EntityRat entity) {
         return BASE_TEXTURE;
     }
 
-    private class LayerGhostPirat extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
-        private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> ratRenderer;
+    private class LayerGhostPirat extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
+        private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRenderer;
         private ResourceLocation GHOST_OVERLAY = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
 
-        public LayerGhostPirat(IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderGhostPirat) {
+        public LayerGhostPirat(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderGhostPirat) {
             super(renderGhostPirat);
             this.ratRenderer = renderGhostPirat;
         }

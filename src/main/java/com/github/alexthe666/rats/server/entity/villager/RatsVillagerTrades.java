@@ -93,37 +93,6 @@ public class RatsVillagerTrades {
         }
     }
 
-    static class EmeraldForMapTrade implements VillagerTrades.ITrade {
-        private final int field_221227_a;
-        private final String field_221228_b;
-        private final MapDecoration.Type field_221229_c;
-        private final int field_221230_d;
-        private final int field_221231_e;
-
-        public EmeraldForMapTrade(int p_i50525_1_, String p_i50525_2_, MapDecoration.Type p_i50525_3_, int p_i50525_4_, int p_i50525_5_) {
-            this.field_221227_a = p_i50525_1_;
-            this.field_221228_b = p_i50525_2_;
-            this.field_221229_c = p_i50525_3_;
-            this.field_221230_d = p_i50525_4_;
-            this.field_221231_e = p_i50525_5_;
-        }
-
-        @Nullable
-        public MerchantOffer getOffer(Entity p_221182_1_, Random p_221182_2_) {
-            World lvt_3_1_ = p_221182_1_.world;
-            BlockPos lvt_4_1_ = lvt_3_1_.findNearestStructure(this.field_221228_b, new BlockPos(p_221182_1_), 100, true);
-            if (lvt_4_1_ != null) {
-                ItemStack lvt_5_1_ = FilledMapItem.setupNewMap(lvt_3_1_, lvt_4_1_.getX(), lvt_4_1_.getZ(), (byte)2, true, true);
-                FilledMapItem.renderBiomePreviewMap(lvt_3_1_, lvt_5_1_);
-                MapData.addTargetDecoration(lvt_5_1_, lvt_4_1_, "+", this.field_221229_c);
-                lvt_5_1_.setDisplayName(new TranslationTextComponent("filled_map." + this.field_221228_b.toLowerCase(Locale.ROOT), new Object[0]));
-                return new MerchantOffer(new ItemStack(Items.EMERALD, this.field_221227_a), new ItemStack(Items.COMPASS), lvt_5_1_, this.field_221230_d, this.field_221231_e, 0.2F);
-            } else {
-                return null;
-            }
-        }
-    }
-
     static class EnchantedBookForEmeraldsTrade implements VillagerTrades.ITrade {
         private final int field_221194_a;
 
@@ -145,48 +114,6 @@ public class RatsVillagerTrades {
             }
 
             return new MerchantOffer(new ItemStack(Items.EMERALD, lvt_6_1_), new ItemStack(Items.BOOK), lvt_5_1_, 12, this.field_221194_a, 0.2F);
-        }
-    }
-
-    static class DyedArmorForEmeraldsTrade implements VillagerTrades.ITrade {
-        private final Item field_221233_a;
-        private final int field_221234_b;
-        private final int field_221235_c;
-        private final int field_221236_d;
-
-        public DyedArmorForEmeraldsTrade(Item p_i50540_1_, int p_i50540_2_) {
-            this(p_i50540_1_, p_i50540_2_, 12, 1);
-        }
-
-        public DyedArmorForEmeraldsTrade(Item p_i50541_1_, int p_i50541_2_, int p_i50541_3_, int p_i50541_4_) {
-            this.field_221233_a = p_i50541_1_;
-            this.field_221234_b = p_i50541_2_;
-            this.field_221235_c = p_i50541_3_;
-            this.field_221236_d = p_i50541_4_;
-        }
-
-        public MerchantOffer getOffer(Entity p_221182_1_, Random p_221182_2_) {
-            ItemStack lvt_3_1_ = new ItemStack(Items.EMERALD, this.field_221234_b);
-            ItemStack lvt_4_1_ = new ItemStack(this.field_221233_a);
-            if (this.field_221233_a instanceof DyeableArmorItem) {
-                List<DyeItem> lvt_5_1_ = Lists.newArrayList();
-                lvt_5_1_.add(func_221232_a(p_221182_2_));
-                if (p_221182_2_.nextFloat() > 0.7F) {
-                    lvt_5_1_.add(func_221232_a(p_221182_2_));
-                }
-
-                if (p_221182_2_.nextFloat() > 0.8F) {
-                    lvt_5_1_.add(func_221232_a(p_221182_2_));
-                }
-
-                lvt_4_1_ = IDyeableArmorItem.func_219975_a(lvt_4_1_, lvt_5_1_);
-            }
-
-            return new MerchantOffer(lvt_3_1_, lvt_4_1_, this.field_221235_c, this.field_221236_d, 0.2F);
-        }
-
-        private static DyeItem func_221232_a(Random p_221232_0_) {
-            return DyeItem.getItem(DyeColor.byId(p_221232_0_.nextInt(16)));
         }
     }
 

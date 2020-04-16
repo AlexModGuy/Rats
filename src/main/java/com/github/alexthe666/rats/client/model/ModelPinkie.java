@@ -8,11 +8,11 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelPinkie<T extends EntityRat> extends ModelRat<T>{
+public class ModelPinkie<T extends EntityRat> extends AdvancedEntityModel<T>{
     public AdvancedModelBox body;
 
     public ModelPinkie() {
-        super(0);
+        super();
         this.textureWidth = 16;
         this.textureHeight = 16;
         this.body = new AdvancedModelBox(this, 0, 0);

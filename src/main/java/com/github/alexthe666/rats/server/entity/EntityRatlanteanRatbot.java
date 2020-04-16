@@ -82,12 +82,12 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
             rangedAttackCooldownLaser = 40;
             float radius = 1.1F;
             float angle = (0.01745329251F * (this.renderYawOffset));
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 0.4 + posY;
-            double targetRelativeX = this.getAttackTarget().posX - extraX;
-            double targetRelativeY = this.getAttackTarget().posY + this.getAttackTarget().getHeight() / 2 - extraY;
-            double targetRelativeZ = this.getAttackTarget().posZ - extraZ;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 0.4 + getPosY();
+            double targetRelativeX = this.getAttackTarget().getPosX() - extraX;
+            double targetRelativeY = this.getAttackTarget().getPosY() + this.getAttackTarget().getHeight() / 2 - extraY;
+            double targetRelativeZ = this.getAttackTarget().getPosZ() - extraZ;
             this.playSound(RatsSoundRegistry.LASER, 1.0F, 0.75F + rand.nextFloat() * 0.5F);
             EntityLaserBeam beam = new EntityLaserBeam(RatsEntityRegistry.LASER_BEAM, world, this);
             beam.setRGB(1.0F, 0.0F, 0.0F);
@@ -159,7 +159,7 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
     }
 
     public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return rand.nextInt(8) == 0 && canSpawnAtPos(world, pos) && MobEntity.func_223315_a(entityType, world, reason, pos, rand);
+        return rand.nextInt(8) == 0 && canSpawnAtPos(world, pos) && MobEntity.canSpawnOn(entityType, world, reason, pos, rand);
     }
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {

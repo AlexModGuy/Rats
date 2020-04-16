@@ -83,11 +83,11 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {

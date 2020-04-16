@@ -91,7 +91,7 @@ public class EntityLaserBeam extends AbstractArrowEntity {
         if (sqrt < 0.3F || this.inGround || this.collidedHorizontally) {
             this.remove();
             Explosion.Mode mode = world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.NONE : Explosion.Mode.DESTROY;
-            Explosion explosion = world.createExplosion(this.getShooter(), this.posX, this.posY, this.posZ, 0.0F, mode);
+            Explosion explosion = world.createExplosion(this.getShooter(), this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, mode);
             explosion.doExplosionA();
             explosion.doExplosionB(true);
         }
@@ -100,7 +100,7 @@ public class EntityLaserBeam extends AbstractArrowEntity {
 
     public void playSound(SoundEvent soundIn, float volume, float pitch) {
         if (!this.isSilent() && soundIn != SoundEvents.ENTITY_ARROW_HIT && soundIn != SoundEvents.ENTITY_ARROW_HIT_PLAYER) {
-            this.world.playSound(null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, this.getSoundCategory(), volume, pitch);
         }
     }
 

@@ -8,6 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -41,8 +43,8 @@ public class BlockRatCraftingTable extends ContainerBlock {
         return new TileEntityRatCraftingTable();
     }
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if(!player.isSneaking()){
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if(!player.isShiftKeyDown()){
             if(worldIn.isRemote){
                 RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
             }else{
@@ -51,9 +53,9 @@ public class BlockRatCraftingTable extends ContainerBlock {
                     player.openContainer(inamedcontainerprovider);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 
 }

@@ -26,8 +26,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import javax.annotation.Nullable;
@@ -98,9 +98,9 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
         if (this.blockBreakCounter > 0) {
             --this.blockBreakCounter;
             if (this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
-                int i1 = MathHelper.floor(this.posY);
-                int l1 = MathHelper.floor(this.posX);
-                int i2 = MathHelper.floor(this.posZ);
+                int i1 = MathHelper.floor(this.getPosY());
+                int l1 = MathHelper.floor(this.getPosX());
+                int i2 = MathHelper.floor(this.getPosZ());
                 boolean flag = false;
 
                 for (int k2 = -2; k2 <= 2; ++k2) {
@@ -191,16 +191,16 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
         if (world.isRemote && rand.nextDouble() < 0.5F) {
             float radius = -0.5F;
             float angle = (0.01745329251F * (this.renderYawOffset));
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 1.25 + posY;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 1.25 + getPosY();
             world.addParticle(ParticleTypes.END_ROD, extraX + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
@@ -209,12 +209,12 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
         if (this.useRangedAttack && this.getAnimation() == ANIMATION_RANGED && this.getAnimationTick() == 6) {
             float radius = -3.8F;
             float angle = (0.01745329251F * (this.renderYawOffset)) - 160F;
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 2.4F + posY;
-            double targetRelativeX = (this.getAttackTarget() == null ? this.getLook(1.0F).x : this.getAttackTarget().posX) - extraX;
-            double targetRelativeY = (this.getAttackTarget() == null ? this.getLook(1.0F).y : this.getAttackTarget().posY) - extraY;
-            double targetRelativeZ = (this.getAttackTarget() == null ? this.getLook(1.0F).z : this.getAttackTarget().posZ) - extraZ;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 2.4F + getPosY();
+            double targetRelativeX = (this.getAttackTarget() == null ? this.getLook(1.0F).x : this.getAttackTarget().getPosX()) - extraX;
+            double targetRelativeY = (this.getAttackTarget() == null ? this.getLook(1.0F).y : this.getAttackTarget().getPosY()) - extraY;
+            double targetRelativeZ = (this.getAttackTarget() == null ? this.getLook(1.0F).z : this.getAttackTarget().getPosZ()) - extraZ;
             EntityGolemBeam beam = new EntityGolemBeam(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, world, this);
             beam.setPosition(extraX, extraY, extraZ);
             beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
@@ -283,7 +283,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityMarbleCheeseGolem.this.posX, this.posY - EntityMarbleCheeseGolem.this.posY, this.posZ - EntityMarbleCheeseGolem.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityMarbleCheeseGolem.this.getPosX(), this.getY() - EntityMarbleCheeseGolem.this.getPosY(), this.getZ() - EntityMarbleCheeseGolem.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityMarbleCheeseGolem.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -296,8 +296,8 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
                         EntityMarbleCheeseGolem.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityMarbleCheeseGolem.this.renderYawOffset = EntityMarbleCheeseGolem.this.rotationYaw;
                     } else {
-                        double d4 = EntityMarbleCheeseGolem.this.getAttackTarget().posX - EntityMarbleCheeseGolem.this.posX;
-                        double d5 = EntityMarbleCheeseGolem.this.getAttackTarget().posZ - EntityMarbleCheeseGolem.this.posZ;
+                        double d4 = EntityMarbleCheeseGolem.this.getAttackTarget().getPosX() - EntityMarbleCheeseGolem.this.getPosX();
+                        double d5 = EntityMarbleCheeseGolem.this.getAttackTarget().getPosZ() - EntityMarbleCheeseGolem.this.getPosZ();
                         EntityMarbleCheeseGolem.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityMarbleCheeseGolem.this.renderYawOffset = EntityMarbleCheeseGolem.this.rotationYaw;
                     }
@@ -366,7 +366,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             LivingEntity LivingEntity = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
-                EntityMarbleCheeseGolem.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1, LivingEntity.posZ, 1D);
+                EntityMarbleCheeseGolem.this.moveController.setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY() + 1, LivingEntity.getPosZ(), 1D);
             }
         }
     }

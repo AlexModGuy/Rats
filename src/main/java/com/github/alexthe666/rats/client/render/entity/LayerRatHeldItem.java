@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;
@@ -29,7 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
+public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
 
     private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
@@ -44,9 +45,9 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
     private static ItemStack CARROT_STACK = new ItemStack(Blocks.FERN);
     private static ModelChristmasChest CHRISTMAS_CHEST_MODEL = new ModelChristmasChest();
-    private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer;
+    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderer;
 
-    public LayerRatHeldItem(IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer) {
+    public LayerRatHeldItem(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderer) {
         super(renderer);
         this.renderer = renderer;
     }

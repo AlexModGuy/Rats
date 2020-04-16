@@ -35,7 +35,7 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy).scale((double)velocity);
         this.setMotion(vec3d);
-        float f = MathHelper.sqrt(func_213296_b(vec3d));
+        float f = MathHelper.sqrt(horizontalMag(vec3d));
         this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
         this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)f) * (double)(180F / (float)Math.PI));
         this.prevRotationYaw = this.rotationYaw;
@@ -57,13 +57,13 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
     public void tick() {
         super.tick();
         if (world.isRemote) {
-            /*RatsMod.PROXY.addParticle("rat_ghost", this.posX + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
-                    this.posY + (double) (this.rand.nextFloat() * this.height),
-                    this.posZ + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
+            /*RatsMod.PROXY.addParticle("rat_ghost", this.getPosX() + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
+                    this.getPosY() + (double) (this.rand.nextFloat() * this.height),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.width * 2F) - (double) this.width,
                     0.92F, 0.82, 0.0F);*/
-            world.addParticle(ParticleTypes.FLAME, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
-                    this.posY + (double) (this.rand.nextFloat() * this.getHeight()),
-                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(), 0, 0, 0);
+            world.addParticle(ParticleTypes.FLAME, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
+                    this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(), 0, 0, 0);
         }
         if (ticksExisted > 200) {
             this.remove();
@@ -78,13 +78,13 @@ public class EntityRatDragonFire extends AbstractFireballEntity {
             if (result.getType() == RayTraceResult.Type.ENTITY) {
                 Entity entity = ((EntityRayTraceResult)result).getEntity();
                 if (!entity.isImmuneToFire()) {
-                    int i = entity.func_223314_ad();
+                    int i = entity.getFireTimer();
                     entity.setFire(10);
                     boolean flag = entity.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F);
                     if (flag) {
                         this.applyEnchantments(this.shootingEntity, entity);
                     } else {
-                        entity.func_223308_g(i);
+                        entity.setFireTimer(i);
                     }
                 }
             } else if (this.shootingEntity == null || !(this.shootingEntity instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity)) {

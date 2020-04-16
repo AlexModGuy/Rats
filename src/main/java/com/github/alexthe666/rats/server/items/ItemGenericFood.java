@@ -58,7 +58,7 @@ public class ItemGenericFood extends Item {
             if (LivingEntity instanceof PlayerEntity) {
                 PlayerEntity PlayerEntity = (PlayerEntity) LivingEntity;
                 PlayerEntity.getFoodStats().addStats(healAmount, saturation);
-                worldIn.playSound(null, PlayerEntity.posX, PlayerEntity.posY, PlayerEntity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+                worldIn.playSound(null, PlayerEntity.getPosX(), PlayerEntity.getPosY(), PlayerEntity.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
                 this.onFoodEaten(stack, worldIn, PlayerEntity);
                 if (PlayerEntity instanceof ServerPlayerEntity) {
                     CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) PlayerEntity, stack);

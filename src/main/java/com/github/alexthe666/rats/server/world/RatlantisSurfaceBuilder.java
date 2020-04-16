@@ -39,11 +39,11 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
         }
         int i = chunkX;
         int k = chunkZ;
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
         float dis = perlin2.turbulence2(i / 150F, k / 150F, 10) * 300 + 200;
         float heightBase = HEIGHT - (dis / WIDTH) + (perlin1.turbulence2(i / 50F, k / 50F, 4F) * 5F);
         for (int y = 0; y < 256; y++) {
-            blockpos$mutableblockpos.setPos(i, y, k);
+            blockpos$mutable.setPos(i, y, k);
             Block i4 = Blocks.AIR;
             if (heightBase > 67) {
                 if (y < 2 + rand.nextInt(2)) {
@@ -68,7 +68,7 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
                     i4 = Blocks.WATER;
                 }
             }
-            chunkIn.setBlockState(blockpos$mutableblockpos, i4.getDefaultState(), false);
+            chunkIn.setBlockState(blockpos$mutable, i4.getDefaultState(), false);
         }
     }
 }

@@ -142,7 +142,7 @@ public class RatAIHarvestFisherman extends Goal {
         List<ItemStack> result = entity.world.getServer().getLootTableManager().getLootTableFromLocation(LootTables.GAMEPLAY_FISHING).generate(lootcontext$builder.build(lootparameterset$builder.build()));
 
         for (ItemStack itemstack : result) {
-            ItemEntity ItemEntity = new ItemEntity(this.entity.world, this.entity.posX, this.entity.posY, this.entity.posZ, itemstack);
+            ItemEntity ItemEntity = new ItemEntity(this.entity.world, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), itemstack);
             if (!this.entity.world.isRemote) {
                 this.entity.world.addEntity(ItemEntity);
             }
@@ -164,9 +164,9 @@ public class RatAIHarvestFisherman extends Goal {
         }
 
         private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
+            double deltaX = this.entity.getPosX() - (pos.getX() + 0.5);
+            double deltaY = this.entity.getPosY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
+            double deltaZ = this.entity.getPosZ() - (pos.getZ() + 0.5);
             return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         }
     }

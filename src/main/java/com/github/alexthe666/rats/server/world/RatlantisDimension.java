@@ -24,14 +24,14 @@ public class RatlantisDimension extends Dimension {
     public static final BlockPos SPAWN = new BlockPos(0, 110, 0);
 
     public RatlantisDimension(final World worldIn, final DimensionType dimension) {
-        super(worldIn, dimension);
+        super(worldIn, dimension, 0);
     }
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
         OverworldGenSettings settings = ChunkGeneratorType.SURFACE.createSettings();
         settings.setDefaultBlock(RatsBlockRegistry.MARBLED_CHEESE.getDefaultState());
-        SingleBiomeProviderSettings providerSettings = new SingleBiomeProviderSettings();
+        SingleBiomeProviderSettings providerSettings = new SingleBiomeProviderSettings(null);
         providerSettings.setBiome(RatsWorldRegistry.RATLANTIS_BIOME);
         return new ChunkProviderRatlantis(this.world, new SingleBiomeProvider(providerSettings), settings);
      }
@@ -59,20 +59,6 @@ public class RatlantisDimension extends Dimension {
         return new Vec3d((double) f1 * bright, (double) f2 * bright, (double) f3 * bright);
     }
 
-    @Override @OnlyIn(Dist.CLIENT)
-    public Vec3d getSkyColor(final BlockPos pos, final float flo) {
-        final float f = this.world.getCelestialAngle(flo);
-        float f2 = MathHelper.cos(f * 6.2831855f) * 2.0f + 0.5f;
-        f2 = MathHelper.clamp(f2, 0.0f, 1.0f);
-        final int i = ForgeHooksClient.getSkyBlendColour(this.world, pos);
-        float f3 = (i >> 16 & 0xFF) / 255.0f;
-        float f4 = (i >> 8 & 0xFF) / 255.0f;
-        float f5 = (i & 0xFF) / 255.0f;
-        f3 *= f2;
-        f4 *= f2;
-        f5 *= f2;
-        return new Vec3d((double) f3, (double) f4, (double) f5);
-    }
 
     @Override
     public boolean hasSkyLight() {

@@ -31,6 +31,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
@@ -133,9 +134,9 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
     public void tick() {
         super.tick();
         if (world.isRemote) {
-            RatsMod.PROXY.addParticle("rat_lightning", this.posX + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
-                    this.posY + this.getEyeHeight() + (this.rand.nextFloat() * 0.35F),
-                    this.posZ + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+            RatsMod.PROXY.addParticle("rat_lightning", this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
+                    this.getPosY() + this.getEyeHeight() + (this.rand.nextFloat() * 0.35F),
+                    this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() / 2,
                     0.0F, 0.0F, 0.0F);
         }
         if (summonCooldown > 0) {
@@ -155,7 +156,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
                 summonCooldown = 100;
                 int bounds = 5;
                 for (int i = 0; i < rand.nextInt(3) + 3; i++) {
-                    EntityLaserPortal laserPortal = new EntityLaserPortal(RatsEntityRegistry.LASER_PORTAL, world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, this.posY + 2, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, this);
+                    EntityLaserPortal laserPortal = new EntityLaserPortal(RatsEntityRegistry.LASER_PORTAL, world, entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, this.getPosY() + 2, entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds, this);
                     world.addEntity(laserPortal);
                 }
                 resetAttacks();
@@ -163,9 +164,9 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
             if (attackSelection == 1 && summonCooldown == 0) {
                 int bounds = 20;
                 if(!world.isRemote){
-                    ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.posX, entity.posY, entity.posZ, false));
+                    ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
                     for (int i = 0; i < rand.nextInt(3) + 2; i++) {
-                        ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.posX + this.rand.nextInt(bounds * 2) - bounds, entity.posY, entity.posZ + this.rand.nextInt(bounds * 2) - bounds, false));
+                        ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, entity.getPosY(), entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds, false));
                     }
                 }
 
@@ -294,7 +295,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityNeoRatlantean.this.posX, this.posY - EntityNeoRatlantean.this.posY, this.posZ - EntityNeoRatlantean.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityNeoRatlantean.this.getPosX(), this.getY() - EntityNeoRatlantean.this.getPosY(), this.getZ() - EntityNeoRatlantean.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -307,8 +308,8 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
                         EntityNeoRatlantean.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityNeoRatlantean.this.renderYawOffset = EntityNeoRatlantean.this.rotationYaw;
                     } else {
-                        double d4 = EntityNeoRatlantean.this.getAttackTarget().posX - EntityNeoRatlantean.this.posX;
-                        double d5 = EntityNeoRatlantean.this.getAttackTarget().posZ - EntityNeoRatlantean.this.posZ;
+                        double d4 = EntityNeoRatlantean.this.getAttackTarget().getPosX() - EntityNeoRatlantean.this.getPosX();
+                        double d5 = EntityNeoRatlantean.this.getAttackTarget().getPosZ() - EntityNeoRatlantean.this.getPosZ();
                         EntityNeoRatlantean.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityNeoRatlantean.this.renderYawOffset = EntityNeoRatlantean.this.rotationYaw;
                     }
@@ -345,7 +346,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
             double maxFollow = followDist * 5;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
 
-                EntityNeoRatlantean.this.moveController.setMoveTo(LivingEntity.posX + rand.nextInt(10) - 20, LivingEntity.posY + 3, LivingEntity.posZ + rand.nextInt(10) - 20, 1D);
+                EntityNeoRatlantean.this.moveController.setMoveTo(LivingEntity.getPosX() + rand.nextInt(10) - 20, LivingEntity.getPosY() + 3, LivingEntity.getPosZ() + rand.nextInt(10) - 20, 1D);
             }
         }
     }

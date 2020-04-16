@@ -73,7 +73,7 @@ public class RatAIHarvestPlacer extends Goal {
                         BlockState BlockState1 = blockItem.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
                         entity.world.setBlockState(targetBlock, BlockState1);
                         if (entity.isEntityInsideOpaqueBlock()) {
-                            entity.setPosition(entity.posX, entity.posY + 1, entity.posZ);
+                            entity.setPosition(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ());
                         }
                         SoundType placeSound = BlockState1.getBlock().getSoundType(BlockState1, entity.world, targetBlock, entity);
                         entity.playSound(placeSound.getPlaceSound(), (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);

@@ -38,7 +38,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
                     ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
                     for (ItemStack itemstack : nonnulllist) {
                         if (!itemstack.isEmpty()) {
-                            ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.posX, ItemEntity.posY, ItemEntity.posZ, itemstack.copy());
+                            ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.getPosX(), ItemEntity.getPosY(), ItemEntity.getPosZ(), itemstack.copy());
                             if (!world.isRemote) {
                                 world.addEntity(splitEntity);
                             }
@@ -49,7 +49,7 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
                 if (spawnedItem > 0) {
                     ItemEntity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
                     ItemEntity.onKillCommand();
-                    ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.posX, ItemEntity.posY, ItemEntity.posZ, new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS, spawnedItem));
+                    ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.getPosX(), ItemEntity.getPosY(), ItemEntity.getPosZ(), new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS, spawnedItem));
                     if (!world.isRemote) {
                         world.addEntity(splitEntity);
                     }

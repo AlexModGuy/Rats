@@ -81,23 +81,21 @@ public class EntityThrownBlock extends Entity {
             ++this.ticksInAir;
             if (ticksInAir > 25) {
                 this.noClip = true;
-                RayTraceResult raytraceresult = ProjectileHelper.func_221266_a(this, true, this.ticksInAir >= 25, this.shootingEntity, RayTraceContext.BlockMode.COLLIDER);
+                RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, true, this.ticksInAir >= 25, this.shootingEntity, RayTraceContext.BlockMode.COLLIDER);
                 if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                     this.onImpact(raytraceresult);
                 }
             } else {
                 this.noClip = false;
             }
-            this.posX += this.getMotion().x;
-            this.posY += this.getMotion().y;
-            this.posZ += this.getMotion().z;
+            this.setPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             ProjectileHelper.rotateTowardsMovement(this, 0.2F);
             float f = this.getMotionFactor();
 
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
                     float f1 = 0.25F;
-                    this.world.addParticle(ParticleTypes.BUBBLE, this.posX - this.getMotion().x * 0.25D, this.posY - this.getMotion().y * 0.25D, this.posZ - this.getMotion().z * 0.25D, this.getMotion().x, this.getMotion().y, this.getMotion().z);
+                    this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() - this.getMotion().x * 0.25D, this.getPosY() - this.getMotion().y * 0.25D, this.getPosZ() - this.getMotion().z * 0.25D, this.getMotion().x, this.getMotion().y, this.getMotion().z);
                 }
 
                 f = 0.8F;
@@ -105,9 +103,9 @@ public class EntityThrownBlock extends Entity {
             if (this.shootingEntity != null && shootingEntity instanceof LivingEntity) {
                 if (((MobEntity) shootingEntity).getAttackTarget() != null) {
                     LivingEntity target = ((MobEntity) shootingEntity).getAttackTarget();
-                    double d0 = target.posX - this.posX;
-                    double d1 = target.posY - this.posY;
-                    double d2 = target.posZ - this.posZ;
+                    double d0 = target.getPosX() - this.getPosX();
+                    double d1 = target.getPosY() - this.getPosY();
+                    double d2 = target.getPosZ() - this.getPosZ();
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                     d3 = (double) MathHelper.sqrt(d3);
                     Vec3d vec3d = this.getMotion();
@@ -115,7 +113,7 @@ public class EntityThrownBlock extends Entity {
                     this.setMotion(vec3d);
                 }
             }
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
         } else {
             this.remove();
         }
@@ -123,7 +121,7 @@ public class EntityThrownBlock extends Entity {
     }
 
     public boolean canEntityBeSeen(Entity entityIn) {
-        return this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double) entityIn.getEyeHeight(), entityIn.posZ), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)) == null;
+        return this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ()), new Vec3d(entityIn.getPosX(), entityIn.getPosY() + (double) entityIn.getEyeHeight(), entityIn.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)) == null;
     }
 
     protected float getMotionFactor() {

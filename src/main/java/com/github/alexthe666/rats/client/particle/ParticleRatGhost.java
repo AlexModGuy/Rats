@@ -70,10 +70,10 @@ public class ParticleRatGhost extends SpriteTexturedParticle {
             vector3f.add(f, f1, f2);
         }
 
-        float f7 = this.getMinU();
-        float f8 = this.getMaxU();
-        float f5 = this.getMinV();
-        float f6 = this.getMaxV();
+        float f7 = 0;
+        float f8 = 1;
+        float f5 = 0;
+        float f6 = 1;
         Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
         int j = this.getBrightnessForRender(partialTicks);
         buffer.pos((double)avector3f[0].getX(), (double)avector3f[0].getY(), (double)avector3f[0].getZ()).tex(f8, f6).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j).endVertex();

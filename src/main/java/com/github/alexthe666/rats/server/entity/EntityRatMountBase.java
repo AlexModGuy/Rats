@@ -93,7 +93,7 @@ public class EntityRatMountBase extends MobEntity {
             double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
             double extraZ = radius * MathHelper.cos(angle);
             double extraY = riderY;
-            passenger.setPosition(this.posX + extraX, this.posY + extraY, this.posZ + extraZ);
+            passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
             if(passenger instanceof LivingEntity){
                 ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
                 ((LivingEntity) passenger).rotationYaw = this.rotationYaw;
@@ -133,7 +133,7 @@ public class EntityRatMountBase extends MobEntity {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.POOF, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
+                this.world.addParticle(ParticleTypes.POOF, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
             this.remove();
         }
@@ -154,7 +154,7 @@ public class EntityRatMountBase extends MobEntity {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(mechanical ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + (double) (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
+                this.world.addParticle(mechanical ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
         }
     }
@@ -195,7 +195,7 @@ public class EntityRatMountBase extends MobEntity {
                 PathNavigator pathnavigator = this.mob.getNavigator();
                 if (pathnavigator != null) {
                     NodeProcessor nodeprocessor = pathnavigator.getNodeProcessor();
-                    if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.mob.world, MathHelper.floor(this.mob.posX + (double)f7), MathHelper.floor(this.mob.posY), MathHelper.floor(this.mob.posZ + (double)f8)) != PathNodeType.WALKABLE) {
+                    if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.mob.world, MathHelper.floor(this.mob.getPosX() + (double)f7), MathHelper.floor(this.mob.getPosY()), MathHelper.floor(this.mob.getPosZ() + (double)f8)) != PathNodeType.WALKABLE) {
                         this.moveForward = 1.0F;
                         this.moveStrafe = 0.0F;
                         f1 = f;
@@ -208,9 +208,9 @@ public class EntityRatMountBase extends MobEntity {
                 this.action = MovementController.Action.WAIT;
             } else if (this.action == MovementController.Action.MOVE_TO) {
                 this.action = MovementController.Action.WAIT;
-                double d0 = this.posX - this.mob.posX;
-                double d1 = this.posZ - this.mob.posZ;
-                double d2 = this.posY - this.mob.posY;
+                double d0 = this.getX() - this.mob.getPosX();
+                double d1 = this.getY() - this.mob.getPosZ();
+                double d2 = this.getZ() - this.mob.getPosY();
                 double d3 = d0 * d0 + d2 * d2 + d1 * d1;
                 if (d3 < (double)2.5000003E-7F) {
                     this.mob.setMoveForward(0.0F);
@@ -225,7 +225,7 @@ public class EntityRatMountBase extends MobEntity {
                 BlockState blockstate = this.mob.world.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
                 VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.world, blockpos);
-                if (d2 > (double)this.mob.stepHeight && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getWidth()) || !voxelshape.isEmpty() && this.mob.posY < voxelshape.getEnd(Direction.Axis.Y) + (double)blockpos.getY() && !block.isIn(BlockTags.DOORS) && !block.isIn(BlockTags.FENCES)) {
+                if (d2 > (double)this.mob.stepHeight && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getWidth()) || !voxelshape.isEmpty() && this.mob.getPosY() < voxelshape.getEnd(Direction.Axis.Y) + (double)blockpos.getY() && !block.isIn(BlockTags.DOORS) && !block.isIn(BlockTags.FENCES)) {
                     this.mob.getJumpController().setJumping();
                     this.action = MovementController.Action.JUMPING;
                 }

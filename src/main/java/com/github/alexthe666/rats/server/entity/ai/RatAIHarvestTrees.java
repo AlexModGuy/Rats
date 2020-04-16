@@ -186,8 +186,8 @@ public class RatAIHarvestTrees extends Goal {
 
         @Override
         public int compare(BlockPos pos1, BlockPos pos2) {
-            double yDist1 = Math.abs(pos1.getY() + 0.5 - entity.posY);
-            double yDist2 = Math.abs(pos2.getY() + 0.5 - entity.posY);
+            double yDist1 = Math.abs(pos1.getY() + 0.5 - entity.getPosY());
+            double yDist2 = Math.abs(pos2.getY() + 0.5 - entity.getPosY());
             if (yDist1 == yDist2) {
                 double distance1 = this.getDistance(pos1);
                 double distance2 = this.getDistance(pos2);
@@ -198,9 +198,9 @@ public class RatAIHarvestTrees extends Goal {
         }
 
         private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
+            double deltaX = this.entity.getPosX() - (pos.getX() + 0.5);
+            double deltaY = this.entity.getPosY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
+            double deltaZ = this.entity.getPosZ() - (pos.getZ() + 0.5);
             return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         }
     }

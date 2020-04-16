@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
@@ -12,8 +13,8 @@ public class RenderPirat extends RenderRat {
         super();
     }
 
-    protected void preRenderCallback(EntityRat rat, float partialTickTime) {
-        super.preRenderCallback(rat, partialTickTime);
-        GL11.glScaled(1.6F, 1.6F, 1.6F);
+    protected void preRenderCallback(EntityRat rat, MatrixStack stack, float partialTickTime) {
+        super.preRenderCallback(rat, stack, partialTickTime);
+        stack.scale(1.6F, 1.6F, 1.6F);
     }
 }

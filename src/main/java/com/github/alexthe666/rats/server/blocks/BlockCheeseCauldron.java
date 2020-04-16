@@ -5,6 +5,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -19,10 +20,6 @@ public class BlockCheeseCauldron extends Block {
         this.setRegistryName(RatsMod.MODID, "cauldron_cheese");
     }
 
-    public boolean isSolid(BlockState state) {
-        return false;
-    }
-
     public boolean isOpaqueCube(BlockState state) {
         return false;
     }
@@ -35,13 +32,13 @@ public class BlockCheeseCauldron extends Block {
         return BlockRenderType.MODEL;
     }
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
         worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
         worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0F, 1.0F);
         if (!playerIn.inventory.addItemStackToInventory(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE))) {
             playerIn.dropItem(new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE), false);
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 }

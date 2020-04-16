@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -105,7 +106,7 @@ public class RatAIHarvestFarmer extends Goal {
                                 if (igrowable.canGrow(entity.world, targetBlock, block, entity.world.isRemote)) {
                                     if (!entity.world.isRemote) {
                                         entity.world.playEvent(2005, targetBlock, 0);
-                                        igrowable.grow(entity.world, entity.world.rand, targetBlock, block);
+                                        igrowable.grow((ServerWorld)entity.world, entity.world.rand, targetBlock, block);
                                     }
                                 }
                             }
@@ -132,7 +133,7 @@ public class RatAIHarvestFarmer extends Goal {
                             this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                             entity.world.setBlockState(targetBlock, BlockState1);
                             if (entity.isEntityInsideOpaqueBlock()) {
-                                entity.setPosition(entity.posX, entity.posY + 1, entity.posZ);
+                                entity.setPosition(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ());
                             }
                             SoundType placeSound = BlockState1.getBlock().getSoundType(BlockState1, entity.world, targetBlock, entity);
                             entity.playSound(placeSound.getPlaceSound(), (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
@@ -222,9 +223,9 @@ public class RatAIHarvestFarmer extends Goal {
         }
 
         private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.posX - (pos.getX() + 0.5);
-            double deltaY = this.entity.posY + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.posZ - (pos.getZ() + 0.5);
+            double deltaX = this.entity.getPosX() - (pos.getX() + 0.5);
+            double deltaY = this.entity.getPosY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
+            double deltaZ = this.entity.getPosZ() - (pos.getZ() + 0.5);
             return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         }
     }

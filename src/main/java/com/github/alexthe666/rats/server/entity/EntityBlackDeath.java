@@ -29,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerBossInfo;
 
 import javax.annotation.Nullable;
 
@@ -98,7 +99,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
     public void remove() {
         if (!this.isAlive()) {
             double dist = 20F;
-            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
+            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.getPosX() - dist, this.getPosY() - dist, this.getPosZ() - dist, this.getPosX() + dist, this.getPosY() + dist, this.getPosZ() + dist))) {
                 if (rat.isOwner(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
@@ -281,8 +282,8 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             float f = this.renderYawOffset * 0.017453292F + MathHelper.cos((float) this.ticksExisted * 0.6662F) * 0.25F;
             float f1 = MathHelper.cos(f);
             float f2 = MathHelper.sin(f);
-            RatsMod.PROXY.addParticle("black_death", this.posX + (double) f1 * 0.6D, this.posY + 1.8D, this.posZ + (double) f2 * 0.6D, d0, d1, d2);
-            RatsMod.PROXY.addParticle("black_death", this.posX - (double) f1 * 0.6D, this.posY + 1.8D, this.posZ - (double) f2 * 0.6D, d0, d1, d2);
+            RatsMod.PROXY.addParticle("black_death", this.getPosX() + (double) f1 * 0.6D, this.getPosY() + 1.8D, this.getPosZ() + (double) f2 * 0.6D, d0, d1, d2);
+            RatsMod.PROXY.addParticle("black_death", this.getPosX() - (double) f1 * 0.6D, this.getPosY() + 1.8D, this.getPosZ() - (double) f2 * 0.6D, d0, d1, d2);
         }
         if (this.getRatsSummoned() < 15 && ratCooldown == 0) {
             summonMinion(0);

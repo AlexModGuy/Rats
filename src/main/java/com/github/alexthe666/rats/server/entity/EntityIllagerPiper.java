@@ -85,7 +85,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
     public void remove() {
         if (!isAlive()) {
             double dist = 20F;
-            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
+            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.getPosX() - dist, this.getPosY() - dist, this.getPosZ() - dist, this.getPosX() + dist, this.getPosY() + dist, this.getPosZ() + dist))) {
                 if (rat.isOwner(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
@@ -224,11 +224,11 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         BasicParticleType p = ParticleTypes.NOTE;
         if (type == 1) {
             double d0 = 0.0;
-            this.world.addParticle(p, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + 0.5D + (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, 0, 0);
+            this.world.addParticle(p, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + 0.5D + (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, 0, 0);
         } else {
             double d0 = 0.65;
             for (int i = 0; i < 9; ++i) {
-                this.world.addParticle(p, this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.posY + 0.5D + (this.rand.nextFloat() * this.getHeight()), this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, 0, 0);
+                this.world.addParticle(p, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + 0.5D + (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, 0, 0);
             }
         }
 

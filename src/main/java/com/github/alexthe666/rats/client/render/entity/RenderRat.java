@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -32,7 +33,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
+public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>> {
 
     private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();
     private static final ModelRat RAT_MODEL = new ModelRat(0.0F);

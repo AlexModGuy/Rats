@@ -193,7 +193,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
 
     public void updateRiding(Entity riding) {
         super.updateRiding(riding);
-        this.setPosition(riding.posX, riding.posY + 0.5D, riding.posZ);
+        this.setPosition(riding.getPosX(), riding.getPosY() + 0.5D, riding.getPosZ());
     }
 
     public void updateRidden() {
@@ -218,8 +218,8 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         if (attackCooldown == 0) {
             this.faceEntity(target, 180, 180);
-            double d0 = target.posX - this.posX;
-            double d2 = target.posZ - this.posZ;
+            double d0 = target.getPosX() - this.getPosX();
+            double d2 = target.getPosZ() - this.getPosZ();
             float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
             this.renderYawOffset = this.rotationYaw = f % 360;
             if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPiratBoat) {

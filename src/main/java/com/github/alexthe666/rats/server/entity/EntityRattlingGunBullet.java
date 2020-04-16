@@ -53,7 +53,7 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
 
     public void playSound(SoundEvent soundIn, float volume, float pitch) {
         if (!this.isSilent() && soundIn != SoundEvents.ENTITY_ARROW_HIT && soundIn != SoundEvents.ENTITY_ARROW_HIT_PLAYER) {
-            this.world.playSound(null, this.posX, this.posY, this.posZ, soundIn, this.getSoundCategory(), volume, pitch);
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, this.getSoundCategory(), volume, pitch);
         }
     }
 

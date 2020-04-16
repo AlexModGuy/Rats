@@ -32,7 +32,7 @@ public class MessageRatDismount {
                 if (entity instanceof EntityRat) {
                     EntityRat rat = (EntityRat) entity;
                     rat.stopRiding();
-                    rat.setPosition(player.posX, player.posY, player.posZ);
+                    rat.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
                 }
             }
         }

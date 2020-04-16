@@ -27,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerBossInfo;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -104,9 +105,9 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             if(!this.hasThrownSword()){
                 float radius = -1.5F;
                 float angle = (0.01745329251F * (this.renderYawOffset)) - 230F;
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-                double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-                double extraY = 1.7F + posY;
+                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+                double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+                double extraY = 1.7F + getPosY();
                 EntityDutchratSword sword = new EntityDutchratSword(RatsEntityRegistry.DUTCHRAT_SWORD, world, extraX, extraY, extraZ, this);
                 world.addEntity(sword);
                 this.useRangedAttack = rand.nextBoolean();
@@ -133,12 +134,12 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
             if (this.getAnimation() == ANIMATION_STAB && (this.getAnimationTick() == 10)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getAttackTarget().posX - this.posX, this.getAttackTarget().posZ - this.posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getAttackTarget().getPosX() - this.getPosX(), this.getAttackTarget().getPosZ() - this.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -214,7 +215,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityDutchrat.this.posX, this.posY - EntityDutchrat.this.posY, this.posZ - EntityDutchrat.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityDutchrat.this.getPosX(), this.getY() - EntityDutchrat.this.getPosY(), this.getZ() - EntityDutchrat.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityDutchrat.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -227,8 +228,8 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
                         EntityDutchrat.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityDutchrat.this.renderYawOffset = EntityDutchrat.this.rotationYaw;
                     } else {
-                        double d4 = EntityDutchrat.this.getAttackTarget().posX - EntityDutchrat.this.posX;
-                        double d5 = EntityDutchrat.this.getAttackTarget().posZ - EntityDutchrat.this.posZ;
+                        double d4 = EntityDutchrat.this.getAttackTarget().getPosX() - EntityDutchrat.this.getPosX();
+                        double d5 = EntityDutchrat.this.getAttackTarget().getPosZ() - EntityDutchrat.this.getPosZ();
                         EntityDutchrat.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityDutchrat.this.renderYawOffset = EntityDutchrat.this.rotationYaw;
                     }
@@ -307,7 +308,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
                    BlockPos blockpos1 = blockpos.add(EntityDutchrat.this.rand.nextInt(15) - 7, 0, EntityDutchrat.this.rand.nextInt(15) - 7);
                    EntityDutchrat.this.moveController.setMoveTo(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ(), 1D);
                }else{
-                   EntityDutchrat.this.moveController.setMoveTo(LivingEntity.posX, LivingEntity.posY + 1, LivingEntity.posZ, 1D);
+                   EntityDutchrat.this.moveController.setMoveTo(LivingEntity.getPosX(), LivingEntity.getPosY() + 1, LivingEntity.getPosZ(), 1D);
                }
             }
         }

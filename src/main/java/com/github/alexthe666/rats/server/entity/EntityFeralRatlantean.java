@@ -89,12 +89,12 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 doExtraEffect(this.getAttackTarget());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 doExtraEffect(this.getAttackTarget());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.posX - this.getAttackTarget().posX, this.posZ - this.getAttackTarget().posZ);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
@@ -184,7 +184,7 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
     }
 
     public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return rand.nextInt(8) == 0 && canSpawnAtPos(world, pos) && MobEntity.func_223315_a(entityType, world, reason, pos, rand);
+        return rand.nextInt(8) == 0 && canSpawnAtPos(world, pos) && MobEntity.canSpawnOn(entityType, world, reason, pos, rand);
     }
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {

@@ -88,7 +88,7 @@ public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
             ItemStackHelper.loadAllItems(tag, nonnulllist);
             flag = !nonnulllist.get(0).isEmpty() && !nonnulllist.get(1).isEmpty();
         }
-        if (!player.isSneaking() && !flag) {
+        if (!player.isShiftKeyDown() && !flag) {
             RatsMod.PROXY.setRefrencedItem(itemStackIn);
             if (!worldIn.isRemote) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {

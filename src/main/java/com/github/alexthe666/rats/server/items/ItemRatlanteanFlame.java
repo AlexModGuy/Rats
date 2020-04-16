@@ -30,7 +30,7 @@ public class ItemRatlanteanFlame extends Item {
         if (!playerIn.isCreative()) {
             itemstack.shrink(1);
         }
-        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isRemote) {
             Vec3d vec3d = playerIn.getLook(1.0F);
             EntityRatlanteanFlame entityegg = new EntityRatlanteanFlame(worldIn, playerIn, vec3d.x, vec3d.y, vec3d.z);

@@ -78,8 +78,8 @@ public class RatAIFollowOwner extends Goal {
                 if (!this.rat.getLeashed() && !this.rat.isPassenger() && this.rat.getOwner() instanceof PlayerEntity) {
                     if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
                         teleport = true;
-                        int i = MathHelper.floor(this.owner.posX) - 2;
-                        int j = MathHelper.floor(this.owner.posZ) - 2;
+                        int i = MathHelper.floor(this.owner.getPosX()) - 2;
+                        int j = MathHelper.floor(this.owner.getPosZ()) - 2;
                         int k = MathHelper.floor(this.owner.getBoundingBox().minY);
                         for (int l = 0; l <= 4; ++l) {
                             for (int i1 = 0; i1 <= 4; ++i1) {

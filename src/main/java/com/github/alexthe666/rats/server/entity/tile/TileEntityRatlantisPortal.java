@@ -36,6 +36,9 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
     }
 
     public boolean shouldRenderFace(Direction p_184313_1_) {
+        if(this.getWorld() == null){
+            return true;
+        }
         Block block = this.getWorld().getBlockState(this.getPos().offset(p_184313_1_)).getBlock();
         return block != RatsBlockRegistry.RATLANTIS_PORTAL;
     }

@@ -56,7 +56,7 @@ public class RatsEntityRegistry {
     static{
         EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatSpawner::func_223325_c);
         EntitySpawnPlacementRegistry.register(RAT_SPAWNER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::canEntityTypeSpawn);
-        EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::func_223325_c);
+        EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::canSpawnOn);
         EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::canSpawn);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);

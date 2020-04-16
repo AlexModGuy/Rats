@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -48,8 +49,8 @@ public class BlockUpgradeCombiner extends ContainerBlock implements IUsesTEISR {
         return new TileEntityUpgradeCombiner();
     }
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if(!player.isSneaking()){
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if(!player.isShiftKeyDown()){
             if(worldIn.isRemote){
                 RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
             }else{
@@ -58,8 +59,8 @@ public class BlockUpgradeCombiner extends ContainerBlock implements IUsesTEISR {
                     player.openContainer(inamedcontainerprovider);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 }

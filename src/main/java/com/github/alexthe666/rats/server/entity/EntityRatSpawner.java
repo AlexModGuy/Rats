@@ -33,7 +33,7 @@ public class EntityRatSpawner extends CreatureEntity {
     }
 
     public static boolean func_223325_c(EntityType<? extends CreatureEntity> p_223325_0_, IWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
-        return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && func_223315_a(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+        return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
     }
 
     public static boolean func_223323_a(IWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {

@@ -23,12 +23,10 @@ public class RatAquaticMoveHelper extends MovementController {
                     this.speed = 0.1F;
                     dist = 8;
                 }
-                BlockPos target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.posX + rat.getRNG().nextInt(dist * 2) - dist, rat.posZ + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
-                this.posX = target.getX();
-                this.posY = target.getY();
-                this.posZ = target.getZ();
+                BlockPos target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+                this.setMoveTo(target.getX(), target.getY(), target.getZ(), this.speed);
             }
-            Vec3d vec3d = new Vec3d(this.posX - rat.posX, this.posY - rat.posY, this.posZ - rat.posZ);
+            Vec3d vec3d = new Vec3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
             double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d0 < edgeLength) {
@@ -41,8 +39,8 @@ public class RatAquaticMoveHelper extends MovementController {
                     rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 } else {
-                    double d4 = rat.getAttackTarget().posX - rat.posX;
-                    double d5 = rat.getAttackTarget().posZ - rat.posZ;
+                    double d4 = rat.getAttackTarget().getPosX() - rat.getPosX();
+                    double d5 = rat.getAttackTarget().getPosZ() - rat.getPosZ();
                     rat.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 }

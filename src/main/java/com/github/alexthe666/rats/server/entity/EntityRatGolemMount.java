@@ -43,13 +43,13 @@ public class EntityRatGolemMount extends EntityRatMountBase {
             --this.attackTimer;
         }
 
-        if (func_213296_b(this.getMotion()) > (double)2.5000003E-7F && this.rand.nextInt(5) == 0) {
-            int i = MathHelper.floor(this.posX);
-            int j = MathHelper.floor(this.posY - (double)0.2F);
-            int k = MathHelper.floor(this.posZ);
+        if (horizontalMag(this.getMotion()) > (double)2.5000003E-7F && this.rand.nextInt(5) == 0) {
+            int i = MathHelper.floor(this.getPosX());
+            int j = MathHelper.floor(this.getPosY() - (double)0.2F);
+            int k = MathHelper.floor(this.getPosZ());
             BlockState blockstate = this.world.getBlockState(new BlockPos(i, j, k));
             if (!blockstate.isAir()) {
-                this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.getWidth(), this.getBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.getWidth(), 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D);
+                this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), this.getPosX() + ((double)this.rand.nextFloat() - 0.5D) * (double)this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + ((double)this.rand.nextFloat() - 0.5D) * (double)this.getWidth(), 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D);
             }
         }
     }

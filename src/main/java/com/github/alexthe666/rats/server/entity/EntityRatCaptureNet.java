@@ -64,7 +64,7 @@ public class EntityRatCaptureNet extends ProjectileItemEntity {
             this.remove();
         }
         sack.setTag(tag);
-        ItemEntity itemEntity = new ItemEntity(world, this.posX, this.posY, this.posZ, sack);
+        ItemEntity itemEntity = new ItemEntity(world, this.getPosX(), this.getPosY(), this.getPosZ(), sack);
         itemEntity.setInvulnerable(true);
         if (!world.isRemote) {
             world.addEntity(itemEntity);
@@ -72,7 +72,7 @@ public class EntityRatCaptureNet extends ProjectileItemEntity {
     }
 
     @Override
-    protected Item func_213885_i() {
+    protected Item getDefaultItem() {
         return RatsItemRegistry.RAT_CAPTURE_NET;
     }
 

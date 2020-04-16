@@ -141,7 +141,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
     protected boolean canPlace(BlockItemUseContext p_195944_1_, BlockState p_195944_2_) {
         PlayerEntity playerentity = p_195944_1_.getPlayer();
         ISelectionContext iselectioncontext = playerentity == null ? ISelectionContext.dummy() : ISelectionContext.forEntity(playerentity);
-        return (!this.func_219987_d() || p_195944_2_.isValidPosition(p_195944_1_.getWorld(), p_195944_1_.getPos())) && p_195944_1_.getWorld().func_217350_a(p_195944_2_, p_195944_1_.getPos(), iselectioncontext);
+        return (!this.func_219987_d() || p_195944_2_.isValidPosition(p_195944_1_.getWorld(), p_195944_1_.getPos()));
     }
 
     protected boolean func_219987_d() {

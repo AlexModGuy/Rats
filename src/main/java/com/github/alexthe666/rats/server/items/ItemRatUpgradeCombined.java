@@ -100,7 +100,7 @@ public class ItemRatUpgradeCombined extends ItemRatUpgrade {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             ItemStack itemStackIn = player.getHeldItem(hand);
-            if (!player.isSneaking()) {
+            if (!player.isShiftKeyDown()) {
                 RatsMod.PROXY.setRefrencedItem(itemStackIn);
                 if(!worldIn.isRemote){
                     NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {

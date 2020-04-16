@@ -16,7 +16,7 @@ public class RatEtherealMoveHelper extends MovementController {
 
     public void tick() {
         if (this.action == Action.MOVE_TO) {
-            Vec3d vec3d = new Vec3d(this.posX - rat.posX, this.posY - rat.posY, this.posZ - rat.posZ);
+            Vec3d vec3d = new Vec3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
             double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d0 < edgeLength) {
@@ -29,8 +29,8 @@ public class RatEtherealMoveHelper extends MovementController {
                     rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 } else {
-                    double d4 = rat.getAttackTarget().posX - rat.posX;
-                    double d5 = rat.getAttackTarget().posZ - rat.posZ;
+                    double d4 = rat.getAttackTarget().getPosX() - rat.getPosX();
+                    double d5 = rat.getAttackTarget().getPosZ() - rat.getPosZ();
                     rat.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 }

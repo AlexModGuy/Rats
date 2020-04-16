@@ -108,7 +108,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
     }
 
     protected SoundEvent getAmbientSound() {
-        return this.func_213716_dX() ? SoundEvents.ENTITY_VILLAGER_TRADE : SoundEvents.ENTITY_VILLAGER_AMBIENT;
+        return this.hasCustomer() ? SoundEvents.ENTITY_VILLAGER_TRADE : SoundEvents.ENTITY_VILLAGER_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -134,22 +134,22 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        double d0 = target.posY + (double) target.getEyeHeight() - 1.100000023841858D;
-        double d1 = target.posX + target.getMotion().x - this.posX;
-        double d2 = d0 - this.posY;
-        double d3 = target.posZ + target.getMotion().z - this.posZ;
+        double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.100000023841858D;
+        double d1 = target.getPosX() + target.getMotion().x - this.getPosX();
+        double d2 = d0 - this.getPosY();
+        double d3 = target.getPosZ() + target.getMotion().z - this.getPosZ();
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3);
         EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(this.world, this);
         entitypotion.rotationPitch -= -20.0F;
         entitypotion.shoot(d1, d2 + (double) (f * 0.2F), d3, 0.75F, 8.0F);
-        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+        this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
         this.world.addEntity(entitypotion);
     }
 
     public void onStruckByLightning(LightningBoltEntity lightningBolt) {
         if (!this.world.isRemote && this.isAlive()) {
             EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, this.world);
-            entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            entitywitch.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
             entitywitch.onInitialSpawn(world, this.world.getDifficultyForLocation(new BlockPos(entitywitch)), SpawnReason.NATURAL, null, null);
             entitywitch.setNoAI(this.isAIDisabled());
             if (this.hasCustomName()) {
@@ -161,10 +161,10 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
     }
 
     @Override
-    protected void func_213713_b(MerchantOffer p_213713_1_) {
-        if (p_213713_1_.func_222221_q()) {
+    protected void onVillagerTrade(MerchantOffer p_213713_1_) {
+        if (p_213713_1_.getDoesRewardExp()) {
             int i = 3 + this.rand.nextInt(4);
-            this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
+            this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY() + 0.5D, this.getPosZ(), i));
         }
     }
 
@@ -212,8 +212,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             BlockPos blockpos = this.plagueDoctor.func_213727_eh();
             if (blockpos != null && EntityPlagueDoctor.this.navigator.noPath()) {
                 if (this.func_220846_a(blockpos, 10.0D)) {
-                    Vec3d vec3d = (new Vec3d((double)blockpos.getX() - this.plagueDoctor.posX, (double)blockpos.getY() - this.plagueDoctor.posY, (double)blockpos.getZ() - this.plagueDoctor.posZ)).normalize();
-                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.plagueDoctor.posX, this.plagueDoctor.posY, this.plagueDoctor.posZ);
+                    Vec3d vec3d = (new Vec3d((double)blockpos.getX() - this.plagueDoctor.getPosX(), (double)blockpos.getY() - this.plagueDoctor.getPosY(), (double)blockpos.getZ() - this.plagueDoctor.getPosZ())).normalize();
+                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.plagueDoctor.getPosX(), this.plagueDoctor.getPosY(), this.plagueDoctor.getPosZ());
                     EntityPlagueDoctor.this.navigator.tryMoveToXYZ(vec3d1.x, vec3d1.y, vec3d1.z, this.speed);
                 } else {
                     EntityPlagueDoctor.this.navigator.tryMoveToXYZ((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), this.speed);
@@ -252,7 +252,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         if (flag) {
             itemstack.interactWithEntity(player, this, hand);
             return true;
-        } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.func_213716_dX() && !this.isChild()) {
+        } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.hasCustomer() && !this.isChild()) {
             if (hand == Hand.MAIN_HAND) {
                 player.addStat(Stats.TALKED_TO_VILLAGER);
             }
@@ -262,7 +262,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             } else {
                 if (!this.world.isRemote) {
                     this.setCustomer(player);
-                    this.func_213707_a(player, this.getDisplayName(), 1);
+                    this.openMerchantContainer(player, this.getDisplayName(), 1);
                 }
 
                 return true;

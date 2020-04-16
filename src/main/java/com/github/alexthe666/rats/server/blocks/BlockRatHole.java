@@ -62,10 +62,6 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
-    public boolean isSolid(BlockState state) {
-        return false;
-    }
-
     public boolean isOpaqueCube(BlockState state) {
         return false;
     }
@@ -106,7 +102,7 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
         BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
         BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
         BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-        return super.getStateForPlacement(context).with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.func_224755_d(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.func_224755_d(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.func_224755_d(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.func_224755_d(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
+        return super.getStateForPlacement(context).with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -174,6 +170,6 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
         if(connect == null){
             return stateIn;
         }
-        return stateIn.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.func_224755_d(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        return stateIn.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.canBeConnectedTo(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
     }
 }

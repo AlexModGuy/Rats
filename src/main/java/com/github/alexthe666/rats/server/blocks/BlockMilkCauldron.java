@@ -10,9 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
@@ -38,10 +36,6 @@ public class BlockMilkCauldron extends ContainerBlock {
         return SHAPE;
     }
 
-    public boolean isSolid(BlockState state) {
-        return false;
-    }
-
     public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return INSIDE;
     }
@@ -61,10 +55,10 @@ public class BlockMilkCauldron extends ContainerBlock {
         }
     }
 
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         if (itemstack.isEmpty()) {
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
             int i = 0;
             Item item = itemstack.getItem();
@@ -82,10 +76,10 @@ public class BlockMilkCauldron extends ContainerBlock {
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                     worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
 

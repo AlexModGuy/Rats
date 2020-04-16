@@ -184,8 +184,8 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
         boolean flag1 = false;
         PlayerEntity PlayerEntity = this.world.getClosestPlayer((float) this.pos.getX() + 0.5F, (float) this.pos.getY() + 0.5F, (float) this.pos.getZ() + 0.5F, 10.0D, false);
         if (PlayerEntity != null) {
-            double d0 = PlayerEntity.posX - (double) ((float) this.pos.getX() + 0.5F);
-            double d1 = PlayerEntity.posZ - (double) ((float) this.pos.getZ() + 0.5F);
+            double d0 = PlayerEntity.getPosX() - (double) ((float) this.pos.getX() + 0.5F);
+            double d1 = PlayerEntity.getPosZ() - (double) ((float) this.pos.getZ() + 0.5F);
             this.tRot = (float) MathHelper.atan2(d1, d0);
         } else {
             this.tRot += 0.04F;

@@ -90,16 +90,16 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
             this.faceEntity(target, 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) RatConfig.ratlanteanAutomatonAttack);
-                target.knockBack(target, 1.5F, this.posX - target.posX, this.posZ - target.posZ);
+                target.knockBack(target, 1.5F, this.getPosX() - target.getPosX(), this.getPosZ() - target.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
         if (world.isRemote && rand.nextDouble() < 0.5F) {
             float radius = -0.5F;
             float angle = (0.01745329251F * (this.renderYawOffset));
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 1.25 + posY;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 1.25 + getPosY();
             world.addParticle(ParticleTypes.END_ROD, extraX + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
                     extraY,
                     extraZ + (double) (this.rand.nextFloat() * 0.5F) - (double) 0.25F,
@@ -108,12 +108,12 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
         if (this.useRangedAttack && this.getAnimation() == ANIMATION_RANGED && this.getAnimationTick() == 6) {
             float radius = -3.4F;
             float angle = (0.01745329251F * (this.renderYawOffset)) - 160F;
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + posX;
-            double extraZ = (double) (radius * MathHelper.cos(angle)) + posZ;
-            double extraY = 2.4F + posY;
-            double targetRelativeX = (target == null ? this.getLook(1.0F).x : target.posX) - extraX;
-            double targetRelativeY = (target == null ? this.getLook(1.0F).y : target.posY) - extraY;
-            double targetRelativeZ = (target == null ? this.getLook(1.0F).z : target.posZ) - extraZ;
+            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + getPosX();
+            double extraZ = (double) (radius * MathHelper.cos(angle)) + getPosZ();
+            double extraY = 2.4F + getPosY();
+            double targetRelativeX = (target == null ? this.getLook(1.0F).x : target.getPosX()) - extraX;
+            double targetRelativeY = (target == null ? this.getLook(1.0F).y : target.getPosY()) - extraY;
+            double targetRelativeZ = (target == null ? this.getLook(1.0F).z : target.getPosZ()) - extraZ;
             EntityGolemBeam beam = new EntityGolemBeam(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, world, this);
             beam.setPosition(extraX, extraY, extraZ);
             beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
@@ -133,7 +133,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.posX - EntityRatAutomatonMount.this.posX, this.posY - EntityRatAutomatonMount.this.posY, this.posZ - EntityRatAutomatonMount.this.posZ);
+                Vec3d vec3d = new Vec3d(this.getX() - EntityRatAutomatonMount.this.getPosX(), this.getY() - EntityRatAutomatonMount.this.getPosY(), this.getZ() - EntityRatAutomatonMount.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityRatAutomatonMount.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -146,8 +146,8 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
                         EntityRatAutomatonMount.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityRatAutomatonMount.this.renderYawOffset = EntityRatAutomatonMount.this.rotationYaw;
                     } else {
-                        double d4 = EntityRatAutomatonMount.this.getAttackTarget().posX - EntityRatAutomatonMount.this.posX;
-                        double d5 = EntityRatAutomatonMount.this.getAttackTarget().posZ - EntityRatAutomatonMount.this.posZ;
+                        double d4 = EntityRatAutomatonMount.this.getAttackTarget().getPosX() - EntityRatAutomatonMount.this.getPosX();
+                        double d5 = EntityRatAutomatonMount.this.getAttackTarget().getPosZ() - EntityRatAutomatonMount.this.getPosZ();
                         EntityRatAutomatonMount.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
                         EntityRatAutomatonMount.this.renderYawOffset = EntityRatAutomatonMount.this.rotationYaw;
                     }
