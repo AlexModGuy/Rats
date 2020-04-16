@@ -1023,16 +1023,25 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     poopTag.put("OreItem", oreTag);
                     pooStack.setTag(poopTag);
                 }
+                this.getHeldItem(Hand.MAIN_HAND).shrink(1);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {
                     if (RatConfig.ratFartNoises) {
                         this.playSound(RatsSoundRegistry.RAT_POOP, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
                     }
-                    if (!world.isRemote) {
-                        this.entityDropItem(pooStack, 0.0F);
+                    if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING)){
+                        if(this.getHeldItem(Hand.MAIN_HAND).isEmpty()){
+                            ItemStack oneStack = pooStack.copy();
+                            oneStack.setCount(1);
+                            this.setHeldItem(Hand.MAIN_HAND, oneStack);
+                            pooStack.shrink(1);
+                        }
                     }
-
+                    if(pooStack.getCount() > 0){
+                        if (!world.isRemote) {
+                            this.entityDropItem(pooStack, 0.0F);
+                        }
+                    }
                 }
-                this.getHeldItem(Hand.MAIN_HAND).shrink(1);
                 int healAmount = 1;
                 if (this.getHeldItem(Hand.MAIN_HAND).getItem().isFood()) {
                     healAmount = this.getHeldItem(Hand.MAIN_HAND).getItem().getFood().getHealing();
@@ -1042,8 +1051,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
         }
         if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
-                && (this.getCommand() != RatCommand.TRANSPORT && this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
-                && this.shouldDepositItem(getHeldItemMainhand())) {
+                && (this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
+                && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) ||this.getCommand() != RatCommand.TRANSPORT && this.shouldDepositItem(getHeldItemMainhand()))) {
             if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getCommand() != RatCommand.HUNT_MONSTERS || this.getHealth() < this.getMaxHealth()) {
                 this.setAnimation(ANIMATION_EAT);
                 this.setRatStatus(RatStatus.EATING);
@@ -2786,7 +2795,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLACER) && this.getCommand() == RatCommand.HARVEST) {
             return false;
         }
-        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || !ItemRatUpgradeOreDoubling.isProcessable(item);
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(item)) {
+            return false;
+        }
+        return true;
     }
 
     public int getRFTransferRate() {
