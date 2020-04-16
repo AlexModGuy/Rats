@@ -3,6 +3,8 @@ package com.github.alexthe666.rats.client.model;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelRattlingGun<T extends EntityRattlingGun> extends AdvancedEntityModel<T> {
     public AdvancedModelBox base1;
@@ -129,12 +131,11 @@ public class ModelRattlingGun<T extends EntityRattlingGun> extends AdvancedEntit
     }
 
     @Override
-    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.base1.render(f5);
-        this.pivot.render(f5);
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(base1, pivot);
     }
 
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         if(entityIn.isFiring()){
             this.gun1.rotateAngleZ = ageInTicks;

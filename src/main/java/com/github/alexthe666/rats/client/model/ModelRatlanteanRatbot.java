@@ -6,7 +6,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanRatbot;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
@@ -142,30 +144,19 @@ public class ModelRatlanteanRatbot<T extends EntityRatlanteanRatbot> extends Adv
         this.updateDefaultPose();
     }
 
-    @Override
-    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
-        this.body1.render(f5);
-    }
-
-
-    public void renderNoWiskers(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
+    public void hideWiskers(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.wisker1.showModel = false;
         this.wisker2.showModel = false;
-        this.body1.render(f5);
-        this.wisker1.showModel = true;
-        this.wisker2.showModel = true;
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
         EntityRatlanteanRatbot rat = (EntityRatlanteanRatbot) entity;
-        setRotationAngles(f, f1, f2, f3, f4, f5, (EntityRatlanteanRatbot) entity);
         animator.update(entity);//ANIMATION_IDLE_SCRATCH
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityRatlanteanRatbot rat) {
+    public void setRotationAngles(EntityRatlanteanRatbot rat, float f, float f1, float f2, float f3, float f4) {
+        animate(rat, f, f1, f2, f3, f4);
         float speedWalk = 0.9F;
         float degreeWalk = 0.25F;
         float speedRun = 1F;
@@ -219,6 +210,11 @@ public class ModelRatlanteanRatbot<T extends EntityRatlanteanRatbot> extends Adv
 
     private void rotateFrom(AdvancedModelBox renderer, float degX, float degY, float degZ) {
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(body1);
     }
 
 }

@@ -3,7 +3,9 @@ package com.github.alexthe666.rats.client.model;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
@@ -67,24 +69,12 @@ public class ModelRatlanteanSpirit<T extends Entity> extends AdvancedEntityModel
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate(entity, f, f1, f2, f3, f4, f5);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, entity instanceof EntityPlagueCloud ? 0.3F : 0.7F);
-        GlStateManager.disableLighting();
-        this.head.render(f5);
-        GlStateManager.enableLighting();
-        GlStateManager.depthMask(true);
-        GlStateManager.disableBlend();
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(head);
     }
 
-    public void animate(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(Entity rat, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity rat) {
         float speedIdle = 0.35F;
         float degreeIdle = 0.15F;
         this.faceTarget(f3, f4, 1, head);

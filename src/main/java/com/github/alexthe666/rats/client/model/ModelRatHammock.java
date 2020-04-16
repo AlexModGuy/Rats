@@ -1,10 +1,13 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelRatHammock <T extends Entity> extends EntityModel<T> {
+public class ModelRatHammock <T extends Entity> extends SegmentedModel<T> {
     public ModelRenderer midSection;
     public ModelRenderer string;
     public ModelRenderer left;
@@ -32,12 +35,14 @@ public class ModelRatHammock <T extends Entity> extends EntityModel<T> {
         this.midSection.addChild(this.right);
     }
 
-    public void renderString(float f5) {
-        this.string.render(f5);
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
     }
 
-    public void renderHammock(float f5) {
-        this.midSection.render(f5);
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(string, midSection);
     }
 
     public void setRotateAngle(ModelRenderer ModelRenderer, float x, float y, float z) {

@@ -1,10 +1,13 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelRatWaterBottle <T extends Entity> extends EntityModel<T> {
+public class ModelRatWaterBottle <T extends Entity> extends SegmentedModel<T> {
     public ModelRenderer waterBottle;
     public ModelRenderer bottom;
     public ModelRenderer sip;
@@ -27,8 +30,14 @@ public class ModelRatWaterBottle <T extends Entity> extends EntityModel<T> {
         this.bottom.addChild(this.sip);
     }
 
-    public void render(float f5) {
-        this.waterBottle.render(f5);
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(waterBottle);
     }
 
     public void setRotateAngle(ModelRenderer ModelRenderer, float x, float y, float z) {

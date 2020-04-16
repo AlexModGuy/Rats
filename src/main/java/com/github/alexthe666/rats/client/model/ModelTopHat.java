@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
 
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
@@ -27,7 +28,7 @@ public class ModelTopHat extends BipedModel {
         this.bipedHead.addChild(this.top);
     }
 
-      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entityIn instanceof ArmorStandEntity) {
             ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
@@ -53,7 +54,7 @@ public class ModelTopHat extends BipedModel {
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 }

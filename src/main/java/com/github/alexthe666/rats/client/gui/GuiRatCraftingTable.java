@@ -94,7 +94,6 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
                                 drawnIngredients.add(drawn);
                                 GlStateManager.enableLighting();
                                 GlStateManager.enableDepthTest();
-                                RenderHelper.enableGUIStandardItemLighting();
                                 GlStateManager.enableRescaleNormal();
                                 this.drawRecipeItemStack(drawn, 8 + renderingIndex * 18, 60);
                                 renderingIndex++;
@@ -106,11 +105,11 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         }
         if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             String ratDesc = I18n.format("container.rat_crafting_table.rat_desc");
-            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, font);
+            renderTooltip(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
         if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             String ratDesc = I18n.format("container.rat_crafting_table.input_desc");
-            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, width, height, 120, font);
+            renderTooltip(Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
     }
 

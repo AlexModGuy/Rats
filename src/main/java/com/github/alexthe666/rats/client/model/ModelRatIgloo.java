@@ -1,10 +1,13 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelRatIgloo <T extends Entity> extends EntityModel<T> {
+public class ModelRatIgloo <T extends Entity> extends SegmentedModel<T> {
     public ModelRenderer cube1;
     public ModelRenderer crown;
     public ModelRenderer entrance;
@@ -26,7 +29,12 @@ public class ModelRatIgloo <T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.cube1.render(f5);
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(cube1);
     }
 }

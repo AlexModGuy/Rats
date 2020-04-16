@@ -2,7 +2,9 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityModel<T>{
@@ -64,7 +66,8 @@ public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityMod
         this.updateDefaultPose();
     }
 
-    public void render(float f5) {
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float speedIdle = 0.1F;
         float degreeIdle = 0.05F;
@@ -73,6 +76,10 @@ public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityMod
         this.chainWave(connectors, speedIdle, degreeIdle, 1, swing, 1);
         this.chainFlap(connectors, speedIdle, degreeIdle, -1, swing, 1);
 
-        this.top.render(f5);
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(top);
     }
 }

@@ -5,9 +5,11 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityRatBeastMount;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelRatBeastMount<T extends Entity> extends AdvancedEntityModel<T> {
+public class ModelRatBeastMount<T extends EntityRatBeastMount> extends AdvancedEntityModel<T> {
     public AdvancedModelBox lowerbody;
     public AdvancedModelBox midBody;
     public AdvancedModelBox backLeftThigh;
@@ -229,15 +231,13 @@ public class ModelRatBeastMount<T extends Entity> extends AdvancedEntityModel<T>
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.resetToDefaultPose();
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
-        this.lowerbody.render(f5);
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(lowerbody);
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5, (EntityRatBeastMount) entity);
         animator.update(entity);
         animator.setAnimation(EntityRatBeastMount.ANIMATION_BITE);
         animator.startKeyframe(5);
@@ -412,7 +412,8 @@ public class ModelRatBeastMount<T extends Entity> extends AdvancedEntityModel<T>
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityRatBeastMount rat) {
+    public void setRotationAngles(EntityRatBeastMount rat, float f, float f1, float f2, float f3, float f4) {
+        animate(rat, f, f1, f2, f3, f4);
         float idleSpeed = 0.3F;
         float idleDegree = 0.1F;
         float walkSpeed = 0.4F;

@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelRatTrap<T extends Entity> extends AdvancedEntityModel<T>{
@@ -35,11 +37,16 @@ public class ModelRatTrap<T extends Entity> extends AdvancedEntityModel<T>{
         this.updateDefaultPose();
     }
 
-    public void render(float f5, float shutProgress) {
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
+        float shutProgress = 0;
         this.hingeMain.rotateAngleX += (float) (shutProgress * Math.PI / 6.0F);
-        this.hingeMain.render(f5);
-        this.bottom.render(f5);
 
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(hingeMain, bottom);
     }
 }

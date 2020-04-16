@@ -3,7 +3,9 @@ package com.github.alexthe666.rats.client.model;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityRatGolemMount;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelRatGolemMount<T extends EntityRatGolemMount> extends AdvancedEntityModel<T> {
     public AdvancedModelBox chest;
@@ -43,36 +45,13 @@ public class ModelRatGolemMount<T extends EntityRatGolemMount> extends AdvancedE
     }
 
     @Override
-    public void render(EntityRatGolemMount entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate(entity, f, f1, f2, f3, f4, f5);
-        this.leftLeg.render(f5);
-        this.chest.render(f5);
-        this.rightArm.render(f5);
-        this.leftArm.render(f5);
-        this.rightLeg.render(f5);
-        this.dome.render(f5);
-        this.waist.render(f5);
-    }
-
-    public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
-
-    }
-
-    private float triangleWave(float p_78172_1_, float p_78172_2_) {
-        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
-    }
-
-    public void animate(EntityRatGolemMount entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(T entityIn, float f, float f1, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityRatGolemMount mount) {
         this.leftLeg.rotateAngleX = -1.5F * this.triangleWave(f, 13.0F) * f1;
         this.rightLeg.rotateAngleX = 1.5F * this.triangleWave(f, 13.0F) * f1;
         this.leftLeg.rotateAngleY = 0.0F;
         this.rightLeg.rotateAngleY = 0.0F;
-        int i = mount.getAttackTimer();
+        int i = entityIn.getAttackTimer();
         if (i > 0) {
             float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
             this.leftArm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float)i - partialTicks, 10.0F);
@@ -81,6 +60,23 @@ public class ModelRatGolemMount<T extends EntityRatGolemMount> extends AdvancedE
             this.leftArm.rotateAngleX = (-0.2F + 1.5F * this.triangleWave(f, 13.0F)) * f1;
             this.rightArm.rotateAngleX = (-0.2F - 1.5F * this.triangleWave(f, 13.0F)) * f1;
         }
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(chest, waist, dome, leftArm, leftLeg, rightArm, rightLeg);
+    }
+
+    private float triangleWave(float p_78172_1_, float p_78172_2_) {
+        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
+    }
+
+    public void animate(EntityRatGolemMount entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    }
+
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityRatGolemMount mount) {
+
     }
 
     public void setRotateAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

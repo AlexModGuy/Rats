@@ -6,13 +6,19 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.inventory.ContainerRat;
 import com.github.alexthe666.rats.server.message.MessageRatCommand;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -35,44 +41,45 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.rat = RatsMod.PROXY.getRefrencedRat();
     }
 
-    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityRat entity) {
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(posX, posY, 30);
-        GlStateManager.scalef((-scale), scale, scale);
-        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+    public static void drawEntityOnScreen(int x, int y, int scale, float yaw, float pitch, LivingEntity entity) {
+        float f = (float)Math.atan((double)(yaw / 40.0F));
+        float f1 = (float)Math.atan((double)(pitch / 40.0F));
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.translate(0.0D, 0.0D, 1000.0D);
+        matrixstack.scale((float)scale, (float)scale, (float)scale);
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        quaternion.multiply(quaternion1);
+        matrixstack.rotate(quaternion);
         float f2 = entity.renderYawOffset;
         float f3 = entity.rotationYaw;
         float f4 = entity.rotationPitch;
         float f5 = entity.prevRotationYawHead;
         float f6 = entity.rotationYawHead;
-        GlStateManager.rotatef(135.0F, 0.0F, 1.0F, 0.0F);
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotatef(-((float) Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-        entity.renderYawOffset = (float) Math.atan(mouseX / 40.0F) * 20.0F;
-        entity.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
-        entity.rotationPitch = -((float) Math.atan(mouseY / 40.0F)) * 20.0F;
+        entity.renderYawOffset = 180.0F + f * 20.0F;
+        entity.rotationYaw = 180.0F + f * 40.0F;
+        entity.rotationPitch = -f1 * 20.0F;
         entity.rotationYawHead = entity.rotationYaw;
         entity.prevRotationYawHead = entity.rotationYaw;
-        GlStateManager.translatef(0.0F, 0.0F, 0.0F);
-        EntityRendererManager rendermanager = Minecraft.getInstance().getRenderManager();
-        rendermanager.setPlayerViewY(180.0F);
-        rendermanager.setRenderShadow(false);
-        rendermanager.renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-        rendermanager.setRenderShadow(true);
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        quaternion1.conjugate();
+        entityrenderermanager.setCameraOrientation(quaternion1);
+        entityrenderermanager.setRenderShadow(false);
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+        irendertypebuffer$impl.finish();
+        entityrenderermanager.setRenderShadow(true);
         entity.renderYawOffset = f2;
         entity.rotationYaw = f3;
         entity.rotationPitch = f4;
         entity.prevRotationYawHead = f5;
         entity.rotationYawHead = f6;
-        GlStateManager.popMatrix();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-        GlStateManager.disableTexture();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
+        RenderSystem.popMatrix();
     }
+
 
     public void init() {
         super.init();
@@ -113,11 +120,11 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         int j = (this.height - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
             String commandText = I18n.format(rat.getCommand().getTranslateDescription());
-            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, width, height, 120, font);
+            renderTooltip(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, font);
         }
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
             String commandText = I18n.format(command1.getTranslateDescription());
-            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, width, height, 120, font);
+            renderTooltip(Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, font);
         }
     }
 

@@ -57,8 +57,8 @@ public class ClientEvents {
             return;
         }
         left_height = 39;
-        int width = Minecraft.getInstance().mainWindow.getScaledWidth();
-        int height = Minecraft.getInstance().mainWindow.getScaledHeight();
+        int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
+        int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
         GlStateManager.enableBlend();
         PlayerEntity player = (PlayerEntity) Minecraft.getInstance().getRenderViewEntity();
         int health = MathHelper.ceil(player.getHealth());
@@ -153,10 +153,10 @@ public class ClientEvents {
             GameRenderer renderer = Minecraft.getInstance().gameRenderer;
             EffectInstance active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
-            if (synesthesia && !renderer.isShaderActive()) {
+            if (synesthesia && renderer.getShaderGroup() == null) {
                 renderer.loadShader(SYNESTHESIA);
             }
-            if (!synesthesia && renderer.isShaderActive() && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
+            if (!synesthesia && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
                 renderer.stopUseShader();
             }
             if (prevSynesthesiaProgress == 2 && synesthesia) {
@@ -198,17 +198,15 @@ public class ClientEvents {
                 double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
                 AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
                 GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.enableNormalize();
                 GlStateManager.enableBlend();
-                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 Minecraft.getInstance().getTextureManager().bindTexture(RADIUS_TEXTURE);
                 GlStateManager.disableCull();
                 GlStateManager.depthMask(false);
                 GlStateManager.pushMatrix();
                 Entity viewEntity = Minecraft.getInstance().getRenderViewEntity();
-                double px = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * event.getPartialTicks();
-                double py = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * event.getPartialTicks();
-                double pz = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * event.getPartialTicks();
+                double px = viewEntity.lastTickPosX + (viewEntity.getPosX() - viewEntity.lastTickPosX) * event.getPartialTicks();
+                double py = viewEntity.lastTickPosY + (viewEntity.getPosY() - viewEntity.lastTickPosY) * event.getPartialTicks();
+                double pz = viewEntity.lastTickPosZ + (viewEntity.getPosZ() - viewEntity.lastTickPosZ) * event.getPartialTicks();
                 GlStateManager.translated(-px, -py, -pz);
                 GlStateManager.translated(renderCenter.x, renderCenter.y, renderCenter.z);
                 renderMovingAABB(aabb, event.getPartialTicks());
@@ -216,7 +214,6 @@ public class ClientEvents {
                 GlStateManager.depthMask(true);
                 GlStateManager.enableCull();
                 GlStateManager.disableBlend();
-                GlStateManager.disableNormalize();
             }
         }
     }
@@ -225,15 +222,15 @@ public class ClientEvents {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
         float f3 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F;
 
-        double maxX = boundingBox.maxX * 0.125F;
-        double minX = boundingBox.minX * 0.125F;
-        double maxY = boundingBox.maxY * 0.125F;
-        double minY = boundingBox.minY * 0.125F;
-        double maxZ = boundingBox.maxZ * 0.125F;
-        double minZ = boundingBox.minZ * 0.125F;
+        float maxX = (float)boundingBox.maxX * 0.125F;
+        float minX = (float)boundingBox.minX * 0.125F;
+        float maxY = (float)boundingBox.maxY * 0.125F;
+        float minY = (float)boundingBox.minY * 0.125F;
+        float maxZ = (float)boundingBox.maxZ * 0.125F;
+        float minZ = (float)boundingBox.minZ * 0.125F;
         vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
         vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
         vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();

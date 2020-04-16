@@ -2,10 +2,13 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.rats.server.entity.EntityRatfish;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelRatFish<T extends Entity> extends AdvancedEntityModel<T> {
+public class ModelRatFish<T extends EntityRatfish> extends AdvancedEntityModel<T> {
     public AdvancedModelBox head;
     public AdvancedModelBox snout;
     public AdvancedModelBox leftEar;
@@ -84,18 +87,15 @@ public class ModelRatFish<T extends Entity> extends AdvancedEntityModel<T> {
         this.updateDefaultPose();
     }
 
-    public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.resetToDefaultPose();
-        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.head.render(scale);
-        this.body.render(scale);
-        this.tail.render(scale);
-        this.finRight.render(scale);
-        this.finLeft.render(scale);
-        this.finTop.render(scale);
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(head, body, tail, finLeft, finRight, finTop);
     }
 
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.resetToDefaultPose();
         float speedIdle = 0.75F;
         float degreeIdle = 0.15F;
         float f = 1.0F;

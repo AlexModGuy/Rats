@@ -39,7 +39,7 @@ public class GuiUpgradeCombiner extends ContainerScreen<ContainerUpgradeCombiner
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityUpgradeCombiner && !((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).canCombine(this.tileFurnace.getStackInSlot(0), this.tileFurnace.getStackInSlot(2)) && !this.tileFurnace.getStackInSlot(0).isEmpty() && !this.tileFurnace.getStackInSlot(2).isEmpty()) {
             if (mouseX > screenW + 42 && mouseX < screenW + 63 && mouseY > screenH + 34 && mouseY < screenH + 55) {
                 String ratDesc = I18n.format("container.upgrade_combiner.cannot_combine");
-                net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(ratDesc), mouseX - screenW, mouseY - screenH + 10, width, height, 120, font);
+                renderTooltip(Arrays.asList(ratDesc), mouseX - screenW, mouseY - screenH + 10, font);
             }
         }
     }

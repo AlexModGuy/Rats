@@ -41,14 +41,14 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     }
 
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(fluidStack.getFluid().getAttributes().getStillTexture());
+        ResourceLocation res = fluidStack.getFluid().getAttributes().getStillTexture();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        float u1 = sprite.getMinU();
-        float v1 = sprite.getMinV();
+        float u1 = 0;
+        float v1 = 0;
         do {
-            int currentHeight = Math.min(sprite.getHeight(), height);
+            int currentHeight = Math.min(16, height);
             height -= currentHeight;
             float v2 = sprite.getInterpolatedV((16 * currentHeight) / (float) sprite.getHeight());
             int x2 = x;
@@ -56,12 +56,11 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
             do {
                 int currentWidth = Math.min(sprite.getWidth(), width2);
                 width2 -= currentWidth;
-                float u2 = sprite.getInterpolatedU((16 * currentWidth) / (float) sprite.getWidth());
                 bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
                 bufferbuilder.pos(x2, y, depth).tex(u1, v1).endVertex();
                 bufferbuilder.pos(x2, y + currentHeight, depth).tex(u1, v2).endVertex();
-                bufferbuilder.pos(x2 + currentWidth, y + currentHeight, depth).tex(u2, v2).endVertex();
-                bufferbuilder.pos(x2 + currentWidth, y, depth).tex(u2, v1).endVertex();
+                bufferbuilder.pos(x2 + currentWidth, y + currentHeight, depth).tex(16, v2).endVertex();
+                bufferbuilder.pos(x2 + currentWidth, y, depth).tex(16, v1).endVertex();
                 tessellator.draw();
                 x2 += currentWidth;
             } while (width2 > 0);
