@@ -17,7 +17,7 @@ public class RenderRatArrow extends ArrowRenderer<EntityRatArrow> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityRatArrow entity) {
+    public ResourceLocation getEntityTexture(EntityRatArrow entity) {
         return TEXTURE;
     }
 }

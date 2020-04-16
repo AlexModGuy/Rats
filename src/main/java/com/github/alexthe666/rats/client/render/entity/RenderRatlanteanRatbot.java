@@ -17,7 +17,7 @@ public class RenderRatlanteanRatbot extends MobRenderer<EntityRatlanteanRatbot, 
 
     }
 
-    protected ResourceLocation getEntityTexture(EntityRatlanteanRatbot entity) {
+    public ResourceLocation getEntityTexture(EntityRatlanteanRatbot entity) {
         return RATBOT_TEXTURE;
     }
 

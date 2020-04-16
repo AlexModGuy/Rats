@@ -29,7 +29,7 @@ public class RenderPlagueBeast extends MobRenderer<EntityPlagueBeast, ModelFeral
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityPlagueBeast entity) {
+    public ResourceLocation getEntityTexture(EntityPlagueBeast entity) {
         switch (entity.getColorVariant()) {
             case 1:
                 return BLACK_TEXTURE;

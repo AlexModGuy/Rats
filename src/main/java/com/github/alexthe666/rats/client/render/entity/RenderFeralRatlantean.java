@@ -15,18 +15,20 @@ public class RenderFeralRatlantean extends MobRenderer<EntityFeralRatlantean, Mo
     private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_black.png");
     private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_brown.png");
     private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_green.png");
+    private static final ResourceLocation CLOTHES = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_clothes.png");
+    private static final ResourceLocation EYES = new ResourceLocation("rats:textures/entity/ratlantis/feral_ratlantean_eyes.png");
 
     public RenderFeralRatlantean() {
         super(Minecraft.getInstance().getRenderManager(), new ModelFeralRatlantean(), 0.5F);
-        this.addLayer(new LayerFeralRatlanteanClothes(this));
-        this.addLayer(new LayerFeralRatlanteanEyes(this));
+        this.addLayer(new LayerBasicOverlay(this, CLOTHES));
+        this.addLayer(new LayerGlowingOverlay(this, EYES));
     }
 
     protected void preRenderCallback(EntityFeralRatlantean rat, float partialTickTime) {
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityFeralRatlantean entity) {
+    public ResourceLocation getEntityTexture(EntityFeralRatlantean entity) {
         switch (entity.getColorVariant()) {
             case 1:
                 return BLACK_TEXTURE;

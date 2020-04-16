@@ -18,7 +18,7 @@ public class RenderRatChickenMount extends MobRenderer<EntityRatChickenMount, Ch
         super(Minecraft.getInstance().getRenderManager(), new ChickenModel<>(), 0.3F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityRatChickenMount entity) {
+    public ResourceLocation getEntityTexture(EntityRatChickenMount entity) {
         return CHICKEN_TEXTURES;
     }
 

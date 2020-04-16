@@ -22,7 +22,7 @@ public class RenderMarbledCheeseGolem extends MobRenderer<EntityMarbleCheeseGole
         GL11.glTranslatef(0, -0.7F, 0);
     }
 
-    protected ResourceLocation getEntityTexture(EntityMarbleCheeseGolem entity) {
+    public ResourceLocation getEntityTexture(EntityMarbleCheeseGolem entity) {
         return MARBLED_CHEESE_GOLEM_TEXTURE;
     }
 }

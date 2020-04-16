@@ -58,7 +58,7 @@ public class RenderPlagueShot extends EntityRenderer<EntityPlagueShot> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityPlagueShot entity) {
+    public ResourceLocation getEntityTexture(EntityPlagueShot entity) {
         return TEXTURE;
     }
 }

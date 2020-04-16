@@ -22,7 +22,7 @@ public class RenderRatAutomatonMount extends MobRenderer<EntityRatAutomatonMount
         GL11.glTranslatef(0, -0.7F, 0);
     }
 
-    protected ResourceLocation getEntityTexture(EntityRatAutomatonMount entity) {
+    public ResourceLocation getEntityTexture(EntityRatAutomatonMount entity) {
         return MARBLED_CHEESE_GOLEM_TEXTURE;
     }
 }

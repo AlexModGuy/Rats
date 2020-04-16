@@ -15,7 +15,7 @@ public class RenderPlagueDoctor extends MobRenderer<EntityPlagueDoctor, ModelPla
         //this.addLayer(new LayerCustomHead(this.getMainModel().villagerHead));
     }
 
-    protected ResourceLocation getEntityTexture(EntityPlagueDoctor entity) {
+    public ResourceLocation getEntityTexture(EntityPlagueDoctor entity) {
         return VILLAGER_TEXTURES;
     }
 

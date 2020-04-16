@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -12,7 +13,7 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<T> {
+public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<T> implements IHasArm {
     public ModelRenderer head;
     public ModelRenderer hat;
     public ModelRenderer body;
@@ -132,6 +133,11 @@ public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<
 
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+
+    }
+
+    @Override
+    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
 
     }
 }

@@ -70,7 +70,7 @@ public class RenderRattlingGun extends EntityRenderer<EntityRattlingGun> {
         return start + (end - start) * pct;
     }
 
-    protected ResourceLocation getEntityTexture(EntityRattlingGun entity) {
+    public ResourceLocation getEntityTexture(EntityRattlingGun entity) {
         return TEXTURE;
     }
 }

@@ -23,7 +23,7 @@ public class RenderRatBeastMount extends MobRenderer<EntityRatBeastMount, ModelR
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityRatBeastMount entity) {
+    public ResourceLocation getEntityTexture(EntityRatBeastMount entity) {
         switch (entity.getColorVariant()) {
             case 1:
                 return BLACK_TEXTURE;

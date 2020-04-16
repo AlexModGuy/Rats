@@ -18,7 +18,7 @@ public class RenderRatfish extends MobRenderer<EntityRatfish, ModelRatFish<Entit
     }
 
     @Nullable
-    protected ResourceLocation getEntityTexture(EntityRatfish entity) {
+    public ResourceLocation getEntityTexture(EntityRatfish entity) {
         return TEXTURE;
     }
 

@@ -18,7 +18,7 @@ public class RenderRatlateanSpirit<T extends MobEntity> extends MobRenderer<T, M
         super(Minecraft.getInstance().getRenderManager(), new ModelRatlanteanSpirit(), 0.5F);
     }
 
-    protected ResourceLocation getEntityTexture(MobEntity entity) {
+    public ResourceLocation getEntityTexture(MobEntity entity) {
         return entity instanceof EntityPlagueCloud ? TEXTURE_CLOUD : TEXTURE;
     }
 

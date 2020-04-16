@@ -30,7 +30,7 @@ public class RenderNeoRatlantean extends MobRenderer<EntityNeoRatlantean, ModelN
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityNeoRatlantean entity) {
+    public ResourceLocation getEntityTexture(EntityNeoRatlantean entity) {
         switch (entity.getColorVariant()) {
             case 1:
                 return BLACK_TEXTURE;

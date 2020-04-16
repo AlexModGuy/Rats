@@ -5,10 +5,16 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 
-public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntityModel<T> {
+public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntityModel<T> implements IHasArm {
     public AdvancedModelBox body1;
     public AdvancedModelBox body2;
     public AdvancedModelBox neck;
@@ -304,5 +310,15 @@ public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntit
 
     public ModelRenderer getArm(HandSide p_191361_1_) {
         return paw;
+    }
+
+    @Override
+    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
+        body1.translateRotate(matrixStackIn);
+        rightArm1.translateRotate(matrixStackIn);
+        rightArm2.translateRotate(matrixStackIn);
+        paw.translateRotate(matrixStackIn);
+        matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 90.0F, true));
+        matrixStackIn.translate(0.1F, -0.75F, 0);
     }
 }

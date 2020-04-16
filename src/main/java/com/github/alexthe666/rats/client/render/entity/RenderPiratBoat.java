@@ -23,7 +23,7 @@ public class RenderPiratBoat extends MobRenderer<EntityPiratBoat, ModelPiratBoat
         GL11.glScaled(1.2F, 1.2F, 1.2F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityPiratBoat entity) {
+    public ResourceLocation getEntityTexture(EntityPiratBoat entity) {
         return TEXTURE;
     }
 }

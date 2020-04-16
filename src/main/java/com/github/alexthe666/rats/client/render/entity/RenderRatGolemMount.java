@@ -14,7 +14,7 @@ public class RenderRatGolemMount extends MobRenderer<EntityRatGolemMount, ModelR
 
     }
 
-    protected ResourceLocation getEntityTexture(EntityRatGolemMount entity) {
+    public ResourceLocation getEntityTexture(EntityRatGolemMount entity) {
         return TEXTURE;
     }
 

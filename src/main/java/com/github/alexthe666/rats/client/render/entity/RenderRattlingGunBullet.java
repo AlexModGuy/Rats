@@ -95,7 +95,7 @@ public class RenderRattlingGunBullet  extends ArrowRenderer {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    public ResourceLocation getEntityTexture(Entity entity) {
         return TEXTURE;
     }
 }

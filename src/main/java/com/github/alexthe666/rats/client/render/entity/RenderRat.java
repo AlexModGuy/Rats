@@ -124,7 +124,7 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
 
     }
 
-    protected ResourceLocation getEntityTexture(EntityRat entity) {
+    public ResourceLocation getEntityTexture(EntityRat entity) {
         String s = entity.getRatTexture();
         if (entity.isChild()) {
             return PINKIE_TEXTURE;

@@ -3,11 +3,17 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
@@ -25,87 +31,41 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, ModelRat<EntityRat>
         this.ratRenderer = ratRendererIn;
     }
 
-    public void render(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
+    @Override
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+     if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
         if (rat.hasPlague()) {
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableNormalize();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            this.ratRenderer.bindTexture(TEXTURE);
-            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            GlStateManager.disableBlend();
-            GlStateManager.disableNormalize();
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE));
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) && rat.getHeldRF() > 0) {//rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
-            float alpha = rat.getHeldRF() / Math.max(1, (float) rat.getRFTransferRate());
-            GlStateManager.pushMatrix();
-            boolean flag = true;
-            GlStateManager.depthMask(!flag);
-            this.ratRenderer.bindTexture(TEXTURE_PSYCHIC);
-            GlStateManager.matrixMode(5890);
-            GlStateManager.loadIdentity();
-            float f = (float) rat.ticksExisted + partialTicks;
-            GlStateManager.translatef(f * 0.01F, f * 0.01F, 0.0F);
-            GlStateManager.matrixMode(5888);
-            GlStateManager.enableBlend();
-            GlStateManager.color4f(0.5F, 0.5F, 0.5F, alpha);
-            GlStateManager.disableLighting();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-            GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-            gamerenderer.setupFogColor(false);
-            RAT_MODEL.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            gamerenderer.setupFogColor(true);
-            GlStateManager.matrixMode(5890);
-            GlStateManager.loadIdentity();
-            GlStateManager.matrixMode(5888);
-            GlStateManager.enableLighting();
-            GlStateManager.disableBlend();
-            GlStateManager.depthMask(flag);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.popMatrix();
+            float f = (float)rat.ticksExisted + partialTicks;
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(TEXTURE_PSYCHIC, f * 0.01F, f * 0.01F));
+            ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
+
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
-            this.ratRenderer.bindTexture(TEXTURE_RATINATOR);
-            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_RATINATOR));
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
-            this.ratRenderer.bindTexture(TEXTURE_LUMBERJACK);
-            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_LUMBERJACK));
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasToga()) {
-            this.ratRenderer.bindTexture(TEXTURE_TOGA);
-            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_TOGA));
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
-            boolean flag = rat.isInvisible();
-            GlStateManager.depthMask(!flag);
-            this.bindTexture(TEXTURE_GHOST);
-            GlStateManager.matrixMode(5890);
-            GlStateManager.loadIdentity();
             float f = (float)rat.ticksExisted + partialTicks;
-            GlStateManager.translatef(f * 0.01F, f * 0.01F, 0.0F);
-            GlStateManager.matrixMode(5888);
-            GlStateManager.enableBlend();
-            float f1 = 0.5F;
-            GlStateManager.color4f(0.5F, 0.5F, 0.5F, 0.8F);
-            GlStateManager.disableLighting();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-            this.getEntityModel().setModelAttributes(this.ratRenderer.getEntityModel());
-            GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-            gamerenderer.setupFogColor(true);
-            this.ratRenderer.getEntityModel().renderNoWiskers(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            gamerenderer.setupFogColor(false);
-            this.ratRenderer.func_217758_e(rat);
-            GlStateManager.matrixMode(5890);
-            GlStateManager.loadIdentity();
-            GlStateManager.matrixMode(5888);
-            GlStateManager.enableLighting();
-            GlStateManager.disableBlend();
-            GlStateManager.depthMask(true);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(TEXTURE_GHOST, f * 0.01F, f * 0.01F));
+            ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
         }
     }
 

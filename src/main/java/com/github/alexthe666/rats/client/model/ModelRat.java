@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 
-public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
+public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
     public AdvancedModelBox body1;
     public AdvancedModelBox body2;
     public AdvancedModelBox tail1;
@@ -230,7 +230,7 @@ public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
 
     }
 
-    public void setRotationAngles(EntityRat rat, float f, float f1, float f2, float f3, float f4) {
+    public void setRotationAngles(T rat, float f, float f1, float f2, float f3, float f4) {
         animate((IAnimatedEntity) rat, f, f1, f2, f3, f4);
         float speedWalk = 1F;
         float degreeWalk = 0.3F;
@@ -507,10 +507,5 @@ public class ModelRat<T extends Entity> extends AdvancedEntityModel<T>{
     @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(body1);
-    }
-
-    @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
     }
 }
