@@ -51,19 +51,31 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                     }
                     else if (thePlayer.dimension != RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE) {
                         thePlayer.timeUntilPortal = 10;
-                        teleportEntity(thePlayer, server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE), pos);
+                        ServerWorld dimWorld = server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
+                        if(dimWorld != null){
+                            teleportEntity(thePlayer, dimWorld, pos);
+                        }
                     } else {
                         thePlayer.timeUntilPortal = 10;
-                        teleportEntity(thePlayer, server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension)), pos);
+                        ServerWorld dimWorld = server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
+                        if(dimWorld != null){
+                            teleportEntity(thePlayer, dimWorld, pos);
+                        }
                     }
                 }
                 if (!(entity instanceof PlayerEntity)) {
                     if (entity.dimension.getId() != RatConfig.ratlantisDimensionId) {
                         entity.timeUntilPortal = 10;
-                        teleportEntity(entity, server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE), pos);
+                        ServerWorld dimWorld = server.getWorld(RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE);
+                        if(dimWorld != null){
+                            teleportEntity(entity, dimWorld, pos);
+                        }
                     } else {
+                        ServerWorld dimWorld = server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension));
                         entity.timeUntilPortal = 10;
-                        teleportEntity(entity, server.getWorld(DimensionType.getById(RatConfig.ratlantisPortalExitDimension)), pos);
+                        if(dimWorld != null){
+                            teleportEntity(entity, dimWorld, pos);
+                        }
                     }
                 }
             }
