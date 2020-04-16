@@ -46,6 +46,7 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
     private static final ResourceLocation RATATLA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_ratatla.png");
     private static final ResourceLocation FRIAR = new ResourceLocation("rats:textures/entity/rat/patreon/rat_friar.png");
     private static final ResourceLocation RIDDLER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_riddler.png");
+    private static final ResourceLocation JOKER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_joker.png");
 
     public RenderRat() {
         super(Minecraft.getInstance().getRenderManager(), RAT_MODEL, 0.15F);
@@ -168,6 +169,9 @@ public class RenderRat extends MobRenderer<EntityRat, ModelRat<EntityRat>> {
                 }
                 if (str.contains("riddler") || str.contains("Riddler")) {
                     return RIDDLER;
+                }
+                if (str.contains("joker") || str.contains("Joker")) {
+                    return JOKER;
                 }
             }
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);
