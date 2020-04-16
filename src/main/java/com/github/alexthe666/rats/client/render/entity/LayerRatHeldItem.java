@@ -1,19 +1,27 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.client.model.ModelChristmasChest;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.model.ChestModel;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -22,7 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRat>> {
-    protected static final ChestModel MODEL_CHEST = new ChestModel();
+
     private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
@@ -35,6 +43,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
     private static ItemStack CARROT_STACK = new ItemStack(Blocks.FERN);
+    private static ModelChristmasChest CHRISTMAS_CHEST_MODEL = new ModelChristmasChest();
     private final IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer;
 
     public LayerRatHeldItem(IEntityRenderer<EntityRat, ModelRat<EntityRat>> renderer) {
@@ -42,314 +51,298 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, ModelRat<EntityRa
         this.renderer = renderer;
     }
 
-    public void render(EntityRat entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (!(this.renderer.getEntityModel() instanceof ModelRat)) {
+    @Override
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+     if (!(this.renderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
         ItemStack itemstack = entity.getHeldItem(Hand.MAIN_HAND);
         if (!itemstack.isEmpty()) {
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             if (this.renderer.getEntityModel().isChild) {
-                GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                matrixStackIn.translate(0.0F, 0.625F, 0.0F);
+                matrixStackIn.rotate(new Quaternion(Vector3f.XN, -20F, true));
                 float f = 0.5F;
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getInstance();
             if (entity.shouldNotIdleAnimation()) {
-                translateToHead();
-                GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.translatef(0F, 0.25F, 0.05F);
+                translateToHead(matrixStackIn);
+                matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180F, true));
+                matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
+                matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90F, true));
+                matrixStackIn.translate(0F, 0.25F, 0.05F);
             } else {
-                translateToHand(true);
-                GlStateManager.rotatef(190.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotatef(20.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.translatef(-0.155F, -0.025F, 0.125F);
+                translateToHand(true, matrixStackIn);
+                matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 190F, true));
+                matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
+                matrixStackIn.rotate(new Quaternion(Vector3f.XP, 20F, true));
+                matrixStackIn.translate(-0.155F, -0.025F, 0.125F);
                 if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
-                    GlStateManager.translatef(0F, 0.25F, 0F);
+                    matrixStackIn.translate(0F, 0.25F, 0F);
                     if (itemstack.getItem() instanceof BlockItem) {
-                        GlStateManager.rotatef(-90, 1.0F, 0.0F, 0.0F);
+                        matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
                     } else {
-                        GlStateManager.translatef(0F, -0.1F, -0.075F);
+                        matrixStackIn.translate(0F, -0.1F, -0.075F);
 
                     }
                 }
                 if (entity.holdsItemInHandUpgrade()) {
-                    GlStateManager.translatef(0.15F, -0.075F, 0);
+                    matrixStackIn.translate(0.15F, -0.075F, 0);
                 }
             }
-            if(entity instanceof EntityGhostPirat){
-                GlStateManager.disableLighting();
-                GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-                GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
-            }
-            minecraft.getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            minecraft.getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)) {
-            GlStateManager.pushMatrix();
-            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-            GlStateManager.pushMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0, -0.925F, 0.2F);
-            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-            this.renderer.bindTexture(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON);
-            LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0, -0.925F, 0.2F);
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON));
+            IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON_FIRE));
+            LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             if (entity.getVisualFlag()) {
-                GlStateManager.pushMatrix();
-                GlStateManager.translatef(0, -0.925F, 0.2F);
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-                GlStateManager.disableLighting();
-                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
-                this.renderer.bindTexture(LayerPiratBoatSail.TEXTURE_PIRATE_CANNON_FIRE);
-                LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-                GlStateManager.enableLighting();
-                GlStateManager.popMatrix();
+                LayerPiratBoatSail.MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }
-            GlStateManager.popMatrix();
-            GlStateManager.popMatrix();
+            matrixStackIn.pop();
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             if (this.renderer.getEntityModel().isChild) {
-                GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                matrixStackIn.translate(0.0F, 0.625F, 0.0F);
+                matrixStackIn.rotate(new Quaternion(Vector3f.XN, -20F, true));
+
                 float f = 0.5F;
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getInstance();
-            translateToHand(false);
-            GlStateManager.rotatef(-80.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotatef(10.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translatef(0.15F, -0.4F, -0.5F);
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(-0.175F, 0.25F, 0.2F);
-            GlStateManager.scalef(0.35F, 0.35F, 0.35F);
-            this.renderer.bindTexture(TEXTURE_CHRISTMAS_CHEST);
-            MODEL_CHEST.renderAll();
-            GlStateManager.popMatrix();
-            GlStateManager.popMatrix();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 10F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -80F, true));
+
+            matrixStackIn.translate(0.15F, -0.4F, -0.5F);
+            matrixStackIn.push();
+            matrixStackIn.translate(-0.175F, 0.25F, 0.2F);
+            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE_CHRISTMAS_CHEST));
+            CHRISTMAS_CHEST_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             if (this.renderer.getEntityModel().isChild) {
-                GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                matrixStackIn.translate(0.0F, 0.625F, 0.0F);
+                matrixStackIn.rotate(new Quaternion(Vector3f.XN, -20F, true));
+
                 float f = 0.5F;
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getInstance();
-            translateToHand(true);
-            GlStateManager.rotatef(190.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-70.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.translatef(-0.155F, -0.225F, 0.2F);
-            GlStateManager.scalef(2F, 2F, 2F);
-            minecraft.getItemRenderer().renderItem(PLATTER_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            translateToHand(true, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 190F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -70F, true));
+
+            matrixStackIn.translate(-0.155F, -0.225F, 0.2F);
+            matrixStackIn.scale(2F, 2F, 2F);
+            minecraft.getItemRenderer().renderItem(PLATTER_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MILKER)) {
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             if (this.renderer.getEntityModel().isChild) {
-                GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                matrixStackIn.translate(0.0F, 0.625F, 0.0F);
+                matrixStackIn.rotate(new Quaternion(Vector3f.XN, -20F, true));
                 float f = 0.5F;
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             }
             Minecraft minecraft = Minecraft.getInstance();
-            translateToHand(true);
-            GlStateManager.rotatef(190.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-40.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.translatef(-0.155F, -0.225F, 0.1F);
-            GlStateManager.scalef(1.75F, 1.75F, 1.75F);
-            minecraft.getItemRenderer().renderItem(ItemRatUpgradeBucket.getBucketFromFluid(entity.transportingFluid), entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            translateToHand(true, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 190F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -40F, true));
+
+            matrixStackIn.translate(-0.155F, -0.225F, 0.1F);
+            matrixStackIn.scale(1.75F, 1.75F, 1.75F);
+            minecraft.getItemRenderer().renderItem(ItemRatUpgradeBucket.getBucketFromFluid(entity.transportingFluid), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(true);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(-45.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(AXE_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(-45.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(PICKAXE_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(true, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, -45F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(AXE_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, -45F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(PICKAXE_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(-15.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(IRON_AXE_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, -15F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(IRON_AXE_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(new ItemStack(Items.DIAMOND_PICKAXE), entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(-15.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(IRON_HOE_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, -15F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(IRON_HOE_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-90F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(15.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.translatef(0.1F, 0.0F, 0.0F);
-            minecraft.getItemRenderer().renderItem(SHEARS_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 15F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            matrixStackIn.translate(0.1F, 0.0F, 0.0F);
+            minecraft.getItemRenderer().renderItem(SHEARS_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHand(false);
-            GlStateManager.rotatef(-180F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(90F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translatef(0.2F, 0, 0.0F);
-            minecraft.getItemRenderer().renderItem(FISHING_ROD_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -180F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90F, true));
+            matrixStackIn.translate(0.2F, 0, 0.0F);
+            minecraft.getItemRenderer().renderItem(FISHING_ROD_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             Minecraft minecraft = Minecraft.getInstance();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
-            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-            ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, -0.1F, 0F);
-            GlStateManager.rotatef(wingAngle, 0.0F, 0.0F, -1.0F);
-            GlStateManager.rotatef(wingFold, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translatef(0.55F, 0, 0.2F);
-            GlStateManager.rotatef(-90F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(WING_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, -0.1F, 0F);
-            GlStateManager.rotatef(wingAngle, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(wingFold, 0.0F, -1.0F, 0.0F);
-            GlStateManager.translatef(-0.55F, 0F, 0.2F);
-            GlStateManager.rotatef(-90F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotatef(180F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(WING_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
-            GlStateManager.popMatrix();
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZN, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, wingFold, true));
+            matrixStackIn.translate(0.55F, 0, 0.2F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YN, wingFold, true));
+            matrixStackIn.translate(-0.55F, 0F, 0.2F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
+            matrixStackIn.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
-            GlStateManager.pushMatrix();
+            matrixStackIn.push();
             Minecraft minecraft = Minecraft.getInstance();
             float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 30;
             float wingFold = entity.onGround ? -45 : 0;
-            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-            ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, -0.1F, 0F);
-            GlStateManager.rotatef(wingAngle, 0.0F, 0.0F, -1.0F);
-            GlStateManager.rotatef(wingFold, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translatef(0.55F, 0, 0.2F);
-            GlStateManager.rotatef(-90F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(DRAGON_WING_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, -0.1F, 0F);
-            GlStateManager.rotatef(wingAngle, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(wingFold, 0.0F, -1.0F, 0.0F);
-            GlStateManager.translatef(-0.55F, 0F, 0.2F);
-            GlStateManager.rotatef(-90F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotatef(180F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 1);
-            minecraft.getItemRenderer().renderItem(DRAGON_WING_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
-            GlStateManager.popMatrix();
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZN, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, wingFold, true));
+            matrixStackIn.translate(0.55F, 0, 0.2F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(DRAGON_WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YN, wingFold, true));
+            matrixStackIn.translate(-0.55F, 0F, 0.2F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
+            matrixStackIn.scale(2, 2, 1);
+            minecraft.getItemRenderer().renderItem(DRAGON_WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
             Minecraft minecraft = Minecraft.getInstance();
-            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, 0.1F, 0.1F);
-            GlStateManager.rotatef(180, 1.0F, 0.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 2);
-            minecraft.getItemRenderer().renderItem(TNT_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, 0.1F, 0.1F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180F, true));
+            matrixStackIn.scale(2, 2, 2);
+            minecraft.getItemRenderer().renderItem(TNT_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CARRAT)) {
             Minecraft minecraft = Minecraft.getInstance();
-            ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0F, -0.05F, 0.5F);
-            GlStateManager.rotatef(90, 1.0F, 0.0F, 0.0F);
-            GlStateManager.scalef(2, 2, 2);
-            minecraft.getItemRenderer().renderItem(CARROT_STACK, entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.05F, 0.5F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90F, true));
+            matrixStackIn.scale(2, 2, 2);
+            minecraft.getItemRenderer().renderItem(CARROT_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
             Minecraft minecraft = Minecraft.getInstance();
-            GlStateManager.pushMatrix();
-            translateToHead();
-            GlStateManager.translatef(0F, 0.1F, 0.035F);
-            GlStateManager.rotatef(180, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotatef(180, 0.0F, 1.0F, 0.0F);
-            GlStateManager.scalef(0.9F, 0.9F, 0.9F);
-            minecraft.getItemRenderer().renderItem(new ItemStack(RatsBlockRegistry.BRAIN_BLOCK), entity, ItemCameraTransforms.TransformType.GROUND, false);
-            GlStateManager.popMatrix();
+            matrixStackIn.push();
+            translateToHead(matrixStackIn);
+            matrixStackIn.translate(0F, 0.1F, 0.035F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
+
+            matrixStackIn.scale(0.9F, 0.9F, 0.9F);
+            minecraft.getItemRenderer().renderItem(new ItemStack(RatsBlockRegistry.BRAIN_BLOCK), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
         }
     }
 
-    protected void translateToHead() {
-        ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-        ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
-        ((ModelRat) this.renderer.getEntityModel()).neck.postRender(0.0625F);
-        ((ModelRat) this.renderer.getEntityModel()).head.postRender(0.0625F);
+    protected void translateToHead(MatrixStack matrixStack) {
+        ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStack);
+        ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStack);
+        ((ModelRat) this.renderer.getEntityModel()).neck.translateRotate(matrixStack);
+        ((ModelRat) this.renderer.getEntityModel()).head.translateRotate(matrixStack);
     }
 
-    protected void translateToHand(boolean left) {
-        ((ModelRat) this.renderer.getEntityModel()).body1.postRender(0.0625F);
-        ((ModelRat) this.renderer.getEntityModel()).body2.postRender(0.0625F);
+    protected void translateToHand(boolean left, MatrixStack matrixStack) {
+        ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStack);
+        ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStack);
         if (left) {
-            ((ModelRat) this.renderer.getEntityModel()).leftArm.postRender(0.0625F);
-            ((ModelRat) this.renderer.getEntityModel()).leftHand.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).leftArm.translateRotate(matrixStack);
+            ((ModelRat) this.renderer.getEntityModel()).leftHand.translateRotate(matrixStack);
         } else {
-            ((ModelRat) this.renderer.getEntityModel()).rightArm.postRender(0.0625F);
-            ((ModelRat) this.renderer.getEntityModel()).rightHand.postRender(0.0625F);
+            ((ModelRat) this.renderer.getEntityModel()).rightArm.translateRotate(matrixStack);
+            ((ModelRat) this.renderer.getEntityModel()).rightHand.translateRotate(matrixStack);
         }
-    }
-
-
-    @Override
-    public boolean shouldCombineTextures() {
-        return false;
     }
 }

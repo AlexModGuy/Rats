@@ -3,12 +3,17 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
@@ -27,7 +32,8 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, ModelRat<EntityRat>> 
         this.ratRenderer = ratRendererIn;
     }
 
-    public void render(EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    @Override
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
@@ -43,32 +49,24 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, ModelRat<EntityRat>> 
             brightness = Math.max(i, j);
         }
         if (brightness < 7 || rat.shouldEyesGlow()) {
+            ResourceLocation tex = null;
             if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
-                this.ratRenderer.bindTexture(TEXTURE_DRAGON);
+                tex = TEXTURE_DRAGON;
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
-                this.ratRenderer.bindTexture(TEXTURE_NONBELIEVER);
+                tex = TEXTURE_NONBELIEVER;
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
-                this.ratRenderer.bindTexture(TEXTURE_ENDER);
+                tex = TEXTURE_ENDER;
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
-                this.ratRenderer.bindTexture(TEXTURE_RATINATOR);
+                tex = TEXTURE_RATINATOR;
             } else if (rat.hasPlague()) {
-                this.ratRenderer.bindTexture(TEXTURE_PLAGUE);
+                tex = TEXTURE_PLAGUE;
             } else {
-                this.ratRenderer.bindTexture(TEXTURE);
+                tex = TEXTURE;
             }
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-            GlStateManager.disableLighting();
-            GlStateManager.depthFunc(514);
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
-            GlStateManager.enableLighting();
-            GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-            gamerenderer.setupFogColor(true);
-            this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            gamerenderer.setupFogColor(false);
-            this.ratRenderer.func_217758_e(rat);
-            GlStateManager.disableBlend();
-            GlStateManager.depthFunc(515);
+            if(tex != null){
+                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(tex));
+                this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            }
         }
     }
 

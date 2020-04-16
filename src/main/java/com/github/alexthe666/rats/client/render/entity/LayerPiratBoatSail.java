@@ -3,12 +3,19 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelPiratBoat;
 import com.github.alexthe666.rats.client.model.ModelPiratCannon;
 import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPiratBoat<EntityPiratBoat>> {
@@ -22,36 +29,25 @@ public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPira
         this.ratRenderer = ratRendererIn;
     }
 
-    public void render(EntityPiratBoat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        GlStateManager.pushMatrix();
-        GlStateManager.rotatef(180F, 1F, 0F, 0F);
-        GlStateManager.rotatef(90F, 0F, 1F, 0F);
-        GlStateManager.translatef(0F, -0.8F, -0.9F);
-        GlStateManager.scalef(4F, 4F, 4F);
-        Minecraft.getInstance().getItemRenderer().renderItem(EntityPiratBoat.BANNER, ItemCameraTransforms.TransformType.GROUND);
-        GlStateManager.popMatrix();
+    @Override
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityPiratBoat entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        matrixStackIn.push();
+        matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180F, true));
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90F, true));
+        matrixStackIn.translate(0F, -0.8F, -0.9F);
+        matrixStackIn.scale(4F, 4F, 4F);
+        Minecraft.getInstance().getItemRenderer().renderItem(EntityPiratBoat.BANNER, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        matrixStackIn.pop();
 
-        GlStateManager.pushMatrix();
-        GlStateManager.rotatef(-90F, 0F, 1F, 0F);
-        GlStateManager.translatef(0, 0.1F, -0.6F);
-        GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-        ratRenderer.bindTexture(TEXTURE_PIRATE_CANNON);
-        MODEL_PIRAT_CANNON.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        GlStateManager.popMatrix();
-
-        if (rat.isFiring()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.rotatef(-90F, 0F, 1F, 0F);
-            GlStateManager.translatef(0, 0.1F, -0.6F);
-            GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-            GlStateManager.disableLighting();
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240F, 0.0F);
-            ratRenderer.bindTexture(TEXTURE_PIRATE_CANNON_FIRE);
-            MODEL_PIRAT_CANNON.render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            GlStateManager.enableLighting();
-            GlStateManager.popMatrix();
-        }
-
+        matrixStackIn.push();
+        matrixStackIn.rotate(new Quaternion(Vector3f.YN, 90F, true));
+        matrixStackIn.translate(0, 0.1F, -0.6F);
+        matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE_PIRATE_CANNON));
+        IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RenderType.getEyes(TEXTURE_PIRATE_CANNON));
+        MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        matrixStackIn.pop();
     }
 
     public boolean shouldCombineTextures() {

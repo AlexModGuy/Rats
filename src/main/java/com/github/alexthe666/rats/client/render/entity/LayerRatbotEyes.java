@@ -2,12 +2,17 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanRatbot;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanRatbot;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerRatbotEyes extends LayerRenderer<EntityRatlanteanRatbot, ModelRatlanteanRatbot<EntityRatlanteanRatbot>> {
@@ -22,21 +27,11 @@ public class LayerRatbotEyes extends LayerRenderer<EntityRatlanteanRatbot, Model
         this.ratRenderer = ratRendererIn;
     }
 
-    public void render(EntityRatlanteanRatbot rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.ratRenderer.bindTexture(getTextureForTick(rat.ticksExisted * 3));
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-        GlStateManager.disableLighting();
-        GlStateManager.depthFunc(514);
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
-        GlStateManager.enableLighting();
-        GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-        gamerenderer.setupFogColor(true);
-        this.ratRenderer.getEntityModel().render(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        gamerenderer.setupFogColor(false);
-        this.ratRenderer.func_217758_e(rat);
-        GlStateManager.disableBlend();
-        GlStateManager.depthFunc(515);
+    @Override
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRatlanteanRatbot entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(getTextureForTick(entitylivingbaseIn.ticksExisted * 3)));
+        this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+
     }
 
     private ResourceLocation getTextureForTick(int ticksExisted) {
