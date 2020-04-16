@@ -1,38 +1,28 @@
 package com.github.alexthe666.rats.client.model.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class RendererModelGlowy extends RendererModel {
+public class ModelRendererGlowy extends ModelRenderer {
 
-    public RendererModelGlowy(Model model, String boxNameIn) {
-        super(model, boxNameIn);
-    }
-
-    public RendererModelGlowy(Model model) {
+    public ModelRendererGlowy(Model model) {
         super(model);
     }
 
-    public RendererModelGlowy(Model model, int texOffX, int texOffY) {
+    public ModelRendererGlowy(Model model, int texOffX, int texOffY) {
         super(model, texOffX, texOffY);
     }
 
-    public void render(float scale) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-        GlStateManager.enableNormalize();
-        GlStateManager.disableLighting();
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680, 0.0F);
-        super.render(scale);
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 0.0F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableNormalize();
-        GlStateManager.popMatrix();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public ModelRendererGlowy(int textureWidthIn, int textureHeightIn, int textureOffsetXIn, int textureOffsetYIn) {
+        super(textureWidthIn, textureHeightIn, textureOffsetXIn, textureOffsetYIn);
+    }
+
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
     }
 }

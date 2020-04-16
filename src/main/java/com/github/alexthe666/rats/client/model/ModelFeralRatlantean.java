@@ -2,188 +2,191 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelFeralRatlantean<T extends Entity> extends AdvancedEntityModel<T>{
-    public AdvancedRendererModel lowerbody;
-    public AdvancedRendererModel midBody;
-    public AdvancedRendererModel backLeftThigh;
-    public AdvancedRendererModel backRightThigh;
-    public AdvancedRendererModel tail1;
-    public AdvancedRendererModel tatters3;
-    public AdvancedRendererModel frontBody;
-    public AdvancedRendererModel tatters1;
-    public AdvancedRendererModel tatters2;
-    public AdvancedRendererModel frontRightLeg;
-    public AdvancedRendererModel frontLeftLeg;
-    public AdvancedRendererModel neck;
-    public AdvancedRendererModel frontRightHeel;
-    public AdvancedRendererModel frontRightFoot;
-    public AdvancedRendererModel frontLeftHeel;
-    public AdvancedRendererModel frontLeftFoot;
-    public AdvancedRendererModel head1;
-    public AdvancedRendererModel tatters4;
-    public AdvancedRendererModel snoutUpper;
-    public AdvancedRendererModel mouth1;
-    public AdvancedRendererModel ear1;
-    public AdvancedRendererModel ear2;
-    public AdvancedRendererModel nose;
-    public AdvancedRendererModel teeth;
-    public AdvancedRendererModel wisker1;
-    public AdvancedRendererModel wisker2;
-    public AdvancedRendererModel backLeftLeg;
-    public AdvancedRendererModel backLeftHeel;
-    public AdvancedRendererModel backLeftFoot;
-    public AdvancedRendererModel backRightLeg;
-    public AdvancedRendererModel backRightHeel;
-    public AdvancedRendererModel backRightFoot;
-    public AdvancedRendererModel tail2;
-    public AdvancedRendererModel tail3;
-    public AdvancedRendererModel tail4;
+public class ModelFeralRatlantean<T extends EntityFeralRatlantean> extends AdvancedEntityModel<T>{
+    public AdvancedModelBox lowerbody;
+    public AdvancedModelBox midBody;
+    public AdvancedModelBox backLeftThigh;
+    public AdvancedModelBox backRightThigh;
+    public AdvancedModelBox tail1;
+    public AdvancedModelBox tatters3;
+    public AdvancedModelBox frontBody;
+    public AdvancedModelBox tatters1;
+    public AdvancedModelBox tatters2;
+    public AdvancedModelBox frontRightLeg;
+    public AdvancedModelBox frontLeftLeg;
+    public AdvancedModelBox neck;
+    public AdvancedModelBox frontRightHeel;
+    public AdvancedModelBox frontRightFoot;
+    public AdvancedModelBox frontLeftHeel;
+    public AdvancedModelBox frontLeftFoot;
+    public AdvancedModelBox head1;
+    public AdvancedModelBox tatters4;
+    public AdvancedModelBox snoutUpper;
+    public AdvancedModelBox mouth1;
+    public AdvancedModelBox ear1;
+    public AdvancedModelBox ear2;
+    public AdvancedModelBox nose;
+    public AdvancedModelBox teeth;
+    public AdvancedModelBox wisker1;
+    public AdvancedModelBox wisker2;
+    public AdvancedModelBox backLeftLeg;
+    public AdvancedModelBox backLeftHeel;
+    public AdvancedModelBox backLeftFoot;
+    public AdvancedModelBox backRightLeg;
+    public AdvancedModelBox backRightHeel;
+    public AdvancedModelBox backRightFoot;
+    public AdvancedModelBox tail2;
+    public AdvancedModelBox tail3;
+    public AdvancedModelBox tail4;
     public ModelAnimator animator;
 
     public ModelFeralRatlantean() {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.tail2 = new AdvancedRendererModel(this, 15, 50);
+        this.tail2 = new AdvancedModelBox(this, 15, 50);
         this.tail2.setRotationPoint(0.0F, 0.1F, 7.5F);
         this.tail2.addBox(-1.0F, -1.5F, 0.0F, 2, 3, 8, 0.0F);
         this.setRotateAngle(tail2, 0.2617993877991494F, 0.0F, 0.0F);
-        this.frontLeftHeel = new AdvancedRendererModel(this, 34, 0);
+        this.frontLeftHeel = new AdvancedModelBox(this, 34, 0);
         this.frontLeftHeel.setRotationPoint(1.0F, 4.7F, 1.0F);
         this.frontLeftHeel.addBox(-0.5F, 0.0F, -2.0F, 1, 6, 2, 0.0F);
         this.setRotateAngle(frontLeftHeel, -0.9599310885968813F, 0.0F, 0.0F);
-        this.frontRightHeel = new AdvancedRendererModel(this, 34, 0);
+        this.frontRightHeel = new AdvancedModelBox(this, 34, 0);
         this.frontRightHeel.setRotationPoint(-1.0F, 4.7F, 1.0F);
         this.frontRightHeel.addBox(-0.5F, 0.0F, -2.0F, 1, 6, 2, 0.0F);
         this.setRotateAngle(frontRightHeel, -0.9599310885968813F, 0.0F, 0.0F);
-        this.nose = new AdvancedRendererModel(this, 36, 27);
+        this.nose = new AdvancedModelBox(this, 36, 27);
         this.nose.setRotationPoint(0.0F, 0.5F, -4.0F);
         this.nose.addBox(-1.0F, -1.0F, -2.0F, 2, 2, 3, 0.0F);
         this.setRotateAngle(nose, 0.31869712141416456F, 0.0F, 0.0F);
-        this.teeth = new AdvancedRendererModel(this, 24, 43);
+        this.teeth = new AdvancedModelBox(this, 24, 43);
         this.teeth.setRotationPoint(0.0F, 3.0F, 0.0F);
         this.teeth.addBox(-2.0F, -0.1F, -5.0F, 4, 2, 5, 0.0F);
-        this.tail4 = new AdvancedRendererModel(this, 0, 53);
+        this.tail4 = new AdvancedModelBox(this, 0, 53);
         this.tail4.setRotationPoint(0.0F, 0.0F, 7.5F);
         this.tail4.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 8, 0.0F);
         this.setRotateAngle(tail4, 0.2617993877991494F, 0.0F, 0.0F);
-        this.lowerbody = new AdvancedRendererModel(this, 0, 0);
+        this.lowerbody = new AdvancedModelBox(this, 0, 0);
         this.lowerbody.setRotationPoint(0.0F, 12.3F, 4.0F);
         this.lowerbody.addBox(-3.5F, -4.0F, -1.0F, 7, 8, 10, 0.0F);
         this.setRotateAngle(lowerbody, -0.08726646259971647F, 0.0F, 0.0F);
-        this.tatters4 = new AdvancedRendererModel(this, 89, 0);
+        this.tatters4 = new AdvancedModelBox(this, 89, 0);
         this.tatters4.setRotationPoint(-2.0F, -1.0F, -1.0F);
         this.tatters4.addBox(0.0F, 0.0F, -3.0F, 0, 9, 6, 0.0F);
         this.setRotateAngle(tatters4, 0.0F, 0.0F, 0.2617993877991494F);
-        this.frontBody = new AdvancedRendererModel(this, 15, 27);
+        this.frontBody = new AdvancedModelBox(this, 15, 27);
         this.frontBody.setRotationPoint(0.0F, 0.0F, -6.0F);
         this.frontBody.addBox(-3.5F, -3.5F, -7.0F, 7, 7, 7, 0.0F);
         this.setRotateAngle(frontBody, 0.2617993877991494F, 0.0F, 0.0F);
-        this.frontLeftFoot = new AdvancedRendererModel(this, 0, 29);
+        this.frontLeftFoot = new AdvancedModelBox(this, 0, 29);
         this.frontLeftFoot.setRotationPoint(0.0F, 5.1F, -0.7F);
         this.frontLeftFoot.addBox(-1.0F, 0.0F, -5.0F, 2, 1, 5, 0.0F);
         this.setRotateAngle(frontLeftFoot, 0.08726646259971647F, 0.0F, 0.0F);
-        this.mouth1 = new AdvancedRendererModel(this, 13, 41);
+        this.mouth1 = new AdvancedModelBox(this, 13, 41);
         this.mouth1.setRotationPoint(0.0F, 1.5F, -5.0F);
         this.mouth1.addBox(-1.5F, 0.0F, -5.7F, 3, 1, 5, 0.0F);
-        this.backLeftHeel = new AdvancedRendererModel(this, 0, 44);
+        this.backLeftHeel = new AdvancedModelBox(this, 0, 44);
         this.backLeftHeel.setRotationPoint(0.0F, 6.0F, 0.2F);
         this.backLeftHeel.addBox(-0.5F, 0.0F, -2.0F, 1, 6, 2, 0.0F);
         this.setRotateAngle(backLeftHeel, -2.007128639793479F, 0.0F, 0.0F);
-        this.backRightFoot = new AdvancedRendererModel(this, 1, 47);
+        this.backRightFoot = new AdvancedModelBox(this, 1, 47);
         this.backRightFoot.setRotationPoint(0.0F, 5.1F, -0.7F);
         this.backRightFoot.addBox(-1.0F, 0.0F, -5.0F, 2, 1, 5, 0.0F);
         this.setRotateAngle(backRightFoot, 0.6108652381980153F, 0.0F, 0.0F);
-        this.tail3 = new AdvancedRendererModel(this, 0, 53);
+        this.tail3 = new AdvancedModelBox(this, 0, 53);
         this.tail3.setRotationPoint(0.0F, 0.0F, 7.5F);
         this.tail3.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 8, 0.0F);
         this.setRotateAngle(tail3, 0.2617993877991494F, 0.0F, 0.0F);
-        this.tatters3 = new AdvancedRendererModel(this, 102, 0);
+        this.tatters3 = new AdvancedModelBox(this, 102, 0);
         this.tatters3.setRotationPoint(3.5F, -4.0F, 7.0F);
         this.tatters3.addBox(0.0F, 0.0F, -3.0F, 0, 9, 6, 0.0F);
         this.setRotateAngle(tatters3, 0.0F, 0.0F, -0.9105382707654417F);
-        this.backLeftThigh = new AdvancedRendererModel(this, 30, 15);
+        this.backLeftThigh = new AdvancedModelBox(this, 30, 15);
         this.backLeftThigh.setRotationPoint(3.5F, 0.0F, 5.0F);
         this.backLeftThigh.addBox(0.0F, -1.0F, -2.0F, 3, 8, 4, 0.0F);
         this.setRotateAngle(backLeftThigh, -0.7853981633974483F, 0.0F, 0.0F);
-        this.ear1 = new AdvancedRendererModel(this, 71, -3);
+        this.ear1 = new AdvancedModelBox(this, 71, -3);
         this.ear1.setRotationPoint(2.5F, -2.0F, -2.0F);
         this.ear1.addBox(0.0F, 0.0F, 0.0F, 0, 3, 3, 0.0F);
         this.setRotateAngle(ear1, 0.7853981633974483F, 0.7853981633974483F, 0.0F);
-        this.frontRightFoot = new AdvancedRendererModel(this, 0, 29);
+        this.frontRightFoot = new AdvancedModelBox(this, 0, 29);
         this.frontRightFoot.setRotationPoint(0.0F, 5.1F, -0.7F);
         this.frontRightFoot.addBox(-1.0F, 0.0F, -5.0F, 2, 1, 5, 0.0F);
         this.setRotateAngle(frontRightFoot, 0.08726646259971647F, 0.0F, 0.0F);
-        this.tatters2 = new AdvancedRendererModel(this, 76, 0);
+        this.tatters2 = new AdvancedModelBox(this, 76, 0);
         this.tatters2.setRotationPoint(-3.0F, -3.0F, -6.0F);
         this.tatters2.addBox(0.0F, 0.0F, -3.0F, 0, 8, 6, 0.0F);
         this.setRotateAngle(tatters2, 0.0F, 0.0F, 0.5235987755982988F);
-        this.frontLeftLeg = new AdvancedRendererModel(this, 0, 0);
+        this.frontLeftLeg = new AdvancedModelBox(this, 0, 0);
         this.frontLeftLeg.setRotationPoint(3.5F, 2.0F, -4.0F);
         this.frontLeftLeg.addBox(0.0F, -1.0F, -1.5F, 2, 6, 3, 0.0F);
         this.setRotateAngle(frontLeftLeg, 0.5235987755982988F, 0.0F, 0.0F);
-        this.neck = new AdvancedRendererModel(this, 43, 27);
+        this.neck = new AdvancedModelBox(this, 43, 27);
         this.neck.setRotationPoint(0.0F, -0.5F, -7.0F);
         this.neck.addBox(-2.0F, -2.5F, -4.0F, 4, 5, 5, 0.0F);
         this.setRotateAngle(neck, -0.2617993877991494F, 0.0F, 0.0F);
-        this.tail1 = new AdvancedRendererModel(this, 0, 18);
+        this.tail1 = new AdvancedModelBox(this, 0, 18);
         this.tail1.setRotationPoint(0.0F, -1.0F, 8.0F);
         this.tail1.addBox(-1.5F, -1.5F, 0.0F, 3, 3, 8, 0.0F);
         this.setRotateAngle(tail1, -0.6981317007977318F, 0.0F, 0.0F);
-        this.frontRightLeg = new AdvancedRendererModel(this, 0, 0);
+        this.frontRightLeg = new AdvancedModelBox(this, 0, 0);
         this.frontRightLeg.setRotationPoint(-3.5F, 2.0F, -4.0F);
         this.frontRightLeg.addBox(-2.0F, -1.0F, -1.5F, 2, 6, 3, 0.0F);
         this.setRotateAngle(frontRightLeg, 0.5235987755982988F, 0.0F, 0.0F);
-        this.midBody = new AdvancedRendererModel(this, 34, 0);
+        this.midBody = new AdvancedModelBox(this, 34, 0);
         this.midBody.setRotationPoint(0.0F, 0.0F, -1.0F);
         this.midBody.addBox(-3.0F, -3.0F, -7.0F, 6, 7, 8, 0.0F);
         this.setRotateAngle(midBody, 0.17453292519943295F, 0.0F, 0.0F);
-        this.snoutUpper = new AdvancedRendererModel(this, 0, 36);
+        this.snoutUpper = new AdvancedModelBox(this, 0, 36);
         this.snoutUpper.setRotationPoint(0.0F, -1.3F, -6.0F);
         this.snoutUpper.addBox(-2.0F, 0.0F, -5.0F, 4, 3, 5, 0.0F);
-        this.ear2 = new AdvancedRendererModel(this, 71, -3);
+        this.ear2 = new AdvancedModelBox(this, 71, -3);
         this.ear2.setRotationPoint(-2.5F, -2.0F, -2.0F);
         this.ear2.addBox(0.0F, 0.0F, 0.0F, 0, 3, 3, 0.0F);
         this.setRotateAngle(ear2, 0.7853981633974483F, -0.7853981633974483F, 0.0F);
-        this.wisker1 = new AdvancedRendererModel(this, 63, 0);
+        this.wisker1 = new AdvancedModelBox(this, 63, 0);
         this.wisker1.mirror = true;
         this.wisker1.setRotationPoint(2.0F, 1.0F, -4.0F);
         this.wisker1.addBox(0.0F, -2.0F, 0.0F, 4, 4, 0, 0.0F);
         this.setRotateAngle(wisker1, 0.0F, -0.8726646259971648F, 0.0F);
-        this.backLeftFoot = new AdvancedRendererModel(this, 1, 47);
+        this.backLeftFoot = new AdvancedModelBox(this, 1, 47);
         this.backLeftFoot.mirror = true;
         this.backLeftFoot.setRotationPoint(0.0F, 5.1F, -0.7F);
         this.backLeftFoot.addBox(-1.0F, 0.0F, -5.0F, 2, 1, 5, 0.0F);
         this.setRotateAngle(backLeftFoot, 0.6108652381980153F, 0.0F, 0.0F);
-        this.backLeftLeg = new AdvancedRendererModel(this, 0, 18);
+        this.backLeftLeg = new AdvancedModelBox(this, 0, 18);
         this.backLeftLeg.setRotationPoint(1.2F, 7.0F, 1.5F);
         this.backLeftLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 6, 2, 0.0F);
         this.setRotateAngle(backLeftLeg, 2.2689280275926285F, 0.0F, 0.0F);
-        this.tatters1 = new AdvancedRendererModel(this, 63, 0);
+        this.tatters1 = new AdvancedModelBox(this, 63, 0);
         this.tatters1.setRotationPoint(3.0F, -1.0F, -3.0F);
         this.tatters1.addBox(0.0F, 0.0F, -3.0F, 0, 9, 6, 0.0F);
         this.setRotateAngle(tatters1, 0.0F, 0.0F, -0.2617993877991494F);
-        this.head1 = new AdvancedRendererModel(this, 37, 37);
+        this.head1 = new AdvancedModelBox(this, 37, 37);
         this.head1.setRotationPoint(0.0F, 0.0F, -2.5F);
         this.head1.addBox(-3.0F, -2.5F, -6.0F, 6, 5, 6, 0.0F);
         this.setRotateAngle(head1, -0.08726646259971647F, 0.0F, 0.0F);
-        this.backRightThigh = new AdvancedRendererModel(this, 30, 15);
+        this.backRightThigh = new AdvancedModelBox(this, 30, 15);
         this.backRightThigh.setRotationPoint(-3.5F, 0.0F, 5.0F);
         this.backRightThigh.addBox(-3.0F, -1.0F, -2.0F, 3, 8, 4, 0.0F);
         this.setRotateAngle(backRightThigh, -0.7853981633974483F, 0.0F, 0.0F);
-        this.backRightHeel = new AdvancedRendererModel(this, 0, 44);
+        this.backRightHeel = new AdvancedModelBox(this, 0, 44);
         this.backRightHeel.setRotationPoint(0.0F, 6.0F, 0.2F);
         this.backRightHeel.addBox(-0.5F, 0.0F, -2.0F, 1, 6, 2, 0.0F);
         this.setRotateAngle(backRightHeel, -2.007128639793479F, 0.0F, 0.0F);
-        this.wisker2 = new AdvancedRendererModel(this, 63, 0);
+        this.wisker2 = new AdvancedModelBox(this, 63, 0);
         this.wisker2.setRotationPoint(-2.0F, 1.0F, -4.0F);
         this.wisker2.addBox(-4.0F, -2.0F, 0.0F, 4, 4, 0, 0.0F);
         this.setRotateAngle(wisker2, 0.0F, 0.8726646259971648F, 0.0F);
-        this.backRightLeg = new AdvancedRendererModel(this, 0, 18);
+        this.backRightLeg = new AdvancedModelBox(this, 0, 18);
         this.backRightLeg.setRotationPoint(-1.2F, 7.0F, 1.5F);
         this.backRightLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 6, 2, 0.0F);
         this.setRotateAngle(backRightLeg, 2.2689280275926285F, 0.0F, 0.0F);
@@ -229,15 +232,12 @@ public class ModelFeralRatlantean<T extends Entity> extends AdvancedEntityModel<
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.resetToDefaultPose();
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
-        this.lowerbody.render(f5);
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(lowerbody);
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
-        setRotationAngles(f, f1, f2, f3, f4, f5, (EntityFeralRatlantean) entity);
         animator.update(entity);
         animator.setAnimation(EntityFeralRatlantean.ANIMATION_BITE);
         animator.startKeyframe(5);
@@ -408,16 +408,18 @@ public class ModelFeralRatlantean<T extends Entity> extends AdvancedEntityModel<
 
     }
 
-    private void rotateFrom(AdvancedRendererModel renderer, float degX, float degY, float degZ) {
+    private void rotateFrom(AdvancedModelBox renderer, float degX, float degY, float degZ) {
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityFeralRatlantean rat) {
+    @Override
+    public void setRotationAngles(EntityFeralRatlantean rat, float f, float f1, float f2, float f3, float f4) {
+        animate(rat, f, f1, f2, f3, f4);
         float idleSpeed = 0.3F;
         float idleDegree = 0.1F;
         float walkSpeed = 0.4F;
         float walkDegree = 0.3F;
-        AdvancedRendererModel[] tailParts = new AdvancedRendererModel[]{tail1, tail2, tail3, tail4};
+        AdvancedModelBox[] tailParts = new AdvancedModelBox[]{tail1, tail2, tail3, tail4};
         this.bob(lowerbody, idleSpeed, idleDegree * 1.5F, false, f2, 1);
         this.bob(backLeftThigh, idleSpeed, -idleDegree * 1.5F, false, f2, 1);
         this.bob(backRightThigh, idleSpeed, -idleDegree * 1.5F, false, f2, 1);
@@ -490,9 +492,9 @@ public class ModelFeralRatlantean<T extends Entity> extends AdvancedEntityModel<
         this.faceTarget(f3, f4, 2, neck, head1);
     }
 
-    public void setRotateAngle(AdvancedRendererModel advancedRendererModel, float x, float y, float z) {
-        advancedRendererModel.rotateAngleX = x;
-        advancedRendererModel.rotateAngleY = y;
-        advancedRendererModel.rotateAngleZ = z;
+    public void setRotateAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

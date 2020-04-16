@@ -1,23 +1,23 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ModelRatFez extends BipedModel {
-    public RendererModel fez1;
-    public RendererModel fez2;
+    public ModelRenderer fez1;
+    public ModelRenderer fez2;
 
     public ModelRatFez(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.fez2 = new RendererModel(this, 0, 75);
+        this.fez2 = new ModelRenderer(this, 0, 75);
         this.fez2.setRotationPoint(2.0F, -7.0F, 1.5F);
         this.fez2.addBox(0.0F, 0.0F, 0.0F, 3, 5, 2, 0.0F);
         this.setRotateAngle(fez2, 0.0F, 0.0F, -0.27314402793711257F);
-        this.fez1 = new RendererModel(this, 0, 64);
+        this.fez1 = new ModelRenderer(this, 0, 64);
         this.fez1.setRotationPoint(0.0F, -8.0F, 0.0F);
         this.fez1.addBox(0.0F, -6.0F, 0.0F, 5, 6, 5, 0.0F);
         this.setRotateAngle(fez1, -0.4459316238845512F, 0.0F, 0.3312634920285238F);
@@ -55,9 +55,9 @@ public class ModelRatFez extends BipedModel {
         }
     }
 
-    public void setRotateAngle(RendererModel RendererModel, float x, float y, float z) {
-        RendererModel.rotateAngleX = x;
-        RendererModel.rotateAngleY = y;
-        RendererModel.rotateAngleZ = z;
+    public void setRotateAngle(ModelRenderer ModelRenderer, float x, float y, float z) {
+        ModelRenderer.rotateAngleX = x;
+        ModelRenderer.rotateAngleY = y;
+        ModelRenderer.rotateAngleZ = z;
     }
 }

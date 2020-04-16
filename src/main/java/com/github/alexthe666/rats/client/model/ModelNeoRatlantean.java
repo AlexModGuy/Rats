@@ -2,153 +2,155 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityNeoRatlantean;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelNeoRatlantean<T extends Entity> extends AdvancedEntityModel<T>{
-    public AdvancedRendererModel body1;
-    public AdvancedRendererModel floaty;
-    public AdvancedRendererModel floatyPivot;
-    public AdvancedRendererModel body2;
-    public AdvancedRendererModel tail1;
-    public AdvancedRendererModel leftThigh;
-    public AdvancedRendererModel rightThigh;
-    public AdvancedRendererModel coat1;
-    public AdvancedRendererModel neck;
-    public AdvancedRendererModel leftArm;
-    public AdvancedRendererModel rightArm;
-    public AdvancedRendererModel coat2;
-    public AdvancedRendererModel head;
-    public AdvancedRendererModel snout;
-    public AdvancedRendererModel leftEar;
-    public AdvancedRendererModel rightEar;
-    public AdvancedRendererModel leftEye;
-    public AdvancedRendererModel rightEye;
-    public AdvancedRendererModel brain1;
-    public AdvancedRendererModel nose;
-    public AdvancedRendererModel wisker2;
-    public AdvancedRendererModel wisker2_1;
-    public AdvancedRendererModel brain2;
-    public AdvancedRendererModel brain3;
-    public AdvancedRendererModel leftHand;
-    public AdvancedRendererModel rightHand;
-    public AdvancedRendererModel tail1_1;
-    public AdvancedRendererModel leftFoot;
-    public AdvancedRendererModel rightFoot;
+public class ModelNeoRatlantean<T extends EntityNeoRatlantean> extends AdvancedEntityModel<T>{
+    public AdvancedModelBox body1;
+    public AdvancedModelBox floaty;
+    public AdvancedModelBox floatyPivot;
+    public AdvancedModelBox body2;
+    public AdvancedModelBox tail1;
+    public AdvancedModelBox leftThigh;
+    public AdvancedModelBox rightThigh;
+    public AdvancedModelBox coat1;
+    public AdvancedModelBox neck;
+    public AdvancedModelBox leftArm;
+    public AdvancedModelBox rightArm;
+    public AdvancedModelBox coat2;
+    public AdvancedModelBox head;
+    public AdvancedModelBox snout;
+    public AdvancedModelBox leftEar;
+    public AdvancedModelBox rightEar;
+    public AdvancedModelBox leftEye;
+    public AdvancedModelBox rightEye;
+    public AdvancedModelBox brain1;
+    public AdvancedModelBox nose;
+    public AdvancedModelBox wisker2;
+    public AdvancedModelBox wisker2_1;
+    public AdvancedModelBox brain2;
+    public AdvancedModelBox brain3;
+    public AdvancedModelBox leftHand;
+    public AdvancedModelBox rightHand;
+    public AdvancedModelBox tail1_1;
+    public AdvancedModelBox leftFoot;
+    public AdvancedModelBox rightFoot;
     private ModelAnimator animator;
 
     public ModelNeoRatlantean() {
         this.textureWidth = 64;
         this.textureHeight = 64;
-        this.rightHand = new AdvancedRendererModel(this, 32, 13);
+        this.rightHand = new AdvancedModelBox(this, 32, 13);
         this.rightHand.setRotationPoint(-0.4F, 2.0F, -0.3F);
         this.rightHand.addBox(-0.5F, 0.0F, -1.5F, 1, 1, 2, 0.0F);
         this.setRotateAngle(rightHand, 0.9599310885968813F, -0.17453292519943295F, 0.08726646259971647F);
-        this.brain2 = new AdvancedRendererModel(this, 0, 21);
+        this.brain2 = new AdvancedModelBox(this, 0, 21);
         this.brain2.setRotationPoint(2.0F, -2.0F, -0.5F);
         this.brain2.addBox(-1.5F, -2.0F, -1.5F, 3, 3, 4, 0.0F);
-        this.brain1 = new AdvancedRendererModel(this, 38, 25);
+        this.brain1 = new AdvancedModelBox(this, 38, 25);
         this.brain1.setRotationPoint(0.0F, -0.5F, -0.4F);
         this.brain1.addBox(-1.5F, -3.3F, -1.5F, 3, 3, 3, 0.0F);
-        this.wisker2 = new AdvancedRendererModel(this, 35, 0);
+        this.wisker2 = new AdvancedModelBox(this, 35, 0);
         this.wisker2.setRotationPoint(-1.0F, 0.0F, -1.0F);
         this.wisker2.addBox(-2.5F, -1.5F, 0.0F, 2, 3, 0, 0.0F);
-        this.head = new AdvancedRendererModel(this, 22, 20);
+        this.head = new AdvancedModelBox(this, 22, 20);
         this.head.setRotationPoint(0.0F, -0.5F, -1.9F);
         this.head.addBox(-2.0F, -1.5F, -2.5F, 4, 3, 3, 0.0F);
         this.setRotateAngle(head, 1.3089969389957472F, 0.0F, 0.0F);
-        this.leftFoot = new AdvancedRendererModel(this, 22, 15);
+        this.leftFoot = new AdvancedModelBox(this, 22, 15);
         this.leftFoot.mirror = true;
         this.leftFoot.setRotationPoint(0.0F, 3.0F, 0.5F);
         this.leftFoot.addBox(-0.5F, 0.0F, -3.5F, 1, 1, 4, 0.0F);
-        this.leftHand = new AdvancedRendererModel(this, 32, 13);
+        this.leftHand = new AdvancedModelBox(this, 32, 13);
         this.leftHand.mirror = true;
         this.leftHand.setRotationPoint(0.4F, 2.0F, -0.3F);
         this.leftHand.addBox(-0.5F, 0.0F, -1.5F, 1, 1, 2, 0.0F);
         this.setRotateAngle(leftHand, 0.9599310885968813F, 0.17453292519943295F, -0.08726646259971647F);
-        this.body1 = new AdvancedRendererModel(this, 0, 0);
+        this.body1 = new AdvancedModelBox(this, 0, 0);
         this.body1.setRotationPoint(0.0F, 15.5F, 0.0F);
         this.body1.addBox(-2.5F, -3.0F, 0.0F, 5, 5, 6, 0.0F);
         this.setRotateAngle(body1, -1.5707963267948966F, 0.0F, 0.0F);
-        this.neck = new AdvancedRendererModel(this, 42, 17);
+        this.neck = new AdvancedModelBox(this, 42, 17);
         this.neck.setRotationPoint(0.0F, 0.0F, -5.0F);
         this.neck.addBox(-1.0F, -1.0F, -1.5F, 2, 3, 2, 0.0F);
         this.setRotateAngle(neck, 0.091106186954104F, 0.0F, 0.0F);
-        this.rightThigh = new AdvancedRendererModel(this, 22, 9);
+        this.rightThigh = new AdvancedModelBox(this, 22, 9);
         this.rightThigh.setRotationPoint(-2.5F, 0.0F, 4.5F);
         this.rightThigh.addBox(-1.0F, 0.0F, -1.5F, 2, 3, 3, 0.0F);
         this.setRotateAngle(rightThigh, 1.5707963267948966F, 0.0F, 0.0F);
-        this.leftArm = new AdvancedRendererModel(this, 32, 9);
+        this.leftArm = new AdvancedModelBox(this, 32, 9);
         this.leftArm.mirror = true;
         this.leftArm.setRotationPoint(2.0F, 1.5F, -3.0F);
         this.leftArm.addBox(0.0F, 0.0F, -1.0F, 1, 2, 2, 0.0F);
         this.setRotateAngle(leftArm, 1.3089969389957472F, 0.0F, 0.0F);
-        this.rightEye = new AdvancedRendererModel(this, 37, 20);
+        this.rightEye = new AdvancedModelBox(this, 37, 20);
         this.rightEye.setRotationPoint(-2.0F, -0.5F, -1.6F);
         this.rightEye.addBox(-0.5F, -0.7F, -0.5F, 1, 1, 1, 0.0F);
-        this.floaty = new AdvancedRendererModel(this, -15, 30);
+        this.floaty = new AdvancedModelBox(this, -15, 30);
         this.floaty.addBox(-7.5F, 0.0F, -7.5F, 15, 0, 15, 0.0F);
         this.setRotateAngle(floaty, 0.0F, -0.7853981633974483F, 0.0F);
-        this.floatyPivot = new AdvancedRendererModel(this, 0, 0);
+        this.floatyPivot = new AdvancedModelBox(this, 0, 0);
         this.floatyPivot.setRotationPoint(0.0F, 24.5F, 0.0F);
         this.setRotateAngle(floatyPivot, 0.0F, 0.0F, 0.0F);
-        this.tail1_1 = new AdvancedRendererModel(this, 0, 11);
+        this.tail1_1 = new AdvancedModelBox(this, 0, 11);
         this.tail1_1.setRotationPoint(0.0F, 0.0F, 8.0F);
         this.tail1_1.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 8, 0.0F);
         this.setRotateAngle(tail1_1, 0.20943951023931953F, 0.0F, 0.0F);
-        this.coat1 = new AdvancedRendererModel(this, 31, 31);
+        this.coat1 = new AdvancedModelBox(this, 31, 31);
         this.coat1.setRotationPoint(0.0F, -0.1F, 0.0F);
         this.coat1.addBox(-4.0F, -3.0F, 0.0F, 8, 6, 8, 0.0F);
-        this.leftEye = new AdvancedRendererModel(this, 37, 20);
+        this.leftEye = new AdvancedModelBox(this, 37, 20);
         this.leftEye.setRotationPoint(2.0F, -0.5F, -1.6F);
         this.leftEye.addBox(-0.5F, -0.7F, -0.5F, 1, 1, 1, 0.0F);
-        this.leftThigh = new AdvancedRendererModel(this, 22, 9);
+        this.leftThigh = new AdvancedModelBox(this, 22, 9);
         this.leftThigh.mirror = true;
         this.leftThigh.setRotationPoint(2.5F, 0.0F, 4.5F);
         this.leftThigh.addBox(-1.0F, 0.0F, -1.5F, 2, 3, 3, 0.0F);
         this.setRotateAngle(leftThigh, 1.5707963267948966F, 0.0F, 0.0F);
-        this.rightEar = new AdvancedRendererModel(this, 33, 20);
+        this.rightEar = new AdvancedModelBox(this, 33, 20);
         this.rightEar.setRotationPoint(-1.5F, -0.5F, 0.0F);
         this.rightEar.addBox(-2.0F, -2.0F, 0.0F, 2, 2, 0, 0.0F);
         this.setRotateAngle(rightEar, -0.17453292519943295F, 0.7056366165813075F, -1.3089969389957472F);
-        this.rightFoot = new AdvancedRendererModel(this, 22, 15);
+        this.rightFoot = new AdvancedModelBox(this, 22, 15);
         this.rightFoot.setRotationPoint(0.0F, 3.0F, 0.5F);
         this.rightFoot.addBox(-0.5F, 0.0F, -3.5F, 1, 1, 4, 0.0F);
-        this.leftEar = new AdvancedRendererModel(this, 33, 20);
+        this.leftEar = new AdvancedModelBox(this, 33, 20);
         this.leftEar.mirror = true;
         this.leftEar.setRotationPoint(1.5F, -0.5F, 0.0F);
         this.leftEar.addBox(0.0F, -2.0F, 0.0F, 2, 2, 0, 0.0F);
         this.setRotateAngle(leftEar, -0.17453292519943295F, -0.7853981633974483F, 1.3089969389957472F);
-        this.brain3 = new AdvancedRendererModel(this, 0, 21);
+        this.brain3 = new AdvancedModelBox(this, 0, 21);
         this.brain3.setRotationPoint(-2.0F, -2.0F, -0.5F);
         this.brain3.addBox(-1.5F, -2.0F, -1.5F, 3, 3, 4, 0.0F);
-        this.nose = new AdvancedRendererModel(this, 32, 26);
+        this.nose = new AdvancedModelBox(this, 32, 26);
         this.nose.setRotationPoint(0.0F, -0.6F, -2.1F);
         this.nose.addBox(-0.5F, -0.3F, -1.0F, 1, 1, 2, 0.0F);
-        this.wisker2_1 = new AdvancedRendererModel(this, 35, 0);
+        this.wisker2_1 = new AdvancedModelBox(this, 35, 0);
         this.wisker2_1.mirror = true;
         this.wisker2_1.setRotationPoint(1.0F, 0.0F, -1.0F);
         this.wisker2_1.addBox(0.5F, -1.5F, 0.0F, 2, 3, 0, 0.0F);
-        this.body2 = new AdvancedRendererModel(this, 22, 0);
+        this.body2 = new AdvancedModelBox(this, 22, 0);
         this.body2.setRotationPoint(0.0F, -0.4F, 0.5F);
         this.body2.addBox(-2.0F, -2.0F, -5.0F, 4, 4, 5, 0.0F);
         this.setRotateAngle(body2, 0.17453292519943295F, 0.0F, 0.0F);
-        this.coat2 = new AdvancedRendererModel(this, 38, 4);
+        this.coat2 = new AdvancedModelBox(this, 38, 4);
         this.coat2.setRotationPoint(0.0F, -0.6F, -5.0F);
         this.coat2.addBox(-4.0F, -3.0F, -0.4F, 8, 6, 5, 0.0F);
         this.setRotateAngle(coat2, -0.17453292519943295F, 0.0F, 0.0F);
-        this.tail1 = new AdvancedRendererModel(this, 0, 11);
+        this.tail1 = new AdvancedModelBox(this, 0, 11);
         this.tail1.setRotationPoint(0.0F, -1.9F, 5.5F);
         this.tail1.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 8, 0.0F);
         this.setRotateAngle(tail1, 1.3362240753268586F, 0.0F, 0.0F);
-        this.rightArm = new AdvancedRendererModel(this, 32, 9);
+        this.rightArm = new AdvancedModelBox(this, 32, 9);
         this.rightArm.setRotationPoint(-2.0F, 1.5F, -3.0F);
         this.rightArm.addBox(-1.0F, 0.0F, -1.0F, 1, 2, 2, 0.0F);
         this.setRotateAngle(rightArm, 1.3089969389957472F, 0.0F, 0.0F);
-        this.snout = new AdvancedRendererModel(this, 22, 26);
+        this.snout = new AdvancedModelBox(this, 22, 26);
         this.snout.setRotationPoint(0.0F, 0.5F, -2.3F);
         this.snout.addBox(-1.5F, -1.0F, -2.0F, 3, 2, 2, 0.0F);
         this.setRotateAngle(snout, 0.17453292519943295F, 0.0F, 0.0F);
@@ -184,22 +186,19 @@ public class ModelNeoRatlantean<T extends Entity> extends AdvancedEntityModel<T>
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
-        this.body1.render(f5);
-        if (!entity.onGround) {
-            this.floatyPivot.render(f5);
-        }
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(body1, floatyPivot);
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
         EntityNeoRatlantean neoRatlantean = (EntityNeoRatlantean) entity;
-        setRotationAngles(f, f1, f2, f3, f4, f5, neoRatlantean);
         animator.update(entity);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityNeoRatlantean rat) {
+    public void setRotationAngles(EntityNeoRatlantean rat, float f, float f1, float f2, float f3, float f4) {
+        animate((IAnimatedEntity) rat, f, f1, f2, f3, f4);
         this.floaty.rotateAngleY = (float) Math.toRadians(MathHelper.wrapDegrees(f2 * 10));
         this.floaty.setScale(2.0F, 2.0F, 2.0F);
         float speedWalk = 1F;
@@ -249,9 +248,9 @@ public class ModelNeoRatlantean<T extends Entity> extends AdvancedEntityModel<T>
         }
     }
 
-    public void setRotateAngle(AdvancedRendererModel advancedRendererModel, float x, float y, float z) {
-        advancedRendererModel.rotateAngleX = x;
-        advancedRendererModel.rotateAngleY = y;
-        advancedRendererModel.rotateAngleZ = z;
+    public void setRotateAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

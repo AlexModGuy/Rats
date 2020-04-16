@@ -1,29 +1,29 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ModelPiperHat extends BipedModel {
 
-    public RendererModel hat;
-    public RendererModel hat_feather;
-    public RendererModel hatTop;
+    public ModelRenderer hat;
+    public ModelRenderer hat_feather;
+    public ModelRenderer hatTop;
 
     public ModelPiperHat(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.hat_feather = new RendererModel(this, 0, 72);
+        this.hat_feather = new ModelRenderer(this, 0, 72);
         this.hat_feather.setRotationPoint(-2.5F, -5.0F, 0.0F);
         this.hat_feather.addBox(0.0F, -9.0F, 0.0F, 0, 9, 9, 0.0F);
         this.setRotateAngle(hat_feather, 0.0F, 0.0F, -0.3490658503988659F);
-        this.hat = new RendererModel(this, 0, 64);
+        this.hat = new ModelRenderer(this, 0, 64);
         this.hat.setRotationPoint(0.0F, -6.0F, 0.0F);
         this.hat.addBox(-4.5F, -5.0F, -6.0F, 9, 4, 12, 0.0F);
         this.setRotateAngle(hat, 0.17453292519943295F, 0.0F, 0.0F);
-        this.hatTop = new RendererModel(this, 0, 118);
+        this.hatTop = new ModelRenderer(this, 0, 118);
         this.hatTop.setRotationPoint(0.0F, -5.0F, 0.0F);
         this.hatTop.addBox(-2.5F, -2.0F, -4.0F, 5, 2, 8, 0.0F);
         this.bipedHead.addChild(this.hat);
@@ -31,13 +31,13 @@ public class ModelPiperHat extends BipedModel {
         this.hat.addChild(this.hatTop);
     }
 
-    public void setRotateAngle(RendererModel RendererModel, float x, float y, float z) {
-        RendererModel.rotateAngleX = x;
-        RendererModel.rotateAngleY = y;
-        RendererModel.rotateAngleZ = z;
+    public void setRotateAngle(ModelRenderer ModelRenderer, float x, float y, float z) {
+        ModelRenderer.rotateAngleX = x;
+        ModelRenderer.rotateAngleY = y;
+        ModelRenderer.rotateAngleZ = z;
     }
 
-      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entityIn instanceof ArmorStandEntity) {
             ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
@@ -63,7 +63,7 @@ public class ModelPiperHat extends BipedModel {
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 

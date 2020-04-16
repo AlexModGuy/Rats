@@ -1,25 +1,25 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelHaloHat extends BipedModel {
-    public RendererModel famerHat;
+    public ModelRenderer famerHat;
 
     public ModelHaloHat(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.famerHat = new RendererModel(this, 0, 64);
+        this.famerHat = new ModelRenderer(this, 0, 64);
         this.famerHat.setRotationPoint(0.0F, -9.0F, 0.0F);
         this.famerHat.addBox(-4.0F, -4.0F, -4.0F, 8, 4, 8, scale);
         this.bipedHead.addChild(this.famerHat);
     }
 
-      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+      public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
           this.famerHat.rotationPointY = -9.0F + MathHelper.sin(ageInTicks * 0.05F);
         if (entityIn instanceof ArmorStandEntity) {
             ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
@@ -46,7 +46,7 @@ public class ModelHaloHat extends BipedModel {
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 }

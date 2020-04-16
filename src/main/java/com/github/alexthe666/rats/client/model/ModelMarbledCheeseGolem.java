@@ -2,100 +2,103 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedRendererModel;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityModel<T> {
-    public AdvancedRendererModel body;
-    public AdvancedRendererModel headBase;
-    public AdvancedRendererModel armLeft1;
-    public AdvancedRendererModel armRight1;
-    public AdvancedRendererModel thruster;
-    public AdvancedRendererModel upperbody;
-    public AdvancedRendererModel snout;
-    public AdvancedRendererModel ear1;
-    public AdvancedRendererModel ear2;
-    public AdvancedRendererModel nose;
-    public AdvancedRendererModel armLeft2;
-    public AdvancedRendererModel drillArm1;
-    public AdvancedRendererModel drillArm2;
-    public AdvancedRendererModel drilArm3;
-    public AdvancedRendererModel blade;
-    public AdvancedRendererModel armRight2;
-    public AdvancedRendererModel cannon;
+public class ModelMarbledCheeseGolem<T extends EntityDutchrat> extends AdvancedEntityModel<T> {
+    public AdvancedModelBox body;
+    public AdvancedModelBox headBase;
+    public AdvancedModelBox armLeft1;
+    public AdvancedModelBox armRight1;
+    public AdvancedModelBox thruster;
+    public AdvancedModelBox upperbody;
+    public AdvancedModelBox snout;
+    public AdvancedModelBox ear1;
+    public AdvancedModelBox ear2;
+    public AdvancedModelBox nose;
+    public AdvancedModelBox armLeft2;
+    public AdvancedModelBox drillArm1;
+    public AdvancedModelBox drillArm2;
+    public AdvancedModelBox drilArm3;
+    public AdvancedModelBox blade;
+    public AdvancedModelBox armRight2;
+    public AdvancedModelBox cannon;
     private ModelAnimator animator;
 
     public ModelMarbledCheeseGolem() {
         this.textureWidth = 128;
         this.textureHeight = 96;
-        this.upperbody = new AdvancedRendererModel(this, 0, 34);
+        this.upperbody = new AdvancedModelBox(this, 0, 34);
         this.upperbody.setRotationPoint(0.0F, -5.0F, 0.0F);
         this.upperbody.addBox(-11.0F, -5.0F, -6.0F, 22, 10, 12, 0.0F);
-        this.body = new AdvancedRendererModel(this, 0, 0);
+        this.body = new AdvancedModelBox(this, 0, 0);
         this.body.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.body.addBox(-6.0F, -3.5F, -5.0F, 12, 16, 10, 0.0F);
-        this.headBase = new AdvancedRendererModel(this, 44, 0);
+        this.headBase = new AdvancedModelBox(this, 44, 0);
         this.headBase.setRotationPoint(0.0F, -15.0F, 0.0F);
         this.headBase.addBox(-4.0F, -6.0F, -7.0F, 8, 7, 11, 0.0F);
         this.setRotateAngle(headBase, 0.22759093446006054F, 0.0F, 0.0F);
-        this.ear2 = new AdvancedRendererModel(this, 34, 0);
+        this.ear2 = new AdvancedModelBox(this, 34, 0);
         this.ear2.mirror = true;
         this.ear2.setRotationPoint(-7.0F, -3.0F, 5.0F);
         this.ear2.addBox(-7.0F, -6.0F, 0.0F, 7, 7, 1, 0.0F);
         this.setRotateAngle(ear2, -0.2617993877991494F, 0.9075712110370513F, 0.0F);
-        this.drilArm3 = new AdvancedRendererModel(this, 0, 0);
+        this.drilArm3 = new AdvancedModelBox(this, 0, 0);
         this.drilArm3.setRotationPoint(0.0F, 11.0F, 0.0F);
         this.drilArm3.addBox(-0.5F, -0.5F, -0.5F, 4, 1, 1, 0.0F);
         this.setRotateAngle(drilArm3, 0.0F, 0.0F, -0.13962634015954636F);
-        this.cannon = new AdvancedRendererModel(this, 68, 47);
+        this.cannon = new AdvancedModelBox(this, 68, 47);
         this.cannon.setRotationPoint(0.0F, 20.0F, 0.0F);
         this.cannon.addBox(-3.0F, 0.0F, -4.0F, 6, 14, 7, 0.0F);
         this.setRotateAngle(cannon, -0.3490658503988659F, -0.13321877203096466F, -0.31359068978645194F);
-        this.armRight1 = new AdvancedRendererModel(this, 82, 0);
+        this.armRight1 = new AdvancedModelBox(this, 82, 0);
         this.armRight1.mirror = true;
         this.armRight1.setRotationPoint(-17.0F, -4.0F, 0.0F);
         this.armRight1.addBox(-3.0F, -4.0F, -2.5F, 5, 18, 5, 0.0F);
         this.setRotateAngle(armRight1, -0.05235987755982988F, 0.2617993877991494F, 0.22689280275926282F);
-        this.thruster = new AdvancedRendererModel(this, 36, 18);
+        this.thruster = new AdvancedModelBox(this, 36, 18);
         this.thruster.setRotationPoint(0.0F, 12.0F, 0.0F);
         this.thruster.addBox(-5.0F, -1.0F, -4.0F, 10, 8, 8, 0.0F);
         this.setRotateAngle(thruster, 0.3490658503988659F, 0.0F, 0.0F);
-        this.nose = new AdvancedRendererModel(this, 64, 18);
+        this.nose = new AdvancedModelBox(this, 64, 18);
         this.nose.setRotationPoint(0.0F, -3.0F, -3.0F);
         this.nose.addBox(-1.5F, -2.0F, -4.0F, 3, 3, 4, 0.0F);
         this.setRotateAngle(nose, 0.17453292519943295F, 0.0F, 0.0F);
-        this.drillArm2 = new AdvancedRendererModel(this, 0, 26);
+        this.drillArm2 = new AdvancedModelBox(this, 0, 26);
         this.drillArm2.setRotationPoint(0.0F, 17.0F, 0.0F);
         this.drillArm2.addBox(-1.0F, 0.0F, -1.0F, 1, 12, 2, 0.0F);
         this.setRotateAngle(drillArm2, 0.0F, 0.0F, 0.13962634015954636F);
-        this.armLeft2 = new AdvancedRendererModel(this, 107, 26);
+        this.armLeft2 = new AdvancedModelBox(this, 107, 26);
         this.armLeft2.setRotationPoint(0.0F, 18.0F, -2.0F);
         this.armLeft2.addBox(-1.5F, -1.0F, -2.5F, 3, 18, 5, 0.0F);
         this.setRotateAngle(armLeft2, -1.0471975511965976F, -0.08726646259971647F, 0.22689280275926282F);
-        this.drillArm1 = new AdvancedRendererModel(this, 0, 26);
+        this.drillArm1 = new AdvancedModelBox(this, 0, 26);
         this.drillArm1.setRotationPoint(0.0F, 17.0F, 0.0F);
         this.drillArm1.addBox(0.0F, 0.0F, -1.0F, 1, 12, 2, 0.0F);
         this.setRotateAngle(drillArm1, 0.0F, 0.0F, -0.13962634015954636F);
-        this.armLeft1 = new AdvancedRendererModel(this, 82, 0);
+        this.armLeft1 = new AdvancedModelBox(this, 82, 0);
         this.armLeft1.setRotationPoint(17.0F, -4.0F, 0.0F);
         this.armLeft1.addBox(-2.0F, -4.0F, -2.5F, 5, 18, 5, 0.0F);
         this.setRotateAngle(armLeft1, -0.05235987755982988F, -0.2617993877991494F, -0.22689280275926282F);
-        this.blade = new AdvancedRendererModel(this, 0, 42);
+        this.blade = new AdvancedModelBox(this, 0, 42);
         this.blade.setRotationPoint(1.5F, 0.0F, 0.0F);
         this.blade.addBox(0.0F, -7.0F, -7.0F, 0, 14, 14, 0.0F);
         this.setRotateAngle(blade, 0.7853981633974483F, 0.0F, 0.0F);
-        this.ear1 = new AdvancedRendererModel(this, 34, 0);
+        this.ear1 = new AdvancedModelBox(this, 34, 0);
         this.ear1.setRotationPoint(7.0F, -3.0F, 5.0F);
         this.ear1.addBox(0.0F, -6.0F, 0.0F, 7, 7, 1, 0.0F);
         this.setRotateAngle(ear1, -0.2617993877991494F, -0.9075712110370513F, 0.0F);
-        this.armRight2 = new AdvancedRendererModel(this, 107, 26);
+        this.armRight2 = new AdvancedModelBox(this, 107, 26);
         this.armRight2.setRotationPoint(0.0F, 18.0F, -2.0F);
         this.armRight2.addBox(-1.5F, -1.0F, -2.5F, 3, 18, 5, 0.0F);
         this.setRotateAngle(armRight2, -1.0471975511965976F, 0.08726646259971647F, -0.22689280275926282F);
-        this.snout = new AdvancedRendererModel(this, 72, 23);
+        this.snout = new AdvancedModelBox(this, 72, 23);
         this.snout.setRotationPoint(0.0F, 0.0F, -8.0F);
         this.snout.addBox(-3.0F, -4.0F, -5.0F, 6, 5, 6, 0.0F);
         this.body.addChild(this.upperbody);
@@ -116,18 +119,18 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        animate((IAnimatedEntity) entity, f, f1, f2, f3, f4, f5);
-        this.body.render(f5);
-        this.headBase.render(f5);
-        this.armRight1.render(f5);
-        this.armLeft1.render(f5);
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(body, headBase, armLeft1, armRight1);
+    }
+
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
         EntityMarbleCheeseGolem golem = (EntityMarbleCheeseGolem) entity;
-        setRotationAngles(f, f1, f2, f3, f4, f5, (EntityMarbleCheeseGolem) entity);
         animator.update(entity);
         animator.setAnimation(EntityMarbleCheeseGolem.ANIMATION_MELEE);
         animator.startKeyframe(5);
@@ -152,7 +155,7 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
         animator.endKeyframe();
     }
 
-    public void renderHead(float f5, float ticksExisted){
+    public void renderHead(float ticksExisted){
         this.resetToDefaultPose();
         ear1.rotationPointZ = 3;
         ear2.rotationPointZ = 3;
@@ -164,10 +167,10 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
         this.walk(headBase, idleSpeed * 0.4F, idleDegree * 0.1F, false, 0, 0, ticksExisted, 1);
         this.swing(ear1, idleSpeed * 0.4F, idleDegree * 0.4F, false, 0, 0, ticksExisted, 1);
         this.swing(ear2, idleSpeed * 0.4F, idleDegree * 0.4F, true, 0, 0, ticksExisted, 1);
-        this.headBase.render(f5);
-       }
+    }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityMarbleCheeseGolem rat) {
+    public void setRotationAngles(EntityMarbleCheeseGolem rat, float f, float f1, float f2, float f3, float f4) {
+        animate((IAnimatedEntity) rat, f, f1, f2, f3, f4);
         this.blade.rotateAngleX = (float) Math.toRadians(MathHelper.wrapDegrees(f2 * 50));
         float idleSpeed = 0.3F;
         float idleDegree = 0.7F;
@@ -193,7 +196,7 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
         this.faceTarget(f3, f4, 1, headBase);
     }
 
-    public void bob(AdvancedRendererModel box, float speed, float degree, float offset, float weight, boolean bounce, float f, float f1) {
+    public void bob(AdvancedModelBox box, float speed, float degree, float offset, float weight, boolean bounce, float f, float f1) {
         float movementScale = box.getModel().getMovementScale();
         degree *= movementScale;
         speed *= movementScale;
@@ -206,13 +209,13 @@ public class ModelMarbledCheeseGolem<T extends Entity> extends AdvancedEntityMod
     }
 
 
-    public void setRotateAngle(AdvancedRendererModel advancedRendererModel, float x, float y, float z) {
-        advancedRendererModel.rotateAngleX = x;
-        advancedRendererModel.rotateAngleY = y;
-        advancedRendererModel.rotateAngleZ = z;
+    public void setRotateAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 
-    private void rotateFrom(AdvancedRendererModel renderer, float degX, float degY, float degZ) {
+    private void rotateFrom(AdvancedModelBox renderer, float degX, float degY, float degZ) {
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
 }

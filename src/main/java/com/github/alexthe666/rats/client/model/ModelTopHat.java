@@ -1,26 +1,26 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ModelTopHat extends BipedModel {
-    public RendererModel head;
-    public RendererModel top;
-    public RendererModel brimMiddle;
+    public ModelRenderer head;
+    public ModelRenderer top;
+    public ModelRenderer brimMiddle;
 
     public ModelTopHat(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.brimMiddle = new RendererModel(this, 0, 101);
+        this.brimMiddle = new ModelRenderer(this, 0, 101);
         this.brimMiddle.setRotationPoint(0.0F, -0.1F, 0.0F);
         this.brimMiddle.addBox(-5.0F, -0.01F, -5.0F, 10, 1, 10, 0.0F);
-        this.top = new RendererModel(this, 0, 86);
+        this.top = new ModelRenderer(this, 0, 86);
         this.top.setRotationPoint(0.0F, -8.0F, 0.0F);
         this.top.addBox(-3.5F, -8.0F, -3.5F, 7, 8, 7, 0.0F);
-        this.head = new RendererModel(this, 0, 0);
+        this.head = new ModelRenderer(this, 0, 0);
         this.head.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.head.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F);
         this.top.addChild(this.brimMiddle);

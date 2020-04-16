@@ -1,23 +1,23 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
-public class ModelChefToque extends BipedModel {
-    public RendererModel toupe;
+public class ModelChefToque extends BipedModel<LivingEntity> {
+    public ModelRenderer toupe;
 
     public ModelChefToque(float scale) {
         super(scale, 0, 64, 128);
-        this.toupe = new RendererModel(this, 0, 64);
+        this.toupe = new ModelRenderer(this, 0, 64);
         this.toupe.setRotationPoint(0.0F, -7.0F, 0.0F);
         this.toupe.addBox(-4.5F, -15.0F, -4.5F, 9, 16, 9, 0.0F);
         this.setRotateAngle(toupe, -0.27314402793711257F, 0.0F, 0.0F);
         this.bipedHead.addChild(toupe);
     }
 
-    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entityIn instanceof ArmorStandEntity) {
             ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
@@ -43,11 +43,11 @@ public class ModelChefToque extends BipedModel {
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 
-    public void setRotateAngle(RendererModel model, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;

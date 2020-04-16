@@ -1,42 +1,42 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ModelSantaHat extends BipedModel {
-    public RendererModel santaHat;
-    public RendererModel red1;
-    public RendererModel red2;
-    public RendererModel red3;
-    public RendererModel red4;
-    public RendererModel ball;
+    public ModelRenderer santaHat;
+    public ModelRenderer red1;
+    public ModelRenderer red2;
+    public ModelRenderer red3;
+    public ModelRenderer red4;
+    public ModelRenderer ball;
 
     public ModelSantaHat(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.red1 = new RendererModel(this, 0, 76);
+        this.red1 = new ModelRenderer(this, 0, 76);
         this.red1.setRotationPoint(-4.0F, 0.0F, -3.5F);
         this.red1.addBox(0.0F, -5.0F, 0.0F, 8, 5, 7, 0.0F);
         this.setRotateAngle(red1, -0.2617993877991494F, 0.0F, 0.091106186954104F);
-        this.santaHat = new RendererModel(this, 0, 64);
+        this.santaHat = new ModelRenderer(this, 0, 64);
         this.santaHat.setRotationPoint(0.0F, -8.5F, 0.0F);
         this.santaHat.addBox(-5.0F, -0.01F, -5.0F, 10, 2, 10, 0.0F);
-        this.red3 = new RendererModel(this, 0, 100);
+        this.red3 = new ModelRenderer(this, 0, 100);
         this.red3.setRotationPoint(1.0F, -6.0F, 0.5F);
         this.red3.addBox(0.0F, -4.0F, 0.0F, 4, 4, 4, 0.0F);
         this.setRotateAngle(red3, -0.20943951023931953F, 0.0F, 0.27314402793711257F);
-        this.red4 = new RendererModel(this, 16, 100);
+        this.red4 = new ModelRenderer(this, 16, 100);
         this.red4.setRotationPoint(1.0F, -4.0F, 1.0F);
         this.red4.addBox(0.0F, -2.0F, 0.0F, 2, 2, 2, 0.0F);
         this.setRotateAngle(red4, -0.20943951023931953F, 0.0F, 0.27314402793711257F);
-        this.red2 = new RendererModel(this, 0, 88);
+        this.red2 = new ModelRenderer(this, 0, 88);
         this.red2.setRotationPoint(1.0F, -5.0F, 0.5F);
         this.red2.addBox(0.0F, -6.0F, 0.0F, 6, 6, 6, 0.0F);
         this.setRotateAngle(red2, -0.20943951023931953F, 0.0F, 0.27314402793711257F);
-        this.ball = new RendererModel(this, 30, 64);
+        this.ball = new ModelRenderer(this, 30, 64);
         this.ball.setRotationPoint(1.0F, -1.6F, 1.0F);
         this.ball.addBox(-2.0F, -4.0F, -2.0F, 4, 4, 4, 0.0F);
         this.setRotateAngle(ball, 0.0F, -0.7853981633974483F, 0.17453292519943295F);
@@ -48,10 +48,10 @@ public class ModelSantaHat extends BipedModel {
         this.red4.addChild(this.ball);
     }
 
-    public void setRotateAngle(RendererModel RendererModel, float x, float y, float z) {
-        RendererModel.rotateAngleX = x;
-        RendererModel.rotateAngleY = y;
-        RendererModel.rotateAngleZ = z;
+    public void setRotateAngle(ModelRenderer ModelRenderer, float x, float y, float z) {
+        ModelRenderer.rotateAngleX = x;
+        ModelRenderer.rotateAngleY = y;
+        ModelRenderer.rotateAngleZ = z;
     }
 
       public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {

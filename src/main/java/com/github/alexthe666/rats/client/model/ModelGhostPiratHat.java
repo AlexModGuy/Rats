@@ -1,53 +1,53 @@
 package com.github.alexthe666.rats.client.model;
 
-import com.github.alexthe666.rats.client.model.util.RendererModelGlowy;
+import com.github.alexthe666.rats.client.model.util.ModelRendererGlowy;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ModelGhostPiratHat extends BipedModel {
-    public RendererModelGlowy piratHat1;
-    public RendererModelGlowy brim1;
-    public RendererModelGlowy brim2;
-    public RendererModelGlowy brim3;
-    public RendererModelGlowy brim4;
-    public RendererModelGlowy middle;
-    public RendererModelGlowy brim6;
-    public RendererModelGlowy brim5;
-    public RendererModelGlowy brim6_1;
+    public ModelRendererGlowy piratHat1;
+    public ModelRendererGlowy brim1;
+    public ModelRendererGlowy brim2;
+    public ModelRendererGlowy brim3;
+    public ModelRendererGlowy brim4;
+    public ModelRendererGlowy middle;
+    public ModelRendererGlowy brim6;
+    public ModelRendererGlowy brim5;
+    public ModelRendererGlowy brim6_1;
 
     public ModelGhostPiratHat(float scale) {
         super(scale, 0, 64, 128);
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.middle = new RendererModelGlowy(this, 0, 86);
+        this.middle = new ModelRendererGlowy(this, 0, 86);
         this.middle.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.middle.addBox(-4.0F, -5.0F, -3.0F, 8, 5, 6, 0.0F);
-        this.brim3 = new RendererModelGlowy(this, 23, 78);
+        this.brim3 = new ModelRendererGlowy(this, 23, 78);
         this.brim3.setRotationPoint(6.0F, 0.0F, 0.0F);
         this.brim3.addBox(0.01F, -3.0F, -4.0F, 1, 3, 8, 0.0F);
-        this.brim2 = new RendererModelGlowy(this, 0, 80);
+        this.brim2 = new ModelRendererGlowy(this, 0, 80);
         this.brim2.setRotationPoint(0.0F, 0.0F, 4.0F);
         this.brim2.addBox(-7.0F, -4.0F, 0.0F, 14, 4, 1, 0.0F);
         this.setRotateAngle(brim2, 0.17453292519943295F, 0.0F, 0.0F);
-        this.brim6_1 = new RendererModelGlowy(this, 1, 101);
+        this.brim6_1 = new ModelRendererGlowy(this, 1, 101);
         this.brim6_1.setRotationPoint(0.0F, -3.0F, 0.0F);
         this.brim6_1.addBox(-3.0F, -1.0F, 0.0F, 6, 1, 1, 0.0F);
-        this.piratHat1 = new RendererModelGlowy(this, -10, 64);
+        this.piratHat1 = new ModelRendererGlowy(this, -10, 64);
         this.piratHat1.setRotationPoint(0.0F, -6.0F, 0.0F);
         this.piratHat1.addBox(-7.0F, -0.01F, -5.0F, 14, 0, 9, 0.0F);
         this.setRotateAngle(piratHat1, 0.0F, 3.141592653589793F, 0.0F);
-        this.brim1 = new RendererModelGlowy(this, 0, 75);
+        this.brim1 = new ModelRendererGlowy(this, 0, 75);
         this.brim1.setRotationPoint(0.0F, 0.0F, -5.0F);
         this.brim1.addBox(-7.0F, -4.0F, 0.0F, 14, 4, 1, 0.0F);
         this.setRotateAngle(brim1, -0.17453292519943295F, 0.0F, 0.0F);
-        this.brim6 = new RendererModelGlowy(this, 30, 90);
+        this.brim6 = new ModelRendererGlowy(this, 30, 90);
         this.brim6.setRotationPoint(0.0F, -4.0F, 0.0F);
         this.brim6.addBox(-5.0F, -2.0F, 0.0F, 10, 2, 1, 0.0F);
-        this.brim5 = new RendererModelGlowy(this, 0, 97);
+        this.brim5 = new ModelRendererGlowy(this, 0, 97);
         this.brim5.setRotationPoint(0.0F, -4.0F, 0.0F);
         this.brim5.addBox(-5.0F, -3.0F, 0.0F, 10, 3, 1, 0.0F);
-        this.brim4 = new RendererModelGlowy(this, 23, 78);
+        this.brim4 = new ModelRendererGlowy(this, 23, 78);
         this.brim4.setRotationPoint(-6.0F, 0.0F, 0.0F);
         this.brim4.addBox(-1.01F, -3.0F, -4.0F, 1, 3, 8, 0.0F);
         this.piratHat1.addChild(this.middle);
@@ -62,7 +62,7 @@ public class ModelGhostPiratHat extends BipedModel {
     }
 
 
-    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entityIn instanceof ArmorStandEntity) {
             ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
@@ -88,13 +88,13 @@ public class ModelGhostPiratHat extends BipedModel {
             this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
             this.bipedHeadwear.copyModelAngles(this.bipedHead);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 
-    public void setRotateAngle(RendererModelGlowy RendererModelGlowy, float x, float y, float z) {
-        RendererModelGlowy.rotateAngleX = x;
-        RendererModelGlowy.rotateAngleY = y;
-        RendererModelGlowy.rotateAngleZ = z;
+    public void setRotateAngle(ModelRendererGlowy ModelRendererGlowy, float x, float y, float z) {
+        ModelRendererGlowy.rotateAngleX = x;
+        ModelRendererGlowy.rotateAngleY = y;
+        ModelRendererGlowy.rotateAngleZ = z;
     }
 }
