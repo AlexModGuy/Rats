@@ -152,4 +152,32 @@ public class ModelRattlingGun<T extends EntityRattlingGun> extends AdvancedEntit
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
     }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(base1,
+                pivot,
+                backleg,
+                leftleg,
+                rightleg,
+                base2,
+                centerThingy,
+                behind,
+                gun1,
+                handle1,
+                seatConnector1,
+                handle2,
+                handle3,
+                seatConnector2,
+                seat,
+                seatBack,
+                barrel1,
+                barrel2,
+                barrel3,
+                barrel4,
+                barrel5,
+                gun2,
+                gun3
+        );
+    }
 }

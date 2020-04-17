@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelFeralRatlantean<T extends EntityFeralRatlantean> extends AdvancedEntityModel<T>{
+public class ModelFeralRatlantean<T extends EntityFeralRatlantean> extends AdvancedEntityModel<T> {
     public AdvancedModelBox lowerbody;
     public AdvancedModelBox midBody;
     public AdvancedModelBox backLeftThigh;
@@ -49,6 +49,7 @@ public class ModelFeralRatlantean<T extends EntityFeralRatlantean> extends Advan
     public ModelAnimator animator;
 
     public ModelFeralRatlantean() {
+        super();
         this.textureWidth = 128;
         this.textureHeight = 64;
         this.tail2 = new AdvancedModelBox(this, 15, 50);
@@ -496,5 +497,44 @@ public class ModelFeralRatlantean<T extends EntityFeralRatlantean> extends Advan
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
+    }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(lowerbody,
+                midBody,
+                backLeftThigh,
+                backRightThigh,
+                tail1,
+                tatters3,
+                frontBody,
+                tatters1,
+                tatters2,
+                frontRightLeg,
+                frontLeftLeg,
+                neck,
+                frontRightHeel,
+                frontRightFoot,
+                frontLeftHeel,
+                frontLeftFoot,
+                head1,
+                tatters4,
+                snoutUpper,
+                mouth1,
+                ear1,
+                ear2,
+                nose,
+                teeth,
+                wisker1,
+                wisker2,
+                backLeftLeg,
+                backLeftHeel,
+                backLeftFoot,
+                backRightLeg,
+                backRightHeel,
+                backRightFoot,
+                tail2,
+                tail3,
+                tail4);
     }
 }

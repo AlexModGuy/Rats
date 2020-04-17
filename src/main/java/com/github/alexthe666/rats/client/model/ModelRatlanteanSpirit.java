@@ -91,6 +91,10 @@ public class ModelRatlanteanSpirit<T extends Entity> extends AdvancedEntityModel
 
     }
 
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(this.nose, this.leftEye, this.rightEye, this.head, this.leftEar, this.rightEar, this.snout, this.wisker2_1, this.wisker2);
+    }
+
     public void setRotateAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;

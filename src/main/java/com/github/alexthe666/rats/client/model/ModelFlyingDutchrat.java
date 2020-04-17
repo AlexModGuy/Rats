@@ -308,6 +308,36 @@ public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntit
         AdvancedModelBox.rotateAngleZ = z;
     }
 
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(body1,
+                body2,
+                neck,
+                leftArm1,
+                rightArm1,
+                coat,
+                body3,
+                body4,
+                tail1,
+                head,
+                upperJaw,
+                lowerJaw,
+                eyebrowLeft,
+                eyebrowRight,
+                earLeft,
+                earRight,
+                nose,
+                wiskers1,
+                wiskers2,
+                beard,
+                leftArm2,
+                hookBase,
+                hook1,
+                hook2,
+                rightArm2,
+                paw);
+    }
+
     public ModelRenderer getArm(HandSide p_191361_1_) {
         return paw;
     }

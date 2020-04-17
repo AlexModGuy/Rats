@@ -218,6 +218,27 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
         AdvancedModelBox.rotateAngleZ = z;
     }
 
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(body,
+                headBase,
+                armLeft1,
+                armRight1,
+                thruster,
+                upperbody,
+                snout,
+                ear1,
+                ear2,
+                nose,
+                armLeft2,
+                drillArm1,
+                drillArm2,
+                drilArm3,
+                blade,
+                armRight2,
+                cannon);
+    }
+
     private void rotateFrom(AdvancedModelBox renderer, float degX, float degY, float degZ) {
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }

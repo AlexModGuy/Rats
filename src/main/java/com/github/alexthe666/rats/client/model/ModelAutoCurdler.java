@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -11,6 +12,10 @@ import net.minecraft.entity.Entity;
 public class ModelAutoCurdler <T extends Entity> extends AdvancedEntityModel<T> {
     public ModelRenderer bottom;
     public ModelRenderer milkTank;
+
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of();
+    }
 
     public ModelAutoCurdler() {
         this.textureWidth = 64;

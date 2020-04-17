@@ -112,4 +112,22 @@ public class ModelRatFish<T extends EntityRatfish> extends AdvancedEntityModel<T
         this.walk(this.wisker1, speedIdle, degreeIdle, false, 2, 0, ageInTicks, 1);
         this.nose.setScale(ulatingScale, ulatingScale, ulatingScale);
     }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(head,
+                snout,
+                leftEar,
+                rightEar,
+                leftEye,
+                rightEye,
+                nose,
+                wisker1,
+                wisker2,
+                body,
+                tail,
+                finRight,
+                finLeft,
+                finTop);
+    }
 }

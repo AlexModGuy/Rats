@@ -96,7 +96,7 @@ public class ModelRatAutomatonMount<T extends EntityRatAutomatonMount> extends A
         this.riderPlate = new AdvancedModelBox(this, 34, 0);
         this.riderPlate.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.riderPlate.addBox(-3.5F, -3.5F, 0.0F, 7, 7, 1, 0.3F);
-        this.setRotateAngle(riderPlate, (float)Math.toRadians(90), 0F, 0.0F);
+        this.setRotateAngle(riderPlate, (float) Math.toRadians(90), 0F, 0.0F);
 
         this.body.addChild(this.upperbody);
         this.riderPlatePivot.addChild(this.ear2);
@@ -189,6 +189,26 @@ public class ModelRatAutomatonMount<T extends EntityRatAutomatonMount> extends A
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
+    }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(body,
+                armLeft1,
+                armRight1,
+                thruster,
+                upperbody,
+                ear1,
+                ear2,
+                armLeft2,
+                drillArm1,
+                drillArm2,
+                drilArm3,
+                blade,
+                armRight2,
+                cannon,
+                riderPlate,
+                riderPlatePivot);
     }
 
     private void rotateFrom(AdvancedModelBox renderer, float degX, float degY, float degZ) {

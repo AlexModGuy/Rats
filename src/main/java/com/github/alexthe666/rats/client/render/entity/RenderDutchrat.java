@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelFlyingDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.EntityPlagueBeast;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
@@ -32,8 +33,7 @@ public class RenderDutchrat extends MobRenderer<EntityDutchrat, ModelFlyingDutch
         });
     }
 
-    protected void preRenderCallback(EntityDutchrat rat, float partialTickTime) {
-        //GL11.glScaled(2.0F, 2.0F, 2.0F);
+    protected void preRenderCallback(EntityPlagueBeast rat, MatrixStack stack, float partialTickTime) {
     }
 
     public ResourceLocation getEntityTexture(EntityDutchrat entity) {

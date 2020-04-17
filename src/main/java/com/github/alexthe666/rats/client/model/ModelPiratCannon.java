@@ -58,4 +58,9 @@ public class ModelPiratCannon<T extends Entity> extends AdvancedEntityModel<T>{
         ModelRenderer.rotateAngleY = y;
         ModelRenderer.rotateAngleZ = z;
     }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(this.base, this.middle, this.backCannon, this.frontCannon, this.midCannon, this.whick);
+    }
 }

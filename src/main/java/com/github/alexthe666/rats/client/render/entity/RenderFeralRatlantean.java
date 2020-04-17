@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelFeralRatlantean;
 import com.github.alexthe666.rats.server.entity.EntityFeralRatlantean;
+import com.github.alexthe666.rats.server.entity.EntityPlagueBeast;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -24,8 +26,8 @@ public class RenderFeralRatlantean extends MobRenderer<EntityFeralRatlantean, Mo
         this.addLayer(new LayerGlowingOverlay(this, EYES));
     }
 
-    protected void preRenderCallback(EntityFeralRatlantean rat, float partialTickTime) {
-        GL11.glScaled(1.2F, 1.2F, 1.2F);
+    protected void preRenderCallback(EntityPlagueBeast rat, MatrixStack stack, float partialTickTime) {
+        stack.scale(1.2F, 1.2F, 1.2F);
     }
 
     public ResourceLocation getEntityTexture(EntityFeralRatlantean entity) {

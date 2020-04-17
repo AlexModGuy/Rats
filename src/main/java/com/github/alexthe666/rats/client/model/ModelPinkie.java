@@ -22,6 +22,11 @@ public class ModelPinkie<T extends EntityRat> extends AdvancedEntityModel<T>{
     }
 
     @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(body);
+    }
+
+    @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(body);
     }

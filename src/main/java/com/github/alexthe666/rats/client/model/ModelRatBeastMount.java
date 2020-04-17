@@ -231,6 +231,45 @@ public class ModelRatBeastMount<T extends EntityRatBeastMount> extends AdvancedE
     }
 
     @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(lowerbody,
+                midBody,
+                backLeftThigh,
+                backRightThigh,
+                tail1,
+                tatters3,
+                frontBody,
+                tatters1,
+                tatters2,
+                frontRightLeg,
+                frontLeftLeg,
+                neck,
+                frontRightHeel,
+                frontRightFoot,
+                frontLeftHeel,
+                frontLeftFoot,
+                head1,
+                tatters4,
+                snoutUpper,
+                mouth1,
+                ear1,
+                ear2,
+                nose,
+                teeth,
+                wisker1,
+                wisker2,
+                backLeftLeg,
+                backLeftHeel,
+                backLeftFoot,
+                backRightLeg,
+                backRightHeel,
+                backRightFoot,
+                tail2,
+                tail3,
+                tail4);
+    }
+
+    @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(lowerbody);
     }

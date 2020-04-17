@@ -67,6 +67,11 @@ public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityMod
     }
 
     @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(top, connector1, connector2, connector3, heart1, heart2, heart3, heart4, heart5, heart6);
+    }
+
+    @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float speedIdle = 0.1F;

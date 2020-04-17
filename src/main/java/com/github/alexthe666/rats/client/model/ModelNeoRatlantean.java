@@ -253,4 +253,37 @@ public class ModelNeoRatlantean<T extends EntityNeoRatlantean> extends AdvancedE
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
     }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(body1,
+                floaty,
+                floatyPivot,
+                body2,
+                tail1,
+                leftThigh,
+                rightThigh,
+                coat1,
+                neck,
+                leftArm,
+                rightArm,
+                coat2,
+                head,
+                snout,
+                leftEar,
+                rightEar,
+                leftEye,
+                rightEye,
+                brain1,
+                nose,
+                wisker2,
+                wisker2_1,
+                brain2,
+                brain3,
+                leftHand,
+                rightHand,
+                tail1_1,
+                leftFoot,
+                rightFoot);
+    }
 }

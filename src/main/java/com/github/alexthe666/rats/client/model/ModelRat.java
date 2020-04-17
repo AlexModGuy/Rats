@@ -9,6 +9,8 @@ import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -141,6 +143,11 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
         this.updateDefaultPose();
     }
 
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        //this.resetToDefaultPose();
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    }
+
     public void renderNoWiskers(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         animate((IAnimatedEntity) entity, f, f1, f2, f3, f4);
         this.wisker1.showModel = false;
@@ -148,7 +155,9 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
     }
 
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
+        //this.resetToDefaultPose();
         this.resetToDefaultPose();
+
         EntityRat rat = (EntityRat) entity;
         animator.update(entity);//ANIMATION_IDLE_SCRATCH
         animator.setAnimation(EntityRat.ANIMATION_IDLE_SCRATCH);
@@ -507,5 +516,9 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
     @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(body1);
+    }
+
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(this.body1, this.body2, this.nose, this.leftEye, this.rightEye, this.head, this.leftArm, this.leftEar, this.leftFoot, this.leftHand, this.leftThigh, this.neck, this.rightArm, this.rightEar, this.rightFoot, this.rightHand, this.rightThigh, this.snout, this.tail1, this.tail1, this.tail2, this.wisker1, this.wisker2);
     }
 }

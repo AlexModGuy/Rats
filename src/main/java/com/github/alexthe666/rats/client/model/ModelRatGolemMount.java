@@ -84,4 +84,9 @@ public class ModelRatGolemMount<T extends EntityRatGolemMount> extends AdvancedE
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
     }
+
+    @Override
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(chest, waist, dome, leftArm, leftLeg, rightArm, rightLeg);
+    }
 }

@@ -13,6 +13,10 @@ public class ModelRatTrap<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedModelBox hingeTop;
     public AdvancedModelBox hinge2;
 
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(this.bottom, this.hingeMain, this.spring, this.hingeTop, this.hinge2);
+    }
+
     public ModelRatTrap() {
         this.textureWidth = 64;
         this.textureHeight = 32;

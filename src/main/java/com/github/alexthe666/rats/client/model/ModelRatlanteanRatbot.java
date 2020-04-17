@@ -212,6 +212,10 @@ public class ModelRatlanteanRatbot<T extends EntityRatlanteanRatbot> extends Adv
         animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
     }
 
+    public Iterable<AdvancedModelBox> getAllParts() {
+        return ImmutableList.of(this.body1, this.body2, this.nose, this.leftEye, this.rightEye, this.head, this.leftArm, this.leftEar, this.leftFoot, this.leftHand, this.leftThigh, this.neck, this.rightArm, this.rightEar, this.rightFoot, this.rightHand, this.rightThigh, this.snout, this.tail1, this.tail1, this.tail2, this.wisker1, this.wisker2, this.gear);
+    }
+
     @Override
     public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(body1);
