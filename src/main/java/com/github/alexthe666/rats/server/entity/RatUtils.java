@@ -6,8 +6,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -30,6 +29,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RatUtils {
 
@@ -716,6 +717,44 @@ public class RatUtils {
         }
         return entity instanceof CowEntity || s.contains("cow");
     }
+
+    public static void polinateAround(World world, BlockPos position) {
+        int RADIUS = 10;
+        List<BlockPos> allBlocks = new ArrayList<>();
+        for (BlockPos pos : BlockPos.getAllInBox(position.add(-RADIUS, -RADIUS, -RADIUS), position.add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            if (canPlantBeBonemealed(world, pos, world.getBlockState(pos))) {
+                allBlocks.add(pos);
+            }
+        }
+        if (!allBlocks.isEmpty()) {
+            for(BlockPos pos : allBlocks){
+                BlockState block = world.getBlockState(pos);
+                if (block.getBlock() instanceof IGrowable) {
+                    IGrowable igrowable = (IGrowable) block.getBlock();
+                    if (igrowable.canGrow(world, pos, block, world.isRemote) && world.rand.nextInt(3) == 0) {
+                        if (!world.isRemote) {
+                            world.playEvent(2005, pos, 0);
+                            igrowable.grow((ServerWorld)world, world.rand, pos, block);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean canPlantBeBonemealed(World world, BlockPos pos, BlockState BlockState) {
+        if (BlockState.getBlock() instanceof IGrowable && !(BlockState.getBlock() instanceof TallGrassBlock) && !(BlockState.getBlock() instanceof GrassBlock)) {
+            IGrowable igrowable = (IGrowable) BlockState.getBlock();
+            if (igrowable.canGrow(world, pos, BlockState, world.isRemote)) {
+                if (!world.isRemote) {
+                    //  igrowable.grow(worldIn, worldIn.rand, target, BlockState);
+                    return igrowable.canUseBonemeal(world, world.rand, pos, BlockState);
+                }
+            }
+        }
+        return false;
+    }
+
 
     public static class TubeSorter implements Comparator<Direction> {
         private final EntityRat theEntity;

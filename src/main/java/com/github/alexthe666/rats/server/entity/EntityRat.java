@@ -190,6 +190,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private int rangedAttackCooldownDragon = 0;
     private int visualCooldown = 0;
     private int poopCooldown = 0;
+    private int randomEffectCooldown = 0;
 
     public EntityRat(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -593,6 +594,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             compound.putInt("DepositPosZ", depositPos.getZ());
             compound.putInt("DepositFacing", depositFacing.ordinal());
         }
+        compound.putInt("RandomEffectCooldown", randomEffectCooldown);
         if (transportingFluid != null) {
             CompoundNBT fluidTag = new CompoundNBT();
             transportingFluid.writeToNBT(fluidTag);
@@ -621,6 +623,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         eatenItems = compound.getInt("EatenItems");
         mountRespawnCooldown = compound.getInt("MountCooldown");
         cheeseFeedings = compound.getInt("CheeseFeedings");
+        randomEffectCooldown = compound.getInt("RandomEffectCooldown");
         this.setHeldRF(compound.getInt("TransportingRF"));
         this.setRespawnCountdown(compound.getInt("RespawnCountdown"));
         this.setCommandInteger(compound.getInt("Command"));
@@ -830,6 +833,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 600));
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 600));
             }
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE)) {
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 1200, 1));
+            }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT)) {
                 Explosion.Mode explosion$mode = world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
                 Explosion explosion = new Explosion(this.world, null, this.getPosX(), this.getPosY() + (double) (this.getHeight() / 16.0F), this.getPosZ(), 4.0F, false, explosion$mode);
@@ -893,7 +899,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (this.flyingPitch < 1F && flyingPitch > -1F && onGround) {
                 this.flyingPitch = 0;
             }
-        } else if (this.hasFlight() && !this.isInWater()) {
+        } else if (this.hasFlightUpgrade() && !this.isInWater()) {
             if (navigatorType != 2) {
                 switchNavigator(2);
             }
@@ -1438,8 +1444,17 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
             this.startRiding(entity, true);
         }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE) && this.randomEffectCooldown == 0){
+            this.randomEffectCooldown = 500 + rand.nextInt(500);
+            if(rand.nextInt(3) == 0){
+                RatUtils.polinateAround(world, this.getPosition());
+            }
+        }
         if (mountRespawnCooldown > 0) {
             mountRespawnCooldown--;
+        }
+        if (randomEffectCooldown > 0) {
+            randomEffectCooldown--;
         }
     }
 
@@ -1866,6 +1881,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.getNavigator().clearPath();
             }
             vec3d = Vec3d.ZERO;
+            return;
         }
         super.travel(vec3d);
     }
@@ -2247,7 +2263,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
-        if (!this.hasFlight() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube() && !this.isPassenger()) {
+        if (!this.hasFlightUpgrade() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.inTube() && !this.isPassenger()) {
             return super.onLivingFall(distance, damageMultiplier);
         }
         return false;
@@ -2255,7 +2271,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     @Override
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-        if (!this.hasFlight() && !this.inTube()) {
+        if (!this.hasFlightUpgrade() && !this.inTube()) {
             super.updateFallState(y, onGroundIn, state, pos);
         }
     }
@@ -2831,10 +2847,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return 0;
     }
 
-    public boolean hasFlight() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON);
-    }
-
     public boolean isOnSameTeam(Entity entityIn) {
         if (entityIn != null) {
             if (entityIn instanceof TameableEntity) {
@@ -2988,5 +3000,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
         }
         return 1D;
+    }
+
+    public boolean hasFlightUpgrade(){
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) ||this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE);
     }
 }

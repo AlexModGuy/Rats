@@ -31,7 +31,8 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CRAFTING, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BLACKLIST, new Item[]{RatsItemRegistry.RAT_UPGRADE_WHITELIST});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_WHITELIST, new Item[]{RatsItemRegistry.RAT_UPGRADE_BLACKLIST});
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FLIGHT, new Item[0]);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_FLIGHT, new Item[]{RatsItemRegistry.RAT_UPGRADE_BEE, RatsItemRegistry.RAT_UPGRADE_DRAGON});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BEE, new Item[]{RatsItemRegistry.RAT_UPGRADE_FLIGHT, RatsItemRegistry.RAT_UPGRADE_DRAGON});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ENDER, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK, HARVEST_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_MINER, HARVEST_CONFLICTS);
@@ -63,7 +64,7 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_DISENCHANTER});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER, new Item[]{RatsItemRegistry.RAT_UPGRADE_ENCHANTER});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS, PROCESSING_CONFLICTS);
-        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DRAGON, new Item[]{RatsItemRegistry.RAT_UPGRADE_FLIGHT, RatsItemRegistry.RAT_UPGRADE_ASBESTOS});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_DRAGON, new Item[]{RatsItemRegistry.RAT_UPGRADE_FLIGHT,RatsItemRegistry.RAT_UPGRADE_BEE, RatsItemRegistry.RAT_UPGRADE_ASBESTOS});
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ETHEREAL, new Item[0]);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_ANGEL, new Item[0]);

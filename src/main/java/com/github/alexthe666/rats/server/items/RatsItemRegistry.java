@@ -63,6 +63,10 @@ public class RatsItemRegistry {
 
     public static final Item DRAGON_WING = new ItemGeneric("dragon_wing");
 
+    public static final Item BEE_WING = new ItemGeneric("bee_wing", null);
+
+    public static final Item BEE_FEELERS = new ItemGeneric("bee_feelers", null);
+
     public static final Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
 
     public static final Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
@@ -234,6 +238,8 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
     public static final Item RAT_UPGRADE_DRAGON = new ItemRatUpgrade("rat_upgrade_dragon", 1, 5);
+
+    public static final Item RAT_UPGRADE_BEE = new ItemRatUpgrade("rat_upgrade_bee", 1, 3);
 
     public static final Item RAT_UPGRADE_AQUATIC = new ItemRatUpgrade("rat_upgrade_aquatic", 0, 3);
 

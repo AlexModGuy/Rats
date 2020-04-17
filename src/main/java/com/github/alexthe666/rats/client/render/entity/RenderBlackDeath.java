@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderBlackDeath extends MobRenderer<EntityBlackDeath, ModelBlackDeath<EntityBlackDeath>> {
 
     private static final ResourceLocation BLACK_DEATH_TEXTURE = new ResourceLocation("rats:textures/entity/black_death.png");
-    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/black_death_overlay.png");
+    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("rats:textures/entity/black_death_overlay.png");
 
     public RenderBlackDeath() {
         super(Minecraft.getInstance().getRenderManager(), new ModelBlackDeath(), 0.5F);

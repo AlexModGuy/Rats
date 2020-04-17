@@ -17,7 +17,7 @@ public class AquaticRatPathNavigate extends FlyingPathNavigator {
         rat = entityIn;
     }
 
-    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
+    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC)) {
             rat.getMoveHelper().setMoveTo(entityIn.getPosX(), entityIn.getPosY() + entityIn.getHeight(), entityIn.getPosZ(), 0.25D);
         }

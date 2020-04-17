@@ -66,7 +66,7 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
     }
 
     private boolean shouldRatAIExecute() {
-        return rat.canMove() && !rat.hasFlight() && !rat.isDancing() && !rat.isFleeing;
+        return rat.canMove() && !rat.hasFlightUpgrade() && !rat.isDancing() && !rat.isFleeing;
     }
 
 }

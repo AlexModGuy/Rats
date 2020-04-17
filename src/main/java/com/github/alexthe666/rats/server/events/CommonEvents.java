@@ -290,7 +290,9 @@ public class CommonEvents {
                     event.getPlayer().swingArm(event.getHand());
                 }
             }
-            RatsMod.PROXY.openCheeseStaffGui();
+            if(event.getWorld().isRemote){
+                RatsMod.PROXY.openCheeseStaffGui();
+            }
         }
         if (event.getPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
             if (!RatConfig.disableRatlantis) {

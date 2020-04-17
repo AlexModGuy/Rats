@@ -337,14 +337,6 @@ public class ClientProxy extends CommonProxy {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void openCheeseStaffGui() {
-        if (refrencedRat != null) {
-            Minecraft.getInstance().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
     public EntityRat getRefrencedRat() {
         return refrencedRat;
     }
@@ -450,6 +442,14 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> getTEISR() {
         return com.github.alexthe666.rats.client.render.tile.RatsTEISR::new;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void openCheeseStaffGui() {
+        if (refrencedRat != null) {
+            Minecraft.getInstance().displayGuiScreen(new GuiCheeseStaff(refrencedRat));
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

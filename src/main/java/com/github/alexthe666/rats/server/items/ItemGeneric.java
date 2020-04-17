@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -20,6 +21,11 @@ public class ItemGeneric extends Item {
 
     public ItemGeneric(String name) {
         super(new Item.Properties().group(RatsMod.TAB));
+        this.setRegistryName(RatsMod.MODID, name);
+    }
+
+    public ItemGeneric(String name, ItemGroup group) {
+        super(new Item.Properties().group(group));
         this.setRegistryName(RatsMod.MODID, name);
     }
 

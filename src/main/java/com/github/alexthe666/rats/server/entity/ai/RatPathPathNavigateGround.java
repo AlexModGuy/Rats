@@ -51,7 +51,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
         return super.getPathToEntity(entityIn, idk);
     }
 
-    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
+    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
         Path path = this.getPathToEntity(entityIn, 0);
 
         if (path != null) {

@@ -44,45 +44,6 @@ public class GuiCheeseStaff extends Screen {
         init();
     }
 
-    public static void drawEntityOnScreen(int x, int y, int scale, float yaw, float pitch, LivingEntity entity) {
-        float f = (float)Math.atan((double)(yaw / 40.0F));
-        float f1 = (float)Math.atan((double)(pitch / 40.0F));
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef((float)x, (float)y, 1050.0F);
-        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixstack = new MatrixStack();
-        matrixstack.translate(0.0D, 0.0D, 1000.0D);
-        matrixstack.scale((float)scale, (float)scale, (float)scale);
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
-        quaternion.multiply(quaternion1);
-        matrixstack.rotate(quaternion);
-        float f2 = entity.renderYawOffset;
-        float f3 = entity.rotationYaw;
-        float f4 = entity.rotationPitch;
-        float f5 = entity.prevRotationYawHead;
-        float f6 = entity.rotationYawHead;
-        entity.renderYawOffset = 180.0F + f * 20.0F;
-        entity.rotationYaw = 180.0F + f * 40.0F;
-        entity.rotationPitch = -f1 * 20.0F;
-        entity.rotationYawHead = entity.rotationYaw;
-        entity.prevRotationYawHead = entity.rotationYaw;
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
-        quaternion1.conjugate();
-        entityrenderermanager.setCameraOrientation(quaternion1);
-        entityrenderermanager.setRenderShadow(false);
-        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
-        irendertypebuffer$impl.finish();
-        entityrenderermanager.setRenderShadow(true);
-        entity.renderYawOffset = f2;
-        entity.rotationYaw = f3;
-        entity.rotationPitch = f4;
-        entity.prevRotationYawHead = f5;
-        entity.rotationYawHead = f6;
-        RenderSystem.popMatrix();
-    }
-
     public void init() {
         super.init();
         this.buttons.clear();
@@ -154,6 +115,7 @@ public class GuiCheeseStaff extends Screen {
 
             }
         }
+
         super.render(mouseX, mouseY, partialTicks);
         int i = (this.width - 248) / 2 + 10;
         int j = (this.height - 166) / 2 + 8;
@@ -162,6 +124,48 @@ public class GuiCheeseStaff extends Screen {
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         GlStateManager.popMatrix();
+    }
+
+    public static void drawEntityOnScreen(int x, int y, int scale, float yaw, float pitch, LivingEntity entity) {
+        float f = (float)Math.atan((double)(yaw / 40.0F));
+        float f1 = (float)Math.atan((double)(pitch / 40.0F));
+        float rotate = (Minecraft.getInstance().getRenderPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 2F;
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.translate(0.0D, 0.0D, 1000.0D);
+        matrixstack.scale((float)scale, (float)scale, (float)scale);
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        Quaternion quaternion2 = Vector3f.YP.rotationDegrees(rotate);
+        quaternion.multiply(quaternion1);
+        matrixstack.rotate(quaternion);
+        matrixstack.rotate(quaternion2);
+        float f2 = entity.renderYawOffset;
+        float f3 = entity.rotationYaw;
+        float f4 = entity.rotationPitch;
+        float f5 = entity.prevRotationYawHead;
+        float f6 = entity.rotationYawHead;
+        entity.renderYawOffset = 180.0F + f * 20.0F;
+        entity.rotationYaw = 180.0F + f * 40.0F;
+        entity.rotationPitch = -f1 * 20.0F;
+        entity.rotationYawHead = entity.rotationYaw;
+        entity.prevRotationYawHead = entity.rotationYaw;
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        quaternion1.conjugate();
+        entityrenderermanager.setCameraOrientation(quaternion1);
+        entityrenderermanager.setRenderShadow(false);
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+        irendertypebuffer$impl.finish();
+        entityrenderermanager.setRenderShadow(true);
+        entity.renderYawOffset = f2;
+        entity.rotationYaw = f3;
+        entity.rotationPitch = f4;
+        entity.prevRotationYawHead = f5;
+        entity.rotationYawHead = f6;
+        RenderSystem.popMatrix();
     }
 
     public boolean isPauseScreen() {

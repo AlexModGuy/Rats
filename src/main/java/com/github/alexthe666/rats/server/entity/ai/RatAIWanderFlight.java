@@ -18,7 +18,7 @@ public class RatAIWanderFlight extends Goal {
     }
 
     public boolean shouldExecute() {
-        if (rat.hasFlight() && rat.canMove() && !rat.isInWater()) {
+        if (rat.hasFlightUpgrade() && rat.canMove() && !rat.isInWater()) {
             int dist = 8;
             if (rat.isInCage()) {
                 dist = 3;

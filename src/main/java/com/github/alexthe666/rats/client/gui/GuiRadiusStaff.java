@@ -50,6 +50,7 @@ public class GuiRadiusStaff extends Screen {
     public static void drawEntityOnScreen(int x, int y, int scale, float yaw, float pitch, LivingEntity entity) {
         float f = (float)Math.atan((double)(yaw / 40.0F));
         float f1 = (float)Math.atan((double)(pitch / 40.0F));
+        float rotate = (Minecraft.getInstance().getRenderPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 2F;
         RenderSystem.pushMatrix();
         RenderSystem.translatef((float)x, (float)y, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
@@ -58,8 +59,10 @@ public class GuiRadiusStaff extends Screen {
         matrixstack.scale((float)scale, (float)scale, (float)scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        Quaternion quaternion2 = Vector3f.YP.rotationDegrees(rotate);
         quaternion.multiply(quaternion1);
         matrixstack.rotate(quaternion);
+        matrixstack.rotate(quaternion2);
         float f2 = entity.renderYawOffset;
         float f3 = entity.rotationYaw;
         float f4 = entity.rotationPitch;

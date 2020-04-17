@@ -42,6 +42,8 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
+    private static ItemStack BEE_WING_STACK = new ItemStack(RatsItemRegistry.BEE_WING);
+    private static ItemStack BEE_ANTENNE_STACK = new ItemStack(RatsItemRegistry.BEE_FEELERS);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
     private static ItemStack CARROT_STACK = new ItemStack(Blocks.FERN);
     private static ModelChristmasChest CHRISTMAS_CHEST_MODEL = new ModelChristmasChest();
@@ -264,6 +266,35 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
             matrixStackIn.scale(2, 2, 1);
             minecraft.getItemRenderer().renderItem(WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.pop();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE)) {
+            matrixStackIn.push();
+            Minecraft minecraft = Minecraft.getInstance();
+            float wingAngle = entity.onGround ? 0 : MathHelper.sin(ageInTicks) * 60;
+            float wingFold = entity.onGround ? -45 : 0;
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZN, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, wingFold, true));
+            matrixStackIn.translate(0.75F, 0, 0.4F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.scale(3, 3, 1);
+            minecraft.getItemRenderer().renderItem(BEE_WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+            matrixStackIn.push();
+            matrixStackIn.translate(0F, -0.1F, 0F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, wingAngle, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YN, wingFold, true));
+            matrixStackIn.translate(-0.75F, 0F, 0.4F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
+            matrixStackIn.scale(3, 3, 1);
+            minecraft.getItemRenderer().renderItem(BEE_WING_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
             matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {

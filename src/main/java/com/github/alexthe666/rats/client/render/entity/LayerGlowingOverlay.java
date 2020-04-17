@@ -18,11 +18,13 @@ import net.minecraft.util.ResourceLocation;
 public class LayerGlowingOverlay<T extends LivingEntity> extends LayerRenderer<T, EntityModel<T>> {
     private final IEntityRenderer<T, EntityModel<T>> ratRenderer;
     private final ResourceLocation texture;
+    private final RenderType renderType;
 
     public LayerGlowingOverlay(IEntityRenderer<T, EntityModel<T>> ratRendererIn, ResourceLocation texture) {
         super(ratRendererIn);
         this.ratRenderer = ratRendererIn;
         this.texture = texture;
+        this.renderType = RenderType.getEyes(texture);
     }
 
     public boolean shouldCombineTextures() {
@@ -31,7 +33,7 @@ public class LayerGlowingOverlay<T extends LivingEntity> extends LayerRenderer<T
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(texture));
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(renderType);
         this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
     }

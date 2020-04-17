@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HCH",
+    "CUC",
+    "HCH"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:honey_bottle"
+    },
+    "C": {
+      "item": "minecraft:honeycomb_block"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_flight",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_bee"
+  }
+}
