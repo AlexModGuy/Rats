@@ -43,7 +43,7 @@ public class BlockRatHole extends ContainerBlock implements IUsesTEISR {
     private VoxelShape shape;
 
     protected BlockRatHole() {
-        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.3F, 0.0F));
+        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).notSolid().variableOpacity().hardnessAndResistance(1.3F, 0.0F));
         setDefaultState(this.stateContainer.getBaseState()
                 .with(NORTH, Boolean.valueOf(false))
                 .with(EAST, Boolean.valueOf(false))

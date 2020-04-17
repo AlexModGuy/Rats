@@ -5,6 +5,9 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -84,6 +87,8 @@ public class TileEntityRatCageBreedingLantern extends TileEntityRatCageDecorated
         } else {
             breedingCooldown--;
         }
-        //world.addParticle((IParticleData) ParticleTypes.DUST, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3);
+        if(world.isRemote){
+            world.addParticle(RedstoneParticleData.REDSTONE_DUST, i + random.nextDouble() - 0.5D, j + random.nextDouble() - 0.5D, k + random.nextDouble() - 0.5D, f1, f2, f3);
+        }
     }
 }

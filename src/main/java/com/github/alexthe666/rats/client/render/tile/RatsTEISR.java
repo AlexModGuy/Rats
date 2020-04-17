@@ -30,7 +30,7 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
             renderRatHole.render(teRatHole, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP)) {
-            GL11.glScalef(1.2F, 1.2F, 1.2F);
+            matrixStackIn.scale(1.2F, 1.2F, 1.2F);
             renderRatTrap.render(teRatTrap, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER)) {

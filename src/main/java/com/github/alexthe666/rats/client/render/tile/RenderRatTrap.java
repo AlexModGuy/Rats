@@ -32,7 +32,7 @@ public class RenderRatTrap extends TileEntityRenderer<TileEntityRatTrap> {
         float rotation = 0;
         float shutProgress = 0;
         ItemStack bait = ItemStack.EMPTY;
-        if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatTrap && entity instanceof TileEntityRatTrap) {
+        if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockRatTrap) {
             if (entity.getWorld().getBlockState(entity.getPos()).get(BlockRatTrap.FACING) == Direction.NORTH) {
                 rotation = 180;
             }
@@ -53,8 +53,8 @@ public class RenderRatTrap extends TileEntityRenderer<TileEntityRatTrap> {
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, rotation, true));
         matrixStackIn.push();
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
-        MODEL_RAT_TRAP.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
         MODEL_RAT_TRAP.animateHinge(shutProgress);
+        MODEL_RAT_TRAP.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
         if (!bait.isEmpty()) {
             matrixStackIn.scale(0.4F, 0.4F, 0.4F);
             matrixStackIn.translate(0, 3.4F, -0.5F);

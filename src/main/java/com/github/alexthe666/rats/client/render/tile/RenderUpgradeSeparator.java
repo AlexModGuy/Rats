@@ -40,7 +40,7 @@ public class RenderUpgradeSeparator extends TileEntityRenderer<TileEntityUpgrade
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * 0.1F * (180F / (float) Math.PI), true));
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90, true));
-        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.FIXED, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
         matrixStackIn.pop();
     }
 }

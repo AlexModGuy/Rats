@@ -35,7 +35,7 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     private static final VoxelShape AABB = Block.makeCuboidShape(0, 0, 0, 16, 18, 16);
 
     public BlockAutoCurdler() {
-        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0F, 0.0F));
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).notSolid().variableOpacity().hardnessAndResistance(2.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "auto_curdler");
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         //GameRegistry.registerTileEntity(TileEntityAutoCurdler.class, "rats.auto_curdler");

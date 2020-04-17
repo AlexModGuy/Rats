@@ -30,6 +30,9 @@ public class FeatureMarblePile extends Feature<NoFeatureConfig> {
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+        if(rand.nextFloat() > 0.9){
+            return false;
+        }
         for (int i = 0; i < 4 + rand.nextInt(6); ++i) {
             BlockPos blockpos = pos.add(rand.nextInt(15), 64, rand.nextInt(15));
             blockpos = new BlockPos(blockpos.getX(), worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, blockpos.getX(), blockpos.getZ()), blockpos.getZ());

@@ -32,17 +32,17 @@ public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
     private static final AxisAlignedBB SOUTH_CORNER_AABB = new AxisAlignedBB(-0.001F, -0.001F, 0.74999F, 0.251, 0.5F, 1.001F);
     private static final AxisAlignedBB WEST_CORNER_AABB = new AxisAlignedBB(0.74999F, -0.001F, 0.74999F, 1.001F, 0.5F, 1.001F);
 
+    private static final RenderType TEXTURE = RenderType.getEntitySmoothCutout(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+
     public RenderRatHole(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
 
-    public static void renderAABB(IRenderTypeBuffer bufferIn, AxisAlignedBB boundingBox, MatrixStack matrixStack, TextureAtlasSprite sprite, int combinedLight) {
+    public static void renderAABB(IRenderTypeBuffer bufferIn, AxisAlignedBB boundingBox, MatrixStack matrixStack, TextureAtlasSprite sprite, int combinedLight, int overlay) {
         matrixStack.push();
         GlStateManager.enableBlend();
         GlStateManager.depthMask(true);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
-        IVertexBuilder vertexbuffer = tessellator.getBuffer();
+        IVertexBuilder vertexbuffer = bufferIn.getBuffer(TEXTURE);
         double avgY = boundingBox.maxY - boundingBox.minY;
         double avgX = Math.abs(boundingBox.maxX - boundingBox.minX);
         double avgZ = Math.abs(boundingBox.maxZ - boundingBox.minZ);
@@ -57,38 +57,36 @@ public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
         float f4_alt_z = (float) Math.min(sprite.getMaxV(), f3 + avgZ * Math.abs(sprite.getMaxV() - sprite.getMinV()));//sprite.getMaxU();
         //back
         Matrix4f matrix4f = matrixStack.getLast().getMatrix();
-        builder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f2_alt_x,  f3).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f1,  f3).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f1,  f4_alt).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f2_alt_x,  f4_alt).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_x,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_x,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, -1.0F).endVertex();
         //front
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f1,  f4_alt).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f2_alt_x,  f4_alt).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f2_alt_x,  f3).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f1,  f3).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_x,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_x,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 0.0F, 1.0F).endVertex();
         //tops
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f1,  f4_alt_z).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f2_alt_x,  f4_alt_z).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f2_alt_x,  f3).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f1,  f3).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f4_alt_z).overlay(overlay).lightmap(combinedLight).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_x,  f4_alt_z).overlay(overlay).lightmap(combinedLight).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_x,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, -1.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f1,  f4_alt_z).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f2_alt_x,  f4_alt_z).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f2_alt_x,  f3).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f1,  f3).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f4_alt_z).overlay(overlay).lightmap(combinedLight).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_x,  f4_alt_z).overlay(overlay).lightmap(combinedLight).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_x,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(0.0F, 1.0F, 0.0F).endVertex();
         //sides
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f2_alt_z,  f4_alt).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f2_alt_z,  f3).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f1,  f3).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f1,  f4_alt).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_z,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f2_alt_z,  f3).overlay(overlay).lightmap(combinedLight).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f1,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(-1.0F, 0.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).tex( f2_alt_z,  f4_alt).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).tex( f2_alt_z,  f3).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).tex( f1,  f3).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).tex( f1,  f4_alt).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).lightmap(combinedLight).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_z,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.minZ).color(255, 255, 255, 255).tex( f2_alt_z,  f3).overlay(overlay).lightmap(combinedLight).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.maxY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f3).overlay(overlay).lightmap(combinedLight).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX, (float)boundingBox.minY, (float)boundingBox.maxZ).color(255, 255, 255, 255).tex( f1,  f4_alt).overlay(overlay).lightmap(combinedLight).normal(1.0F, 0.0F, 0.0F).endVertex();
         matrixStack.pop();
-        tessellator.draw();
     }
 
     @Override
@@ -111,23 +109,22 @@ public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
         int z = 0;
         matrixStackIn.push();
         IBakedModel ibakedmodel = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(state);
-        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        renderAABB(bufferIn, TOP_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
-        renderAABB(bufferIn, EAST_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
-        renderAABB(bufferIn, WEST_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
-        renderAABB(bufferIn, NORTH_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
-        renderAABB(bufferIn, SOUTH_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
+        renderAABB(bufferIn, TOP_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
+        renderAABB(bufferIn, EAST_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
+        renderAABB(bufferIn, WEST_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
+        renderAABB(bufferIn, NORTH_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
+        renderAABB(bufferIn, SOUTH_CORNER_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
         if (connectedEast) {
-            renderAABB(bufferIn, NS_RIGHT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
+            renderAABB(bufferIn, NS_RIGHT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
         }
         if (connectedWest) {
-            renderAABB(bufferIn, NS_LEFT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
+            renderAABB(bufferIn, NS_LEFT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
         }
         if (connectedNorth) {
-            renderAABB(bufferIn, EW_LEFT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
+            renderAABB(bufferIn, EW_LEFT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
         }
         if (connectedSouth) {
-            renderAABB(bufferIn, EW_RIGHT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn);
+            renderAABB(bufferIn, EW_RIGHT_AABB, matrixStackIn, ibakedmodel.getParticleTexture(), combinedLightIn, combinedOverlayIn);
         }
         matrixStackIn.pop();
     }

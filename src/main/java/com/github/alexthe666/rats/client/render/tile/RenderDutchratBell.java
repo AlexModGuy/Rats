@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.tile;
 
+import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityDutchratBell;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -22,8 +23,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class RenderDutchratBell extends TileEntityRenderer<TileEntityDutchratBell> {
 
-    public static final Material BELL_BODY_TEXTURE = new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation("rats:textures/entity/ratlantis/dutchrat_bell.png"));
     private final ModelRenderer modelRenderer = new ModelRenderer(32, 32, 0, 0);
+    private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation("rats:textures/entity/ratlantis/dutchrat_bell.png"));
 
     public RenderDutchratBell(TileEntityRendererDispatcher p_i226005_1_) {
         super(p_i226005_1_);
@@ -54,7 +55,7 @@ public class RenderDutchratBell extends TileEntityRenderer<TileEntityDutchratBel
 
         this.modelRenderer.rotateAngleX = f1;
         this.modelRenderer.rotateAngleZ = f2;
-        IVertexBuilder ivertexbuilder = BELL_BODY_TEXTURE.getBuffer(bufferIn, RenderType::getEntitySolid);
-        this.modelRenderer.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
+        this.modelRenderer.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 0.5F);
     }
 }

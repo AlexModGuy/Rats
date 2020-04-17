@@ -37,14 +37,12 @@ public class LayerDutchratHelmet extends LayerRenderer<EntityDutchrat, ModelFlyi
         ((ModelFlyingDutchrat) this.ratRenderer.getEntityModel()).body1.translateRotate(matrixStackIn);
         ((ModelFlyingDutchrat) this.ratRenderer.getEntityModel()).neck.translateRotate(matrixStackIn);
         ((ModelFlyingDutchrat) this.ratRenderer.getEntityModel()).head.translateRotate(matrixStackIn);
-        GL11.glTranslatef(0, -0.77F, 0);
+        matrixStackIn.translate(0, -0.77F, 0);
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem) itemstack.getItem();
             BipedModel a = getArmorModelHook(rat, itemstack, EquipmentSlotType.HEAD, backup);
             ResourceLocation tex = getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null);
-            a.setLivingAnimations(rat, limbSwing, limbSwingAmount, partialTicks);
-            a.setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(tex), false, false);
             a.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }

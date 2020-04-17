@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.properties.BellAttachment;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.BellTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -28,6 +29,7 @@ public class BlockDutchratBell extends BellBlock {
     public BlockDutchratBell() {
         super(Block.Properties.create(Material.IRON, MaterialColor.GOLD).hardnessAndResistance(5.0F).sound(SoundType.ANVIL));
         this.setRegistryName("rats:dutchrat_bell");
+        this.setDefaultState(this.stateContainer.getBaseState().with(field_220133_a, Direction.NORTH).with(BlockStateProperties.BELL_ATTACHMENT, BellAttachment.FLOOR).with(field_226883_b_, Boolean.valueOf(false)));
     }
 
     @Override
@@ -41,6 +43,21 @@ public class BlockDutchratBell extends BellBlock {
                 p_226884_4_.addStat(Stats.BELL_RING);
             }
 
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean func_226885_a_(World p_226885_1_, BlockPos p_226885_2_, @Nullable Direction p_226885_3_) {
+        TileEntity tileentity = p_226885_1_.getTileEntity(p_226885_2_);
+        if (!p_226885_1_.isRemote && tileentity instanceof TileEntityDutchratBell) {
+            if (p_226885_3_ == null) {
+                p_226885_3_ = p_226885_1_.getBlockState(p_226885_2_).get(field_220133_a);
+            }
+            playRingSound(p_226885_1_, p_226885_2_);
+            ((TileEntityDutchratBell)tileentity).func_213939_a(p_226885_3_);
             return true;
         } else {
             return false;

@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelFlyingDutchrat;
+import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
@@ -28,10 +29,10 @@ public class LayerDutchratGlow extends LayerRenderer<EntityDutchrat, ModelFlying
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityDutchrat entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(GLOW_1));
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RatsRenderType.getGlowingTranslucent(GLOW_1));
+        IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RatsRenderType.getGlowingTranslucent(GLOW_2));
         this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RenderType.getEyes(GLOW_2));
-        this.getEntityModel().render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.getEntityModel().render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
 
     }
 
