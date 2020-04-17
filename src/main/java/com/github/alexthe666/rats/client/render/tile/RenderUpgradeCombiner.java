@@ -19,7 +19,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class RenderUpgradeCombiner extends TileEntityRenderer<TileEntityUpgradeCombiner> {
     private static final ModelRatlanteanSpirit MODEL_SPIRIT = new ModelRatlanteanSpirit();
-    private static final RenderType TEXTURE = RenderType.getEntityCutout(new ResourceLocation("rats:textures/entity/ratlantis/upgrade_combiner.png"));
+    private static final RenderType TEXTURE = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/entity/ratlantis/upgrade_combiner.png"));
 
     public RenderUpgradeCombiner(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
@@ -28,9 +28,9 @@ public class RenderUpgradeCombiner extends TileEntityRenderer<TileEntityUpgradeC
     @Override
     public void render(TileEntityUpgradeCombiner entity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.push();
-        matrixStackIn.translate(0.5D, 1.5D, 0.5D);
+        matrixStackIn.translate(0.5D, 0.0D, 0.5D);
         float f = (float) entity.ticksExisted + Minecraft.getInstance().getRenderPartialTicks();
-        matrixStackIn.translate(0.0F, 3F + MathHelper.sin(f * 0.1F) * 0.1F, 0.0F);
+        matrixStackIn.translate(0.0F, 3.25F + MathHelper.sin(f * 0.1F) * 0.1F, 0.0F);
         float f1;
 
         for (f1 = entity.ratRotation - entity.ratRotationPrev; f1 >= (float) Math.PI; f1 -= ((float) Math.PI * 2F)) {
@@ -40,11 +40,11 @@ public class RenderUpgradeCombiner extends TileEntityRenderer<TileEntityUpgradeC
             f1 += ((float) Math.PI * 2F);
         }
         float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getRenderPartialTicks();;
-        matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * (180F / (float) Math.PI), true));
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * (180F/ (float) Math.PI) - 90F, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
-        matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90, true));
+        matrixStackIn.scale(1.5F, 1.5F, 1.5F);
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
-        MODEL_SPIRIT.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+        MODEL_SPIRIT.render(matrixStackIn, ivertexbuilder, 244, 0, 1.0F, 1.0F, 1.0F, 0.5F);
 
         matrixStackIn.pop();
     }

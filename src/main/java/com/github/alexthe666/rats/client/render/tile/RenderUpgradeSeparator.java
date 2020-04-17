@@ -25,9 +25,9 @@ public class RenderUpgradeSeparator extends TileEntityRenderer<TileEntityUpgrade
     @Override
     public void render(TileEntityUpgradeSeparator entity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.push();
-        matrixStackIn.translate(0.5D, 1.5D, 0.5D);
+        matrixStackIn.translate(0.5D, 0.15D, 0.5D);
         float f = (float) entity.ratRotationPrev + Minecraft.getInstance().getRenderPartialTicks();
-        matrixStackIn.translate(0.0F, 3F + MathHelper.sin(f * 0.1F) * 0.1F, 0.0F);
+        matrixStackIn.translate(0.0F, 1F + MathHelper.sin(f * 0.1F) * 0.1F, 0.0F);
         float f1;
 
         for (f1 = entity.ratRotation - entity.ratRotationPrev; f1 >= (float) Math.PI; f1 -= ((float) Math.PI * 2F)) {
@@ -36,13 +36,11 @@ public class RenderUpgradeSeparator extends TileEntityRenderer<TileEntityUpgrade
         while (f1 < -(float) Math.PI) {
             f1 += ((float) Math.PI * 2F);
         }
-        float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getRenderPartialTicks();;
-        matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * (180F / (float) Math.PI), true));
+        float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getRenderPartialTicks();
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, -f2 * 0.1F * (180F / (float) Math.PI), true));
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
-        matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90, true));
-
-        GlStateManager.scalef(1.7F, 1.7F, 1.7F);
-        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.GROUND, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
-        GlStateManager.popMatrix();
+        matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90, true));
+        Minecraft.getInstance().getItemRenderer().renderItem(RENDER_STACK, ItemCameraTransforms.TransformType.FIXED, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        matrixStackIn.pop();
     }
 }

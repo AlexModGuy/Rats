@@ -71,8 +71,7 @@ public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityMod
         return ImmutableList.of(top, connector1, connector2, connector3, heart1, heart2, heart3, heart4, heart5, heart6);
     }
 
-    @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void swingChain(){
         this.resetToDefaultPose();
         float speedIdle = 0.1F;
         float degreeIdle = 0.05F;
@@ -80,6 +79,11 @@ public class ModelRatBreedingLantern<T extends Entity> extends AdvancedEntityMod
         float swing = Minecraft.getInstance().player.ticksExisted;
         this.chainWave(connectors, speedIdle, degreeIdle, 1, swing, 1);
         this.chainFlap(connectors, speedIdle, degreeIdle, -1, swing, 1);
+    }
+
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
 
     }
 

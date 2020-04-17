@@ -42,7 +42,7 @@ public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
         GlStateManager.depthMask(true);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder builder = tessellator.getBuffer();
-        IVertexBuilder vertexbuffer = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
+        IVertexBuilder vertexbuffer = tessellator.getBuffer();
         double avgY = boundingBox.maxY - boundingBox.minY;
         double avgX = Math.abs(boundingBox.maxX - boundingBox.minX);
         double avgZ = Math.abs(boundingBox.maxZ - boundingBox.minZ);

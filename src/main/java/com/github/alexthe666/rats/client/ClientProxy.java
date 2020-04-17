@@ -16,7 +16,10 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
@@ -117,7 +120,12 @@ public class ClientProxy extends CommonProxy {
 
     @OnlyIn(Dist.CLIENT)
     public void preInit() {
-        //TinkersCompatBridge.loadTinkersClientCompat();
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_DECORATED, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RATGLOVE_FLOWER, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_TUBE_COLOR, RenderType.getCutout());
+
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -173,10 +181,6 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
- /*Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE).setTileItemEntityStackRenderer(TEISR);
-        Item.getItemFromBlock(RatsBlockRegistry.RAT_TRAP).setTileItemEntityStackRenderer(TEISR);
-        Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER).setTileItemEntityStackRenderer(TEISR);
-        Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL).setTileItemEntityStackRenderer(TEISR);*/
     }
 
     @SubscribeEvent

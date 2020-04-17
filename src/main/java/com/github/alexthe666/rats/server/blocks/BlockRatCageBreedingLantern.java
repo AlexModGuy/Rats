@@ -26,7 +26,7 @@ public class BlockRatCageBreedingLantern extends BlockRatCage implements ITileEn
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockRatCageBreedingLantern() {
-        super("rat_cage_breeding_lantern", Block.Properties.create(Material.IRON).sound(SoundType.METAL).variableOpacity().hardnessAndResistance(2.0F, 0.0F));
+        super("rat_cage_breeding_lantern", Block.Properties.create(Material.IRON).sound(SoundType.METAL).notSolid().variableOpacity().hardnessAndResistance(2.0F, 0.0F));
         this.setDefaultState(this.stateContainer.getBaseState()
                 .with(NORTH, Integer.valueOf(0))
                 .with(EAST, Integer.valueOf(0))

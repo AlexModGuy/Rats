@@ -31,11 +31,11 @@ public class RenderRatCageDecorated extends TileEntityRenderer<TileEntityRatCage
     private static final ModelRatWaterBottle MODEL_RAT_WATER_BOTTLE = new ModelRatWaterBottle();
     private static final ModelRatSeedBowl MODEL_RAT_SEED_BOWL = new ModelRatSeedBowl();
     private static final ModelRatBreedingLantern MODEL_RAT_BREEDING_LANTERN = new ModelRatBreedingLantern();
-    private static final RenderType TEXTURE_RAT_IGLOO = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_igloo.png"));
-    private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_hammock_0.png"));
-    private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_water_bottle.png"));
-    private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_seed_bowl.png"));
-    private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/rat_breeding_lantern.png"));
+    private static final RenderType TEXTURE_RAT_IGLOO = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_igloo.png"));
+    private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_hammock_0.png"));
+    private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_water_bottle.png"));
+    private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_seed_bowl.png"));
+    private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_breeding_lantern.png"));
 
     public RenderRatCageDecorated(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
@@ -61,23 +61,18 @@ public class RenderRatCageDecorated extends TileEntityRenderer<TileEntityRatCage
             DyeColor color = ((ItemRatIgloo) containedItem.getItem()).color;
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RAT_IGLOO);
             GlStateManager.color4f(color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2], 1.0F);
-            MODEL_RAT_IGLOO.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            MODEL_RAT_IGLOO.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2], 1.0F);
             GlStateManager.enableCull();
             GlStateManager.disableBlend();
         }
         if (containedItem.getItem() instanceof ItemRatHammock) {
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RAT_HAMMOCK);
-            GL11.glPushMatrix();
-            GlStateManager.disableCull();
-            GlStateManager.enableCull();
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
+            matrixStackIn.push();
             DyeColor color = ((ItemRatHammock) containedItem.getItem()).color;
             GlStateManager.enableColorMaterial();
-            GlStateManager.color4f(color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2], 1.0F);
-            MODEL_RAT_HAMMOCK.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            MODEL_RAT_HAMMOCK.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, color.getColorComponentValues()[0], color.getColorComponentValues()[1], color.getColorComponentValues()[2], 1.0F);
             GlStateManager.disableColorMaterial();
-            GL11.glPopMatrix();
+            matrixStackIn.pop();
 
 
         }
@@ -94,11 +89,8 @@ public class RenderRatCageDecorated extends TileEntityRenderer<TileEntityRatCage
         if (containedItem.getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RAT_BREEDING_LANTERN);
             MODEL_RAT_BREEDING_LANTERN.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
-
-        }
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-
+            MODEL_RAT_BREEDING_LANTERN.swingChain();
+         }
+        matrixStackIn.pop();
     }
 }

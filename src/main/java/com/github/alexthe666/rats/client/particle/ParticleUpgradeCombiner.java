@@ -22,7 +22,7 @@ public class ParticleUpgradeCombiner extends SpriteTexturedParticle {
     public ParticleUpgradeCombiner(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, colorR, colorG, colorB);
         //this.particleAlpha = 0.5F;
-        this.maxAge = 50;
+        this.maxAge = 15;
         this.particleGravity = 0;
     }
 
@@ -34,6 +34,8 @@ public class ParticleUpgradeCombiner extends SpriteTexturedParticle {
     @Override
     public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
         Vec3d inerp = renderInfo.getProjectedView();
+        particleScale = (15 - age) * 0.01F;
+        this.particleAlpha = (15 - age) * 0.05F;
         if (age > this.getMaxAge()) {
             this.setExpired();
         }
