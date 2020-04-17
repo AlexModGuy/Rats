@@ -2,6 +2,8 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelMarbledCheeseGolem;
 import com.github.alexthe666.rats.server.blocks.BlockMarbledCheeseRatHead;
+import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
@@ -31,11 +33,24 @@ public class RenderRatlanteanAutomatonHead extends TileEntityRenderer<TileEntity
     @Override
     public void render(TileEntityRatlanteanAutomatonHead te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn){
         float rotation = 0;
-        float ticksExisted = Minecraft.getInstance().player.ticksExisted + Minecraft.getInstance().getRenderPartialTicks();
+        float ticksExisted = Minecraft.getInstance().player.ticksExisted + partialTicks;
+        if (te != null && te.getWorld() != null && te.getWorld().getBlockState(te.getPos()).getBlock() instanceof BlockMarbledCheeseRatHead) {
+            if (te.getWorld().getBlockState(te.getPos()).get(BlockMarbledCheeseRatHead.FACING) == Direction.NORTH) {
+                rotation = 180;
+            }
+            if (te.getWorld().getBlockState(te.getPos()).get(BlockMarbledCheeseRatHead.FACING) == Direction.EAST) {
+                rotation = -90;
+            }
+            if (te.getWorld().getBlockState(te.getPos()).get(BlockMarbledCheeseRatHead.FACING) == Direction.WEST) {
+                rotation = 90;
+            }
+            ticksExisted = te.ticksExisted + partialTicks;
+        }
         matrixStackIn.push();
         matrixStackIn.push();
+        matrixStackIn.translate(0.5F, -0.5F, 0.5F);
         matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
-        matrixStackIn.translate(-0.5F, 0.5F, -0.5F);
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, rotation, true));
         matrixStackIn.push();
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(GOLEM_TEXTURE);
         MODEL_GOLEM.setTERotationAngles(ticksExisted);

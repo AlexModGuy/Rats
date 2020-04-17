@@ -27,6 +27,7 @@ public class RenderPlagueBeast extends MobRenderer<EntityPlagueBeast, ModelFeral
     }
 
     protected void preRenderCallback(EntityPlagueBeast rat, MatrixStack stack, float partialTickTime) {
+
         stack.scale(1.2F, 1.2F, 1.2F);
     }
 

@@ -24,7 +24,6 @@ public class RenderDutchrat extends MobRenderer<EntityDutchrat, ModelFlyingDutch
         this.addLayer(new LayerDutchratGlow(this));
         this.addLayer(new LayerDutchratHelmet(this));
         this.addLayer(new HeldItemLayer(this) {
-
             public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
                 if(entitylivingbaseIn instanceof EntityDutchrat && !((EntityDutchrat) entitylivingbaseIn).hasThrownSword()){
                     super.render(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
@@ -33,7 +32,7 @@ public class RenderDutchrat extends MobRenderer<EntityDutchrat, ModelFlyingDutch
         });
     }
 
-    protected void preRenderCallback(EntityPlagueBeast rat, MatrixStack stack, float partialTickTime) {
+    protected void preRenderCallback(EntityDutchrat rat, MatrixStack stack, float partialTickTime) {
     }
 
     public ResourceLocation getEntityTexture(EntityDutchrat entity) {

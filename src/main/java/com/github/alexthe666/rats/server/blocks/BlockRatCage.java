@@ -61,7 +61,7 @@ public class BlockRatCage extends Block {
     private static final VoxelShape WEST_AABB = Block.makeCuboidShape(0F, 0F, 0F, 1F, 16F, 16F);
 
     public BlockRatCage(String name) {
-        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0F, 0.0F));
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).variableOpacity().hardnessAndResistance(2.0F, 0.0F));
         this.setDefaultState(this.stateContainer.getBaseState()
                 .with(NORTH, Integer.valueOf(0))
                 .with(EAST, Integer.valueOf(0))

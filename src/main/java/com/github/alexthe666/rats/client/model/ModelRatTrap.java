@@ -44,9 +44,11 @@ public class ModelRatTrap<T extends Entity> extends AdvancedEntityModel<T>{
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float shutProgress = 0;
-        this.hingeMain.rotateAngleX += (float) (shutProgress * Math.PI / 6.0F);
+    }
 
+    public void animateHinge(float shutProgress){
+        this.resetToDefaultPose();
+        this.hingeMain.rotateAngleX += (float) (shutProgress * Math.PI / 6.0F);
     }
 
     @Override

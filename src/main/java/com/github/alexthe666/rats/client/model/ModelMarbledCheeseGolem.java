@@ -154,7 +154,6 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
     }
 
     public void renderHead(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha){
-        this.resetToDefaultPose();
         headBase.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
     }
 

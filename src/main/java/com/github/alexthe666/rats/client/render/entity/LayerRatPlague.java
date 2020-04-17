@@ -38,7 +38,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             return;
         }
         if (rat.hasPlague()) {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityNoOutline(TEXTURE));
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         }

@@ -128,6 +128,7 @@ public class ClientProxy extends CommonProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT, manager -> new RenderRat());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SPAWNER, manager -> new RenderNothing());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIED_PIPER, manager -> new RenderIllagerPiper());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_FLAME, manager -> new SpriteRenderer(manager, Minecraft.getInstance().getItemRenderer()));

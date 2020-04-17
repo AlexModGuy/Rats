@@ -46,7 +46,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
     private BlockPattern golemPattern;
 
     public BlockMarbledCheeseRatHead() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).lightValue(5).hardnessAndResistance(2.5F, 0));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).lightValue(5).notSolid().variableOpacity().hardnessAndResistance(2.5F, 0));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         this.setRegistryName(RatsMod.MODID, "marbled_cheese_rat_head");
 
@@ -59,6 +59,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.toRotation(state.get(FACING)));
     }
+
 
     public boolean isOpaqueCube(BlockState state) {
         return false;

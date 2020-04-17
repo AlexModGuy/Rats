@@ -132,12 +132,8 @@ public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-
-    }
-
-    @Override
     public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
+        getArm(sideIn).translateRotate(matrixStackIn);
 
     }
 }

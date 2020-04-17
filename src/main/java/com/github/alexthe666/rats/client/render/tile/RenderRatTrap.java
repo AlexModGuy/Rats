@@ -54,13 +54,13 @@ public class RenderRatTrap extends TileEntityRenderer<TileEntityRatTrap> {
         matrixStackIn.push();
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
         MODEL_RAT_TRAP.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
-
+        MODEL_RAT_TRAP.animateHinge(shutProgress);
         if (!bait.isEmpty()) {
             matrixStackIn.scale(0.4F, 0.4F, 0.4F);
             matrixStackIn.translate(0, 3.4F, -0.5F);
             matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90, true));
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
-            Minecraft.getInstance().getItemRenderer().renderItem(bait, ItemCameraTransforms.TransformType.FIXED, combinedOverlayIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            Minecraft.getInstance().getItemRenderer().renderItem(bait, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
         }
         matrixStackIn.pop();
         matrixStackIn.pop();

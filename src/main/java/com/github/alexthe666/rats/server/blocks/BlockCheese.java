@@ -10,4 +10,6 @@ public class BlockCheese extends Block {
         super(Block.Properties.create(Material.WOOL).sound(SoundType.SLIME).hardnessAndResistance(2.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "block_of_cheese");
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelPlagueDoctor;
 import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +20,7 @@ public class RenderPlagueDoctor extends MobRenderer<EntityPlagueDoctor, ModelPla
         return VILLAGER_TEXTURES;
     }
 
-    protected void preRenderCallback(EntityPlagueDoctor LivingEntityIn, float partialTickTime) {
+    protected void preRenderCallback(EntityPlagueDoctor LivingEntityIn, MatrixStack matrixStack, float partialTickTime) {
         float f = 0.9375F;
         if (LivingEntityIn.getGrowingAge() < 0) {
             f = (float) ((double) f * 0.5D);
@@ -27,6 +28,6 @@ public class RenderPlagueDoctor extends MobRenderer<EntityPlagueDoctor, ModelPla
         } else {
             this.shadowSize = 0.5F;
         }
-        GlStateManager.scalef(f, f, f);
+        matrixStack.scale(f, f, f);
     }
 }

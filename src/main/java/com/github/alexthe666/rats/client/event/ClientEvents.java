@@ -4,12 +4,12 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -202,15 +202,20 @@ public class ClientEvents {
                 Minecraft.getInstance().getTextureManager().bindTexture(RADIUS_TEXTURE);
                 GlStateManager.disableCull();
                 GlStateManager.depthMask(false);
-                GlStateManager.pushMatrix();
-                Entity viewEntity = Minecraft.getInstance().getRenderViewEntity();
-                double px = viewEntity.lastTickPosX + (viewEntity.getPosX() - viewEntity.lastTickPosX) * event.getPartialTicks();
-                double py = viewEntity.lastTickPosY + (viewEntity.getPosY() - viewEntity.lastTickPosY) * event.getPartialTicks();
-                double pz = viewEntity.lastTickPosZ + (viewEntity.getPosZ() - viewEntity.lastTickPosZ) * event.getPartialTicks();
-                GlStateManager.translated(-px, -py, -pz);
-                GlStateManager.translated(renderCenter.x, renderCenter.y, renderCenter.z);
-                renderMovingAABB(aabb, event.getPartialTicks());
-                GlStateManager.popMatrix();
+                Entity viewEntity = Minecraft.getInstance().player;
+                ActiveRenderInfo activerenderinfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+                Vec3d viewPosition = activerenderinfo.getProjectedView();
+                double px = viewPosition.x;
+                double py = viewPosition.y;
+                double pz = viewPosition.z;
+                MatrixStack stack = event.getMatrixStack();
+                stack.push();
+                stack.translate(-px, -py, -pz);
+                stack.translate(renderCenter.x, renderCenter.y, renderCenter.z);
+                stack.push();
+                renderMovingAABB(aabb, event.getPartialTicks(), stack);
+                stack.pop();
+                stack.pop();
                 GlStateManager.depthMask(true);
                 GlStateManager.enableCull();
                 GlStateManager.disableBlend();
@@ -218,48 +223,49 @@ public class ClientEvents {
         }
     }
 
-    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks) {
+    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks, MatrixStack stack) {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        IVertexBuilder vertexbuffer = tessellator.getBuffer().getVertexBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
         float f3 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F;
-
+        Matrix4f matrix4f = stack.getLast().getMatrix();
         float maxX = (float)boundingBox.maxX * 0.125F;
         float minX = (float)boundingBox.minX * 0.125F;
         float maxY = (float)boundingBox.maxY * 0.125F;
         float minY = (float)boundingBox.minY * 0.125F;
         float maxZ = (float)boundingBox.maxZ * 0.125F;
         float minZ = (float)boundingBox.minZ * 0.125F;
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 0.0F, -1.0F).endVertex();
+        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f,  (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f,  (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f,  (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f,  (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
 
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
         tessellator.draw();
     }
 }
