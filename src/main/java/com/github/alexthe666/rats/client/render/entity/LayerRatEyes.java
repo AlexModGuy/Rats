@@ -20,12 +20,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 
 public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png");
-    private static final ResourceLocation TEXTURE_PLAGUE = new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png");
-    private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png");
-    private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png");
-    private static final ResourceLocation TEXTURE_NONBELIEVER = new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png");
-    private static final ResourceLocation TEXTURE_DRAGON = new ResourceLocation("rats:textures/entity/rat/rat_eye_dragon_upgrade.png");
+    private static final RenderType TEXTURE = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png"));
+    private static final RenderType TEXTURE_PLAGUE = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png"));
+    private static final RenderType TEXTURE_ENDER = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png"));
+    private static final RenderType TEXTURE_RATINATOR = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png"));
+    private static final RenderType TEXTURE_NONBELIEVER = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png"));
+    private static final RenderType TEXTURE_DRAGON = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_dragon_upgrade.png"));
     private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRenderer;
 
     public LayerRatEyes(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRendererIn) {
@@ -50,7 +50,7 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
             brightness = Math.max(i, j);
         }
         if (brightness < 7 || rat.shouldEyesGlow()) {
-            ResourceLocation tex = null;
+            RenderType tex = null;
             if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
                 tex = TEXTURE_DRAGON;
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
@@ -65,7 +65,7 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
                 tex = TEXTURE;
             }
             if(tex != null){
-                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(tex));
+                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(tex);
                 this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }
         }

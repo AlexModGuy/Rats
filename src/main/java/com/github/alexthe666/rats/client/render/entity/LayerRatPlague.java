@@ -18,10 +18,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_plague_overlay.png");
-    private static final ResourceLocation TEXTURE_LUMBERJACK = new ResourceLocation("rats:textures/entity/rat/rat_lumberjack_upgrade.png");
-    private static final ResourceLocation TEXTURE_TOGA = new ResourceLocation("rats:textures/entity/rat/toga.png");
-    private static final ResourceLocation TEXTURE_RATINATOR = new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png");
+    private static final RenderType TEXTURE = RenderType.getEntityNoOutline(new ResourceLocation("rats:textures/entity/rat/rat_plague_overlay.png"));
+    private static final RenderType TEXTURE_LUMBERJACK = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/rat_lumberjack_upgrade.png"));
+    private static final RenderType TEXTURE_TOGA = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/toga.png"));
+    private static final RenderType TEXTURE_RATINATOR = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png"));
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
     private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
@@ -38,7 +38,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             return;
         }
         if (rat.hasPlague()) {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityNoOutline(TEXTURE));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         }
@@ -50,15 +50,15 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
 
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_RATINATOR));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RATINATOR);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)) {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_LUMBERJACK));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_LUMBERJACK);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasToga()) {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySmoothCutout(TEXTURE_TOGA));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_TOGA);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         }

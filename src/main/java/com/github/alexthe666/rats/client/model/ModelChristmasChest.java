@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;
@@ -58,6 +59,6 @@ public class ModelChristmasChest extends SegmentedModel<Entity> {
 
     @Override
     public Iterable<ModelRenderer> getParts() {
-        return null;
+        return ImmutableList.of(field_228863_c_, field_228862_a_, field_228864_d_);
     }
 }

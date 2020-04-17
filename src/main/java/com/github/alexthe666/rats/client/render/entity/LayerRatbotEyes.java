@@ -16,10 +16,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerRatbotEyes extends LayerRenderer<EntityRatlanteanRatbot, ModelRatlanteanRatbot<EntityRatlanteanRatbot>> {
-    private static final ResourceLocation TEXTURE_EYES_0 = new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_0.png");
-    private static final ResourceLocation TEXTURE_EYES_1 = new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_1.png");
-    private static final ResourceLocation TEXTURE_EYES_2 = new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_2.png");
-    private static final ResourceLocation TEXTURE_EYES_3 = new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_3.png");
+    private static final RenderType TEXTURE_EYES_0 = RenderType.getEyes(new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_0.png"));
+    private static final RenderType TEXTURE_EYES_1 = RenderType.getEyes(new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_1.png"));
+    private static final RenderType TEXTURE_EYES_2 = RenderType.getEyes(new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_2.png"));
+    private static final RenderType TEXTURE_EYES_3 = RenderType.getEyes(new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot_eyes_3.png"));
     private final IEntityRenderer<EntityRatlanteanRatbot, ModelRatlanteanRatbot<EntityRatlanteanRatbot>> ratRenderer;
 
     public LayerRatbotEyes(IEntityRenderer<EntityRatlanteanRatbot, ModelRatlanteanRatbot<EntityRatlanteanRatbot>> ratRendererIn) {
@@ -29,12 +29,12 @@ public class LayerRatbotEyes extends LayerRenderer<EntityRatlanteanRatbot, Model
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRatlanteanRatbot entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(getTextureForTick(entitylivingbaseIn.ticksExisted * 3)));
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(getTextureForTick(entitylivingbaseIn.ticksExisted * 3));
         this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
     }
 
-    private ResourceLocation getTextureForTick(int ticksExisted) {
+    private RenderType getTextureForTick(int ticksExisted) {
         int tickCap = ticksExisted % 40;
         if(tickCap > 19){
             tickCap = tickCap - 20;

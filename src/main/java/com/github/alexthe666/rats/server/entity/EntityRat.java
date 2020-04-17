@@ -1881,7 +1881,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.getNavigator().clearPath();
             }
             vec3d = Vec3d.ZERO;
-            return;
         }
         super.travel(vec3d);
     }

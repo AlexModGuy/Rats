@@ -32,7 +32,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
 
-    private static final ResourceLocation TEXTURE_CHRISTMAS_CHEST = new ResourceLocation("textures/entity/chest/christmas.png");
+    private static final RenderType TEXTURE_CHRISTMAS_CHEST = RenderType.getEntityCutoutNoCull(new ResourceLocation("textures/entity/chest/christmas.png"));
     private static ItemStack PLATTER_STACK = new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
@@ -43,7 +43,6 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack BEE_WING_STACK = new ItemStack(RatsItemRegistry.BEE_WING);
-    private static ItemStack BEE_ANTENNE_STACK = new ItemStack(RatsItemRegistry.BEE_FEELERS);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
     private static ItemStack CARROT_STACK = new ItemStack(Blocks.FERN);
     private static ModelChristmasChest CHRISTMAS_CHEST_MODEL = new ModelChristmasChest();
@@ -82,8 +81,9 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
                 matrixStackIn.rotate(new Quaternion(Vector3f.XP, 20F, true));
                 matrixStackIn.translate(-0.155F, -0.025F, 0.125F);
                 if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
-                    matrixStackIn.translate(0F, 0.25F, 0F);
+                    matrixStackIn.translate(-0.15F, 0.25F, 0F);
                     if (itemstack.getItem() instanceof BlockItem) {
+                        matrixStackIn.translate(0F, -0.1F, 0F);
                         matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
                     } else {
                         matrixStackIn.translate(0F, -0.1F, -0.075F);
@@ -114,23 +114,14 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)) {
             matrixStackIn.push();
-            if (this.renderer.getEntityModel().isChild) {
-                matrixStackIn.translate(0.0F, 0.625F, 0.0F);
-                matrixStackIn.rotate(new Quaternion(Vector3f.XN, -20F, true));
-
-                float f = 0.5F;
-                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-            }
             Minecraft minecraft = Minecraft.getInstance();
             translateToHand(false, matrixStackIn);
-            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 10F, true));
-            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -80F, true));
-
-            matrixStackIn.translate(0.15F, -0.4F, -0.5F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 5F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90F, true));
             matrixStackIn.push();
-            matrixStackIn.translate(-0.175F, 0.25F, 0.2F);
+            matrixStackIn.translate(-0.025F, -0.2F, -0.05F);
             matrixStackIn.scale(0.35F, 0.35F, 0.35F);
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE_CHRISTMAS_CHEST));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_CHRISTMAS_CHEST);
             CHRISTMAS_CHEST_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.pop();
             matrixStackIn.pop();
