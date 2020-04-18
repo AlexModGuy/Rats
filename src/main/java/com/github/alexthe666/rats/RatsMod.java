@@ -109,7 +109,6 @@ public class RatsMod {
 
     @SubscribeEvent
     public static void registerDimensionTypes(RegisterDimensionsEvent event) {
-        RatsMod.LOGGER.warn("registered dim");
         RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager
                 .registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
     }
