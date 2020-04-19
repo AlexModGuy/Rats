@@ -15,8 +15,8 @@ public class BlackDeathAITargetNonPlagued extends NearestAttackableTargetGoal {
         super(creature, LivingEntityClass, b);
     }
 
-    protected boolean isSuitableTarget(@Nullable LivingEntity target, EntityPredicate includeInvincibles) {
-        if (super.isSuitableTarget(target, includeInvincibles)) {
+    protected boolean isSuitableTarget(@Nullable LivingEntity potentialTarget, EntityPredicate targetPredicate) {
+        if (super.isSuitableTarget(target, targetPredicate)) {
             if (target instanceof IPlagueLegion) {
                 return false;
             }

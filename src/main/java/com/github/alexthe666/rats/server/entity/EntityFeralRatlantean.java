@@ -51,7 +51,9 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
+        if(!(this instanceof EntityPlagueBeast)){
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
+        }
     }
 
     protected void registerAttributes() {

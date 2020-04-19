@@ -2064,7 +2064,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.setMotion(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
-                if (this.getRidingEntity() instanceof EntityRatMountBase) {
+                if (this.getRidingEntity() instanceof EntityRatMountBase || this.getRidingEntity() instanceof EntityRattlingGun) {
+                    this.rotationYaw = this.renderYawOffset;
                     super.updateRidden();
                 } else {
                     this.updateRiding(entity);
@@ -2099,14 +2100,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             if (((PlayerEntity) riding).isElytraFlying()) {
                 this.stopRiding();
             }
-        }
-        if (riding != null && riding.isPassenger(this) && riding instanceof EntityRattlingGun) {
-            float radius = 0.9F;
-            float angle = (0.01745329251F * (((EntityRattlingGun) riding).renderYawOffset + 150F));
-            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-            double extraZ = radius * MathHelper.cos(angle);
-            double extraY = 1.3215D;
-            this.setPosition(riding.getPosX() + extraX, riding.getPosY() + extraY, riding.getPosZ() + extraZ);
         }
     }
 

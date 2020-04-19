@@ -39,7 +39,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityDutchrat> DUTCHRAT = registerEntity(EntityType.Builder.create(EntityDutchrat::new, EntityClassification.MONSTER).size(2.0F, 2.75F), "dutchrat");
     public static final EntityType<EntityDutchratSword> DUTCHRAT_SWORD = registerEntity(EntityType.Builder.create(EntityDutchratSword::new, EntityClassification.MISC).size(0.95F, 0.95F).setCustomClientFactory(EntityDutchratSword::new), "dutchrat_sword");
     public static final EntityType<EntityRatfish> RATFISH = registerEntity(EntityType.Builder.create(EntityRatfish::new, EntityClassification.WATER_CREATURE).size(0.45F, 0.45F), "ratfish");
-    public static final EntityType<EntityRattlingGun> RATTLING_GUN = registerEntity(EntityType.Builder.create(EntityRattlingGun::new, EntityClassification.MISC).size(1.5F, 1.6F), "rattling_gun");
+    public static final EntityType<EntityRattlingGun> RATTLING_GUN = registerEntity(EntityType.Builder.create(EntityRattlingGun::new, EntityClassification.CREATURE).size(1.5F, 1.6F).setCustomClientFactory(EntityRattlingGun::new), "rattling_gun");
     public static final EntityType<EntityRattlingGunBullet> RATTLING_GUN_BULLET = registerEntity(EntityType.Builder.create(EntityRattlingGunBullet::new, EntityClassification.MISC).size(0.25F, 0.25F), "rattling_gun_bullet");
     public static final EntityType<EntityRatlanteanRatbot> RATLANTEAN_RATBOT = registerEntity(EntityType.Builder.create(EntityRatlanteanRatbot::new, EntityClassification.MONSTER).size(1.2F, 1.3F), "ratlantean_ratbot");
     public static final EntityType<EntityRatGolemMount> RAT_MOUNT_GOLEM = registerEntity(EntityType.Builder.create(EntityRatGolemMount::new, EntityClassification.MISC).size(1.25F, 2.75F), "rat_mount_golem");

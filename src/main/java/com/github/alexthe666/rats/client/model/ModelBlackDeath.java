@@ -4,6 +4,8 @@ import com.github.alexthe666.rats.server.entity.EntityBlackDeath;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
@@ -111,7 +113,7 @@ public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<
             this.rightArm.rotateAngleY = 0.0F;
             this.leftArm.rotateAngleY = 0.0F;
         }
-        boolean flag = abstractillager.isSummoning();
+        boolean flag = !abstractillager.isSummoning();
         this.arms.showModel = flag;
         this.leftArm.showModel = !flag;
         this.rightArm.showModel = !flag;
@@ -134,6 +136,7 @@ public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<
     @Override
     public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
         getArm(sideIn).translateRotate(matrixStackIn);
-
+        matrixStackIn.rotate(new Quaternion(Vector3f.YN, 180, true));
+        matrixStackIn.translate(0.15F, 0, 0);
     }
 }

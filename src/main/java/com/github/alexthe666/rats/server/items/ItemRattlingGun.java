@@ -33,7 +33,7 @@ public class ItemRattlingGun extends Item {
         PlayerEntity player = context.getPlayer();
         BlockPos offset = context.getPos().offset(context.getFace());
         if(context.getWorld().getBlockState(offset).getMaterial().isReplaceable()){
-            entity.setLocationAndAngles(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, player.rotationYaw, 0);
+            entity.setLocationAndAngles(offset.getX() + 0.5D, offset.getY() + 0, offset.getZ() + 0.5D, player.rotationYaw, 0);
             float yaw = MathHelper.wrapDegrees(player.rotationYaw + 180F);
             entity.prevRotationYaw = yaw;
             entity.rotationYaw = yaw;
@@ -43,7 +43,9 @@ public class ItemRattlingGun extends Item {
             if (!player.isCreative()) {
                 context.getItem().shrink(1);
             }
-            context.getWorld().addEntity(entity);
+            if (!context.getWorld().isRemote) {
+                context.getWorld().addEntity(entity);
+            }
 
             return ActionResultType.SUCCESS;
         }

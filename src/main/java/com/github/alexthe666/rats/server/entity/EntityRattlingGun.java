@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
 
     public EntityRattlingGun(EntityType type, World worldIn) {
         super(type, worldIn);
+        this.recalculateSize();
     }
     
     public boolean writeUnlessPassenger(CompoundNBT compound) {
@@ -58,12 +60,17 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
     }
 
     public double getYOffset() {
-        return 1.45D;
+        return 0.45D;
     }
 
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
-        passenger.setPosition(this.getPosX(), this.getPosY() + 1.45D, this.getPosZ());
+        float radius = 0.9F;
+        float angle = (0.01745329251F * (rotationYaw + 150F));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
+        double extraY = 1.3215D;
+        passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
     }
 
     @Override
@@ -115,6 +122,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
 
     public void tick() {
        super.tick();
+       Entity rat = this.getControllingPassenger();
         if (this.getRidingEntity() != null) {
             if (!this.getRidingEntity().isPassenger()) {
                 this.getRidingEntity().startRiding(this, true);
@@ -130,19 +138,24 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
             fireCooldown--;
         }
         prevFire = this.isFiring();
-        this.renderYawOffset = this.rotationYaw;
-        if (this.getControllingPassenger() != null) {
-            if (this.getControllingPassenger() instanceof LivingEntity) {
+        if (rat != null) {
+            if (rat instanceof LivingEntity) {
                 LivingEntity riding = (LivingEntity) this.getControllingPassenger();
-               if (this.getControllingPassenger() instanceof EntityRat) {
-                    EntityRat rat = (EntityRat)this.getControllingPassenger();
-                    if(rat.getAttackTarget() != null && rat.getAttackTarget().getEntityId() != this.getEntityId()){
-                        this.faceEntity(rat.getAttackTarget(), 30, 30);
-                        this.shoot(rat);
+                this.rotationYaw = riding.rotationYaw;
+                this.prevRotationYaw = riding.rotationYaw;
+                this.rotationYawHead = riding.rotationYaw;
+                if (riding instanceof EntityRat) {
+                    EntityRat rattus = (EntityRat)this.getControllingPassenger();
+                    if(rattus.getAttackTarget() != null && rattus.getAttackTarget().getEntityId() != this.getEntityId()){
+                        this.faceEntity(rattus.getAttackTarget(), 30, 30);
+                        this.shoot(rattus);
                     }
                 }
             }
+
         }
+        this.setRotation(this.rotationYaw, this.rotationPitch);
+
         this.doBlockCollisions();
     }
 
@@ -173,7 +186,8 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
         return HandSide.RIGHT;
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    @Override
+    protected boolean processInteract(PlayerEntity player, Hand hand) {
         if (this.getControllingPassenger() == null) {
             if (!player.getPassengers().isEmpty()) {
                 boolean flag = false;
@@ -181,18 +195,18 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                     if (entity instanceof EntityRat) {
                         flag = true;
                         System.out.println(world.isRemote);
-                        ((EntityRat) entity).stopRiding();
-                        entity.startRiding(this);
+                        entity.startRiding(this, false);
                         break;
                     }
                 }
                 return flag;
             }
         } else {
-            if (this.getControllingPassenger() instanceof EntityRat) {
-                if (((EntityRat) this.getControllingPassenger()).isOwner(player)) {
-                    ((EntityRat) this.getControllingPassenger()).stopRiding();
-                    ((EntityRat) this.getControllingPassenger()).startRiding(player);
+            Entity passenger = this.getControllingPassenger();
+            if (passenger instanceof EntityRat) {
+                if (((EntityRat)passenger).isOwner(player)) {
+                    ((EntityRat) passenger).stopRiding();
+                    ((EntityRat) passenger).startRiding(player);
                     return true;
                 }
             }
@@ -213,6 +227,9 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                 this.renderYawOffset = f % 360;
                 this.rotationYaw = f % 360;
                 this.rotationYawHead = f % 360;
+                pirat.renderYawOffset = f % 360;
+                pirat.rotationYaw = f % 360;
+                pirat.rotationYawHead = f % 360;
             }
             EntityRattlingGunBullet cannonball = new EntityRattlingGunBullet(RatsEntityRegistry.RATTLING_GUN_BULLET, world, pirat);
             float radius = 1.6F;
@@ -249,6 +266,15 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
 
     public boolean shouldDismountInWater(Entity rider) {
         return false;
+    }
+
+
+    public boolean shouldRiderFaceForward(PlayerEntity player) {
+        return true;
+    }
+
+    public EntityRattlingGun(FMLPlayMessages.SpawnEntity spawnEntity, World worldIn) {
+        this(RatsEntityRegistry.RATTLING_GUN, worldIn);
     }
 
     public void travel(Vec3d vec) {

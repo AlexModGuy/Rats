@@ -95,9 +95,9 @@ public class EntityRatMountBase extends MobEntity {
             double extraY = riderY;
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
             if(passenger instanceof LivingEntity){
-                ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
-                ((LivingEntity) passenger).rotationYaw = this.rotationYaw;
-                ((LivingEntity) passenger).rotationYawHead = this.rotationYaw;
+                //((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
+                //((LivingEntity) passenger).rotationYaw = this.rotationYaw;
+               // ((LivingEntity) passenger).rotationYawHead = this.rotationYaw;
             }
 
         }

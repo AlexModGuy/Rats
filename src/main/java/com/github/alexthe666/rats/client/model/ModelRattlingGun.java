@@ -132,7 +132,7 @@ public class ModelRattlingGun<T extends EntityRattlingGun> extends AdvancedEntit
 
     @Override
     public Iterable<ModelRenderer> getParts() {
-        return ImmutableList.of(base1, pivot);
+        return ImmutableList.of(pivot);
     }
 
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {

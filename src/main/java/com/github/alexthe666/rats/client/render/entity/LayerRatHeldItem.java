@@ -83,7 +83,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
                 if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER)) {
                     matrixStackIn.translate(-0.15F, 0.25F, 0F);
                     if (itemstack.getItem() instanceof BlockItem) {
-                        matrixStackIn.translate(0F, -0.1F, 0F);
+                        matrixStackIn.translate(0F, 0F, -0.075F);
                         matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
                     } else {
                         matrixStackIn.translate(0F, -0.1F, -0.075F);
