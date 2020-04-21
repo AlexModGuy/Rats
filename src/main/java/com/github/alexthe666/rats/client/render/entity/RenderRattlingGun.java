@@ -39,9 +39,27 @@ public class RenderRattlingGun extends EntityRenderer<EntityRattlingGun> {
         GUN_BASE_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         //IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RenderType.getEyes(TEXTURE_FIRING));
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(entity.rotationYaw));
+        GUN_MODEL.resetToDefaultPose();
+        if(!entity.isFiring()){
+            GUN_MODEL.gun1.rotateAngleZ = 0;
+            GUN_MODEL.handle1.rotateAngleX = 0;
+        }else{
+            GUN_MODEL.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, 0, 0);
+        }
+
         GUN_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        GUN_MODEL.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, 0, 0);
         matrixStackIn.pop();
+
+        if(entity.isFiring()) {
+            matrixStackIn.push();
+            matrixStackIn.translate(0, 1.6F, 0);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
+            IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(RenderType.getEyes(TEXTURE_FIRING));
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(entity.rotationYaw));
+            GUN_MODEL.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, 0, 0);
+            GUN_MODEL.render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+        }
         matrixStackIn.pop();
     }
 

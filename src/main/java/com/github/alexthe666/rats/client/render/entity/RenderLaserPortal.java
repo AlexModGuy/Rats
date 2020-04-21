@@ -31,15 +31,18 @@ public class RenderLaserPortal extends EntityRenderer<EntityLaserPortal> {
         IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(TEXTURE_EYES), false, true);
         float d1 = this.interpolateValue(entity.scaleOfPortalPrev, entity.scaleOfPortal, (partialTicks));
 
+        matrixStackIn.push();
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, true));
         matrixStackIn.push();
-        GlStateManager.scalef(1.5F * d1, 1.5F * d1, 1.5F * d1);
+        matrixStackIn.scale(1.5F * d1, 1.5F * d1, 1.5F * d1);
         matrixStackIn.translate(0, 0.5F, 0);
         matrixStackIn.translate(0, 1 - d1, 0);
+        matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.XP, 90, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, (entity.ticksExisted + partialTicks) * 10, true));
-        MODEL_NEO_RATLANTEAN.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        MODEL_NEO_RATLANTEAN.render(matrixStackIn, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        matrixStackIn.pop();
         matrixStackIn.pop();
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }

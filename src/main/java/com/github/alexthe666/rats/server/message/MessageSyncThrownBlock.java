@@ -34,7 +34,7 @@ public class MessageSyncThrownBlock {
                 Entity entity = player.world.getEntityByID(message.blockEntityId);
                 if (entity instanceof EntityThrownBlock) {
                     BlockPos pos = BlockPos.fromLong(message.blockPos);
-                    ((EntityThrownBlock) entity).fallTile = player.world.getBlockState(pos);
+                    ((EntityThrownBlock) entity).setHeldBlockState(player.world.getBlockState(pos));
                 }
             }
         }

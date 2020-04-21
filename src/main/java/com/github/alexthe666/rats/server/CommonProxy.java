@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server;
 import com.github.alexthe666.rats.ConfigHolder;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
@@ -14,6 +15,7 @@ import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegis
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,6 +52,11 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Effect> event) {
         event.getRegistry().registerAll(RatsMod.CONFIT_BYALDI_POTION, RatsMod.PLAGUE_POTION);
+    }
+
+    @SubscribeEvent
+    public static void registerFluids(RegistryEvent.Register<Fluid> event) {
+       // event.getRegistry().register(RatsBlockRegistry.MILK_FLUID);
     }
 
     @SubscribeEvent

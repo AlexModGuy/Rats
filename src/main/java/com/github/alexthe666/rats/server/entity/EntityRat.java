@@ -511,10 +511,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             this.navigatorType = 2;
         } else if (type == 3) {//tube
             this.moveController = new RatTubeMoveHelper(this);
+
             RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
             if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
                 PathPoint point = this.navigator.getPath().getFinalPathPoint();
                 newNav.tryMoveToXYZ(point.x, point.y, point.z, 1.0F);
+                this.navigator.clearPath();
             }
             this.navigator = newNav;
             this.navigatorType = 3;
@@ -1299,7 +1301,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     if (listOfAll.size() > 0) {
                         BlockPos pos = listOfAll.get(rand.nextInt(listOfAll.size()));
                         EntityThrownBlock thrownBlock = new EntityThrownBlock(RatsEntityRegistry.THROWN_BLOCK, world, world.getBlockState(pos), this);
-                        thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                        thrownBlock.setPosition(pos.getX() + 0.5D, pos.getY() + 2.5D, pos.getZ() + 0.5D);
                         thrownBlock.dropBlock = false;
                         if (!world.isRemote) {
                             world.addEntity(thrownBlock);

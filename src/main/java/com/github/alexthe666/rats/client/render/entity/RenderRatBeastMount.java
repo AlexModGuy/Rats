@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRatBeastMount;
 import com.github.alexthe666.rats.server.entity.EntityRatBeastMount;
+import com.github.alexthe666.rats.server.entity.EntityRatGolemMount;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -19,8 +21,8 @@ public class RenderRatBeastMount extends MobRenderer<EntityRatBeastMount, ModelR
         this.addLayer(new LayerGlowingOverlay(this, EYE_TEXTURE));
     }
 
-    protected void preRenderCallback(EntityRatBeastMount rat, float partialTickTime) {
-        GL11.glScaled(1.2F, 1.2F, 1.2F);
+    protected void preRenderCallback(EntityRatGolemMount rat, MatrixStack matrixStackIn, float partialTickTime) {
+        matrixStackIn.scale(1.2F, 1.2F, 1.2F);
     }
 
     public ResourceLocation getEntityTexture(EntityRatBeastMount entity) {

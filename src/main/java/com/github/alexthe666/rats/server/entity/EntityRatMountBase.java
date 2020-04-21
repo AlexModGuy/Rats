@@ -94,12 +94,9 @@ public class EntityRatMountBase extends MobEntity {
             double extraZ = radius * MathHelper.cos(angle);
             double extraY = riderY;
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
-            if(passenger instanceof LivingEntity){
-                //((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
-                //((LivingEntity) passenger).rotationYaw = this.rotationYaw;
-               // ((LivingEntity) passenger).rotationYawHead = this.rotationYaw;
+            if (passenger instanceof LivingEntity) {
+                ((LivingEntity)passenger).renderYawOffset = this.renderYawOffset;
             }
-
         }
 
 
@@ -208,18 +205,17 @@ public class EntityRatMountBase extends MobEntity {
                 this.action = MovementController.Action.WAIT;
             } else if (this.action == MovementController.Action.MOVE_TO) {
                 this.action = MovementController.Action.WAIT;
-                double d0 = this.getX() - this.mob.getPosX();
-                double d1 = this.getY() - this.mob.getPosZ();
-                double d2 = this.getZ() - this.mob.getPosY();
+                double d0 = this.posX - this.mob.getPosX();
+                double d1 = this.posZ - this.mob.getPosZ();
+                double d2 = this.posY - this.mob.getPosY();
                 double d3 = d0 * d0 + d2 * d2 + d1 * d1;
                 if (d3 < (double)2.5000003E-7F) {
                     this.mob.setMoveForward(0.0F);
                     return;
                 }
 
-                float f9 = (float) (MathHelper.atan2(d1, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-
                 this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
                 BlockPos blockpos = new BlockPos(this.mob);
                 BlockState blockstate = this.mob.world.getBlockState(blockpos);

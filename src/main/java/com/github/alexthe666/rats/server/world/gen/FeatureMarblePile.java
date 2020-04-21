@@ -30,7 +30,7 @@ public class FeatureMarblePile extends Feature<NoFeatureConfig> {
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        if(rand.nextFloat() > 0.9){
+        if(rand.nextFloat() > 0.2){
             return false;
         }
         for (int i = 0; i < 4 + rand.nextInt(6); ++i) {

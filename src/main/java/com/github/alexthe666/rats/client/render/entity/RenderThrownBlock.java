@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.entity.EntityThrownBlock;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -23,11 +24,24 @@ public class RenderThrownBlock extends EntityRenderer<EntityThrownBlock> {
     }
 
     public void render(EntityThrownBlock entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        float f = 0.0625F;
-        matrixStackIn.push();
-        matrixStackIn.scale(1.5F, -1.5F, 1.5F);
+        float f = entity.ticksExisted + partialTicks;
         float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-        matrixStackIn.translate(0F, -1.5F, 0F);
+        matrixStackIn.push();
+        BlockState state = entity.getHeldBlockState();
+        if(state != null){
+            BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+            matrixStackIn.push();
+            float f4 = 0.75F;
+            matrixStackIn.translate(-0.5D, 0, 0.5D);
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90.0F));
+            blockrendererdispatcher.renderBlock(state, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY);
+            matrixStackIn.pop();
+        }
+        matrixStackIn.pop();
+
+        matrixStackIn.push();
+        matrixStackIn.scale(1F, -1F, 1F);
+        matrixStackIn.translate(0F, -0.5F, 0F);
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, yaw - 180, true));
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(LIGHTNING_TEXTURE, f * 0.01F, f * 0.01F));
         MODEL_CUBE.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

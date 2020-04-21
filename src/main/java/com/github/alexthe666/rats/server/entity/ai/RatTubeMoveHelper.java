@@ -1,12 +1,18 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.shapes.VoxelShape;
 
 public class RatTubeMoveHelper extends MovementController {
     EntityRat rat;
@@ -52,22 +58,26 @@ public class RatTubeMoveHelper extends MovementController {
             this.rat.setMoveStrafing(this.moveStrafe);
             this.action = MovementController.Action.WAIT;
         } else if (this.action == MovementController.Action.MOVE_TO) {
+
             this.action = MovementController.Action.WAIT;
-            double d0 = this.getX() - this.rat.getPosX();
-            double d1 = this.getY() - this.rat.getPosZ();
-            double d2 = this.getZ() - this.rat.getPosY();
+            double d0 = this.posX - this.mob.getPosX();
+            double d1 = this.posZ - this.mob.getPosZ();
+            double d2 = this.posY - this.mob.getPosY() + 0.25;
             double d3 = d0 * d0 + d2 * d2 + d1 * d1;
-            if (d3 < 2.500000277905201E-7D) {
-                this.rat.setMoveForward(0.0F);
+            if (d3 < (double)2.5000003E-7F) {
+                this.mob.setMoveForward(0.0F);
                 return;
             }
-            float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
-            this.rat.rotationYaw = this.limitAngle(this.rat.rotationYaw, f9, 90.0F);
-            this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-            this.rat.climbingTube = false;
-            //this.rat.motionY += 0.1D;
+
+            float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+            this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
+            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
+            BlockPos blockpos = new BlockPos(this.mob);
+            BlockState blockstate = this.mob.world.getBlockState(blockpos);
             if (d2 > 0) {
                 this.rat.climbingTube = true;
+            }else{
+                this.rat.climbingTube = false;
             }
         } else if (this.action == MovementController.Action.JUMPING) {
             this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));

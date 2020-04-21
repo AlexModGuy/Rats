@@ -140,7 +140,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT, manager -> new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SPAWNER, manager -> new RenderNothing());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIED_PIPER, manager -> new RenderIllagerPiper());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit(false));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_FLAME, manager -> new SpriteRenderer(manager, Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON, manager -> new RenderMarbledCheeseGolem());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, manager -> new RenderGolemBeam());
@@ -155,7 +155,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_DOCTOR, manager -> new RenderPlagueDoctor());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PURIFYING_LIQUID, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.BLACK_DEATH, manager -> new RenderBlackDeath());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_CLOUD, manager -> new RenderRatlateanSpirit());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_CLOUD, manager -> new RenderRatlateanSpirit(true));
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_BEAST, manager -> new RenderPlagueBeast());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_SHOT, manager -> new RenderPlagueShot());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_CAPTURE_NET, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));

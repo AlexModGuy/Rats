@@ -6,9 +6,11 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -74,12 +76,9 @@ public class RatsBlockRegistry {
 
     public static final Fluid MILK_FLUID = new MilkFluid();
 
-    static {
-        //Fluids.registerFluid(MILK_FLUID);
-    }
-
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        Registry.register(Registry.FLUID, "rats.milk", MILK_FLUID);
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -148,10 +147,5 @@ public class RatsBlockRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @SubscribeEvent
-    public static void registerFluids(RegistryEvent.Register<Fluid> event) {
-        event.getRegistry().register(MILK_FLUID);
     }
 }

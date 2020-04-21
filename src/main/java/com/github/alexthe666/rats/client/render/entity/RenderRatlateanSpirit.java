@@ -15,8 +15,10 @@ public class RenderRatlateanSpirit<T extends MobEntity> extends MobRenderer<T, M
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/entity/rat/ratlantean_spirit.png");
     private static final ResourceLocation TEXTURE_CLOUD = new ResourceLocation("rats:textures/entity/plague_cloud.png");
 
-    public RenderRatlateanSpirit() {
+    public RenderRatlateanSpirit(boolean cloud) {
         super(Minecraft.getInstance().getRenderManager(), new ModelRatlanteanSpirit(), 0.5F);
+        this.addLayer(new LayerGlowingOverlay(this, cloud ? TEXTURE_CLOUD : TEXTURE));
+
     }
 
     public ResourceLocation getEntityTexture(MobEntity entity) {

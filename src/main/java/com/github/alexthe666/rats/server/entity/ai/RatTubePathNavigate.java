@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RatTubePathNavigate extends GroundPathNavigator {
     public BlockPos targetPosition;
-
+    private Path prevPath;
     public RatTubePathNavigate(MobEntity LivingEntityIn, World worldIn) {
         super(LivingEntityIn, worldIn);
     }
@@ -41,8 +41,8 @@ public class RatTubePathNavigate extends GroundPathNavigator {
         return generatePath();
     }
 
-    public boolean tryMoveToLivingEntity(Entity entityIn, double speedIn) {
-        Path path = this.getPathToLivingEntity(entityIn, 0);
+    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
+        Path path = this.getPathToLivingEntity(entityIn, 1);
         if (path != null) {
             return this.setPath(path, speedIn);
         } else {
@@ -53,15 +53,19 @@ public class RatTubePathNavigate extends GroundPathNavigator {
     }
 
     private Path generatePath(){
-        BlockPos startPos = new BlockPos(this.getEntityPosition());
-        AStar aStar = new AStar(startPos, targetPosition, 1000, false);
-        BlockPos[] pathBlocks = aStar.getPath(world);
-        PathPoint[] fromPos = new PathPoint[pathBlocks.length - 1];
-        for (int i = 1; i < pathBlocks.length; i++) {
-            fromPos[i - 1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
+        if(prevPath == null || prevPath.isFinished() || prevPath.getFinalPathPoint() != null && prevPath.getFinalPathPoint().x != targetPosition.getX() && prevPath.getFinalPathPoint().y != targetPosition.getY() && prevPath.getFinalPathPoint().y != targetPosition.getZ()) {
+            BlockPos startPos = new BlockPos(this.getEntityPosition());
+            AStar aStar = new AStar(startPos, targetPosition, 1000, false);
+            BlockPos[] pathBlocks = aStar.getPath(world);
+            PathPoint[] fromPos = new PathPoint[pathBlocks.length - 1];
+            for (int i = 1; i < pathBlocks.length; i++) {
+                fromPos[i - 1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
+            }
+            List<PathPoint> pathPointList = new ArrayList<>(Arrays.asList(fromPos));
+            prevPath = new Path(pathPointList, targetPosition, false);
+            return prevPath;
         }
-        List<PathPoint> pathPointList = new ArrayList<>(Arrays.asList(fromPos));
-        return new Path(pathPointList, targetPosition, false);
+        return prevPath;
     }
 
     public void tick() {

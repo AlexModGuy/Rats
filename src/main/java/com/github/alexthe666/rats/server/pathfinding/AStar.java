@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class AStar {
         return world.getTileEntity(offset) instanceof TileEntityRatTube;
     }
 
-    public static BlockPos getConnectedToRatTube(IWorldReader world, BlockPos pos) {
+    public static BlockPos getConnectedToRatTube(IBlockReader world, BlockPos pos) {
         for (Direction facing : Direction.values()) {
             BlockPos statePos = pos.offset(facing);
             BlockState state = world.getBlockState(statePos);
@@ -43,7 +44,7 @@ public class AStar {
                 for (int i = 0; i < Direction.values().length; i++) {
                     BooleanProperty bool = BlockRatTube.ALL_OPEN_PROPS[i];
                     BlockPos offsetInPos = statePos.offset(Direction.values()[i]);
-                    if (state.get(bool) && (world.isAirBlock(offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)) {
+                    if (state.get(bool) && (world.getBlockState(offsetInPos).isAir(world, offsetInPos) || world.getBlockState(offsetInPos).getBlock() instanceof BlockRatCage)) {
                         return offsetInPos;
                     }
                 }

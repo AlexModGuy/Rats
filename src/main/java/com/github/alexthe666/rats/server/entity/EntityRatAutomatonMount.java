@@ -72,7 +72,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
 
     public void livingTick() {
         super.livingTick();
-        this.riderY = 3.22F;
+        this.riderY = 2.52F;
         LivingEntity target = this.getAttackTarget();
         if (target != null) {
             this.useRangedAttack = this.getDistance(target) > 10;

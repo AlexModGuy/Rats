@@ -9,12 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class NuggetColorRegister {
 
     public static final ItemStack FALLBACK_STACK = new ItemStack(Items.IRON_INGOT);

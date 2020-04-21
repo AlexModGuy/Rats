@@ -8,12 +8,17 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -27,9 +32,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 public class EntityThrownBlock extends Entity {
     public LivingEntity shootingEntity;
-    public BlockState fallTile;
+    private static final DataParameter<Optional<BlockState>> CARRIED_BLOCK = EntityDataManager.createKey(EntityThrownBlock.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     public boolean dropBlock = true;
     public CompoundNBT tileEntityData;
     private int ticksAlive;
@@ -45,11 +53,21 @@ public class EntityThrownBlock extends Entity {
 
     public EntityThrownBlock(EntityType type, World worldIn, BlockState blockState, LivingEntity entityNeoRatlantean) {
         super(type, worldIn);
-        this.fallTile = blockState;
+        this.setHeldBlockState(blockState);
         this.shootingEntity = entityNeoRatlantean;
     }
 
     protected void registerData() {
+        this.dataManager.register(CARRIED_BLOCK, Optional.empty());
+    }
+
+    public void setHeldBlockState(@Nullable BlockState state) {
+        this.dataManager.set(CARRIED_BLOCK, Optional.ofNullable(state));
+    }
+
+    @Nullable
+    public BlockState getHeldBlockState() {
+        return (BlockState)((Optional)this.dataManager.get(CARRIED_BLOCK)).orElse((BlockState)null);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -62,16 +80,6 @@ public class EntityThrownBlock extends Entity {
 
         d0 = d0 * 64.0D;
         return distance < d0 * d0;
-    }
-
-    @Override
-    protected void readAdditional(CompoundNBT compound) {
-
-    }
-
-    @Override
-    protected void writeAdditional(CompoundNBT compound) {
-
     }
 
     public void tick() {
@@ -100,7 +108,7 @@ public class EntityThrownBlock extends Entity {
 
                 f = 0.8F;
             }
-            if (this.shootingEntity != null && shootingEntity instanceof LivingEntity) {
+            if (this.shootingEntity != null && shootingEntity instanceof MobEntity) {
                 if (((MobEntity) shootingEntity).getAttackTarget() != null) {
                     LivingEntity target = ((MobEntity) shootingEntity).getAttackTarget();
                     double d0 = target.getPosX() - this.getPosX();
@@ -109,11 +117,10 @@ public class EntityThrownBlock extends Entity {
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                     d3 = (double) MathHelper.sqrt(d3);
                     Vec3d vec3d = this.getMotion();
-                    vec3d.add(d0 / d3 * 0.2D, d1 / d3 * 0.2D, d2 / d3 * 0.2D);
+                    vec3d = vec3d.add(d0 / d3 * 0.2D, d1 / d3 * 0.2D, d2 / d3 * 0.2D);
                     this.setMotion(vec3d);
                 }
             }
-            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
         } else {
             this.remove();
         }
@@ -129,8 +136,8 @@ public class EntityThrownBlock extends Entity {
     }
 
     protected void onImpact(RayTraceResult result) {
-        if (fallTile != null) {
-            Block block = this.fallTile.getBlock();
+        if (getHeldBlockState() != null) {
+            Block block = getHeldBlockState().getBlock();
             BlockPos pos = null;
             if (result instanceof BlockRayTraceResult) {
                 pos = ((BlockRayTraceResult) result).getPos();
@@ -145,12 +152,12 @@ public class EntityThrownBlock extends Entity {
                 BlockPos blockpos1 = pos.up();
                 if (true) {
                     if (dropBlock) {
-                        this.world.setBlockState(blockpos1, this.fallTile);
+                        this.world.setBlockState(blockpos1, getHeldBlockState());
                     }
                     if (block instanceof FallingBlock) {
-                        ((FallingBlock) block).onEndFalling(this.world, blockpos1, this.fallTile, fallTile);
+                        ((FallingBlock) block).onEndFalling(this.world, blockpos1, getHeldBlockState(), getHeldBlockState());
                     }
-                    if (this.tileEntityData != null && block.hasTileEntity(this.fallTile)) {
+                    if (this.tileEntityData != null && block.hasTileEntity(getHeldBlockState())) {
                         TileEntity tileentity = this.world.getTileEntity(blockpos1);
 
                         if (tileentity != null) {
@@ -182,12 +189,13 @@ public class EntityThrownBlock extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(CompoundNBT compound) {
+    public void writeAdditional(CompoundNBT compound) {
         compound.put("direction", this.newDoubleNBTList(this.getMotion().x, this.getMotion().y, this.getMotion().z));
         compound.putInt("life", this.ticksAlive);
-        Block block = this.fallTile != null ? this.fallTile.getBlock() : Blocks.AIR;
-        ResourceLocation resourcelocation = Registry.BLOCK.getKey(block);
-        compound.putString("Block", resourcelocation == null ? "" : resourcelocation.toString());
+        BlockState blockstate = this.getHeldBlockState();
+        if (blockstate != null) {
+            compound.put("carriedBlockState", NBTUtil.writeBlockState(blockstate));
+        }
         if (this.tileEntityData != null) {
             compound.put("TileEntityData", this.tileEntityData);
         }
@@ -196,7 +204,7 @@ public class EntityThrownBlock extends Entity {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(CompoundNBT compound) {
+    public void readAdditional(CompoundNBT compound) {
         if (compound.contains("power", 9)) {
             ListNBT nbttaglist = compound.getList("power", 6);
         }
@@ -211,17 +219,12 @@ public class EntityThrownBlock extends Entity {
         }
         int i = compound.getByte("Data") & 255;
 
-        if (compound.contains("Block", 8)) {
-            this.fallTile = Registry.BLOCK.getOrDefault(new ResourceLocation(compound.getString("Block"))).getDefaultState();
-        } else if (compound.contains("TileID", 99)) {
-            this.fallTile = Block.getStateById(compound.getInt("TileID")).getBlockState();
-        } else {
-            this.fallTile = Block.getStateById(compound.getByte("Tile") & 255).getBlockState();
-        }
-
-        Block block = this.fallTile.getBlock();
-        if (block == null || block.getDefaultState().getMaterial() == Material.AIR) {
-            this.fallTile = Blocks.GRASS.getDefaultState();
+        BlockState blockstate = null;
+        if (compound.contains("carriedBlockState", 10)) {
+            blockstate = NBTUtil.readBlockState(compound.getCompound("carriedBlockState"));
+            if (blockstate.isAir()) {
+                blockstate = null;
+            }
         }
         if (compound.contains("TileEntityData", 10)) {
             this.tileEntityData = compound.getCompound("TileEntityData");

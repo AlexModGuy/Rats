@@ -66,7 +66,7 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
         float walkDegree = 0.1F;
         float bob = -(float)(Math.sin((double)(ticksExisted * idleSpeed)) * (double)idleDegree - (double)(idleDegree));
         float bob_walk = -(float)(Math.sin((double)(limbSwing * walkSpeed))  * limbSwingAmount * (double)walkDegree - (double)(walkDegree));
-        this.riderY = 1.0F + bob + bob_walk;
+        this.riderY = 0.8F + bob + bob_walk;
         this.riderXZ = 0.1F;
         if(this.getAnimation() == ANIMATION_SNIFF || this.getAnimation() == ANIMATION_SLASH){
             float max = 0.75F;
