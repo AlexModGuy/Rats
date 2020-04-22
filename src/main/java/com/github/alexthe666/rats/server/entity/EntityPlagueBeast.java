@@ -166,4 +166,8 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         }
         return null;
     }
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        return super.isOnSameTeam(entityIn) || entityIn instanceof IPlagueLegion;
+    }
 }

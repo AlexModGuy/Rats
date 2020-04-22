@@ -298,4 +298,8 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
             }
         }
     }
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        return super.isOnSameTeam(entityIn) || entityIn instanceof IPlagueLegion;
+    }
 }
