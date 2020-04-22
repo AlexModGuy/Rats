@@ -25,7 +25,7 @@ public class MilkFluid extends FlowingFluid {
                 new net.minecraft.util.ResourceLocation("rats:block/milk"),
                 new net.minecraft.util.ResourceLocation("rats:block/milk_flowing"))
                 .overlay(new net.minecraft.util.ResourceLocation("block/water_overlay"))
-                .translationKey("rats.block.milk.name")
+                .translationKey("block.rats.milk.name")
                 .color(0xEEEEEE).build(this);
     }
 
