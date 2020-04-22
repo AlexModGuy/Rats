@@ -73,7 +73,6 @@ public class RatTubeMoveHelper extends MovementController {
             this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
             this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
             BlockPos blockpos = new BlockPos(this.mob);
-            BlockState blockstate = this.mob.world.getBlockState(blockpos);
             if (d2 > 0) {
                 this.rat.climbingTube = true;
             }else{

@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.BannerPatternItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -121,9 +122,10 @@ public class CommonProxy {
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RATFISH, 0X30333E, 0X7EA8BD, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_ratfish"));
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RATLANTEAN_RATBOT, 0XA3A3A3, 0XFF0000, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_ratlantean_ratbot"));
         //TODO: Forge needs to update loom code so that these don't crash the game
-       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_banner_pattern"));
-       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
-       // event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
+        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_banner_pattern"));
+        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
+        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
+        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_SICKLE_BANNER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_sickle_banner_pattern"));
     }
 
     @SubscribeEvent

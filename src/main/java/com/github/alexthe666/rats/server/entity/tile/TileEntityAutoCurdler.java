@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.blocks.RatsFluidRegistry;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.entity.player.PlayerEntity;
@@ -191,7 +192,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
             FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);
             if(milkFluid.isEmpty()){
-                milkFluid = new FluidStack(RatsBlockRegistry.MILK_FLUID, 1000);
+                milkFluid = new FluidStack(RatsFluidRegistry.MILK_FLUID, 1000);
             }
             if (tank.fill(milkFluid.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
                 tank.fill(milkFluid.copy(), IFluidHandler.FluidAction.EXECUTE);

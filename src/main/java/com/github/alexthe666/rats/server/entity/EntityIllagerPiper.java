@@ -204,7 +204,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
             world.setEntityState(this, (byte) 83);
         }
 
-        if (this.getRatsSummoned() < 3 && ratCooldown == 0) {
+        if (this.getRatsSummoned() < 3 && ratCooldown == 0 && this.ticksExisted > 20) {
             summonRat();
         }
     }

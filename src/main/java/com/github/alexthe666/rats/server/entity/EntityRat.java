@@ -236,7 +236,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public static boolean canEntityTypeSpawn(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
         BlockPos blockpos = p_223315_3_.down();
-        return p_223315_2_ == SpawnReason.SPAWNER || spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
+        if(p_223315_1_.getDifficulty() != Difficulty.PEACEFUL || p_223315_4_.nextInt(32) == 0){
+            return p_223315_2_ == SpawnReason.SPAWNER || spawnCheck(p_223315_1_, p_223315_3_, p_223315_4_);
+        }
+        return false;
     }
 
     private static boolean spawnCheck(IWorld world, BlockPos pos, Random rand) {

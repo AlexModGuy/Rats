@@ -74,11 +74,9 @@ public class RatsBlockRegistry {
     public static final Block PIRAT_DOOR = new BlockGenericDoor(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_door");
     public static final Block DUTCHRAT_BELL = new BlockDutchratBell();
 
-    public static final Fluid MILK_FLUID = new MilkFluid();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        Registry.register(Registry.FLUID, "rats.milk", MILK_FLUID);
         try {
             for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

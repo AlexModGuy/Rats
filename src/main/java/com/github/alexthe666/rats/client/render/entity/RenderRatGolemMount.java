@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.entity.EntityRatGolemMount;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.IronGolemCracksLayer;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderRatGolemMount extends MobRenderer<EntityRatGolemMount, ModelRatGolemMount<EntityRatGolemMount>> {
@@ -12,6 +13,7 @@ public class RenderRatGolemMount extends MobRenderer<EntityRatGolemMount, ModelR
 
     public RenderRatGolemMount() {
         super(Minecraft.getInstance().getRenderManager(), new ModelRatGolemMount(), 0.75F);
+        this.addLayer(new LayerRatGolemMountCracks(this));
 
     }
 

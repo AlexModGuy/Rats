@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.blocks.RatsFluidRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -74,7 +75,7 @@ public class RatAIHarvestMilk extends Goal {
                     FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
                     FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);
                     if(milkFluid.isEmpty()){
-                        milkFluid = new FluidStack(RatsBlockRegistry.MILK_FLUID, 1000);
+                        milkFluid = new FluidStack(RatsFluidRegistry.MILK_FLUID, 1000);
                     }
                     if (milkWrapper.getFluid() != null && (this.entity.transportingFluid.isEmpty() || this.entity.transportingFluid.getAmount() < this.entity.getMBTransferRate())) {
                         this.entity.transportingFluid = milkFluid.copy();

@@ -123,6 +123,10 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
                     matrixStackIn.translate(0, 0.075F, -0.05F);
                     matrixStackIn.scale(1.25F, 1.25F, 1.25F);
                 }
+                if (itemstack.getItem() == RatsItemRegistry.MILITARY_HAT) {
+                    matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
+                    matrixStackIn.scale(1.425F, 1.425F, 1.425F);
+                }
                 boolean flag1 = itemstack.hasEffect();
                 if (armoritem instanceof net.minecraft.item.IDyeableArmorItem) { // Allow this for anything, not only cloth
                     int i = ((net.minecraft.item.IDyeableArmorItem)armoritem).getColor(itemstack);

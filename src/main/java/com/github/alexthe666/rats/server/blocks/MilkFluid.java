@@ -66,12 +66,12 @@ public class MilkFluid extends FlowingFluid {
 
     @Override
     public Fluid getFlowingFluid() {
-        return RatsBlockRegistry.MILK_FLUID;
+        return RatsFluidRegistry.MILK_FLUID;
     }
 
     @Override
     public Fluid getStillFluid() {
-        return RatsBlockRegistry.MILK_FLUID;
+        return RatsFluidRegistry.MILK_FLUID;
     }
 
     @Override

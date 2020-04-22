@@ -139,6 +139,8 @@ public class RatsItemRegistry {
 
     public static final Item HALO_HAT = new ItemHat("halo_hat", 10);
 
+    public static final Item MILITARY_HAT = new ItemHat("military_hat", 12);
+
     public static final Item PARTY_HAT_1 = new ItemHat("party_hat_1", 11);
 
     public static final Item PARTY_HAT_2 = new ItemHat("party_hat_2", 11);

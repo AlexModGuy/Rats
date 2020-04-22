@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
+import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
@@ -10,6 +11,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +27,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,12 +69,41 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         if(!player.isShiftKeyDown()){
-            if(worldIn.isRemote){
-                RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
-            }else{
-                INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
-                if (inamedcontainerprovider != null) {
-                    player.openContainer(inamedcontainerprovider);
+            boolean flag = false;
+            ItemStack stack = player.getHeldItem(hand);
+            if(TileEntityAutoCurdler.isMilk(stack) && worldIn.getTileEntity(pos) instanceof TileEntityAutoCurdler){
+                TileEntityAutoCurdler te = (TileEntityAutoCurdler)worldIn.getTileEntity(pos);
+                FluidStack fluidStack = getFluidStack(stack);
+                if (fluidStack != null && !worldIn.isRemote) {
+                    IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).orElse(null);
+                    FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                    if (drain.getAmount() > 0 || stack.getItem() == Items.MILK_BUCKET) {
+                        if (te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                            te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
+                            if(!player.isCreative()){
+                                fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                                if (stack.getItem() == Items.MILK_BUCKET) {
+                                    stack.shrink(1);
+                                    player.addItemStackToInventory(new ItemStack(Items.BUCKET));
+                                }
+                            }
+                            flag = true;
+                        }
+                    }
+                    if(flag){
+                        RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(pos.toLong(), te.tank.getFluid()));
+                    }
+                }
+                return ActionResultType.SUCCESS;
+            }
+            if(!flag) {
+                if (worldIn.isRemote) {
+                    RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
+                } else {
+                    INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+                    if (inamedcontainerprovider != null) {
+                        player.openContainer(inamedcontainerprovider);
+                    }
                 }
             }
             return ActionResultType.SUCCESS;
@@ -76,6 +111,13 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
         return ActionResultType.PASS;
     }
 
+    public static FluidStack getFluidStack(ItemStack stack){
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+        if(fluidStack.isEmpty() && stack.getItem() == Items.MILK_BUCKET){
+            return new FluidStack(RatsFluidRegistry.MILK_FLUID, 1000);
+        }
+        return fluidStack;
+    }
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.with(FACING, rot.rotate(state.get(FACING)));
     }
