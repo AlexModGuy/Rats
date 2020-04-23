@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats;
 
+import static com.github.alexthe666.rats.server.world.RatsWorldRegistry.RATLANTIS_DIM;
+
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry;
@@ -7,11 +9,15 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
+import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.world.RegisterDimensionsEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(RatsMod.MODID)
-@Mod.EventBusSubscriber(modid = RatsMod.MODID)
+@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RatsMod {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "rats";
@@ -99,5 +105,11 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTileSlots.class, MessageUpdateTileSlots::write, MessageUpdateTileSlots::read, MessageUpdateTileSlots.Handler::handle);
         RatsAdvancementRegistry.init();
+    }
+
+    @SubscribeEvent
+    public static void registerDimensionTypes(RegisterDimensionsEvent event) {
+        RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager
+                .registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
     }
 }

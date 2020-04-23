@@ -191,12 +191,6 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerDimensionTypes(RegisterDimensionsEvent event) {
-        RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
-
-    }
-
-    @SubscribeEvent
     public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
         event.getRegistry().register(RATLANTIS_DIM);
         RatlantisStructureRegistry.register();
