@@ -76,22 +76,24 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
                 FluidStack fluidStack = getFluidStack(stack);
                 if (fluidStack != null && !worldIn.isRemote) {
                     IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).orElse(null);
-                    FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-                    if (drain.getAmount() > 0 || stack.getItem() == Items.MILK_BUCKET) {
-                        if (te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
-                            te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
-                            if(!player.isCreative()){
-                                fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-                                if (stack.getItem() == Items.MILK_BUCKET) {
-                                    stack.shrink(1);
-                                    player.addItemStackToInventory(new ItemStack(Items.BUCKET));
+                    if(fluidHandler != null) {
+                        FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                        if (drain.getAmount() > 0 || stack.getItem() == Items.MILK_BUCKET) {
+                            if (te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                                te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
+                                if (!player.isCreative()) {
+                                    fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                                    if (stack.getItem() == Items.MILK_BUCKET) {
+                                        stack.shrink(1);
+                                        player.addItemStackToInventory(new ItemStack(Items.BUCKET));
+                                    }
                                 }
+                                flag = true;
                             }
-                            flag = true;
                         }
-                    }
-                    if(flag){
-                        RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(pos.toLong(), te.tank.getFluid()));
+                        if (flag) {
+                            RatsMod.sendMSGToAll(new MessageAutoCurdlerFluid(pos.toLong(), te.tank.getFluid()));
+                        }
                     }
                 }
                 return ActionResultType.SUCCESS;
@@ -112,7 +114,7 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
     }
 
     public static FluidStack getFluidStack(ItemStack stack){
-        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
         if(fluidStack.isEmpty() && stack.getItem() == Items.MILK_BUCKET){
             return new FluidStack(RatsFluidRegistry.MILK_FLUID, 1000);
         }
