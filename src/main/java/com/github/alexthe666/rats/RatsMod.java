@@ -3,10 +3,13 @@ package com.github.alexthe666.rats;
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -105,5 +108,7 @@ public class RatsMod {
 
     private void setupClient(FMLClientSetupEvent event) {
         PROXY.preInit();
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_GRASS, RenderType.getCutout());
     }
 }
