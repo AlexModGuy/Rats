@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
@@ -10,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexBuilderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -52,10 +54,12 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
           matrixStackIn.push();
 
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
-            renderer.getEntityModel().render(matrixStackIn, ItemRenderer.getBuffer(bufferIn, RenderType.getEntityGlint(), false, true), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(renderer.getEntityTexture(rat)), false, true);
+            renderer.getEntityModel().render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
-            renderer.getEntityModel().render(matrixStackIn, ItemRenderer.getBuffer(bufferIn, RenderType.getEntityGlint(), false, true), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            IVertexBuilder vertexBuilder = bufferIn.getBuffer(RatsRenderType.GREEN_ENTITY_GLINT);
+            renderer.getEntityModel().render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);

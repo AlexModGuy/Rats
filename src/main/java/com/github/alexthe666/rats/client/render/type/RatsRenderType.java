@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.type;
 
 import com.github.alexthe666.rats.client.render.tile.RenderRatlantisPortal;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.EndPortalTileEntityRenderer;
@@ -14,6 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RatsRenderType extends RenderType {
+    public static final RenderType GREEN_ENTITY_GLINT = makeType("green_glint", DefaultVertexFormats.POSITION_TEX, 7, 256, RenderType.State.getBuilder().texture(new RenderState.TextureState(new ResourceLocation("rats:textures/entity/rat/green_glint.png"), true, false)).writeMask(COLOR_WRITE).cull(CULL_DISABLED).depthTest(DEPTH_EQUAL).transparency(GLINT_TRANSPARENCY).texturing(ENTITY_GLINT_TEXTURING).build(false));
 
     public RatsRenderType(String p_i225992_1_, VertexFormat p_i225992_2_, int p_i225992_3_, int p_i225992_4_, boolean p_i225992_5_, boolean p_i225992_6_, Runnable p_i225992_7_, Runnable p_i225992_8_) {
         super(p_i225992_1_, p_i225992_2_, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, p_i225992_7_, p_i225992_8_);
