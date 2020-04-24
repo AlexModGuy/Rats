@@ -51,7 +51,10 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-          matrixStackIn.push();
+        if (!(this.renderer.getEntityModel() instanceof ModelRat)) {
+            return;
+        }
+        matrixStackIn.push();
 
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
             IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(renderer.getEntityTexture(rat)), false, true);
