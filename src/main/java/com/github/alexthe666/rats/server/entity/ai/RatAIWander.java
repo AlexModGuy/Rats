@@ -27,7 +27,7 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
             Vec3d vec3d = RandomPositionGenerator.getLandPos(this.rat, 15, 7);
             return vec3d == null ? generateRatPosition() : vec3d;
         } else {
-            return this.rat.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.rat, 10, 7) : generateRatPosition();
+            return this.rat.getRNG().nextFloat() >= this.probability && !rat.isInCage() ? RandomPositionGenerator.getLandPos(this.rat, 10, 7) : generateRatPosition();
         }
     }
 
@@ -62,6 +62,8 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
     }
 
     public boolean shouldExecute() {
+        executionChance = rat.isInCage() ? 15 : 200;
+
         return shouldRatAIExecute() && super.shouldExecute();
     }
 

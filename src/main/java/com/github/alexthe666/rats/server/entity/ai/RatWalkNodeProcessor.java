@@ -16,6 +16,7 @@ import java.util.EnumSet;
 
 public class RatWalkNodeProcessor extends WalkNodeProcessor {
 
+    @Override
     public PathNodeType getPathNodeType(IBlockReader p_193577_1_, int x, int y, int z, int xSize, int ySize, int zSize, boolean canOpenDoorsIn, boolean canEnterDoorsIn, EnumSet<PathNodeType> nodeTypeEnum, PathNodeType nodeType, BlockPos pos) {
         for (int i = 0; i < xSize; ++i) {
             for (int j = 0; j < ySize; ++j) {
@@ -45,7 +46,9 @@ public class RatWalkNodeProcessor extends WalkNodeProcessor {
                     if (i == 0 && j == 0 && k == 0) {
                         nodeType = pathnodetype;
                     }
-
+                    if(block instanceof BlockRatHole && entity != null && ((EntityRat) entity).isInCage()){
+                        pathnodetype = PathNodeType.WALKABLE;
+                    }
                     nodeTypeEnum.add(pathnodetype);
                 }
             }

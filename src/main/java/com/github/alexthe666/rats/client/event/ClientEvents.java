@@ -52,7 +52,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onPlayerInteract(RenderGameOverlayEvent.Pre event) {
+    public void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getInstance().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatConfig.plagueHearts) {
             return;
         }
@@ -153,12 +153,17 @@ public class ClientEvents {
             GameRenderer renderer = Minecraft.getInstance().gameRenderer;
             EffectInstance active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
-            if (synesthesia && renderer.getShaderGroup() == null) {
-                renderer.loadShader(SYNESTHESIA);
+            try{
+                if (synesthesia && renderer.getShaderGroup() == null) {
+                    renderer.loadShader(SYNESTHESIA);
+                }
+                if (!synesthesia && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
+                    renderer.stopUseShader();
+                }
+            }catch (Exception e){
+                RatsMod.LOGGER.warn("Game tried to crash when applying shader");
             }
-            if (!synesthesia && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
-                renderer.stopUseShader();
-            }
+
             if (prevSynesthesiaProgress == 2 && synesthesia) {
                 Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(RatsSoundRegistry.POTION_EFFECT_BEGIN, 1.0F));
             }
