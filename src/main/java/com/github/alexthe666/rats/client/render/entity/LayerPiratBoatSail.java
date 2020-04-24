@@ -29,7 +29,7 @@ public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPira
     public LayerPiratBoatSail(IEntityRenderer<EntityPiratBoat, ModelPiratBoat<EntityPiratBoat>> ratRendererIn) {
         super(ratRendererIn);
         this.renderType = RenderType.getEntityCutoutNoCull(TEXTURE_PIRATE_CANNON);
-        this.renderTypeFire = RenderType.getEntityCutoutNoCull(TEXTURE_PIRATE_CANNON_FIRE);
+        this.renderTypeFire = RenderType.getEyes(TEXTURE_PIRATE_CANNON_FIRE);
         this.ratRenderer = ratRendererIn;
     }
 
@@ -48,10 +48,18 @@ public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPira
         matrixStackIn.translate(0, 0.1F, -0.6F);
         matrixStackIn.scale(0.75F, 0.75F, 0.75F);
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(renderType);
-        IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(renderTypeFire);
         MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder2, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         matrixStackIn.pop();
+
+        if(entitylivingbaseIn.isFiring()){
+            matrixStackIn.push();
+            matrixStackIn.rotate(new Quaternion(Vector3f.YN, 90F, true));
+            matrixStackIn.translate(0, 0.1F, -0.6F);
+            matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+            IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(renderTypeFire);
+            MODEL_PIRAT_CANNON.render(matrixStackIn, ivertexbuilder2, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+        }
     }
 
     public boolean shouldCombineTextures() {
