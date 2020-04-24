@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.world;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -11,6 +12,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.MineshaftConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftStructure;
@@ -24,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BiomeRatlantis extends Biome {
 
     public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
+    public static final BlockClusterFeatureConfig RATGLOVE_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState()), new SimpleBlockPlacer())).tries(64).build();
 
     public BiomeRatlantis() {
         super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).depth(1).waterFogColor(270131).parent((String)null));
@@ -35,6 +39,8 @@ public class BiomeRatlantis extends Biome {
         this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.RAT_RUINS.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, RatlantisStructureRegistry.MARBLE_PILE.withConfiguration(new NoFeatureConfig()));
+        this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));
+        this.flowers.add(Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));
         //this.addStructure(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig());
         //this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig(), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         DefaultBiomeFeatures.addCarvers(this);

@@ -40,7 +40,7 @@ public class LayerPiratBoatSail extends LayerRenderer<EntityPiratBoat, ModelPira
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90F, true));
         matrixStackIn.translate(0F, -0.8F, -0.9F);
         matrixStackIn.scale(4F, 4F, 4F);
-        Minecraft.getInstance().getItemRenderer().renderItem(EntityPiratBoat.BANNER, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        Minecraft.getInstance().getItemRenderer().renderItem(entitylivingbaseIn.banner, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         matrixStackIn.pop();
 
         matrixStackIn.push();

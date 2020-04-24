@@ -38,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
-    public static final ItemStack BANNER = generateBanner();
+    public ItemStack banner = generateBanner();
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityPiratBoat.class, DataSerializers.BOOLEAN);
     private final float[] paddlePositions;
@@ -52,6 +52,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
 
     public EntityPiratBoat(EntityType type, World worldIn) {
         super(type, worldIn);
+        banner = generateBanner();
         this.paddlePositions = new float[2];
         switchNavigator(0);
     }
@@ -152,7 +153,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                     this.entityDropItem(new ItemStack(Blocks.OAK_PLANKS), 0.0F);
                 }
                 if (rand.nextInt(3) == 0) {
-                    this.entityDropItem(BANNER.copy(), 0.0F);
+                    this.entityDropItem(banner.copy(), 0.0F);
                 }
                 if (rand.nextInt(2) == 0) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.CHEESE_CANNONBALL), 0.0F);
