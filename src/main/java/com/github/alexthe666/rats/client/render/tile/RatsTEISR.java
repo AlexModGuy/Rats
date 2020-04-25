@@ -17,11 +17,13 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
     private TileEntityAutoCurdler teAutoCurdler = new TileEntityAutoCurdler();
     private TileEntityRatlantisPortal teRatlantisPortal = new TileEntityRatlantisPortal();
     private TileEntityRatlanteanAutomatonHead teHead = new TileEntityRatlanteanAutomatonHead();
+    private TileEntityTrashCan trashCan = new TileEntityTrashCan();
     private RenderRatHole renderRatHole = new RenderRatHole(TileEntityRendererDispatcher.instance);
     private RenderRatTrap renderRatTrap = new RenderRatTrap(TileEntityRendererDispatcher.instance);
     private RenderAutoCurdler renderAutoCurdler = new RenderAutoCurdler(TileEntityRendererDispatcher.instance);
     private RenderRatlantisPortal renderRatlantisPortal = new RenderRatlantisPortal(TileEntityRendererDispatcher.instance);
     private RenderRatlanteanAutomatonHead renderRatlanteanAutomatonHead = new RenderRatlanteanAutomatonHead(TileEntityRendererDispatcher.instance);
+    private RenderTrashCan renderTrashCan = new RenderTrashCan(TileEntityRendererDispatcher.instance);
     //private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
     //private RenderUpgradeSeparator renderUpgradeSeparator = new RenderUpgradeSeparator();
 
@@ -41,6 +43,9 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)) {
             renderRatlanteanAutomatonHead.render(teHead, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        }
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.TRASH_CAN)) {
+            renderTrashCan.render(trashCan, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
     }
 }

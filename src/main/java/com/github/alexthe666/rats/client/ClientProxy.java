@@ -127,6 +127,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_TUBE_COLOR, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AUTO_CURDLER, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_HOLE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MANHOLE, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.TRASH_CAN, RenderType.getCutout());
 
     }
 
@@ -183,6 +185,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));
     }
 
     @SubscribeEvent

@@ -73,6 +73,8 @@ public class RatsBlockRegistry {
     public static final Block PIRAT_FENCE = new FenceBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_fence");
     public static final Block PIRAT_DOOR = new BlockGenericDoor(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_door");
     public static final Block DUTCHRAT_BELL = new BlockDutchratBell();
+    public static final Block MANHOLE = new BlockGenericTrapDoor(Block.Properties.create(Material.IRON, MaterialColor.BROWN_TERRACOTTA).hardnessAndResistance(10.0F).sound(SoundType.ANVIL)).setRegistryName("rats:manhole");
+    public static final Block TRASH_CAN = new BlockTrashCan();
 
 
     @SubscribeEvent

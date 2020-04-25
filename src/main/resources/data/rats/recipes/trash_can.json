@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " N ",
+    "III",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:cauldron",
+      "data": 0
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "N": {
+      "tag": "forge:nuggets/iron"
+    }
+  },
+  "result": {
+    "item": "rats:trash_can"
+  }
+}
