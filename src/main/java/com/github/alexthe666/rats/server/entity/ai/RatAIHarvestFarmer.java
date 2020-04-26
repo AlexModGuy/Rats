@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.ItemUseContextAccess;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -128,7 +129,7 @@ public class RatAIHarvestFarmer extends Goal {
                     if (distance < 4.5F) {
                         if (holdingBlock()) {
                             BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(targetBlock), new Vec3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
-                            ItemUseContext itemusecontext = new ItemUseContext(null, Hand.MAIN_HAND, raytrace);
+                            ItemUseContext itemusecontext = new ItemUseContextAccess(entity.world, null, Hand.MAIN_HAND, entity.getHeldItem(Hand.MAIN_HAND),  raytrace);
                             BlockState BlockState1 = itemBlock.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
                             this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                             entity.world.setBlockState(targetBlock, BlockState1);
@@ -183,7 +184,7 @@ public class RatAIHarvestFarmer extends Goal {
                 block = ((BlockItem) this.entity.getHeldItem(Hand.MAIN_HAND).getItem()).getBlock();
             }
             for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-                if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, pos) && entity.world.isAirBlock(pos.up())) {
+                if (block.getBlock().isValidPosition(block.getDefaultState(), entity.world, pos) && entity.world.isAirBlock(pos.up()) && entity.world.isAirBlock(pos)) {
                     allBlocks.add(pos);
                 }
             }
