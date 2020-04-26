@@ -102,7 +102,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = getTitle().getFormattedText().length() == 0 ? I18n.format("entity.rats.rat.name") : getTitle().getFormattedText();
+        String name = getTitle().getFormattedText().length() == 0 ? I18n.format("entity.rats.rat") : getTitle().getFormattedText();
         this.font.drawString(name, this.xSize / 2 - this.font.getStringWidth(name) / 2, 6, 4210752);
 
         String commandDesc = I18n.format("entity.rats.rat.command.current");

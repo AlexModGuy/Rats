@@ -71,7 +71,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
@@ -606,7 +605,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             compound.put("TransportingFluid", fluidTag);
         }
         if (this.hasCustomName()) {
-            compound.putString("CustomName", this.getCustomName().toString());
+            compound.putString("CustomName", ITextComponent.Serializer.toJson(this.getCustomName()));
         }
     }
 
@@ -675,8 +674,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
             }
         }
-        if (compound.contains("CustomName", 8)) {
-            this.setCustomName(new StringTextComponent(compound.getString("CustomName")));
+
+        if (compound.contains("CustomName", 8) && !compound.getString("CustomName").startsWith("TextComponent")) {
+            this.setCustomName(ITextComponent.Serializer.fromJson(compound.getString("CustomName")));
         }
     }
 
@@ -1900,7 +1900,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
                 @Override
                 public ITextComponent getDisplayName() {
-                    return new TranslationTextComponent("Rat");
+                    return new TranslationTextComponent("entity.rats.rat");
                 }
             });
         }
@@ -2398,7 +2398,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
 
     public ITextComponent getName() {
         if (this.hasPlague()) {
-            return new TranslationTextComponent("plague_rat");
+            return new TranslationTextComponent("entity.rats.plague_rat");
         }
         return super.getName(); // Forge: Use getter to allow overriding by mods
     }
