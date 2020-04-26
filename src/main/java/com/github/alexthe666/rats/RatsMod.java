@@ -106,6 +106,7 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTileSlots.class, MessageUpdateTileSlots::write, MessageUpdateTileSlots::read, MessageUpdateTileSlots.Handler::handle);
         RatsAdvancementRegistry.init();
         RatsWorldRegistry.init();
+        PROXY.addMobSpawns();
     }
 
     private void setupClient(FMLClientSetupEvent event) {

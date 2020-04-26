@@ -172,36 +172,7 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
-        if (RatConfig.spawnRats) {
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
-                        if (RatConfig.ratsSpawnLikeMonsters) {
-                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
-                        } else {
-                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.CREATURE);
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
-                        }
-                    }
-                }
-            }
-        }
-        if (RatConfig.spawnPiper) {
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)){
-                        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
-                            //3 times as likely to spawn in dark forests
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate * 3, 1, 1));
-                        } else {
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
-                        }
-                    }
-                }
-            }
-        }
+
     }
 
     @SubscribeEvent
@@ -274,5 +245,38 @@ public class CommonProxy {
     }
 
     public void openRadiusStaffGui() {
+    }
+
+    public void addMobSpawns(){
+        if (RatConfig.spawnRats) {
+            for (Biome biome : ForgeRegistries.BIOMES) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+                        if (RatConfig.ratsSpawnLikeMonsters) {
+                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
+                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
+                        } else {
+                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.CREATURE);
+                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
+                        }
+                    }
+                }
+            }
+        }
+        if (RatConfig.spawnPiper) {
+            for (Biome biome : ForgeRegistries.BIOMES) {
+                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
+                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)){
+                        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
+                            //3 times as likely to spawn in dark forests
+                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate * 3, 1, 1));
+                        } else {
+                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
