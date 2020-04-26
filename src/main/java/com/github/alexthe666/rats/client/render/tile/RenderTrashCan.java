@@ -45,7 +45,7 @@ public class RenderTrashCan extends TileEntityRenderer<TileEntityTrashCan> {
             shutProgress = entity.lidProgress;
         }
         matrixStackIn.push();
-        matrixStackIn.translate(0.5D, 1.499D, 0.5D);
+        matrixStackIn.translate(0.5D, 1.501D, 0.5D);
         matrixStackIn.push();
         matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
         matrixStackIn.rotate(new Quaternion(Vector3f.YP, rotation, true));

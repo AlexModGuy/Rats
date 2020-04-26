@@ -4,7 +4,8 @@
     "sounds": [
       "rats:trash_can_0",
       "rats:trash_can_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.trash_can"
   },
   "ratlantean_ratbot_idle": {
     "category": "neutral",
@@ -12,21 +13,24 @@
       "rats:ratlantean_ratbot_idle_0",
       "rats:ratlantean_ratbot_idle_1",
       "rats:ratlantean_ratbot_idle_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_ratbot_idle"
   },
   "dutchrat_die": {
     "category": "neutral",
     "sounds": [
       "rats:dutchrat_hurt_0",
       "rats:dutchrat_hurt_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.dutchrat_die"
   },
   "dutchrat_hurt": {
     "category": "neutral",
     "sounds": [
       "rats:dutchrat_hurt_0",
       "rats:dutchrat_hurt_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.dutchrat_hurt"
   },
   "dutchrat_idle": {
     "category": "neutral",
@@ -37,20 +41,23 @@
       "rats:dutchrat_idle_3",
       "rats:dutchrat_idle_4",
       "rats:dutchrat_idle_5"
-    ]
+    ],
+    "subtitle": "rats.subtitle.dutchrat_idle"
   },
   "dutchrat_bell": {
     "category": "neutral",
     "sounds": [
       "rats:dutchrat_bell"
-    ]
+    ],
+    "subtitle": "rats.subtitle.dutchrat_bell"
   },
   "rat_santa": {
     "category": "neutral",
     "sounds": [
       "rats:rat_santa_0",
       "rats:rat_santa_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_santa"
   },
   "rat_poop": {
     "category": "neutral",
@@ -58,14 +65,16 @@
       "rats:rat_poop_0",
       "rats:rat_poop_1",
       "rats:rat_poop_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_poop"
   },
   "black_death_die": {
     "category": "neutral",
     "sounds": [
       "rats:black_death_die_0",
       "rats:black_death_die_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.black_death_die"
   },
   "black_death_hurt": {
     "category": "neutral",
@@ -74,7 +83,8 @@
       "rats:black_death_hurt_1",
       "rats:black_death_hurt_2",
       "rats:black_death_hurt_3"
-    ]
+    ],
+    "subtitle": "rats.subtitle.black_death_hurt"
   },
   "black_death_idle": {
     "category": "neutral",
@@ -84,7 +94,8 @@
       "rats:black_death_idle_2",
       "rats:black_death_idle_3",
       "rats:black_death_idle_4"
-    ]
+    ],
+    "subtitle": "rats.subtitle.black_death_idle"
   },
 
   "rat_laser": {
@@ -92,25 +103,29 @@
     "sounds": [
       "rats:laser_0",
       "rats:laser_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_laser"
   },
   "neoratlantean_loop": {
     "category": "neutral",
     "sounds": [
       "rats:neoratlantean_loop"
-    ]
+    ],
+    "subtitle": "rats.subtitle.neoratlantean_loop"
   },
   "neoratlantean_summon": {
     "category": "neutral",
     "sounds": [
       "rats:neoratlantean_summon_0"
-    ]
+    ],
+    "subtitle": "rats.subtitle.neoratlantean_summon"
   },
   "neoratlantean_die": {
     "category": "neutral",
     "sounds": [
       "rats:neoratlantean_die_0"
-    ]
+    ],
+    "subtitle": "rats.subtitle.neoratlantean_die"
   },
   "neoratlantean_hurt": {
     "category": "neutral",
@@ -120,7 +135,8 @@
       "rats:neoratlantean_hurt_2",
       "rats:neoratlantean_hurt_3"
 
-    ]
+    ],
+    "subtitle": "rats.subtitle.neoratlantean_hurt"
   },
   "neoratlantean_idle": {
     "category": "neutral",
@@ -129,19 +145,23 @@
       "rats:neoratlantean_idle_1",
       "rats:neoratlantean_idle_2",
       "rats:neoratlantean_idle_3"
-    ]
+    ],
+    "subtitle": "rats.subtitle.neoratlantean_idle"
   },
   "ratlantean_automaton_die": {
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_automaton_die_0"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_automaton_die"
   },
   "ratlantean_automaton_hurt": {
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_automaton_hurt_0"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_automaton_hurt"
+
   },
   "ratlantean_automaton_idle": {
     "category": "neutral",
@@ -150,20 +170,23 @@
       "rats:ratlantean_automaton_idle_1",
       "rats:ratlantean_automaton_idle_2",
       "rats:ratlantean_automaton_idle_3"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_automaton_idle"
   },
   "ratlantean_spirit_die": {
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_spirit_die_0"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_spirit_die"
   },
   "ratlantean_spirit_hurt": {
     "category": "neutral",
     "sounds": [
       "rats:ratlantean_spirit_hurt_0",
       "rats:ratlantean_spirit_hurt_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_spirit_hurt"
   },
   "ratlantean_spirit_idle": {
     "category": "neutral",
@@ -171,13 +194,15 @@
       "rats:ratlantean_spirit_idle_0",
       "rats:ratlantean_spirit_idle_1",
       "rats:ratlantean_spirit_idle_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.ratlantean_spirit_idle"
   },
   "piper_loop" : {
     "category": "neutral",
     "sounds": [
       "rats:piper_loop"
-    ]
+    ],
+    "subtitle": "rats.subtitle.piper_loop"
   },
   "rat_flute": {
     "category": "neutral",
@@ -186,7 +211,8 @@
       "rats:flute_1",
       "rats:flute_2",
       "rats:flute_3"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_flute"
   },
   "rat_dig": {
     "category": "neutral",
@@ -194,7 +220,8 @@
       "rats:rat_dig_0",
       "rats:rat_dig_1",
       "rats:rat_dig_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_dig"
   },
   "rat_plague": {
     "category": "neutral",
@@ -203,14 +230,16 @@
       "rats:rat_plague_1",
       "rats:rat_plague_2"
 
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_plague"
   },
   "rat_die": {
     "category": "neutral",
     "sounds": [
       "rats:rat_die_0",
       "rats:rat_die_1"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_die"
   },
   "rat_hurt": {
     "category": "neutral",
@@ -218,7 +247,8 @@
       "rats:rat_hurt_0",
       "rats:rat_hurt_1",
       "rats:rat_hurt_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_hurt"
   },
   "rat_idle": {
     "category": "neutral",
@@ -226,18 +256,21 @@
       "rats:rat_idle_0",
       "rats:rat_idle_1",
       "rats:rat_idle_2"
-    ]
+    ],
+    "subtitle": "rats.subtitle.rat_idle"
   },
   "potion_effect_begin": {
     "category": "neutral",
     "sounds": [
       "rats:potion_effect_begin"
-    ]
+    ],
+    "subtitle": "rats.subtitle.potion_effect_begin"
   },
   "potion_effect_end": {
     "category": "neutral",
     "sounds": [
       "rats:potion_effect_end"
-    ]
+    ],
+    "subtitle": "rats.subtitle.potion_effect_end"
   }
 }
