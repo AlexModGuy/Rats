@@ -3,14 +3,18 @@ package com.github.alexthe666.rats.server.world;
 import com.github.alexthe666.rats.server.world.structure.DutchratShipStructure;
 import com.github.alexthe666.rats.server.world.structure.RatlantisAquaductStructure;
 import com.github.alexthe666.rats.server.world.structure.RatlantisRuinsStructure;
+import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 public class RatsWorldRegistry {
@@ -25,5 +29,14 @@ public class RatsWorldRegistry {
 
     static {
         RATLANTIS_SURFACE.setRegistryName("rats:ratlantis_surface");
+    }
+
+    public static void init() {
+       /* for(Biome biome : ForgeRegistries.BIOMES.getValues()){
+            if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER)){
+                biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatlantisStructureRegistry.SEWER.withConfiguration(new NoFeatureConfig()));
+            }
+        }*/
+
     }
 }

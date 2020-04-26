@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -10,17 +11,24 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import javax.annotation.Nullable;
 
 public class TileEntityTrashCan extends TileEntity implements ITickableTileEntity {
     public boolean opened = false;
     public float lidProgress;
     public float prevLidProgress;
     public int trashStored;
-    private int timeOpen = 0;
     int ticksExisted;
+    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler> upHandler = TrashCanInventoryWrapperTop.create(this, Direction.UP);
+    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler> downHandler = TrashCanInventoryWrapperBottom.create(this, Direction.DOWN);
+    private int timeOpen = 0;
 
     public TileEntityTrashCan() {
         super(RatsTileEntityRegistry.TRASH_CAN);
@@ -36,11 +44,26 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
         } else if (!opened && lidProgress > 0.0F) {
             lidProgress -= lidInc;
         }
-        if(opened){
+        if (opened) {
             timeOpen++;
-            if(timeOpen > 30){
+            if (timeOpen > 30) {
                 opened = false;
                 timeOpen = 0;
+            }
+        }
+
+        if (trashStored >= 7) {
+            BlockPos down = this.getPos().down();
+            TileEntity tileEntity = world.getTileEntity(down);
+            boolean flag = false;
+            if (tileEntity != null && tileEntity.getCapability(net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP).isPresent()) {
+                flag = true;
+            }
+            if(!flag){
+                trashStored = 0;
+                depositGarbage();
+                BlockState blockstate = this.world.getBlockState(this.getPos());
+                world.notifyBlockUpdate(this.getPos(), blockstate, blockstate, 3);
             }
         }
     }
@@ -50,12 +73,11 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
         world.addEntity(itemEntity);
     }
 
-
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT tag = new CompoundNBT();
         this.write(tag);
-        return new SUpdateTileEntityPacket(pos, 1, tag);
+        return new SUpdateTileEntityPacket(pos, -1, tag);
     }
 
     @Override
@@ -77,5 +99,16 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
         ticksExisted = compound.getInt("TicksExisted");
         trashStored = compound.getInt("TrashStored");
         super.read(compound);
+    }
+
+    @Override
+    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
+        if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == Direction.DOWN)
+                return downHandler.cast();
+            else
+                return upHandler.cast();
+        }
+        return super.getCapability(capability, facing);
     }
 }

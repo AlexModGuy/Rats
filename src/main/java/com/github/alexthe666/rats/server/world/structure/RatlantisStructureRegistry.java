@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.world.structure;
 
 import com.github.alexthe666.rats.server.world.gen.FeatureMarblePile;
+import com.github.alexthe666.rats.server.world.gen.FeatureSewer;
 import com.github.alexthe666.rats.server.world.gen.RatsStructureProcessor;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
@@ -15,6 +16,7 @@ public class RatlantisStructureRegistry {
     public static IStructurePieceType FLYING_DUTCHRAT_TYPE;
     public static IStructureProcessorType RAT_RUINS_PROCESSOR;
     public static Feature<NoFeatureConfig> MARBLE_PILE;
+    public static Feature<NoFeatureConfig> SEWER;
 
     public static void register(){
         RAT_RUINS_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:ratlantis_ruins", RatlantisRuinsPiece.Piece::new);
@@ -22,6 +24,7 @@ public class RatlantisStructureRegistry {
         FLYING_DUTCHRAT_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:flying_dutchrat", DutchratShipPiece.Piece::new);
         RAT_RUINS_PROCESSOR = Registry.register(Registry.STRUCTURE_PROCESSOR, "ratlantis_ruins_processor", RatsStructureProcessor::new);
         MARBLE_PILE = Registry.register(Registry.FEATURE, "marble_pile", new FeatureMarblePile(NoFeatureConfig::deserialize));
+        SEWER = Registry.register(Registry.FEATURE, "sewer", new FeatureSewer(NoFeatureConfig::deserialize));
     }
 
 

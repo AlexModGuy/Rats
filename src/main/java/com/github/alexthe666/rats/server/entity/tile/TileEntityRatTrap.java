@@ -43,7 +43,6 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.65F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                System.out.println(world.isRemote);
                 isShut = true;
                 if (!rat.isDead()) {
                     rat.setKilledInTrap();

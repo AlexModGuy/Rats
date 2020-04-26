@@ -60,10 +60,6 @@ public class BlockTrashCan extends ContainerBlock implements IUsesTEISR {
                 TileEntityTrashCan trashCan = (TileEntityTrashCan)te;
                 trashCan.opened = true;
                 if(!stack.isEmpty() && stack.getItem() instanceof BlockItem){
-                    if(trashCan.trashStored >= 7){
-                        trashCan.trashStored = 0;
-                        trashCan.depositGarbage();
-                    }
                     if(trashCan.trashStored < 7){
                         if(!player.isCreative()){
                             stack.shrink(1);
