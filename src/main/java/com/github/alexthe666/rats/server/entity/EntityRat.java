@@ -816,7 +816,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isHoldingFood() {
-        return !this.getHeldItem(Hand.MAIN_HAND).isEmpty() && (RatUtils.isRatFood(this.getHeldItem(Hand.MAIN_HAND)) || hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()));
+        return !this.getHeldItem(Hand.MAIN_HAND).isEmpty() && ((RatUtils.isRatFood(this.getHeldItem(Hand.MAIN_HAND)) || (hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()))));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -1024,10 +1024,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.isSitting() && this.getCommand() != RatCommand.SIT) {
             this.setSitting(false);
         }
-        if (this.getAnimation() == ANIMATION_EAT && isHoldingFood() && eatingTicks <= 40) {
+        if (this.getAnimation() == ANIMATION_EAT && isHoldingFood()) {
             eatingTicks++;
             eatItem(this.getHeldItem(Hand.MAIN_HAND), 3);
-            if (eatingTicks == 40) {
+            if (eatingTicks >= 40) {
                 ItemStack pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItem(Hand.MAIN_HAND))) {
                     pooStack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE, 2);
@@ -1064,12 +1064,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 eatingTicks = 0;
             }
         }
-        if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
-                && (this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
-                && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) ||this.getCommand() != RatCommand.TRANSPORT && this.shouldDepositItem(getHeldItemMainhand()))) {
-            if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getCommand() != RatCommand.HUNT_MONSTERS || this.getHealth() < this.getMaxHealth()) {
-                this.setAnimation(ANIMATION_EAT);
-                this.setRatStatus(RatStatus.EATING);
+        if(!world.isRemote){
+            if (isHoldingFood() && (this.getRNG().nextInt(20) == 0 || eatingTicks > 0) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS)
+                    && (this.getCommand() != RatCommand.GATHER && this.getCommand() != RatCommand.HARVEST)
+                    && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) ||this.getCommand() != RatCommand.TRANSPORT && this.shouldDepositItem(getHeldItemMainhand()))) {
+                if (this.getCommand() != RatCommand.HARVEST || this.getCommand() != RatCommand.HUNT_ANIMALS || this.getCommand() != RatCommand.HUNT_MONSTERS || this.getHealth() < this.getMaxHealth()) {
+                    this.setAnimation(ANIMATION_EAT);
+                    this.setRatStatus(RatStatus.EATING);
+                }
             }
         }
         if (this.hasPlague() && rand.nextFloat() < 0.3F) {

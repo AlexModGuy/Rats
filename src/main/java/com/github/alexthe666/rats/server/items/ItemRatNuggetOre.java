@@ -22,6 +22,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -100,8 +101,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            RatsNuggetRegistry.init();
-            for (Block entry : RatsNuggetRegistry.ORE_TO_INGOTS) {
+            for (Block entry : Tags.Blocks.ORES.getAllElements()) {
                 ItemStack oreStack = new ItemStack(entry);
                 ItemStack stack = new ItemStack(this);
                 CompoundNBT poopTag = new CompoundNBT();
