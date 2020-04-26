@@ -41,6 +41,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -172,7 +173,7 @@ public class CommonProxy {
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
         if (RatConfig.spawnRats) {
-            for (Biome biome : Biome.BIOMES) {
+            for (Biome biome : ForgeRegistries.BIOMES) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
                         if (RatConfig.ratsSpawnLikeMonsters) {
@@ -187,7 +188,7 @@ public class CommonProxy {
             }
         }
         if (RatConfig.spawnPiper) {
-            for (Biome biome : Biome.BIOMES) {
+            for (Biome biome : ForgeRegistries.BIOMES) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
                     if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)){

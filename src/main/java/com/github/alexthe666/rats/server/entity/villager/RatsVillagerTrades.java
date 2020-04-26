@@ -54,7 +54,8 @@ public class RatsVillagerTrades {
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_STEW, 7, 2, 8, 6),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_DOCTOR_MASK, 15, 1, 2, 10),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PURIFYING_LIQUID, 8, 2, 5, 7),
-                        new ItemsForEmeraldsTrade(RatsItemRegistry.TOKEN_FRAGMENT, 3, 1, 20, 2)
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.TOKEN_FRAGMENT, 3, 1, 20, 2),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_UPGRADE_BASIC, 4, 2, 6, 10)
                 }));
     }
 
