@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
@@ -47,6 +48,7 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
         if (opened) {
             timeOpen++;
             if (timeOpen > 30) {
+                world.playSound(null, pos, RatsSoundRegistry.TRASH_CAN, SoundCategory.BLOCKS, 0.7F, 0.75F + world.rand.nextFloat() * 0.5F);
                 opened = false;
                 timeOpen = 0;
             }

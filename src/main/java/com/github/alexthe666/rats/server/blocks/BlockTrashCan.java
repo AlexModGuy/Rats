@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityTrashCan;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
@@ -58,6 +59,9 @@ public class BlockTrashCan extends ContainerBlock implements IUsesTEISR {
             TileEntity te = worldIn.getTileEntity(pos);
             if(te instanceof TileEntityTrashCan){
                 TileEntityTrashCan trashCan = (TileEntityTrashCan)te;
+                if(!trashCan.opened){
+                    worldIn.playSound(player, pos, RatsSoundRegistry.TRASH_CAN, SoundCategory.BLOCKS, 0.7F, 0.75F + worldIn.rand.nextFloat() * 0.5F);
+                }
                 trashCan.opened = true;
                 if(!stack.isEmpty() && stack.getItem() instanceof BlockItem){
                     if(trashCan.trashStored < 7){

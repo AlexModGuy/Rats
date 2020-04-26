@@ -1,4 +1,11 @@
 {
+  "trash_can": {
+    "category": "neutral",
+    "sounds": [
+      "rats:trash_can_0",
+      "rats:trash_can_1"
+    ]
+  },
   "ratlantean_ratbot_idle": {
     "category": "neutral",
     "sounds": [
