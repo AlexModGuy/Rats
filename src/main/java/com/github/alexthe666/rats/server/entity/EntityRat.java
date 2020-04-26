@@ -36,6 +36,7 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -276,7 +277,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new RatAISwimming(this));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isAlive() && (entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative() || entity instanceof OcelotEntity;
+                return entity.isAlive() && ((entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative()) || entity instanceof OcelotEntity;
             }
         }, 10.0F, 0.8D, 1.225D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
@@ -310,7 +311,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }));
         this.targetSelector.addGoal(2, new RatAIOwnerHurtByTarget(this));
         this.targetSelector.addGoal(3, new RatAIOwnerHurtTarget(this));
-        this.targetSelector.addGoal(4, new RatAIHurtByTarget(this));
+        this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, CatEntity.class, OcelotEntity.class));
     }
 
     protected void setupDynamicAI() {

@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
@@ -53,13 +54,16 @@ public class RatAIFleeMobs extends Goal {
             return false;
         }
         List<OcelotEntity> ocelotList = this.entity.world.getEntitiesWithinAABB(OcelotEntity.class, this.entity.getBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(this.canBeSeenSelector, this.avoidTargetSelector));
+        List<CatEntity> catList = this.entity.world.getEntitiesWithinAABB(CatEntity.class, this.entity.getBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(this.canBeSeenSelector, this.avoidTargetSelector));
         List<PlayerEntity> playerList = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow((double) avoidDistance, 8.0D, (double) avoidDistance), Predicates.and(this.canBeSeenSelector, this.avoidTargetSelector));
-        if (ocelotList.isEmpty() && playerList.isEmpty()) {
+        if (ocelotList.isEmpty() && playerList.isEmpty() && catList.isEmpty()) {
             return false;
         } else {
             if (!ocelotList.isEmpty()) {
                 this.closestLivingEntity = ocelotList.get(0);
-            } else {
+            } else if (!catList.isEmpty()) {
+                this.closestLivingEntity = catList.get(0);
+            } else{
                 this.closestLivingEntity = playerList.get(0);
             }
             Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
