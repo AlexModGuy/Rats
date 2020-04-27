@@ -83,16 +83,14 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
     }
 
     public void remove() {
-        if (!isAlive()) {
-            double dist = 20F;
-            for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.getPosX() - dist, this.getPosY() - dist, this.getPosZ() - dist, this.getPosX() + dist, this.getPosY() + dist, this.getPosZ() + dist))) {
-                if (rat.isOwner(this)) {
-                    rat.setTamed(false);
-                    rat.setOwnerId(null);
-                    rat.fleePos = new BlockPos(rat);
-                    rat.setAttackTarget(null);
-                    rat.setRevengeTarget(null);
-                }
+        double dist = 20F;
+        for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.getPosX() - dist, this.getPosY() - dist, this.getPosZ() - dist, this.getPosX() + dist, this.getPosY() + dist, this.getPosZ() + dist))) {
+            if (rat.isOwner(this)) {
+                rat.setTamed(false);
+                rat.setOwnerId(null);
+                rat.fleePos = new BlockPos(rat);
+                rat.setAttackTarget(null);
+                rat.setRevengeTarget(null);
             }
         }
         super.remove();
@@ -172,12 +170,11 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         if (this.getRatsSummoned() < 6 && ratCooldown == 0) {
             world.setEntityState(this, (byte) 82);
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
-            rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
+            rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.NATURAL, null, null);
             rat.copyLocationAndAnglesFrom(this);
             rat.setPlague(false);
-            if (!world.isRemote) {
-                world.addEntity(rat);
-            }
+            world.addEntity(rat);
+
             rat.setTamed(true);
             rat.setTamedByPlayerFlag(false);
             rat.setOwnerId(this.getUniqueID());

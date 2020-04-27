@@ -1254,7 +1254,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
-        if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityIllagerPiper) {
+        if (!world.isRemote && this.isTamed() && this.getAttackTarget() != null && this.getOwner() instanceof EntityIllagerPiper) {
             EntityIllagerPiper piper = (EntityIllagerPiper) this.getOwner();
             if (piper.getAttackTarget() != null) {
                 this.setAttackTarget(piper.getAttackTarget());
@@ -1262,7 +1262,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         }
         if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityBlackDeath) {
             EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
-            if (death.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
+            if (death.getAttackTarget() != null && this.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
                 this.setAttackTarget(death.getAttackTarget());
             }
             if (this.getAttackTarget() == null || !this.getAttackTarget().isAlive()) {
