@@ -10,7 +10,7 @@ import net.minecraft.util.SoundEvent;
 public class ItemRatDisc extends MusicDiscItem {
 
     protected ItemRatDisc(String name, SoundEvent soundIn) {
-        super(13, soundIn, (new Item.Properties()).maxStackSize(1).group(ItemGroup.MISC).rarity(Rarity.RARE));
+        super(13, soundIn, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB).rarity(Rarity.RARE));
         this.setRegistryName(RatsMod.MODID, name);
     }
 }

@@ -1,4 +1,22 @@
 {
+  "mice_on_venus": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "music/game/piano3",
+        "stream": true
+      }
+    ]
+  },
+  "living_mice": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "music/game/hal2",
+        "stream": true
+      }
+    ]
+  },
   "trash_can": {
     "category": "neutral",
     "sounds": [
