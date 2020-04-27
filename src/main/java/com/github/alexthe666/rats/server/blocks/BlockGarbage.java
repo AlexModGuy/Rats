@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
@@ -33,7 +34,7 @@ public class BlockGarbage extends FallingBlock {
     }
 
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-        if (random.nextFloat() <= 0.25) {
+        if (random.nextFloat() <= RatConfig.garbageSpawnRate) {
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
             int i = worldIn.isThundering() ? worldIn.getNeighborAwareLightSubtracted(pos.up(), 10) : worldIn.getLight(pos.up());

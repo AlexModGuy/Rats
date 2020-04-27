@@ -35,7 +35,6 @@ public class ServerConfig {
     public final ForgeConfigSpec.BooleanValue disablePlastic;
     public final ForgeConfigSpec.BooleanValue ratsBreakBlockOnHarvest;
     public final ForgeConfigSpec.BooleanValue plagueSpread;
-    public final ForgeConfigSpec.BooleanValue plagueHearts;
     public final ForgeConfigSpec.DoubleValue ratStrengthThreshold;
     public final ForgeConfigSpec.IntValue ratFluteDistance;
     public final ForgeConfigSpec.IntValue ratCageCramming;
@@ -94,7 +93,6 @@ public class ServerConfig {
         this.ratsBreakBlockOnHarvest = buildBoolean(builder, "Rats Break Crops on Harvest", "all", true, "True if tamed rats will destroy crops when they harvest them");
         this.ratFartNoises = buildBoolean(builder, "Rat Fart Noises", "all", true, "True if rats should rarely make a funny noise when creating rats nuggets.");
         this.plagueSpread = buildBoolean(builder, "Other Mobs can spread Plague", "all", true, "True if infected mobs with plague can spread it by interacting or attacking.");
-        this.plagueHearts = buildBoolean(builder, "Plague Heart Overlay", "all", true, "True if player UI has plague hearts render when the effect is active.");
         this.cheesemaking = buildBoolean(builder, "Cheesemaking", "all", true, "True if cheese can be created in cauldrons");
         this.milkCauldronTime = buildInt(builder, "Milk Curdling Time", "all", 150, 20, 1000000, "The time in ticks(20 per second) it takes for milk to turn into cheese in a cauldron");
         this.ratStrengthThreshold = buildDouble(builder, "Rat Dig Strength", "all", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
