@@ -21,6 +21,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionBrewing;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
@@ -28,6 +29,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -42,20 +44,33 @@ public class RatsVillagerTrades {
     static {
         PLAGUE_DOCTOR_TRADES = createTrades(ImmutableMap.of(1,
                 new VillagerTrades.ITrade[]{
+                        new EmeraldForItemsTrade(RatsItemRegistry.RAW_RAT, 10, 1, 3),
                         new ItemsForEmeraldsTrade(Items.BONE, 3, 8, 9, 1),
                         new ItemsForEmeraldsTrade(Items.ROTTEN_FLESH, 2, 10, 9, 2),
                         new EmeraldForItemsTrade(Items.POISONOUS_POTATO, 1, 3, 3),
+                        new EmeraldForItemsTrade(RatsItemRegistry.CONTAMINATED_FOOD, 1, 1, 3),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.COOKED_RAT, 1, 5, 15, 10),
                         new ItemsForEmeraldsAndItemsTrade(Blocks.POPPY, 5, 3, RatsItemRegistry.HERB_BUNDLE, 3, 1, 5),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.TREACLE, 2, 3, 10, 5),
                         new ItemsForEmeraldsTrade(RatsBlockRegistry.GARBAGE_PILE, 5, 4, 5, 3),
+                        new ItemsForEmeraldsTrade(RatsBlockRegistry.RAT_CAGE, 2, 4, 4, 5),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_DOCTOR_MASK, 15, 1, 2, 10),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_SKULL, 3, 1, 15, 10),
                 },
+                //Only 3 of these appears per plague doctor
                 2, new VillagerTrades.ITrade[]{
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_LEECH, 3, 1, 15, 6),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_STEW, 7, 2, 8, 6),
-                        new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_DOCTOR_MASK, 15, 1, 2, 10),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_SACK, 2, 1, 2, 5),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PURIFYING_LIQUID, 8, 2, 5, 7),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.TOKEN_FRAGMENT, 3, 1, 20, 2),
-                        new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_UPGRADE_BASIC, 4, 2, 6, 10)
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_UPGRADE_BASIC, 4, 2, 6, 10),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_ESSENCE, 2, 1, 10, 6),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.FERAL_RAT_CLAW, 2, 3, 10, 6),
+                        new ItemsForEmeraldsTrade(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rats:cheese_banner_pattern")), 1, 1, 5, 2),
+                        new ItemsForEmeraldsTrade(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rats:rat_banner_pattern")), 1, 1, 5, 2),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.STRING_CHEESE, 2, 8, 5, 6),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.GOLDEN_RAT_SKULL, 8, 2, 5, 6),
                 }));
     }
 

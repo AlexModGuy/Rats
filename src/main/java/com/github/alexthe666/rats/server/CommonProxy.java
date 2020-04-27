@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server;
 import com.github.alexthe666.rats.ConfigHolder;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.inventory.RatsContainerRegistry;
@@ -125,7 +124,7 @@ public class CommonProxy {
         //TODO: Forge needs to update loom code so that these don't crash the game
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_banner_pattern"));
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
-        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
+        event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_SICKLE_BANNER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_sickle_banner_pattern"));
     }
 

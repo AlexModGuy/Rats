@@ -21,7 +21,7 @@ public class RatsRecipeRegistry {
 
     public static BannerPattern RAT_PATTERN = addBanner("rat", new ItemStack(RatsItemRegistry.RAT_PELT));
     public static BannerPattern CHEESE_PATTERN = addBanner("cheese", new ItemStack(RatsItemRegistry.CHEESE));
-    public static BannerPattern RAT_AND_CROSSBONES_PATTERN = addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
+    public static BannerPattern RAT_AND_CROSSBONES_BANNER = addBanner("rat_and_crossbones", new ItemStack(RatsItemRegistry.PIRAT_HAT));
     public static BannerPattern RAT_AND_SICKLE_BANNER = addBanner("rat_and_sickle", new ItemStack(RatsItemRegistry.MILITARY_HAT));
 
    public static void preRegister() {

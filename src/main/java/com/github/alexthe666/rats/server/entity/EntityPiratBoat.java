@@ -60,7 +60,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
     private static ItemStack generateBanner() {
         ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
         CompoundNBT compoundnbt = itemstack.getOrCreateChildTag("BlockEntityTag");
-        ListNBT listnbt = (new BannerPattern.Builder()).func_222477_a(RatsRecipeRegistry.RAT_AND_CROSSBONES_PATTERN, DyeColor.WHITE).func_222476_a();
+        ListNBT listnbt = (new BannerPattern.Builder()).func_222477_a(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE).func_222476_a();
         compoundnbt.put("Patterns", listnbt);
         return itemstack;
     }
