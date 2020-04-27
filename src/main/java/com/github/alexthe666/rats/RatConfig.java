@@ -60,7 +60,7 @@ public class RatConfig {
     public static boolean addLoot = true;
     public static int defaultRatRadius = 16;
     public static int maxRatRadius = 32;
-    public static float garbageSpawnRate = 0.15F;
+    public static double garbageSpawnRate = 0.15F;
 
     public static void bakeClient(final ModConfig config) {
         plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
@@ -121,5 +121,6 @@ public class RatConfig {
          addLoot = ConfigHolder.SERVER.addLoot.get();
          defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
          maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
+        garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
     }
 }

@@ -58,6 +58,7 @@ public class ServerConfig {
     public final ForgeConfigSpec.BooleanValue addLoot;
     public final ForgeConfigSpec.IntValue defaultRatRadius;
     public final ForgeConfigSpec.IntValue maxRatRadius;
+    public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
 
     //public static String[] blacklistedRatBlocks = new String[0];
     //public final ForgeConfigSpec.IntValue[] blacklistedRatDimensions = new int[0];
@@ -120,6 +121,7 @@ public class ServerConfig {
         this.addLoot = buildBoolean(builder, "Add Loot", "all", true, "True if loot from rats can spawn in chests");
         this.defaultRatRadius = buildInt(builder, "Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
         this.maxRatRadius = buildInt(builder, "Max Rat Radius", "all", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
+        this.garbageSpawnRate = buildDouble(builder, "Garbage Pile Spawn Chance", "all", 0.15F, 0F, 1.0F, "Percentage for every random tick to spawn a rat for a garbage pile.");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){
