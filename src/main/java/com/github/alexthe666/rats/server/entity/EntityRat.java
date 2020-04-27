@@ -1730,7 +1730,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     Vec3d vec3d1 = new Vec3d(((double) this.rand.nextFloat() - 0.5D) * 0.3D, d0, 0.1D);
                     vec3d1 = vec3d1.rotatePitch(-this.rotationPitch * 0.017453292F);
                     vec3d1 = vec3d1.rotateYaw(-this.rotationYaw * 0.017453292F);
-                    vec3d1 = vec3d1.add(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ());
+                    vec3d1 = vec3d1.add(this.getPosX(), this.getPosY() + (double) 0.25D, this.getPosZ());
                     this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z);
 
                 }

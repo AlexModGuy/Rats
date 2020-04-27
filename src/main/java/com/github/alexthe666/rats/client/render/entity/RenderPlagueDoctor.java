@@ -6,6 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.CrossedArmsItemLayer;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderPlagueDoctor extends MobRenderer<EntityPlagueDoctor, ModelPlagueDoctor<EntityPlagueDoctor>> {
@@ -13,8 +14,10 @@ public class RenderPlagueDoctor extends MobRenderer<EntityPlagueDoctor, ModelPla
 
     public RenderPlagueDoctor() {
         super(Minecraft.getInstance().getRenderManager(), new ModelPlagueDoctor(0.0F), 0.5F);
+        this.addLayer(new CrossedArmsItemLayer<>(this));
         //this.addLayer(new LayerCustomHead(this.getMainModel().villagerHead));
     }
+
 
     public ResourceLocation getEntityTexture(EntityPlagueDoctor entity) {
         return VILLAGER_TEXTURES;

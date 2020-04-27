@@ -9,10 +9,9 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
@@ -22,10 +21,14 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.LightType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
@@ -63,6 +66,50 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
         this.addLayer(new LayerRatHeldItem(this));
     }
 
+    @Override
+    public <E extends Entity> void renderLeash(EntityRat entityLivingIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, E leashHolder) {
+        matrixStackIn.push();
+        double d0 = (double)(MathHelper.lerp(partialTicks * 0.5F, leashHolder.rotationYaw, leashHolder.prevRotationYaw) * ((float)Math.PI / 180F));
+        double d1 = (double)(MathHelper.lerp(partialTicks * 0.5F, leashHolder.rotationPitch, leashHolder.prevRotationPitch) * ((float)Math.PI / 180F));
+        double d2 = Math.cos(d0);
+        double d3 = Math.sin(d0);
+        double d4 = Math.sin(d1);
+        if (leashHolder instanceof HangingEntity) {
+            d2 = 0.0D;
+            d3 = 0.0D;
+            d4 = -1.0D;
+        }
+
+        double d5 = Math.cos(d1);
+        double d6 = MathHelper.lerp((double)partialTicks, leashHolder.prevPosX, leashHolder.getPosX()) - d2 * 0.7D - d3 * 0.5D * d5;
+        double d7 = MathHelper.lerp((double)partialTicks, leashHolder.prevPosY + (double)leashHolder.getEyeHeight() * 1.5D, leashHolder.getPosY() + (double)leashHolder.getEyeHeight() * 1.5D) - d4 * 0.25D - 0.125D;
+        double d8 = MathHelper.lerp((double)partialTicks, leashHolder.prevPosZ, leashHolder.getPosZ()) - d3 * 0.7D + d2 * 0.5D * d5;
+        double d9 = (double)(MathHelper.lerp(partialTicks, entityLivingIn.renderYawOffset, entityLivingIn.prevRenderYawOffset) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
+        d2 = Math.cos(d9) * (double)entityLivingIn.getWidth() * 0.4D;
+        d3 = Math.sin(d9) * (double)entityLivingIn.getWidth() * 0.4D;
+        double d10 = MathHelper.lerp((double)partialTicks, entityLivingIn.prevPosX, entityLivingIn.getPosX()) + d2;
+        double d11 = MathHelper.lerp((double)partialTicks, entityLivingIn.prevPosY, entityLivingIn.getPosY());
+        double d12 = MathHelper.lerp((double)partialTicks, entityLivingIn.prevPosZ, entityLivingIn.getPosZ()) + d3;
+        matrixStackIn.translate(d2, -(1.6D - (double)entityLivingIn.getHeight()) * 1D, d3);
+        float f = (float)(d6 - d10);
+        float f1 = (float)(d7 - d11);
+        float f2 = (float)(d8 - d12);
+        float f3 = 0.025F;
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getLeash());
+        Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
+        float f4 = MathHelper.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
+        float f5 = f2 * f4;
+        float f6 = f * f4;
+        int i = this.getBlockLight(entityLivingIn, partialTicks);
+        int j = entityLivingIn.isBurning() ? 15 : entityLivingIn.world.getLightFor(LightType.BLOCK, new BlockPos(entityLivingIn.getEyePosition(partialTicks)));
+        int k = entityLivingIn.world.getLightFor(LightType.SKY, new BlockPos(entityLivingIn.getEyePosition(partialTicks)));
+        int l = entityLivingIn.world.getLightFor(LightType.SKY, new BlockPos(leashHolder.getEyePosition(partialTicks)));
+        renderSide(ivertexbuilder, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.025F, f5, f6);
+        renderSide(ivertexbuilder, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.0F, f5, f6);
+        matrixStackIn.pop();
+    }
+
+
     protected boolean canRenderName(EntityRat entity) {
         return RatsMod.PROXY.shouldRenderNameplates() && super.canRenderName(entity);
     }
@@ -74,7 +121,6 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
             entityModel = RAT_MODEL;
         }
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-
     }
 
 

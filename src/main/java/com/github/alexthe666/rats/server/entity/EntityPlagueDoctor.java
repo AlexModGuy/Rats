@@ -15,6 +15,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
@@ -41,6 +46,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         }
     };
     private BlockPos wanderTarget;
+    private int despawnDelay;
+    private static final DataParameter<Boolean> WILL_DESPAWN = EntityDataManager.createKey(EntityPlagueDoctor.class, DataSerializers.BOOLEAN);
 
     public EntityPlagueDoctor(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -70,6 +77,21 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
     }
 
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(WILL_DESPAWN, Boolean.valueOf(false));
+    }
+
+    public boolean willDespawn() {
+        return this.dataManager.get(WILL_DESPAWN).booleanValue();
+    }
+
+    public void setWillDespawn(boolean despawn) {
+        this.dataManager.set(WILL_DESPAWN, Boolean.valueOf(despawn));
+    }
+
+
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
@@ -81,9 +103,12 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         return null;
     }
 
+
     public void livingTick() {
         super.livingTick();
-
+        if (!this.world.isRemote && willDespawn()) {
+            this.handleDespawn();
+        }
         if (this.getAttackTarget() != null) {
             if (this.getAttackTarget() instanceof EntityRat) {
                 if (!((EntityRat) this.getAttackTarget()).hasPlague()) {
@@ -98,6 +123,50 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             }
         }
     }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("DespawnDelay", this.despawnDelay);
+        compound.putBoolean("WillDespawn", this.willDespawn());
+        if (this.wanderTarget != null) {
+            compound.put("WanderTarget", NBTUtil.writeBlockPos(this.wanderTarget));
+        }
+
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        if (compound.contains("DespawnDelay", 99)) {
+            this.despawnDelay = compound.getInt("DespawnDelay");
+        }
+        this.setWillDespawn(compound.getBoolean("WillDespawn"));
+
+        if (compound.contains("WanderTarget")) {
+            this.wanderTarget = NBTUtil.readBlockPos(compound.getCompound("WanderTarget"));
+        }
+
+        this.setGrowingAge(Math.max(0, this.getGrowingAge()));
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    public void setDespawnDelay(int delay) {
+        this.despawnDelay = delay;
+    }
+
+    public int getDespawnDelay() {
+        return this.despawnDelay;
+    }
+
+
+    private void handleDespawn() {
+        if (this.despawnDelay > 0 && !this.hasCustomer() && --this.despawnDelay == 0) {
+            this.remove();
+        }
+    }
+
 
     public boolean isPotionApplicable(EffectInstance potioneffectIn) {
         return potioneffectIn.getPotion() != RatsMod.PLAGUE_POTION && super.isPotionApplicable(potioneffectIn);
@@ -168,13 +237,13 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         }
     }
 
-    public void func_213726_g(@Nullable BlockPos p_213726_1_) {
-        this.wanderTarget = p_213726_1_;
-    }
-
     @Nullable
     private BlockPos func_213727_eh() {
         return this.wanderTarget;
+    }
+
+    public void setWanderTarget(@Nullable BlockPos blockpos1) {
+        this.wanderTarget = blockpos1;
     }
 
     public class MoveToGoal extends Goal {
@@ -193,7 +262,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void resetTask() {
-            this.plagueDoctor.func_213726_g((BlockPos)null);
+            this.plagueDoctor.setWanderTarget((BlockPos)null);
             EntityPlagueDoctor.this.navigator.clearPath();
         }
 
@@ -243,6 +312,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         }
     }
 
+
+
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
@@ -250,6 +321,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             RatsAdvancementRegistry.PLAGUE_DOCTOR_TRIGGER.trigger((ServerPlayerEntity)player, this);
         }
         if (flag) {
+            this.setWillDespawn(false);
             itemstack.interactWithEntity(player, this, hand);
             return true;
         } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.hasCustomer() && !this.isChild()) {

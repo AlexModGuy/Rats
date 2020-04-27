@@ -39,6 +39,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -50,9 +52,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID)
 public class CommonEvents {
@@ -222,6 +222,21 @@ public class CommonEvents {
 
             }
         }
+    }
+
+    private static final Map<ServerWorld, PlagueDoctorSpawner> PLAGUE_DOCTOR_SPAWNER_MAP = new HashMap<ServerWorld, PlagueDoctorSpawner>();
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.WorldTickEvent tick){
+        if(!tick.world.isRemote && tick.world instanceof ServerWorld){
+            ServerWorld serverWorld = (ServerWorld)tick.world;
+            if(PLAGUE_DOCTOR_SPAWNER_MAP.get(serverWorld) == null){
+                PLAGUE_DOCTOR_SPAWNER_MAP.put(serverWorld, new PlagueDoctorSpawner(serverWorld));
+            }
+            PlagueDoctorSpawner spawner = PLAGUE_DOCTOR_SPAWNER_MAP.get(serverWorld);
+            spawner.tick();
+        }
+
     }
 
     @SubscribeEvent
