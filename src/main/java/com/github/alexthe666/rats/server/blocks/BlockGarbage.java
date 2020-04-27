@@ -28,16 +28,17 @@ import java.util.Random;
 
 public class BlockGarbage extends FallingBlock {
     public BlockGarbage() {
-        super(Block.Properties.create(Material.ORGANIC).sound(SoundType.GROUND).hardnessAndResistance(0.7F, 1.0F));
+        super(Block.Properties.create(Material.ORGANIC).sound(SoundType.GROUND).hardnessAndResistance(0.7F, 1.0F).tickRandomly());
         this.setRegistryName(RatsMod.MODID, "garbage_pile");
     }
 
-    @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (rand.nextFloat() <= 0.15) {
+    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+        if (random.nextFloat() <= 0.25) {
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
-            if (rat.canSpawn(worldIn, SpawnReason.NATURAL) && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
+            int i = worldIn.isThundering() ? worldIn.getNeighborAwareLightSubtracted(pos.up(), 10) : worldIn.getLight(pos.up());
+            System.out.println(i);
+            if (i <= random.nextInt(8) && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
                 rat.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.NATURAL, null, null);
                 if (!worldIn.isRemote) {
                     worldIn.addEntity(rat);

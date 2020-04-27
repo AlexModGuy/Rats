@@ -454,7 +454,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
     }
 
-    protected boolean isValidLightLevel() {
+    public boolean isValidLightLevel() {
         BlockPos blockpos = new BlockPos(this.getPosX(), this.getBoundingBox().minY, this.getPosZ());
         if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
             return false;
