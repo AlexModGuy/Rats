@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "rats:block/rat_upgrade_block",
+        "side": "rats:block/rat_upgrade_block"
+    }
+}

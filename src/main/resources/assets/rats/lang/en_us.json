@@ -77,6 +77,7 @@
   "block.rats.purified_garbage.desc": "Spawns rats without plague on block",
   "block.rats.trash_can.desc0": "Right click with blocks in hand to throw them away",
   "block.rats.trash_can.desc1": "Creates garbage piles when items are discarded",
+  "block.rats.rat_upgrade_block": "Rat Upgrade Block",
   "item.rats.rat_tube_light_gray": "Light Gray Rat Tube",
   "item.rats.rat_tube_white": "White Rat Tube",
   "item.rats.rat_tube_orange": "Orange Rat Tube",

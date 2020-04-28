@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=up": { "model": "rats:block/rat_upgrade_block" },
+        "facing=down": { "model": "rats:block/rat_upgrade_block", "x": 180 },
+        "facing=east": { "model": "rats:block/rat_upgrade_block", "y": 90, "x": 90 },
+        "facing=south": { "model": "rats:block/rat_upgrade_block", "y": 180, "x": 90 },
+        "facing=west": { "model": "rats:block/rat_upgrade_block", "y": 270, "x": 90 },
+        "facing=north": { "model": "rats:block/rat_upgrade_block", "y": 0, "x": 90 }
+    }
+}

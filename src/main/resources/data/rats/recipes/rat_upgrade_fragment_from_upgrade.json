@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:rat_upgrade_basic"
+    }
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_fragment",
+    "count": 9
+  }
+}
