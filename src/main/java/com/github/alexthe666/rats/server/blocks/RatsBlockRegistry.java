@@ -34,7 +34,8 @@ public class RatsBlockRegistry {
     public static final Block AUTO_CURDLER = new BlockAutoCurdler();
     public static final Block RAT_TRAP = new BlockRatTrap();
     public static final Block RAT_TUBE_COLOR = new BlockRatTube();
-    public static final Block GARBAGE_PILE = new BlockGarbage();
+    public static final Block GARBAGE_PILE = new BlockGarbage("garbage_pile");
+    public static final Block CURSED_GARBAGE = new BlockCursedGarbage();
     public static final Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_slab");

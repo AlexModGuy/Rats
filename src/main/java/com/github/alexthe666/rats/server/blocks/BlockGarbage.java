@@ -28,9 +28,13 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockGarbage extends FallingBlock {
-    public BlockGarbage() {
+
+    public SpawnReason spawnReason;
+
+    public BlockGarbage(String name) {
         super(Block.Properties.create(Material.ORGANIC).sound(SoundType.GROUND).hardnessAndResistance(0.7F, 1.0F).tickRandomly());
-        this.setRegistryName(RatsMod.MODID, "garbage_pile");
+        this.setRegistryName(RatsMod.MODID, name);
+        this.spawnReason = SpawnReason.NATURAL;
     }
 
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
@@ -39,7 +43,8 @@ public class BlockGarbage extends FallingBlock {
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
             int i = worldIn.isThundering() ? worldIn.getNeighborAwareLightSubtracted(pos.up(), 10) : worldIn.getLight(pos.up());
             if (i <= random.nextInt(8) && !rat.isEntityInsideOpaqueBlock() && rat.isNotColliding(worldIn)) {
-                rat.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.NATURAL, null, null);
+                rat.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), spawnReason, null, null);
+                onSpawnRat(rat);
                 if (!worldIn.isRemote) {
                     worldIn.addEntity(rat);
                 }
@@ -47,10 +52,16 @@ public class BlockGarbage extends FallingBlock {
         }
     }
 
+    public void onSpawnRat(EntityRat rat){}
+
+    public double getSpawnRate(){
+        return RatConfig.garbageSpawnRate;
+    }
+
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.garbage_pile.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
     }
 
     public int getDustColor(BlockState state) {
