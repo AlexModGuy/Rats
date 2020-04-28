@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,14 +10,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-public class BlockCursedGarbage extends BlockGarbage {
+public class BlockPurifiedGarbage extends BlockGarbage {
 
-    public BlockCursedGarbage() {
-        super("cursed_garbage", 1.0D);
+    public BlockPurifiedGarbage() {
+        super("purified_garbage", 1.0D);
     }
 
     public void onSpawnRat(EntityRat rat){
-        rat.setPlague(true);
+        rat.setPlague(false);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -31,7 +28,11 @@ public class BlockCursedGarbage extends BlockGarbage {
                 double d0 = (double)pos.getX() + (double)rand.nextFloat();
                 double d1 = (double)pos.getY() + 1.05D;
                 double d2 = (double)pos.getZ() + (double)rand.nextFloat();
-                worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, 0, rand.nextGaussian() * 0.05D + 0.75D, 0);
+                double r = 0.74D;
+                double g = 0.87D;
+                double b = 0.88D;
+
+                worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, r, g, rand.nextGaussian() * 0.05D + b);
             }
         }
 

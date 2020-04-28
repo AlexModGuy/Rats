@@ -1,0 +1,1 @@
+{  "type": "minecraft:block",  "pools": [    {      "name": "purified_garbage",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:purified_garbage"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

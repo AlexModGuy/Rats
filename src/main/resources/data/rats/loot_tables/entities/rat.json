@@ -65,9 +65,6 @@
             "name": "rat_skull",
             "conditions": [
                 {
-                    "condition": "killed_by_player"
-                },
-                {
                     "condition": "random_chance_with_looting",
                     "chance": 0.05,
                     "looting_multiplier": 0.05
@@ -78,6 +75,24 @@
                 {
                     "type": "item",
                     "name": "rats:rat_skull",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "upgrade_fragment",
+            "conditions": [
+                {
+                    "condition": "random_chance_with_looting",
+                    "chance": 0.02,
+                    "looting_multiplier": 0.01
+                }
+            ],
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "rats:rat_upgrade_fragment",
                     "weight": 1
                 }
             ]

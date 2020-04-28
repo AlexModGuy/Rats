@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "rats:block/purified_garbage" },
+      { "model": "rats:block/purified_garbage", "y" : 90 },
+      { "model": "rats:block/purified_garbage", "y" : 180 },
+      { "model": "rats:block/purified_garbage", "y" : 270 }
+    ]
+  }
+}

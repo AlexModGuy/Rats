@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GEG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "rats:garbage_pile"
+    },
+    "E": {
+      "item": "rats:purifying_liquid"
+    }
+  },
+  "result": {
+    "item": "rats:purified_garbage",
+    "count": 8
+  }
+}

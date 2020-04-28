@@ -30,15 +30,17 @@ import java.util.Random;
 public class BlockGarbage extends FallingBlock {
 
     public SpawnReason spawnReason;
+    public double spawnRateModifier;
 
-    public BlockGarbage(String name) {
+    public BlockGarbage(String name, double spawnRateModifier) {
         super(Block.Properties.create(Material.ORGANIC).sound(SoundType.GROUND).hardnessAndResistance(0.7F, 1.0F).tickRandomly());
         this.setRegistryName(RatsMod.MODID, name);
         this.spawnReason = SpawnReason.NATURAL;
+        this.spawnRateModifier = spawnRateModifier;
     }
 
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-        if (random.nextFloat() <= RatConfig.garbageSpawnRate) {
+        if (random.nextFloat() <= RatConfig.garbageSpawnRate * spawnRateModifier) {
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, worldIn);
             rat.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0, 0);
             int i = worldIn.isThundering() ? worldIn.getNeighborAwareLightSubtracted(pos.up(), 10) : worldIn.getLight(pos.up());
@@ -53,11 +55,6 @@ public class BlockGarbage extends FallingBlock {
     }
 
     public void onSpawnRat(EntityRat rat){}
-
-    public double getSpawnRate(){
-        return RatConfig.garbageSpawnRate;
-    }
-
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

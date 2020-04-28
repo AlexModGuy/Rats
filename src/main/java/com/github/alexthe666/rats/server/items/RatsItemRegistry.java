@@ -89,6 +89,10 @@ public class RatsItemRegistry {
 
     public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
+    public static final Item FILTH = new ItemGeneric("filth");
+
+    public static final Item FILTH_CORRUPTION = new ItemGeneric("filth_corruption", 1);
+
     public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
 
     public static final Item[] RAT_TUBES = new Item[16];
@@ -200,6 +204,8 @@ public class RatsItemRegistry {
     public static final Item CHARGED_RATBOT_BARREL = new ItemGeneric("charged_ratbot_barrel");
 
     public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
+
+    public static final Item RAT_UPGRADE_FRAGMENT = new ItemGeneric("rat_upgrade_fragment", 1);
 
     public static final Item RATTLING_GUN = new ItemRattlingGun();
 

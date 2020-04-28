@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "rats:rat_upgrade_fragment"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_basic"
+  }
+}
