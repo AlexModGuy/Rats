@@ -64,7 +64,7 @@ public class ItemGildedRatFlute extends Item {
             });
             player.swingArm(hand);
             player.getCooldownTracker().setCooldown(this, 5);
-            worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_FLUTE, SoundCategory.NEUTRAL, 1, 1.5F);
+            worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_FLUTE, SoundCategory.NEUTRAL, 0.5F, 0.75F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }

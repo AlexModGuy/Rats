@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.client;
+package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;

@@ -129,6 +129,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_HOLE, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MANHOLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.TRASH_CAN, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_ATTRACTOR, RenderType.getCutout());
 
     }
 

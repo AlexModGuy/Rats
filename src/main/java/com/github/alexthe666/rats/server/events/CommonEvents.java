@@ -85,8 +85,8 @@ public class CommonEvents {
         }
         if (event.getTarget() instanceof AbstractVillagerEntity && !(event.getTarget() instanceof EntityPlagueDoctor)) {
             ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());
-            if (heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((VillagerEntity) event.getTarget()).isChild()) {
-                VillagerEntity villager = (VillagerEntity) event.getTarget();
+            if (heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((AbstractVillagerEntity) event.getTarget()).isChild()) {
+                AbstractVillagerEntity villager = (AbstractVillagerEntity) event.getTarget();
                 EntityPlagueDoctor doctor = new EntityPlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR, event.getWorld());
                 doctor.copyLocationAndAnglesFrom(villager);
                 villager.remove();

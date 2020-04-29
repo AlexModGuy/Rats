@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RLR",
+    "RCR"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:block_of_cheese"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    }
+  },
+  "result": {
+    "item": "rats:rat_attractor",
+    "count": 1
+  }
+}

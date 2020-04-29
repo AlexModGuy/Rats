@@ -79,6 +79,7 @@ public class RatsBlockRegistry {
     public static final Block DUTCHRAT_BELL = new BlockDutchratBell();
     public static final Block MANHOLE = new BlockGenericTrapDoor(Block.Properties.create(Material.IRON, MaterialColor.BROWN_TERRACOTTA).hardnessAndResistance(10.0F).sound(SoundType.ANVIL)).setRegistryName("rats:manhole");
     public static final Block TRASH_CAN = new BlockTrashCan();
+    public static final Block RAT_ATTRACTOR = new BlockRatAttractor();
 
 
     @SubscribeEvent

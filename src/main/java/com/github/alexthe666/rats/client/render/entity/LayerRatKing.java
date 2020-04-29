@@ -1,21 +1,16 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.client.ModelEmpty;
-import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.client.model.ModelEmpty;
 import com.github.alexthe666.rats.client.model.ModelRatKing;
-import com.github.alexthe666.rats.client.model.ModelRatlanteanRatbot;
 import com.github.alexthe666.rats.server.entity.EntityRatKing;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanRatbot;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
