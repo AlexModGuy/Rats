@@ -33,7 +33,7 @@ import net.minecraft.world.server.ServerBossInfo;
 
 import javax.annotation.Nullable;
 
-public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IRangedAttackMob {
+public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IRangedAttackMob, ISummonsRats {
 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_SUMMONING = EntityDataManager.createKey(EntityBlackDeath.class, DataSerializers.BOOLEAN);
@@ -138,12 +138,27 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
         this.dataManager.set(IS_SUMMONING, summoning);
     }
 
+    @Override
+    public boolean encirclesSummoner() {
+        return true;
+    }
+
+    @Override
+    public boolean readsorbRats() {
+        return false;
+    }
+
     public int getRatsSummoned() {
         return Integer.valueOf(this.dataManager.get(RAT_COUNT).intValue());
     }
 
     public void setRatsSummoned(int count) {
         this.dataManager.set(RAT_COUNT, Integer.valueOf(count));
+    }
+
+    @Override
+    public float getRadius() {
+        return (float) 5 - (float) Math.sin(this.ticksExisted * 0.4D) * 0.5F;
     }
 
     public int getCloudsSummoned() {

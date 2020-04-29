@@ -34,7 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntityIllagerPiper extends AbstractIllagerEntity implements IRangedAttackMob {
+public class EntityIllagerPiper extends AbstractIllagerEntity implements IRangedAttackMob, ISummonsRats {
 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.VARINT);
@@ -105,6 +105,16 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         super.readAdditional(compound);
         this.setRatsSummoned(compound.getInt("RatsSummoned"));
         this.setCombatTask();
+    }
+
+    @Override
+    public boolean encirclesSummoner() {
+        return false;
+    }
+
+    @Override
+    public boolean readsorbRats() {
+        return false;
     }
 
     public int getRatsSummoned() {

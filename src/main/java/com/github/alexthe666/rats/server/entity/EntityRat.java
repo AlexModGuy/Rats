@@ -1254,33 +1254,38 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
-        if (!world.isRemote && this.isTamed() && this.getAttackTarget() != null && this.getOwner() instanceof EntityIllagerPiper) {
-            EntityIllagerPiper piper = (EntityIllagerPiper) this.getOwner();
-            if (piper.getAttackTarget() != null) {
-                this.setAttackTarget(piper.getAttackTarget());
+        if (!world.isRemote && this.isTamed() && this.getOwner() instanceof ISummonsRats && this.getOwner() instanceof MobEntity) {
+            MobEntity mob = (MobEntity) this.getOwner();
+            ISummonsRats summonsRats = (ISummonsRats)this.getOwner();
+            if (mob.getAttackTarget() != null && this.getAttackTarget() != null) {
+                this.setAttackTarget(mob.getAttackTarget());
             }
-        }
-        if (!world.isRemote && this.isTamed() && this.getOwner() instanceof EntityBlackDeath) {
-            EntityBlackDeath death = (EntityBlackDeath) this.getOwner();
-            if (death.getAttackTarget() != null && this.getAttackTarget() != null && death.getAttackTarget().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK) {
-                this.setAttackTarget(death.getAttackTarget());
-            }
-            if (this.getAttackTarget() == null || !this.getAttackTarget().isAlive()) {
-                float radius = (float) 5 - (float) Math.sin(death.ticksExisted * 0.4D) * 0.5F;
-                int maxRatStuff = 360 / Math.max(death.getRatsSummoned(), 1);
-                int ratIndex = this.getEntityId() % Math.max(death.getRatsSummoned(), 1);
-                float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + death.getPosX();
-                double extraZ = (double) (radius * MathHelper.cos(angle)) + death.getPosZ();
-                BlockPos runToPos = new BlockPos(extraX, death.getPosY(), extraZ);
-                int steps = 0;
-                while (world.getBlockState(runToPos).isOpaqueCube(world, runToPos) && steps < 10) {
-                    runToPos = runToPos.up();
-                    steps++;
+            if(summonsRats.readsorbRats()){
+                this.getNavigator().tryMoveToEntityLiving(mob, 1.225F);
+                if(this.getDistance(mob) < mob.getWidth()){
+                    this.remove();
+                    summonsRats.setRatsSummoned(summonsRats.getRatsSummoned() - 1);
                 }
-                this.getNavigator().tryMoveToXYZ(extraX, runToPos.getY(), extraZ, 1.225F);
+            }else if(summonsRats.encirclesSummoner()){
+                if (this.getAttackTarget() == null || !this.getAttackTarget().isAlive()) {
+                    float radius = summonsRats.getRadius();
+                    int maxRatStuff = 360 / Math.max(summonsRats.getRatsSummoned(), 1);
+                    int ratIndex = this.getEntityId() % Math.max(summonsRats.getRatsSummoned(), 1);
+                    float angle = (0.01745329251F * (ratIndex * maxRatStuff + ticksExisted * 4.1F));
+                    double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle))) + mob.getPosX();
+                    double extraZ = (double) (radius * MathHelper.cos(angle)) + mob.getPosZ();
+                    BlockPos runToPos = new BlockPos(extraX, mob.getPosY(), extraZ);
+                    int steps = 0;
+                    while (world.getBlockState(runToPos).isOpaqueCube(world, runToPos) && steps < 10) {
+                        runToPos = runToPos.up();
+                        steps++;
+                    }
+                    this.getNavigator().tryMoveToXYZ(extraX, runToPos.getY(), extraZ, 1.225F);
+                }
             }
+
         }
+
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
             if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 30 == 0) {
                 this.heal(1.0F);
@@ -2031,19 +2036,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public void remove() {
-        if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityIllagerPiper) {
-            EntityIllagerPiper illagerPiper = (EntityIllagerPiper) this.getOwner();
+        if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof ISummonsRats) {
+            ISummonsRats illagerPiper = (ISummonsRats) this.getOwner();
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
             this.setOwnerId(null);
             this.setTamedByPlayerFlag(false);
         }
-        if (!isAlive() && this.isTamed() && this.getOwner() != null && this.getOwner() instanceof EntityBlackDeath) {
-            EntityBlackDeath illagerPiper = (EntityBlackDeath) this.getOwner();
-            illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
-            this.setOwnerId(null);
-            this.setTamedByPlayerFlag(false);
-        }
-
         super.remove();
     }
 
