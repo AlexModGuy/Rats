@@ -90,7 +90,7 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
             float velocity = Math.min(MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.06F, 1.4F);
             cannonball.setPosition(extraX, extraY, extraZ);
             cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0);
-            //this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
                 this.world.addEntity(cannonball);
             }

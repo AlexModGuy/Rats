@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -82,11 +83,14 @@ public class EntityRatShot extends ThrowableEntity {
         if(result instanceof EntityRayTraceResult && getThrower() != null && getThrower().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
             return;
         }
+        Entity hitEntity = null;
+        float damage = this.getThrower() instanceof PlayerEntity ? 6 : 8;
         if (!this.world.isRemote) {
             if (result instanceof EntityRayTraceResult) {
                 EntityRayTraceResult entityResult = (EntityRayTraceResult)result;
                 if((getThrower() == null || !entityResult.getEntity().isOnSameTeam(getThrower())) && entityResult.getEntity() instanceof LivingEntity){
-                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
+                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+                    hitEntity = entityResult.getEntity();
                 }
             }
             Entity thrower = this.getThrower();
@@ -94,12 +98,17 @@ public class EntityRatShot extends ThrowableEntity {
                 EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
                 rat.copyLocationAndAnglesFrom(this);
                 rat.setColorVariant(this.getColorVariant());
-                rat.setTamedByPlayerFlag(false);
-                rat.setTamed(true);
+
                 if(thrower instanceof MobEntity){
                     rat.setAttackTarget(((MobEntity) thrower).getAttackTarget());
+                    rat.setTamedByPlayerFlag(false);
+                    rat.setTamed(true);
+                    rat.setOwnerId(thrower.getUniqueID());
+                }else{
+                    if(hitEntity instanceof LivingEntity){
+                        rat.setAttackTarget((LivingEntity) hitEntity);
+                    }
                 }
-                rat.setOwnerId(thrower.getUniqueID());
                 if(thrower instanceof ISummonsRats){
                     ((ISummonsRats) thrower).setRatsSummoned(((ISummonsRats) thrower).getRatsSummoned() + 1);
                 }

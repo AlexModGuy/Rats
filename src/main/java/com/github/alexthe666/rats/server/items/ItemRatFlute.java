@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
@@ -37,6 +38,10 @@ public class ItemRatFlute extends Item {
         return UseAction.BOW;
     }
 
+
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.TERRACOTTA;
+    }
 
     @Override
     public void onCreated(ItemStack itemStack, World world, PlayerEntity player) {

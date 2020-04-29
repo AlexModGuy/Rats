@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    " F ",
+    "T  "
+  ],
+  "key": {
+    "S": {
+      "item": "rats:golden_rat_skull"
+    },
+    "F": {
+      "item": "rats:rat_flute"
+    },
+    "T": {
+      "item": "rats:tangled_rat_tails"
+    }
+  },
+  "result": {
+    "item": "rats:gilded_rat_flute"
+  }
+}

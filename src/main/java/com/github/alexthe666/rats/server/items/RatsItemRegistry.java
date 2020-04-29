@@ -43,6 +43,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_FLUTE = new ItemRatFlute();
 
+    public static final Item GILDED_RAT_FLUTE = new ItemGildedRatFlute();
+
     public static final Item PIPER_HAT = new ItemPiperHat();
 
     public static final Item STRING_CHEESE = new ItemStringCheese();
@@ -87,11 +89,15 @@ public class RatsItemRegistry {
 
     public static final Item GOLDEN_RAT_SKULL = new ItemGeneric("golden_rat_skull");
 
+    public static final Item CORRUPT_RAT_SKULL = new ItemGeneric("corrupt_rat_skull");
+
     public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
     public static final Item FILTH = new ItemGeneric("filth");
 
     public static final Item FILTH_CORRUPTION = new ItemGeneric("filth_corruption", 1);
+
+    public static final Item TANGLED_RAT_TAILS = new ItemGeneric("tangled_rat_tails");
 
     public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
 
@@ -156,6 +162,8 @@ public class RatsItemRegistry {
     public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
+
+    public static final Item RAT_KING_CROWN = new ItemHat("rat_king_crown", 4);
 
     public static final Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
 
