@@ -42,4 +42,9 @@ public class ItemGeneric extends Item {
             }
         }
     }
+
+    public boolean hasEffect(ItemStack stack) {
+        return super.hasEffect(stack) || this == RatsItemRegistry.PLAGUE_TOME;
+    }
+
 }

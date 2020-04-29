@@ -12,6 +12,7 @@ public class RatConfig {
     public static int piperSpawnRate = 6;
     public static float piperHatDropRate = 0.09F;
     public static float plagueEssenceDropRate = 0.05F;
+    public static float plagueTomeDropRate = 0.0035F;
     public static float archeologistHatSpawnRate = 0.12F;
     public static float ratlanteanAutomatonHealth = 600F;
     public static float ratlanteanAutomatonAttack = 6F;
@@ -76,6 +77,7 @@ public class RatConfig {
          piperSpawnRate = ConfigHolder.SERVER.piperSpawnRate.get();
          piperHatDropRate = ConfigHolder.SERVER.piperHatDropRate.get().floatValue();
          plagueEssenceDropRate = ConfigHolder.SERVER.plagueEssenceDropRate.get().floatValue();
+         plagueTomeDropRate = ConfigHolder.SERVER.plagueTomeDropRate.get().floatValue();
          archeologistHatSpawnRate = ConfigHolder.SERVER.archeologistHatSpawnRate.get().floatValue();
          ratlanteanAutomatonHealth = ConfigHolder.SERVER.ratlanteanAutomatonHealth.get().floatValue();
          ratlanteanAutomatonAttack = ConfigHolder.SERVER.ratlanteanAutomatonAttack.get().floatValue();

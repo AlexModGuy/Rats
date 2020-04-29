@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
@@ -14,6 +15,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -43,6 +46,14 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
     public EntityRatKing(EntityType type, World worldIn) {
         super(type, worldIn);
     }
+
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
+
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));

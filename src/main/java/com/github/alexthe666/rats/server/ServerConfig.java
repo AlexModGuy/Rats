@@ -13,6 +13,7 @@ public class ServerConfig {
     public final ForgeConfigSpec.IntValue piperSpawnRate;
     public final ForgeConfigSpec.DoubleValue piperHatDropRate;
     public final ForgeConfigSpec.DoubleValue plagueEssenceDropRate;
+    public final ForgeConfigSpec.DoubleValue plagueTomeDropRate;
     public final ForgeConfigSpec.DoubleValue archeologistHatSpawnRate;
     public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonHealth;
     public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonAttack;
@@ -75,6 +76,7 @@ public class ServerConfig {
         this.piperSpawnRate = buildInt(builder, "Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = buildDouble(builder, "Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.plagueEssenceDropRate = buildDouble(builder, "Plague Essence Drop Rate", "all", 0.1F, 0F, 1F, "percent chance for plague rat to drop plague essence on death");
+        this.plagueTomeDropRate = buildDouble(builder, "Plague Tome Drop Rate", "all", 0.0035F, 0F, 1F, "percent chance for plague rat to drop plague tome on death");
         this.archeologistHatSpawnRate = buildDouble(builder, "Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
         this.ratlanteanAutomatonHealth = buildDouble(builder, "Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
         this.ratlanteanAutomatonAttack = buildDouble(builder, "Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");

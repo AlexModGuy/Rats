@@ -1999,6 +1999,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 if (this.hasPlague() && rand.nextFloat() <= RatConfig.plagueEssenceDropRate) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE), 0.0F);
                 }
+                if (this.hasPlague() && rand.nextFloat() <= RatConfig.plagueTomeDropRate) {
+                    this.entityDropItem(new ItemStack(RatsItemRegistry.PLAGUE_TOME), 0.0F);
+                }
                 if (this.hasToga()) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
                     if (this.dimension == DimensionType.getById(RatConfig.ratlantisDimensionId)) {

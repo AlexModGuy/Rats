@@ -18,6 +18,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.HuskEntity;
@@ -82,13 +83,14 @@ public class CommonEvents {
                 }
             }
         }
-        if (event.getTarget() instanceof VillagerEntity) {
+        if (event.getTarget() instanceof AbstractVillagerEntity && !(event.getTarget() instanceof EntityPlagueDoctor)) {
             ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());
             if (heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((VillagerEntity) event.getTarget()).isChild()) {
                 VillagerEntity villager = (VillagerEntity) event.getTarget();
                 EntityPlagueDoctor doctor = new EntityPlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR, event.getWorld());
                 doctor.copyLocationAndAnglesFrom(villager);
                 villager.remove();
+                doctor.setWillDespawn(false);
                 doctor.onInitialSpawn(event.getWorld(), event.getWorld().getDifficultyForLocation(event.getPos()), SpawnReason.MOB_SUMMONED, null, null);
                 if (!event.getWorld().isRemote) {
                     event.getWorld().addEntity(doctor);
@@ -101,6 +103,19 @@ public class CommonEvents {
                 if (!event.getPlayer().isCreative()) {
                     heldItem.shrink(1);
                 }
+            }
+        }
+        if (event.getTarget() instanceof EntityPlagueDoctor) {
+            ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());
+            if (heldItem.getItem() == RatsItemRegistry.PLAGUE_TOME && !((EntityPlagueDoctor) event.getTarget()).isChild()) {
+                EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, event.getWorld());
+                entitywitch.setLocationAndAngles(event.getTarget().getPosX(), event.getTarget().getPosY(), event.getTarget().getPosZ(), event.getTarget().rotationYaw, event.getTarget().rotationPitch);
+                entitywitch.onInitialSpawn(event.getTarget().getEntityWorld(), event.getTarget().world.getDifficultyForLocation(new BlockPos(entitywitch)), SpawnReason.NATURAL, null, null);
+                if (event.getTarget().hasCustomName()) {
+                    entitywitch.setCustomName(event.getTarget().getCustomName());
+                }
+                event.getTarget().world.addEntity(entitywitch);
+                event.getTarget().remove();
             }
         }
         if (event.getPlayer().isPotionActive(RatsMod.PLAGUE_POTION) && RatConfig.plagueSpread && !(event.getTarget() instanceof EntityRat)) {

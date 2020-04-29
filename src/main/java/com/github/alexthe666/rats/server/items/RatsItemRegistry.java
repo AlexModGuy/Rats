@@ -91,6 +91,8 @@ public class RatsItemRegistry {
 
     public static final Item CORRUPT_RAT_SKULL = new ItemGeneric("corrupt_rat_skull");
 
+    public static final Item PLAGUE_TOME = new ItemGeneric("plague_tome", 2);
+
     public static final Item PLAGUE_SCYTHE = new ItemPlagueScythe();
 
     public static final Item FILTH = new ItemGeneric("filth");
