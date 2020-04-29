@@ -10,11 +10,14 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
 
 import javax.annotation.Nullable;
 
 public class RenderRatShot extends EntityRenderer<EntityRatShot> {
 
+    private static final RenderType TEXTURE_EYES = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png"));
     private static final RenderType TEXTURE_0 = RenderType.getEntityCutoutNoCull(new ResourceLocation("rats:textures/entity/rat/rat_blue.png"));
     private static final RenderType TEXTURE_1 = RenderType.getEntityCutoutNoCull(new ResourceLocation("rats:textures/entity/rat/rat_black.png"));
     private static final RenderType TEXTURE_2 = RenderType.getEntityCutoutNoCull(new ResourceLocation("rats:textures/entity/rat/rat_brown.png"));
@@ -26,6 +29,17 @@ public class RenderRatShot extends EntityRenderer<EntityRatShot> {
     }
 
     public void render(EntityRatShot entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        long roundedTime = entity.world.getDayTime() % 24000;
+        boolean night = roundedTime >= 13000 && roundedTime <= 22000;
+        BlockPos ratPos = entity.getLightPosition();
+        int brightI = entity.world.getLightFor(LightType.SKY, ratPos);
+        int brightJ = entity.world.getLightFor(LightType.BLOCK, ratPos);
+        int brightness;
+        if (night) {
+            brightness = brightJ;
+        } else {
+            brightness = Math.max(brightI, brightJ);
+        }
         matrixStackIn.push();
         matrixStackIn.scale(0.6F, -0.6F, 0.6F);
         float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
@@ -53,7 +67,12 @@ public class RenderRatShot extends EntityRenderer<EntityRatShot> {
         float f = (entity.ticksExisted + partialTicks) * 0.5F;
         float f1 = 1;
         MODEL_STATIC_RAT.setRotationAngles(entity, f, f1, entity.ticksExisted + partialTicks, 0, 0);
-        MODEL_STATIC_RAT.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        MODEL_STATIC_RAT.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.getPackedUV(OverlayTexture.getU(0), OverlayTexture.getV(false)), 1.0F, 1.0F, 1.0F, 1.0F);
+
+        if(brightness < 7){
+            IVertexBuilder iGlowBuffer = bufferIn.getBuffer(TEXTURE_EYES);
+            MODEL_STATIC_RAT.render(matrixStackIn, iGlowBuffer, packedLightIn, OverlayTexture.getPackedUV(OverlayTexture.getU(0), OverlayTexture.getV(false)), 1.0F, 1.0F, 1.0F, 1.0F);
+        }
         matrixStackIn.pop();
 
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

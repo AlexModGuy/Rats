@@ -12,10 +12,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -81,15 +78,6 @@ public class EntityRatShot extends ThrowableEntity {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public int getBrightnessForRender() {
-        return 15728880;
-    }
-
-    public float getBrightness() {
-        return 1.0F;
-    }
-
     protected void onImpact(RayTraceResult result) {
         if(result instanceof EntityRayTraceResult && getThrower() != null && getThrower().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
             return;
@@ -135,4 +123,11 @@ public class EntityRatShot extends ThrowableEntity {
         this.dataManager.set(RAT_COLOR, Integer.valueOf(color));
     }
 
+    public BlockPos getLightPosition() {
+        BlockPos pos = new BlockPos(this);
+        if (!world.getBlockState(pos).isSolid()) {
+            return pos.up();
+        }
+        return pos;
+    }
 }

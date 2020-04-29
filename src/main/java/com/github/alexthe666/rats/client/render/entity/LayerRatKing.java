@@ -17,7 +17,9 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.LightType;
 
 public class LayerRatKing extends LayerRenderer<EntityRatKing, ModelEmpty<EntityRatKing>> {
     private static final RenderType TEXTURE_EYES = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png"));
@@ -37,16 +39,32 @@ public class LayerRatKing extends LayerRenderer<EntityRatKing, ModelEmpty<Entity
         float f = MathHelper.interpolateAngle(partialTicks, king.prevRenderYawOffset, king.renderYawOffset);
         float f1 = MathHelper.interpolateAngle(partialTicks, king.prevRotationYawHead, king.rotationYawHead);
         float f2 = f1 - f;
+        long roundedTime = king.world.getDayTime() % 24000;
+        boolean night = roundedTime >= 13000 && roundedTime <= 22000;
+        BlockPos ratPos = king.getLightPosition();
+        int brightI = king.world.getLightFor(LightType.SKY, ratPos);
+        int brightJ = king.world.getLightFor(LightType.BLOCK, ratPos);
+        int brightness;
+        if (night) {
+            brightness = brightJ;
+        } else {
+            brightness = Math.max(brightI, brightJ);
+        }
 
         for(int i = 0; i < EntityRatKing.RAT_COUNT; i++){
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(getRatTexture(king.getRatColors(i)));
             matrixStackIn.push();
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(i * EntityRatKing.RAT_ANGLE));
-            matrixStackIn.translate(0, 0.5 ,-0.8);
+            matrixStackIn.translate(0, 0.6 ,-0.8);
             matrixStackIn.push();
             matrixStackIn.scale(0.6F, 0.6F ,0.6F);
             RAT_MODEL.setRotationAngles(king, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             RAT_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            if (brightness < 7){
+                IVertexBuilder iGlowBuffer = bufferIn.getBuffer(TEXTURE_EYES);
+                RAT_MODEL.render(matrixStackIn, iGlowBuffer, packedLightIn, LivingRenderer.getPackedOverlay(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            }
+
             matrixStackIn.pop();
             matrixStackIn.pop();
         }

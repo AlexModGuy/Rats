@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
@@ -16,6 +17,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -72,7 +74,7 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
     public void livingTick() {
         super.livingTick();
         LivingEntity target = this.getAttackTarget();
-        if(!world.isRemote && target != null & this.ticksExisted % 15 == 0){
+        if(!world.isRemote && target != null & this.ticksExisted % 15 == 0 && this.getRatsSummoned() < 10){
             EntityRatShot cannonball = new EntityRatShot(RatsEntityRegistry.RAT_SHOT, world, this);
             cannonball.setColorVariant(rand.nextInt(4));
             float radius = 1.6F;
@@ -80,14 +82,14 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
             double extraX = getPosX();
             double extraZ = getPosZ();
             double extraY = 0.2 + getPosY();
-            double d0 = target.getPosY() + (double) target.getEyeHeight();
+            double d0 = target.getPosYEye() - (double)1.2F;
             double d1 = target.getPosX() - extraX;
             double d3 = target.getPosZ() - extraZ;
             double d2 = d0 - extraY;
-            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.25F;
-            float velocity = this.getDistance(target) * 0.055F;
+            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 1;
+            float velocity = Math.min(MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.06F, 1.4F);
             cannonball.setPosition(extraX, extraY, extraZ);
-            cannonball.shoot(d1, d2 + (double) f, d3, 0.75F, 0);
+            cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0);
             //this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
                 this.world.addEntity(cannonball);
@@ -103,6 +105,22 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
                 this.playSound(soundevent, this.getSoundVolume(), this.getSoundPitch());
             }
         }
+    }
+
+    public int getTalkInterval() {
+        return 20;
+    }
+
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+        SoundEvent soundevent = this.getHurtSound(source);
+        if (soundevent != null) {
+            for(int i = 0; i < 3 + rand.nextInt(3); i++){
+                this.playSound(soundevent, this.getSoundVolume(), this.getSoundPitch());
+            }
+        }
+
     }
 
     protected SoundEvent getAmbientSound() {
@@ -217,4 +235,12 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
         return new Animation[]{};
     }
 
+
+    public BlockPos getLightPosition() {
+        BlockPos pos = new BlockPos(this);
+        if (!world.getBlockState(pos).isSolid()) {
+            return pos.up();
+        }
+        return pos;
+    }
 }

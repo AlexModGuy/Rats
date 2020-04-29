@@ -1261,7 +1261,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.setAttackTarget(mob.getAttackTarget());
             }
             if(summonsRats.readsorbRats()){
-                this.getNavigator().tryMoveToEntityLiving(mob, 1.225F);
+                if(this.getAttackTarget() == null || !this.getAttackTarget().isAlive()){
+                    this.getNavigator().tryMoveToEntityLiving(mob, 1.225F);
+                }
                 if(this.getDistance(mob) < mob.getWidth()){
                     this.remove();
                     summonsRats.setRatsSummoned(summonsRats.getRatsSummoned() - 1);
@@ -2113,6 +2115,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         ItemStack itemstack = player.getHeldItem(hand);
         if (this.getRespawnCountdown() > 0) {
             return false;
+        }
+        if (itemstack.getItem() == RatsItemRegistry.FILTH_CORRUPTION) {
+            this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1F, 1.5F);
+            this.remove();
+            EntityRatKing ratKing = new EntityRatKing(RatsEntityRegistry.RAT_KING, this.world);
+            ratKing.copyLocationAndAnglesFrom(this);
+            ratKing.onInitialSpawn(world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.CONVERSION, null, null);
+            world.addEntity(ratKing);
+            if(!player.isCreative()){
+                itemstack.shrink(1);
+            }
+            return true;
         }
         if (itemstack.getItem() == RatsItemRegistry.RAT_TOGA) {
             if (!this.hasToga()) {
