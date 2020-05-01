@@ -68,6 +68,9 @@ public class RatsItemRegistry {
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_capture_net")
     public static Item RAT_CAPTURE_NET = new ItemRatCaptureNet();
 
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_fragment")
+    public static Item RAT_UPGRADE_FRAGMENT = new ItemGeneric("rat_upgrade_fragment", 1);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":feathery_wing")
     public static Item FEATHERY_WING = new ItemGeneric("feathery_wing");
 
@@ -100,6 +103,10 @@ public class RatsItemRegistry {
 
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_scythe")
     public static Item PLAGUE_SCYTHE = new ItemPlagueScythe();
+
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":plague_tome")
+    public static Item PLAGUE_TOME = new ItemGeneric("plague_tome", 2);
+
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":charged_creeper_chunk")
     public static Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
     public static Item[] RAT_IGLOOS = new Item[16];

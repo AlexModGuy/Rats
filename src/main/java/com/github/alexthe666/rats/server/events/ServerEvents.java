@@ -3,10 +3,7 @@ package com.github.alexthe666.rats.server.events;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.compat.TinkersCompatBridge;
-import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
-import com.github.alexthe666.rats.server.entity.EntityPlagueDoctor;
-import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.RatUtils;
+import com.github.alexthe666.rats.server.entity.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import com.github.alexthe666.rats.server.message.MessageSwingArm;
@@ -158,6 +155,28 @@ public class ServerEvents {
             if(heldItem.getItem() == RatsItemRegistry.PLAGUE_DOCTORATE && !((EntityVillager) event.getTarget()).isChild()){
                 EntityVillager villager = (EntityVillager)event.getTarget();
                 EntityPlagueDoctor doctor = new EntityPlagueDoctor(event.getWorld());
+                doctor.copyLocationAndAnglesFrom(villager);
+                villager.setDead();
+                doctor.onInitialSpawn(event.getWorld().getDifficultyForLocation(event.getPos()), null);
+                if(!event.getWorld().isRemote){
+                    event.getWorld().spawnEntity(doctor);
+                }
+                doctor.setNoAI(villager.isAIDisabled());
+                if (villager.hasCustomName()) {
+                    doctor.setCustomNameTag(villager.getCustomNameTag());
+                    doctor.setAlwaysRenderNameTag(villager.getAlwaysRenderNameTag());
+                }
+                event.getEntityPlayer().swingArm(event.getHand());
+                if(!event.getEntityPlayer().isCreative()){
+                    heldItem.shrink(1);
+                }
+            }
+        }
+        if(event.getTarget() instanceof EntityPlagueDoctor){
+            ItemStack heldItem = event.getEntityPlayer().getHeldItem(event.getHand());
+            if(heldItem.getItem() == RatsItemRegistry.PLAGUE_TOME && !((EntityPlagueDoctor) event.getTarget()).isChild()){
+                EntityPlagueDoctor villager = (EntityPlagueDoctor)event.getTarget();
+                EntityBlackDeath doctor = new EntityBlackDeath(event.getWorld());
                 doctor.copyLocationAndAnglesFrom(villager);
                 villager.setDead();
                 doctor.onInitialSpawn(event.getWorld().getDifficultyForLocation(event.getPos()), null);

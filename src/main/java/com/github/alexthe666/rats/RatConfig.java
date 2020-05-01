@@ -59,6 +59,7 @@ public class RatConfig {
     public double ratVoodooDistance = 32;
     public boolean addLoot = true;
     public boolean customMainMenu = true;
+    public float plagueTomeDropRate = 0.05F;
 
     public void init(Configuration config) {
         this.customMainMenu = config.getBoolean("Custom Main Menu", "all", true, "True if rats has a custom main menu");
@@ -73,6 +74,7 @@ public class RatConfig {
         this.piperSpawnRate = config.getInt("Pied Piper Spawn Weight", "all", 6, 1, 300, "The weight of pied pipers in vanilla's spawn rate");
         this.piperHatDropRate = config.getFloat("Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.plagueEssenceDropRate = config.getFloat("Plague Essence Drop Rate", "all", 0.1F, 0F, 1F, "percent chance for plague rat to drop plague essence on death");
+        this.plagueTomeDropRate = config.getFloat("Plague Tome Drop Rate", "all", 0.005F, 0F, 1F, "percent chance for plague rat to drop plague tome on death");
         this.archeologistHatSpawnRate = config.getFloat("Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
         this.ratlanteanAutomatonHealth = config.getFloat("Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
         this.ratlanteanAutomatonAttack = config.getFloat("Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");

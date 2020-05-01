@@ -58,6 +58,24 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "fragment",
+            "conditions": [
+                {
+                    "condition": "random_chance_with_looting",
+                    "chance": 0.01,
+                    "looting_multiplier": 0.02
+                }
+            ],
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "rats:rat_upgrade_fragment",
+                    "weight": 1
+                }
+            ]
         }
     ]
 }
