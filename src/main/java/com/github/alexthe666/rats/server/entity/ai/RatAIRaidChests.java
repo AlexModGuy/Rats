@@ -41,12 +41,12 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
                 if (entity instanceof IInventory) {
                     IInventory inventory = (IInventory) entity;
                     try {
-                        if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
+                        if (!inventory.isEmpty() && inventory.getSizeInventory() > 0 && RatUtils.doesContainFood(inventory)) {
                             return true;
                         }
                     } catch (Exception e) {
-                        RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
-                        e.printStackTrace();
+                       // RatsMod.logger.warn("Rats stopped a " + inventory.getName() + " from causing a crash during access");
+                       //  e.printStackTrace();
                     }
                 }
             }
