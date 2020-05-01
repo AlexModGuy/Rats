@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 public class ChiselCompatBridge {
 
     public static void loadChiselCompat() {
-        FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_raw|0");
+        /*FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_raw|0");
         FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese|0");
         FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_pillar|0");
         FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_chiseled|0");
@@ -16,6 +16,6 @@ public class ChiselCompatBridge {
         FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_brick_chiseled|0");
         FMLInterModComms.sendMessage("chisel", "variation:add", "dirt|rats:marbled_cheese_dirt|0");
         FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_dirt|0");
-        FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_grass|0");
+        FMLInterModComms.sendMessage("chisel", "variation:add", "marbled_cheese|rats:marbled_cheese_grass|0");*/
     }
 }
