@@ -94,6 +94,17 @@ public class RatAIHarvestMilk extends EntityAIBase {
                         this.targetCow = null;
                         this.resetTask();
                     }
+                }else{
+                    FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
+                    if(milkWrapper.getFluid() != null && (this.entity.transportingFluid == null || this.entity.transportingFluid.amount < this.entity.getMBTransferRate())){
+                        this.entity.transportingFluid = milkWrapper.getFluid().copy();
+                        if(!this.entity.world.isRemote){
+                            RatsMod.NETWORK_WRAPPER.sendToAll(new MessageUpdateRatFluid(this.entity.getEntityId(), this.entity.transportingFluid));
+                        }
+                        this.entity.playSound(SoundEvents.ENTITY_COW_MILK, 1, 1);
+                        this.targetCow = null;
+                        this.resetTask();
+                    }
                 }
             }
         }else{

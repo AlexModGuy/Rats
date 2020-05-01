@@ -25,7 +25,9 @@ import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,7 +42,7 @@ public class ChunkProviderRatlantis implements IChunkGenerator {
     private Random rand;
     private World world;
     private Biome[] biomesForGeneration;
-    private MapGenBase caveGenerator = new MapGenCaves();
+    private MapGenBase caveGenerator = TerrainGen.getModdedMapGen(new MapGenCaves(), InitMapGenEvent.EventType.CAVE);
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
     private MapGenRatRoad ratRoadGenerator = new MapGenRatRoad();
     private int drawnPaths = 0;
