@@ -38,6 +38,7 @@ import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -115,6 +116,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private static final DataParameter<Boolean> HAS_CUSTOM_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<BlockPos> RADIUS_CENTER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> DYED = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(EntityRat.class, DataSerializers.BYTE);
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -488,6 +491,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.register(RADIUS_CENTER, this.getPosition());
         this.dataManager.register(HAS_CUSTOM_RADIUS, Boolean.valueOf(false));
         this.dataManager.register(SEARCH_RADIUS, RatConfig.defaultRatRadius);
+        this.dataManager.register(DYED, Boolean.valueOf(false));
+        this.dataManager.register(DYE_COLOR, Byte.valueOf((byte)0));
 
     }
 
@@ -574,6 +579,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         compound.putBoolean("Toga", this.hasToga());
         compound.putBoolean("IsMale", this.isMale());
         compound.putInt("WildTrust", wildTrust);
+        compound.putBoolean("Dyed", this.isDyed());
+        compound.putByte("DyeColor", (byte)this.getDyeColor());
         if (ratInventory != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < ratInventory.getSizeInventory(); ++i) {
@@ -639,6 +646,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.setToga(compound.getBoolean("Toga"));
         this.setMale(compound.getBoolean("IsMale"));
         this.setColorVariant(compound.getInt("ColorVariant"));
+        this.setDyed(compound.getBoolean("Dyed"));
+        this.setDyeColor((compound.getByte("DyeColor")));
         if (ratInventory != null) {
             ListNBT nbttaglist = compound.getList("Items", 10);
             this.initInventory();
@@ -794,6 +803,22 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         this.dataManager.set(RESPAWN_COUNTDOWN, Integer.valueOf(respawn));
     }
 
+    public void setDyed(boolean dyed) {
+        this.dataManager.set(DYED, Boolean.valueOf(dyed));
+    }
+
+    public boolean isDyed() {
+        return this.dataManager.get(DYED).booleanValue();
+    }
+
+
+    public int getDyeColor() {
+        return this.dataManager.get(DYE_COLOR);
+    }
+
+    public void setDyeColor(int color) {
+        this.dataManager.set(DYE_COLOR, (byte)(color));
+    }
 
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
@@ -2169,6 +2194,53 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 }
             }
             if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
+                if(itemstack.getItem() == Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE)){
+                    this.setDyed(false);
+                    this.setDyeColor(0);
+                    for (int i = 0; i < 8; i++) {
+                        double d0 = this.rand.nextGaussian() * 0.02D;
+                        double d1 = this.rand.nextGaussian() * 0.02D;
+                        double d2 = this.rand.nextGaussian() * 0.02D;
+                        this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE))), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                    }
+                    this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                    return true;
+                }
+                if(itemstack.getItem() == RatsItemRegistry.RATBOW_ESSENCE) {
+                    if (!this.isDyed()) {
+                        this.setDyed(true);
+                    }
+                    if (this.getDyeColor() != 100) {
+                        this.setDyeColor(100);
+                        for (int i = 0; i < 8; i++) {
+                            double d0 = this.rand.nextGaussian() * 0.02D;
+                            double d1 = this.rand.nextGaussian() * 0.02D;
+                            double d2 = this.rand.nextGaussian() * 0.02D;
+                            this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.RATBOW_ESSENCE)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        }
+                        this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                        itemstack.shrink(1);
+                        return true;
+                    }
+                }
+                if(itemstack.getItem() instanceof DyeItem){
+                    DyeItem dyeItem = (DyeItem)itemstack.getItem();
+                    if(!this.isDyed()){
+                        this.setDyed(true);
+                    }
+                    if(this.getDyeColor() != dyeItem.getDyeColor().getId()){
+                        this.setDyeColor(dyeItem.getDyeColor().getId());
+                        for (int i = 0; i < 8; i++) {
+                            double d0 = this.rand.nextGaussian() * 0.02D;
+                            double d1 = this.rand.nextGaussian() * 0.02D;
+                            double d2 = this.rand.nextGaussian() * 0.02D;
+                            this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(dyeItem)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
+                        }
+                        this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                        itemstack.shrink(1);
+                        return true;
+                    }
+                }
                 if (itemstack.getItem() == RatsItemRegistry.RAT_SACK) {
                     CompoundNBT compound = itemstack.getTag();
                     if (compound == null) {

@@ -35,6 +35,7 @@ public class RatsBlockRegistry {
     public static final Block RAT_TRAP = new BlockRatTrap();
     public static final Block RAT_TUBE_COLOR = new BlockRatTube();
     public static final Block RAT_UPGRADE_BLOCK = new BlockRatUpgrade();
+    public static final Block DYE_SPONGE = new BlockDyeSponge();
     public static final Block GARBAGE_PILE = new BlockGarbage("garbage_pile", 1.0D);
     public static final Block CURSED_GARBAGE = new BlockCursedGarbage();
     public static final Block COMPRESSED_GARBAGE = new BlockGarbage("compressed_garbage", 2.0D);

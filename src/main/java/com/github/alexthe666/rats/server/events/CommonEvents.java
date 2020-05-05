@@ -25,12 +25,15 @@ import net.minecraft.entity.monster.HuskEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
@@ -82,6 +85,18 @@ public class CommonEvents {
                     }
                 }
             }
+        }
+        if(event.getTarget() instanceof SheepEntity && event.getPlayer().getHeldItem(event.getHand()).getItem() == Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE)){
+            SheepEntity sheep = (SheepEntity)event.getTarget();
+            sheep.setFleeceColor(DyeColor.WHITE);
+            for (int i = 0; i < 8; i++) {
+                double d0 = sheep.getRNG().nextGaussian() * 0.02D;
+                double d1 = sheep.getRNG().nextGaussian() * 0.02D;
+                double d2 = sheep.getRNG().nextGaussian() * 0.02D;
+                sheep.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE))), sheep.getPosX() + (double) (sheep.getRNG().nextFloat() * sheep.getWidth() * 2.0F) - (double) sheep.getWidth(), sheep.getPosY() + (double) (sheep.getRNG().nextFloat() * sheep.getHeight() * 2.0F) - (double) sheep.getHeight(), sheep.getPosZ() + (double) (sheep.getRNG().nextFloat() * sheep.getWidth() * 2.0F) - (double) sheep.getWidth(), d0, d1, d2);
+            }
+            sheep.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, 1.0F, 1.0F);
+
         }
         if (event.getTarget() instanceof AbstractVillagerEntity && !(event.getTarget() instanceof EntityPlagueDoctor)) {
             ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());

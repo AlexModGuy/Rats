@@ -103,6 +103,8 @@ public class RatsItemRegistry {
 
     public static final Item CHARGED_CREEPER_CHUNK = new ItemGeneric("charged_creeper_chunk", 1);
 
+    public static final Item RATBOW_ESSENCE = new ItemGeneric("ratbow_essence", 1);
+
     public static final Item[] RAT_TUBES = new Item[16];
 
     public static final Item[] RAT_IGLOOS = new Item[16];

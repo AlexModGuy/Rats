@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VSV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "tag": "forge:dyes"
+    },
+    "S": {
+      "item": "rats:plague_essence"
+    }
+  },
+  "result": {
+    "item": "rats:ratbow_essence"
+  }
+}

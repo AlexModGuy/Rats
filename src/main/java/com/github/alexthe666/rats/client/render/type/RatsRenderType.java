@@ -15,7 +15,32 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RatsRenderType extends RenderType {
+    protected static final RenderState.TexturingState RAINBOW_GLINT_TEXTURING = new RenderState.TexturingState("rainbow_glint_texturing", () -> {
+        setupRainbowRendering(0.16F);
+    }, () -> {
+        RenderSystem.matrixMode(5890);
+        RenderSystem.popMatrix();
+        RenderSystem.matrixMode(5888);
+    });
+
+
     public static final RenderType GREEN_ENTITY_GLINT = makeType("green_glint", DefaultVertexFormats.POSITION_TEX, 7, 256, RenderType.State.getBuilder().texture(new RenderState.TextureState(new ResourceLocation("rats:textures/entity/rat/green_glint.png"), true, false)).writeMask(COLOR_WRITE).cull(CULL_DISABLED).depthTest(DEPTH_EQUAL).transparency(GLINT_TRANSPARENCY).texturing(ENTITY_GLINT_TEXTURING).build(false));
+    public static final RenderType RAINBOW_GLINT = makeType("rainbow_glint", DefaultVertexFormats.POSITION_TEX, 7, 256, RenderType.State.getBuilder().texture(new RenderState.TextureState(new ResourceLocation("rats:textures/entity/rat/rainbow_glint.png"), true, false)).writeMask(COLOR_WRITE).cull(CULL_DISABLED).depthTest(DEPTH_EQUAL).transparency(GLINT_TRANSPARENCY).texturing(RAINBOW_GLINT_TEXTURING).build(false));
+
+
+
+    private static void setupRainbowRendering(float scaleIn) {
+        RenderSystem.matrixMode(5890);
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
+        long i = Util.milliTime() * 8L;
+        float f = (float)(i % 110000L) / 110000.0F;
+        float f1 = (float)(i % 10000L) / 10000.0F;
+        RenderSystem.translatef(0, f1, 0.0F);
+        RenderSystem.rotatef(10.0F, 0.0F, 0.0F, 1.0F);
+        RenderSystem.scalef(scaleIn, scaleIn, scaleIn);
+        RenderSystem.matrixMode(5888);
+    }
 
     public RatsRenderType(String p_i225992_1_, VertexFormat p_i225992_2_, int p_i225992_3_, int p_i225992_4_, boolean p_i225992_5_, boolean p_i225992_6_, Runnable p_i225992_7_, Runnable p_i225992_8_) {
         super(p_i225992_1_, p_i225992_2_, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, p_i225992_7_, p_i225992_8_);

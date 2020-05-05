@@ -48,9 +48,11 @@ public class RatsVillagerTrades {
                         new ItemsForEmeraldsTrade(Items.BONE, 3, 8, 9, 1),
                         new ItemsForEmeraldsTrade(Items.ROTTEN_FLESH, 2, 10, 9, 2),
                         new EmeraldForItemsTrade(Items.POISONOUS_POTATO, 1, 3, 3),
+                        new EmeraldForItemsTrade(RatsItemRegistry.PLAGUE_ESSENCE, 3, 3, 7),
                         new EmeraldForItemsTrade(RatsItemRegistry.CONTAMINATED_FOOD, 1, 1, 3),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.COOKED_RAT, 1, 5, 15, 10),
                         new ItemsForEmeraldsAndItemsTrade(Blocks.POPPY, 5, 3, RatsItemRegistry.HERB_BUNDLE, 3, 1, 5),
+                        new ItemsForEmeraldsTrade(RatsBlockRegistry.DYE_SPONGE, 1, 1, 4, 4),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.TREACLE, 2, 3, 10, 5),
                         new ItemsForEmeraldsTrade(RatsBlockRegistry.GARBAGE_PILE, 5, 4, 5, 3),
                         new ItemsForEmeraldsTrade(RatsBlockRegistry.RAT_CAGE, 2, 4, 4, 5),
@@ -71,6 +73,7 @@ public class RatsVillagerTrades {
                         new ItemsForEmeraldsTrade(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rats:rat_banner_pattern")), 1, 1, 5, 2),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.STRING_CHEESE, 2, 8, 5, 6),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.GOLDEN_RAT_SKULL, 8, 2, 5, 6),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_TOME, 32, 1, 1, 20),
                 }));
     }
 

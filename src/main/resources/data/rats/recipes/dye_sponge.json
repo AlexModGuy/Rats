@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VSV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "tag": "forge:dyes"
+    },
+    "S": {
+      "item": "minecraft:sponge"
+    }
+  },
+  "result": {
+    "item": "rats:dye_sponge"
+  }
+}
