@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -8,6 +9,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.util.Random;
 
@@ -36,6 +38,9 @@ public class EntityRatSpawner extends CreatureEntity {
     public static boolean func_223325_c(EntityType<? extends CreatureEntity> p_223325_0_, IWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
         boolean peaceful = p_223325_1_.getDifficulty() == Difficulty.PEACEFUL;
         if(peaceful){
+            return false;
+        }
+        if(RatConfig.ratOverworldOnly && p_223325_1_.getDimension().getType() != DimensionType.OVERWORLD){
             return false;
         }
         return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_) && p_223325_4_.nextInt(peaceful ? 32 : 3) == 0;

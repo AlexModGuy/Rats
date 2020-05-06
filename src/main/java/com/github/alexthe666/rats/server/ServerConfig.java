@@ -7,6 +7,8 @@ public class ServerConfig {
     public final ForgeConfigSpec.BooleanValue spawnRats;
     public final ForgeConfigSpec.BooleanValue ratsDespawn;
     public final ForgeConfigSpec.BooleanValue spawnPiper;
+    public final ForgeConfigSpec.BooleanValue ratOverworldOnly;
+    public final ForgeConfigSpec.BooleanValue piperOverworldOnly;
     public final ForgeConfigSpec.IntValue ratSpawnRate;
     public final ForgeConfigSpec.IntValue ratSpawnDecrease;
     public final ForgeConfigSpec.IntValue piperSpawnDecrease;
@@ -68,6 +70,8 @@ public class ServerConfig {
         builder.push("general");
         this.spawnRats = buildBoolean(builder, "Spawn Rats", "all", true, "True if rats are to spawn naturally");
         this.ratsDespawn = buildBoolean(builder, "Rat Immediate Despawn Distance", "all", true, "True if wild, untamed rats can despawn.");
+        this.ratOverworldOnly = buildBoolean(builder, "Rats Spawn In Overworld Only", "all", false, "True if rats can only spawn in the Overworld(0) dimension.");
+        this.piperOverworldOnly = buildBoolean(builder, "Pied Piper Spawn In Overworld Only", "all", true, "True if Pied Pipers can only spawn in the Overworld(0) dimension.");
         this.ratSpawnDecrease = buildInt(builder, "Rat Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.plagueRats = buildBoolean(builder, "Plague Rats", "all", true, "True if plague rats are to spawn naturally");
         this.spawnPiper = buildBoolean(builder, "Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
