@@ -13,6 +13,7 @@
     "parent": "rats:rats/cheese",
     "criteria": {
         "tame_rat": {
+
             "trigger": "minecraft:tame_animal",
             "conditions": {
                 "entity": {
