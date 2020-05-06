@@ -35,8 +35,11 @@ public class RatAIFollowOwner extends Goal {
      * Returns whether the Goal should begin execution.
      */
     public boolean shouldExecute() {
-        if (rat.isTamed() && rat.isFollowing()) {
+        if ((this.rat.isTamed() || this.rat.wasTamedByMonster()) && rat.isFollowing()) {
             LivingEntity LivingEntity = this.rat.getOwner();
+            if(LivingEntity == null){
+                LivingEntity = this.rat.getMonsterOwner();
+            }
             if (LivingEntity == null) {
                 return false;
             } else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity) LivingEntity).isSpectator()) {
@@ -75,7 +78,7 @@ public class RatAIFollowOwner extends Goal {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 boolean teleport = false;
-                if (!this.rat.getLeashed() && !this.rat.isPassenger() && this.rat.getOwner() instanceof PlayerEntity) {
+                if (!this.rat.getLeashed() && !this.rat.isPassenger() && owner instanceof PlayerEntity) {
                     if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
                         teleport = true;
                         int i = MathHelper.floor(this.owner.getPosX()) - 2;

@@ -236,9 +236,9 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
                 if (!world.isRemote) {
                     world.addEntity(rat);
                 }
-                rat.setTamed(true);
-                rat.setTamedByPlayerFlag(false);
-                rat.setOwnerId(this.getUniqueID());
+                rat.setTamed(false);
+                rat.setTamedByMonster(true);
+                rat.setMonsterOwnerUniqueId(this.getUniqueID());
                 rat.setCommand(RatCommand.FOLLOW);
                 if (this.getAttackTarget() != null) {
                     rat.setAttackTarget(this.getAttackTarget());

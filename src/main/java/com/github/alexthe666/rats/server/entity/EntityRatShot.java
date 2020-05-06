@@ -101,9 +101,9 @@ public class EntityRatShot extends ThrowableEntity {
 
                 if(thrower instanceof MobEntity){
                     rat.setAttackTarget(((MobEntity) thrower).getAttackTarget());
-                    rat.setTamedByPlayerFlag(false);
-                    rat.setTamed(true);
-                    rat.setOwnerId(thrower.getUniqueID());
+                    rat.setTamedByMonster(true);
+                    rat.setTamed(false);
+                    rat.setMonsterOwnerUniqueId(this.getUniqueID());
                 }else{
                     if(hitEntity instanceof LivingEntity){
                         rat.setAttackTarget((LivingEntity) hitEntity);

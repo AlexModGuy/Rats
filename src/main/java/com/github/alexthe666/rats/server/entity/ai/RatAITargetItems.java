@@ -123,7 +123,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
                         if (rat.wildTrust >= 100 && rat.getRNG().nextInt(3) == 0 || rat.cheeseFeedings >= 15) {
                             rat.world.setEntityState(rat, (byte) 83);
                             rat.setTamed(true);
-                            rat.setTamedByPlayerFlag(true);
+                            rat.setTamedByMonster(false);
                             rat.setOwnerId(targetPlayer.getUniqueID());
                             rat.setCommand(RatCommand.FOLLOW);
                         }
