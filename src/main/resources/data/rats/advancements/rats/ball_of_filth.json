@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:cheese"
+        },
+        "title": {
+            "translate": "advancements.rats.ball_of_filth.title"
+        },
+        "description": {
+            "translate": "advancements.rats.ball_of_filth.description"
+        }
+    },
+    "parent": "rats:rats/garbage_pile",
+    "criteria": {
+        "filth": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:filth_corruption"
+                    }
+                ]
+            }
+        }
+    }
+}

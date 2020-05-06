@@ -193,7 +193,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
                 rat.setAttackTarget(this.getAttackTarget());
             }
             this.setRatsSummoned(this.getRatsSummoned() + 1);
-            this.playSound(RatsSoundRegistry.RAT_FLUTE, 1, 1);
+            this.playSound(RatsSoundRegistry.RAT_FLUTE, 0.5F, 1);
             ratCooldown = 150;
         }
     }
@@ -204,7 +204,7 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
             ratCooldown--;
         }
         if (fluteTicks % 157 == 0) {
-            this.playSound(RatsSoundRegistry.PIPER_LOOP, 1, 1);
+            this.playSound(RatsSoundRegistry.PIPER_LOOP, 0.5F, 1);
         }
         fluteTicks++;
         if (fluteTicks % 10 == 0) {
