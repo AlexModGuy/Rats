@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WVW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "rats:pied_wool"
+    },
+    "V": {
+      "item": "rats:compressed_garbage"
+    }
+  },
+  "result": {
+    "item": "rats:pied_garbage"
+  }
+}

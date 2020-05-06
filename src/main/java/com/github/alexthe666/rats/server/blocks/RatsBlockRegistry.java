@@ -40,6 +40,7 @@ public class RatsBlockRegistry {
     public static final Block CURSED_GARBAGE = new BlockCursedGarbage();
     public static final Block COMPRESSED_GARBAGE = new BlockGarbage("compressed_garbage", 2.0D);
     public static final Block PURIFIED_GARBAGE = new BlockPurifiedGarbage();
+    public static final Block PIED_GARBAGE = new BlockPiedGarbage();
     public static final Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_slab");
@@ -62,6 +63,7 @@ public class RatsBlockRegistry {
     public static final Block BRAIN_BLOCK = new BlockBrain();
     public static final Block JACK_O_RATERN = new BlockJackORatern();
     public static final Block BLOCK_OF_BLUE_CHEESE = new BlockGeneric("block_of_blue_cheese", Material.WOOL, 2.0F, 0F, SoundType.SLIME);
+    public static final Block PIED_WOOL = new BlockGeneric("pied_wool", Material.WOOL, 1.0F, 0F, SoundType.CLOTH);
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
     public static final Block PIRAT_PLANKS = new Block(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).lightValue(3).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).setRegistryName("rats:pirat_planks");

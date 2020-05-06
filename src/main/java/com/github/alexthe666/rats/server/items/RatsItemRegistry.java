@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RatsItemRegistry {
 
+    public static CustomArmorMaterial PIPER_HAT_ARMOR_MATERIAL = new CustomArmorMaterial("PiperHat", 600, new int[]{2, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static CustomArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new CustomArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static CustomArmorMaterial HAT_ARMOR_MATERIAL = new CustomArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static CustomArmorMaterial PLAGUE_MASK_MATERIAL = new CustomArmorMaterial("PlagueMaskk", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);

@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemPiperHat extends ArmorItem {
 
     public ItemPiperHat() {
-        super(RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(RatsMod.TAB));
+        super(RatsItemRegistry.PIPER_HAT_ARMOR_MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(RatsMod.TAB));
         this.setRegistryName(RatsMod.MODID, "piper_hat");
     }
 

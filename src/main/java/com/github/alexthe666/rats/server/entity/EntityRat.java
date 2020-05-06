@@ -118,6 +118,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DYED = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(EntityRat.class, DataSerializers.BYTE);
+    private static final ResourceLocation PLAGUE_RAT_LOOT_TABLE = new ResourceLocation("rats", "entities/plague_rat");
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
             "rats:textures/entity/rat/rat_black.png",
@@ -2015,18 +2016,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                     i -= j;
                     this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
                 }
-                if (rand.nextInt(100) == 0) {
-                    this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_SKULL), 0.0F);
-                }
-                if (rand.nextInt(RatConfig.tokenDropRate) == 0) {
-                    this.entityDropItem(new ItemStack(RatsItemRegistry.CHUNKY_CHEESE_TOKEN), 0.0F);
-                }
-                if (this.hasPlague() && rand.nextFloat() <= RatConfig.plagueEssenceDropRate) {
-                    this.entityDropItem(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE), 0.0F);
-                }
-                if (this.hasPlague() && rand.nextFloat() <= RatConfig.plagueTomeDropRate) {
-                    this.entityDropItem(new ItemStack(RatsItemRegistry.PLAGUE_TOME), 0.0F);
-                }
+
                 if (this.hasToga()) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
                     if (this.dimension == DimensionType.getById(RatConfig.ratlantisDimensionId)) {
@@ -2203,7 +2193,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                         double d2 = this.rand.nextGaussian() * 0.02D;
                         this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE))), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                     }
-                    this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                    this.playSound(SoundEvents.ITEM_BUCKET_FILL, getSoundVolume(), getSoundPitch());
                     return true;
                 }
                 if(itemstack.getItem() == RatsItemRegistry.RATBOW_ESSENCE) {
@@ -2218,7 +2208,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                             double d2 = this.rand.nextGaussian() * 0.02D;
                             this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.RATBOW_ESSENCE)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                         }
-                        this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                        this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, getSoundVolume(), getSoundPitch());
                         itemstack.shrink(1);
                         return true;
                     }
@@ -2236,7 +2226,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                             double d2 = this.rand.nextGaussian() * 0.02D;
                             this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(dyeItem)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight() * 2.0F) - (double) this.getHeight(), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d0, d1, d2);
                         }
-                        this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, getSoundVolume(), getSoundPitch());
+                        this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, getSoundVolume(), getSoundPitch());
                         itemstack.shrink(1);
                         return true;
                     }
@@ -3087,6 +3077,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
             }
         }
         return 1D;
+    }
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return this.hasPlague() ? PLAGUE_RAT_LOOT_TABLE : this.getType().getLootTable();
     }
 
     public boolean hasFlightUpgrade(){

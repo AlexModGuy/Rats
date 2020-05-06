@@ -59,6 +59,7 @@ public class RatsRecipeRegistry {
         RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Blocks.BLUE_ORCHID), new ItemStack(RatsBlockRegistry.RATGLOVE_FLOWER)));
 
         RatsItemRegistry.CHEF_TOQUE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Blocks.WHITE_WOOL)));
+        RatsItemRegistry.PIPER_HAT_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(RatsBlockRegistry.PIED_WOOL)));
         RatsItemRegistry.HAT_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.LEATHER)));
         RatsItemRegistry.PIRAT_CUTLASS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)));
         RatsItemRegistry.BAGHNAKHS_MATERIAL.setRepairMaterial(Ingredient.fromStacks(new ItemStack(RatsItemRegistry.FERAL_RAT_CLAW)));
