@@ -882,7 +882,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean isHoldingFood() {
-        return !this.getHeldItem(Hand.MAIN_HAND).isEmpty() && ((RatUtils.isRatFood(this.getHeldItem(Hand.MAIN_HAND)) || (hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()))));
+        return !this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHEF) && ((RatUtils.isRatFood(this.getHeldItem(Hand.MAIN_HAND)) || (hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) && ItemRatUpgradeOreDoubling.isProcessable(this.getHeldItemMainhand()))));
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
