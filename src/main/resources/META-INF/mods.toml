@@ -3,7 +3,7 @@ loaderVersion="[31,)" #mandatory This is typically bumped every Minecraft versio
 issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
 [[mods]] #mandatory
 modId="rats" #mandatory
-version="5.1.0" #mandatory
+version="5.2.0" #mandatory
 displayName="Rats" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/rats" #optional
 logoFile="rats_logo.png" #optional
