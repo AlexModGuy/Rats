@@ -50,7 +50,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
             burntItem = irecipe.getRecipeOutput().copy();
         }
         if(burntItem != poopStack){
-            ItemStack dropStack = new ItemStack(burntItem.getItem(), 2);
+            ItemStack dropStack = new ItemStack(burntItem.getItem(), 1);
             if(!playerIn.addItemStackToInventory(dropStack)){
                 playerIn.dropItem(dropStack, false);
             }
