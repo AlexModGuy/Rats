@@ -1491,6 +1491,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 RatUtils.polinateAround(world, this.getPosition());
             }
         }
+        if(this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR)){
+            RatUtils.accelerateTick(world, this.getPosition().up());
+            RatUtils.accelerateTick(world, this.getPosition());
+            RatUtils.accelerateTick(world, this.getPosition().down());
+        }
         if (mountRespawnCooldown > 0) {
             mountRespawnCooldown--;
         }

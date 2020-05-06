@@ -276,6 +276,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_FISHERMAN = new ItemRatUpgrade("rat_upgrade_fisherman", 1, 2);
 
+    public static final Item RAT_UPGRADE_TICK_ACCELERATOR = new ItemRatUpgrade("rat_upgrade_tick_accelerator", 1, 2);
+
     public static final Item RAT_UPGRADE_ASBESTOS = new ItemRatUpgrade("rat_upgrade_asbestos", 0, 4);
 
     public static final Item RAT_UPGRADE_UNDERWATER = new ItemRatUpgrade("rat_upgrade_underwater", 0, 3);

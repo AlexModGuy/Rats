@@ -22,6 +22,8 @@ import net.minecraft.item.Items;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
@@ -344,8 +346,8 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
-            double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
+            double d0 = rat.getHomePosition().distanceSq(MathHelper.floor(rat.getPosX()), MathHelper.floor(rat.getPosY()), MathHelper.floor(rat.getPosZ()), true) + 4.0D;
+            double d1 = rat.getMaximumHomeDistance() + (float) searchWidth;
             flag = d0 < d1 * d1;
         } else {
             flag = false;
@@ -410,8 +412,8 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
-            double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
+            double d0 = rat.getHomePosition().distanceSq(MathHelper.floor(rat.getPosX()), MathHelper.floor(rat.getPosY()), MathHelper.floor(rat.getPosZ()), true) + 4.0D;
+            double d1 = rat.getMaximumHomeDistance() + (float) searchWidth;
             flag = d0 < d1 * d1;
         } else {
             flag = false;
@@ -476,8 +478,8 @@ public class RatUtils {
         boolean flag;
 
         if (rat.detachHome()) {
-            double d0 = rat.getHomePosition().distanceSq((double) MathHelper.floor(rat.getPosX()), (double) MathHelper.floor(rat.getPosY()), (double) MathHelper.floor(rat.getPosZ()), true) + 4.0D;
-            double d1 = (double) (rat.getMaximumHomeDistance() + (float) searchWidth);
+            double d0 = rat.getHomePosition().distanceSq(MathHelper.floor(rat.getPosX()), MathHelper.floor(rat.getPosY()), MathHelper.floor(rat.getPosZ()), true) + 4.0D;
+            double d1 = rat.getMaximumHomeDistance() + (float) searchWidth;
             flag = d0 < d1 * d1;
         } else {
             flag = false;
@@ -616,8 +618,8 @@ public class RatUtils {
         boolean flag;
 
         if (p_191379_0_.detachHome()) {
-            double d0 = p_191379_0_.getHomePosition().distanceSq((double) MathHelper.floor(p_191379_0_.getPosX()), (double) MathHelper.floor(p_191379_0_.getPosY()), (double) MathHelper.floor(p_191379_0_.getPosZ()), true) + 4.0D;
-            double d1 = (double) (p_191379_0_.getMaximumHomeDistance() + (float) p_191379_1_);
+            double d0 = p_191379_0_.getHomePosition().distanceSq(MathHelper.floor(p_191379_0_.getPosX()), MathHelper.floor(p_191379_0_.getPosY()), MathHelper.floor(p_191379_0_.getPosZ()), true) + 4.0D;
+            double d1 = p_191379_0_.getMaximumHomeDistance() + (float) p_191379_1_;
             flag = d0 < d1 * d1;
         } else {
             flag = false;
@@ -727,14 +729,14 @@ public class RatUtils {
             }
         }
         if (!allBlocks.isEmpty()) {
-            for(BlockPos pos : allBlocks){
+            for (BlockPos pos : allBlocks) {
                 BlockState block = world.getBlockState(pos);
                 if (block.getBlock() instanceof IGrowable) {
                     IGrowable igrowable = (IGrowable) block.getBlock();
                     if (igrowable.canGrow(world, pos, block, world.isRemote) && world.rand.nextInt(3) == 0) {
                         if (!world.isRemote) {
                             world.playEvent(2005, pos, 0);
-                            igrowable.grow((ServerWorld)world, world.rand, pos, block);
+                            igrowable.grow((ServerWorld) world, world.rand, pos, block);
                         }
                     }
                 }
@@ -753,6 +755,24 @@ public class RatUtils {
             }
         }
         return false;
+    }
+
+    public static void accelerateTick(World world, BlockPos pos) {
+        BlockState blockState = world.getBlockState(pos);
+        Block block = blockState.getBlock();
+        if(!world.isRemote && world instanceof ServerWorld){
+            if (block.ticksRandomly(blockState) && world.getRandom().nextInt(40) == 0) {
+                block.randomTick(blockState, (ServerWorld) world, pos, world.getRandom());
+            }
+        }
+        if (block.hasTileEntity(blockState)) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity != null && !tileEntity.isRemoved() && tileEntity instanceof ITickableTileEntity) {
+                for (int i = 0; i < 4; i++) {
+                    ((ITickableTileEntity) tileEntity).tick();
+                }
+            }
+        }
     }
 
 
