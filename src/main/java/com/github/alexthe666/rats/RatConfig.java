@@ -63,65 +63,74 @@ public class RatConfig {
     public static double garbageSpawnRate = 0.15F;
 
     public static void bakeClient(final ModConfig config) {
-        plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
+        try {
+            plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
+        }catch (Exception e){
+            RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
+            e.printStackTrace();
+        }
     }
 
     public static void bakeServer(final ModConfig config) {
-
-        spawnRats = ConfigHolder.SERVER.spawnRats.get();
-        spawnPiper = ConfigHolder.SERVER.spawnPiper.get();
-        ratSpawnRate = ConfigHolder.SERVER.ratSpawnRate.get();
-        ratSpawnDecrease = ConfigHolder.SERVER.ratSpawnDecrease.get();
-        piperSpawnDecrease = ConfigHolder.SERVER.piperSpawnDecrease.get();
-        piperSpawnRate = ConfigHolder.SERVER.piperSpawnRate.get();
-        piperHatDropRate = ConfigHolder.SERVER.piperHatDropRate.get().floatValue();
-        archeologistHatSpawnRate = ConfigHolder.SERVER.archeologistHatSpawnRate.get().floatValue();
-        ratlanteanAutomatonHealth = ConfigHolder.SERVER.ratlanteanAutomatonHealth.get().floatValue();
-        ratlanteanAutomatonAttack = ConfigHolder.SERVER.ratlanteanAutomatonAttack.get().floatValue();
-        neoRatlanteanHealth = ConfigHolder.SERVER.neoRatlanteanHealth.get().floatValue();
-        neoRatlanteanAttack = ConfigHolder.SERVER.neoRatlanteanAttack.get().floatValue();
-        dutchratHealth = ConfigHolder.SERVER.dutchratHealth.get().floatValue();
-        dutchratAttack = ConfigHolder.SERVER.dutchratAttack.get().floatValue();
-        ratsSpawnLikeMonsters = ConfigHolder.SERVER.ratsSpawnLikeMonsters.get();
-        cheesemaking = ConfigHolder.SERVER.cheesemaking.get();
-        plagueRats = ConfigHolder.SERVER.plagueRats.get();
-        milkCauldronTime = ConfigHolder.SERVER.milkCauldronTime.get();
-        ratsDigBlocks = ConfigHolder.SERVER.ratsDigBlocks.get();
-        ratsBreakCrops = ConfigHolder.SERVER.ratsBreakCrops.get();
-        ratsStealItems = ConfigHolder.SERVER.ratsStealItems.get();
-        ratsContaminateFood = ConfigHolder.SERVER.ratsContaminateFood.get();
-        golemsTargetRats = ConfigHolder.SERVER.golemsTargetRats.get();
-        villagePetShops = ConfigHolder.SERVER.villagePetShops.get();
-        villageGarbageHeaps = ConfigHolder.SERVER.villageGarbageHeaps.get();
-        villagePlagueDoctors = ConfigHolder.SERVER.villagePlagueDoctors.get();
-        disablePlastic = ConfigHolder.SERVER.disablePlastic.get();
-        ratsBreakBlockOnHarvest = ConfigHolder.SERVER.ratsBreakBlockOnHarvest.get();
-        plagueSpread = ConfigHolder.SERVER.plagueSpread.get();
-        ratStrengthThreshold = ConfigHolder.SERVER.ratStrengthThreshold.get().floatValue();
-        ratFluteDistance = ConfigHolder.SERVER.ratFluteDistance.get();
-        ratCageCramming = ConfigHolder.SERVER.ratCageCramming.get();
-        ratUpdateDelay = ConfigHolder.SERVER.ratUpdateDelay.get();
-        tokenDropRate = ConfigHolder.SERVER.tokenDropRate.get();
-        disableRatlantis = ConfigHolder.SERVER.disableRatlantis.get();
-        ratlantisDimensionId = ConfigHolder.SERVER.ratlantisDimensionId.get();
-        ratlantisPortalExitDimension = ConfigHolder.SERVER.ratlantisPortalExitDimension.get();
-        maxDestroyedLeaves = ConfigHolder.SERVER.maxDestroyedLeaves.get();
-        blackDeathHealth = ConfigHolder.SERVER.blackDeathHealth.get().floatValue();
-        blackDeathAttack = ConfigHolder.SERVER.blackDeathAttack.get().floatValue();
-        ratDespawnFarDistance = ConfigHolder.SERVER.ratDespawnFarDistance.get();
-        ratDespawnCloseDistance = ConfigHolder.SERVER.ratDespawnCloseDistance.get();
-        ratDespawnRandomChance = ConfigHolder.SERVER.ratDespawnRandomChance.get();
-        ratFartNoises = ConfigHolder.SERVER.ratFartNoises.get();
-        ratRFTransferBasic = ConfigHolder.SERVER.ratRFTransferBasic.get();
-        ratRFTransferAdvanced = ConfigHolder.SERVER.ratRFTransferAdvanced.get();
-        ratRFTransferElite = ConfigHolder.SERVER.ratRFTransferElite.get();
-        ratRFTransferExtreme = ConfigHolder.SERVER.ratRFTransferExtreme.get();
-        ratVoodooDistance = ConfigHolder.SERVER.ratVoodooDistance.get();
-        addLoot = ConfigHolder.SERVER.addLoot.get();
-        defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
-        maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
-        garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
-        ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
-        piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
+        try {
+            spawnRats = ConfigHolder.SERVER.spawnRats.get();
+            spawnPiper = ConfigHolder.SERVER.spawnPiper.get();
+            ratSpawnRate = ConfigHolder.SERVER.ratSpawnRate.get();
+            ratSpawnDecrease = ConfigHolder.SERVER.ratSpawnDecrease.get();
+            piperSpawnDecrease = ConfigHolder.SERVER.piperSpawnDecrease.get();
+            piperSpawnRate = ConfigHolder.SERVER.piperSpawnRate.get();
+            piperHatDropRate = ConfigHolder.SERVER.piperHatDropRate.get().floatValue();
+            archeologistHatSpawnRate = ConfigHolder.SERVER.archeologistHatSpawnRate.get().floatValue();
+            ratlanteanAutomatonHealth = ConfigHolder.SERVER.ratlanteanAutomatonHealth.get().floatValue();
+            ratlanteanAutomatonAttack = ConfigHolder.SERVER.ratlanteanAutomatonAttack.get().floatValue();
+            neoRatlanteanHealth = ConfigHolder.SERVER.neoRatlanteanHealth.get().floatValue();
+            neoRatlanteanAttack = ConfigHolder.SERVER.neoRatlanteanAttack.get().floatValue();
+            dutchratHealth = ConfigHolder.SERVER.dutchratHealth.get().floatValue();
+            dutchratAttack = ConfigHolder.SERVER.dutchratAttack.get().floatValue();
+            ratsSpawnLikeMonsters = ConfigHolder.SERVER.ratsSpawnLikeMonsters.get();
+            cheesemaking = ConfigHolder.SERVER.cheesemaking.get();
+            plagueRats = ConfigHolder.SERVER.plagueRats.get();
+            milkCauldronTime = ConfigHolder.SERVER.milkCauldronTime.get();
+            ratsDigBlocks = ConfigHolder.SERVER.ratsDigBlocks.get();
+            ratsBreakCrops = ConfigHolder.SERVER.ratsBreakCrops.get();
+            ratsStealItems = ConfigHolder.SERVER.ratsStealItems.get();
+            ratsContaminateFood = ConfigHolder.SERVER.ratsContaminateFood.get();
+            golemsTargetRats = ConfigHolder.SERVER.golemsTargetRats.get();
+            villagePetShops = ConfigHolder.SERVER.villagePetShops.get();
+            villageGarbageHeaps = ConfigHolder.SERVER.villageGarbageHeaps.get();
+            villagePlagueDoctors = ConfigHolder.SERVER.villagePlagueDoctors.get();
+            disablePlastic = ConfigHolder.SERVER.disablePlastic.get();
+            ratsBreakBlockOnHarvest = ConfigHolder.SERVER.ratsBreakBlockOnHarvest.get();
+            plagueSpread = ConfigHolder.SERVER.plagueSpread.get();
+            ratStrengthThreshold = ConfigHolder.SERVER.ratStrengthThreshold.get().floatValue();
+            ratFluteDistance = ConfigHolder.SERVER.ratFluteDistance.get();
+            ratCageCramming = ConfigHolder.SERVER.ratCageCramming.get();
+            ratUpdateDelay = ConfigHolder.SERVER.ratUpdateDelay.get();
+            tokenDropRate = ConfigHolder.SERVER.tokenDropRate.get();
+            disableRatlantis = ConfigHolder.SERVER.disableRatlantis.get();
+            ratlantisDimensionId = ConfigHolder.SERVER.ratlantisDimensionId.get();
+            ratlantisPortalExitDimension = ConfigHolder.SERVER.ratlantisPortalExitDimension.get();
+            maxDestroyedLeaves = ConfigHolder.SERVER.maxDestroyedLeaves.get();
+            blackDeathHealth = ConfigHolder.SERVER.blackDeathHealth.get().floatValue();
+            blackDeathAttack = ConfigHolder.SERVER.blackDeathAttack.get().floatValue();
+            ratDespawnFarDistance = ConfigHolder.SERVER.ratDespawnFarDistance.get();
+            ratDespawnCloseDistance = ConfigHolder.SERVER.ratDespawnCloseDistance.get();
+            ratDespawnRandomChance = ConfigHolder.SERVER.ratDespawnRandomChance.get();
+            ratFartNoises = ConfigHolder.SERVER.ratFartNoises.get();
+            ratRFTransferBasic = ConfigHolder.SERVER.ratRFTransferBasic.get();
+            ratRFTransferAdvanced = ConfigHolder.SERVER.ratRFTransferAdvanced.get();
+            ratRFTransferElite = ConfigHolder.SERVER.ratRFTransferElite.get();
+            ratRFTransferExtreme = ConfigHolder.SERVER.ratRFTransferExtreme.get();
+            ratVoodooDistance = ConfigHolder.SERVER.ratVoodooDistance.get();
+            addLoot = ConfigHolder.SERVER.addLoot.get();
+            defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
+            maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
+            garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
+            ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
+            piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
+        }catch (Exception e){
+            RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
+            e.printStackTrace();
+        }
     }
 }
