@@ -4,7 +4,6 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class RatConfig {
     public static boolean spawnRats = true;
-    public static boolean ratsDespawn = true;
     public static boolean spawnPiper = true;
     public static boolean ratOverworldOnly = false;
     public static boolean piperOverworldOnly = true;
@@ -70,9 +69,6 @@ public class RatConfig {
     public static void bakeServer(final ModConfig config) {
 
         spawnRats = ConfigHolder.SERVER.spawnRats.get();
-        ratsDespawn = ConfigHolder.SERVER.ratsDespawn.get();
-        ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
-        piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
         spawnPiper = ConfigHolder.SERVER.spawnPiper.get();
         ratSpawnRate = ConfigHolder.SERVER.ratSpawnRate.get();
         ratSpawnDecrease = ConfigHolder.SERVER.ratSpawnDecrease.get();
@@ -125,5 +121,7 @@ public class RatConfig {
         defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
         maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
         garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
+        ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
+        piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
     }
 }
