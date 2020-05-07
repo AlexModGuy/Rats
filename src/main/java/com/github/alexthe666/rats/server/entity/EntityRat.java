@@ -2216,8 +2216,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (!super.processInteract(player, hand)) {
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CARRAT)) {
                 if (player.getFoodStats().needFood()) {
-                    player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel() + 1);
-                    player.getFoodStats().setFoodSaturationLevel(player.getFoodStats().getSaturationLevel() + 0.1F);
+                    player.getFoodStats().addStats(1, 0.1F);
                     player.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
                     for (int i = 0; i < 8; i++) {
                         double d0 = this.rand.nextGaussian() * 0.02D;
