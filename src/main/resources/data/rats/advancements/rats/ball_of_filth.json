@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "rats:cheese"
+            "item": "rats:filth_corruption"
         },
         "title": {
             "translate": "advancements.rats.ball_of_filth.title"
