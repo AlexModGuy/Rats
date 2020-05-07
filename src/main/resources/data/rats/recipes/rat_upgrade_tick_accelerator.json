@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "HCH",
+    "HTH",
     "CUC",
     "HCH"
   ],
@@ -15,6 +15,9 @@
     "U": {
       "item": "rats:rat_upgrade_basic",
       "data": 0
+    },
+    "T": {
+      "item": "rats:tangled_rat_tails"
     }
   },
   "result": {
