@@ -256,6 +256,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_WHITELIST = new ItemRatListUpgrade("rat_upgrade_whitelist", 0, 3, true);
 
+    public static final Item RAT_UPGRADE_REPLANTER = new ItemRatUpgrade("rat_upgrade_replanter", 0, 1);
+
     public static final Item RAT_UPGRADE_FLIGHT = new ItemRatUpgrade("rat_upgrade_flight", 0, 3);
 
     public static final Item RAT_UPGRADE_DRAGON = new ItemRatUpgrade("rat_upgrade_dragon", 1, 5);

@@ -276,6 +276,8 @@
   "item.rats.rat_upgrade_ratinator0.desc": "Half Machine, Half Rodent.",
   "item.rats.rat_upgrade_ratinator1.desc": "Fires dual lasers at targets",
   "item.rats.rat_upgrade_ratinator2.desc": "§b80 Base Rat Armor",
+  "item.rats.rat_upgrade_replanter": "Rat Upgrade: Replanter",
+  "item.rats.rat_upgrade_replanter0.desc": "Rat does not break crops when harvesting them",
   "item.rats.rat_upgrade_psychic": "Rat Upgrade: Psychic",
   "item.rats.rat_upgrade_psychic0.desc": "Extremely fast health regeneration",
   "item.rats.rat_upgrade_psychic1.desc": "Summons portals that attack targets",

@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.CropsBlock;
@@ -108,7 +109,8 @@ public class RatAIHarvestCrops extends Goal {
                     }
                     this.entity.fleePos = this.targetBlock;
                     this.entity.world.destroyBlock(targetBlock, false);
-                    if (!RatConfig.ratsBreakBlockOnHarvest && block.getBlock() instanceof CropsBlock) {
+
+                    if ((!RatConfig.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER)) && block.getBlock() instanceof CropsBlock) {
                         this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
                     }
                     this.targetBlock = null;
