@@ -79,7 +79,7 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
             }
             this.riderY += jumpAdd;
         }
-        if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 7 && this.canEntityBeSeen(this.getAttackTarget()) && this.getAttackTarget().isAlive()) {
+        if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 5 && this.canEntityBeSeen(this.getAttackTarget()) && this.getAttackTarget().isAlive()) {
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
