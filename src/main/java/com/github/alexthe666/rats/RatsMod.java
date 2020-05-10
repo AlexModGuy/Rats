@@ -111,7 +111,5 @@ public class RatsMod {
 
     private void setupClient(FMLClientSetupEvent event) {
         PROXY.preInit();
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_GRASS, RenderType.getCutout());
     }
 }
