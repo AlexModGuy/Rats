@@ -26,6 +26,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -82,6 +83,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private List<IRecipe> currentApplicableRecipes = new ArrayList<>();
     private IRecipe selectedRecipe = null;
     private int selectedRecipeIndex = 0;
+    private boolean forceUpdateRecipes = false;
 
     public TileEntityRatCraftingTable() {
         super(RatsTileEntityRegistry.RAT_CRAFTING_TABLE);
@@ -273,8 +275,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         if (index == 0 && !flag) {
             this.totalCookTime = 200;
             this.cookTime = 0;
-            this.currentApplicableRecipes.clear();
-            this.currentApplicableRecipes = findMatchingRecipesFor(stack);
+            this.forceUpdateRecipes = true;
             this.selectedRecipe = null;
             this.selectedRecipeIndex = 0;
             this.markDirty();
@@ -326,12 +327,18 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         boolean flag = false;
         hasRat = false;
         this.prevCookTime = cookTime;
+        if(forceUpdateRecipes){
+            this.currentApplicableRecipes.clear();
+            this.currentApplicableRecipes = findMatchingRecipesFor(this.inventory.get(0));
+            forceUpdateRecipes = false;
+        }
         for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(pos.getX(), (double) pos.getY() + 1, pos.getZ(), (double) pos.getX() + 1, (double) pos.getY() + 2, (double) pos.getZ() + 1))) {
             if (rat.isTamed() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING)) {
                 hasRat = true;
             }
         }
         if (!this.currentApplicableRecipes.isEmpty()) {
+            selectedRecipeIndex = MathHelper.clamp(selectedRecipeIndex, 0, currentApplicableRecipes.size()-1);
             if (this.currentApplicableRecipes.size() <= 1) {
                 selectedRecipe = currentApplicableRecipes.get(0);
             } else {
@@ -429,14 +436,12 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         ItemStackHelper.loadAllItems(compound, this.inventory);
         this.cookTime = compound.getInt("CookTime");
         this.totalCookTime = compound.getInt("CookTimeTotal");
-
         if (!compound.getString("CustomName").isEmpty()) {
             this.furnaceCustomName = compound.getString("CustomName");
         }
-        this.currentApplicableRecipes.clear();
-        this.currentApplicableRecipes = findMatchingRecipesFor(this.inventory.get(0));
+        this.forceUpdateRecipes = true;
         this.selectedRecipe = null;
-        this.selectedRecipeIndex = 0;
+        this.selectedRecipeIndex = compound.getInt("SelectedRecipeIndex");
     }
 
     public CompoundNBT write(CompoundNBT compound) {
@@ -448,6 +453,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         if (this.hasCustomName()) {
             compound.putString("CustomName", this.furnaceCustomName);
         }
+        compound.putInt("SelectedRecipeIndex", this.selectedRecipeIndex);
         return compound;
     }
 
