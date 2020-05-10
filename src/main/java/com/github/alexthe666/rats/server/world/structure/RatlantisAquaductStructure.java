@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.structure;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +22,7 @@ public class RatlantisAquaductStructure extends ScatteredStructure<NoFeatureConf
     }
 
     public String getStructureName() {
-        return "RatlantisAquaduct";
+        return RatsMod.MODID + ":RatlantisAquaduct";
     }
 
     public int getSize() {
