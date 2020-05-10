@@ -98,7 +98,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
     }
 
     public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return canSpawnAtPos(world, pos) && MobEntity.canSpawnOn(entityType, world, reason, pos, rand);
+        return canSpawnAtPos(world, pos) || reason == SpawnReason.SPAWNER;
     }
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
