@@ -2512,6 +2512,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return RAT_TEXTURES[MathHelper.clamp(this.getColorVariant(), 0, RAT_TEXTURES.length - 1)];
     }
 
+    public ITextComponent getName() {
+        if (this.hasPlague()) {
+            return new TranslationTextComponent("entity.rats.plague_rat");
+        }
+        return super.getName(); // Forge: Use getter to allow overriding by mods
+    }
+
     public boolean shouldHuntAnimal() {
         return this.getCommandInteger() == 3;
     }
@@ -2520,11 +2527,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         return this.getCommandInteger() == 7;
     }
 
-    public ITextComponent getName() {
-        if (this.hasPlague()) {
-            return new TranslationTextComponent("entity.rats.plague_rat");
-        }
-        return super.getName(); // Forge: Use getter to allow overriding by mods
+    public boolean shouldWander() {
+        int cmd = this.getCommandInteger();
+        return cmd != 4 && cmd != 5 && cmd != 6;
     }
 
     public boolean shouldEyesGlow() {
@@ -3134,4 +3139,5 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
     public boolean hasFlightUpgrade() {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE);
     }
+
 }
