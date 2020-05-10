@@ -47,6 +47,7 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -108,7 +109,9 @@ public class ServerEvents {
                         event.getEntityPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
                     } else if (isMilk(event.getItemStack())) {
                         IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
-                        fluidHandler.drain(1000, true);
+                        if (fluidHandler != null) {
+                            fluidHandler.drain(Fluid.BUCKET_VOLUME, true);
+                        }
                     }
                 }
                 event.setUseItem(Event.Result.DENY);
@@ -122,7 +125,7 @@ public class ServerEvents {
             return true;
         }
         FluidStack fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack != null && fluidStack.amount >= 1000 && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"));
+        return fluidStack != null && fluidStack.amount >= Fluid.BUCKET_VOLUME && (fluidStack.getFluid().getUnlocalizedName().contains("milk") || fluidStack.getFluid().getUnlocalizedName().contains("Milk"));
     }
 
     @SubscribeEvent

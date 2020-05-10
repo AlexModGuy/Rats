@@ -197,6 +197,8 @@ public class RatsItemRegistry {
     public static Item RAT_UPGRADE_CREATIVE = new ItemRatUpgrade("rat_upgrade_creative", 3, 0);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_speed")
     public static Item RAT_UPGRADE_SPEED = new ItemRatUpgrade("rat_upgrade_speed");
+    @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_replanter")
+    public static Item RAT_UPGRADE_REPLANTER = new ItemRatUpgrade("rat_upgrade_replanter", 0, 1);
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_platter")
     public static Item RAT_UPGRADE_PLATTER = new ItemRatUpgrade("rat_upgrade_platter");
     @GameRegistry.ObjectHolder(RatsMod.MODID + ":rat_upgrade_health")
