@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.ItemUseContextAccess;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.ai.goal.Goal;
@@ -69,7 +70,7 @@ public class RatAIHarvestPlacer extends Goal {
                         seedStack.setCount(1);
                         this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
                         BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(targetBlock), new Vec3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
-                        ItemUseContext itemusecontext = new ItemUseContext(null, Hand.MAIN_HAND, raytrace);
+                        ItemUseContext itemusecontext = new ItemUseContextAccess(entity.world, null, Hand.MAIN_HAND, entity.getHeldItem(Hand.MAIN_HAND),  raytrace);
                         BlockState BlockState1 = blockItem.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
                         entity.world.setBlockState(targetBlock, BlockState1);
                         if (entity.isEntityInsideOpaqueBlock()) {
