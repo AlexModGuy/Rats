@@ -357,7 +357,7 @@ public class EntityNeoRatlantean extends EntityMob implements IAnimatedEntity, I
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = followDist * 5;
-            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (entitylivingbase != null && entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
 
                 EntityNeoRatlantean.this.moveHelper.setMoveTo(entitylivingbase.posX + rand.nextInt(10) - 20, entitylivingbase.posY + 3, entitylivingbase.posZ + rand.nextInt(10) - 20, 1D);
             }

@@ -383,7 +383,7 @@ public class EntityMarbleCheeseGolem extends EntityMob implements IAnimatedEntit
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
-            if (entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (entitylivingbase != null && entitylivingbase.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
                 EntityMarbleCheeseGolem.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY + 1, entitylivingbase.posZ, 1D);
             }
         }

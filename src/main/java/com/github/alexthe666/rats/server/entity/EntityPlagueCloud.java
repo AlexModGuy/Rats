@@ -288,7 +288,7 @@ public class EntityPlagueCloud extends EntityMob implements IPlagueLegion {
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if (entitylivingbase.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (entitylivingbase != null && entitylivingbase.getDistanceSq(this.parentEntity) >= 2.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
 
                 EntityPlagueCloud.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY + 1.0D, entitylivingbase.posZ, 0.5D);
 

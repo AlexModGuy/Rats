@@ -220,7 +220,7 @@ public class EntityRatlanteanSpirit extends EntityMob implements IAnimatedEntity
         public void updateTask() {
             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if (entitylivingbase.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
+            if (entitylivingbase != null && entitylivingbase.getDistanceSq(this.parentEntity) >= 4096.0D || !this.parentEntity.canEntityBeSeen(entitylivingbase)) {
 
                 EntityRatlanteanSpirit.this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 0.5D);
 
