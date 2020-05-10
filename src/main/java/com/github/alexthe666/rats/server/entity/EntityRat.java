@@ -19,6 +19,7 @@ import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
+import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.BlockState;
@@ -93,7 +94,7 @@ import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntityRat extends TameableEntity implements IAnimatedEntity {
+public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatlantean {
 
     public static final Animation ANIMATION_EAT = Animation.create(10);
     public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);
@@ -2483,7 +2484,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
         if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != Difficulty.PEACEFUL && RatConfig.plagueRats && reason != SpawnReason.CONVERSION) {
             this.setPlague(true);
         }
-        if (this.dimension == DimensionType.getById(RatConfig.ratlantisDimensionId)) {
+        this.world.getDimension();
+        if (this.world.getDimension().getType() == RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE) {
             this.setToga(true);
         }
         if (this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
@@ -2494,11 +2496,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity {
                 this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(Blocks.PUMPKIN));
                 this.inventoryArmorDropChances[EquipmentSlotType.HEAD.getIndex()] = 1.0F;
             }
-        }
-        if (this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
-            LocalDate localdate = LocalDate.now();
-            int i = localdate.get(ChronoField.DAY_OF_MONTH);
-            int j = localdate.get(ChronoField.MONTH_OF_YEAR);
             if ((j == 11 && i > 15 || j == 12 || j == 1 && i <= 10) && this.rand.nextFloat() <= 0.25F) {
                 this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT));
                 this.inventoryArmorDropChances[EquipmentSlotType.HEAD.getIndex()] = 1.0F;
