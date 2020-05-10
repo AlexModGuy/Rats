@@ -106,7 +106,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
         if (!isDead) {
             double dist = 20F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
-                if (rat.isOwner(this)) {
+                if (rat.isOwnerMonster() && rat.getOwnerMonster() != null && rat.getOwnerMonster().equals(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
                     rat.fleePos = new BlockPos(rat);
@@ -228,8 +228,7 @@ public class EntityBlackDeath extends EntityMob implements IPlagueLegion, IRange
                 if (!world.isRemote) {
                     world.spawnEntity(rat);
                 }
-                rat.setTamed(true);
-                rat.setOwnerId(this.getUniqueID());
+                rat.setMonsterOwnerId(this.getUniqueID());
                 rat.setOwnerMonster(true);
                 rat.setCommand(RatCommand.FOLLOW);
                 if (this.getAttackTarget() != null) {

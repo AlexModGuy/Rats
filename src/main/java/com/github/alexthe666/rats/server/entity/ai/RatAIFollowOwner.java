@@ -35,8 +35,11 @@ public class RatAIFollowOwner extends EntityAIBase {
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute() {
-        if (rat.isTamed() && rat.isFollowing()) {
+        if ((rat.isTamed() || rat.isOwnerMonster()) && rat.isFollowing()) {
             EntityLivingBase entitylivingbase = this.rat.getOwner();
+            if(rat.isOwnerMonster()){
+                entitylivingbase = this.rat.getOwnerMonster();
+            }
             if (entitylivingbase == null) {
                 return false;
             } else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer) entitylivingbase).isSpectator()) {

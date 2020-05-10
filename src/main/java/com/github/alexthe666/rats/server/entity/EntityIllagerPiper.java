@@ -37,8 +37,8 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "illager_piper"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.VARINT);
-    private final PiperAIStrife aiArrowAttack = new PiperAIStrife(this, 1.0D, 20, 15.0F);
-    private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+    private final PiperAIStrife aiArrowAttack = new PiperAIStrife(this, 0.6D, 20, 15.0F);
+    private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 0.8D, false);
     private int ratCooldown = 0;
     private int fluteTicks = 0;
 
@@ -80,7 +80,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         if (!isDead) {
             double dist = 20F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB(this.posX - dist, this.posY - dist, this.posZ - dist, this.posX + dist, this.posY + dist, this.posZ + dist))) {
-                if (rat.isOwner(this)) {
+                if (rat.isOwnerMonster() && rat.getOwnerMonster() != null && rat.getOwnerMonster().equals(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
                     rat.fleePos = new BlockPos(rat);
@@ -174,8 +174,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
             if (!world.isRemote) {
                 world.spawnEntity(rat);
             }
-            rat.setTamed(true);
-            rat.setOwnerId(this.getUniqueID());
+            rat.setMonsterOwnerId(this.getUniqueID());
             rat.setOwnerMonster(true);
             rat.setCommand(RatCommand.FOLLOW);
             if (this.getAttackTarget() != null) {
