@@ -40,6 +40,8 @@ public class RenderRat extends RenderLiving<EntityRat> {
     private static final ResourceLocation DINO = new ResourceLocation("rats:textures/entity/rat/patreon/rat_dino.png");
     private static final ResourceLocation RATALA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_ratala.png");
     private static final ResourceLocation FRIAR = new ResourceLocation("rats:textures/entity/rat/patreon/rat_friar.png");
+    private static final ResourceLocation RIDDLER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_riddler.png");
+    private static final ResourceLocation JOKER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_joker.png");
 
     public RenderRat() {
         super(Minecraft.getMinecraft().getRenderManager(), RAT_MODEL, 0.15F);
@@ -136,6 +138,12 @@ public class RenderRat extends RenderLiving<EntityRat> {
                 }
                 if (str.contains("friar") || str.contains("Friar")) {
                     return FRIAR;
+                }
+                if (str.contains("riddler") || str.contains("Riddler")) {
+                    return RIDDLER;
+                }
+                if (str.contains("joker") || str.contains("Joker")) {
+                    return JOKER;
                 }
             }
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);
