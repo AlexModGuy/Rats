@@ -633,7 +633,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         if (compound.hasKey("CustomName", 8)) {
             this.setCustomNameTag(compound.getString("CustomName"));
         }
-        if (compound.hasKey("MonsterOwnerUUID", 8)) {
+        if (compound.hasKey("MonsterOwnerUUID", 8) && !compound.getString("MonsterOwnerUUID").equals("")) {
             String s = compound.getString("MonsterOwnerUUID");
             this.setMonsterOwnerId(UUID.fromString(s));
             this.setOwnerMonster(true);
