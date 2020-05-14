@@ -857,7 +857,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     @Override
     public void onLivingUpdate() {
         this.setRatStatus(RatStatus.IDLE);
-        if (this.getUpgradeSlot() != prevUpgrade) {
+        if (!ItemStack.areItemsEqual(this.getUpgradeSlot(), prevUpgrade)) {
             this.onUpgradeChanged();
         }
         super.onLivingUpdate();
