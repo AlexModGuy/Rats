@@ -156,6 +156,8 @@ public class RatsItemRegistry {
 
     public static final Item MILITARY_HAT = new ItemHat("military_hat", 12);
 
+    public static final Item AVIATOR_HAT = new ItemHat("aviator_hat", 13);
+
     public static final Item PARTY_HAT_1 = new ItemHat("party_hat_1", 11);
 
     public static final Item PARTY_HAT_2 = new ItemHat("party_hat_2", 11);
@@ -184,6 +186,10 @@ public class RatsItemRegistry {
 
     public static final Item GEM_OF_RATLANTIS = new ItemGeneric("gem_of_ratlantis");
 
+    public static final Item ORATCHALCUM_INGOT = new ItemGeneric("oratchalcum_ingot");
+
+    public static final Item ORATCHALCUM_NUGGET = new ItemGeneric("oratchalcum_nugget");
+
     public static final Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
 
     public static final Item ANCIENT_SAWBLADE = new ItemGeneric("ancient_sawblade");
@@ -207,6 +213,8 @@ public class RatsItemRegistry {
     public static final Item GHOST_PIRAT_CUTLASS = new ItemPiratCutlass(true);
 
     public static final Item DUTCHRAT_WHEEL = new ItemGeneric("dutchrat_wheel");
+
+    public static final Item BIPLANE_WING = new ItemGeneric("biplane_wing");
 
     public static final Item RATFISH = new ItemGenericFood(1, 0.35F, false, false, false, "ratfish");
 

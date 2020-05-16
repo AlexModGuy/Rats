@@ -41,8 +41,13 @@ public class RatsBlockRegistry {
     public static final Block COMPRESSED_GARBAGE = new BlockGarbage("compressed_garbage", 2.0D);
     public static final Block PURIFIED_GARBAGE = new BlockPurifiedGarbage();
     public static final Block PIED_GARBAGE = new BlockPiedGarbage();
+    public static final Block CHEESE_ORE = new BlockGeneric("cheese_ore", Material.ROCK, 2.0F, 3.0F, SoundType.STONE);
+    public static final Block RATLANTEAN_GEM_ORE = new BlockGeneric("ratlantean_gem_ore", Material.ROCK, 8.0F, 10.0F, SoundType.STONE);
+    public static final Block ORATCHALCUM_ORE = new BlockGeneric("oratchalcum_ore", Material.ROCK, 12.0F, 100.0F, SoundType.STONE);
+    public static final Block ORATCHALCUM_BLOCK = new BlockGeneric("oratchalcum_block", Material.ROCK, 10.0F, 100.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE_RAW = new BlockGeneric("marbled_cheese_raw", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE = new BlockGeneric("marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
+    public static final Block BLACK_MARBLED_CHEESE = new BlockGeneric("black_marbled_cheese", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
     public static final Block MARBLED_CHEESE_SLAB = new BlockGenericSlab(Block.Properties.create(Material.ROCK, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE), "marbled_cheese_slab");
     public static final Block MARBLED_CHEESE_STAIRS = new BlockGenericStairs(MARBLED_CHEESE.getDefaultState(), Block.Properties.from(MARBLED_CHEESE), "marbled_cheese_stairs");
     public static final Block MARBLED_CHEESE_TILE = new BlockGeneric("marbled_cheese_tile", Material.ROCK, 2.0F, 10.0F, SoundType.STONE);
@@ -83,6 +88,7 @@ public class RatsBlockRegistry {
     public static final Block MANHOLE = new BlockGenericTrapDoor(Block.Properties.create(Material.IRON, MaterialColor.BROWN_TERRACOTTA).hardnessAndResistance(10.0F).sound(SoundType.ANVIL)).setRegistryName("rats:manhole");
     public static final Block TRASH_CAN = new BlockTrashCan();
     public static final Block RAT_ATTRACTOR = new BlockRatAttractor();
+    public static final Block AIR_RAID_SIREN = new BlockAirRaidSiren();
 
 
     @SubscribeEvent

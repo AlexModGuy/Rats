@@ -45,7 +45,7 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
 
     public void tick() {
         float sqrt = (float)this.getMotion().length();
-        if (sqrt < 0.2F || this.inGround || this.collided) {
+        if (sqrt < 0.2F || this.inGround) {
             this.remove();
         }
         super.tick();

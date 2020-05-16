@@ -2136,7 +2136,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.setMotion(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
-                if (this.getRidingEntity() instanceof EntityRatMountBase || this.getRidingEntity() instanceof EntityRattlingGun) {
+                if (this.getRidingEntity() instanceof EntityRatMountBase || this.getRidingEntity() instanceof EntityRatBaronPlane|| this.getRidingEntity() instanceof EntityRattlingGun) {
                     this.rotationYaw = this.renderYawOffset;
                     super.updateRidden();
                 } else {
@@ -3109,6 +3109,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         if (this.isPassenger() && this.getRidingEntity() instanceof EntityRattlingGun) {
             return 5;
+        }
+        if (this.isPassenger() && this.getRidingEntity() instanceof EntityRatBaronPlane) {
+            return 3;
         }
         return 0;//normal (down + riding)
     }

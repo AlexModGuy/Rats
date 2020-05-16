@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "rats:oratchalcum_nugget"
+    }
+  },
+  "result": {
+    "item": "rats:oratchalcum_ingot"
+  }
+}

@@ -48,6 +48,8 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatAutomatonMount> RAT_MOUNT_AUTOMATON = registerEntity(EntityType.Builder.create(EntityRatAutomatonMount::new, EntityClassification.MISC).size(2F, 3.5F), "rat_mount_automaton");
     public static final EntityType<EntityRatKing> RAT_KING = registerEntity(EntityType.Builder.create(EntityRatKing::new, EntityClassification.MONSTER).size(2F, 0.5F), "rat_king");
     public static final EntityType<EntityRatShot> RAT_SHOT = registerEntity(EntityType.Builder.create(EntityRatShot::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatShot::new), "rat_shot");
+    public static final EntityType<EntityRatBaron> RAT_BARON = registerEntity(EntityType.Builder.create(EntityRatBaron::new, EntityClassification.MONSTER).size(0.5F, 0.5F), "rat_baron");
+    public static final EntityType<EntityRatBaronPlane> RAT_BARON_PLANE = registerEntity(EntityType.Builder.create(EntityRatBaronPlane::new, EntityClassification.MONSTER).size(3.5F, 3.0F), "rat_baron_plane");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){

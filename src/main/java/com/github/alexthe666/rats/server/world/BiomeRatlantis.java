@@ -33,6 +33,9 @@ public class BiomeRatlantis extends Biome {
         super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).depth(1).waterFogColor(270131).parent((String)null));
         this.addStructure(Feature.MINESHAFT.withConfiguration(new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL)));
         this.addStructure(Feature.SHIPWRECK.withConfiguration( new ShipwreckConfig(false)));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.CHEESE_ORE.getDefaultState(), 6)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.RATLANTEAN_GEM_ORE.getDefaultState(), 6)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 32))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.ORATCHALCUM_ORE.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 20))));
         this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
         this.addStructure(RatsWorldRegistry.RAT_RUINS.withConfiguration( new NoFeatureConfig()));
         this.addStructure(RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration( new NoFeatureConfig()));

@@ -132,6 +132,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_ATTRACTOR, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_GRASS, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AIR_RAID_SIREN, RenderType.getCutout());
 
     }
 
@@ -180,6 +181,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.GHOST_PIRAT, manager -> new RenderGhostPirat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_KING, manager -> new RenderRatKing());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SHOT, manager -> new RenderRatShot());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON, manager -> new RenderRat());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON_PLANE, manager -> new RenderRatBaronPlane());
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
@@ -340,8 +343,10 @@ public class ClientProxy extends CommonProxy {
             return new ModelHaloHat(0.5F);
         }else  if(index == 11){
             return new ModelPartyHat(0.5F);
-        }else {
+        }else if(index == 12){
             return new ModelMilitaryHat(1.2F);
+        }else {
+            return new ModelAviatorHat(1.0F);
         }
     }
 
@@ -468,5 +473,11 @@ public class ClientProxy extends CommonProxy {
         if (refrencedRat != null) {
             Minecraft.getInstance().displayGuiScreen(new GuiRadiusStaff(refrencedRat));
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float getPartialTicks() {
+        return Minecraft.getInstance().getRenderPartialTicks();
     }
 }

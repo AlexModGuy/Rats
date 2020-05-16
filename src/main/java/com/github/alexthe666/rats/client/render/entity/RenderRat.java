@@ -1,9 +1,11 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.model.ModelBiplane;
 import com.github.alexthe666.rats.client.model.ModelPinkie;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.EntityRatBaronPlane;
 import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
@@ -153,6 +155,16 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
                     if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof BipedModel) {
                         RenderRattlingGun.GUN_MODEL.pivot.translateRotate(matrixStackIn);
                     //GlStateManager.translatef(0.0F, -0.7F, 0.25F);
+                    }
+                }
+            }
+            if(rat.getRidingEntity() instanceof EntityRatBaronPlane){
+                Entity riding = rat.getRidingEntity();
+                if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
+                    EntityRenderer playerRender = Minecraft.getInstance().getRenderManager().getRenderer(riding);
+                    if (playerRender instanceof LivingRenderer && ((LivingRenderer) playerRender).getEntityModel() instanceof ModelBiplane) {
+                        matrixStackIn.translate(0.0F, -0.1F, 0.45F);
+                        ((ModelBiplane) ((LivingRenderer) playerRender).getEntityModel()).body1.translateRotate(matrixStackIn);
                     }
                 }
             }
