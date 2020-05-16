@@ -7,31 +7,31 @@
   ],
   "key": {
     "A": {
-      "item": "rats:arcane_technology"
+      "item": "rats:feral_rat_claw"
     },
     "B": {
       "item": "rats:pirat_hat"
     },
     "C": {
-      "item": "rats:psionic_rat_brain"
+      "item": "rats:ratlantean_flame"
     },
     "D": {
       "item": "rats:rat_toga"
     },
     "E": {
-      "item": "rats:gem_of_ratlantis"
+      "item": "rats:ratlantis_rat_skull"
     },
     "F": {
-      "item": "rats:dutchrat_wheel"
-    },
-    "G": {
       "item": "rats:ratfish"
     },
+    "G": {
+      "item": "rats:oratchalcum_ingot"
+    },
     "H": {
-      "item": "rats:feral_rat_claw"
+      "item": "rats:gem_of_ratlantis"
     },
     "I": {
-      "item": "rats:ratlantean_flame"
+      "item": "rats:ratglove_petals"
     }
   },
   "result": {

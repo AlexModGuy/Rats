@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import com.sun.jna.platform.unix.X11;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.BodyController;
 import net.minecraft.entity.ai.controller.LookController;
@@ -48,6 +50,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
     private boolean hasStartedToScorch = false;
     private LivingEntity prevAttackTarget = null;
     private BlockPos escortPosition = null;
+    private int soundLoopCounter = 0;
     private static final Predicate<LivingEntity> PLAYER = new Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
             return (entity instanceof PlayerEntity || entity instanceof AbstractVillagerEntity) && entity.isAlive();
@@ -90,6 +93,14 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         return false;
     }
 
+    public void fall(float distance, float damageMultiplier) {
+
+    }
+
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(1, new AIHuntPlayers(this));
@@ -124,6 +135,14 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
 
     public void tick() {
         super.tick();
+        if(soundLoopCounter == 0){
+            this.playSound(RatsSoundRegistry.BIPLANE_LOOP, 10, 1);
+        }
+        soundLoopCounter++;
+        if(soundLoopCounter > 90){
+            soundLoopCounter = 0;
+        }
+
         this.prevPlanePitch = this.getPlanePitch();
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);

@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.github.alexthe666.rats.server.world.structure.DutchratShipStructure;
-import com.github.alexthe666.rats.server.world.structure.RatlantisAquaductStructure;
-import com.github.alexthe666.rats.server.world.structure.RatlantisRuinsStructure;
-import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
+import com.github.alexthe666.rats.server.world.structure.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
@@ -26,6 +23,7 @@ public class RatsWorldRegistry {
     public static final Structure<NoFeatureConfig> RAT_RUINS = new RatlantisRuinsStructure(NoFeatureConfig::deserialize);
     public static final Structure<NoFeatureConfig> FLYING_DUTCHRAT = new DutchratShipStructure(NoFeatureConfig::deserialize);
     public static final Structure<NoFeatureConfig> RATLANTIS_AQUADUCTS = new RatlantisAquaductStructure(NoFeatureConfig::deserialize);
+    public static final Structure<NoFeatureConfig> RUNWAY = new RunwayStructure(NoFeatureConfig::deserialize);
 
     static {
         RATLANTIS_SURFACE.setRegistryName("rats:ratlantis_surface");

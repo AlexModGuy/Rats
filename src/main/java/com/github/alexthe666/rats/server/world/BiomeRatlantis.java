@@ -39,8 +39,10 @@ public class BiomeRatlantis extends Biome {
         this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
         this.addStructure(RatsWorldRegistry.RAT_RUINS.withConfiguration( new NoFeatureConfig()));
         this.addStructure(RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration( new NoFeatureConfig()));
+        this.addStructure(RatsWorldRegistry.RUNWAY.withConfiguration( new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.RAT_RUINS.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration(new NoFeatureConfig()));
+        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.RUNWAY.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, RatlantisStructureRegistry.MARBLE_PILE.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));
         this.flowers.add(Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));

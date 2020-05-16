@@ -142,7 +142,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Feature<?>> event) {
-        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RATLANTIS_AQUADUCTS);
+        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RATLANTIS_AQUADUCTS, RatsWorldRegistry.RUNWAY);
     }
 
 

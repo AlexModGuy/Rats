@@ -1,17 +1,80 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.client.event.sound.SoundEvent;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockAirRaidSiren extends Block {
+
+    private static final VoxelShape AABB = Block.makeCuboidShape(6, 0, 6, 10, 16, 10);
 
     public BlockAirRaidSiren() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5.0F, 1000.0F).variableOpacity());
         this.setRegistryName(RatsMod.MODID, "air_raid_siren");
+    }
+
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return AABB;
+    }
+
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
+        this.playSound(player, worldIn, pos);
+        if(!worldIn.isRemote){
+            ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, false));
+            worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
+
+        }
+        for(int i = 0; i < 2; i++){
+            Random rand = worldIn.rand;
+            worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5D + (rand.nextFloat() - 0.5D) * 3, pos.getY() - 1, pos.getZ() + 0.5D + (rand.nextFloat() - 0.5D) * 3, new ItemStack(Items.IRON_INGOT)));
+        }
+        return ActionResultType.SUCCESS;
+    }
+
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if (!worldIn.isRemote) {
+            boolean flag = worldIn.isBlockPowered(pos);
+            if(flag){
+                worldIn.playSound(null, pos, RatsSoundRegistry.AIR_RAID_SIREN, SoundCategory.BLOCKS, 1, 1);
+                if(!worldIn.isRemote){
+                    ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, false));
+                    worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
+
+                }
+                for(int i = 0; i < 2; i++){
+                    Random rand = worldIn.rand;
+                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5D + (rand.nextFloat() - 0.5D) * 3, pos.getY() - 1, pos.getZ() + 0.5D + (rand.nextFloat() - 0.5D) * 3, new ItemStack(Items.IRON_INGOT)));
+                }
+            }
+
+        }
+    }
+
+    protected void playSound(@Nullable PlayerEntity player, World worldIn, BlockPos pos) {
+        worldIn.playSound(player, pos, RatsSoundRegistry.AIR_RAID_SIREN, SoundCategory.BLOCKS, 1, 1);
+
+
     }
 
     public boolean isOpaqueCube(BlockState state) {

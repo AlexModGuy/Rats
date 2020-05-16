@@ -1,4 +1,21 @@
 {
+  "biplane_loop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "rats:biplane_loop",
+        "stream": true
+      }
+    ],
+    "subtitle": "rats.subtitle.biplane_loop"
+  },
+  "air_raid_siren": {
+    "category": "neutral",
+    "sounds": [
+      "rats:air_raid_siren"
+    ],
+    "subtitle": "rats.subtitle.air_raid_siren"
+  },
   "mice_on_venus": {
     "category": "record",
     "sounds": [
