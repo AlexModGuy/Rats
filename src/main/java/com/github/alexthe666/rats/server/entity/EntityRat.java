@@ -3048,6 +3048,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     @Nullable
     private EntityType getMountEntityType() {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT)) {
+            return RatsEntityRegistry.RAT_MOUNT_BIPLANE;
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT)) {
             return RatsEntityRegistry.RAT_MOUNT_CHICKEN;
         }
@@ -3091,7 +3094,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
 
     public boolean isRidingSpecialMount() {
-        return this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType();
+        if(this.getRidingEntity() != null && getMountEntityType() != null){
+            return this.getRidingEntity().getType().equals(getMountEntityType());
+        }
+        return false;
     }
 
     public int getTailBehaviorForMount() {
@@ -3110,7 +3116,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.isPassenger() && this.getRidingEntity() instanceof EntityRattlingGun) {
             return 5;
         }
-        if (this.isPassenger() && this.getRidingEntity() instanceof EntityRatBaronPlane) {
+        if (this.isPassenger() && this.getRidingEntity() instanceof EntityRatBaronPlane || this.getRidingEntity() instanceof EntityRatBiplaneMount) {
             return 3;
         }
         return 0;//normal (down + riding)
@@ -3137,7 +3143,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean hasFlightUpgrade() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT) && this.isRidingSpecialMount();
     }
 
 }

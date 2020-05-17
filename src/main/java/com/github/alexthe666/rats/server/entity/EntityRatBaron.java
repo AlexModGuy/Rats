@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.RatAIHuntPrey;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.Goal;
@@ -14,8 +16,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
@@ -58,6 +61,14 @@ public class EntityRatBaron extends EntityRat {
             this.bossInfo.setName(this.getDisplayName());
         }
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        if (this.getRidingEntity() instanceof EntityRatBaronPlane) {
+            return SoundEvents.ENTITY_IRON_GOLEM_HURT;
+        }
+        return RatsSoundRegistry.RAT_HURT;
+    }
+
 
     public void tick() {
         super.tick();

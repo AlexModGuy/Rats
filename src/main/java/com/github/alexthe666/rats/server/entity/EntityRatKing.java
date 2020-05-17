@@ -54,6 +54,9 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
         return super.isPotionApplicable(potioneffectIn);
     }
 
+    public boolean canDespawn(double p_213397_1_) {
+        return false;
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));

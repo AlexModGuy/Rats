@@ -183,6 +183,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SHOT, manager -> new RenderRatShot());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON, manager -> new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON_PLANE, manager -> new RenderRatBaronPlane());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BIPLANE, manager -> new RenderRatBiplaneMount());
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));

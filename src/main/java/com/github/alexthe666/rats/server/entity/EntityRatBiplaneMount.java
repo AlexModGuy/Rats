@@ -1,47 +1,41 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.server.entity.ai.RatAIHurtByTarget;
+import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.google.common.base.Predicate;
-import com.sun.jna.platform.unix.X11;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.controller.BodyController;
-import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.monster.PhantomEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
+public class EntityRatBiplaneMount extends EntityRatMountBase {
 
-    private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityRatBaronPlane.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Float> PLANE_PITCH = EntityDataManager.createKey(EntityRatBaronPlane.class, DataSerializers.FLOAT);
+    public float prevPlanePitch;
+    private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityRatBiplaneMount.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> PLANE_PITCH = EntityDataManager.createKey(EntityRatBiplaneMount.class, DataSerializers.FLOAT);
     @OnlyIn(Dist.CLIENT)
     public PlaneBuffer roll_buffer;
     @OnlyIn(Dist.CLIENT)
@@ -54,23 +48,57 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
     private LivingEntity prevAttackTarget = null;
     private BlockPos escortPosition = null;
     private int soundLoopCounter = 0;
-    private static final Predicate<LivingEntity> PLAYER = new Predicate<LivingEntity>() {
-        public boolean apply(@Nullable LivingEntity entity) {
-            return (entity instanceof PlayerEntity || entity instanceof AbstractVillagerEntity) && entity.isAlive();
-        }
-    };
-    public float prevPlanePitch;
 
-    protected EntityRatBaronPlane(EntityType<? extends MobEntity> type, World world) {
-        super(type, world);
+    protected EntityRatBiplaneMount(EntityType<? extends MobEntity> type, World worldIn) {
+        super(type, worldIn);
+        this.riderY = 1.35F;
+        this.riderXZ = -0.35F;
+        this.stepHeight = 1.0F;
+        this.upgrade = RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT;
         this.moveController = new FlightMoveHelper(this);
-        this.experienceValue = 55;
         if (world.isRemote) {
             roll_buffer = new PlaneBuffer();
             pitch_buffer = new PlaneBuffer();
         }
     }
 
+    public void updatePassenger(Entity passenger) {
+        super.updatePassenger(passenger);
+        float radius = (float)0.35F;
+        float angle = (0.01745329251F * this.renderYawOffset);
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
+        double extraY = 1.35F;
+        passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
+        if (passenger instanceof LivingEntity) {
+            ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
+            ((LivingEntity) passenger).rotationYaw = this.renderYawOffset;
+            ((LivingEntity) passenger).rotationYawHead = this.renderYawOffset;
+        }
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(FIRING, Boolean.valueOf(false));
+        this.dataManager.register(PLANE_PITCH, 0F);
+    }
+
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    public void fall(float distance, float damageMultiplier) {
+
+    }
+
+    public boolean canDespawn(double p_213397_1_) {
+        return false;
+    }
+
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+
+    }
 
     public float getPlanePitch() {
         return dataManager.get(PLANE_PITCH).floatValue();
@@ -88,52 +116,12 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         dataManager.set(PLANE_PITCH, getPlanePitch() - pitch);
     }
 
-    public boolean isOnSameTeam(Entity entityIn) {
-        return super.isOnSameTeam(entityIn) || entityIn instanceof EntityRatBaron;
-    }
-
-    public boolean onLivingFall(float distance, float damageMultiplier) {
-        return false;
-    }
-
-    public void fall(float distance, float damageMultiplier) {
-
-    }
-
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new AIHuntPlayers(this));
-    }
-
-    private class AIHuntPlayers extends NearestAttackableTargetGoal<LivingEntity> {
-        private final EntityRatBaronPlane rat;
-
-        public AIHuntPlayers(EntityRatBaronPlane entityIn) {
-            super(entityIn, LivingEntity.class, 10, true, true, PLAYER);
-            this.rat = entityIn;
-        }
-        protected AxisAlignedBB getTargetableArea(double targetDistance) {
-            return this.goalOwner.getBoundingBox().grow(targetDistance, 128.0D, targetDistance);
-        }
-    }
-
-    public void setAttackTarget(@Nullable LivingEntity LivingEntityIn) {
-        super.setAttackTarget(LivingEntityIn);
-        if(LivingEntityIn != null) {
-            if (prevAttackTarget != LivingEntityIn) {
-                if (LivingEntityIn != null) {
-                    startPreyVec = new Vec3d(LivingEntityIn.getPosX(), LivingEntityIn.getPosY(), LivingEntityIn.getPosZ());
-                } else {
-                    startPreyVec = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
-                }
-                startAttackVec = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
-            }
-            prevAttackTarget = LivingEntityIn;
-        }
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
     public void tick() {
@@ -145,11 +133,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         if(soundLoopCounter > 90){
             soundLoopCounter = 0;
         }
-        for(Entity passenger : this.getPassengers()){
-            if(passenger instanceof EntityRat){
-                this.setAttackTarget(((EntityRat) passenger).getAttackTarget());
-            }
-        }
+
         this.prevPlanePitch = this.getPlanePitch();
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
@@ -157,13 +141,19 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         if (!this.onGround && this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
-        this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
+        boolean flag = false;
+        EntityRat rat = this.getRat();
+        double up = 0.08D;
+        if(rat != null && !rat.canMove()){
+            up = 0;
+        }
+        this.setMotion(this.getMotion().x, this.getMotion().y + up, this.getMotion().z);
+
         if (this.getAttackTarget() != null && startPreyVec != null && startAttackVec != null) {
             float distX = (float) (startPreyVec.x - startAttackVec.x);
             float distY = 1.5F;
             float distZ = (float) (startPreyVec.z - startAttackVec.z);
             flightTarget = new Vec3d(this.getAttackTarget().getPosX() + distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() + distZ);
-            this.tryScorchTarget();
             hasStartedToScorch = true;
             if (flightTarget != null && this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 100) {
                 flightTarget = new Vec3d(this.getAttackTarget().getPosX() - distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() - distZ);
@@ -195,11 +185,10 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
             }
             this.setFiring(true);
         }
-        if(this.getAttackTarget() == null || this.flightTarget == null  || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 9 || !this.world.isAirBlock(new BlockPos(flightTarget))){
-            if(escortPosition == null){
-                escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
-            }
-            flightTarget = getBlockInViewEscort();
+
+        if(this.flightTarget == null || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 20 || rat != null && !rat.canMove()){
+            escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
+            flightTarget = null;
         }
         if (world.isRemote) {
             if (!onGround) {
@@ -236,52 +225,6 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         }
     }
 
-    private void tryScorchTarget() {
-
-    }
-
-    public boolean canDespawn(double p_213397_1_) {
-        return false;
-    }
-
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(this.isBeingRidden() && !this.getPassengers().isEmpty()){
-            for(Entity passenger : this.getPassengers()){
-                passenger.attackEntityFrom(source, amount);
-
-            }
-            return super.attackEntityFrom(source, 0.0F);
-        }else{
-            return super.attackEntityFrom(source, amount);
-        }
-    }
-
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-    }
-
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-    }
-
-    public void updatePassenger(Entity passenger) {
-        super.updatePassenger(passenger);
-        float radius = (float) 0.35F;
-        float angle = (0.01745329251F * this.renderYawOffset);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        double extraY = 1.35F;
-        passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ);
-        if (passenger instanceof LivingEntity) {
-            ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
-            ((LivingEntity) passenger).rotationYaw = this.renderYawOffset;
-            ((LivingEntity) passenger).rotationYawHead = this.renderYawOffset;
-        }
-    }
 
     public Vec3d getBlockInViewEscort() {
         float radius = 12;
@@ -290,7 +233,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         BlockPos escortPos = this.getEscortPosition();
         BlockPos ground = this.world.getHeight(Heightmap.Type.WORLD_SURFACE, escortPos);
         int distFromGround = escortPos.getY() - ground.getY();
-        int fromHome = 30;
+        int fromHome = getRat() != null && getRat().getCommand() == RatCommand.FOLLOW ? 14 : 30;
         for (int i = 0; i < 10; i++) {
             BlockPos pos = new BlockPos(escortPos.getX() + this.getRNG().nextInt(fromHome) - fromHome / 2,
                     (distFromGround > 16 ? escortPos.getY() : escortPos.getY() + 5 + this.getRNG().nextInt(26)),
@@ -300,6 +243,15 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
             }
         }
         return null;
+    }
+
+
+    public boolean isFiring() {
+        return this.dataManager.get(FIRING).booleanValue();
+    }
+
+    public void setFiring(boolean male) {
+        this.dataManager.set(FIRING, Boolean.valueOf(male));
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
@@ -313,30 +265,20 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
     }
 
 
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FIRING, Boolean.valueOf(false));
-        this.dataManager.register(PLANE_PITCH, 0F);
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_IRON_GOLEM_HURT;
     }
 
-    public boolean isFiring() {
-        return this.dataManager.get(FIRING).booleanValue();
-    }
-
-    public void setFiring(boolean male) {
-        this.dataManager.set(FIRING, Boolean.valueOf(male));
-    }
-
-    private double getFlightSpeedModifier() {
-        return 1.0F;
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_IRON_GOLEM_DEATH;
     }
 
     protected static class FlightMoveHelper extends MovementController {
 
-        private EntityRatBaronPlane plane;
+        private EntityRatBiplaneMount plane;
 
-        protected FlightMoveHelper(EntityRatBaronPlane planeBase) {
+        protected FlightMoveHelper(EntityRatBiplaneMount planeBase) {
             super(planeBase);
             this.plane = planeBase;
         }
@@ -361,6 +303,14 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
                 this.speed = 0.1F;
                 plane.flightTarget = null;
                 return;
+            }
+            if(plane.getRat() != null){
+                if(!plane.getRat().canMove()){
+                    return;
+                }
+            }
+            if(plane.flightTarget == null && this.isUpdating()){
+                plane.flightTarget = new Vec3d(this.getX(), this.getY(), this.getZ());
             }
             if(plane.flightTarget != null) {
                 float distX = (float) (plane.flightTarget.x - plane.getPosX());
@@ -393,7 +343,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
                     double lvt_16_1_ = speed * MathHelper.cos(yawTurnHead * 0.017453292F) * Math.abs((double) distX / dist);
                     double lvt_18_1_ = speed * MathHelper.sin(yawTurnHead * 0.017453292F) * Math.abs((double) distZ / dist);
                     double lvt_20_1_ = speed * MathHelper.sin(finPitch * 0.017453292F) * Math.abs((double) distY / dist);
-                    plane.setMotion(plane.getMotion().add(lvt_16_1_ * 0.4D * plane.getFlightSpeedModifier(), lvt_20_1_ * 0.4D * plane.getFlightSpeedModifier(), lvt_18_1_ * 0.4D * plane.getFlightSpeedModifier()));
+                    plane.setMotion(plane.getMotion().add(lvt_16_1_ * 0.4D, lvt_20_1_ * 0.4D, lvt_18_1_ * 0.4D));
                 }
             }
         }

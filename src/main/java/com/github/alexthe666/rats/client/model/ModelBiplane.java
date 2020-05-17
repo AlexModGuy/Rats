@@ -4,6 +4,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityRatBaronPlane;
+import com.github.alexthe666.rats.server.entity.EntityRatBiplaneMount;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -185,6 +186,11 @@ public class ModelBiplane<T extends MobEntity> extends AdvancedEntityModel<T> {
         this.resetToDefaultPose();
         if(!t.onGround && t instanceof EntityRatBaronPlane){
             EntityRatBaronPlane plane = (EntityRatBaronPlane)t;
+            plane.roll_buffer.applyChainFlapBuffer(body1);
+            plane.pitch_buffer.applyChainWaveBuffer(body1);
+        }
+        if(!t.onGround && t instanceof EntityRatBiplaneMount){
+            EntityRatBiplaneMount plane = (EntityRatBiplaneMount)t;
             plane.roll_buffer.applyChainFlapBuffer(body1);
             plane.pitch_buffer.applyChainWaveBuffer(body1);
         }

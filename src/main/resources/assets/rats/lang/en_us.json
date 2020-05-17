@@ -421,6 +421,8 @@
   "item.rats.rat_upgrade_automaton_mount0.desc": "§6Mount Upgrade§r§7: rat gains an automaton mount",
   "item.rats.rat_upgrade_automaton_mount1.desc": "Automaton mount has 250 health and moves slowly",
   "item.rats.rat_upgrade_automaton_mount2.desc": "Cooldown on mount respawning when slain",
+  "item.rats.rat_upgrade_biplane_mount": "Rat Upgrade: Biplane Mount",
+  "item.rats.rat_upgrade_biplane_mount0.desc": "§6Mount Upgrade§r§7: rat gains a biplane mount",
   "item.rats.rat_flute": "Rat Flute",
   "item.rats.rat_flute.desc0": "Commands all tamed rats within the local area",
   "item.rats.rat_flute.desc1": "Sneak and use to change command",
