@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DAD",
+    "BUB",
+    "DWD"
+  ],
+  "key": {
+    "A": {
+      "item": "rats:aviator_hat"
+    },
+    "W": {
+      "item": "rats:biplane_wing"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    },
+    "B": {
+      "item": "rats:ratbot_barrel"
+    },
+    "D": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_biplane_mount"
+  }
+}

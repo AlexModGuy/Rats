@@ -742,7 +742,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
     }
 
-    private int getCommandInteger() {
+    protected int getCommandInteger() {
         return Integer.valueOf(this.dataManager.get(COMMAND).intValue());
     }
 
@@ -2874,7 +2874,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return super.isPotionApplicable(potioneffectIn);
     }
 
-    public boolean isInvulnerabledddddTo(DamageSource source) {
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
         if (this.getRespawnCountdown() > 0) {
             return true;
         }
@@ -2887,7 +2888,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
-        if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR))) {
+        if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR) || this.hasFlightUpgrade())) {
             return true;
         }
         if (source.isExplosion() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
@@ -3131,10 +3132,22 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.isRidingSpecialMount()) {
             Entity entity = this.getRidingEntity();
             if (entity != null) {
+                if (entity instanceof EntityRatBiplaneMount) {
+                    return 3.5D;
+                }
                 return 1.5D;
             }
+
         }
         return 1D;
+    }
+
+    public PathNavigator getNavigator() {
+        if (this.ratInventory != null && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT) && isRidingSpecialMount()) {
+            return this.navigator;
+        } else {
+            return super.getNavigator();
+        }
     }
 
     @Override

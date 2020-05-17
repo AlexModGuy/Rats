@@ -8,6 +8,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -119,7 +120,7 @@ public class EntityRatBaron extends EntityRat {
 
     private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
-            return entity.isAlive() && !(entity instanceof IRatlantean);
+            return entity.isAlive() && !(entity instanceof IRatlantean) && (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative());
         }
     };
 

@@ -220,9 +220,6 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         } else {
             this.setPlanePitch(0);
         }
-        if(world.getDifficulty() == Difficulty.PEACEFUL){
-            this.remove();
-        }
     }
 
 

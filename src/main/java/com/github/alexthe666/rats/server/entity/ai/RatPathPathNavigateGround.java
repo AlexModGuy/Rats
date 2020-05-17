@@ -16,9 +16,10 @@ import net.minecraft.world.World;
 public class RatPathPathNavigateGround extends GroundPathNavigator {
 
     public BlockPos targetPosition;
-
+    private EntityRat rat;
     public RatPathPathNavigateGround(EntityRat LivingEntityIn, World worldIn) {
         super(LivingEntityIn, worldIn);
+        rat = LivingEntityIn;
     }
 
     protected PathFinder getPathFinder(int p_179679_1_) {
@@ -66,6 +67,9 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         boolean supe = super.tryMoveToXYZ(x, y, z, speedIn);
         this.targetPosition = new BlockPos(x, y, z);
+        if(this.rat.hasFlightUpgrade()){
+            this.rat.getMoveHelper().setMoveTo(x, y, z, speedIn);
+        }
         return supe;
     }
 

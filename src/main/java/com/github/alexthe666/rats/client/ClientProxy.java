@@ -184,6 +184,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON, manager -> new RenderRat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON_PLANE, manager -> new RenderRatBaronPlane());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BIPLANE, manager -> new RenderRatBiplaneMount());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_PROTECTOR, manager -> new RenderRatProtector());
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
@@ -346,8 +347,14 @@ public class ClientProxy extends CommonProxy {
             return new ModelPartyHat(0.5F);
         }else if(index == 12){
             return new ModelMilitaryHat(1.2F);
-        }else {
+        }else if(index == 13){
             return new ModelAviatorHat(1.0F);
+        }else if(index == 14){
+            return new ModelRatlantisArmor(1.0F);
+        }else if(index == 15){
+            return new ModelRatlantisArmor(0.5F);
+        }else{
+            return null;
         }
     }
 

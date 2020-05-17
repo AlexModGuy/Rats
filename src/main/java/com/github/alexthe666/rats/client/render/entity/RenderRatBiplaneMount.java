@@ -18,8 +18,7 @@ public class RenderRatBiplaneMount extends MobRenderer<EntityRatBiplaneMount, Mo
     }
 
     protected void preRenderCallback(EntityRatBiplaneMount entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f7 = entity.prevPlanePitch + (entity.getPlanePitch() - entity.prevPlanePitch) * partialTickTime;
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(f7));
+
     }
 
     public ResourceLocation getEntityTexture(EntityRatBiplaneMount entity) {

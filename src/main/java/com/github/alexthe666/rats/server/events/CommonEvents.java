@@ -36,11 +36,13 @@ import net.minecraft.item.Items;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -141,6 +143,23 @@ public class CommonEvents {
         }
     }
 
+    public static int getProtectorCount(LivingEntity entity){
+        int protectors = 0;
+        if(entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.RATLANTIS_HELMET){
+            protectors++;
+        }
+        if(entity.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() == RatsItemRegistry.RATLANTIS_CHESTPLATE){
+            protectors++;
+        }
+        if(entity.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == RatsItemRegistry.RATLANTIS_LEGGINGS){
+            protectors++;
+        }
+        if(entity.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == RatsItemRegistry.RATLANTIS_BOOTS){
+            protectors++;
+        }
+        return protectors;
+    }
+
     @SubscribeEvent
     public static void onHitEntity(LivingAttackEvent event) {
         if (event.getSource().getImmediateSource() instanceof LivingEntity && RatConfig.plagueSpread) {
@@ -150,6 +169,21 @@ public class CommonEvents {
                     event.getEntityLiving().addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 6000));
                     event.getEntityLiving().playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1.0F, 1.0F);
                 }
+            }
+        }
+        int protectors = getProtectorCount(event.getEntityLiving());
+        if(protectors > 0){
+            if(event.getSource() != null && event.getSource().getTrueSource() != null){
+                Entity trueSource = event.getSource().getTrueSource();
+                if(trueSource.getDistance(event.getEntityLiving()) < 6D){
+                    trueSource.attackEntityFrom(DamageSource.causeMobDamage(event.getEntityLiving()), 2.0F * protectors);
+                    Vec3d vec3d = trueSource.getMotion();
+                    double strength = 0.3D * protectors;
+                    Vec3d vec3d1 = (new Vec3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);
+                    trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.onGround ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
+
+                }
+
             }
         }
     }

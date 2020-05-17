@@ -2,19 +2,27 @@ package com.github.alexthe666.rats.client.event;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.model.ModelStaticRat;
+import com.github.alexthe666.rats.client.render.entity.RenderRatProtector;
+import com.github.alexthe666.rats.client.render.type.RatsRenderType;
+import com.github.alexthe666.rats.server.events.CommonEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexBuilderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
@@ -25,9 +33,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -273,4 +279,38 @@ public class ClientEvents {
         vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
         tessellator.draw();
     }
+
+    private static final ModelStaticRat RAT_MODEL = new ModelStaticRat(0);
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onLivingRender(RenderLivingEvent.Post event) {
+        MatrixStack matrixStackIn = event.getMatrixStack();
+        int protectorCount = CommonEvents.getProtectorCount(event.getEntity());
+        IVertexBuilder textureBuilder = event.getBuffers().getBuffer(RatsRenderType.getGlowingTranslucent(RenderRatProtector.BASE_TEXTURE));
+        for(int i = 0; i < protectorCount; i++){
+           float tick = (float)(event.getEntity().ticksExisted - 1) + event.getPartialRenderTick();
+            float offsetRot = 30 + 360 * (i / (float)protectorCount);
+            float bob = (float)((Math.sin((double)(tick * 0.1F)) * 0.2F + Math.cos(tick * 0.4F + i)) * 0.2);
+            float scale = 0.4F;
+            float rotation = MathHelper.wrapDegrees((tick * 8) % 360.0F + offsetRot);
+            matrixStackIn.push();
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(rotation));
+            matrixStackIn.translate(0.0D, (double)(event.getEntity().getHeight() + 0.5D + bob), (double)(event.getEntity().getWidth() + 0.5F));
+            matrixStackIn.push();
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90));
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(75.0F));
+            matrixStackIn.scale(scale, scale, scale);
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90.0F));
+            float f = (event.getEntity().ticksExisted + event.getPartialRenderTick()) * 0.5F;
+            float f1 = 1;
+            RAT_MODEL.setRotationAngles(event.getEntity(), f, f1, event.getEntity().ticksExisted + event.getPartialRenderTick(), event.getPartialRenderTick(), 0);
+            RAT_MODEL.render(event.getMatrixStack(), textureBuilder, event.getLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+            matrixStackIn.pop();
+
+        }
+    }
+
+
+
 }

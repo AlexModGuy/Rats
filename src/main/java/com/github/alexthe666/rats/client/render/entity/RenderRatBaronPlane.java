@@ -22,8 +22,7 @@ public class RenderRatBaronPlane extends MobRenderer<EntityRatBaronPlane, ModelB
     }
 
     protected void preRenderCallback(EntityRatBaronPlane entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f7 = entity.prevPlanePitch + (entity.getPlanePitch() - entity.prevPlanePitch) * partialTickTime;
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(f7));
+
     }
 
     public ResourceLocation getEntityTexture(EntityRatBaronPlane entity) {
