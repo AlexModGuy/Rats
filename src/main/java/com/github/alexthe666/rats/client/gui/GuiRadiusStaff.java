@@ -71,8 +71,6 @@ public class GuiRadiusStaff extends Screen {
         entity.renderYawOffset = 180.0F + f * 20.0F;
         entity.rotationYaw = 180.0F + f * 40.0F;
         entity.rotationPitch = -f1 * 20.0F;
-        entity.rotationYawHead = entity.rotationYaw;
-        entity.prevRotationYawHead = entity.rotationYaw;
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
         quaternion1.conjugate();
         entityrenderermanager.setCameraOrientation(quaternion1);
@@ -139,7 +137,9 @@ public class GuiRadiusStaff extends Screen {
                 GlStateManager.pushMatrix();
                 GlStateManager.translatef(0, 0, 10F);
                 GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-                drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
+                if(this.rat != null){
+                    drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
+                }
                 GlStateManager.popMatrix();
             } catch (Exception e) {
                 Minecraft.getInstance().displayGuiScreen(null);
