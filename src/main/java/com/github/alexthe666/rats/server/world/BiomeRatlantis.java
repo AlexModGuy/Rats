@@ -35,7 +35,7 @@ public class BiomeRatlantis extends Biome {
         this.addStructure(Feature.SHIPWRECK.withConfiguration( new ShipwreckConfig(false)));
         this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.CHEESE_ORE.getDefaultState(), 6)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
         this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.RATLANTEAN_GEM_ORE.getDefaultState(), 6)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 32))));
-        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.ORATCHALCUM_ORE.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 20))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.ORATCHALCUM_ORE.getDefaultState(), 1)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 25))));
         this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
         this.addStructure(RatsWorldRegistry.RAT_RUINS.withConfiguration( new NoFeatureConfig()));
         this.addStructure(RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration( new NoFeatureConfig()));

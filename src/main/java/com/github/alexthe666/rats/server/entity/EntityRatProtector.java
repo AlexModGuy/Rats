@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,7 +23,16 @@ public class EntityRatProtector extends EntityRat {
         switchNavigator(5);
     }
 
-    protected void switchNavigator(int type) {
+    public boolean attackEntityAsMob(Entity entityIn) {
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
+        if(flag){
+            this.onKillCommand();
+
+        }
+        return flag;
+    }
+
+        protected void switchNavigator(int type) {
         this.moveController = new RatEtherealMoveHelper(this);
         this.navigator = new EtherealRatPathNavigate(this, world);
         this.navigatorType = 5;
@@ -38,9 +48,9 @@ public class EntityRatProtector extends EntityRat {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.65D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
@@ -64,16 +74,12 @@ public class EntityRatProtector extends EntityRat {
 
     }
 
-    protected SoundEvent getAmbientSound() {
-        return RatsSoundRegistry.RATLANTEAN_SPIRIT_IDLE;
-    }
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return RatsSoundRegistry.RATLANTEAN_SPIRIT_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE;
+        return null;
     }
 
     public void tick(){
@@ -84,7 +90,7 @@ public class EntityRatProtector extends EntityRat {
         noClip = true;
         if(!world.isRemote){
             if(this.getAttackTarget() == null || !this.getAttackTarget().isAlive()){
-                this.remove();
+                this.onKillCommand();
             }else{
                 LivingEntity target = this.getAttackTarget();
                 this.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY() + target.getHeight()/2, target.getPosZ(), 1);

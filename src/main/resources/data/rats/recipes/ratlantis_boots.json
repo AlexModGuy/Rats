@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "VDV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "D": {
+      "item": "diamond_boots"
+    },
+    "X": {
+      "item": "rats:dutchrat_wheel"
+    }
+  },
+  "result": {
+    "item": "rats:ratlantis_boots"
+  }
+}

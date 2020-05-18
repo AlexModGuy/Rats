@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "IVI",
+    " S "
+  ],
+  "key": {
+    "V": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "I": {
+      "item": "rats:ratbot_barrel"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "rats:air_raid_siren"
+  }
+}

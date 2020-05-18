@@ -120,7 +120,7 @@ public class EntityRatBaron extends EntityRat {
 
     private static final Predicate<LivingEntity> NOT_RATLANTEAN = new Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
-            return entity.isAlive() && !(entity instanceof IRatlantean) && (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative());
+            return entity.isAlive() && !(entity instanceof IRatlantean) && ((entity instanceof PlayerEntity) && !((PlayerEntity) entity).isCreative());
         }
     };
 

@@ -25,11 +25,11 @@ public class RatsItemRegistry {
     public static CustomArmorMaterial CHEF_TOQUE_ARMOR_MATERIAL = new CustomArmorMaterial("ChefToque", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static CustomArmorMaterial HAT_ARMOR_MATERIAL = new CustomArmorMaterial("Hat", 200, new int[]{1, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
     public static CustomArmorMaterial PLAGUE_MASK_MATERIAL = new CustomArmorMaterial("PlagueMask", 100, new int[]{3, 1, 1, 1}, 100, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1);
-    public static CustomArmorMaterial RATLANTIS_ARMOR_MATERIAL = new CustomArmorMaterial("RatlantisArmor", 2500, new int[]{5, 10, 8, 5}, 20, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 3);
+    public static CustomArmorMaterial RATLANTIS_ARMOR_MATERIAL = new CustomArmorMaterial("RatlantisArmor", 2500, new int[]{5, 8, 10, 5}, 20, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 5);
     public static CustomToolMaterial PIRAT_CUTLASS_MATERIAL = new CustomToolMaterial("PiratCutlass", 2, 300, 5.0F, 6.5F, 30);
     public static CustomToolMaterial BAGHNAKHS_MATERIAL = new CustomToolMaterial("BaghHakhs", 1, 500, 2.0F, 3.5F, 15);
     public static CustomToolMaterial PLAGUE_SCYTHE_MATERIAL = new CustomToolMaterial("PlagueScythe", 2, 1500, 5.0F, 12F, 30);
-    public static CustomToolMaterial RATLANTIS_TOOL_MATERIAL = new CustomToolMaterial("RatlantisToolMaterial", 4, 3500, 6.0F, 7F, 30);
+    public static CustomToolMaterial RATLANTIS_TOOL_MATERIAL = new CustomToolMaterial("RatlantisToolMaterial", 4, 3500, 8.0F, 15F, 30);
 
     public static final Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
@@ -212,6 +212,8 @@ public class RatsItemRegistry {
     public static final Item RATLANTIS_SHOVEL = new ItemRatlantisTool.Shovel();
 
     public static final Item RATLANTIS_HOE = new ItemRatlantisTool.Hoe();
+
+    public static final Item RATLANTIS_BOW = new ItemRatlantisBow();
 
     public static final Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
 

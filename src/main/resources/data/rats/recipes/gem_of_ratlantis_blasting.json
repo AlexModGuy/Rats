@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": [
+    {
+      "item": "rats:ratlantean_gem_ore"
+    }
+  ],
+  "result": "rats:gem_of_ratlantis",
+  "experience": 0.2,
+  "cookingtime": 100
+}

@@ -33,7 +33,7 @@ public class ItemRatlantisSword  extends SwordItem {
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity targetEntity, LivingEntity attacker) {
         EntityRatProtector protector = new EntityRatProtector(RatsEntityRegistry.RAT_PROTECTOR, targetEntity.world);
-        protector.copyLocationAndAnglesFrom(attacker);
+        protector.setLocationAndAngles(attacker.getPosX(), attacker.getPosY() + 1.0D, attacker.getPosZ(), attacker.rotationYaw, attacker.rotationPitch);
         protector.setAttackTarget(targetEntity);
         attacker.world.addEntity(protector);
         return super.hitEntity(stack, targetEntity, attacker);
@@ -41,7 +41,8 @@ public class ItemRatlantisSword  extends SwordItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
     }
 }

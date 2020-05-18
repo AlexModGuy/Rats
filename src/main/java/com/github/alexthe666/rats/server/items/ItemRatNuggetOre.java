@@ -101,6 +101,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
+            System.out.println(Tags.Blocks.ORES.getAllElements());
             for (Block entry : Tags.Blocks.ORES.getAllElements()) {
                 ItemStack oreStack = new ItemStack(entry);
                 ItemStack stack = new ItemStack(this);

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": [
+    {
+      "item": "rats:cheese_ore"
+    }
+  ],
+  "result": "rats:cheese",
+  "experience": 0.2,
+  "cookingtime": 200
+}

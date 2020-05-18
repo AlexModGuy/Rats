@@ -44,8 +44,9 @@ public class ItemRatlantisArmor extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_armor0.desc").applyTextStyle(TextFormatting.YELLOW));
+        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_armor1.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_armor2.desc").applyTextStyle(TextFormatting.GRAY));
     }
 }

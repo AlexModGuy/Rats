@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VDV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "D": {
+      "item": "diamond_hoe"
+    }
+  },
+  "result": {
+    "item": "rats:ratlantis_hoe"
+  }
+}

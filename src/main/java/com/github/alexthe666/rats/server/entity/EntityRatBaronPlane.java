@@ -186,6 +186,8 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
                     float velocity = 3.2F;
                     EntityRattlingGunBullet cannonball = new EntityRattlingGunBullet(RatsEntityRegistry.RATTLING_GUN_BULLET, world, this);
                     cannonball.setPosition(extraX, extraY, extraZ);
+                    cannonball.setDamage(0.5F);
+
                     cannonball.shoot(d1, d2, d3, velocity, 1.4F);
                     this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0F, 2.3F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                     if (!world.isRemote) {

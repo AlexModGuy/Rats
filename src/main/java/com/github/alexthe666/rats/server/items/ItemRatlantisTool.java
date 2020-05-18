@@ -32,7 +32,7 @@ public class ItemRatlantisTool {
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
             tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
         }
 
         public static final ResourceLocation STONE_FORGE_TAG = new ResourceLocation("rats", "pirat_blocks");
@@ -59,10 +59,17 @@ public class ItemRatlantisTool {
             this.setRegistryName(RatsMod.MODID, "ratlantis_axe");
         }
 
+        public float getDestroySpeed(ItemStack stack, BlockState state) {
+            if(BlockTags.LEAVES.contains(state.getBlock())){
+                return efficiency * 1.5F;
+            }
+            return super.getDestroySpeed(stack, state);
+        }
+
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
             tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
         }
 
         public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
@@ -101,7 +108,7 @@ public class ItemRatlantisTool {
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
             tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
         }
     }
 
@@ -119,8 +126,8 @@ public class ItemRatlantisTool {
             if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
                 boolean b = false;
                 PlayerEntity playerentity = context.getPlayer();
-                for(int x = -1; x < 1; x++){
-                    for(int z = -1; z < 1; z++){
+                for(int x = -1; x <= 1; x++){
+                    for(int z = -1; z <= 1; z++){
                         BlockPos offset = blockpos.add(x, 0, z);
                         BlockState blockstate = HOE_LOOKUP.get(world.getBlockState(offset).getBlock());
                         if (blockstate != null) {
@@ -150,8 +157,9 @@ public class ItemRatlantisTool {
 
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+            super.addInformation(stack, worldIn, tooltip, flagIn);
             tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
         }
     }
 }

@@ -1,9 +1,13 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.EntityRatBaron;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,9 +45,12 @@ public class BlockAirRaidSiren extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
         this.playSound(player, worldIn, pos);
         if(!worldIn.isRemote){
-            ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, false));
+            ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, true));
             worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
-
+            EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
+            baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
+            baron.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+            worldIn.addEntity(baron);
         }
         for(int i = 0; i < 2; i++){
             Random rand = worldIn.rand;
@@ -58,9 +65,12 @@ public class BlockAirRaidSiren extends Block {
             if(flag){
                 worldIn.playSound(null, pos, RatsSoundRegistry.AIR_RAID_SIREN, SoundCategory.BLOCKS, 1, 1);
                 if(!worldIn.isRemote){
-                    ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, false));
+                    ((ServerWorld)worldIn).addLightningBolt(new LightningBoltEntity(worldIn, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, true));
                     worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
-
+                    EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
+                    baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
+                    baron.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+                    worldIn.addEntity(baron);
                 }
                 for(int i = 0; i < 2; i++){
                     Random rand = worldIn.rand;

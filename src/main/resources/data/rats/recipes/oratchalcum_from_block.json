@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:oratchalcum_block"
+    }
+  ],
+  "result": {
+    "item": "rats:oratchalcum_ingot",
+    "count": 9
+  }
+}

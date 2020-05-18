@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "rats:cheese_ore",
+    "rats:oratchalcum_ore",
+    "rats:ratlantean_gem_ore"
+  ]
+}
