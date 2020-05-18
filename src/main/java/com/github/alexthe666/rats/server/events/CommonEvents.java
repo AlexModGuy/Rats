@@ -373,28 +373,6 @@ public class CommonEvents {
                 RatsMod.PROXY.openCheeseStaffGui();
             }
         }
-        if (event.getPlayer().getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN || event.getPlayer().getHeldItem(Hand.OFF_HAND).getItem() == RatsItemRegistry.CHUNKY_CHEESE_TOKEN) {
-            if (!RatConfig.disableRatlantis) {
-                if (!event.getPlayer().isCreative()) {
-                    event.getItemStack().shrink(1);
-                }
-                boolean canBuild = true;
-                BlockPos pos = event.getPos().offset(event.getFace());
-                for (int i = 0; i < 4; i++) {
-                    BlockState state = event.getWorld().getBlockState(pos.up(i));
-                    if (state.getBlockHardness(event.getWorld(), pos.up(i)) == -1.0F) {
-                        canBuild = false;
-                    }
-                }
-                if (canBuild) {
-                    event.getPlayer().playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1, 1);
-                    event.getWorld().setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-                    event.getWorld().setBlockState(pos.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-                }
-            }
-        }
         if (RatConfig.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && RatUtils.isMilk(event.getItemStack())) {
             if (event.getWorld().getBlockState(event.getPos()).get(CauldronBlock.LEVEL) == 0) {
                 event.getWorld().setBlockState(event.getPos(), RatsBlockRegistry.MILK_CAULDRON.getDefaultState());

@@ -38,11 +38,11 @@ public class DutchratShipStructure extends ScatteredStructure<NoFeatureConfig> {
     }
 
     protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {
-        return 25;
+        return 27;
     }
 
     protected int getBiomeFeatureSeparation(ChunkGenerator<?> chunkGenerator) {
-        return 8;
+        return 10;
     }
 
     public static class Start extends StructureStart {

@@ -141,7 +141,7 @@ public class RatsItemRegistry {
 
     public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
-    public static final Item CHUNKY_CHEESE_TOKEN = new ItemChunkyCheeseToken();
+    public static final Item TOKEN_RENDERER = new ItemGeneric("token_renderer");
 
     public static final Item BLUE_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "blue_cheese");
 

@@ -38,11 +38,11 @@ public class RunwayStructure extends ScatteredStructure<NoFeatureConfig> {
     }
 
     protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {
-        return 8;
+        return 12;
     }
 
     protected int getBiomeFeatureSeparation(ChunkGenerator<?> chunkGenerator) {
-        return 3;
+        return 7;
     }
 
     public static class Start extends StructureStart {

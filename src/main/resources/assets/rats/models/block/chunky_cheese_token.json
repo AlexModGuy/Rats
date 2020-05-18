@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "rats:item/chunky_cheese_token"
+  }
+}
