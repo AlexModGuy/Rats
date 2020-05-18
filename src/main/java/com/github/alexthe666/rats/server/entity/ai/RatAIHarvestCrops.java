@@ -16,6 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.IPlantable;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.block.Block;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -90,7 +93,22 @@ public class RatAIHarvestCrops extends EntityAIBase {
                 if (distance < 1.5F) {
                     NonNullList<ItemStack> drops = NonNullList.create();
                     block.getBlock().getDrops(drops, this.entity.world, targetBlock, block, 0);
+
+                    this.entity.world.destroyBlock(targetBlock, false);
+                    if ((!RatsMod.CONFIG_OPTIONS.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER)) && block.getBlock() instanceof BlockCrops) {
+                        for (int i = 0; i < drops.size(); ++i) {
+                            if (isPlantabe(drops.get(i).getItem())) {
+                                if (drops.get(i).getCount() == 1)
+                                    drops.remove(i);
+                                else
+                                    drops.get(i).setCount(drops.get(i).getCount() - 1);
+                                this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
+                            }
+                        }
+                    }
+
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
+
                         ItemStack duplicate = drops.get(0).copy();
                         drops.remove(0);
                         if (!this.entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
@@ -100,10 +118,6 @@ public class RatAIHarvestCrops extends EntityAIBase {
                         for (ItemStack drop : drops) {
                             this.entity.entityDropItem(drop, 0);
                         }
-                        this.entity.world.destroyBlock(targetBlock, false);
-                        if ((!RatsMod.CONFIG_OPTIONS.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER)) && block.getBlock() instanceof BlockCrops) {
-                            this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
-                        }
                         this.entity.fleePos = this.targetBlock;
                     }
                     this.targetBlock = null;
@@ -112,6 +126,17 @@ public class RatAIHarvestCrops extends EntityAIBase {
             }
 
         }
+    }
+
+    private static boolean isPlantabe(Item item) {
+        if (item instanceof IPlantable) {
+            return true;
+        } else if (item instanceof ItemBlock) {
+            Block block = Block.getBlockFromItem(item);
+            if (block instanceof IPlantable)
+                return true;
+        }
+        return false;
     }
 
     public class BlockSorter implements Comparator<BlockPos> {
