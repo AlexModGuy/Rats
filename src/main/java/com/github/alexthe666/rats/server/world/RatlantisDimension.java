@@ -45,8 +45,8 @@ public class RatlantisDimension extends Dimension {
 
     @Override @Nullable
     @OnlyIn(Dist.CLIENT)
-    public float[] calcSunriseSunsetColors(final float p_76560_1_, final float p_76560_2_) {
-        return null;
+    public float[] calcSunriseSunsetColors(float celestialAngle, float partialTicks) {
+        return super.calcSunriseSunsetColors(celestialAngle, partialTicks);
     }
 
     @Override @OnlyIn(Dist.CLIENT)
@@ -77,12 +77,12 @@ public class RatlantisDimension extends Dimension {
 
     @Override
     public boolean isSurfaceWorld() {
-        return false;
+        return true;
     }
 
     @Override @OnlyIn(Dist.CLIENT)
     public float getCloudHeight() {
-        return 128.0f;
+        return super.getCloudHeight() + 20;
     }
 
     @Override @Nullable

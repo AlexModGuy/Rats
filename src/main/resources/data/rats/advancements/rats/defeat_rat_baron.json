@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:biplane_wing"
+        },
+        "title": {
+            "translate": "advancements.rats.defeat_rat_baron.title"
+        },
+        "description": {
+            "translate": "advancements.rats.defeat_rat_baron.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/ratlantis",
+    "criteria": {
+        "rat_baron_killed": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:rat_baron"
+                }
+            }
+        }
+    }
+}

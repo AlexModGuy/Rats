@@ -176,7 +176,7 @@ public class CommonEvents {
             if(event.getSource() != null && event.getSource().getTrueSource() != null){
                 Entity trueSource = event.getSource().getTrueSource();
                 if(trueSource.getDistance(event.getEntityLiving()) < 6D){
-                    trueSource.attackEntityFrom(DamageSource.causeMobDamage(event.getEntityLiving()), 2.0F * protectors);
+                    trueSource.attackEntityFrom(DamageSource.MAGIC, 2.0F * protectors);
                     Vec3d vec3d = trueSource.getMotion();
                     double strength = 0.3D * protectors;
                     Vec3d vec3d1 = (new Vec3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);

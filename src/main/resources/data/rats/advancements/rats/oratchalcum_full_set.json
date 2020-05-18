@@ -1,0 +1,57 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:ratlantis_helmet"
+        },
+        "title": {
+            "translate": "advancements.rats.ratlantis_armor.title"
+        },
+        "description": {
+            "translate": "advancements.rats.ratlantis_armor.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "rats:rats/oratchalcum",
+    "criteria": {
+        "helmet": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:ratlantis_helmet"
+                    }
+                ]
+            }
+        },
+        "chest": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:ratlantis_chestplate"
+                    }
+                ]
+            }
+        },
+        "legs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:ratlantis_leggings"
+                    }
+                ]
+            }
+        },
+        "feet": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:ratlantis_boots"
+                    }
+                ]
+            }
+        }
+    }
+}

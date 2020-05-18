@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "rats:rat_upgrade_biplane_mount"
+        },
+        "title": {
+            "translate": "advancements.rats.rat_upgrade_mount_biplane.title"
+        },
+        "description": {
+            "translate": "advancements.rats.rat_upgrade_mount_biplane.description"
+        }
+    },
+    "parent": "rats:rats/defeat_rat_baron",
+    "criteria": {
+        "iron_pickaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "rats:rat_upgrade_biplane_mount"
+                    }
+                ]
+            }
+        }
+    }
+}
