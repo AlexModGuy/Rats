@@ -97,7 +97,9 @@ public class RatAIHarvestCrops extends Goal {
                     List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                         ItemStack duplicate = drops.get(0).copy();
-                        drops.remove(0);
+                        try{
+                            drops.remove(0);
+                        }catch (Exception e){}
                         if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
                             this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
                         }

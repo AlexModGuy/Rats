@@ -133,19 +133,20 @@ public class GuiRadiusStaff extends Screen {
         if (getMinecraft() != null) {
             try {
                 this.renderBackground();
+                super.render(mouseX, mouseY, partialTicks);
+                int i = (this.width - 248) / 2 + 10;
+                int j = (this.height - 166) / 2 + 8;
+                GlStateManager.pushMatrix();
+                GlStateManager.translatef(0, 0, 10F);
+                GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
+                GlStateManager.popMatrix();
             } catch (Exception e) {
-
+                Minecraft.getInstance().displayGuiScreen(null);
             }
         }
 
-        super.render(mouseX, mouseY, partialTicks);
-        int i = (this.width - 248) / 2 + 10;
-        int j = (this.height - 166) / 2 + 8;
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(0, 0, 10F);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
-        GlStateManager.popMatrix();
+
     }
 
     public boolean isPauseScreen() {
