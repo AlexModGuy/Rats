@@ -861,7 +861,8 @@
   "block.minecraft.banner.rat_and_sickle.green": "Green Rat and Sickle",
   "block.minecraft.banner.rat_and_sickle.red": "Red Rat and Sickle",
   "block.minecraft.banner.rat_and_sickle.black": "Black Rat and Sickle",
-
+  "rats.subtitle.air_raid_siren": "Air-Raid Siren wails",
+  "rats.subtitle.biplane_loop": "Biplane buzzes",
   "rats.subtitle.potion_effect_begin": "Nostalgia starts",
   "rats.subtitle.potion_effect_end": "Nostalgia fades",
   "rats.subtitle.rat_idle": "Rat squeaks",

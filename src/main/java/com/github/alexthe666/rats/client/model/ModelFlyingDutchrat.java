@@ -349,6 +349,6 @@ public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntit
         rightArm2.translateRotate(matrixStackIn);
         paw.translateRotate(matrixStackIn);
         matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 90.0F, true));
-        matrixStackIn.translate(0.1F, -0.75F, 0);
+        matrixStackIn.translate(0.1F, -0.45F, 0);
     }
 }
