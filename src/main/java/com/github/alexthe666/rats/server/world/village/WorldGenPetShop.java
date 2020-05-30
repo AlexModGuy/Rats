@@ -138,7 +138,9 @@ public class WorldGenPetShop extends WorldGenerator {
             BlockPos pos = villageItr.next();
             EntityVillager villager = new EntityVillager(worldIn);
             villager.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
-            villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
+            if (RatsMod.CONFIG_OPTIONS.villagePetShops) {
+                villager.setProfession(RatsVillageRegistry.PET_SHOP_OWNER);
+            }
             villager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(villager)), null, false);
             villager.setPositionAndRotation(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() * 360, 0);
             worldIn.spawnEntity(villager);

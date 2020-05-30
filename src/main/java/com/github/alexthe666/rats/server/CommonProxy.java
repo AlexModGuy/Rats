@@ -61,7 +61,9 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
-        event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
+        if (RatsMod.CONFIG_OPTIONS.villagePetShops) {
+            event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
+        }
     }
 
     @SubscribeEvent
