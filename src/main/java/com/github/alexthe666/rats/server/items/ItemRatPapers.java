@@ -83,11 +83,10 @@ public class ItemRatPapers extends Item {
                             EntityRat rat = (EntityRat)entity;
                             if(rat.isTamed() && rat.isOwner(playerIn)){
                                 rat.setTamedBy((PlayerEntity) target);
+                                stack.shrink(1);
                             }
-
                         }
                     }
-                    stack.shrink(1);
                     return true;
                 }
             }catch (Exception e){
