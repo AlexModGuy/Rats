@@ -57,7 +57,7 @@ public class BlockGarbage extends BlockFalling {
     }
 
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return rand.nextInt(3) == 0 ? RatsItemRegistry.PLASTIC_WASTE : super.getItemDropped(state, rand, fortune);
+        return rand.nextInt(3) == 0 && !RatsMod.CONFIG_OPTIONS.disablePlastic ? RatsItemRegistry.PLASTIC_WASTE : super.getItemDropped(state, rand, fortune);
     }
 
     @SideOnly(Side.CLIENT)
