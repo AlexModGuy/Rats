@@ -334,7 +334,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     protected boolean canDespawn() {
         if (RatsMod.CONFIG_OPTIONS.ratsDespawn) {
-            return (!this.isTamed() || this.isOwnerMonster()) && !this.isChild();
+            return (!this.isTamed() || this.isOwnerMonster()) && !this.isChild() && !this.isInCage();
         } else {
             return false;
         }
