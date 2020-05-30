@@ -1033,7 +1033,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     pooStack.setTagCompound(poopTag);
                 }
                 this.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {
+                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.05F && this.isTamed()) {
                     if (RatsMod.CONFIG_OPTIONS.ratFartNoises) {
                         this.playSound(RatsSoundRegistry.RAT_POOP, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
                     }
