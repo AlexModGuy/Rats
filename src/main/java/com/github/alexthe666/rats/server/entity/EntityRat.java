@@ -333,9 +333,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         return null;
     }
 
+    public boolean isNoDespawnRequired() {
+        return !canDespawn() || super.isNoDespawnRequired();
+    }
+
     protected boolean canDespawn() {
         if (RatsMod.CONFIG_OPTIONS.ratsDespawn) {
-            return (!this.isTamed() || this.isOwnerMonster()) && !this.isChild() && !this.isInCage();
+            return !this.isTamed() && !this.isChild() && !this.isInCage();
         } else {
             return false;
         }
@@ -343,6 +347,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
 
     protected void despawnEntity() {
         net.minecraftforge.fml.common.eventhandler.Event.Result result = null;
+        if(!this.canDespawn()){
+            return;
+        }
         if ((this.idleTime & 0x1F) == 0x1F && (result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this)) != net.minecraftforge.fml.common.eventhandler.Event.Result.DEFAULT) {
             if (result == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY) {
                 this.idleTime = 0;
