@@ -83,16 +83,16 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
     }
 
     private Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint) {
-        if(entity.dimension != RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE){
+        if(endpointWorld.dimension.getType() == RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE){
             endpoint = new BlockPos(0, 112, 0);
             placeInPortal(entity, endpointWorld);
         }else{
-            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedLocation() != null) {
-                BlockPos bedPos = ((PlayerEntity) entity).getBedLocation();
+            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedLocation(DimensionType.OVERWORLD) != null) {
+                BlockPos bedPos = ((PlayerEntity) entity).getBedLocation(DimensionType.OVERWORLD);
                 endpoint = bedPos;
                 entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
             } else {
-                BlockPos height = entity.world.getHeight(Heightmap.Type.WORLD_SURFACE, entity.getPosition());
+                BlockPos height = entity.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, entity.getPosition());
                 endpoint = height;
                 entity.setLocationAndAngles(height.getX() + 0.5D, height.getY() + 0.5D, height.getZ() + 0.5D, entity.rotationYaw, 0.0F);
             }
