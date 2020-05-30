@@ -409,7 +409,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean isNoDespawnRequired() {
-        return this.isTamed() || this.isChild() || !this.isNoDespawnRequired();
+        return this.isTamed() || this.isChild() || super.isNoDespawnRequired();
     }
 
     public boolean canDespawn(double distanceToClosestPlayer) {

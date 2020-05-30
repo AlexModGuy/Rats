@@ -6,8 +6,10 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -29,13 +31,14 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntityIllagerPiper extends AbstractIllagerEntity implements IRangedAttackMob, ISummonsRats {
+public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMob, ISummonsRats {
 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.VARINT);
@@ -49,16 +52,13 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.setCombatTask();
     }
 
+
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
         this.dataManager.register(RAT_COUNT, Integer.valueOf(0));
     }
 
-    @Override
-    public void func_213660_a(int p_213660_1_, boolean p_213660_2_) {
-
-    }
 
     protected void registerGoals() {
         super.registerGoals();
@@ -172,11 +172,6 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
         this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public ArmPose getArmPose() {
-        return ArmPose.BOW_AND_ARROW;
-    }
-
     public void summonRat() {
         if (this.getRatsSummoned() < 6 && ratCooldown == 0) {
             world.setEntityState(this, (byte) 82);
@@ -261,11 +256,6 @@ public class EntityIllagerPiper extends AbstractIllagerEntity implements IRanged
                 }
             }
         }
-    }
-
-    @Override
-    public SoundEvent getRaidLossSound() {
-        return null;
     }
 
     protected SoundEvent getDeathSound() {
