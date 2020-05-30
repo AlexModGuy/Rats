@@ -1975,6 +1975,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             illagerPiper.setRatsSummoned(illagerPiper.getRatsSummoned() - 1);
         }
         this.isDead = true;
+        super.setDead();
     }
 
     public void updateRidden() {

@@ -73,7 +73,7 @@ public class RatAIHarvestFisherman extends EntityAIBase {
                 }
                 if (isShore(this.targetBlock, entity.world)) {
                     double distance = this.entity.getDistance(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                    if (distance < 1.5F) {
+                    if (distance < 2.0F) {
                         // this.targetBlock = null;
                         //  this.resetTask();
                         if(throwCooldown == 0){
