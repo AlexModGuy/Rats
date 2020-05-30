@@ -2047,7 +2047,7 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             return true;
         }
         if (!super.processInteract(player, hand)) {
-            if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
+            if (this.isTamed() && !this.isChild() && (isOwner(player))) {
                 if (itemstack.getItem() == RatsItemRegistry.RAT_SACK) {
                     NBTTagCompound compound = itemstack.getTagCompound();
                     if (compound == null) {

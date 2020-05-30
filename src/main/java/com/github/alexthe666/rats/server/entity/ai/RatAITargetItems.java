@@ -60,6 +60,7 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
         if (!rat.canMove() || this.taskOwner.isRiding() || rat.isInCage() || rat.isTargetCommand() && rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
             return false;
         }
+
         if(rat.getAttackTarget() != null){
             return false;
         }
@@ -73,6 +74,8 @@ public class RatAITargetItems<T extends EntityItem> extends EntityAITarget {
             }
         }
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+
+
         if (list.isEmpty()) {
             return false;
         } else {
