@@ -2232,7 +2232,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                     return true;
                 }
             }
-            if (this.isTamed() && !this.isChild() && (isOwner(player) || player.isCreative())) {
+            if (this.isTamed() && !this.isChild() && isOwner(player)) {
                 if (itemstack.getItem() == Item.getItemFromBlock(RatsBlockRegistry.DYE_SPONGE)) {
                     this.setDyed(false);
                     this.setDyeColor(0);

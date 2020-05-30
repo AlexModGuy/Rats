@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PSP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper",
+      "data": 0
+    },
+    "S": {
+      "tag": "forge:cheese",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "rats:rat_papers"
+  }
+}
