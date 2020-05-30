@@ -254,19 +254,19 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 }
             }
         }));
-        this.targetTasks.addTask(1, new RatAITargetItems(this, false));
-        this.targetTasks.addTask(2, new RatAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(3, new RatAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(4, new RatAIHurtByTarget(this, false));
-    }
+        this.targetTasks.addTask(1, new RatAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(2, new RatAIOwnerHurtTarget(this));
+        this.targetTasks.addTask(3, new RatAIHurtByTarget(this, false));
+        this.targetTasks.addTask(4, new RatAITargetItems(this, false));
+   }
 
     protected void setupDynamicAI() {
         this.tasks.removeTask(this.aiHarvest);
         this.tasks.removeTask(this.aiDeposit);
         this.tasks.removeTask(this.aiPickup);
-        aiHarvest = new RatAIHarvestCrops(this);
-        aiDeposit = new RatAIDepositInInventory(this);
-        aiPickup = new RatAIPickupFromInventory(this);
+        aiHarvest = null;
+        aiDeposit = null;
+        aiPickup = null;
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
             aiHarvest = new RatAIHarvestTrees(this);
         }
@@ -297,6 +297,15 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         } else if (this.getRFTransferRate() > 0) {
             aiDeposit = new RatAIPickupEnergy(this);
             aiPickup = new RatAIDepositEnergy(this);
+        }
+        if(aiHarvest == null){
+            aiHarvest = new RatAIHarvestCrops(this);
+        }
+        if(aiDeposit == null){
+            aiDeposit = new RatAIDepositInInventory(this);
+        }
+        if(aiPickup == null){
+            aiPickup = new RatAIPickupFromInventory(this);
         }
         this.tasks.addTask(3, this.aiHarvest);
         this.tasks.addTask(4, this.aiDeposit);
