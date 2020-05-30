@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "rats:oratchalcum_ingot"
+      "tag": "forge:ingots/oratchalcum"
     }
   ],
   "result": {

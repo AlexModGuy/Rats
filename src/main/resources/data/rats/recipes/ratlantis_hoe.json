@@ -7,7 +7,7 @@
   ],
   "key": {
     "V": {
-      "item": "rats:oratchalcum_ingot"
+      "tag": "forge:ingots/oratchalcum"
     },
     "D": {
       "item": "diamond_hoe"

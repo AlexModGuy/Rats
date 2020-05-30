@@ -25,7 +25,7 @@
       "item": "rats:ratfish"
     },
     "G": {
-      "item": "rats:oratchalcum_ingot"
+      "tag": "forge:ingots/oratchalcum"
     },
     "H": {
       "item": "rats:gem_of_ratlantis"

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "rats:oratchalcum_block"
+      "tag": "forge:storage_blocks/oratchalcum"
     }
   ],
   "result": {
