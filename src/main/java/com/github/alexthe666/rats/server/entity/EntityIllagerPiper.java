@@ -4,10 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -37,7 +34,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("rats", "illager_piper"));
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> RAT_COUNT = EntityDataManager.createKey(EntityIllagerPiper.class, DataSerializers.VARINT);
-    private final PiperAIStrife aiArrowAttack = new PiperAIStrife(this, 0.6D, 20, 15.0F);
+    private final PiperAIStrife aiArrowAttack = new PiperAIStrife(this, 0.8D, 20, 15.0F);
     private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 0.8D, false);
     private int ratCooldown = 0;
     private int fluteTicks = 0;
@@ -46,6 +43,13 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
         super(world);
         this.setCombatTask();
     }
+
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    }
+
 
     protected void entityInit() {
         super.entityInit();
