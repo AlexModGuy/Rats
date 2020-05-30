@@ -408,9 +408,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return null;
     }
 
+    public boolean isNoDespawnRequired() {
+        return this.isTamed() || this.isChild() || !this.isNoDespawnRequired();
+    }
+
     public boolean canDespawn(double distanceToClosestPlayer) {
         if (RatConfig.ratsSpawnLikeMonsters) {
-            return (!this.isTamed() || this.wasTamedByMonster()) && !this.isChild();
+            return !this.isTamed() && !this.isChild();
         } else {
             return super.canDespawn(distanceToClosestPlayer);
         }
@@ -1105,7 +1109,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                     pooStack.setTag(poopTag);
                 }
                 this.getHeldItem(Hand.MAIN_HAND).shrink(1);
-                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.1F) {
+                if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.05F && this.isTamed()) {
                     if (RatConfig.ratFartNoises) {
                         this.playSound(RatsSoundRegistry.RAT_POOP, 0.5F + rand.nextFloat() * 0.5F, 1.0F + rand.nextFloat() * 0.5F);
                     }
