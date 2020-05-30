@@ -141,8 +141,6 @@ public class RatsItemRegistry {
 
     public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
-    public static final Item TOKEN_RENDERER = new ItemGeneric("token_renderer");
-
     public static final Item BLUE_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "blue_cheese");
 
     public static final Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
@@ -419,13 +417,14 @@ public class RatsItemRegistry {
             for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item && ((Item) obj).getRegistryName() != null) {
-                    if ((obj != RatsItemRegistry.PLASTIC_WASTE && obj != RatsItemRegistry.RAW_PLASTIC) || !RatConfig.disablePlastic) {
+                    if (RatConfig.disablePlastic && (obj == RatsItemRegistry.PLASTIC_WASTE || obj == RatsItemRegistry.RAW_PLASTIC)) {
+                        //do not remove
+                    }else{
                         event.getRegistry().register((Item) obj);
                     }
                 } else if (obj instanceof Item[]) {
                     for (Item item : (Item[]) obj) {
                         event.getRegistry().register((item));
-
                     }
                 }
             }
