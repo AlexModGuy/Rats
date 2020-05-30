@@ -71,7 +71,7 @@ public class RatAIWander extends EntityAIWanderAvoidWater {
     }
 
     private boolean shouldRatAIExecute() {
-        return rat.canMove() && !rat.hasFlight() && !rat.isDancing() && !rat.isFleeing;
+        return rat.canMove() && !rat.hasFlight() && !rat.isDancing() && !rat.isFleeing && rat.shouldWander();
     }
 
 }

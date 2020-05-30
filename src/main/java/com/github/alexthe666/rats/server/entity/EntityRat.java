@@ -792,6 +792,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
         }
     }
 
+    public boolean shouldWander() {
+        int cmd = this.getCommandInteger();
+        return cmd != 1 && cmd != 4 && cmd != 5 && cmd != 6;
+    }
+
     public RatCommand getCommand() {
         return RatCommand.values()[MathHelper.clamp(getCommandInteger(), 0, RatCommand.values().length - 1)];
     }
