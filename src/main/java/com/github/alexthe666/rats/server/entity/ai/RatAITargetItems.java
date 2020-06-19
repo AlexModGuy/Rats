@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
@@ -87,7 +89,10 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.goalOwner.getBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+        Vec3d renderCenter = new Vec3d(this.rat.getSearchCenter()).add(0.5, 0.5, 0.5);
+        double renderRadius = this.rat.getSearchRadius();
+        AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
+        return aabb.offset(renderCenter);
     }
 
     @Override
