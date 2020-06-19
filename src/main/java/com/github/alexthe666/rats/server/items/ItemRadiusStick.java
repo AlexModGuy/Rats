@@ -60,7 +60,9 @@ public class ItemRadiusStick extends Item {
             }
         }
         RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
-        RatsMod.PROXY.openRadiusStaffGui();
+        if(context.getWorld().isRemote){
+            RatsMod.PROXY.openRadiusStaffGui();
+        }
         return ActionResultType.SUCCESS;
     }
 

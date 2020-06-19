@@ -23,8 +23,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiRadiusStaff extends Screen {
 
     protected static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/cheese_staff.png");
@@ -145,8 +148,6 @@ public class GuiRadiusStaff extends Screen {
                 Minecraft.getInstance().displayGuiScreen(null);
             }
         }
-
-
     }
 
     public boolean isPauseScreen() {
