@@ -47,6 +47,14 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
         return false;
     }
 
+    public boolean isNoDespawnRequired() {
+        return true;
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return false;
+    }
+
     @Override
     public Entity getControllingPassenger() {
         if (!this.getPassengers().isEmpty()) {
