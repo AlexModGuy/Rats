@@ -7,14 +7,12 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -103,6 +101,7 @@ public class ItemRatSack extends Item {
         ItemStack stack = player.getHeldItem(hand);
         if (stack.getItem() == RatsItemRegistry.RAT_SACK && getRatsInStack(stack) > 0) {
             int ratCount = 0;
+            boolean flag = false;
             if (stack.getTagCompound() != null) {
                 for (String tagInfo : stack.getTagCompound().getKeySet()) {
                     if (tagInfo.contains("Rat")) {
@@ -115,13 +114,16 @@ public class ItemRatSack extends Item {
                         if (!worldIn.isRemote) {
                             worldIn.spawnEntity(rat);
                         }
+                        flag = true;
                     }
                 }
+                stack.setTagCompound(new NBTTagCompound());
             }
-            if (ratCount > 0) {
+            if (flag || ratCount > 0) {
                 player.swingArm(hand);
                 player.sendStatusMessage(new TextComponentTranslation("entity.rat.sack.release", ratCount), true);
                 stack.setTagCompound(new NBTTagCompound());
+                player.getCooldownTracker().setCooldown(this, 10);
             }
         }
         return EnumActionResult.PASS;
