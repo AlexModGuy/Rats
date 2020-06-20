@@ -185,7 +185,7 @@ public class EntityIllagerPiper extends AbstractIllager implements IRangedAttack
                 rat.setAttackTarget(this.getAttackTarget());
             }
             this.setRatsSummoned(this.getRatsSummoned() + 1);
-            this.playSound(RatsSoundRegistry.RAT_FLUTE, 0.7F, 1);
+            this.playSound(RatsSoundRegistry.getFluteSound(), 0.7F, 1);
             ratCooldown = 150;
         }
     }

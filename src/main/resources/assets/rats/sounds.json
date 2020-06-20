@@ -150,6 +150,14 @@
       "rats:piper_loop"
     ]
   },
+  "rat_flute_no_funny": {
+    "category": "neutral",
+    "sounds": [
+      "rats:flute_0",
+      "rats:flute_1",
+      "rats:flute_3"
+    ]
+  },
   "rat_flute": {
     "category": "neutral",
     "sounds": [

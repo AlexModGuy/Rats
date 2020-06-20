@@ -21,6 +21,7 @@ public class RatConfig {
     public boolean ratsSpawnLikeMonsters = true;
     public boolean cheesemaking = true;
     public boolean plagueRats = true;
+    public boolean ratFluteFunnySound = true;
     public int milkCauldronTime = 150;
     public boolean ratsDigBlocks = true;
     public boolean ratsBreakCrops = true;
@@ -68,6 +69,7 @@ public class RatConfig {
         this.defaultRatRadius = config.getInt("Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
         this.maxRatRadius = config.getInt("Max Rat Radius", "all", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
         this.plagueRats = config.getBoolean("Plague Rats", "all", true, "True if plague rats are to spawn naturally");
+        this.ratFluteFunnySound = config.getBoolean("Rat Flute Funny Sound", "all", true, "True if rat flutes can occasionally make a funny sound.");
         this.spawnPiper = config.getBoolean("Spawn Piper", "all", true, "True if Pied Pipers are to spawn naturally");
         this.piperSpawnDecrease = config.getInt("Piper Spawn Decrease", "all", 5, 0, Integer.MAX_VALUE, "A seperate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
         this.ratSpawnRate = config.getInt("Rat Spawn Weight", "all", 80, 1, 300, "The weight of rats in vanilla's spawn rate");

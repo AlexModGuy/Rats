@@ -82,7 +82,7 @@ public class ItemRatFlute extends Item {
                 }
                 player.swingArm(hand);
                 player.sendStatusMessage(new TextComponentTranslation("item.rats.rat_flute.rat_count", ratCount), true);
-                worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_FLUTE, SoundCategory.NEUTRAL, 1, 1.25F);
+                worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.getFluteSound(), SoundCategory.NEUTRAL, 1, 1.25F);
             }
         }
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
