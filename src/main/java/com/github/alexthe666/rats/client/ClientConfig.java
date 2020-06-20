@@ -5,10 +5,12 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ClientConfig {
 
     public final ForgeConfigSpec.BooleanValue plagueHearts;
+    public final ForgeConfigSpec.BooleanValue funnyFluteSound;
 
     public ClientConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
         this.plagueHearts = buildBoolean(builder, "Plague Heart Overlay", "all", true, "True if player UI has plague hearts render when the effect is active.");
+        this.funnyFluteSound = buildBoolean(builder, "Funny Rat Flute Sound", "all", true, "True if rats flutes can occasionally make a funny sound.");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

@@ -196,7 +196,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
                 rat.setAttackTarget(this.getAttackTarget());
             }
             this.setRatsSummoned(this.getRatsSummoned() + 1);
-            this.playSound(RatsSoundRegistry.RAT_FLUTE, 0.5F, 1);
+            this.playSound(RatsSoundRegistry.getFluteSound(), 0.5F, 1);
             ratCooldown = 150;
         }
     }
