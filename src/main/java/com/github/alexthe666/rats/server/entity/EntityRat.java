@@ -330,13 +330,13 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     public EntityLivingBase getOwnerMonster() {
         try {
             UUID uuid = this.getMonsterOwnerId();
-            if (!world.isRemote) {
+            if (!world.isRemote && world.getMinecraftServer() != null && uuid != null) {
                 Entity entity = world.getMinecraftServer().getWorld(this.dimension).getEntityFromUuid(uuid);
                 if (entity instanceof EntityLivingBase) {
                     return (EntityLivingBase) entity;
                 }
             }
-        } catch (IllegalArgumentException var2) {
+        } catch (Exception var2) {
             return null;
         }
         return null;

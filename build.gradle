@@ -76,7 +76,6 @@ dependencies {
     deobfCompile "net.ilexiconn:llibrary:1.7.9-1.12.2"
     deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.21"
     deobfCompile "slimeknights:TConstruct:1.12.2-2.9.1.70"
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.25-B40_1.12"
     runtime "mezz.jei:jei_1.12.2:4.9.1.181"
     deobfProvided "mezz.jei:jei_1.12.2:4.9.1.181:api"
     compile "baubles:Baubles:1.12:1.5.2"
