@@ -88,7 +88,7 @@ public class RatAIPickupFromInventory extends Goal {
             if (distance < 6.25F * this.entity.getRatDistanceModifier() && distance > 2.72F * this.entity.getRatDistanceModifier() && canSeeChest() && entity instanceof IInventory) {
                 toggleChest((IInventory) entity, true);
             }
-            if (distance <= 2.89F * this.entity.getRatDistanceModifier() && canSeeChest()) {
+            if (distance <= 3F * this.entity.getRatDistanceModifier() && canSeeChest()) {
                 if (entity instanceof IInventory) {
                     toggleChest((IInventory) entity, false);
                 }

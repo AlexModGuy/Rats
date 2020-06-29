@@ -142,10 +142,10 @@ public class RatAIDepositInInventory extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
                 double distance = Math.sqrt(this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D));
-                if (distance < 2.5 * entity.getRatDistanceModifier() && distance > 1.5 * entity.getRatDistanceModifier() && canSeeChest() && te instanceof IInventory) {
+                if (distance < 3D * entity.getRatDistanceModifier() && distance > 2D * entity.getRatDistanceModifier() && canSeeChest() && te instanceof IInventory) {
                     toggleChest((IInventory) te, true);
                 }
-                if (distance <= 1.5 * entity.getRatDistanceModifier() && canSeeChest()) {
+                if (distance <= 2 * entity.getRatDistanceModifier() && canSeeChest()) {
                     if (te instanceof IInventory) {
                         toggleChest((IInventory) te, false);
                     }
