@@ -19,7 +19,6 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -474,11 +473,11 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     protected void switchNavigator(int type) {
         if (type == 1) {//cage or wild
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new RatPathPathNavigateGround(this, world);
+            this.navigator = new RatPathNavigateGround(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {//tamed
             this.moveHelper = new EntityMoveHelper(this);
-            this.navigator = new RatPathPathNavigateGround(this, world);
+            this.navigator = new RatPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying
             this.moveHelper = new RatFlyingMoveHelper(this);
@@ -1773,9 +1772,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     private void findDigTarget() {
-        if (this.getNavigator() instanceof RatPathPathNavigateGround) {
-            if (((RatPathPathNavigateGround) this.getNavigator()).targetPosition != null) {
-                BlockPos target = ((RatPathPathNavigateGround) this.getNavigator()).targetPosition.down();
+        if (this.getNavigator() instanceof RatPathNavigateGround) {
+            if (((RatPathNavigateGround) this.getNavigator()).targetPosition != null) {
+                BlockPos target = ((RatPathNavigateGround) this.getNavigator()).targetPosition.down();
                 if (world.getTileEntity(target) != null) {
                     finalDigPathPoint = target;
                 }

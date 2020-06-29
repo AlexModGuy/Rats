@@ -14,11 +14,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class RatPathPathNavigateGround extends PathNavigateGround {
+public class RatPathNavigateGround extends PathNavigateGround {
 
     public BlockPos targetPosition;
 
-    public RatPathPathNavigateGround(EntityRat entitylivingIn, World worldIn) {
+    public RatPathNavigateGround(EntityRat entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }
 
@@ -44,7 +44,11 @@ public class RatPathPathNavigateGround extends PathNavigateGround {
                 }
             }
         }
-        return super.getPathToPos(pos);
+        try{
+            return super.getPathToPos(pos);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public Path getPathToEntityLiving(Entity entityIn) {
