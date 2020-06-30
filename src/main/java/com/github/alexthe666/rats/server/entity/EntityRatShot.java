@@ -69,7 +69,7 @@ public class EntityRatShot extends ThrowableEntity {
 
     public void tick() {
         super.tick();
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(horizontalMag(vec3d));
             this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, vec3d.z) * (double) (180F / (float) Math.PI));

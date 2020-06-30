@@ -3,10 +3,13 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -56,14 +59,13 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
         }
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 80.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.5D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 5.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 4.0D);             //ARMOR
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -90,13 +92,13 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
+                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
+                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
@@ -191,6 +193,6 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return !BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
+        return !BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
     }
 }

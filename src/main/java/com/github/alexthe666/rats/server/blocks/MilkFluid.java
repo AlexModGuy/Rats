@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
@@ -35,7 +35,7 @@ public class MilkFluid extends FlowingFluid {
     }
 
     @Override
-    protected boolean canDisplace(IFluidState p_215665_1_, IBlockReader p_215665_2_, BlockPos p_215665_3_, Fluid p_215665_4_, Direction p_215665_5_) {
+    protected boolean canDisplace(FluidState p_215665_1_, IBlockReader p_215665_2_, BlockPos p_215665_3_, Fluid p_215665_4_, Direction p_215665_5_) {
         return false;
     }
 
@@ -50,17 +50,17 @@ public class MilkFluid extends FlowingFluid {
     }
 
     @Override
-    protected BlockState getBlockState(IFluidState state) {
+    protected BlockState getBlockState(FluidState state) {
         return Blocks.AIR.getDefaultState();
     }
 
     @Override
-    public boolean isSource(IFluidState state) {
+    public boolean isSource(FluidState state) {
         return true;
     }
 
     @Override
-    public int getLevel(IFluidState p_207192_1_) {
+    public int getLevel(FluidState p_207192_1_) {
         return 8;
     }
 

@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 public class RatFlyingMoveHelper extends MovementController {
     EntityRat rat;
@@ -28,7 +28,7 @@ public class RatFlyingMoveHelper extends MovementController {
                 this.setMoveTo(target.getX(), target.getY(), target.getZ(), this.speed);
 
             }
-            Vec3d vec3d = new Vec3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
+            Vector3d vec3d = new Vector3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
             double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d0 < edgeLength) {
@@ -37,7 +37,7 @@ public class RatFlyingMoveHelper extends MovementController {
             } else {
                 rat.setMotion(rat.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                 if (rat.getAttackTarget() == null) {
-                    Vec3d vec3d1 = rat.getMotion();
+                    Vector3d vec3d1 = rat.getMotion();
                     rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 } else {

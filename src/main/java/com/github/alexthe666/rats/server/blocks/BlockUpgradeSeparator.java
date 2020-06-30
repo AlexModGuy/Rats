@@ -24,7 +24,7 @@ public class BlockUpgradeSeparator extends ContainerBlock implements IUsesTEISR 
     protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
     public BlockUpgradeSeparator() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.WOOD).notSolid().variableOpacity().hardnessAndResistance(5.0F, 0.0F).lightValue(4));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.WOOD).notSolid().variableOpacity().hardnessAndResistance(5.0F, 0.0F).func_235838_a_((p) -> 4));
         this.setRegistryName(RatsMod.MODID, "upgrade_separator");
         //GameRegistry.registerTileEntity(TileEntityUpgradeSeparator.class, "rats.upgrade_separator");
     }
@@ -47,7 +47,7 @@ public class BlockUpgradeSeparator extends ContainerBlock implements IUsesTEISR 
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.upgrade_separator.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.upgrade_separator.desc").func_240699_a_(TextFormatting.GRAY));
     }
 
     @Nullable

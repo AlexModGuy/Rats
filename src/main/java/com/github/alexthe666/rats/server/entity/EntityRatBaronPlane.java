@@ -47,9 +47,9 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
     @OnlyIn(Dist.CLIENT)
     public PlaneBuffer pitch_buffer;
     @Nullable
-    private Vec3d flightTarget;
-    private Vec3d startAttackVec;
-    private Vec3d startPreyVec;
+    private Vector3d flightTarget;
+    private Vector3d startAttackVec;
+    private Vector3d startPreyVec;
     private boolean hasStartedToScorch = false;
     private LivingEntity prevAttackTarget = null;
     private BlockPos escortPosition = null;
@@ -126,11 +126,11 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         if(LivingEntityIn != null) {
             if (prevAttackTarget != LivingEntityIn) {
                 if (LivingEntityIn != null) {
-                    startPreyVec = new Vec3d(LivingEntityIn.getPosX(), LivingEntityIn.getPosY(), LivingEntityIn.getPosZ());
+                    startPreyVec = new Vector3d(LivingEntityIn.getPosX(), LivingEntityIn.getPosY(), LivingEntityIn.getPosZ());
                 } else {
-                    startPreyVec = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+                    startPreyVec = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
                 }
-                startAttackVec = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+                startAttackVec = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
             }
             prevAttackTarget = LivingEntityIn;
         }
@@ -162,11 +162,11 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
             float distX = (float) (startPreyVec.x - startAttackVec.x);
             float distY = 1.5F;
             float distZ = (float) (startPreyVec.z - startAttackVec.z);
-            flightTarget = new Vec3d(this.getAttackTarget().getPosX() + distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() + distZ);
+            flightTarget = new Vector3d(this.getAttackTarget().getPosX() + distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() + distZ);
             this.tryScorchTarget();
             hasStartedToScorch = true;
             if (flightTarget != null && this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 100) {
-                flightTarget = new Vec3d(this.getAttackTarget().getPosX() - distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() - distZ);
+                flightTarget = new Vector3d(this.getAttackTarget().getPosX() - distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() - distZ);
             }
         }
         if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())){
@@ -285,7 +285,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         }
     }
 
-    public Vec3d getBlockInViewEscort() {
+    public Vector3d getBlockInViewEscort() {
         float radius = 12;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.renderYawOffset;
@@ -298,15 +298,15 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
                     (distFromGround > 16 ? escortPos.getY() : escortPos.getY() + 5 + this.getRNG().nextInt(26)),
                     (escortPos.getZ() + this.getRNG().nextInt(fromHome) - fromHome / 2));
             if (canBlockPosBeSeen(pos) && this.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 6) {
-                return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                return new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
             }
         }
         return null;
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
-        Vec3d vec3d = new Vec3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-        Vec3d vec3d1 = new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+        Vector3d vec3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+        Vector3d vec3d1 = new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
         return this.world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
     }
 

@@ -11,14 +11,14 @@ import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,8 +42,8 @@ public class RatNukeExplosion extends Explosion {
     private final Entity exploder;
     private final float size;
     private final List<BlockPos> affectedBlockPositions;
-    private final Map<PlayerEntity, Vec3d> playerKnockbackMap;
-    private final Vec3d position;
+    private final Map<PlayerEntity, Vector3d> playerKnockbackMap;
+    private final Vector3d position;
 
     @OnlyIn(Dist.CLIENT)
     public RatNukeExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, List<BlockPos> affectedPositions) {
@@ -69,7 +69,7 @@ public class RatNukeExplosion extends Explosion {
         this.z = z;
         this.causesFire = causesFire;
         this.damagesTerrain = damagesTerrain;
-        this.position = new Vec3d(this.x, this.y, this.z);
+        this.position = new Vector3d(this.x, this.y, this.z);
     }
 
     public void doExplosionA() {
@@ -95,7 +95,7 @@ public class RatNukeExplosion extends Explosion {
                         for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             BlockState blockstate = this.world.getBlockState(blockpos);
-                            IFluidState ifluidstate = this.world.getFluidState(blockpos);
+                            FluidState ifluidstate = this.world.getFluidState(blockpos);
                             if (!blockstate.isAir(this.world, blockpos) || !ifluidstate.isEmpty()) {
                                 float f2 = Math.max(blockstate.getExplosionResistance(this.world, blockpos, exploder, this), ifluidstate.getExplosionResistance(this.world, blockpos, exploder, this));
                                 if (this.exploder != null) {
@@ -128,12 +128,12 @@ public class RatNukeExplosion extends Explosion {
         int j1 = MathHelper.floor(this.z + (double)f3 + 1.0D);
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, this, list, f3);
-        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
+        Vector3d vec3d = new Vector3d(this.x, this.y, this.z);
 
         for(int k2 = 0; k2 < list.size(); ++k2) {
             Entity entity = list.get(k2);
             if (!entity.isImmuneToExplosions()) {
-                double d12 = (double)(MathHelper.sqrt(entity.getDistanceSq(new Vec3d(this.x, this.y, this.z))) / f3);
+                double d12 = (double)(MathHelper.sqrt(entity.getDistanceSq(new Vector3d(this.x, this.y, this.z))) / f3);
                 if (d12 <= 1.0D) {
                     double d5 = entity.getPosX() - this.x;
                     double d7 = entity.getPosY() + (double)entity.getEyeHeight() - this.y;
@@ -155,7 +155,7 @@ public class RatNukeExplosion extends Explosion {
                         if (entity instanceof PlayerEntity) {
                             PlayerEntity playerentity = (PlayerEntity)entity;
                             if (!playerentity.isSpectator() && (!playerentity.isCreative() || !playerentity.abilities.isFlying)) {
-                                this.playerKnockbackMap.put(playerentity, new Vec3d(d5 * d10, d7 * d10, d9 * d10));
+                                this.playerKnockbackMap.put(playerentity, new Vector3d(d5 * d10, d7 * d10, d9 * d10));
                             }
                         }
                     }
@@ -225,7 +225,7 @@ public class RatNukeExplosion extends Explosion {
         }
     }
 
-    public Map<PlayerEntity, Vec3d> getPlayerKnockbackMap() {
+    public Map<PlayerEntity, Vector3d> getPlayerKnockbackMap() {
         return this.playerKnockbackMap;
     }
 
@@ -249,7 +249,7 @@ public class RatNukeExplosion extends Explosion {
         return this.affectedBlockPositions;
     }
 
-    public Vec3d getPosition() {
+    public Vector3d getPosition() {
         return this.position;
     }
 }

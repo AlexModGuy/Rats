@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
             float k = this.getPos().getZ() + 0.5F;
             float d0 = 0.4F;
             for (EntityRat rat : world.getEntitiesWithinAABB(EntityRat.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                rat.setMotionMultiplier(this.getBlockState(), new Vec3d(1.75F, 1, 1.75F));
+                rat.setMotionMultiplier(this.getBlockState(), new Vector3d(1.75F, 1, 1.75F));
                 this.updateRat(rat);
             }
         }

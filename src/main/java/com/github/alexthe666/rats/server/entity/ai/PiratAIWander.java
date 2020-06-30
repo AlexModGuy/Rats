@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 import java.util.EnumSet;
 
@@ -35,7 +35,7 @@ public class PiratAIWander extends Goal {
                 return false;
             }
         }
-        Vec3d vec3d = RatUtils.generateRandomWaterPos(this.rat, 10, 5, null, true);
+        Vector3d vec3d = RatUtils.generateRandomWaterPos(this.rat, 10, 5, null, true);
         if (vec3d == null) {
             return false;
         } else {

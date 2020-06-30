@@ -12,7 +12,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 
 public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnimatedEntity {
@@ -90,7 +90,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
             this.faceEntity(target, 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) RatConfig.ratlanteanAutomatonAttack);
-                target.knockBack(target, 1.5F, this.getPosX() - target.getPosX(), this.getPosZ() - target.getPosZ());
+                target.func_233627_a_(target, 1.5F, this.getPosX() - target.getPosX(), this.getPosZ() - target.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -133,7 +133,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityRatAutomatonMount.this.getPosX(), this.getY() - EntityRatAutomatonMount.this.getPosY(), this.getZ() - EntityRatAutomatonMount.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityRatAutomatonMount.this.getPosX(), this.getY() - EntityRatAutomatonMount.this.getPosY(), this.getZ() - EntityRatAutomatonMount.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityRatAutomatonMount.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -142,7 +142,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
                 } else {
                     EntityRatAutomatonMount.this.setMotion(EntityRatAutomatonMount.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityRatAutomatonMount.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityRatAutomatonMount.this.getMotion();
+                        Vector3d vec3d1 = EntityRatAutomatonMount.this.getMotion();
                         EntityRatAutomatonMount.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityRatAutomatonMount.this.renderYawOffset = EntityRatAutomatonMount.this.rotationYaw;
                     } else {

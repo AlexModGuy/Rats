@@ -26,7 +26,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -203,7 +203,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityPlagueCloud.this.getPosX(), this.getY() - EntityPlagueCloud.this.getPosY(), this.getZ() - EntityPlagueCloud.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityPlagueCloud.this.getPosX(), this.getY() - EntityPlagueCloud.this.getPosY(), this.getZ() - EntityPlagueCloud.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityPlagueCloud.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -212,7 +212,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
                 } else {
                     EntityPlagueCloud.this.setMotion(EntityPlagueCloud.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityPlagueCloud.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityPlagueCloud.this.getMotion();
+                        Vector3d vec3d1 = EntityPlagueCloud.this.getMotion();
                         EntityPlagueCloud.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityPlagueCloud.this.renderYawOffset = EntityPlagueCloud.this.rotationYaw;
                     } else {

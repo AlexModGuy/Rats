@@ -8,7 +8,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
@@ -317,7 +317,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         IBlockReader iblockreader = context.getWorld();
         BlockPos blockpos = context.getPos();
-        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
         BlockPos blockpos1 = blockpos.north();
         BlockPos blockpos2 = blockpos.east();
         BlockPos blockpos3 = blockpos.south();
@@ -353,7 +353,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-        if (playerIn.isShiftKeyDown() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem || playerIn.getHeldItem(hand).getItem() instanceof ItemRatTube) {
+        if (playerIn.isSneaking() || playerIn.getHeldItem(hand).getItem() instanceof BlockItem || playerIn.getHeldItem(hand).getItem() instanceof ItemRatTube) {
             return ActionResultType.PASS;
         } else {
             Direction side = hit.getFace();

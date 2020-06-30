@@ -54,7 +54,7 @@ public class BlockRatAttractor extends ContainerBlock {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_attractor.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_attractor.desc0").func_240699_a_(TextFormatting.GRAY));
     }
 
     public BlockRenderType getRenderType(BlockState state) {

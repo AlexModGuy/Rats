@@ -30,7 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -205,7 +205,7 @@ public class ClientEvents {
     public void onRenderWorld(RenderWorldLastEvent event) {
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
-                Vec3d renderCenter = new Vec3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
+                Vector3d renderCenter = new Vector3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
                 double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
                 AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
                 GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -215,7 +215,7 @@ public class ClientEvents {
                 GlStateManager.depthMask(false);
                 Entity viewEntity = Minecraft.getInstance().player;
                 ActiveRenderInfo activerenderinfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
-                Vec3d viewPosition = activerenderinfo.getProjectedView();
+                Vector3d viewPosition = activerenderinfo.getProjectedView();
                 double px = viewPosition.x;
                 double py = viewPosition.y;
                 double pz = viewPosition.z;

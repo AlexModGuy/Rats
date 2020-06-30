@@ -23,7 +23,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
@@ -191,7 +191,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().func_233627_a_(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -283,7 +283,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityMarbleCheeseGolem.this.getPosX(), this.getY() - EntityMarbleCheeseGolem.this.getPosY(), this.getZ() - EntityMarbleCheeseGolem.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityMarbleCheeseGolem.this.getPosX(), this.getY() - EntityMarbleCheeseGolem.this.getPosY(), this.getZ() - EntityMarbleCheeseGolem.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityMarbleCheeseGolem.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -292,7 +292,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
                 } else {
                     EntityMarbleCheeseGolem.this.setMotion(EntityMarbleCheeseGolem.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityMarbleCheeseGolem.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityMarbleCheeseGolem.this.getMotion();
+                        Vector3d vec3d1 = EntityMarbleCheeseGolem.this.getMotion();
                         EntityMarbleCheeseGolem.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityMarbleCheeseGolem.this.renderYawOffset = EntityMarbleCheeseGolem.this.rotationYaw;
                     } else {

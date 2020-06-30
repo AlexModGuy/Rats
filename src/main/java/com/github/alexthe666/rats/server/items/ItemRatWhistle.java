@@ -80,7 +80,7 @@ public class ItemRatWhistle extends Item {
             }
         }
         player.swingArm(hand);
-        player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).applyTextStyle(TextFormatting.GRAY), true);
+        player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).func_240699_a_(TextFormatting.GRAY), true);
         worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_WHISTLE, SoundCategory.NEUTRAL, 1, 1.25F);
 
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
@@ -88,6 +88,6 @@ public class ItemRatWhistle extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_whistle.desc0").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_whistle.desc0").func_240699_a_(TextFormatting.GRAY));
     }
 }

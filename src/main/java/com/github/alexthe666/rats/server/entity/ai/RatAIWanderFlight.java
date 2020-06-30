@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 import java.util.EnumSet;
 
@@ -25,7 +25,7 @@ public class RatAIWanderFlight extends Goal {
             }
             target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
             if (!rat.getMoveHelper().isUpdating()) {
-                return rat.isDirectPathBetweenPoints(new Vec3d(target));
+                return rat.isDirectPathBetweenPoints(new Vector3d(target));
             }
         }
         return false;
@@ -36,7 +36,7 @@ public class RatAIWanderFlight extends Goal {
     }
 
     public void tick() {
-        if (!rat.isDirectPathBetweenPoints(new Vec3d(target))) {
+        if (!rat.isDirectPathBetweenPoints(new Vector3d(target))) {
             int dist = 8;
             if (rat.isInCage()) {
                 dist = 3;

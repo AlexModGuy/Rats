@@ -3,8 +3,8 @@ package com.github.alexthe666.rats.server.world.gen;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +29,10 @@ public class RatsStructureProcessor extends StructureProcessor {
         this(p_i51333_1_.get("integrity").asFloat(1.0F));
     }
 
+    public RatsStructureProcessor() {
+        integrity = 1.0F;
+    }
+
 
     public Template.BlockInfo process(IWorldReader worldReader, BlockPos pos, Template.BlockInfo infoIn1, Template.BlockInfo infoIn2, PlacementSettings settings) {
         Random random = settings.getRandom(infoIn2.pos);
@@ -42,12 +46,7 @@ public class RatsStructureProcessor extends StructureProcessor {
 
     @Override
     protected IStructureProcessorType getType() {
-        return RatlantisStructureRegistry.RAT_RUINS_PROCESSOR;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("integrity"), ops.createFloat(this.integrity))));
+        return IStructureProcessorType.BLOCK_ROT;
     }
 
 }

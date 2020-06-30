@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;
@@ -49,11 +47,6 @@ public class RatsStructureVineProcessor extends StructureProcessor {
     @Override
     protected IStructureProcessorType getType() {
         return IStructureProcessorType.BLOCK_ROT;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("rats_processor"), ops.createFloat(this.integrity))));
     }
 
 }

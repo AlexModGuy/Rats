@@ -28,7 +28,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
@@ -295,7 +295,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityNeoRatlantean.this.getPosX(), this.getY() - EntityNeoRatlantean.this.getPosY(), this.getZ() - EntityNeoRatlantean.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityNeoRatlantean.this.getPosX(), this.getY() - EntityNeoRatlantean.this.getPosY(), this.getZ() - EntityNeoRatlantean.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityNeoRatlantean.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -304,7 +304,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
                 } else {
                     EntityNeoRatlantean.this.setMotion(EntityNeoRatlantean.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityNeoRatlantean.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityNeoRatlantean.this.getMotion();
+                        Vector3d vec3d1 = EntityNeoRatlantean.this.getMotion();
                         EntityNeoRatlantean.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityNeoRatlantean.this.renderYawOffset = EntityNeoRatlantean.this.rotationYaw;
                     } else {

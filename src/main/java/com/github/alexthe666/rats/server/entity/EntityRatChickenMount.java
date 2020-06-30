@@ -8,7 +8,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 
 public class EntityRatChickenMount extends EntityRatMountBase {
@@ -53,7 +53,7 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         }
 
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         if (!this.onGround && vec3d.y < 0.0D) {
             this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         }

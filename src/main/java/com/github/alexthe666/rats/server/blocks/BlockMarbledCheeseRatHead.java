@@ -46,7 +46,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
     private BlockPattern golemPattern;
 
     public BlockMarbledCheeseRatHead() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).lightValue(5).notSolid().variableOpacity().hardnessAndResistance(2.5F, 0));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).func_235838_a_((p) -> 5).notSolid().variableOpacity().hardnessAndResistance(2.5F, 0));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         this.setRegistryName(RatsMod.MODID, "marbled_cheese_rat_head");
 
@@ -100,7 +100,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
             for (int i1 = 0; i1 < this.getGolemPattern().getPalmLength(); ++i1) {
                 for (int j1 = 0; j1 < this.getGolemPattern().getThumbLength(); ++j1) {
                     CachedBlockInfo cachedblockinfo1 = blockpattern$patternhelper.translateOffset(i1, j1, 0);
-                    worldIn.notifyNeighbors(cachedblockinfo1.getPos(), Blocks.AIR);
+                    worldIn.notifyBlockUpdate(cachedblockinfo1.getPos(), cachedblockinfo1.getBlockState(), cachedblockinfo1.getBlockState(), 4);
                 }
             }
         }

@@ -9,7 +9,9 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeAmbience;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
+import net.minecraft.world.biome.MoodSoundAmbience;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
@@ -29,27 +31,27 @@ public class BiomeRatlantis extends Biome {
     public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
     public static final BlockClusterFeatureConfig RATGLOVE_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState()), new SimpleBlockPlacer())).tries(64).build();
 
+
     public BiomeRatlantis() {
-        super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).waterColor(4445678).depth(1).waterFogColor(270131).parent((String)null));
-        this.addStructure(Feature.MINESHAFT.withConfiguration(new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL)));
-        this.addStructure(Feature.SHIPWRECK.withConfiguration( new ShipwreckConfig(false)));
+        super((new Biome.Builder()).surfaceBuilder(RatsWorldRegistry.RATLANTIS_SURFACE, SURFACE_BUILDER_CONFIG).precipitation(Biome.RainType.RAIN).category(Category.OCEAN).scale(0.1F).temperature(0.55F).downfall(0.5F).depth(1).func_235097_a_((new BiomeAmbience.Builder()).func_235246_b_(4445678).func_235248_c_(270131).func_235239_a_(12638463).func_235243_a_(MoodSoundAmbience.field_235027_b_).func_235238_a_()).parent((String)null));
+        this.func_235063_a_(Structure.field_236367_c_.func_236391_a_(new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL)));
+        this.func_235063_a_(Structure.field_236373_i_.func_236391_a_( new ShipwreckConfig(false)));
         this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.CHEESE_ORE.getDefaultState(), 5)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
         this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.RATLANTEAN_GEM_ORE.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 32))));
         this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, RatsBlockRegistry.ORATCHALCUM_ORE.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(3, 0, 0, 25))));
-        this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
-        this.addStructure(RatsWorldRegistry.RAT_RUINS.withConfiguration( new NoFeatureConfig()));
-        this.addStructure(RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration( new NoFeatureConfig()));
-        this.addStructure(RatsWorldRegistry.RUNWAY.withConfiguration( new NoFeatureConfig()));
-        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.RAT_RUINS.withConfiguration(new NoFeatureConfig()));
-        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.FLYING_DUTCHRAT.withConfiguration(new NoFeatureConfig()));
-        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, RatsWorldRegistry.RUNWAY.withConfiguration(new NoFeatureConfig()));
+        this.func_235063_a_(Structure.field_236373_i_.func_236391_a_(new ShipwreckConfig(false)));
+        this.func_235063_a_(RatsWorldRegistry.RAT_RUINS.func_236391_a_( new NoFeatureConfig()));
+        this.func_235063_a_(RatsWorldRegistry.FLYING_DUTCHRAT.func_236391_a_( new NoFeatureConfig()));
+        this.func_235063_a_(RatsWorldRegistry.RUNWAY.func_236391_a_( new NoFeatureConfig()));
+        this.func_235063_a_(RatsWorldRegistry.RAT_RUINS.func_236391_a_(new NoFeatureConfig()));
+        this.func_235063_a_( RatsWorldRegistry.FLYING_DUTCHRAT.func_236391_a_(new NoFeatureConfig()));
+        this.func_235063_a_( RatsWorldRegistry.RUNWAY.func_236391_a_(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, RatlantisStructureRegistry.MARBLE_PILE.withConfiguration(new NoFeatureConfig()));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));
         this.flowers.add(Feature.RANDOM_PATCH.withConfiguration(RATGLOVE_CONFIG));
         //this.addStructure(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig());
         //this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(RatsWorldRegistry.RATLANTIS_AQUADUCTS, new NoFeatureConfig(), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         DefaultBiomeFeatures.addCarvers(this);
-        DefaultBiomeFeatures.addStructures(this);
         DefaultBiomeFeatures.addLakes(this);
         DefaultBiomeFeatures.addMonsterRooms(this);
         DefaultBiomeFeatures.addStoneVariants(this);
@@ -62,7 +64,6 @@ public class BiomeRatlantis extends Biome {
         DefaultBiomeFeatures.addReedsAndPumpkins(this);
         DefaultBiomeFeatures.addSprings(this);
         DefaultBiomeFeatures.addJunglePlants(this);
-        DefaultBiomeFeatures.func_222309_aj(this);
         DefaultBiomeFeatures.addSprings(this);
         DefaultBiomeFeatures.addFreezeTopLayer(this);
         DefaultBiomeFeatures.addLakes(this);

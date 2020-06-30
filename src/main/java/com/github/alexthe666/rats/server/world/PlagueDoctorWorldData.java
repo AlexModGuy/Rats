@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.world;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
@@ -24,7 +23,7 @@ public class PlagueDoctorWorldData extends WorldSavedData {
 
     public static PlagueDoctorWorldData get(World world) {
         if (world instanceof ServerWorld) {
-            ServerWorld overworld = world.getServer().getWorld(DimensionType.OVERWORLD);
+            ServerWorld overworld = world.getServer().getWorld(world.func_234923_W_());
 
             DimensionSavedDataManager storage = overworld.getSavedData();
             PlagueDoctorWorldData data = storage.getOrCreate(PlagueDoctorWorldData::new, IDENTIFIER);

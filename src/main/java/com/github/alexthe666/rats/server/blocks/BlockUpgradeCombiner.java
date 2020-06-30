@@ -22,7 +22,7 @@ public class BlockUpgradeCombiner extends ContainerBlock implements IUsesTEISR {
     protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
     public BlockUpgradeCombiner() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.WOOD).notSolid().variableOpacity().hardnessAndResistance(5.0F, 0.0F).lightValue(4));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.WOOD).notSolid().variableOpacity().hardnessAndResistance(5.0F, 0.0F).func_235838_a_((p) -> 4));
         //GameRegistry.registerTileEntity(TileEntityUpgradeCombiner.class, "rats.upgrade_combiner");
         this.setRegistryName("rats:upgrade_combiner");
     }
@@ -50,7 +50,7 @@ public class BlockUpgradeCombiner extends ContainerBlock implements IUsesTEISR {
     }
 
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if(!player.isShiftKeyDown()){
+        if(!player.isSneaking()){
             if(worldIn.isRemote){
                 RatsMod.PROXY.setRefrencedTE(worldIn.getTileEntity(pos));
             }else{

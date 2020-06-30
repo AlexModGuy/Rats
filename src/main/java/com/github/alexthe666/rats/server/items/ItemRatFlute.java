@@ -60,7 +60,7 @@ public class ItemRatFlute extends Item {
         if (itemStackIn.getTag() != null) {
             int commandInt = itemStackIn.getTag().getInt("Command");
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(commandInt, 0, RatCommand.values().length - 1)];
-            if (player.isShiftKeyDown()) {
+            if (player.isSneaking()) {
                 commandInt++;
                 if (commandInt > RatCommand.values().length - 1) {
                     commandInt = 0;
@@ -84,7 +84,7 @@ public class ItemRatFlute extends Item {
                     }
                 }
                 player.swingArm(hand);
-                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).applyTextStyle(TextFormatting.GRAY), true);
+                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).func_240699_a_(TextFormatting.GRAY), true);
                 worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.getFluteSound(), SoundCategory.NEUTRAL, 1, 1.25F);
             }
         }
@@ -93,11 +93,11 @@ public class ItemRatFlute extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc0").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1").func_240699_a_(TextFormatting.GRAY));
         if (stack.getTag() != null) {
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(stack.getTag().getInt("Command"), 0, RatCommand.values().length - 1)];
-            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())).applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendText(" ").appendSibling(new TranslationTextComponent(ratCommand.getTranslateName())).func_240699_a_(TextFormatting.GRAY));
 
         }
     }

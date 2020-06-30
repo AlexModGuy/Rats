@@ -42,7 +42,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -177,9 +177,9 @@ public class CommonEvents {
                 Entity trueSource = event.getSource().getTrueSource();
                 if(trueSource.getDistance(event.getEntityLiving()) < 6D){
                     trueSource.attackEntityFrom(DamageSource.MAGIC, 2.0F * protectors);
-                    Vec3d vec3d = trueSource.getMotion();
+                    Vector3d vec3d = trueSource.getMotion();
                     double strength = 0.3D * protectors;
-                    Vec3d vec3d1 = (new Vec3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);
+                    Vector3d vec3d1 = (new Vector3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);
                     trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.onGround ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
 
                 }
@@ -218,7 +218,7 @@ public class CommonEvents {
         }*/
         RatsCustomEvents.onPlayerSwing(event.getPlayer(), itemstack);
         RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
-        if (event.getPlayer().isShiftKeyDown() && !event.getPlayer().getPassengers().isEmpty()) {
+        if (event.getPlayer().isSneaking() && !event.getPlayer().getPassengers().isEmpty()) {
             for (Entity passenger : event.getPlayer().getPassengers()) {
                 if (passenger instanceof EntityRat) {
                     passenger.stopRiding();

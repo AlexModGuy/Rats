@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
@@ -89,7 +89,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        Vec3d renderCenter = new Vec3d(this.rat.getSearchCenter()).add(0.5, 0.5, 0.5);
+        Vector3d renderCenter = new Vector3d(this.rat.getSearchCenter()).add(0.5, 0.5, 0.5);
         double renderRadius = this.rat.getSearchRadius();
         AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
         return aabb.offset(renderCenter);

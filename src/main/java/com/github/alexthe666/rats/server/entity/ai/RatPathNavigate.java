@@ -12,7 +12,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 
 public class RatPathNavigate extends GroundPathNavigator {
@@ -77,8 +77,8 @@ public class RatPathNavigate extends GroundPathNavigator {
             if (this.canNavigate()) {
                 this.pathFollow();
             } else if (this.currentPath != null && this.currentPath.getCurrentPathIndex() < this.currentPath.getCurrentPathLength()) {
-                Vec3d vec3d = this.getEntityPosition();
-                Vec3d vec3d1 = this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getCurrentPathIndex());
+                Vector3d vec3d = this.getEntityPosition();
+                Vector3d vec3d1 = this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getCurrentPathIndex());
 
                 if (vec3d.y > vec3d1.y && !this.entity.onGround && MathHelper.floor(vec3d.x) == MathHelper.floor(vec3d1.x) && MathHelper.floor(vec3d.z) == MathHelper.floor(vec3d1.z)) {
                     this.currentPath.setCurrentPathIndex(this.currentPath.getCurrentPathIndex() + 1);
@@ -86,7 +86,7 @@ public class RatPathNavigate extends GroundPathNavigator {
             }
             this.world.getProfiler().endSection();
             if (!this.noPath()) {
-                Vec3d vec3d2 = this.currentPath.getPosition(this.entity);
+                Vector3d vec3d2 = this.currentPath.getPosition(this.entity);
                 this.entity.getMoveHelper().setMoveTo(vec3d2.x, vec3d2.y, vec3d2.z, this.speed);
 
             }

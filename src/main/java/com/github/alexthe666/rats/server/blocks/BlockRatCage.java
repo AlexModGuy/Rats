@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,8 +88,8 @@ public class BlockRatCage extends Block {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").func_240699_a_(TextFormatting.GRAY));
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -100,7 +100,7 @@ public class BlockRatCage extends Block {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         IBlockReader iblockreader = context.getWorld();
         BlockPos blockpos = context.getPos();
-        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
         BlockPos blockpos1 = blockpos.north();
         BlockPos blockpos2 = blockpos.east();
         BlockPos blockpos3 = blockpos.south();
@@ -192,7 +192,7 @@ public class BlockRatCage extends Block {
             ItemStack stack = this.getContainedItem(worldIn, pos);
             boolean clearIt = true;
             if (stack != ItemStack.EMPTY) {
-                clearIt = playerIn.isShiftKeyDown();
+                clearIt = playerIn.isSneaking();
             }
             if (clearIt) {
                 BlockState pre = worldIn.getBlockState(pos);

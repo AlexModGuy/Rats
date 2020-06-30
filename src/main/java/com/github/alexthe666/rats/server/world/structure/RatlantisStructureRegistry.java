@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.world.structure;
 
 import com.github.alexthe666.rats.server.world.gen.FeatureMarblePile;
-import com.github.alexthe666.rats.server.world.gen.FeatureSewer;
 import com.github.alexthe666.rats.server.world.gen.RatsStructureProcessor;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -24,9 +24,8 @@ public class RatlantisStructureRegistry {
         RAT_AQUADUCT_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:ratlantis_aquaduct", RatlantisAquaductPiece.Piece::new);
         FLYING_DUTCHRAT_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:flying_dutchrat", DutchratShipPiece.Piece::new);
         RUNWAY_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:runway", RunwayPiece.Piece::new);
-        RAT_RUINS_PROCESSOR = Registry.register(Registry.STRUCTURE_PROCESSOR, "ratlantis_ruins_processor", RatsStructureProcessor::new);
-        MARBLE_PILE = Registry.register(Registry.FEATURE, "marble_pile", new FeatureMarblePile(NoFeatureConfig::deserialize));
-        SEWER = Registry.register(Registry.FEATURE, "sewer", new FeatureSewer(NoFeatureConfig::deserialize));
+
+        MARBLE_PILE = Registry.register(Registry.FEATURE, "marble_pile", new FeatureMarblePile(NoFeatureConfig.field_236558_a_));
     }
 
 

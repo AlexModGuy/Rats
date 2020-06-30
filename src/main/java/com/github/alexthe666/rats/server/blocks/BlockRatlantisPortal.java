@@ -17,7 +17,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     protected BlockRatlantisPortal() {
-        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).lightValue(15).doesNotBlockMovement());
+        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).func_235838_a_((p) -> 15).doesNotBlockMovement());
         this.setRegistryName(RatsMod.MODID, "ratlantis_portal");
         //GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
     }
@@ -42,8 +41,9 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
         if (!RatConfig.disableRatlantis && !worldIn.isRemote) {
+            //TODO
             MinecraftServer server = worldIn.getServer();
-            if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
+          /*  if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
                 if ((entity instanceof ServerPlayerEntity)) {
                     ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
                     if (thePlayer.timeUntilPortal > 0) {
@@ -79,8 +79,10 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                     }
                 }
             }
+        }*/
         }
     }
+    /*
 
     private Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint) {
         if(endpointWorld.dimension.getType() == RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE){
@@ -115,7 +117,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
         teleportedEntity.setRotationYawHead(entity.rotationYaw);
         endpointWorld.func_217460_e(teleportedEntity);
         return teleportedEntity;
-    }
+    }*/
 
     public void placeInPortal(Entity entity, ServerWorld serverWorld) {
         entity.setPositionAndRotation(0, 110, 0, 0, 0);

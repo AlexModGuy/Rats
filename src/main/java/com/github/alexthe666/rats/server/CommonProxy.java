@@ -30,12 +30,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.world.RegisterDimensionsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
@@ -43,6 +42,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Field;
+import java.sql.Struct;
 import java.util.List;
 
 import static com.github.alexthe666.rats.server.world.RatsWorldRegistry.RATLANTIS_DIM;
@@ -141,7 +141,7 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerWorldGenFeatures(RegistryEvent.Register<Feature<?>> event) {
+    public static void registerWorldGenFeatures(RegistryEvent.Register<Structure<?>> event) {
         event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RATLANTIS_AQUADUCTS, RatsWorldRegistry.RUNWAY);
     }
 
@@ -173,18 +173,6 @@ public class CommonProxy {
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
 
-    }
-
-    @SubscribeEvent
-    public static void registerDimensionTypes(RegisterDimensionsEvent event) {
-        RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("rats:ratlantis"), RATLANTIS_DIM, null, true);
-
-    }
-
-    @SubscribeEvent
-    public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
-        event.getRegistry().register(RATLANTIS_DIM);
-        RatlantisStructureRegistry.register();
     }
 
     public void preInit() {

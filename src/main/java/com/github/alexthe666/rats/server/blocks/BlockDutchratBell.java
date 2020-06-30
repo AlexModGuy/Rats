@@ -29,7 +29,7 @@ public class BlockDutchratBell extends BellBlock {
     public BlockDutchratBell() {
         super(Block.Properties.create(Material.IRON, MaterialColor.GOLD).hardnessAndResistance(5.0F).sound(SoundType.ANVIL));
         this.setRegistryName("rats:dutchrat_bell");
-        this.setDefaultState(this.stateContainer.getBaseState().with(field_220133_a, Direction.NORTH).with(BlockStateProperties.BELL_ATTACHMENT, BellAttachment.FLOOR).with(field_226883_b_, Boolean.valueOf(false)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(field_220133_a, Direction.NORTH).with(BlockStateProperties.BELL_ATTACHMENT, BellAttachment.FLOOR).with(POWERED, Boolean.valueOf(false)));
     }
 
     @Override

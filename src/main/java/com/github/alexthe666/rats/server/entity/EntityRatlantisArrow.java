@@ -17,7 +17,7 @@ import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -112,7 +112,7 @@ public class EntityRatlantisArrow extends AbstractArrowEntity {
                 }
 
                 if (this.knockbackStrength > 0) {
-                    Vec3d vec3d = this.getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
+                    Vector3d vec3d = this.getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
                     if (vec3d.lengthSquared() > 0.0D) {
                         livingentity.addVelocity(vec3d.x, 0.1D, vec3d.z);
                     }

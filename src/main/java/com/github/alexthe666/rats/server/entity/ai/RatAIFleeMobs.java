@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -66,7 +66,7 @@ public class RatAIFleeMobs extends Goal {
             } else{
                 this.closestLivingEntity = playerList.get(0);
             }
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
+            Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vector3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
             if (vec3d == null) {
                 return false;
             } else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.entity)) {
@@ -81,8 +81,8 @@ public class RatAIFleeMobs extends Goal {
 
     private boolean shouldFlee(LivingEntity mob) {
         int trust = entity.wildTrust;
-        Vec3d vec3d = mob.getLook(1.0F).normalize();
-        Vec3d vec3d1 = new Vec3d(entity.getPosX() - mob.getPosX(), entity.getBoundingBox().minY + (double) entity.getEyeHeight() - (mob.getPosY() + (double) mob.getEyeHeight()), entity.getPosZ() - mob.getPosZ());
+        Vector3d vec3d = mob.getLook(1.0F).normalize();
+        Vector3d vec3d1 = new Vector3d(entity.getPosX() - mob.getPosX(), entity.getBoundingBox().minY + (double) entity.getEyeHeight() - (mob.getPosY() + (double) mob.getEyeHeight()), entity.getPosZ() - mob.getPosZ());
         double d0 = vec3d1.length();
         vec3d1 = vec3d1.normalize();
         double d1 = vec3d.dotProduct(vec3d1);

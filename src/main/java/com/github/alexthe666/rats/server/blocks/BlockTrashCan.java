@@ -43,8 +43,8 @@ public class BlockTrashCan extends ContainerBlock implements IUsesTEISR {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.trash_can.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.trash_can.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.trash_can.desc0").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.trash_can.desc1").func_240699_a_(TextFormatting.GRAY));
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -53,7 +53,7 @@ public class BlockTrashCan extends ContainerBlock implements IUsesTEISR {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-        if(!player.isShiftKeyDown()){
+        if(!player.isSneaking()){
             boolean flag = false;
             ItemStack stack = player.getHeldItem(hand);
             TileEntity te = worldIn.getTileEntity(pos);

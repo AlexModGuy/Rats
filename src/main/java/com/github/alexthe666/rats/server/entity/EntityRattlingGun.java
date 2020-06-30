@@ -13,7 +13,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
@@ -97,7 +97,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
 
     protected void onDeathUpdate() {
         ++this.deathTime;
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         this.livingSoundTime = 20;
         if (this.deathTime >= 40) {
@@ -285,7 +285,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
         this(RatsEntityRegistry.RATTLING_GUN, worldIn);
     }
 
-    public void travel(Vec3d vec) {
+    public void travel(Vector3d vec) {
 
     }
 }

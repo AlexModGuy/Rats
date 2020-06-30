@@ -31,7 +31,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -281,8 +281,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             BlockPos blockpos = this.plagueDoctor.func_213727_eh();
             if (blockpos != null && EntityPlagueDoctor.this.navigator.noPath()) {
                 if (this.func_220846_a(blockpos, 10.0D)) {
-                    Vec3d vec3d = (new Vec3d((double)blockpos.getX() - this.plagueDoctor.getPosX(), (double)blockpos.getY() - this.plagueDoctor.getPosY(), (double)blockpos.getZ() - this.plagueDoctor.getPosZ())).normalize();
-                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.plagueDoctor.getPosX(), this.plagueDoctor.getPosY(), this.plagueDoctor.getPosZ());
+                    Vector3d vec3d = (new Vector3d((double)blockpos.getX() - this.plagueDoctor.getPosX(), (double)blockpos.getY() - this.plagueDoctor.getPosY(), (double)blockpos.getZ() - this.plagueDoctor.getPosZ())).normalize();
+                    Vector3d vec3d1 = vec3d.scale(10.0D).add(this.plagueDoctor.getPosX(), this.plagueDoctor.getPosY(), this.plagueDoctor.getPosZ());
                     EntityPlagueDoctor.this.navigator.tryMoveToXYZ(vec3d1.x, vec3d1.y, vec3d1.z, this.speed);
                 } else {
                     EntityPlagueDoctor.this.navigator.tryMoveToXYZ((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), this.speed);

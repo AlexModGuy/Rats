@@ -5,7 +5,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 import java.util.EnumSet;
 
@@ -21,7 +21,7 @@ public class RatAIFleePosition extends Goal {
     @Override
     public boolean shouldExecute() {
         if (this.rat.fleePos != null && !rat.isInCage()) {
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.rat, 32, 7, new Vec3d(this.rat.fleePos).add(0.5D, 0.5D, 0.5D));
+            Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.rat, 32, 7, new Vector3d(this.rat.fleePos).add(0.5D, 0.5D, 0.5D));
             if (vec3d == null) {
                 return false;
             } else if (this.rat.fleePos.distanceSq(vec3d.x, vec3d.y, vec3d.z, true) < this.rat.getDistanceSq(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ())) {

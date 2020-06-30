@@ -8,6 +8,8 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -24,7 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
@@ -55,13 +57,13 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
         this.moveController = new EntityDutchrat.AIMoveControl(this);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.dutchratHealth);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.dutchratAttack);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, RatConfig.dutchratHealth)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.5D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, RatConfig.dutchratAttack)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128D)               //FOLLOW RANGE
+                  .func_233815_a_(Attributes.field_233826_i_, 10D);             //ARMOR
     }
 
     protected void updateAITasks() {
@@ -133,13 +135,13 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
+                this.getAttackTarget().func_233627_a_(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
             if (this.getAnimation() == ANIMATION_STAB && (this.getAnimationTick() == 10)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().knockBack(this.getAttackTarget(), 1.5F, this.getAttackTarget().getPosX() - this.getPosX(), this.getAttackTarget().getPosZ() - this.getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
+                this.getAttackTarget().func_233627_a_( 1.5F, this.getAttackTarget().getPosX() - this.getPosX(), this.getAttackTarget().getPosZ() - this.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -215,7 +217,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityDutchrat.this.getPosX(), this.getY() - EntityDutchrat.this.getPosY(), this.getZ() - EntityDutchrat.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityDutchrat.this.getPosX(), this.getY() - EntityDutchrat.this.getPosY(), this.getZ() - EntityDutchrat.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityDutchrat.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -224,7 +226,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
                 } else {
                     EntityDutchrat.this.setMotion(EntityDutchrat.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityDutchrat.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityDutchrat.this.getMotion();
+                        Vector3d vec3d1 = EntityDutchrat.this.getMotion();
                         EntityDutchrat.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityDutchrat.this.renderYawOffset = EntityDutchrat.this.rotationYaw;
                     } else {
@@ -253,7 +255,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
         }
 
         public void tick() {
-            BlockPos blockpos = new BlockPos(EntityDutchrat.this);
+            BlockPos blockpos = new BlockPos(EntityDutchrat.this.getPositionVec());
             if(EntityDutchrat.this.detachHome()){
                 blockpos = EntityDutchrat.this.getHomePosition();
             }
@@ -301,7 +303,7 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             double maxFollow = this.parentEntity.useRangedAttack ? 5 * followDist : followDist;
             if (LivingEntity.getDistance(this.parentEntity) >= maxFollow || !this.parentEntity.canEntityBeSeen(LivingEntity)) {
                if(EntityDutchrat.this.hasThrownSword()){
-                   BlockPos blockpos = new BlockPos(EntityDutchrat.this);
+                   BlockPos blockpos = new BlockPos(EntityDutchrat.this.getPositionVec());
                    if(EntityDutchrat.this.detachHome()){
                        blockpos = EntityDutchrat.this.getHomePosition();
                    }

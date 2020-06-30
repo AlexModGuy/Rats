@@ -8,11 +8,11 @@ import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,7 +44,7 @@ public class ParticleSaliva extends SpriteTexturedParticle {
                 this.motionY *= (double)0.98F;
                 this.motionZ *= (double)0.98F;
                 BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
-                IFluidState ifluidstate = this.world.getFluidState(blockpos);
+                FluidState ifluidstate = this.world.getFluidState(blockpos);
                 if (ifluidstate.getFluid() == this.fluid && this.posY < (double)((float)blockpos.getY() + ifluidstate.getActualHeight(this.world, blockpos))) {
                     this.setExpired();
                 }
@@ -55,12 +55,12 @@ public class ParticleSaliva extends SpriteTexturedParticle {
 
     @Override
     public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
-        Vec3d inerp = renderInfo.getProjectedView();
+        Vector3d inerp = renderInfo.getProjectedView();
         if (age > this.getMaxAge()) {
             this.setExpired();
         }
 
-        Vec3d vec3d = renderInfo.getProjectedView();
+        Vector3d vec3d = renderInfo.getProjectedView();
         float f = (float)(MathHelper.lerp((double)partialTicks, this.prevPosX, this.posX) - vec3d.getX());
         float f1 = (float)(MathHelper.lerp((double)partialTicks, this.prevPosY, this.posY) - vec3d.getY());
         float f2 = (float)(MathHelper.lerp((double)partialTicks, this.prevPosZ, this.posZ) - vec3d.getZ());

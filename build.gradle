@@ -27,14 +27,14 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '5.3.2-1.15.2'
+version = '6.0.0-1.16.1'
 group = 'com.yourname.modid' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'rats'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200225-1.15.1'
+    mappings channel: 'snapshot', version: '20200514-1.16'
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     accessTransformer = file('src/main/resources/META-INF/rats_at.cfg')
 
@@ -93,10 +93,10 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.18'
-    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
-    compile 'citadel:citadel:1.1.4:deobf'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.29'
+    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2")
+    compile 'citadel:citadel:1.2.0:deobf'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

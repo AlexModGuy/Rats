@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -132,7 +132,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
 
     protected void onDeathUpdate() {
         ++this.deathTime;
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         this.livingSoundTime = 20;
         if (this.deathTime >= 80) {
@@ -206,7 +206,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 LivingEntity riding = (LivingEntity) this.getControllingPassenger();
                 this.moveStrafing = riding.moveStrafing;
                 this.moveForward = riding.moveForward;
-                this.moveRelative(1, new Vec3d(moveStrafing, 0, moveForward));
+                this.moveRelative(1, new Vector3d(moveStrafing, 0, moveForward));
                 this.rotationYaw = riding.rotationYaw;
                 this.rotationYawHead = riding.rotationYawHead;
                 this.prevRotationYaw = riding.prevRotationYaw;
@@ -336,7 +336,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 for(int l1 = i; l1 < j; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutable.setPos(l1, k1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
+                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
                             f = Math.max(f, ifluidstate.getActualHeight(this.world, blockpos$pooledmutable));
                         }
@@ -374,7 +374,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 for(int l1 = k; l1 < l; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutable.setPos(k1, l1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
+                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
                             float f = (float)l1 + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable);
                             this.waterLevel = Math.max((double)f, this.waterLevel);
@@ -422,7 +422,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 for(int l1 = k; l1 < l; ++l1) {
                     for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutable.setPos(k1, l1, i2);
-                        IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
+                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutable.getY() + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable))) {
                             if (!ifluidstate.isSource()) {
                                 BoatEntity.Status boatentity$status = BoatEntity.Status.UNDER_FLOWING_WATER;
@@ -469,10 +469,10 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
                 }*/
             }
 
-            Vec3d vec3d = this.getMotion();
+            Vector3d vec3d = this.getMotion();
             this.setMotion(vec3d.x * (double)momentum, vec3d.y + d1, vec3d.z * (double)momentum);
             if (d2 > 0.0D) {
-                Vec3d vec3d1 = this.getMotion();
+                Vector3d vec3d1 = this.getMotion();
                 this.setMotion(vec3d1.x, (vec3d1.y + d2 * 0.06153846016296973D) * 0.75D, vec3d1.z);
             }
         }
@@ -490,7 +490,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         return false;
     }
 
-    public void travel(Vec3d vec) {
+    public void travel(Vector3d vec) {
         super.travel(vec);
 
     }

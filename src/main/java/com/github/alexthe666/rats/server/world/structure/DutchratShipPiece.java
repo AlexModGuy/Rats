@@ -10,8 +10,10 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
@@ -75,7 +77,7 @@ public class DutchratShipPiece {
             if(function.equals("load_second_half")){
                 PlacementSettings settings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK).addProcessor(new RatsDutchratShipProcessor());
                 Template secondTemplate = manager.getTemplateDefaulted(PART_2);
-                if(secondTemplate.addBlocksToWorld(worldIn, pos, settings, 2)){
+                if(secondTemplate.func_237146_a_(worldIn, pos, pos, settings, rand, 2)){
                     for(Template.BlockInfo template$blockinfo : secondTemplate.func_215381_a(pos, settings, Blocks.STRUCTURE_BLOCK)) {
                         if (template$blockinfo.nbt != null) {
                             StructureMode structuremode = StructureMode.valueOf(template$blockinfo.nbt.getString("mode"));
@@ -89,9 +91,9 @@ public class DutchratShipPiece {
             }
         }
 
-        public boolean func_225577_a_(IWorld p_225577_1_, ChunkGenerator<?> p_225577_2_, Random p_225577_3_, MutableBoundingBox p_225577_4_, ChunkPos p_225577_5_) {
-            boolean prev = super.func_225577_a_(p_225577_1_, p_225577_2_, p_225577_3_, p_225577_4_, p_225577_5_);
-            return prev;
+        public boolean func_230383_a_(ISeedReader p_230383_1_, StructureManager p_230383_2_, ChunkGenerator p_230383_3_, Random p_230383_4_, MutableBoundingBox p_230383_5_, ChunkPos p_230383_6_, BlockPos p_230383_7_) {
+            return super.func_230383_a_(p_230383_1_, p_230383_2_, p_230383_3_, p_230383_4_, p_230383_5_, p_230383_6_, p_230383_7_);
+
         }
     }
 }

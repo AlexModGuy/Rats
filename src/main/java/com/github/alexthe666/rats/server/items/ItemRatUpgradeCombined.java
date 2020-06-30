@@ -58,9 +58,9 @@ public class ItemRatUpgradeCombined extends ItemRatUpgrade {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").func_240699_a_(TextFormatting.GRAY));
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").func_240699_a_(TextFormatting.GRAY));
         CompoundNBT tag = stack.getTag();
 
         if (tag != null && tag.contains("Items", 9)) {
@@ -100,7 +100,7 @@ public class ItemRatUpgradeCombined extends ItemRatUpgrade {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
             ItemStack itemStackIn = player.getHeldItem(hand);
-            if (!player.isShiftKeyDown()) {
+            if (!player.isSneaking()) {
                 RatsMod.PROXY.setRefrencedItem(itemStackIn);
                 if(!worldIn.isRemote){
                     NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {

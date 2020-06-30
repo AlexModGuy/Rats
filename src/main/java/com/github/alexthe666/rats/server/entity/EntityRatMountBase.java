@@ -18,7 +18,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.World;
 
@@ -137,7 +137,7 @@ public class EntityRatMountBase extends MobEntity {
     }
 
     protected void onDeathUpdate() {
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         EntityRat rat = this.getRat();
         if(rat != null){
             rat.mountRespawnCooldown = 1000;

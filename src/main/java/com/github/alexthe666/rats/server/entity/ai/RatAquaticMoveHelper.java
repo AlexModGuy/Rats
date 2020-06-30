@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 
 public class RatAquaticMoveHelper extends MovementController {
     EntityRat rat;
@@ -26,7 +26,7 @@ public class RatAquaticMoveHelper extends MovementController {
                 BlockPos target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
                 this.setMoveTo(target.getX(), target.getY(), target.getZ(), this.speed);
             }
-            Vec3d vec3d = new Vec3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
+            Vector3d vec3d = new Vector3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
             double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d0 < edgeLength) {
@@ -35,7 +35,7 @@ public class RatAquaticMoveHelper extends MovementController {
             } else {
                 rat.setMotion(rat.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                 if (rat.getAttackTarget() == null) {
-                    Vec3d vec3d1 = rat.getMotion();
+                    Vector3d vec3d1 = rat.getMotion();
                     rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                     rat.renderYawOffset = rat.rotationYaw;
                 } else {

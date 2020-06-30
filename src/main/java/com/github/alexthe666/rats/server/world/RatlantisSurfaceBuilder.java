@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,10 +21,10 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
     private PerlinNoise perlin2 = new PerlinNoise(200);
     private long prevSeed = -1;
 
-    public RatlantisSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> p_i51305_1_) {
-        super(p_i51305_1_);
-
+    public RatlantisSurfaceBuilder(Codec<SurfaceBuilderConfig> p_i232127_1_) {
+        super(p_i232127_1_);
     }
+
 
     public void setSeed(long seed) {
         super.setSeed(seed);

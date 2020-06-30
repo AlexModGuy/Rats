@@ -16,7 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -55,7 +55,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
-    public void move(MoverType typeIn, Vec3d pos) {
+    public void move(MoverType typeIn, Vector3d pos) {
         super.move(typeIn, pos);
         this.doBlockCollisions();
     }
@@ -127,7 +127,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO) {
-                Vec3d vec3d = new Vec3d(this.getX() - EntityRatlanteanSpirit.this.getPosX(), this.getY() - EntityRatlanteanSpirit.this.getPosY(), this.getZ() - EntityRatlanteanSpirit.this.getPosZ());
+                Vector3d vec3d = new Vector3d(this.getX() - EntityRatlanteanSpirit.this.getPosX(), this.getY() - EntityRatlanteanSpirit.this.getPosY(), this.getZ() - EntityRatlanteanSpirit.this.getPosZ());
                 double d0 = vec3d.length();
                 double edgeLength = EntityRatlanteanSpirit.this.getBoundingBox().getAverageEdgeLength();
                 if (d0 < edgeLength) {
@@ -136,7 +136,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
                 } else {
                     EntityRatlanteanSpirit.this.setMotion(EntityRatlanteanSpirit.this.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                     if (EntityRatlanteanSpirit.this.getAttackTarget() == null) {
-                        Vec3d vec3d1 = EntityRatlanteanSpirit.this.getMotion();
+                        Vector3d vec3d1 = EntityRatlanteanSpirit.this.getMotion();
                         EntityRatlanteanSpirit.this.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);
                         EntityRatlanteanSpirit.this.renderYawOffset = EntityRatlanteanSpirit.this.rotationYaw;
                     } else {

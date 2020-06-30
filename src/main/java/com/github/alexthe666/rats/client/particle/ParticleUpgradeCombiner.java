@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,14 +33,14 @@ public class ParticleUpgradeCombiner extends SpriteTexturedParticle {
 
     @Override
     public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
-        Vec3d inerp = renderInfo.getProjectedView();
+        Vector3d inerp = renderInfo.getProjectedView();
         particleScale = (15 - age) * 0.01F;
         this.particleAlpha = (15 - age) * 0.05F;
         if (age > this.getMaxAge()) {
             this.setExpired();
         }
 
-        Vec3d vec3d = renderInfo.getProjectedView();
+        Vector3d vec3d = renderInfo.getProjectedView();
         float f = (float)(MathHelper.lerp((double)partialTicks, this.prevPosX, this.posX) - vec3d.getX());
         float f1 = (float)(MathHelper.lerp((double)partialTicks, this.prevPosY, this.posY) - vec3d.getY());
         float f2 = (float)(MathHelper.lerp((double)partialTicks, this.prevPosZ, this.posZ) - vec3d.getZ());

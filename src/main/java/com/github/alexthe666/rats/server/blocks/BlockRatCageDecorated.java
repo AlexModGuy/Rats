@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.server.advancements.RatCageDecoTrigger;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -24,7 +23,6 @@ import java.util.Random;
 public class BlockRatCageDecorated extends BlockRatCage implements ITileEntityProvider, INoTab {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-    public static final RatCageDecoTrigger DECO_TRIGGER = CriteriaTriggers.register(new RatCageDecoTrigger());
 
     public BlockRatCageDecorated() {
         super("rat_cage_decorated");

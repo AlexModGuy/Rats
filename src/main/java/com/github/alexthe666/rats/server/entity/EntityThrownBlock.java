@@ -116,7 +116,7 @@ public class EntityThrownBlock extends Entity {
                     double d2 = target.getPosZ() - this.getPosZ();
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                     d3 = (double) MathHelper.sqrt(d3);
-                    Vec3d vec3d = this.getMotion();
+                    Vector3d vec3d = this.getMotion();
                     vec3d = vec3d.add(d0 / d3 * 0.2D, d1 / d3 * 0.2D, d2 / d3 * 0.2D);
                     this.setMotion(vec3d);
                 }
@@ -128,7 +128,7 @@ public class EntityThrownBlock extends Entity {
     }
 
     public boolean canEntityBeSeen(Entity entityIn) {
-        return this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ()), new Vec3d(entityIn.getPosX(), entityIn.getPosY() + (double) entityIn.getEyeHeight(), entityIn.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)) == null;
+        return this.world.rayTraceBlocks(new RayTraceContext(new Vector3d(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ()), new Vector3d(entityIn.getPosX(), entityIn.getPosY() + (double) entityIn.getEyeHeight(), entityIn.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)) == null;
     }
 
     protected float getMotionFactor() {
@@ -252,7 +252,7 @@ public class EntityThrownBlock extends Entity {
             this.markVelocityChanged();
 
             if (source.getTrueSource() != null) {
-                Vec3d vec3d = source.getTrueSource().getLookVec();
+                Vector3d vec3d = source.getTrueSource().getLookVec();
 
                 if (vec3d != null) {
                     this.setMotion(vec3d);

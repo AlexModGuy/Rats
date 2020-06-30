@@ -27,6 +27,8 @@ public class EntityDutchratSword extends Entity {
     @Nullable
     private Entity target;
     private UUID ownerUniqueId;
+    private int field_234610_c_;
+    private boolean field_234611_d_;
 
     public EntityDutchratSword(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -47,6 +49,25 @@ public class EntityDutchratSword extends Entity {
         this.setCreator(creator);
     }
 
+
+    protected boolean func_230298_a_(Entity p_230298_1_) {
+        if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.canBeCollidedWith()) {
+            Entity entity = this.func_234616_v_();
+            return entity == null || this.field_234611_d_ || !entity.isRidingSameEntity(p_230298_1_);
+        } else {
+            return false;
+        }
+    }
+
+    @Nullable
+    public Entity func_234616_v_() {
+        if (this.creator != null && this.world instanceof ServerWorld) {
+            return ((ServerWorld)this.world).getEntityByUuid(this.ownerUniqueId);
+        } else {
+            return this.field_234610_c_ != 0 ? this.world.getEntityByID(this.field_234610_c_) : null;
+        }
+    }
+
     public void tick() {
         super.tick();
         this.noClip = true;
@@ -54,7 +75,7 @@ public class EntityDutchratSword extends Entity {
            // this.remove();
         }
         if(ticksExisted > 5){
-            RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, true, this.ticksExisted >= 25, this.getCreator(), RayTraceContext.BlockMode.COLLIDER);
+            RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_, RayTraceContext.BlockMode.COLLIDER);
             if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                 this.onImpact(raytraceresult);
             }

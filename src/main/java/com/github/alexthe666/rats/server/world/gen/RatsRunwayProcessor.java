@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.BarrelBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
@@ -44,8 +42,4 @@ public class RatsRunwayProcessor extends StructureProcessor {
         return IStructureProcessorType.BLOCK_ROT;
     }
 
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.mergeInto(this.serialize0(ops).getValue(), ops.createString("rats_dutchrat_shi[_processor"), ops.createString(Registry.STRUCTURE_PROCESSOR.getKey(this.getType()).toString())));
-    }
 }

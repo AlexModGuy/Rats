@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -27,13 +29,30 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
         super(type, worldIn);
     }
 
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.35D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 7.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 32.0D);
+    }
+
+    public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+        return canSpawnAtPos(world, pos) || reason == SpawnReason.SPAWNER;
+    }
+
+    private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
+        BlockState down = world.getBlockState(pos.down());
+        return BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.45D, false));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new RatAIWander(this, 1.0D));
         this.goalSelector.addGoal(3, new RatAIFleeSun(this, 1.66D));
-        this.goalSelector.addGoal(3, this.sitGoal = new RatAISit(this));
+        this.goalSelector.addGoal(3, new RatAISit(this));
         this.goalSelector.addGoal(5, new RatAIEnterTrap(this));
         this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 6.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -53,14 +72,6 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
         this.moveController = new MovementController(this);
         this.navigator = new RatPathPathNavigateGround(this, world);
         this.navigatorType = 1;
-    }
-
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
     public void livingTick() {
@@ -95,14 +106,5 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
 
     public boolean shouldHuntAnimal() {
         return true;
-    }
-
-    public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return canSpawnAtPos(world, pos) || reason == SpawnReason.SPAWNER;
-    }
-
-    private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
-        BlockState down = world.getBlockState(pos.down());
-        return BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
     }
 }

@@ -64,7 +64,7 @@ public class ItemCheeseStick extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc0").applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc1").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc0").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.cheese_stick.desc1").func_240699_a_(TextFormatting.GRAY));
     }
 }

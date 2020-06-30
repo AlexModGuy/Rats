@@ -31,8 +31,8 @@ public class ItemRatlantisTool {
 
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").func_240699_a_(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").func_240699_a_(TextFormatting.GRAY));
         }
 
         public static final ResourceLocation STONE_FORGE_TAG = new ResourceLocation("rats", "pirat_blocks");
@@ -68,8 +68,8 @@ public class ItemRatlantisTool {
 
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").func_240699_a_(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").func_240699_a_(TextFormatting.GRAY));
         }
 
         public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
@@ -107,8 +107,8 @@ public class ItemRatlantisTool {
 
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").func_240699_a_(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").func_240699_a_(TextFormatting.GRAY));
         }
     }
 
@@ -158,8 +158,8 @@ public class ItemRatlantisTool {
         @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
             super.addInformation(stack, worldIn, tooltip, flagIn);
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").applyTextStyle(TextFormatting.YELLOW));
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "0.desc").func_240699_a_(TextFormatting.YELLOW));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + "1.desc").func_240699_a_(TextFormatting.GRAY));
         }
     }
 }

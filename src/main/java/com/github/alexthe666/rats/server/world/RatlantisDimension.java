@@ -4,30 +4,26 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.provider.SingleBiomeProvider;
-import net.minecraft.world.biome.provider.SingleBiomeProviderSettings;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraft.world.gen.OverworldGenSettings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.Supplier;
 
-public class RatlantisDimension extends Dimension {
+public class RatlantisDimension {/* extends Dimension {
     public static final BlockPos SPAWN = new BlockPos(0, 110, 0);
 
-    public RatlantisDimension(final World worldIn, final DimensionType dimension) {
-        super(worldIn, dimension, 0);
+    public RatlantisDimension(Supplier<DimensionType> p_i231900_1_, ChunkGenerator p_i231900_2_) {
+        super(p_i231900_1_, p_i231900_2_);
     }
 
-    @Override
     public ChunkGenerator<?> createChunkGenerator() {
         OverworldGenSettings settings = ChunkGeneratorType.SURFACE.createSettings();
         settings.setDefaultBlock(RatsBlockRegistry.MARBLED_CHEESE.getDefaultState());
@@ -50,13 +46,13 @@ public class RatlantisDimension extends Dimension {
     }
 
     @Override @OnlyIn(Dist.CLIENT)
-    public Vec3d getFogColor(final float p_76562_1_, final float p_76562_2_) {
+    public Vector3d getFogColor(final float p_76562_1_, final float p_76562_2_) {
         float f = MathHelper.clamp(MathHelper.cos(p_76562_1_ * ((float) Math.PI * 2F)) * 2.0F + 0.5F, 0, 1F);
         float bright = 1.15F * f;
         float f1 = 1F;
         float f2 = 0.98F;
         float f3 = 0.79F;
-        return new Vec3d((double) f1 * bright, (double) f2 * bright, (double) f3 * bright);
+        return new Vector3d((double) f1 * bright, (double) f2 * bright, (double) f3 * bright);
     }
 
 
@@ -106,5 +102,5 @@ public class RatlantisDimension extends Dimension {
     @Override @OnlyIn(Dist.CLIENT)
     public boolean doesXZShowFog(final int p_76568_1_, final int p_76568_2_) {
         return false;
-    }
+    }*/
 }

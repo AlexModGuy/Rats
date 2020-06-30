@@ -27,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -172,13 +173,13 @@ public class RatUtils {
     }
 
     @Nullable
-    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vec3d start, Vec3d end, boolean stopOnLiquid, Entity entity) {
+    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vector3d start, Vector3d end, boolean stopOnLiquid, Entity entity) {
         //TODO: Redo ray trace code
         return world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
     }
 
     @Nullable
-    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vec3d vec31, Vec3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
+    public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vector3d vec31, Vector3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
         if (!Double.isNaN(vec31.x) && !Double.isNaN(vec31.y) && !Double.isNaN(vec31.z)) {
             if (!Double.isNaN(vec32.x) && !Double.isNaN(vec32.y) && !Double.isNaN(vec32.z)) {
                 int i = MathHelper.floor(vec32.x);
@@ -277,13 +278,13 @@ public class RatUtils {
 
                     if (d3 < d4 && d3 < d5) {
                         Direction = i > l ? net.minecraft.util.Direction.WEST : net.minecraft.util.Direction.EAST;
-                        vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
+                        vec31 = new Vector3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
                     } else if (d4 < d5) {
                         Direction = j > i1 ? net.minecraft.util.Direction.DOWN : net.minecraft.util.Direction.UP;
-                        vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
+                        vec31 = new Vector3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
                     } else {
                         Direction = k > j1 ? net.minecraft.util.Direction.NORTH : net.minecraft.util.Direction.SOUTH;
-                        vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
+                        vec31 = new Vector3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
                     }
 
                     l = MathHelper.floor(vec31.x) - (Direction == net.minecraft.util.Direction.EAST ? 1 : 0);
@@ -335,12 +336,12 @@ public class RatUtils {
     }
 
     @Nullable
-    public static Vec3d findRandomCageOrTubeTarget(EntityRat rat, int xz, int y) {
+    public static Vector3d findRandomCageOrTubeTarget(EntityRat rat, int xz, int y) {
         return generateRandomCageOrTubePos(rat, xz, y, null, false);
     }
 
     @Nullable
-    public static Vec3d generateRandomCageOrTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+    public static Vector3d generateRandomCageOrTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vector3d positionVector, boolean water) {
         PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
@@ -399,14 +400,14 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
+            return new Vector3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
     }
 
     @Nullable
-    public static Vec3d generateRandomCagePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+    public static Vector3d generateRandomCagePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vector3d positionVector, boolean water) {
         PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
@@ -465,14 +466,14 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
+            return new Vector3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
     }
 
     @Nullable
-    public static Vec3d generateRandomTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vec3d positionVector, boolean water) {
+    public static Vector3d generateRandomTubePos(EntityRat rat, int searchWidth, int searchHeight, @Nullable Vector3d positionVector, boolean water) {
         PathNavigator pathnavigate = rat.getNavigator();
         Random random = rat.getRNG();
         boolean flag;
@@ -531,7 +532,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
+            return new Vector3d((double) k1 + rat.getPosX(), (double) i + rat.getPosY(), (double) j + rat.getPosZ());
         } else {
             return null;
         }
@@ -612,7 +613,7 @@ public class RatUtils {
         return pos;
     }
 
-    public static Vec3d generateRandomWaterPos(CreatureEntity p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vec3d p_191379_3_, boolean p_191379_4_) {
+    public static Vector3d generateRandomWaterPos(CreatureEntity p_191379_0_, int p_191379_1_, int p_191379_2_, @Nullable Vector3d p_191379_3_, boolean p_191379_4_) {
         PathNavigator pathnavigate = p_191379_0_.getNavigator();
         Random random = p_191379_0_.getRNG();
         boolean flag;
@@ -678,7 +679,7 @@ public class RatUtils {
         }
 
         if (flag1) {
-            return new Vec3d((double) k1 + p_191379_0_.getPosX(), (double) i + p_191379_0_.getPosY(), (double) j + p_191379_0_.getPosZ());
+            return new Vector3d((double) k1 + p_191379_0_.getPosX(), (double) i + p_191379_0_.getPosY(), (double) j + p_191379_0_.getPosZ());
         } else {
             return null;
         }

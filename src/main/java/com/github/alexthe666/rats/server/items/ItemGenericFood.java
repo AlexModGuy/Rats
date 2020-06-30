@@ -117,11 +117,11 @@ public class ItemGenericFood extends Item {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (this == RatsItemRegistry.RAT_BURGER) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_burger.desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_burger.desc").func_240699_a_(TextFormatting.GRAY));
         }
         if (this == RatsItemRegistry.CONTAMINATED_FOOD) {
-            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc0").applyTextStyle(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc1").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc0").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.contaminated_food.desc1").func_240699_a_(TextFormatting.GRAY));
         }
     }
 }

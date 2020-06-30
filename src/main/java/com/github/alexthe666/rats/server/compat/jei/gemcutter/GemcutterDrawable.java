@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.compat.jei.gemcutter;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -21,7 +22,7 @@ public class GemcutterDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(int xOffset, int yOffset) {
+    public void draw(MatrixStack sta, int xOffset, int yOffset) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(xOffset, yOffset, 3, 4, 170, 79);

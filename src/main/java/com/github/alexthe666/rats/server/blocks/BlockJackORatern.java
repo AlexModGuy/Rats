@@ -12,7 +12,7 @@ import net.minecraft.state.StateContainer;
 public class BlockJackORatern extends HorizontalBlock {
 
     public BlockJackORatern() {
-        super(Block.Properties.create(Material.GOURD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0).lightValue(15));
+        super(Block.Properties.create(Material.GOURD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 0).func_235838_a_((p) -> 15));
         this.setRegistryName(RatsMod.MODID, "jack_o_ratern");
     }
 

@@ -53,7 +53,7 @@ public class ItemPlagueHealer extends ItemGenericFood {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.plague_heal_chance.desc", (int) (healChance * 100F)).applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.plague_heal_chance.desc", (int) (healChance * 100F)).func_240699_a_(TextFormatting.GRAY));
 
     }
 }

@@ -40,19 +40,19 @@ public class ItemRatPapers extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(!isEntityBound(stack)){
-            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc0").applyTextStyle(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc1").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc0").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc1").func_240699_a_(TextFormatting.GRAY));
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc2").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_papers.desc2").func_240699_a_(TextFormatting.GRAY));
         if (stack.getTag() != null) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.rat_desc").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_papers.rat_desc").func_240699_a_(TextFormatting.GRAY));
             String ratName = I18n.format("entity.rats.rat");
             String entity = stack.getTag().getString("RatName");
             if (stack.getTag().hasUniqueId("RatUUID")) {
                 if(entity.isEmpty()){
-                    tooltip.add(new TranslationTextComponent(ratName).applyTextStyle(TextFormatting.GRAY));
+                    tooltip.add(new TranslationTextComponent(ratName).func_240699_a_(TextFormatting.GRAY));
                 }else{
-                    tooltip.add(new StringTextComponent(entity).applyTextStyle(TextFormatting.GRAY));
+                    tooltip.add(new StringTextComponent(entity).func_240699_a_(TextFormatting.GRAY));
                 }
             }
         }

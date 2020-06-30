@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.compat.jei.cauldron;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.Minecraft;
@@ -23,7 +24,7 @@ public class CauldronDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(int xOffset, int yOffset) {
+    public void draw(MatrixStack mtrx, int xOffset, int yOffset) {
         Minecraft minecraft = Minecraft.getInstance();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bindTexture(TEXTURE);
@@ -31,7 +32,7 @@ public class CauldronDrawable implements IDrawable {
         int scaledProgress = (minecraft.player.ticksExisted % 100) * 24 / 100;
         this.drawTexturedModalRect(95, 31, 176, 0, scaledProgress + 1, 16);
         String time_string = RatConfig.milkCauldronTime / 20 + " s";
-        minecraft.fontRenderer.drawString(time_string, 107 - minecraft.fontRenderer.getStringWidth(time_string) / 2, 20, 0X8B8B8B);
+        minecraft.fontRenderer.func_238421_b_(mtrx, time_string, 107 - minecraft.fontRenderer.getStringWidth(time_string) / 2, 20, 0X8B8B8B);
 
     }
 
