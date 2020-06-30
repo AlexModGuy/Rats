@@ -4,10 +4,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.block.StemBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -54,12 +51,14 @@ public class RatAIHarvestCrops extends Goal {
         int RADIUS = entity.getSearchRadius();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             BlockState block = this.entity.world.getBlockState(pos);
-            if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD) && !(block.getBlock() instanceof StemBlock)) {
-                LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
-                List<ItemStack> items = block.getBlock().getDrops(block, loot);
-                for(ItemStack stack : items){
-                    if (entity.canRatPickupItem(stack)) {
-                        allBlocks.add(pos);
+            if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD)) {
+                if(!(block.getBlock() instanceof StemBlock) && !(block.getBlock() instanceof AttachedStemBlock)){
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    List<ItemStack> items = block.getBlock().getDrops(block, loot);
+                    for(ItemStack stack : items){
+                        if (entity.canRatPickupItem(stack)) {
+                            allBlocks.add(pos);
+                        }
                     }
                 }
             }
@@ -110,10 +109,17 @@ public class RatAIHarvestCrops extends Goal {
 
                     }
                     this.entity.fleePos = this.targetBlock;
-                    this.entity.world.destroyBlock(targetBlock, false);
 
-                    if ((!RatConfig.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER)) && block.getBlock() instanceof CropsBlock) {
-                        this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
+                    if ((!RatConfig.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER))) {
+                        if(block.getMaterial() == Material.GOURD){
+                            this.entity.world.destroyBlock(targetBlock, false);
+                        }else{
+                            if(block.getBlock() instanceof IGrowable){
+                                this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
+                            }
+                        }
+                    }else{
+                        this.entity.world.destroyBlock(targetBlock, false);
                     }
                     this.targetBlock = null;
                     this.resetTask();
