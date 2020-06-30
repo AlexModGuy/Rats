@@ -535,7 +535,7 @@
   "item.rats.ratlantis_boots": "§eBoots of Ratlantis",
   "item.rats.ratlantis_sword": "§eSword of Ratlantis",
   "item.rats.ratlantis_sword0.desc": "§eSpectral Alliance",
-  "item.rats.ratlantis_sword1.desc": "Each attack summons a spectral rat that deals an adition 6 damage.",
+  "item.rats.ratlantis_sword1.desc": "Each attack summons a spectral rat that deals an additional 6 damage.",
   "item.rats.ratlantis_pickaxe": "§ePickaxe of Ratlantis",
   "item.rats.ratlantis_pickaxe0.desc": "§eRatlantean Caver",
   "item.rats.ratlantis_pickaxe1.desc": "Mining stone blocks will not damage this tool.",
