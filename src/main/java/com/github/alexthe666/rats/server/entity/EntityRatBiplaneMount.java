@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -20,6 +22,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
@@ -116,12 +119,12 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         dataManager.set(PLANE_PITCH, getPlanePitch() - pitch);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 300.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.35D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128.0D);
     }
 
     public void tick() {
@@ -188,7 +191,7 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         }
 
         if(this.flightTarget == null || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 20 || rat != null && !rat.canMove()){
-            escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
+            escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(this.getPositionVec())).up(20 + rand.nextInt(10));
             flightTarget = null;
         }
         if (world.isRemote) {

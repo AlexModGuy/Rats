@@ -77,8 +77,8 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
     }
 
     public ITextComponent getDisplayName(ItemStack stack) {
-        String oreName = getIngot(stack, IRON_INGOT, RatsMod.PROXY.getWorld()).getDisplayName().getFormattedText();
-        String removedString = new TranslationTextComponent("item.rats.rat_nugget_remove_tag").getFormattedText(); //I18n.format("");
+        String oreName = getIngot(stack, IRON_INGOT, RatsMod.PROXY.getWorld()).getDisplayName().getString();
+        String removedString = new TranslationTextComponent("item.rats.rat_nugget_remove_tag").getString(); //I18n.format("");
         if (oreName.contains(removedString)) {
             oreName = oreName.replace(removedString, "");
         } else {
@@ -101,8 +101,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            System.out.println(Tags.Blocks.ORES.getAllElements());
-            for (Block entry : Tags.Blocks.ORES.getAllElements()) {
+            for (Block entry : Tags.Blocks.ORES.func_230236_b_()) {
                 ItemStack oreStack = new ItemStack(entry);
                 ItemStack stack = new ItemStack(this);
                 CompoundNBT poopTag = new CompoundNBT();

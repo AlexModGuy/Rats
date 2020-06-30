@@ -73,7 +73,7 @@ public class ItemRatUpgradeCombined extends ItemRatUpgrade {
                     ++j;
                     if (i <= 4) {
                         ++i;
-                        tooltip.add(new StringTextComponent(String.format("%s", itemstack.getDisplayName().getFormattedText())));
+                        tooltip.add(new StringTextComponent(String.format("%s", itemstack.getDisplayName().getString())));
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -13,13 +14,14 @@ import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class EntityRatMountBase extends MobEntity {
@@ -36,9 +38,9 @@ public class EntityRatMountBase extends MobEntity {
         riderXZ = 0;
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         EntityRat rat = this.getRat();
-        return rat != null && rat.processInteract(player, hand);
+        return rat != null ? rat.func_230254_b_(player, hand) : ActionResultType.PASS;
     }
 
     public boolean writeUnlessPassenger(CompoundNBT compound) {
@@ -173,7 +175,7 @@ public class EntityRatMountBase extends MobEntity {
 
         public void tick() {
             if (this.action == MovementController.Action.STRAFE) {
-                float f = (float)this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
+                float f = (float)this.mob.getAttribute(Attributes.field_233821_d_).getValue();
                 float f1 = (float)this.speed * f;
                 float f2 = this.moveForward;
                 float f3 = this.moveStrafe;
@@ -216,8 +218,8 @@ public class EntityRatMountBase extends MobEntity {
 
                 float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-                this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-                BlockPos blockpos = new BlockPos(this.mob);
+                this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+                BlockPos blockpos = new BlockPos(this.mob.getPositionVec());
                 BlockState blockstate = this.mob.world.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
                 VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.world, blockpos);
@@ -226,8 +228,8 @@ public class EntityRatMountBase extends MobEntity {
                     this.action = MovementController.Action.JUMPING;
                 }
             } else if (this.action == MovementController.Action.JUMPING) {
-                this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-                if (this.mob.onGround) {
+                this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+                if (this.mob.func_233570_aj_()) {
                     this.action = MovementController.Action.WAIT;
                 }
             } else {

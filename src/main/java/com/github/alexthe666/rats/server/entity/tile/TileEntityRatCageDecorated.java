@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -29,7 +30,7 @@ public class TileEntityRatCageDecorated extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        read(packet.getNbtCompound());
+        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
@@ -41,10 +42,10 @@ public class TileEntityRatCageDecorated extends TileEntity {
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, containedDeco);
-        super.read(compound);
     }
 
     public ItemStack getContainedItem() {

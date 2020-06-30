@@ -8,6 +8,8 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,15 +55,16 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
+
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 40.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 5.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 7.0D);         //ARMOR
     }
+
 
     public boolean attackEntityAsMob(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
@@ -164,6 +167,6 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return !BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
+        return !BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
     }
 }

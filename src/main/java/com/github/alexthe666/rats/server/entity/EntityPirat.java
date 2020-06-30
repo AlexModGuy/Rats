@@ -1,11 +1,14 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
@@ -66,7 +69,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.goalSelector.addGoal(2, new PiratAIWander(this, 1.0D));
         this.goalSelector.addGoal(2, new RatAIWander(this, 1.0D));
         this.goalSelector.addGoal(3, new RatAIFleeSun(this, 1.66D));
-        this.goalSelector.addGoal(3, this.sitGoal = new RatAISit(this));
+        this.goalSelector.addGoal(3, new RatAISit(this));
         this.goalSelector.addGoal(5, new RatAIEnterTrap(this));
         this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 6.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -79,12 +82,13 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
         this.goalSelector.removeGoal(this.aiAttackOnCollide);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 30.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.3D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 5.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 0.0D);
     }
 
     public void setAttackTarget(@Nullable LivingEntity LivingEntityIn) {
@@ -150,7 +154,7 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        BlockPos pos = new BlockPos(this);
+        BlockPos pos = new BlockPos(this.getPositionVec());
         BlockState BlockState = this.world.getBlockState(pos.down());
         return this.world.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && BlockState.getMaterial() == Material.WATER && rand.nextFloat() < 0.1F;
     }
@@ -175,10 +179,10 @@ public class EntityPirat extends EntityRat implements IRangedAttackMob, IRatlant
     }
 
     @Override
-    public boolean handleWaterMovement() {
+    public boolean func_233566_aG_() {
         if (this.getRidingEntity() instanceof EntityPiratBoat) {
             this.inWater = false;
-        } else if (this.handleFluidAcceleration(FluidTags.WATER)) {
+        } else if (this.handleFluidAcceleration(FluidTags.WATER, 0.014D)) {
             if (!this.inWater && !this.firstUpdate) {
                 this.doWaterSplashEffect();
             }

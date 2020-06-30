@@ -916,7 +916,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 explosion.doExplosionB(true);
             }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
-                Explosion explosion = new RatNukeExplosion(this.world, this, this.getPosX(), this.getPosY() + (double) (this.getHeight() / 16.0F), this.getPosZ(), 4.0F, false, world.getGameRules().getBoolean(GameRules.MOB_GRIEFING));
+                Explosion explosion = new RatExplosion(this.world, this, this.getPosX(), this.getPosY() + (double) (this.getHeight() / 16.0F), this.getPosZ(), 4.0F, false, world.getGameRules().getBoolean(GameRules.MOB_GRIEFING));
                 explosion.doExplosionA();
                 explosion.doExplosionB(true);
             }

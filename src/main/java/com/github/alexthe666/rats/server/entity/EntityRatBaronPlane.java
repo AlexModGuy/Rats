@@ -6,6 +6,8 @@ import com.google.common.base.Predicate;
 import com.sun.jna.platform.unix.X11;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.BodyController;
 import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -25,6 +27,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -199,7 +202,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         }
         if(this.getAttackTarget() == null || this.flightTarget == null  || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 9 || !this.world.isAirBlock(new BlockPos(flightTarget))){
             if(escortPosition == null){
-                escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
+                escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(this.getPositionVec())).up(20 + rand.nextInt(10));
             }
             flightTarget = getBlockInViewEscort();
         }
@@ -262,13 +265,15 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 10.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.35D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128.0D);         //FOLLOW RANGE
     }
+
+
 
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);

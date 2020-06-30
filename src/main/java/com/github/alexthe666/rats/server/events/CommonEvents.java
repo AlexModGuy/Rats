@@ -42,7 +42,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -127,7 +127,7 @@ public class CommonEvents {
             if (heldItem.getItem() == RatsItemRegistry.PLAGUE_TOME && !((EntityPlagueDoctor) event.getTarget()).isChild()) {
                 EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, event.getWorld());
                 entitywitch.setLocationAndAngles(event.getTarget().getPosX(), event.getTarget().getPosY(), event.getTarget().getPosZ(), event.getTarget().rotationYaw, event.getTarget().rotationPitch);
-                entitywitch.onInitialSpawn(event.getTarget().getEntityWorld(), event.getTarget().world.getDifficultyForLocation(new BlockPos(entitywitch)), SpawnReason.NATURAL, null, null);
+                entitywitch.onInitialSpawn(event.getTarget().getEntityWorld(), event.getTarget().world.getDifficultyForLocation(new BlockPos(entitywitch.getPositionVec())), SpawnReason.NATURAL, null, null);
                 if (event.getTarget().hasCustomName()) {
                     entitywitch.setCustomName(event.getTarget().getCustomName());
                 }
@@ -180,7 +180,7 @@ public class CommonEvents {
                     Vector3d vec3d = trueSource.getMotion();
                     double strength = 0.3D * protectors;
                     Vector3d vec3d1 = (new Vector3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);
-                    trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.onGround ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
+                    trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.func_233570_aj_() ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
 
                 }
 
@@ -247,7 +247,7 @@ public class CommonEvents {
         if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof PlayerEntity && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.PIPER_HAT)));
         }
-        if (event.getEntityLiving() instanceof CreeperEntity && ((CreeperEntity) event.getEntityLiving()).func_225509_J__()) {
+        if (event.getEntityLiving() instanceof CreeperEntity && ((CreeperEntity) event.getEntityLiving()).isCharged()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.CHARGED_CREEPER_CHUNK, event.getLootingLevel() + 1 + event.getEntityLiving().world.rand.nextInt(2))));
         }
         if (event.getSource().getTrueSource() instanceof EntityRat && ((EntityRat) event.getSource().getTrueSource()).hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT)) {

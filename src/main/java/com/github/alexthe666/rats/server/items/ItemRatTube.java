@@ -13,7 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -36,7 +36,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
 
     public ItemRatTube(DyeColor color) {
         super(new Item.Properties().group(RatsMod.TAB));
-        this.setRegistryName(RatsMod.MODID, "rat_tube_" + color.getName());
+        this.setRegistryName(RatsMod.MODID, "rat_tube_" + color.getTranslationKey());
         this.color = color;
     }
 
@@ -117,7 +117,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
             StateContainer<Block, BlockState> statecontainer = p_219985_4_.getBlock().getStateContainer();
 
             for(String s : compoundnbt1.keySet()) {
-                IProperty<?> iproperty = statecontainer.getProperty(s);
+                Property<?> iproperty = statecontainer.getProperty(s);
                 if (iproperty != null) {
                     String s1 = compoundnbt1.get(s).getString();
                     blockstate = func_219988_a(blockstate, iproperty, s1);
@@ -132,7 +132,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
         return blockstate;
     }
 
-    private static <T extends Comparable<T>> BlockState func_219988_a(BlockState p_219988_0_, IProperty<T> p_219988_1_, String p_219988_2_) {
+    private static <T extends Comparable<T>> BlockState func_219988_a(BlockState p_219988_0_, Property<T> p_219988_1_, String p_219988_2_) {
         return p_219988_1_.parseValue(p_219988_2_).map((p_219986_2_) -> {
             return p_219988_0_.with(p_219988_1_, p_219986_2_);
         }).orElse(p_219988_0_);
@@ -172,7 +172,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
                     compoundnbt1.putInt("y", pos.getY());
                     compoundnbt1.putInt("z", pos.getZ());
                     if (!compoundnbt1.equals(compoundnbt2)) {
-                        tileentity.read(compoundnbt1);
+                        tileentity.func_230337_a_(worldIn.getBlockState(pos), compoundnbt1);
                         tileentity.markDirty();
                         return true;
                     }

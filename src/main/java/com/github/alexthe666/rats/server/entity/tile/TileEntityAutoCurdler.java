@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsFluidRegistry;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
 import com.github.alexthe666.rats.server.message.MessageAutoCurdlerFluid;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -84,7 +85,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             return true;
         }
         LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().getFormattedText().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
+        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().func_230531_f_().toString().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
     }
 
     public int getSizeInventory() {
@@ -127,8 +128,8 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         }
     }
 
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void func_230337_a_(BlockState state,  CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         tank.readFromNBT(compound);
         this.curdlerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.curdlerStacks);

@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.entity.ai.PiperAIStrife;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -27,8 +29,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -49,12 +49,13 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
         this.setCombatTask();
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.3D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64D);               //FOLLOW RANGE
     }
 
     protected void registerData() {
@@ -93,7 +94,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
             if (rat.isOwner(this)) {
                 rat.setTamed(false);
                 rat.setOwnerId(null);
-                rat.fleePos = new BlockPos(rat);
+                rat.fleePos = new BlockPos(rat.getPositionVec());
                 rat.setAttackTarget(null);
                 rat.setRevengeTarget(null);
             }
@@ -180,7 +181,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
         if (this.getRatsSummoned() < 6 && ratCooldown == 0) {
             world.setEntityState(this, (byte) 82);
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
-            rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.NATURAL, null, null);
+            rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.NATURAL, null, null);
             rat.copyLocationAndAnglesFrom(this);
             rat.setPlague(false);
             world.addEntity(rat);
@@ -222,7 +223,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
 
     public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        if(RatConfig.piperOverworldOnly && worldIn.getDimension().getType() != DimensionType.OVERWORLD){
+        if(RatConfig.piperOverworldOnly && worldIn.getWorld().func_234922_V_() != DimensionType.field_235999_c_){
             return false;
         }
         boolean b = canPiperSpawnInLight(typeIn, worldIn, reason, pos, randomIn);

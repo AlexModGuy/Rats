@@ -5,12 +5,7 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
-
+import net.minecraft.world.*;
 import java.util.Random;
 
 public class EntityRatSpawner extends CreatureEntity {
@@ -28,7 +23,7 @@ public class EntityRatSpawner extends CreatureEntity {
             hasSpawnedRat = true;
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
             rat.copyLocationAndAnglesFrom(this);
-            rat.onInitialSpawn(world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.NATURAL, null, null);
+            rat.onInitialSpawn(world, world.getDifficultyForLocation(this.getOnPosition()), SpawnReason.NATURAL, null, null);
             if (!world.isRemote) {
                 world.addEntity(rat);
             }
@@ -40,7 +35,7 @@ public class EntityRatSpawner extends CreatureEntity {
         if(peaceful){
             return false;
         }
-        if(RatConfig.ratOverworldOnly && p_223325_1_.getDimension().getType() != DimensionType.OVERWORLD){
+        if(RatConfig.ratOverworldOnly && p_223325_1_.getWorld().func_234922_V_() != DimensionType.field_235999_c_){
             return false;
         }
         return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_) && p_223325_4_.nextInt(peaceful ? 32 : 3) == 0;

@@ -1,10 +1,11 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.advancements.RatsAdvancementRegistry;
 import com.github.alexthe666.rats.server.entity.villager.RatsVillagerTrades;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -25,13 +26,10 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -91,10 +89,10 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         this.dataManager.set(WILL_DESPAWN, Boolean.valueOf(despawn));
     }
 
-
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.5D);
     }
 
     @Nullable
@@ -219,7 +217,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         if (!this.world.isRemote && this.isAlive()) {
             EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, this.world);
             entitywitch.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
-            entitywitch.onInitialSpawn(world, this.world.getDifficultyForLocation(new BlockPos(entitywitch)), SpawnReason.NATURAL, null, null);
+            entitywitch.onInitialSpawn(world, this.world.getDifficultyForLocation(new BlockPos(entitywitch.getPositionVec())), SpawnReason.NATURAL, null, null);
             entitywitch.setNoAI(this.isAIDisabled());
             if (this.hasCustomName()) {
                 entitywitch.setCustomName(this.getCustomName());
@@ -335,33 +333,30 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
 
 
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
-        if (player instanceof ServerPlayerEntity) {
-            RatsAdvancementRegistry.PLAGUE_DOCTOR_TRIGGER.trigger((ServerPlayerEntity)player, this);
-        }
         if (flag) {
             this.setWillDespawn(false);
-            itemstack.interactWithEntity(player, this, hand);
-            return true;
+            itemstack.func_111282_a_(player, this, hand);
+            return ActionResultType.SUCCESS;
         } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.hasCustomer() && !this.isChild()) {
             if (hand == Hand.MAIN_HAND) {
                 player.addStat(Stats.TALKED_TO_VILLAGER);
             }
 
             if (this.getOffers().isEmpty()) {
-                return super.processInteract(player, hand);
+                return super.processInitialInteract(player, hand);
             } else {
                 if (!this.world.isRemote) {
                     this.setCustomer(player);
                     this.openMerchantContainer(player, this.getDisplayName(), 1);
                 }
 
-                return true;
+                return ActionResultType.SUCCESS;
             }
         } else {
-            return super.processInteract(player, hand);
+            return super.func_230254_b_(player, hand);
         }
     }
 }

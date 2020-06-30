@@ -6,7 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,12 +40,12 @@ public class EntityRatGolemMount extends EntityRatMountBase {
         this.upgrade = RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-        this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 100.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.2D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233820_c_, 1.0D);            //KNOCKBACK RESIST
     }
 
     public void livingTick() {

@@ -84,7 +84,7 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        read(packet.getNbtCompound());
+        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
@@ -97,10 +97,10 @@ public class TileEntityTrashCan extends TileEntity implements ITickableTileEntit
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         ticksExisted = compound.getInt("TicksExisted");
         trashStored = compound.getInt("TrashStored");
-        super.read(compound);
     }
 
     @Override

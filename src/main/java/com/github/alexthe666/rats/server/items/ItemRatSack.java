@@ -30,11 +30,12 @@ public class ItemRatSack extends Item {
     public ItemRatSack() {
         super(new Item.Properties().group(RatsMod.TAB).maxStackSize(1));
         this.setRegistryName(RatsMod.MODID, "rat_sack");
-        this.addPropertyOverride(new ResourceLocation("rat_count"), new IItemPropertyGetter() {
+        //TODO
+       /* this.addPropertyOverride(new ResourceLocation("rat_count"), new IItemPropertyGetter() {
             public float call(ItemStack p_call_1_, @Nullable World p_call_2_, @Nullable LivingEntity p_call_3_) {
                 return Math.min(3, ItemRatSack.getRatsInStack(p_call_1_));
             }
-        });
+        });*/
     }
 
     public static int getRatsInStack(ItemStack stack) {
@@ -73,9 +74,9 @@ public class ItemRatSack extends Item {
                     ratCount++;
                     String ratName = I18n.format("entity.rats.rat");
                     if (!ratTag.getString("CustomName").isEmpty() && !ratTag.getString("CustomName").startsWith("TextComponent")) {
-                        ITextComponent ratNameTag = ITextComponent.Serializer.fromJson(ratTag.getString("CustomName"));
+                        ITextComponent ratNameTag = ITextComponent.Serializer.func_240643_a_(ratTag.getString("CustomName"));
                         if (ratNameTag != null) {
-                            ratName = ratNameTag.getFormattedText();
+                            ratName = ratNameTag.getString();
                         }
                     }
                     ratNames.add(ratName);

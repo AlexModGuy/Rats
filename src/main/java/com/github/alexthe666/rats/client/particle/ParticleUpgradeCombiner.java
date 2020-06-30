@@ -7,9 +7,12 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 public class ParticleUpgradeCombiner extends SpriteTexturedParticle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/particle/upgrade_combiner.png");
 
-    public ParticleUpgradeCombiner(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
+    public ParticleUpgradeCombiner(ClientWorld worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, colorR, colorG, colorB);
         //this.particleAlpha = 0.5F;
         this.maxAge = 15;

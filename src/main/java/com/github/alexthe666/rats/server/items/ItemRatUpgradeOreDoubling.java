@@ -13,7 +13,7 @@ public class ItemRatUpgradeOreDoubling extends ItemRatUpgrade {
 
 
     public static boolean isProcessable(ItemStack stack) {
-        boolean b = Tags.Blocks.ORES.getAllElements().contains(Block.getBlockFromItem(stack.getItem()));
+        boolean b = Tags.Blocks.ORES.func_230236_b_().contains(Block.getBlockFromItem(stack.getItem()));
         return b;
     }
 

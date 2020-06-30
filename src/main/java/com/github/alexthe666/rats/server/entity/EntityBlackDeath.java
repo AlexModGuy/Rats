@@ -7,6 +7,8 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -103,7 +105,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
                 if (rat.isOwner(this)) {
                     rat.setTamed(false);
                     rat.setOwnerId(null);
-                    rat.fleePos = new BlockPos(rat);
+                    rat.fleePos = new BlockPos(rat.getPositionVec());
                     rat.setAttackTarget(null);
                     rat.setRevengeTarget(null);
                 }
@@ -112,14 +114,15 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
         super.remove();
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.blackDeathHealth);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.blackDeathAttack);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(12.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, RatConfig.blackDeathHealth)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.25D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, RatConfig.blackDeathAttack)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 12D);             //ARMOR
     }
+
 
     protected void updateAITasks() {
         super.updateAITasks();
@@ -230,7 +233,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             world.setEntityState(this, (byte) 82);
             if (type == 0 && this.getRatsSummoned() < 15) {
                 EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
-                rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
+                rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
                 rat.copyLocationAndAnglesFrom(this);
                 rat.setPlague(true);
                 if (!world.isRemote) {
@@ -247,7 +250,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             }
             if (type == 1 && this.getCloudsSummoned() < 4) {
                 EntityPlagueCloud cloud = new EntityPlagueCloud(RatsEntityRegistry.PLAGUE_CLOUD, this.world);
-                cloud.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
+                cloud.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
                 cloud.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(cloud);
@@ -260,7 +263,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             }
             if (type == 2 && this.getBeastsSummoned() < 3) {
                 EntityPlagueBeast beast = new EntityPlagueBeast(RatsEntityRegistry.PLAGUE_BEAST, this.world);
-                beast.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this)), SpawnReason.MOB_SUMMONED, null, null);
+                beast.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
                 beast.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(beast);

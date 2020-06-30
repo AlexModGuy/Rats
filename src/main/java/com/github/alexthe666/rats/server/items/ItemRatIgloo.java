@@ -24,7 +24,7 @@ public class ItemRatIgloo extends Item implements ICustomRendered, IRatCageDecor
 
     public ItemRatIgloo(DyeColor color) {
         super(new Item.Properties().group(RatsMod.TAB));
-        this.setRegistryName(RatsMod.MODID, "rat_igloo_" + color.getName());
+        this.setRegistryName(RatsMod.MODID, "rat_igloo_" + color.getTranslationKey());
         this.color = color;
     }
 

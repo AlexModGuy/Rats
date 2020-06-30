@@ -14,6 +14,7 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -80,20 +81,20 @@ public class EntityRatShot extends ThrowableEntity {
     }
 
     protected void onImpact(RayTraceResult result) {
-        if(result instanceof EntityRayTraceResult && getThrower() != null && getThrower().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
+        if(result instanceof EntityRayTraceResult && func_234616_v_() != null && func_234616_v_().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
             return;
         }
         Entity hitEntity = null;
-        float damage = this.getThrower() instanceof PlayerEntity ? 6 : 8;
+        float damage = this.func_234616_v_() instanceof PlayerEntity ? 6 : 8;
         if (!this.world.isRemote) {
             if (result instanceof EntityRayTraceResult) {
                 EntityRayTraceResult entityResult = (EntityRayTraceResult)result;
-                if((getThrower() == null || !entityResult.getEntity().isOnSameTeam(getThrower())) && entityResult.getEntity() instanceof LivingEntity){
-                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+                if((func_234616_v_() == null || !entityResult.getEntity().isOnSameTeam(func_234616_v_())) && entityResult.getEntity() instanceof LivingEntity){
+                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), damage);
                     hitEntity = entityResult.getEntity();
                 }
             }
-            Entity thrower = this.getThrower();
+            Entity thrower = this.func_234616_v_();
             if(thrower != null){
                 EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
                 rat.copyLocationAndAnglesFrom(this);
@@ -133,7 +134,7 @@ public class EntityRatShot extends ThrowableEntity {
     }
 
     public BlockPos getLightPosition() {
-        BlockPos pos = new BlockPos(this);
+        BlockPos pos = new BlockPos(this.getPositionVec());
         if (!world.getBlockState(pos).isSolid()) {
             return pos.up();
         }

@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -34,14 +36,16 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
         this.upgrade = RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
+
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 80.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.4D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 5.0D);
     }
+
 
     public boolean attackEntityAsMob(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
@@ -83,11 +87,11 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().func_233627_a_(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().func_233627_a_(this.getAttackTarget(), 0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {

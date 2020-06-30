@@ -7,12 +7,15 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,7 +26,7 @@ public class ParticleSaliva extends SpriteTexturedParticle {
     private final Fluid fluid;
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/particle/rat_saliva.png");
 
-    public ParticleSaliva(World p_i49197_1_, double p_i49197_2_, double p_i49197_4_, double p_i49197_6_, Fluid p_i49197_8_) {
+    public ParticleSaliva(ClientWorld p_i49197_1_, double p_i49197_2_, double p_i49197_4_, double p_i49197_6_, Fluid p_i49197_8_) {
         super(p_i49197_1_, p_i49197_2_, p_i49197_4_, p_i49197_6_);
         this.setSize(0.01F, 0.01F);
         this.particleGravity = 0.06F;

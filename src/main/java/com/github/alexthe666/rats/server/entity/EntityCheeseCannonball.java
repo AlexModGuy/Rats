@@ -66,17 +66,17 @@ public class EntityCheeseCannonball extends ThrowableEntity implements IRendersA
     }
 
     protected void onImpact(RayTraceResult result) {
-        if(result instanceof EntityRayTraceResult && getThrower() != null && getThrower().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
+        if(result instanceof EntityRayTraceResult && func_234616_v_() != null && func_234616_v_().isOnSameTeam(((EntityRayTraceResult) result).getEntity())){
             return;
         }
         if (!this.world.isRemote) {
             if (result instanceof EntityRayTraceResult) {
                 EntityRayTraceResult entityResult = (EntityRayTraceResult)result;
-                if((getThrower() == null || !entityResult.getEntity().isOnSameTeam(getThrower())) && entityResult.getEntity() instanceof LivingEntity){
-                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8.0F);
+                if((func_234616_v_() == null || !entityResult.getEntity().isOnSameTeam(func_234616_v_())) && entityResult.getEntity() instanceof LivingEntity){
+                    ((LivingEntity)entityResult.getEntity()).attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 8.0F);
                 }
             }
-            Explosion explosion = new RatNukeExplosion(world, getThrower() == null ? this : getThrower(), this.getPosX(), this.getPosY(), this.getPosZ(), 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, getThrower() == null ? this : getThrower()));
+            Explosion explosion = new RatExplosion(world, func_234616_v_() == null ? this : func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 1.0F, false, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, func_234616_v_() == null ? this : func_234616_v_()));
             explosion.doExplosionA();
             explosion.doExplosionB(true);
             this.remove();

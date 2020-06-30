@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -16,7 +18,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,11 +51,15 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, AbstractVillagerEntity.class, false));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 20.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 4.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 0);         //ARMOR
     }
+
 
     public void move(MoverType typeIn, Vector3d pos) {
         super.move(typeIn, pos);
@@ -165,7 +171,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         }
 
         public void tick() {
-            BlockPos blockpos = new BlockPos(EntityRatlanteanSpirit.this);
+            BlockPos blockpos = new BlockPos(EntityRatlanteanSpirit.this.getPositionVec());
 
             for (int i = 0; i < 3; ++i) {
                 BlockPos blockpos1 = blockpos.add(EntityRatlanteanSpirit.this.rand.nextInt(15) - 7, EntityRatlanteanSpirit.this.rand.nextInt(11) - 5, EntityRatlanteanSpirit.this.rand.nextInt(15) - 7);
@@ -219,7 +225,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
                     double d2 = LivingEntity.getPosX() - (this.parentEntity.getPosX());
                     double d3 = LivingEntity.getPosY() + (double) (LivingEntity.getHeight()) - (this.parentEntity.getPosY() + (double) (this.parentEntity.getHeight() / 2.0F));
                     double d4 = LivingEntity.getPosZ() - (this.parentEntity.getPosZ());
-                    world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
+                    world.playEvent(null, 1016, new BlockPos(this.parentEntity.getPositionVec()), 0);
                     EntityRatlanteanFlame entitylargefireball = new EntityRatlanteanFlame(world, this.parentEntity, d2, d3, d4);
                     entitylargefireball.setPosition(this.parentEntity.getPosX(), this.parentEntity.getPosY() + (double) (this.parentEntity.getHeight() / 2.0F), this.parentEntity.getPosZ());
                     world.addEntity(entitylargefireball);

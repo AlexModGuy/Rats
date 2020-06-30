@@ -10,6 +10,8 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.boss.WitherEntity;
@@ -28,7 +30,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
@@ -164,9 +166,15 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
             if (attackSelection == 1 && summonCooldown == 0) {
                 int bounds = 20;
                 if(!world.isRemote){
-                    ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
+                    LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(world);
+                    lightningboltentity.func_233576_c_(entity.getPositionVec());
+                    lightningboltentity.func_233623_a_(true);
+                    world.addEntity(lightningboltentity);
                     for (int i = 0; i < rand.nextInt(3) + 2; i++) {
-                        ((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, entity.getPosY(), entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds, false));
+                        LightningBoltEntity lightningboltentity2 = EntityType.LIGHTNING_BOLT.create(world);
+                        lightningboltentity2.func_233576_c_(new Vector3d(entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, entity.getPosY(), entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds));
+                        lightningboltentity2.func_233623_a_(true);
+                        world.addEntity(lightningboltentity2);
                     }
                 }
 
@@ -175,7 +183,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
             }
             if (attackSelection == 2 && summonCooldown == 0) {
                 int searchRange = 10;
-                BlockPos ourPos = new BlockPos(this);
+                BlockPos ourPos = new BlockPos(this.getPositionVec());
                 List<BlockPos> listOfAll = new ArrayList<>();
                 for (BlockPos pos : BlockPos.getAllInBox(ourPos.add(-searchRange, -searchRange, -searchRange), ourPos.add(searchRange, searchRange, searchRange)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                     BlockState state = world.getBlockState(pos);
@@ -225,14 +233,15 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.neoRatlanteanHealth);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.neoRatlanteanAttack);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, RatConfig.neoRatlanteanHealth)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 1.0D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, RatConfig.neoRatlanteanAttack)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 0.0D);
     }
+
 
     public void fall(float distance, float damageMultiplier) {
 
@@ -366,7 +375,7 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
         }
 
         public void tick() {
-            BlockPos blockpos = new BlockPos(EntityNeoRatlantean.this);
+            BlockPos blockpos = new BlockPos(EntityNeoRatlantean.this.getPositionVec());
 
             for (int i = 0; i < 3; ++i) {
                 BlockPos blockpos1 = blockpos.add(EntityNeoRatlantean.this.rand.nextInt(15) - 7, EntityNeoRatlantean.this.rand.nextInt(11) - 5, EntityNeoRatlantean.this.rand.nextInt(15) - 7);

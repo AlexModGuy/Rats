@@ -22,7 +22,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -65,7 +65,7 @@ public class EntityGolemBeam extends AbstractArrowEntity {
         if (sqrt < 0.2F || this.inGround || this.collidedHorizontally) {
             this.remove();
             Explosion.Mode mode = world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.NONE : Explosion.Mode.DESTROY;
-            Explosion explosion = world.createExplosion(this.getShooter(), this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, mode);
+            Explosion explosion = world.createExplosion(this.func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, mode);
             explosion.doExplosionA();
             explosion.doExplosionB(true);
         }
@@ -78,14 +78,14 @@ public class EntityGolemBeam extends AbstractArrowEntity {
         }
     }
 
-    protected void onHit(RayTraceResult raytraceResultIn) {
-        if(raytraceResultIn instanceof EntityRayTraceResult && getShooter() != null && getShooter().isOnSameTeam(((EntityRayTraceResult) raytraceResultIn).getEntity())){
+    protected void onImpact(RayTraceResult raytraceResultIn) {
+        if(raytraceResultIn instanceof EntityRayTraceResult && func_234616_v_() != null && func_234616_v_().isOnSameTeam(((EntityRayTraceResult) raytraceResultIn).getEntity())){
             return;
         }
         if (raytraceResultIn instanceof EntityRayTraceResult && ((EntityRayTraceResult) raytraceResultIn).getEntity() instanceof PlayerEntity) {
             this.damageShield((PlayerEntity) ((EntityRayTraceResult) raytraceResultIn).getEntity(), (float) this.getDamage());
         }
-        super.onHit(raytraceResultIn);
+        super.onImpact(raytraceResultIn);
     }
 
     protected void damageShield(PlayerEntity player, float damage) {
@@ -167,7 +167,7 @@ public class EntityGolemBeam extends AbstractArrowEntity {
             i += this.rand.nextInt(i / 2 + 2);
         }
 
-        Entity entity1 = this.getShooter();
+        Entity entity1 = this.func_234616_v_();
         DamageSource damagesource;
         if (entity1 == null) {
             damagesource = DamageSource.causeArrowDamage(this, this);
@@ -209,7 +209,7 @@ public class EntityGolemBeam extends AbstractArrowEntity {
 
                 this.arrowHit(livingentity);
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity) {
-                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(6, 0.0F));
+                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.field_241770_g_, 0.0F));
                 }
 
                 if (!entity.isAlive() && this.hitEntities != null) {
@@ -219,9 +219,9 @@ public class EntityGolemBeam extends AbstractArrowEntity {
                 if (!this.world.isRemote && entity1 instanceof ServerPlayerEntity) {
                     ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)entity1;
                     if (this.hitEntities != null && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, this.hitEntities, this.hitEntities.size());
+                        CriteriaTriggers.KILLED_BY_CROSSBOW.func_234941_a_(serverplayerentity, this.hitEntities);
                     } else if (!entity.isAlive() && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, Arrays.asList(entity), 0);
+                        CriteriaTriggers.KILLED_BY_CROSSBOW.func_234941_a_(serverplayerentity, Arrays.asList(entity));
                     }
                 }
             }
@@ -231,7 +231,7 @@ public class EntityGolemBeam extends AbstractArrowEntity {
                 this.remove();
             }
         } else {
-            entity.setFireTimer(j);
+            entity.func_241209_g_(j);
             this.setMotion(this.getMotion().scale(-0.1D));
             this.rotationYaw += 180.0F;
             this.prevRotationYaw += 180.0F;

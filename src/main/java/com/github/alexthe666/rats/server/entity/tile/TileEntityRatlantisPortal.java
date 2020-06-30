@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.EndPortalTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -20,16 +21,15 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
         return compound;
     }
 
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         this.age = compound.getLong("Age");
     }
 
     public void tick() {
         ++this.age;
     }
-
-
 
     public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());

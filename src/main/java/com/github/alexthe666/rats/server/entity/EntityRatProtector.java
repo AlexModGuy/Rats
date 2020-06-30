@@ -7,7 +7,9 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.particles.ParticleTypes;
@@ -24,7 +26,7 @@ public class EntityRatProtector extends EntityRat {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(Attributes.field_233823_f_).getValue()));
         if(flag){
             this.onKillCommand();
 
@@ -46,13 +48,15 @@ public class EntityRatProtector extends EntityRat {
         return 0;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.65D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
+
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 2.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 1.65D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 6.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 32.0D);         //FOLLOW RANGE
     }
+
 
     public float getBrightness() {
         return 240;

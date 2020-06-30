@@ -17,7 +17,10 @@ import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -57,14 +60,16 @@ public class ItemGildedRatFlute extends Item {
         if (itemStackIn.getTag() != null) {
             EntityRatShot ratShot = new EntityRatShot(RatsEntityRegistry.RAT_SHOT, worldIn, player);
             ratShot.setColorVariant(worldIn.rand.nextInt(3));
-            ratShot.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.6F, 1.0F);
+            Vector3d vector3d = player.getLook(1.0F);
+            Vector3f vector3f = new Vector3f(vector3d);
+            ratShot.shoot((double)vector3f.getX(), (double)vector3f.getY(), (double)vector3f.getZ(), 1.0F, 1.5F);
             worldIn.addEntity(ratShot);
             itemStackIn.damageItem(1, player, (p_213833_1_) -> {
                 p_213833_1_.sendBreakAnimation(Hand.MAIN_HAND);
             });
             player.swingArm(hand);
             player.getCooldownTracker().setCooldown(this, 5);
-            worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.getFluteSound(), SoundCategory.NEUTRAL, 0.5F, 0.75F);
+            worldIn.playSound(player, new BlockPos(player.getPositionVec()), RatsSoundRegistry.getFluteSound(), SoundCategory.NEUTRAL, 0.5F, 0.75F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }

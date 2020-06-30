@@ -13,7 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -51,7 +51,7 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
         float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
         float f2 = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
         this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
-        this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.onGround ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
+        this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.func_233570_aj_() ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
     }
 
 
@@ -70,20 +70,20 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
     }
 
     protected void onImpact(RayTraceResult result) {
+        Entity shootingEntity = this.func_234616_v_();
         if (!this.world.isRemote) {
             if (result.getType() == RayTraceResult.Type.ENTITY) {
                 Entity entity = ((EntityRayTraceResult)result).getEntity();
-                if (!entity.isImmuneToFire()) {
+                if (!entity.func_230279_az_()) {
                     int i = entity.getFireTimer();
                     entity.setFire(10);
-                    boolean flag = entity.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F);
-                    if (flag) {
-                        this.applyEnchantments(this.shootingEntity, entity);
+                    boolean flag = entity.attackEntityFrom(DamageSource.func_233547_a_(this, shootingEntity), 5.0F);
+                    if (flag && shootingEntity instanceof LivingEntity) {
+                        this.applyEnchantments((LivingEntity) shootingEntity, entity);
                     } else {
-                        entity.setFireTimer(i);
                     }
                 }
-            } else if (this.shootingEntity == null || !(this.shootingEntity instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity)) {
+            } else if (shootingEntity == null || !(shootingEntity instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, shootingEntity)) {
             }
         }
     }

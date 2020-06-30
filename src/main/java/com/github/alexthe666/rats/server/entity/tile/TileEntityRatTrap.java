@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -66,7 +67,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        read(packet.getNbtCompound());
+        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
@@ -80,12 +81,13 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, baitStack);
         isShut = compound.getBoolean("IsShut");
         shutProgress = compound.getFloat("ShutProgress");
-        super.read(compound);
     }
 
     public void setBaitStack(ItemStack stack) {

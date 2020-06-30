@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -23,7 +25,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
@@ -65,14 +67,15 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
         return true;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(RatConfig.ratlanteanAutomatonHealth);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.8D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(RatConfig.ratlanteanAutomatonAttack);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, RatConfig.ratlanteanAutomatonHealth)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.8D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, RatConfig.ratlanteanAutomatonAttack)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 10.0D);
     }
+
 
     public CreatureAttribute getCreatureAttribute() {
         return CreatureAttribute.UNDEFINED;
@@ -120,7 +123,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
                 }
 
                 if (flag) {
-                    this.world.playEvent(null, 1022, new BlockPos(this), 0);
+                    this.world.playEvent(null, 1022, new BlockPos(this.getPositionVec()), 0);
                 }
             }
         }
@@ -190,8 +193,8 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-                this.getAttackTarget().func_233627_a_(this.getAttackTarget(), 1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
+                this.getAttackTarget().func_233627_a_(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }
@@ -321,7 +324,7 @@ public class EntityMarbleCheeseGolem extends MonsterEntity implements IAnimatedE
         }
 
         public void tick() {
-            BlockPos blockpos = new BlockPos(EntityMarbleCheeseGolem.this);
+            BlockPos blockpos = new BlockPos(EntityMarbleCheeseGolem.this.getPositionVec());
 
             for (int i = 0; i < 3; ++i) {
                 BlockPos blockpos1 = blockpos.add(EntityMarbleCheeseGolem.this.rand.nextInt(15) - 7, EntityMarbleCheeseGolem.this.rand.nextInt(11) - 5, EntityMarbleCheeseGolem.this.rand.nextInt(15) - 7);

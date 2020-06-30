@@ -23,7 +23,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -103,7 +103,7 @@ public class EntityPlagueShot extends AbstractArrowEntity {
 
     protected void arrowHit(LivingEntity living) {
         super.arrowHit(living);
-        if (living != null && (this.getShooter() == null || !living.isEntityEqual(this.getShooter()))) {
+        if (living != null && (this.func_234616_v_() == null || !living.isEntityEqual(this.func_234616_v_()))) {
             living.addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 1200));
             if (living instanceof PlayerEntity) {
                 this.damageShield((PlayerEntity) living, (float) this.getDamage());
@@ -189,7 +189,7 @@ public class EntityPlagueShot extends AbstractArrowEntity {
             i += this.rand.nextInt(i / 2 + 2);
         }
 
-        Entity entity1 = this.getShooter();
+        Entity entity1 = this.func_234616_v_();
         DamageSource damagesource;
         if (entity1 == null) {
             damagesource = DamageSource.causeArrowDamage(this, this);
@@ -231,7 +231,7 @@ public class EntityPlagueShot extends AbstractArrowEntity {
 
                 this.arrowHit(livingentity);
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity) {
-                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(6, 0.0F));
+                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.field_241770_g_, 0.0F));
                 }
 
                 if (!entity.isAlive() && this.hitEntities != null) {
@@ -240,11 +240,6 @@ public class EntityPlagueShot extends AbstractArrowEntity {
 
                 if (!this.world.isRemote && entity1 instanceof ServerPlayerEntity) {
                     ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)entity1;
-                    if (this.hitEntities != null && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, this.hitEntities, this.hitEntities.size());
-                    } else if (!entity.isAlive() && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, Arrays.asList(entity), 0);
-                    }
                 }
             }
 
@@ -253,7 +248,6 @@ public class EntityPlagueShot extends AbstractArrowEntity {
                 this.remove();
             }
         } else {
-            entity.setFireTimer(j);
             this.setMotion(this.getMotion().scale(-0.1D));
             this.rotationYaw += 180.0F;
             this.prevRotationYaw += 180.0F;

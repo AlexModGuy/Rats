@@ -24,7 +24,7 @@ public class ItemRatHammock extends Item implements ICustomRendered, IRatCageDec
 
     public ItemRatHammock(DyeColor color) {
         super(new Item.Properties().group(RatsMod.TAB));
-        this.setRegistryName(RatsMod.MODID, "rat_hammock_" + color.getName());
+        this.setRegistryName(RatsMod.MODID, "rat_hammock_" + color.getTranslationKey());
         this.color = color;
     }
 

@@ -71,7 +71,7 @@ public class RatsRecipeRegistry {
 
 
     public static BannerPattern addBanner(String name, ItemStack craftingStack) {
-        return BannerPattern.create(name.toUpperCase(), name, "rats." + name, craftingStack);
+        return BannerPattern.create(name.toUpperCase(), name, "rats." + name, true);
     }
 
     public static SharedRecipe getRatChefRecipe(ItemStack stack) {

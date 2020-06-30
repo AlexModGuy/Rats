@@ -29,7 +29,7 @@ public class ItemRatlantisBow extends BowItem {
     }
 
     @Override
-    public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+    public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
         EntityRatlantisArrow ratlantisArrow = new EntityRatlantisArrow(RatsEntityRegistry.RATLANTIS_ARROW, arrow.world);
         ratlantisArrow.copyDataFromOld(arrow);
         return ratlantisArrow;

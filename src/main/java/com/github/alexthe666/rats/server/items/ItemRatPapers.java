@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
@@ -71,14 +72,14 @@ public class ItemRatPapers extends Item {
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
         CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
         if(target instanceof PlayerEntity){
             try{
                 if(nbt.hasUniqueId("RatUUID")){
                     UUID ratUUID = nbt.getUniqueId("RatUUID");
                     if (!target.world.isRemote) {
-                        Entity entity = target.world.getServer().getWorld(target.world.dimension.getType()).getEntityByUuid(ratUUID);
+                        Entity entity = target.world.getServer().getWorld(target.world.func_234923_W_()).getEntityByUuid(ratUUID);
                         if (entity instanceof EntityRat) {
                             EntityRat rat = (EntityRat)entity;
                             if(rat.isTamed() && rat.isOwner(playerIn)){
@@ -87,18 +88,18 @@ public class ItemRatPapers extends Item {
                             }
                         }
                     }
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }catch (Exception e){
 
             }
-            return false;
+            return ActionResultType.PASS;
         }
 
         if(target instanceof EntityRat && ((EntityRat) target).isOwner(playerIn)){
             EntityRat rat = (EntityRat)target;
             if(rat.hasCustomName()){
-                nbt.putString("RatName", rat.getCustomName().getFormattedText());
+                nbt.putString("RatName", rat.getCustomName().getString());
             }
             nbt.putUniqueId("RatUUID", rat.getUniqueID());
             ItemStack stackReplacement = new ItemStack(this);
@@ -114,8 +115,8 @@ public class ItemRatPapers extends Item {
                     itementity.setOwnerId(playerIn.getUniqueID());
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.PASS;
     }
 }

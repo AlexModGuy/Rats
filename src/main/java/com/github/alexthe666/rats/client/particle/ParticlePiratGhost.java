@@ -7,16 +7,19 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class ParticlePiratGhost extends SpriteTexturedParticle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/particle/pirat_ghost.png");
 
-    public ParticlePiratGhost(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
+    public ParticlePiratGhost(ClientWorld worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, colorR, colorG, colorB);
         this.particleAlpha = 1F;
         this.maxAge = (int) (16.0D / (Math.random() * 0.8D + 0.2D));

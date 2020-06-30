@@ -7,13 +7,16 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -35,25 +38,28 @@ public class ItemPlagueScythe extends SwordItem {
         tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").func_240699_a_(TextFormatting.GRAY));
     }
 
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)12, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)-0.5, AttributeModifier.Operation.ADDITION));
+            multimap.put(Attributes.field_233823_f_, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)12, AttributeModifier.Operation.ADDITION));
+            multimap.put(Attributes.field_233825_h_, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)-0.5, AttributeModifier.Operation.ADDITION));
         }
         return multimap;
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
         if (LivingEntity.swingProgress == 0) {
-            Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EquipmentSlotType.MAINHAND);
+            Multimap<Attribute, AttributeModifier> dmg = stack.getAttributeModifiers(EquipmentSlotType.MAINHAND);
             double totalDmg = 0;
-            for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+            for (AttributeModifier modifier : dmg.get(Attributes.field_233823_f_)) {
                 totalDmg += modifier.getAmount();
             }
             LivingEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
             EntityPlagueShot shot = new EntityPlagueShot(RatsEntityRegistry.PLAGUE_SHOT, LivingEntity.world, LivingEntity, totalDmg * 0.5F);
-            shot.shoot(LivingEntity, LivingEntity.rotationPitch, LivingEntity.rotationYaw, 0.0F, 0.8F, 1.0F);
+            Vector3d vector3d = LivingEntity.getLook(1.0F);
+            Vector3f vector3f = new Vector3f(vector3d);
+
+            shot.shoot((double)vector3f.getX(), (double)vector3f.getY(), (double)vector3f.getZ(), 1.0F, 0.5F);
             LivingEntity.world.addEntity(shot);
 
         }

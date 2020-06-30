@@ -22,7 +22,6 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
-import net.minecraft.world.storage.WorldInfo;
 
 public class PlagueDoctorSpawner {
     private final Random random = new Random();
@@ -74,9 +73,9 @@ public class PlagueDoctorSpawner {
         } else if (this.random.nextInt(10) != 0) {
             return false;
         } else {
-            BlockPos blockpos = playerentity.getPosition();
+            BlockPos blockpos = new BlockPos(playerentity.getPositionVec());
             PointOfInterestManager pointofinterestmanager = this.world.getPointOfInterestManager();
-            Optional<BlockPos> optional = pointofinterestmanager.func_219127_a(PointOfInterestType.MEETING.func_221045_c(), (p_221241_0_) -> {
+            Optional<BlockPos> optional = pointofinterestmanager.find(PointOfInterestType.MEETING.getPredicate(), (p_221241_0_) -> {
                 return true;
             }, blockpos, 48, Status.ANY);
             BlockPos blockpos1 = (BlockPos)optional.orElse(blockpos);
@@ -107,7 +106,7 @@ public class PlagueDoctorSpawner {
     }
 
     private void func_221243_a(EntityPlagueDoctor p_221243_1_, int p_221243_2_) {
-        BlockPos blockpos = this.func_221244_a(new BlockPos(p_221243_1_), p_221243_2_);
+        BlockPos blockpos = this.func_221244_a(new BlockPos(p_221243_1_.getPositionVec()), p_221243_2_);
         if (blockpos != null) {
             EntityRat rat = (EntityRat)RatsEntityRegistry.RAT.spawn(this.world, (CompoundNBT)null, (ITextComponent)null, (PlayerEntity)null, blockpos, SpawnReason.EVENT, false, false);
             if (rat != null) {

@@ -24,9 +24,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
@@ -82,14 +84,24 @@ public class EntityThrownBlock extends Entity {
         return distance < d0 * d0;
     }
 
+
+    protected boolean func_230298_a_(Entity p_230298_1_) {
+        if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.canBeCollidedWith()) {
+            Entity entity = this.shootingEntity;
+            return entity == null || !entity.isRidingSameEntity(p_230298_1_);
+        } else {
+            return false;
+        }
+    }
+
     public void tick() {
-        if (this.world.isRemote || (this.shootingEntity == null || this.shootingEntity.isAlive()) && this.world.isBlockLoaded(new BlockPos(this))) {
+        if (this.world.isRemote || (this.shootingEntity == null || this.shootingEntity.isAlive()) && this.world.isBlockLoaded(new BlockPos(this.getPositionVec()))) {
             super.tick();
 
             ++this.ticksInAir;
             if (ticksInAir > 25) {
                 this.noClip = true;
-                RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, true, this.ticksInAir >= 25, this.shootingEntity, RayTraceContext.BlockMode.COLLIDER);
+                RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_, RayTraceContext.BlockMode.OUTLINE);
                 if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                     this.onImpact(raytraceresult);
                 }
@@ -143,7 +155,7 @@ public class EntityThrownBlock extends Entity {
                 pos = ((BlockRayTraceResult) result).getPos();
             }
             if (result instanceof EntityRayTraceResult) {
-                pos = new BlockPos(((EntityRayTraceResult) result).getEntity());
+                pos = new BlockPos(((EntityRayTraceResult) result).getEntity().getPositionVec());
             }
             if (pos != null) {
                 for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
@@ -153,9 +165,6 @@ public class EntityThrownBlock extends Entity {
                 if (true) {
                     if (dropBlock) {
                         this.world.setBlockState(blockpos1, getHeldBlockState());
-                    }
-                    if (block instanceof FallingBlock) {
-                        ((FallingBlock) block).onEndFalling(this.world, blockpos1, getHeldBlockState(), getHeldBlockState());
                     }
                     if (this.tileEntityData != null && block.hasTileEntity(getHeldBlockState())) {
                         TileEntity tileentity = this.world.getTileEntity(blockpos1);
@@ -170,8 +179,6 @@ public class EntityThrownBlock extends Entity {
                                     CompoundNBT.put(s, nbtbase.copy());
                                 }
                             }
-
-                            tileentity.read(CompoundNBT);
                             tileentity.markDirty();
                         }
                     }

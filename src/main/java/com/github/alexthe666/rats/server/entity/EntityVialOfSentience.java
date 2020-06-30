@@ -71,7 +71,7 @@ public class EntityVialOfSentience extends ProjectileItemEntity implements IRend
                 this.remove();
             }
         }
-        this.world.playEvent(2002, new BlockPos(this), 0XFEFE7E);
+        this.world.playEvent(2002, new BlockPos(this.getPositionVec()), 0XFEFE7E);
     }
 
     @Override

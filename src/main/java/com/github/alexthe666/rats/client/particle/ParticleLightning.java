@@ -7,9 +7,12 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +25,7 @@ public class ParticleLightning extends SpriteTexturedParticle {
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("rats:textures/particle/lightning_1.png");
     private boolean type;
 
-    public ParticleLightning(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
+    public ParticleLightning(ClientWorld worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float colorR, float colorG, float colorB) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, colorR, colorG, colorB);
         this.particleAlpha = 1F;
         this.maxAge = (int) (6.0D / (Math.random() * 0.8D + 0.2D));

@@ -26,7 +26,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -157,7 +157,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
             s = compound.getString("OwnerUUID");
         } else {
             String s1 = compound.getString("Owner");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1);
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1).toString();
         }
 
         if (!s.isEmpty()) {
@@ -184,7 +184,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getServer().getWorld(this.dimension).getEntityByUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.world.func_234923_W_()).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }
@@ -241,7 +241,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
         }
 
         public void tick() {
-            BlockPos blockpos = new BlockPos(EntityPlagueCloud.this);
+            BlockPos blockpos = new BlockPos(EntityPlagueCloud.this.getPositionVec());
 
             for (int i = 0; i < 3; ++i) {
                 BlockPos blockpos1 = blockpos.add(EntityPlagueCloud.this.rand.nextInt(15) - 7, EntityPlagueCloud.this.rand.nextInt(11) - 5, EntityPlagueCloud.this.rand.nextInt(15) - 7);

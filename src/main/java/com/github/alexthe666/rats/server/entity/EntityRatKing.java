@@ -7,6 +7,8 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.MooshroomEntity;
@@ -76,13 +78,12 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
         this.dataManager.register(SUMMONED_RATS, Integer.valueOf(0));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 200.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 2.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D);         //FOLLOW RANGE
     }
 
     public void livingTick() {
@@ -251,7 +252,7 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
 
 
     public BlockPos getLightPosition() {
-        BlockPos pos = new BlockPos(this);
+        BlockPos pos = new BlockPos(this.getPositionVec());
         if (!world.getBlockState(pos).isSolid()) {
             return pos.up();
         }

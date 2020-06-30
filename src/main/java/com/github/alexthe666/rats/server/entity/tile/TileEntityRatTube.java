@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
 
@@ -89,7 +89,8 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         isNode = compound.getBoolean("Node");
         int i = compound.getInt("OpenSide");
         if (i == -1) {
@@ -98,7 +99,6 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
             opening = Direction.values()[MathHelper.clamp(i, 0, Direction.values().length - 1)];
         }
         color = compound.getInt("TubeColor");
-        super.read(compound);
     }
 
     public void setEntranceData(Direction side, boolean open) {

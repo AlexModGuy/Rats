@@ -74,7 +74,7 @@ public class RatUtils {
 
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
-        return ItemTags.getCollection().getOrCreate(RatUtils.SEED_ITEMS).contains(item);
+        return ItemTags.getCollection().getOrCreate(RatUtils.SEED_ITEMS).func_230235_a_(item);
     }
 
     public static boolean doesContainFood(IInventory inventory) {
@@ -332,7 +332,7 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return ItemTags.getCollection().getOrCreate(RatUtils.CHEESE_ITEMS).contains(cheese.getItem());
+        return ItemTags.getCollection().getOrCreate(RatUtils.CHEESE_ITEMS).func_230235_a_(cheese.getItem());
     }
 
     @Nullable
@@ -705,7 +705,7 @@ public class RatUtils {
     public static boolean canSpawnInDimension(IWorld world) {
         if (RatConfig.blacklistedRatDimensions.length > 0) {
             for (int i = 0; i < RatConfig.blacklistedRatDimensions.length; i++) {
-                if (RatConfig.blacklistedRatDimensions[i] == world.getDimension().getType().getId()) {
+                if (RatConfig.blacklistedRatDimensions[i] != 0) {//TODO
                     return false;
                 }
             }
@@ -785,8 +785,8 @@ public class RatUtils {
         }
 
         public int compare(Direction p_compare_1_, Direction p_compare_2_) {
-            BlockPos pos1 = new BlockPos(theEntity).offset(p_compare_1_);
-            BlockPos pos2 = new BlockPos(theEntity).offset(p_compare_2_);
+            BlockPos pos1 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_1_);
+            BlockPos pos2 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_2_);
             double d0 = this.theEntity.tubeTarget.distanceSq(pos1.getX(), pos1.getY(), pos1.getZ(), true);
             double d1 = this.theEntity.tubeTarget.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ(), true);
             return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);

@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -383,7 +384,7 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addParticle(String name, double x, double y, double z, double motX, double motY, double motZ) {
-        World world = Minecraft.getInstance().world;
+        ClientWorld world = Minecraft.getInstance().world;
         if (world == null) {
             return;
         }
@@ -457,7 +458,7 @@ public class ClientProxy extends CommonProxy {
         World world = Minecraft.getInstance().world;
         if (world.getTileEntity(pos) != null) {
             TileEntity te = world.getTileEntity(pos);
-            te.read(tag);
+            te.func_230337_a_(world.getBlockState(pos), tag);
         }
     }
 

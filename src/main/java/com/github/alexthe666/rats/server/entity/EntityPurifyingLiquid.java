@@ -88,7 +88,7 @@ public class EntityPurifyingLiquid extends ProjectileItemEntity implements IRend
                 }
             }
             int i = potiontype.hasInstantEffect() ? 2007 : 2002;
-            this.world.playEvent(i, new BlockPos(this), 0XBFDFE2);
+            this.world.playEvent(i, new BlockPos(this.getPositionVec()), 0XBFDFE2);
             this.remove();
         }
     }

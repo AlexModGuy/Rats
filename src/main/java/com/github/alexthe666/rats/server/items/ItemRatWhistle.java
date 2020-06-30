@@ -81,7 +81,7 @@ public class ItemRatWhistle extends Item {
         }
         player.swingArm(hand);
         player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.rat_count", ratCount).func_240699_a_(TextFormatting.GRAY), true);
-        worldIn.playSound(player, player.getPosition(), RatsSoundRegistry.RAT_WHISTLE, SoundCategory.NEUTRAL, 1, 1.25F);
+        worldIn.playSound(player, new BlockPos(player.getPositionVec()), RatsSoundRegistry.RAT_WHISTLE, SoundCategory.NEUTRAL, 1, 1.25F);
 
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
     }

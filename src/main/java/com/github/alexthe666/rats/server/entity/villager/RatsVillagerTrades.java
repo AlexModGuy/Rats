@@ -119,20 +119,21 @@ public class RatsVillagerTrades {
             this.field_221194_a = p_i50537_1_;
         }
 
-        public MerchantOffer getOffer(Entity p_221182_1_, Random p_221182_2_) {
-            Enchantment lvt_3_1_ = (Enchantment) Registry.ENCHANTMENT.getRandom(p_221182_2_);
-            int lvt_4_1_ = MathHelper.nextInt(p_221182_2_, lvt_3_1_.getMinLevel(), lvt_3_1_.getMaxLevel());
-            ItemStack lvt_5_1_ = EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(lvt_3_1_, lvt_4_1_));
-            int lvt_6_1_ = 2 + p_221182_2_.nextInt(5 + lvt_4_1_ * 10) + 3 * lvt_4_1_;
-            if (lvt_3_1_.isTreasureEnchantment()) {
-                lvt_6_1_ *= 2;
+        public MerchantOffer getOffer(Entity trader, Random rand) {
+            List<Enchantment> list = Registry.ENCHANTMENT.stream().filter(Enchantment::func_230309_h_).collect(Collectors.toList());
+            Enchantment enchantment = list.get(rand.nextInt(list.size()));
+            int i = MathHelper.nextInt(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
+            ItemStack itemstack = EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, i));
+            int j = 2 + rand.nextInt(5 + i * 10) + 3 * i;
+            if (enchantment.isTreasureEnchantment()) {
+                j *= 2;
             }
 
-            if (lvt_6_1_ > 64) {
-                lvt_6_1_ = 64;
+            if (j > 64) {
+                j = 64;
             }
 
-            return new MerchantOffer(new ItemStack(Items.EMERALD, lvt_6_1_), new ItemStack(Items.BOOK), lvt_5_1_, 12, this.field_221194_a, 0.2F);
+            return new MerchantOffer(new ItemStack(Items.EMERALD, j), new ItemStack(Items.BOOK), itemstack, 12, this.field_221194_a, 0.2F);
         }
     }
 

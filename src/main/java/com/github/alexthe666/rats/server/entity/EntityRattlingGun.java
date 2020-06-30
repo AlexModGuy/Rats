@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -13,7 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
@@ -167,13 +169,16 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
         this.doBlockCollisions();
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
+
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 60.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 2.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 128.0D)         //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 10);         //ARMOR
     }
+
 
     @Override
     public Iterable<ItemStack> getArmorInventoryList() {
@@ -195,7 +200,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
     }
 
     @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         if (this.getControllingPassenger() == null) {
             if (!player.getPassengers().isEmpty()) {
                 boolean flag = false;
@@ -207,7 +212,7 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                         break;
                     }
                 }
-                return flag;
+                return flag ? ActionResultType.SUCCESS : ActionResultType.PASS;
             }
         } else {
             Entity passenger = this.getControllingPassenger();
@@ -215,11 +220,11 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                 if (((EntityRat)passenger).isOwner(player)) {
                     ((EntityRat) passenger).stopRiding();
                     ((EntityRat) passenger).startRiding(player);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     public void shoot(EntityRat pirat) {

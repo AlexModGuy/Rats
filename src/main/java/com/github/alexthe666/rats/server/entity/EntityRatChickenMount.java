@@ -3,12 +3,14 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class EntityRatChickenMount extends EntityRatMountBase {
@@ -31,10 +33,10 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         return this.isChild() ? sizeIn.height * 0.85F : sizeIn.height * 0.92F;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 4.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.3D);                //SPEED
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {

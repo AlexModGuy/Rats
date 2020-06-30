@@ -5,6 +5,8 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -27,7 +29,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,7 +62,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
     private static ItemStack generateBanner() {
         ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
         CompoundNBT compoundnbt = itemstack.getOrCreateChildTag("BlockEntityTag");
-        ListNBT listnbt = (new BannerPattern.Builder()).func_222477_a(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE).func_222476_a();
+        ListNBT listnbt = (new BannerPattern.Builder()).setPatternWithColor(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE).func_222476_a();
         compoundnbt.put("Patterns", listnbt);
         return itemstack;
     }
@@ -232,13 +234,12 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         }
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
-        this.getAttribute(SWIM_SPEED).setBaseValue(1.6D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 60.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.1D)                //SPEED
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 10.0D);
     }
 
     public void applyEntityCollision(Entity entityIn) {
@@ -327,36 +328,40 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
+        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
-            label161:
-            for(int k1 = k; k1 < l; ++k1) {
-                float f = 0.0F;
+        label39:
+        for(int k1 = k; k1 < l; ++k1) {
+            float f = 0.0F;
+            int l1 = i;
 
-                for(int l1 = i; l1 < j; ++l1) {
-                    for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutable.setPos(l1, k1, i2);
-                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
-                        if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            f = Math.max(f, ifluidstate.getActualHeight(this.world, blockpos$pooledmutable));
-                        }
+            while(true) {
+                if (l1 >= j) {
+                    if (f < 1.0F) {
+                        return (float)blockpos$mutable.getY() + f;
+                    }
+                    break;
+                }
 
-                        if (f >= 1.0F) {
-                            continue label161;
-                        }
+                for(int i2 = i1; i2 < j1; ++i2) {
+                    blockpos$mutable.setPos(l1, k1, i2);
+                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
+                    if (fluidstate.isTagged(FluidTags.WATER)) {
+                        f = Math.max(f, fluidstate.getActualHeight(this.world, blockpos$mutable));
+                    }
+
+                    if (f >= 1.0F) {
+                        continue label39;
                     }
                 }
 
-                if (f < 1.0F) {
-                    float f2 = (float)blockpos$pooledmutable.getY() + f;
-                    return f2;
-                }
+                ++l1;
             }
-
-            float f1 = (float)(l + 1);
-            return f1;
         }
+
+        return (float)(l + 1);
     }
+
 
     private boolean checkInWater() {
         AxisAlignedBB axisalignedbb = this.getBoundingBox();
@@ -368,24 +373,23 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         this.waterLevel = Double.MIN_VALUE;
+        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
-            for(int k1 = i; k1 < j; ++k1) {
-                for(int l1 = k; l1 < l; ++l1) {
-                    for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutable.setPos(k1, l1, i2);
-                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
-                        if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            float f = (float)l1 + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable);
-                            this.waterLevel = Math.max((double)f, this.waterLevel);
-                            flag |= axisalignedbb.minY < (double)f;
-                        }
+        for(int k1 = i; k1 < j; ++k1) {
+            for(int l1 = k; l1 < l; ++l1) {
+                for(int i2 = i1; i2 < j1; ++i2) {
+                    blockpos$mutable.setPos(k1, l1, i2);
+                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
+                    if (fluidstate.isTagged(FluidTags.WATER)) {
+                        float f = (float)l1 + fluidstate.getActualHeight(this.world, blockpos$mutable);
+                        this.waterLevel = Math.max((double)f, this.waterLevel);
+                        flag |= axisalignedbb.minY < (double)f;
                     }
                 }
             }
         }
 
-        return flag || isOverWater();
+        return flag;
     }
 
     private boolean isOverWater() {
@@ -416,21 +420,19 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
         int i1 = MathHelper.floor(axisalignedbb.minZ);
         int j1 = MathHelper.ceil(axisalignedbb.maxZ);
         boolean flag = false;
+        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
-            for(int k1 = i; k1 < j; ++k1) {
-                for(int l1 = k; l1 < l; ++l1) {
-                    for(int i2 = i1; i2 < j1; ++i2) {
-                        blockpos$pooledmutable.setPos(k1, l1, i2);
-                        FluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
-                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutable.getY() + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable))) {
-                            if (!ifluidstate.isSource()) {
-                                BoatEntity.Status boatentity$status = BoatEntity.Status.UNDER_FLOWING_WATER;
-                                return boatentity$status;
-                            }
-
-                            flag = true;
+        for(int k1 = i; k1 < j; ++k1) {
+            for(int l1 = k; l1 < l; ++l1) {
+                for(int i2 = i1; i2 < j1; ++i2) {
+                    blockpos$mutable.setPos(k1, l1, i2);
+                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
+                    if (fluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$mutable.getY() + fluidstate.getActualHeight(this.world, blockpos$mutable))) {
+                        if (!fluidstate.isSource()) {
+                            return BoatEntity.Status.UNDER_FLOWING_WATER;
                         }
+
+                        flag = true;
                     }
                 }
             }

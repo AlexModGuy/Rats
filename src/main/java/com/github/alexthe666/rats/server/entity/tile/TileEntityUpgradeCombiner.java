@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -144,8 +145,8 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
         return 300;
     }
 
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         this.combinerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.combinerStacks);
         this.furnaceBurnTime = compound.getInt("BurnTime");
@@ -440,7 +441,7 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        read(packet.getNbtCompound());
+        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {

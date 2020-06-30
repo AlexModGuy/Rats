@@ -40,14 +40,14 @@ public class EntityRatArrow extends AbstractArrowEntity {
         return new ItemStack(Items.ARROW);
     }
 
-    protected void onHit(RayTraceResult raytraceResultIn) {
-        super.onHit(raytraceResultIn);
+    protected void onImpact(RayTraceResult raytraceResultIn) {
+        super.onImpact(raytraceResultIn);
         if(raytraceResultIn.getType() != RayTraceResult.Type.MISS) {
             Entity entity = null;
             BlockPos pos = null;
             if (raytraceResultIn instanceof EntityRayTraceResult) {
                 entity = ((EntityRayTraceResult) raytraceResultIn).getEntity();
-                pos = new BlockPos(((EntityRayTraceResult) raytraceResultIn).getEntity());
+                pos = new BlockPos(((EntityRayTraceResult) raytraceResultIn).getEntity().getPositionVec());
             }
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
             CompoundNBT ratTag = new CompoundNBT();

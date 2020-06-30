@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -30,9 +31,9 @@ public class TileEntityToken extends TileEntity implements ITickableTileEntity {
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         ticksExisted = compound.getInt("TicksExisted");
-        super.read(compound);
     }
 
     @OnlyIn(Dist.CLIENT)

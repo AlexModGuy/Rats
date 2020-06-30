@@ -5,7 +5,9 @@ import com.github.alexthe666.rats.server.entity.ai.BlackDeathAITargetNonPlagued;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -41,15 +43,14 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
         this.targetSelector.addGoal(2, new BlackDeathAITargetNonPlagued(this, LivingEntity.class, false));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 40.0D)        //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.5D)                //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 5.0D)       //ATTACK
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233826_i_, 4.0D);
     }
-
 
     public boolean isPotionApplicable(EffectInstance potioneffectIn) {
         if (potioneffectIn.getPotion() == RatsMod.PLAGUE_POTION) {
@@ -128,7 +129,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
             s = compound.getString("OwnerUUID");
         } else {
             String s1 = compound.getString("Owner");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1);
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1).toString();
         }
 
         if (!s.isEmpty()) {
@@ -155,7 +156,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getServer().getWorld(this.dimension).getEntityByUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.world.func_234923_W_()).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }

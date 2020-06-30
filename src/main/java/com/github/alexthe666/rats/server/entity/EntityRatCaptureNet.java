@@ -44,13 +44,13 @@ public class EntityRatCaptureNet extends ProjectileItemEntity {
     protected void onImpact(RayTraceResult result) {
         ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK);
         CompoundNBT tag = new CompoundNBT();
-        if (!this.world.isRemote && getThrower() != null) {
+        if (!this.world.isRemote && func_234616_v_() != null) {
             AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(30, 16, 30);
             List<EntityRat> list = this.world.getEntitiesWithinAABB(EntityRat.class, axisalignedbb);
             int capturedRat = 0;
             if (!list.isEmpty()) {
                 for (EntityRat rat : list) {
-                    if (rat.isTamed() && (rat.isOwner(getThrower()) || getThrower() instanceof PlayerEntity && ((PlayerEntity) getThrower()).isCreative())) {
+                    if (rat.isTamed() && func_234616_v_() instanceof LivingEntity && (rat.isOwner((LivingEntity) func_234616_v_()) || func_234616_v_() instanceof PlayerEntity && ((PlayerEntity) func_234616_v_()).isCreative())) {
                         CompoundNBT ratTag = new CompoundNBT();
                         rat.writeAdditional(ratTag);
                         capturedRat++;

@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.server.entity.EntityBlackDeath;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
@@ -14,6 +12,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ModelBlackDeath<T extends EntityBlackDeath> extends SegmentedModel<T> implements IHasArm {
     public ModelRenderer head;

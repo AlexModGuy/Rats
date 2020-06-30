@@ -21,7 +21,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vector3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -69,14 +69,14 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
         }
     }
 
-    protected void onHit(RayTraceResult raytraceResultIn) {
-        if(raytraceResultIn instanceof EntityRayTraceResult && getShooter() != null && getShooter().isOnSameTeam(((EntityRayTraceResult) raytraceResultIn).getEntity())){
+    protected void onImpact(RayTraceResult raytraceResultIn) {
+        if(raytraceResultIn instanceof EntityRayTraceResult && func_234616_v_() != null && func_234616_v_().isOnSameTeam(((EntityRayTraceResult) raytraceResultIn).getEntity())){
             return;
         }
         if (raytraceResultIn instanceof EntityRayTraceResult && ((EntityRayTraceResult) raytraceResultIn).getEntity() instanceof PlayerEntity) {
             this.damageShield((PlayerEntity) ((EntityRayTraceResult) raytraceResultIn).getEntity(), (float) this.getDamage());
         }
-        super.onHit(raytraceResultIn);
+        super.onImpact(raytraceResultIn);
         this.remove();
     }
 
@@ -150,7 +150,7 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
             i += this.rand.nextInt(i / 2 + 2);
         }
 
-        Entity entity1 = this.getShooter();
+        Entity entity1 = this.func_234616_v_();
         DamageSource damagesource;
         if (entity1 == null) {
             damagesource = DamageSource.causeArrowDamage(this, this);
@@ -192,7 +192,7 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
 
                 this.arrowHit(livingentity);
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity) {
-                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(6, 0.0F));
+                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.field_241770_g_, 0.0F));
                 }
 
                 if (!entity.isAlive() && this.hitEntities != null) {
@@ -201,11 +201,6 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
 
                 if (!this.world.isRemote && entity1 instanceof ServerPlayerEntity) {
                     ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)entity1;
-                    if (this.hitEntities != null && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, this.hitEntities, this.hitEntities.size());
-                    } else if (!entity.isAlive() && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, Arrays.asList(entity), 0);
-                    }
                 }
             }
 
@@ -214,7 +209,6 @@ public class EntityRattlingGunBullet extends AbstractArrowEntity {
                 this.remove();
             }
         } else {
-            entity.setFireTimer(j);
             this.setMotion(this.getMotion().scale(-0.1D));
             this.rotationYaw += 180.0F;
             this.prevRotationYaw += 180.0F;

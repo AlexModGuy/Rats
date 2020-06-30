@@ -7,6 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -34,7 +36,10 @@ public class ItemPurifyingLiquid extends Item {
         ItemStack itemstack1 = playerIn.isCreative() ? itemstack.copy() : itemstack.split(1);
         worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(worldIn, playerIn);
-        entitypotion.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+        Vector3d vector3d = playerIn.getLook(1.0F);
+        Vector3f vector3f = new Vector3f(vector3d);
+
+        entitypotion.shoot((double)vector3f.getX(), (double)vector3f.getY(), (double)vector3f.getZ(), 1.0F, 0.5F);
         worldIn.addEntity(entitypotion);
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemstack);
     }
