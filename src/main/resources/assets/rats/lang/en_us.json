@@ -440,6 +440,8 @@
   "item.rats.rat_flute.rat_count": "Commanded %s rats",
   "item.rats.gilded_rat_flute": "Gilded Rat Flute",
   "item.rats.gilded_rat_flute.desc": "Fires rats at target",
+  "item.rats.rat_whistle": "Rat Whistle",
+  "item.rats.rat_whistle.desc0": "Sends all nearby tamed rats to their home position when applicable",
   "item.rats.piper_hat": "Piper Hat",
   "item.rats.piper_hat.desc": "Wild rats will no longer fear you when worn",
   "item.rats.creative_cheese": "Creative Cheese",
@@ -899,5 +901,6 @@
   "rats.subtitle.dutchrat_hurt": "Flying Dutchrat arghs",
   "rats.subtitle.dutchrat_die": "Flying Dutchrat dies",
   "rats.subtitle.ratlantean_ratbot_idle": "Ratlantean Ratbot beeps",
-  "rats.subtitle.trash_can": "Trash Can lid"
+  "rats.subtitle.trash_can": "Trash Can lid",
+  "rats.subtitle.rat_whistle": "Rat whistle"
 }

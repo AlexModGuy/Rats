@@ -1,4 +1,13 @@
 {
+  "rat_whistle": {
+    "category": "neutral",
+    "sounds": [
+      "rats:rat_whistle_0",
+      "rats:rat_whistle_1",
+      "rats:rat_whistle_2"
+    ],
+    "subtitle": "rats.subtitle.rat_whistle"
+  },
   "biplane_loop": {
     "category": "neutral",
     "sounds": [

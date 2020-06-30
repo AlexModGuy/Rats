@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SRS",
+    " SS"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:cheese"
+    },
+    "S": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "rats:rat_whistle"
+  }
+}
