@@ -16,7 +16,7 @@ public class RatsSoundRegistry {
     public static final SoundEvent RAT_DIG = createSoundEvent("rat_dig");
     public static final SoundEvent RAT_PLAGUE = createSoundEvent("rat_plague");
     public static final SoundEvent RAT_FLUTE = createSoundEvent("rat_flute");
-    public static final SoundEvent RAT_FLUTE_NO_FUNNY = createSoundEvent("rat_flute");
+    public static final SoundEvent RAT_FLUTE_NO_FUNNY = createSoundEvent("rat_flute_no_funny");
     public static final SoundEvent PIPER_LOOP = createSoundEvent("piper_loop");
     public static final SoundEvent LASER = createSoundEvent("rat_laser");
     public static final SoundEvent RATLANTEAN_SPIRIT_IDLE = createSoundEvent("ratlantean_spirit_idle");

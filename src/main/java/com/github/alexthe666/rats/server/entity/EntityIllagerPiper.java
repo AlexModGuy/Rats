@@ -26,10 +26,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
@@ -219,12 +216,17 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
         }
     }
 
+    public static boolean canPiperSpawnInLight(EntityType<? extends MobEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(worldIn, pos, randomIn) && canSpawnOn(type, worldIn, reason, pos, randomIn);
+    }
+
     public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
         if(RatConfig.piperOverworldOnly && worldIn.getDimension().getType() != DimensionType.OVERWORLD){
             return false;
         }
-        return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && randomIn.nextFloat() < 0.25F;
+        boolean b = canPiperSpawnInLight(typeIn, worldIn, reason, pos, randomIn);
+        return reason == SpawnReason.SPAWNER || b && worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && randomIn.nextFloat() < 0.25F;
     }
 
     @OnlyIn(Dist.CLIENT)
