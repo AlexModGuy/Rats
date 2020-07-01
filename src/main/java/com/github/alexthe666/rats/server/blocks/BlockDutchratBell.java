@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.properties.BellAttachment;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.BellTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;

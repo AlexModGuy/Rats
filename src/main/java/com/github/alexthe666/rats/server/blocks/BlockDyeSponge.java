@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;

@@ -47,7 +47,8 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
                 }
             }
             if (vec3d != null) {
-                vec3d = new Vector3d(RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat));
+                BlockPos posToFind = RatUtils.findLowestRatCage(new BlockPos(vec3d), this.rat);
+                vec3d = new Vector3d(posToFind.getX(), posToFind.getY(), posToFind.getZ());
             }
         }
         if (!inCage || vec3d == null) {

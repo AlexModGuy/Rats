@@ -4,12 +4,14 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IShearable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.common.IShearable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.IForgeShearable;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -28,7 +30,7 @@ public class RatAIHarvestShears extends Goal {
     private Random rand = new Random();
     private Predicate<LivingEntity> SHEAR_PREDICATE = new com.google.common.base.Predicate<LivingEntity>() {
         public boolean apply(@Nullable LivingEntity entity) {
-            return entity != null && entity instanceof IShearable && ((IShearable) entity).isShearable(SHEAR_STACK, entity.world, entity.getPosition());
+            return entity != null && entity instanceof IForgeShearable && ((IForgeShearable) entity).isShearable(SHEAR_STACK, entity.world, new BlockPos(entity.getPositionVec()));
         }
     };
 
@@ -66,8 +68,8 @@ public class RatAIHarvestShears extends Goal {
         if (this.targetSheep != null && this.targetSheep.isAlive() && this.entity.getHeldItemMainhand().isEmpty()) {
             this.entity.getNavigator().tryMoveToEntityLiving(this.targetSheep, 1.25D);
             if (entity.getDistance(targetSheep) < 1.5D * this.entity.getRatDistanceModifier()) {
-                if (targetSheep instanceof IShearable) {
-                    java.util.List<ItemStack> drops = ((IShearable) targetSheep).onSheared(new ItemStack(Items.SHEARS), this.entity.world, targetSheep.getPosition(), 0);
+                if (targetSheep instanceof IForgeShearable) {
+                    java.util.List<ItemStack> drops = ((IForgeShearable) targetSheep).onSheared(null, new ItemStack(Items.SHEARS), this.entity.world, new BlockPos(targetSheep.getPositionVec()), 0);
                     for (ItemStack stack : drops) {
                         targetSheep.entityDropItem(stack, 0.0F);
                     }

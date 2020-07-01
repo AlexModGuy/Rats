@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

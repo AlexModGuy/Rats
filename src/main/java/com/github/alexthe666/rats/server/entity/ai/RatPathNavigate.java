@@ -46,7 +46,7 @@ public class RatPathNavigate extends GroundPathNavigator {
     }
 
     public Path getPathToEntity(Entity entityIn, int i) {
-        this.targetPosition = new BlockPos(entityIn);
+        this.targetPosition = new BlockPos(entityIn.getPositionVec());
         return super.getPathToEntity(entityIn, i);
     }
 
@@ -56,7 +56,7 @@ public class RatPathNavigate extends GroundPathNavigator {
         if (path != null) {
             return this.setPath(path, speedIn);
         } else {
-            this.targetPosition = new BlockPos(entityIn);
+            this.targetPosition = new BlockPos(entityIn.getPositionVec());
             this.speed = speedIn;
             return true;
         }
@@ -80,7 +80,7 @@ public class RatPathNavigate extends GroundPathNavigator {
                 Vector3d vec3d = this.getEntityPosition();
                 Vector3d vec3d1 = this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getCurrentPathIndex());
 
-                if (vec3d.y > vec3d1.y && !this.entity.onGround && MathHelper.floor(vec3d.x) == MathHelper.floor(vec3d1.x) && MathHelper.floor(vec3d.z) == MathHelper.floor(vec3d1.z)) {
+                if (vec3d.y > vec3d1.y && !this.entity.func_233570_aj_()&& MathHelper.floor(vec3d.x) == MathHelper.floor(vec3d1.x) && MathHelper.floor(vec3d.z) == MathHelper.floor(vec3d1.z)) {
                     this.currentPath.setCurrentPathIndex(this.currentPath.getCurrentPathIndex() + 1);
                 }
             }

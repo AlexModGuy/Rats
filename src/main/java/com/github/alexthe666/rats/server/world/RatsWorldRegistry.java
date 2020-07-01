@@ -1,14 +1,13 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.github.alexthe666.rats.server.world.structure.*;
-import net.minecraft.util.ResourceLocation;
+import com.github.alexthe666.rats.server.world.structure.DutchratShipStructure;
+import com.github.alexthe666.rats.server.world.structure.RatlantisAquaductStructure;
+import com.github.alexthe666.rats.server.world.structure.RatlantisRuinsStructure;
+import com.github.alexthe666.rats.server.world.structure.RunwayStructure;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
 
 
 public class RatsWorldRegistry {

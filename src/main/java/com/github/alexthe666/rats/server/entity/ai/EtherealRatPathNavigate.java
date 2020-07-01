@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.Path;

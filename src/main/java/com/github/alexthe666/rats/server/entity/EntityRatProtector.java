@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.ai.*;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.ai.EtherealRatPathNavigate;
+import com.github.alexthe666.rats.server.entity.ai.RatEtherealMoveHelper;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,10 +10,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;

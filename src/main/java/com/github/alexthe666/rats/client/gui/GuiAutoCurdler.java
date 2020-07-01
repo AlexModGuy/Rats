@@ -3,11 +3,11 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.FluidBlockRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,9 +17,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.lwjgl.opengl.GL11;
 
@@ -29,11 +29,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/auto_curdler.png");
     private final PlayerInventory playerInventory;
     private final IInventory tileFurnace;
-    public ChangeCommandButton previousCommand;
-    public ChangeCommandButton nextCommand;
     public ITextComponent name;
-    private int cookTime;
-    private int totalCookTime;
 
     public GuiAutoCurdler(ContainerAutoCurdler container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
@@ -41,6 +37,28 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         this.tileFurnace = container.tileRatCraftingTable;
         this.name = name;
     }
+
+    @Override
+    protected void func_230450_a_(MatrixStack p_230430_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        this.func_230446_a_(p_230430_1_);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+        int i = (this.field_230708_k_ - this.xSize) / 2;
+        int j = (this.field_230709_l_ - this.ySize) / 2;
+
+        this.func_238474_b_(p_230430_1_, i, j, 0, 0, this.xSize, this.ySize);
+        int l = ((ContainerAutoCurdler)container).getCookProgressionScaled();
+        this.func_238474_b_(p_230430_1_,i + 63, j + 35, 176, 0, l + 1, 16);
+        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
+            FluidTank tank = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank;
+            int textureYPos = (int) (57 * (tank.getFluidAmount() / (float) tank.getCapacity()));
+            renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
+            this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
+        }
+        this.func_238474_b_(p_230430_1_, i + 29, j + 15, 0, 166, 24, 58);
+        drawGuiContainerForegroundLayer(p_230430_1_, p_230450_3_, p_230450_4_);
+   }
+
 
     public static void renderFluidStack(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
         TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(fluidStack.getFluid().getAttributes().getStillTexture());
@@ -71,42 +89,19 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         } while (height > 0);
     }
 
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String s = this.getTitle().getFormattedText();
-        this.font.drawString(s, this.xSize / 2 - this.font.getStringWidth(s) / 2, 5, 4210752);
-        this.font.drawString(this.getTitle().getFormattedText(), 8, this.ySize - 94 + 2, 4210752);
-        int screenW = (this.width - this.xSize) / 2;
-        int screenH = (this.height - this.ySize) / 2;
+    protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
+        String s = this.func_231171_q_().getString();
+        Minecraft.getInstance().fontRenderer.func_238405_a_(stackIn, s, this.xSize / 2 - Minecraft.getInstance().fontRenderer.getStringWidth(s) / 2, 5, 4210752);
+        Minecraft.getInstance().fontRenderer.func_238405_a_(stackIn, this.func_231171_q_().getString(), 8, this.ySize - 94 + 2, 4210752);
+        int screenW = (this.field_230708_k_ - this.xSize) / 2;
+        int screenH = (this.field_230709_l_ - this.ySize) / 2;
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
-                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getFormattedText();
+                String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
-                renderTooltip(Arrays.asList(fluidName, fluidSize), mouseX - screenW, mouseY - screenH + 10, font);
+                func_238654_b_(stackIn, Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize)), mouseX - screenW, mouseY - screenH + 10, Minecraft.getInstance().fontRenderer);
             }
         }
-    }
-
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
-        this.blit(i, j, 0, 0, this.xSize, this.ySize);
-        int l = ((ContainerAutoCurdler)container).getCookProgressionScaled();
-        this.blit(i + 63, j + 35, 176, 0, l + 1, 16);
-        if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
-            FluidTank tank = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank;
-            int textureYPos = (int) (57 * (tank.getFluidAmount() / (float) tank.getCapacity()));
-            renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
-            this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        }
-        this.blit(i + 29, j + 15, 0, 166, 24, 58);
     }
 
 }

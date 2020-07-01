@@ -11,30 +11,30 @@ import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
@@ -103,10 +103,12 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
         float f4 = MathHelper.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
         float f5 = f2 * f4;
         float f6 = f * f4;
-        int i = this.getBlockLight(entityLivingIn, partialTicks);
-        int j = entityLivingIn.isBurning() ? 15 : entityLivingIn.world.getLightFor(LightType.BLOCK, new BlockPos(entityLivingIn.getEyePosition(partialTicks)));
-        int k = entityLivingIn.world.getLightFor(LightType.SKY, new BlockPos(entityLivingIn.getEyePosition(partialTicks)));
-        int l = entityLivingIn.world.getLightFor(LightType.SKY, new BlockPos(leashHolder.getEyePosition(partialTicks)));
+        BlockPos blockpos = new BlockPos(entityLivingIn.getEyePosition(partialTicks));
+        BlockPos blockpos1 = new BlockPos(leashHolder.getEyePosition(partialTicks));
+        int i = this.getBlockLight(entityLivingIn, blockpos);
+        int j = entityLivingIn.world.getLightFor(LightType.BLOCK, blockpos1);
+        int k = entityLivingIn.world.getLightFor(LightType.SKY, blockpos);
+        int l = entityLivingIn.world.getLightFor(LightType.SKY, blockpos1);
         renderSide(ivertexbuilder, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.025F, f5, f6);
         renderSide(ivertexbuilder, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.0F, f5, f6);
         matrixStackIn.pop();
@@ -127,7 +129,7 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
     }
 
 
-    public boolean shouldRender(EntityRat rat, ClippingHelperImpl camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityRat rat, ClippingHelper camera, double camX, double camY, double camZ) {
         if (rat.isPassenger() && rat.getRidingEntity() != null && rat.getRidingEntity().getPassengers().size() >= 1 && rat.getRidingEntity().getPassengers().get(0) == rat && rat.getRidingEntity() instanceof LivingEntity) {
             if (((LivingEntity) rat.getRidingEntity()).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.CHEF_TOQUE) {
                 return false;
@@ -205,7 +207,7 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
                 return AQUATIC_UPGRADE_TEXTURE;
             }
             if (entity.hasCustomName()) {
-                String str = entity.getCustomName().getFormattedText();
+                String str = entity.getCustomName().getString();
                 if (str.contains("julian") || str.contains("Julian")) {
                     return JULIAN;
                 }

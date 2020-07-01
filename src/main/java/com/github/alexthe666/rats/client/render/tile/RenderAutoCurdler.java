@@ -2,26 +2,22 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelAutoCurdler;
 import com.github.alexthe666.rats.server.blocks.BlockAutoCurdler;
-import com.github.alexthe666.rats.server.blocks.BlockRatHole;
-import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class RenderAutoCurdler extends TileEntityRenderer<TileEntityAutoCurdler> {
     private static final ModelAutoCurdler MODEL_AUTO_CURDLER = new ModelAutoCurdler();

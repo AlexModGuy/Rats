@@ -1,22 +1,5 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.provider.SingleBiomeProvider;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ForgeHooksClient;
-
-import javax.annotation.Nullable;
-import java.util.Random;
-import java.util.function.Supplier;
-
 public class RatlantisDimension {/* extends Dimension {
     public static final BlockPos SPAWN = new BlockPos(0, 110, 0);
 

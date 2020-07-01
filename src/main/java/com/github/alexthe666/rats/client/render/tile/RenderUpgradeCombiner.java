@@ -2,22 +2,18 @@ package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanSpirit;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityUpgradeCombiner;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderUpgradeCombiner extends TileEntityRenderer<TileEntityUpgradeCombiner> {
     private static final ModelRatlanteanSpirit MODEL_SPIRIT = new ModelRatlanteanSpirit();

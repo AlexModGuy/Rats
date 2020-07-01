@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 public class ModelPinkie<T extends EntityRat> extends AdvancedEntityModel<T>{
     public AdvancedModelBox body;

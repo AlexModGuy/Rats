@@ -13,8 +13,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import java.util.function.Function;
-
 public class DutchratShipStructure extends Structure<NoFeatureConfig> {
     public DutchratShipStructure(Codec<NoFeatureConfig> p_i51440_1_) {
         super(p_i51440_1_);

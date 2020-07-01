@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;

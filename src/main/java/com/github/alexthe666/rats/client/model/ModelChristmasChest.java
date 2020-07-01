@@ -3,11 +3,7 @@ package com.github.alexthe666.rats.client.model;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.Entity;
-
-import java.util.Calendar;
 
 public class ModelChristmasChest extends SegmentedModel<Entity> {
     private final ModelRenderer field_228862_a_;

@@ -6,13 +6,11 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ModelFlyingDutchrat<T extends EntityDutchrat> extends AdvancedEntityModel<T> implements IHasArm {
     public AdvancedModelBox body1;

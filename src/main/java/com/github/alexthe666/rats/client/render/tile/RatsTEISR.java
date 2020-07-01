@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 public class RatsTEISR extends ItemStackTileEntityRenderer {
 

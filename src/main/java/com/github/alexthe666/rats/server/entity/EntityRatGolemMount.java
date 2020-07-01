@@ -14,10 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -74,23 +71,23 @@ public class EntityRatGolemMount extends EntityRatMountBase {
         return flag;
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         if (item != Items.IRON_INGOT) {
-            return super.processInteract(player, hand);
+            return super.func_230254_b_(player, hand);
         } else {
             float f = this.getHealth();
             this.heal(25.0F);
             if (this.getHealth() == f) {
-                return super.processInteract(player, hand);
+                return super.func_230254_b_(player, hand);
             } else {
                 float f1 = 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
                 this.playSound(SoundEvents.field_226143_fP_, 1.0F, f1);
                 if (!player.abilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
     }

@@ -69,7 +69,7 @@ public class RatAIHarvestPlacer extends Goal {
                         ItemStack seedStack = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
                         seedStack.setCount(1);
                         this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
-                        BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(targetBlock), new Vector3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+                        BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
                         ItemUseContext itemusecontext = new ItemUseContextAccess(entity.world, null, Hand.MAIN_HAND, entity.getHeldItem(Hand.MAIN_HAND),  raytrace);
                         BlockState BlockState1 = blockItem.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
                         entity.world.setBlockState(targetBlock, BlockState1);

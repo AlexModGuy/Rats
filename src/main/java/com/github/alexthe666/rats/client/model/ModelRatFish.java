@@ -5,7 +5,6 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.server.entity.EntityRatfish;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelRatFish<T extends EntityRatfish> extends AdvancedEntityModel<T> {

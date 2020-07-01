@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.RatConfig;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -35,7 +34,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class EntityLaserBeam extends AbstractArrowEntity {

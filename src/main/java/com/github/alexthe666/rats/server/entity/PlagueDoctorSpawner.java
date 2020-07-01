@@ -1,27 +1,27 @@
 package com.github.alexthe666.rats.server.entity;
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Random;
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.rats.server.world.PlagueDoctorWorldData;
+import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.village.PointOfInterestManager;
-import net.minecraft.village.PointOfInterestType;
 import net.minecraft.village.PointOfInterestManager.Status;
+import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
+
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.Random;
 
 public class PlagueDoctorSpawner {
     private final Random random = new Random();

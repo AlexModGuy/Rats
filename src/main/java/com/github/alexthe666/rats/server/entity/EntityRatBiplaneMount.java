@@ -2,37 +2,31 @@ package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class EntityRatBiplaneMount extends EntityRatMountBase {
 
@@ -141,7 +135,7 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
-        if (!this.onGround && this.getMotion().y < 0.0D) {
+        if (!this.func_233570_aj_()&& this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
         boolean flag = false;

@@ -1,18 +1,13 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.VoxelShape;
 
 public class RatTubeMoveHelper extends MovementController {
     EntityRat rat;
@@ -25,7 +20,7 @@ public class RatTubeMoveHelper extends MovementController {
 
     public void tick() {
         if (this.action == MovementController.Action.STRAFE) {
-            float f = (float) rat.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
+            float f = (float) rat.getAttribute(Attributes.field_233821_d_).getValue();
             float f1 = (float) this.speed * f;
             float f2 = this.moveForward;
             float f3 = this.moveStrafe;
@@ -71,17 +66,17 @@ public class RatTubeMoveHelper extends MovementController {
 
             float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
             this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-            BlockPos blockpos = new BlockPos(this.mob);
+            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+            BlockPos blockpos = new BlockPos(this.mob.getPositionVec());
             if (d2 > 0) {
                 this.rat.climbingTube = true;
             }else{
                 this.rat.climbingTube = false;
             }
         } else if (this.action == MovementController.Action.JUMPING) {
-            this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
+            this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(Attributes.field_233821_d_).getValue()));
             this.rat.climbingTube = true;
-            if (this.rat.onGround) {
+            if (this.rat.func_233570_aj_()) {
                 this.action = MovementController.Action.WAIT;
             }
         } else {

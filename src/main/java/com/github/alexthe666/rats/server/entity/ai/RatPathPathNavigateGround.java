@@ -48,7 +48,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
     }
 
     public Path getPathToEntity(Entity entityIn, int idk) {
-        this.targetPosition = new BlockPos(entityIn);
+        this.targetPosition = new BlockPos(entityIn.getPositionVec());
         return super.getPathToEntity(entityIn, idk);
     }
 
@@ -58,7 +58,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
         if (path != null) {
             return this.setPath(path, speedIn);
         } else {
-            this.targetPosition = new BlockPos(entityIn);
+            this.targetPosition = new BlockPos(entityIn.getPositionVec());
             this.speed = speedIn;
             return true;
         }

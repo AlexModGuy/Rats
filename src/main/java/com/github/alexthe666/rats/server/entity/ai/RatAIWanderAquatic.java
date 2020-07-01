@@ -27,7 +27,7 @@ public class RatAIWanderAquatic extends Goal {
             }
             target = EntityRat.getPositionRelativetoWater(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
             if (!rat.getMoveHelper().isUpdating()) {
-                return rat.isDirectPathBetweenPoints(new Vector3d(target));
+                return rat.isDirectPathBetweenPoints(new Vector3d(target.getX(), target.getY(), target.getZ()));
             }
         }
         return false;
@@ -38,7 +38,7 @@ public class RatAIWanderAquatic extends Goal {
     }
 
     public void tick() {
-        if (!rat.isDirectPathBetweenPoints(new Vector3d(target))) {
+        if (!rat.isDirectPathBetweenPoints(new Vector3d(target.getX(), target.getY(), target.getZ()))) {
             int dist = 8;
             if (rat.isInCage()) {
                 dist = 3;

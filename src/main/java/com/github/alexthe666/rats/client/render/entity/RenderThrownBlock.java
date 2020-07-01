@@ -1,18 +1,20 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelCube;
-import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
 import com.github.alexthe666.rats.server.entity.EntityThrownBlock;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderThrownBlock extends EntityRenderer<EntityThrownBlock> {
     private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");

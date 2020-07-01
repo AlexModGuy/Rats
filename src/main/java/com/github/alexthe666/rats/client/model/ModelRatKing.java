@@ -4,17 +4,12 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Hand;
 
 public class ModelRatKing<T extends Entity> extends AdvancedEntityModel<T> {
     public AdvancedModelBox body1;

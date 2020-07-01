@@ -48,15 +48,15 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         super.livingTick();
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
-        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = (float) ((double) this.destPos + (double) (this.func_233570_aj_()? -1 : 4) * 0.3D);
         this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
-        if (!this.onGround && this.wingRotDelta < 1.0F) {
+        if (!this.func_233570_aj_()&& this.wingRotDelta < 1.0F) {
             this.wingRotDelta = 1.0F;
         }
 
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
         Vector3d vec3d = this.getMotion();
-        if (!this.onGround && vec3d.y < 0.0D) {
+        if (!this.func_233570_aj_()&& vec3d.y < 0.0D) {
             this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         }
 

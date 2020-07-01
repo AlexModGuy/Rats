@@ -1,24 +1,18 @@
 package com.github.alexthe666.rats.client.render.tile;
 
-import com.github.alexthe666.rats.client.model.ModelRatTrap;
 import com.github.alexthe666.rats.client.model.ModelTrashCan;
-import com.github.alexthe666.rats.server.blocks.BlockRatTrap;
 import com.github.alexthe666.rats.server.blocks.BlockTrashCan;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTrap;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityTrashCan;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderTrashCan extends TileEntityRenderer<TileEntityTrashCan> {
     private static final ModelTrashCan MODEL_TRASH_CAN = new ModelTrashCan();

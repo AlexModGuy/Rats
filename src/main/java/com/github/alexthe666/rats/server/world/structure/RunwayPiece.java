@@ -1,12 +1,8 @@
 package com.github.alexthe666.rats.server.world.structure;
 
-import com.github.alexthe666.rats.server.world.gen.RatsDutchratShipProcessor;
 import com.github.alexthe666.rats.server.world.gen.RatsRunwayProcessor;
-import com.github.alexthe666.rats.server.world.gen.RatsStructureProcessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.StructureMode;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -27,7 +23,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class RunwayPiece {
     private static final BlockPos STRUCTURE_OFFSET = new BlockPos(0, 0, 0);

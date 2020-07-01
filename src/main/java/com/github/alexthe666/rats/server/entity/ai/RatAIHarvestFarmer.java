@@ -128,7 +128,7 @@ public class RatAIHarvestFarmer extends Goal {
                     double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 4.5F) {
                         if (holdingBlock()) {
-                            BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(targetBlock), new Vector3d(targetBlock), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+                            BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
                             ItemUseContext itemusecontext = new ItemUseContextAccess(entity.world, null, Hand.MAIN_HAND, entity.getHeldItem(Hand.MAIN_HAND),  raytrace);
                             BlockState BlockState1 = itemBlock.getBlock().getStateForPlacement(new BlockItemUseContext(itemusecontext));
                             this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);

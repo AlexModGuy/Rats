@@ -7,7 +7,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;

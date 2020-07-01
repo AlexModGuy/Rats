@@ -32,9 +32,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.*;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

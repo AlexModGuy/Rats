@@ -2,10 +2,8 @@ package com.github.alexthe666.rats.client.render.type;
 
 import com.github.alexthe666.rats.client.render.tile.RenderRatlantisPortal;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.tileentity.EndPortalTileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;

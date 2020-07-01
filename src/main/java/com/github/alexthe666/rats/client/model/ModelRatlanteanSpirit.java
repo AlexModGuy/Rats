@@ -2,12 +2,9 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.rats.server.entity.EntityPlagueCloud;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import org.lwjgl.opengl.GL11;
 
 public class ModelRatlanteanSpirit<T extends Entity> extends AdvancedEntityModel<T>{
     public AdvancedModelBox head;

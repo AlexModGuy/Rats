@@ -44,7 +44,7 @@ public class RatAIFollowOwner extends Goal {
                 return false;
             } else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity) LivingEntity).isSpectator()) {
                 return false;
-            } else if (this.rat.isSitting()) {
+            } else if (this.rat.func_233684_eK_()) {
                 return false;
             } else if (this.rat.getDistanceSq(LivingEntity) < (double) (this.minDist * this.minDist)) {
                 return false;

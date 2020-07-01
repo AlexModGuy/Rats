@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.entity.ai.*;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;

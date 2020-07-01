@@ -1,4 +1,5 @@
 package com.github.alexthe666.rats.client.render.entity;
+
 import com.github.alexthe666.rats.client.model.ModelRatBeastMount;
 import com.github.alexthe666.rats.server.entity.EntityRatBeastMount;
 import com.github.alexthe666.rats.server.entity.EntityRatGolemMount;
@@ -6,7 +7,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class RenderRatBeastMount extends MobRenderer<EntityRatBeastMount, ModelRatBeastMount<EntityRatBeastMount>> {
 

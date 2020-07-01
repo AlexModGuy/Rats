@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelPiratBoat <T extends EntityPiratBoat> extends SegmentedModel<T> {

@@ -25,7 +25,7 @@ public class NuggetColorRegister {
 
     public static int getNuggetColor(ItemStack stack) {
         ItemStack poopStack = ItemRatNuggetOre.getIngot(stack, FALLBACK_STACK, null);
-        String poopName = poopStack.getDisplayName().getFormattedText();
+        String poopName = poopStack.getDisplayName().getString();
         if (TEXTURES_TO_COLOR.get(poopName) != null) {
             return TEXTURES_TO_COLOR.get(poopName).intValue();
         } else {

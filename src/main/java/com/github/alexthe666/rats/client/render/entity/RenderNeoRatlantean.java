@@ -24,7 +24,7 @@ public class RenderNeoRatlantean extends MobRenderer<EntityNeoRatlantean, ModelN
     }
 
     protected void preRenderCallback(EntityNeoRatlantean rat, float partialTickTime) {
-        if (!rat.onGround) {
+        if (!rat.func_233570_aj_()) {
             GL11.glTranslatef(0.0F, -0.2F, 0.0F);
         }
         GL11.glScaled(1.2F, 1.2F, 1.2F);

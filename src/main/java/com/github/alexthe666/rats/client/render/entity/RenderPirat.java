@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderPirat extends RenderRat {

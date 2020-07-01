@@ -20,7 +20,6 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
@@ -949,7 +948,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
             if (climbingTube) {
                 this.setMotion(this.getMotion().x, this.getMotion().y + 0.1D, this.getMotion().z);
-            } else if (!this.onGround && this.getMotion().y < 0.0D) {
+            } else if (!this.func_233570_aj_()&& this.getMotion().y < 0.0D) {
                 this.setMotion(this.getMotion().x, this.getMotion().scale(0.6).y, this.getMotion().z);
             }
             double ydist = prevPosY - this.getPosY();//down 0.4 up -0.38
@@ -964,10 +963,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 this.flyingPitch += planeDist * Math.abs(this.flyingPitch) / 90;
             }
             if (this.flyingPitch > 2F) {
-                this.flyingPitch -= onGround ? Math.max(flyingPitch, 10) : 1F;
+                this.flyingPitch -= func_233570_aj_()? Math.max(flyingPitch, 10) : 1F;
             }
             if (this.flyingPitch < -2F) {
-                this.flyingPitch += onGround ? Math.max(flyingPitch, 10) : 1F;
+                this.flyingPitch += func_233570_aj_()? Math.max(flyingPitch, 10) : 1F;
             }
             if (this.flyingPitch < 1F && flyingPitch > -1F && onGround) {
                 this.flyingPitch = 0;

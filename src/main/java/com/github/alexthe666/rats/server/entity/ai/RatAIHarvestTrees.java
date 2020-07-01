@@ -35,7 +35,7 @@ public class RatAIHarvestTrees extends Goal {
     }
 
     public static final boolean isBlockLog(World world, BlockPos pos) {
-        return world.getBlockState(pos).isIn(BlockTags.LOGS);
+        return world.getBlockState(pos).getBlock().isIn(BlockTags.LOGS);
     }
 
     public static final boolean isBlockLeaf(World world, BlockPos pos) {
@@ -104,7 +104,7 @@ public class RatAIHarvestTrees extends Goal {
     public void tick() {
         if (this.targetBlock != null) {
             if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D)) {
-                RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vector3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false, entity);
+                RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVec(), new Vector3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false, entity);
                 if (rayTrace instanceof BlockRayTraceResult) {
                     BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
                     BlockPos pos = blockRayTraceResult.getPos();

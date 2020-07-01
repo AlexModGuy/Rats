@@ -5,11 +5,12 @@ import com.github.alexthe666.rats.client.model.ModelRatKing;
 import com.github.alexthe666.rats.server.entity.EntityRatKing;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.entity.Pose;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;

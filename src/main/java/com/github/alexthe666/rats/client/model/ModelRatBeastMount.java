@@ -7,7 +7,6 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityRatBeastMount;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 public class ModelRatBeastMount<T extends EntityRatBeastMount> extends AdvancedEntityModel<T> {
     public AdvancedModelBox lowerbody;

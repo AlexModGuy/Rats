@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.world.structure;
 
 import com.github.alexthe666.rats.server.world.gen.FeatureMarblePile;
-import com.github.alexthe666.rats.server.world.gen.RatsStructureProcessor;
-import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;

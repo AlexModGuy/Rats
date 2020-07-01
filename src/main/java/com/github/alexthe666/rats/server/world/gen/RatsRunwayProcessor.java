@@ -1,14 +1,8 @@
 package com.github.alexthe666.rats.server.world.gen;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import net.minecraft.block.BarrelBlock;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;

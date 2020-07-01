@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client.model;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;

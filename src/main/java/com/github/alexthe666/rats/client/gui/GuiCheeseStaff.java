@@ -5,26 +5,24 @@ import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffSync;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,44 +39,44 @@ public class GuiCheeseStaff extends Screen {
     public GuiCheeseStaff(EntityRat rat) {
         super(new TranslationTextComponent("cheese_staff"));
         this.rat = rat;
-        init();
+        func_231160_c_();
     }
 
-    public void init() {
-        super.init();
-        this.buttons.clear();
-        int i = (this.width) / 2;
-        int j = (this.height - 166) / 2;
-        String topText = I18n.format("entity.rats.rat.staff.mark_block_deposit", getPosName()) + " " + I18n.format("rats.direction." + ClientProxy.refrencedFacing.getName());
-        int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText) + 20);
-        this.addButton(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
+    protected void func_231160_c_() {
+        super.func_231160_c_();
+        this.field_230710_m_.clear();
+        int i = (this.field_230708_k_) / 2;
+        int j = (this.field_230709_l_ - 166) / 2;
+        IFormattableTextComponent topText = new TranslationTextComponent("entity.rats.rat.staff.mark_block_deposit", getPosName()).func_230529_a_(new StringTextComponent(" ").func_230529_a_(new TranslationTextComponent("rats.direction." + ClientProxy.refrencedFacing.getName2())));
+        int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText.toString()) + 20);
+        this.func_230480_a_(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
             Minecraft.getInstance().displayGuiScreen(null);
-            init();
+            func_231160_c_();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 85, maxLength, 20, I18n.format("entity.rats.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
+        this.func_230480_a_(new Button(i - maxLength / 2, j + 85, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 1));
             Minecraft.getInstance().displayGuiScreen(null);
-            init();
+            func_231160_c_();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 110, maxLength, 20, I18n.format("entity.rats.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
+        this.func_230480_a_(new Button(i - maxLength / 2, j + 110, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setHomePosAndDistance(pos, 32);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 2));
-            init();
+            func_231160_c_();
         }));
-        this.addButton(new Button(i - maxLength / 2, j + 135, maxLength, 20, I18n.format("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
+        this.func_230480_a_(new Button(i - maxLength / 2, j + 135, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.detachHome();
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 3));
-            init();
+            func_231160_c_();
         }));
-        this.buttons.get(0).active = !isNoInventoryAtPos();
-        this.buttons.get(1).active = !isNoInventoryAtPos();
-        this.buttons.get(2).active = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.detachHome();
-        this.buttons.get(3).active = rat.detachHome();
+        this.field_230710_m_.get(0).field_230693_o_ = !isNoInventoryAtPos();
+        this.field_230710_m_.get(1).field_230693_o_ = !isNoInventoryAtPos();
+        this.field_230710_m_.get(2).field_230693_o_ = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.detachHome();
+        this.field_230710_m_.get(3).field_230693_o_ = rat.detachHome();
     }
 
     private String getPosName() {
@@ -91,7 +89,7 @@ public class GuiCheeseStaff extends Screen {
             } catch (Throwable ignored) {
             }
             if (namelist != null && !namelist.isEmpty()) {
-                return namelist.get(0).getFormattedText();
+                return namelist.get(0).getString();
             }
         }
         return "";
@@ -107,66 +105,59 @@ public class GuiCheeseStaff extends Screen {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void func_230430_a_(MatrixStack stack, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         if (getMinecraft() != null) {
             try {
-                this.renderBackground();
+                this.func_230446_a_(stack);
             } catch (Exception e) {
 
             }
         }
-
-        super.render(mouseX, mouseY, partialTicks);
-        int i = (this.width - 248) / 2 + 10;
-        int j = (this.height - 166) / 2 + 8;
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(0, 0, 10F);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int i = (this.field_230708_k_ - 248) / 2 + 10;
+        int j = (this.field_230709_l_ - 166) / 2 + 8;
         if(this.rat != null){
             drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         }
-        GlStateManager.popMatrix();
     }
 
-    public static void drawEntityOnScreen(int x, int y, int scale, float yaw, float pitch, LivingEntity entity) {
-        float f = (float)Math.atan((double)(yaw / 40.0F));
-        float f1 = (float)Math.atan((double)(pitch / 40.0F));
-        float rotate = (Minecraft.getInstance().getRenderPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 2F;
+    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity p_228187_5_) {
+        float f = (float)Math.atan((double)(mouseX / 40.0F));
+        float f1 = (float)Math.atan((double)(mouseY / 40.0F));
         RenderSystem.pushMatrix();
-        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.translatef((float)posX, (float)posY, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixstack = new MatrixStack();
         matrixstack.translate(0.0D, 0.0D, 1000.0D);
         matrixstack.scale((float)scale, (float)scale, (float)scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
-        Quaternion quaternion2 = Vector3f.YP.rotationDegrees(rotate);
         quaternion.multiply(quaternion1);
         matrixstack.rotate(quaternion);
-        matrixstack.rotate(quaternion2);
-        float f2 = entity.renderYawOffset;
-        float f3 = entity.rotationYaw;
-        float f4 = entity.rotationPitch;
-        float f5 = entity.prevRotationYawHead;
-        float f6 = entity.rotationYawHead;
-        entity.renderYawOffset = 180.0F + f * 20.0F;
-        entity.rotationYaw = 180.0F + f * 40.0F;
-        entity.rotationPitch = -f1 * 20.0F;
-        entity.rotationYawHead = entity.rotationYaw;
-        entity.prevRotationYawHead = entity.rotationYaw;
+        float f2 = p_228187_5_.renderYawOffset;
+        float f3 = p_228187_5_.rotationYaw;
+        float f4 = p_228187_5_.rotationPitch;
+        float f5 = p_228187_5_.prevRotationYawHead;
+        float f6 = p_228187_5_.rotationYawHead;
+        p_228187_5_.renderYawOffset = 180.0F + f * 20.0F;
+        p_228187_5_.rotationYaw = 180.0F + f * 40.0F;
+        p_228187_5_.rotationPitch = -f1 * 20.0F;
+        p_228187_5_.rotationYawHead = p_228187_5_.rotationYaw;
+        p_228187_5_.prevRotationYawHead = p_228187_5_.rotationYaw;
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
         quaternion1.conjugate();
         entityrenderermanager.setCameraOrientation(quaternion1);
         entityrenderermanager.setRenderShadow(false);
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+        RenderSystem.runAsFancy(() -> {
+            entityrenderermanager.renderEntityStatic(p_228187_5_, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+        });
         irendertypebuffer$impl.finish();
         entityrenderermanager.setRenderShadow(true);
-        entity.renderYawOffset = f2;
-        entity.rotationYaw = f3;
-        entity.rotationPitch = f4;
-        entity.prevRotationYawHead = f5;
-        entity.rotationYawHead = f6;
+        p_228187_5_.renderYawOffset = f2;
+        p_228187_5_.rotationYaw = f3;
+        p_228187_5_.rotationPitch = f4;
+        p_228187_5_.prevRotationYawHead = f5;
+        p_228187_5_.rotationYawHead = f6;
         RenderSystem.popMatrix();
     }
 

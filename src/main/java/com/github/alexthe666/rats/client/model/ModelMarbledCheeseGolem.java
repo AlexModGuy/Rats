@@ -5,13 +5,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends AdvancedEntityModel<T> {

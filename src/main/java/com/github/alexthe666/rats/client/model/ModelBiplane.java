@@ -2,12 +2,9 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityRatBaronPlane;
 import com.github.alexthe666.rats.server.entity.EntityRatBiplaneMount;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.MobEntity;
 
@@ -185,14 +182,14 @@ public class ModelBiplane<T extends MobEntity> extends AdvancedEntityModel<T> {
     @Override
     public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
         this.resetToDefaultPose();
-        if(!t.onGround && t instanceof EntityRatBaronPlane){
+        if(!t.func_233570_aj_() && t instanceof EntityRatBaronPlane){
             EntityRatBaronPlane plane = (EntityRatBaronPlane)t;
             plane.roll_buffer.applyChainFlapBuffer(body1);
             plane.pitch_buffer.applyChainWaveBuffer(body1);
             float f7 = plane.prevPlanePitch + (plane.getPlanePitch() - plane.prevPlanePitch) * v3;
             this.body1.rotateAngleX = (float)Math.toRadians(f7);
         }
-        if(!t.onGround && t instanceof EntityRatBiplaneMount){
+        if(!t.func_233570_aj_() && t instanceof EntityRatBiplaneMount){
             EntityRatBiplaneMount plane = (EntityRatBiplaneMount)t;
             plane.roll_buffer.applyChainFlapBuffer(body1);
             plane.pitch_buffer.applyChainWaveBuffer(body1);

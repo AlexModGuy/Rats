@@ -3,9 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.passive.TameableEntity;
 
 import java.util.EnumSet;
 
@@ -24,7 +22,7 @@ public class RatAIOwnerHurtTarget extends TargetGoal {
         if(!tameable.isAttackCommand()){
             return false;
         }
-        if ((this.tameable.isTamed() || this.tameable.wasTamedByMonster()) && !this.tameable.isSitting()) {
+        if ((this.tameable.isTamed() || this.tameable.wasTamedByMonster()) && !this.tameable.func_233684_eK_()) {
             LivingEntity lvt_1_1_ = this.tameable.getOwner();
             if(lvt_1_1_ == null){
                 lvt_1_1_ = this.tameable.getMonsterOwner();

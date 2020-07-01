@@ -1,30 +1,20 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.server.entity.ai.RatAIHurtByTarget;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.google.common.base.Predicate;
-import com.sun.jna.platform.unix.X11;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.BodyController;
-import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.monster.PhantomEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -37,9 +27,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
 
 public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
 
@@ -157,7 +144,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
-        if (!this.onGround && this.getMotion().y < 0.0D) {
+        if (!this.func_233570_aj_()&& this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
         this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);

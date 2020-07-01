@@ -17,7 +17,7 @@ public class RatFlyingMoveHelper extends MovementController {
 
     public void tick() {
         if (this.action == MovementController.Action.MOVE_TO) {
-            if (rat.collidedHorizontally && !rat.onGround) {
+            if (rat.collidedHorizontally && !rat.func_233570_aj_()) {
                 rat.rotationYaw += 180.0F;
                 int dist = 3;
                 if (!rat.isInCage()) {

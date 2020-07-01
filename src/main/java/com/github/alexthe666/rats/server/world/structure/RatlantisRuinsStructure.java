@@ -13,8 +13,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import java.util.function.Function;
-
 public class RatlantisRuinsStructure extends Structure<NoFeatureConfig> {
 
     public RatlantisRuinsStructure(Codec<NoFeatureConfig> p_i231997_1_) {

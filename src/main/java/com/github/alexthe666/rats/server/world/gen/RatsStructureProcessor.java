@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
-import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;

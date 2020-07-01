@@ -11,6 +11,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -19,8 +21,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -70,7 +70,7 @@ public class RatAIDepositFluid extends Goal {
     }
 
     public boolean canSeeChest() {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vector3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false, entity);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVec(), new Vector3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false, entity);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();
@@ -83,7 +83,7 @@ public class RatAIDepositFluid extends Goal {
 
     private Vector3d getMovePos() {
         BlockPos minusVec = this.targetBlock.offset(this.entity.depositFacing).subtract(this.targetBlock);
-        return new Vector3d(targetBlock).add(minusVec.getX() * 0.25D, minusVec.getY() * 0.25D, minusVec.getZ() * 0.25D);
+        return new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()).add(minusVec.getX() * 0.25D, minusVec.getY() * 0.25D, minusVec.getZ() * 0.25D);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RatAIDepositFluid extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.onGround && !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
+            if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()&& !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
                 BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
                 if (rayPos != null && !rayPos.equals(targetBlock)) {
                     BlockState block = this.entity.world.getBlockState(rayPos);

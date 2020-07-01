@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client.render.tile;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -9,15 +8,15 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.AxisAlignedBB;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.vector.Matrix4f;
 
 public class RenderRatHole extends TileEntityRenderer<TileEntityRatHole> {
 

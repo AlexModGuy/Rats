@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.blocks;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapDoorBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ActionResultType;

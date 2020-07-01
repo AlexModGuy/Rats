@@ -3,13 +3,11 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.ModelRatlanteanRatbot;
 import com.github.alexthe666.rats.server.entity.EntityRatlanteanRatbot;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class RenderRatlanteanRatbot extends MobRenderer<EntityRatlanteanRatbot, ModelRatlanteanRatbot<EntityRatlanteanRatbot>> {
     private static final ResourceLocation RATBOT_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/ratlantean_ratbot.png");

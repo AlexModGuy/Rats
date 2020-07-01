@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world.gen;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.potion;
 
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;

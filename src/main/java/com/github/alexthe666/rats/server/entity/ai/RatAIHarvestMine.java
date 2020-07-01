@@ -11,6 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -18,9 +20,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -111,7 +110,7 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
-            if (!entity.getMoveHelper().isUpdating() && entity.onGround) {
+            if (!entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {

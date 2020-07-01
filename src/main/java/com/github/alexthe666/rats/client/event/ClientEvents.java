@@ -11,32 +11,35 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.mojang.blaze3d.vertex.VertexBuilderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -65,6 +68,7 @@ public class ClientEvents {
         if (event.getType() != RenderGameOverlayEvent.ElementType.HEALTH || event.isCanceled() || !Minecraft.getInstance().player.isPotionActive(RatsMod.PLAGUE_POTION) || !RatConfig.plagueHearts) {
             return;
         }
+        MatrixStack stack = event.getMatrixStack();
         left_height = 39;
         int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
         int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
@@ -122,27 +126,27 @@ public class ClientEvents {
 
             if (health <= 4) y += rand.nextInt(2);
             if (i == regen) y -= 2;
-            drawTexturedModalRect(x, y, MARGIN, BACKGROUND, 9, 9);
+            drawTexturedModalRect(stack, x, y, MARGIN, BACKGROUND, 9, 9);
             if (highlight) {
                 if (i * 2 + 1 < healthLast)
-                    drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //6
+                    drawTexturedModalRect(stack, x, y, MARGIN, TOP, 9, 9); //6
                 else if (i * 2 + 1 == healthLast)
-                    drawTexturedModalRect(x, y, MARGIN + 9, TOP, 9, 9); //7
+                    drawTexturedModalRect(stack, x, y, MARGIN + 9, TOP, 9, 9); //7
             }
 
             if (absorbRemaining > 0.0F) {
                 if (absorbRemaining == absorb && absorb % 2.0F == 1.0F) {
-                    drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //17
+                    drawTexturedModalRect(stack, x, y, MARGIN, TOP, 9, 9); //17
                     absorbRemaining -= 1.0F;
                 } else {
-                    drawTexturedModalRect(x, y, MARGIN + 9, TOP, 9, 9); //16
+                    drawTexturedModalRect(stack, x, y, MARGIN + 9, TOP, 9, 9); //16
                     absorbRemaining -= 2.0F;
                 }
             } else {
                 if (i * 2 + 1 < health)
-                    drawTexturedModalRect(x, y, MARGIN, TOP, 9, 9); //4
+                    drawTexturedModalRect(stack, x, y, MARGIN, TOP, 9, 9); //4
                 else if (i * 2 + 1 == health)
-                    drawTexturedModalRect(x, y, MARGIN + 9, TOP, 9, 9); //5
+                    drawTexturedModalRect(stack, x, y, MARGIN + 9, TOP, 9, 9); //5
             }
         }
 
@@ -150,9 +154,9 @@ public class ClientEvents {
         Minecraft.getInstance().getProfiler().endSection();
     }
 
-    private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
+    private void drawTexturedModalRect(MatrixStack stackin, int x, int y, int textureX, int textureY, int width, int height) {
         Minecraft.getInstance().getTextureManager().bindTexture(PLAGUE_HEART_TEXTURE);
-        Minecraft.getInstance().ingameGUI.blit(x, y, textureX, textureY, width, height);
+        Minecraft.getInstance().ingameGUI.func_238474_b_(stackin, x, y, textureX, textureY, width, height);
     }
 
     @SubscribeEvent
@@ -208,7 +212,8 @@ public class ClientEvents {
     public void onRenderWorld(RenderWorldLastEvent event) {
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
-                Vector3d renderCenter = new Vector3d(RatsMod.PROXY.getRefrencedRat().getSearchCenter()).add(0.5, 0.5, 0.5);
+                BlockPos blockPos = RatsMod.PROXY.getRefrencedRat().getSearchCenter();
+                Vector3d renderCenter = new Vector3d(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D);
                 double renderRadius = RatsMod.PROXY.getRefrencedRat().getSearchRadius();
                 AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
                 GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);

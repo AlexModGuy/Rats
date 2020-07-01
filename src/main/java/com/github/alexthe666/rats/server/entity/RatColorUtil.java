@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.google.common.collect.Maps;
-import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

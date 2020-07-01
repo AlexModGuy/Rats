@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
@@ -89,7 +88,7 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        Vector3d renderCenter = new Vector3d(this.rat.getSearchCenter()).add(0.5, 0.5, 0.5);
+        Vector3d renderCenter = new Vector3d(this.rat.getSearchCenter().getX()+ 0.5, this.rat.getSearchCenter().getY()+ 0.5, this.rat.getSearchCenter().getZ() + 0.5D);
         double renderRadius = this.rat.getSearchRadius();
         AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
         return aabb.offset(renderCenter);

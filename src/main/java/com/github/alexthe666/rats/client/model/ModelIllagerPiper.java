@@ -4,16 +4,14 @@ import com.github.alexthe666.rats.server.entity.EntityIllagerPiper;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
-import net.minecraft.client.renderer.entity.model.IllagerModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ModelIllagerPiper<T extends EntityIllagerPiper> extends SegmentedModel<T> implements IHasArm, IHasHead  {
     public ModelRenderer hat;

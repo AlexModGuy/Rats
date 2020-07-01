@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;

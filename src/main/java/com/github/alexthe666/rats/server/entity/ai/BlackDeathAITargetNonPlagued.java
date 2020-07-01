@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.EntityRatKing;
 import com.github.alexthe666.rats.server.entity.IPlagueLegion;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.CreatureEntity;

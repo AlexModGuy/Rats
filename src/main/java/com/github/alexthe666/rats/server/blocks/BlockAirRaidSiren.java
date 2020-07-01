@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.EntityRatBaron;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -12,7 +11,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
@@ -25,8 +23,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.client.event.sound.SoundEvent;
 
 import javax.annotation.Nullable;
 import java.util.Random;

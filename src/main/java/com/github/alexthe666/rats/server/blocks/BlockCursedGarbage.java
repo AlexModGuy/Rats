@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

@@ -65,7 +65,7 @@ public class RatAIPickupFluid extends Goal {
     }
 
     public boolean canSeeChest() {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVector(), new Vector3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false, entity);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVec(), new Vector3d(targetBlock.getX() + 0.5, targetBlock.getY() + 0.5, targetBlock.getZ() + 0.5), false, entity);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();

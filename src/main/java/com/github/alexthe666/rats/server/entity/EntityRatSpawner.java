@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
+
 import java.util.Random;
 
 public class EntityRatSpawner extends CreatureEntity {

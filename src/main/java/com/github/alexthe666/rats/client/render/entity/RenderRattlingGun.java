@@ -2,19 +2,17 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRattlingGun;
 import com.github.alexthe666.rats.client.model.ModelRattlingGunBase;
-import com.github.alexthe666.rats.server.entity.EntityPlagueShot;
 import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderRattlingGun extends EntityRenderer<EntityRattlingGun> {
 

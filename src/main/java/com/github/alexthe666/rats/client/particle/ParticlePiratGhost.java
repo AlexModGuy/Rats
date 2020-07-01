@@ -1,11 +1,12 @@
 package com.github.alexthe666.rats.client.particle;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
@@ -13,8 +14,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class ParticlePiratGhost extends SpriteTexturedParticle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/particle/pirat_ghost.png");
