@@ -13,7 +13,12 @@
     "parent": "rats:rats/plague",
     "criteria": {
         "trig": {
-            "trigger": "rats:plague_doctor"
+            "trigger": "minecraft:player_interacted_with_entity",
+            "conditions": {
+                "entity": {
+                    "type": "rats:plague_doctor"
+                }
+            }
         }
     }
 }

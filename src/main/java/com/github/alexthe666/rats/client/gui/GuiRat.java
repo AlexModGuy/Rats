@@ -20,11 +20,14 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiRat extends ContainerScreen<ContainerRat> {
@@ -115,21 +118,20 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
         this.func_238474_b_(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
         this.func_238474_b_(p_230450_1_, k + 9, l + 20, rat.isMale() ? 176 : 192, 0, 16, field_230709_l_);
-        drawGuiContainerForegroundLayer(p_230450_1_, p_230450_3_, p_230450_4_);
     }
 
-    protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
+    protected void func_230451_b_(MatrixStack stackIn, int mouseX, int mouseY) {
         String name = func_231171_q_().getString().length() == 0 ? I18n.format("entity.rats.rat") : func_231171_q_().getString();
-        this.field_230712_o_.func_238405_a_(stackIn,  name, this.xSize / 2 - this.field_230712_o_.getStringWidth(name) / 2, 6, 4210752);
+        this.field_230712_o_.func_238421_b_(stackIn,  name, this.xSize / 2 - this.field_230712_o_.getStringWidth(name) / 2, 6, 4210752);
 
         String commandDesc = I18n.format("entity.rats.rat.command.current");
-        this.field_230712_o_.func_238405_a_(stackIn,  commandDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
+        this.field_230712_o_.func_238421_b_(stackIn,  commandDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
 
         String command = I18n.format(rat.getCommand().getTranslateName());
         this.field_230712_o_.func_238405_a_(stackIn,  command, this.xSize / 2 - this.field_230712_o_.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
 
         String statusDesc = I18n.format("entity.rats.rat.command.set");
-        this.field_230712_o_.func_238405_a_(stackIn,  statusDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
+        this.field_230712_o_.func_238421_b_(stackIn,  statusDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
         RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
         String command2 = I18n.format(command1.getTranslateName());
         this.field_230712_o_.func_238405_a_(stackIn, command2, this.xSize / 2 - this.field_230712_o_.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
@@ -137,11 +139,45 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         int j = (this.field_230709_l_ - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
             IFormattableTextComponent commandText = new TranslationTextComponent(rat.getCommand().getTranslateDescription());
-            func_238654_b_(stackIn, Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, field_230712_o_);
+            String[] everySpace = commandText.getString().split(" ");
+            int currentStrLength = 0;
+            String builtString = "";
+            ArrayList<String> list = new ArrayList<String>();
+            for(int index = 0; index < everySpace.length; index++){
+                builtString = builtString + everySpace[index] + " ";
+                currentStrLength += field_230712_o_.getStringWidth(everySpace[index] + " ");
+                if(currentStrLength >= 95){
+                    list.add(builtString);
+                    builtString = "";
+                    currentStrLength = 0;
+                }
+            }
+            List<IFormattableTextComponent> convertedList = new ArrayList<>();
+            for(String str : list){
+                convertedList.add(new StringTextComponent(str));
+            }
+            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, field_230712_o_);
         }
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
             IFormattableTextComponent commandText = new TranslationTextComponent(command1.getTranslateDescription());
-            func_238654_b_(stackIn, Arrays.asList(commandText), mouseX - i - 40, mouseY - j + 10, field_230712_o_);
+            String[] everySpace = commandText.getString().split(" ");
+            int currentStrLength = 0;
+            String builtString = "";
+            ArrayList<String> list = new ArrayList<String>();
+            for(int index = 0; index < everySpace.length; index++){
+                builtString = builtString + everySpace[index] + " ";
+                currentStrLength += field_230712_o_.getStringWidth(everySpace[index] + " ");
+                if(currentStrLength >= 95){
+                    list.add(builtString);
+                    builtString = "";
+                    currentStrLength = 0;
+                }
+            }
+            List<IFormattableTextComponent> convertedList = new ArrayList<>();
+            for(String str : list){
+                convertedList.add(new StringTextComponent(str));
+            }
+            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, field_230712_o_);
         }
     }
 }

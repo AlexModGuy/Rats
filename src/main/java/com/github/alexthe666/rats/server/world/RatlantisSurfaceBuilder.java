@@ -22,6 +22,7 @@ public class RatlantisSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
     public RatlantisSurfaceBuilder(Codec<SurfaceBuilderConfig> p_i232127_1_) {
         super(p_i232127_1_);
+        this.setRegistryName("rats:ratlantis_surface");
     }
 
 

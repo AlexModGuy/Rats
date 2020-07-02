@@ -12,6 +12,7 @@
   "block.rats.rat_cage_decorated": "Rat Cage",
   "block.rats.rat_cage_breeding_lantern": "Rat Cage",
   "block.rats.auto_curdler": "Curdling Station",
+  "block.rats.ratlantis_reactor": "Ratlantis Reactor",
   "block.rats.auto_curdler.desc0": "Automatic cheese production",
   "block.rats.auto_curdler.desc1": "§o\"Milk goes in, cheese comes out\"",
   "block.rats.rat_cage.desc0": "Interact with while having a rat on your shoulder to deposit it in the cage",

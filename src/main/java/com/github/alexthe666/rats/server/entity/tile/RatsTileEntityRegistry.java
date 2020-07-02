@@ -25,6 +25,7 @@ public class RatsTileEntityRegistry {
     public static TileEntityType<TileEntityTrashCan> TRASH_CAN = registerTileEntity(TileEntityType.Builder.create(TileEntityTrashCan::new, RatsBlockRegistry.TRASH_CAN), "trash_can");
     public static TileEntityType<TileEntityRatAttractor> RAT_ATTRACTOR = registerTileEntity(TileEntityType.Builder.create(TileEntityRatAttractor::new, RatsBlockRegistry.RAT_ATTRACTOR), "rat_attractor");
     public static TileEntityType<TileEntityToken> TOKEN = registerTileEntity(TileEntityType.Builder.create(TileEntityToken::new, RatsBlockRegistry.CHUNKY_CHEESE_TOKEN), "chunky_cheese_token");
+    public static TileEntityType<TileEntityRatlantisReactor> RATLANTIS_REACTOR = registerTileEntity(TileEntityType.Builder.create(TileEntityRatlantisReactor::new, RatsBlockRegistry.RATLANTIS_REACTOR), "ratlantis_reactor");
 
     public static TileEntityType registerTileEntity(TileEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(RatsMod.MODID, entityName);

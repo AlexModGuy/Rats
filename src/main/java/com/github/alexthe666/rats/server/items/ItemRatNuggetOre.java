@@ -101,7 +101,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            for (Block entry : Tags.Blocks.ORES.func_230236_b_()) {
+            /*for (Block entry : Tags.Blocks.ORES.func_230236_b_()) {
                 ItemStack oreStack = new ItemStack(entry);
                 ItemStack stack = new ItemStack(this);
                 CompoundNBT poopTag = new CompoundNBT();
@@ -112,7 +112,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
                 ItemStack poopyStack = new ItemStack(this, 1);
                 poopyStack.setTag(poopTag);
                 items.add(poopyStack);
-            }
+            }*/
         }
 
     }

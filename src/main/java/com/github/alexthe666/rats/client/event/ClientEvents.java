@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -26,6 +27,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,6 +36,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -61,6 +65,28 @@ public class ClientEvents {
     private float synesthesiaProgress = 0;
     private float prevSynesthesiaProgress = 0;
     private float maxSynesthesiaProgress = 40;
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onFogColors(EntityViewRenderEvent.FogColors event) {
+        ClientWorld world = Minecraft.getInstance().world;
+        if(world.func_234923_W_() == getRatlantisDimension()){
+            float p_230494_2_ = world.getCelestialAngle(Minecraft.getInstance().getRenderPartialTicks());
+            float red = (p_230494_2_ * 1F);
+            float green = (p_230494_2_ * 1F);
+            float blue = (p_230494_2_ * 0.7F);
+            event.setRed(red);
+            event.setGreen(green);
+            event.setBlue(blue);
+        }
+
+    }
+
+    public RegistryKey<World> getRatlantisDimension(){
+        ResourceLocation resourcelocation = new ResourceLocation("rats:ratlantis");
+        RegistryKey<World> registrykey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, resourcelocation);
+        return registrykey;
+    }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)

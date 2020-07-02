@@ -23,7 +23,9 @@ public class CommandPressButton extends Button {
             if (flag) {
                 j += 16;
             }
+
             this.func_238474_b_(matrixStack, this.field_230690_l_, this.field_230691_m_, i, j, this.field_230688_j_, this.field_230689_k_);
+
         }
     }
 }

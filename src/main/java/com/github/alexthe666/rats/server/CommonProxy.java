@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.world.BiomeRatlantis;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
+import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
@@ -93,6 +94,7 @@ public class CommonProxy {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        RatsEntityRegistry.initializeAttributes();
         RatsRecipeRegistry.register();
     }
 
@@ -135,6 +137,9 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Structure<?>> event) {
+        RatsWorldRegistry.putStructureOnAList("rats:ratlantis_ruins_structure", RatsWorldRegistry.RAT_RUINS);
+        RatsWorldRegistry.putStructureOnAList("rats:dutchrat_ship", RatsWorldRegistry.FLYING_DUTCHRAT);
+        RatsWorldRegistry.putStructureOnAList("rats:runway", RatsWorldRegistry.RUNWAY);
         event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RATLANTIS_AQUADUCTS, RatsWorldRegistry.RUNWAY);
     }
 
@@ -159,7 +164,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerSurfaces(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
-        // event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
+         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
     }
 
     @SubscribeEvent
@@ -222,7 +227,8 @@ public class CommonProxy {
     public void handlePacketCheeseStaffRat(int entityId, boolean clear){}
     public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){}
 
-    public void setupTEISR(Item.Properties props) {
+    public Item.Properties setupTEISR(Item.Properties props) {
+        return props;
     }
 
     public void openRadiusStaffGui() {

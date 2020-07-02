@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -19,8 +20,8 @@ public class DutchratShipStructure extends Structure<NoFeatureConfig> {
         this.setRegistryName("rats:dutchrat_ship");
     }
 
-    public String getStructureName() {
-        return RatsMod.MODID + ":DutchratShip";
+    public GenerationStage.Decoration func_236396_f_() {
+        return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
     public int getSize() {

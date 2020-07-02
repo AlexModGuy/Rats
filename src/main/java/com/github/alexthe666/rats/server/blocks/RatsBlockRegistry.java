@@ -26,6 +26,7 @@ public class RatsBlockRegistry {
     public static final Block RAT_CAGE = new BlockRatCage("rat_cage");
     public static final Block RAT_CAGE_DECORATED = new BlockRatCageDecorated();
     public static final Block RAT_CAGE_BREEDING_LANTERN = new BlockRatCageBreedingLantern();
+    public static final Block RATLANTIS_REACTOR = new BlockRatlantisReactor();
     public static final Block FISH_BARREL = new BlockGenericFacing("fish_barrel", Material.WOOD, 2.0F, 10.0F, SoundType.WOOD);
     public static final Block RAT_CRAFTING_TABLE = new BlockRatCraftingTable();
     public static final Block AUTO_CURDLER = new BlockAutoCurdler();
@@ -118,7 +119,7 @@ public class RatsBlockRegistry {
                         props.group(RatsMod.TAB);
                     }
                     if (obj instanceof IUsesTEISR) {
-                        RatsMod.PROXY.setupTEISR(props);
+                        props = RatsMod.PROXY.setupTEISR(props);
                     }
                     BlockItem blockItem = new BlockItem((Block) obj, props);
                     blockItem.setRegistryName(((Block) obj).getRegistryName());

@@ -39,6 +39,7 @@ import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.passive.RabbitEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -197,8 +198,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private int poopCooldown = 0;
     private int randomEffectCooldown = 0;
 
-    public EntityRat(EntityType type, World worldIn) {
-        super(type, worldIn);
+    public EntityRat(EntityType<? extends EntityRat> rat, World worldIn) {
+        super(rat, worldIn);
         this.setPathPriority(PathNodeType.RAIL, 1000F);
         switchNavigator(1);
         initInventory();

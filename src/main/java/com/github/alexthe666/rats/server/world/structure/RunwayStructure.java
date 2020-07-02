@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -15,14 +16,13 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 public class RunwayStructure extends Structure<NoFeatureConfig> {
 
-
     public RunwayStructure(Codec<NoFeatureConfig> p_i231997_1_) {
         super(p_i231997_1_);
         this.setRegistryName("rats:runway");
     }
 
-    public String getStructureName() {
-        return RatsMod.MODID + ":Runway";
+    public GenerationStage.Decoration func_236396_f_() {
+        return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
     public int getSize() {
@@ -31,10 +31,6 @@ public class RunwayStructure extends Structure<NoFeatureConfig> {
 
     public IStartFactory getStartFactory() {
         return RunwayStructure.Start::new;
-    }
-
-    protected int getSeedModifier() {
-        return 945328146;
     }
 
     public static class Start extends StructureStart {

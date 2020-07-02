@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
@@ -26,7 +27,8 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
     //private RenderUpgradeCombiner renderUpgradeCombiner = new RenderUpgradeCombiner();
     //private RenderUpgradeSeparator renderUpgradeSeparator = new RenderUpgradeSeparator();
 
-    public void render(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    @Override
+    public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RAT_HOLE)) {
             renderRatHole.render(teRatHole, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }

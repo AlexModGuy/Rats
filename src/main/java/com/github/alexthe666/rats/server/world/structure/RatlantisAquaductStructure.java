@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -18,11 +19,11 @@ public class RatlantisAquaductStructure extends Structure<NoFeatureConfig> {
 
     public RatlantisAquaductStructure(Codec<NoFeatureConfig> p_i231997_1_) {
         super(p_i231997_1_);
-        this.setRegistryName("rats:ratlantis_aquaduct_structure");
+        this.setRegistryName("rats:ratlantis_aquaduct");
     }
 
-    public String getStructureName() {
-        return RatsMod.MODID + ":RatlantisAquaduct";
+    public GenerationStage.Decoration func_236396_f_() {
+        return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
     public int getSize() {

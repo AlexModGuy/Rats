@@ -463,8 +463,8 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    public void setupTEISR(Item.Properties props) {
-        props.setISTER(ClientProxy::getTEISR);
+    public Item.Properties setupTEISR(Item.Properties props) {
+        return props.setISTER(ClientProxy::getTEISR);
     }
 
     @OnlyIn(Dist.CLIENT)

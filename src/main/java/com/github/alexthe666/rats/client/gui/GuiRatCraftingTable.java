@@ -71,16 +71,15 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         } else {
             this.func_238474_b_(p_230450_1_, i + 8, j + 15, 198, 0, 21, 21);
         }
-        drawGuiContainerForegroundLayer(p_230450_1_, mouseX, mouseY);
     }
 
-    protected void drawGuiContainerForegroundLayer(MatrixStack p_230450_1_, int mouseX, int mouseY) {
+    protected void func_230451_b_(MatrixStack stackIn, int mouseX, int mouseY) {
         FontRenderer font = this.field_230712_o_;
         String s = this.func_231171_q_().getString();
-        font.func_238405_a_(p_230450_1_, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
-        font.func_238405_a_(p_230450_1_, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
-        font.func_238405_a_(p_230450_1_, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
-        font.func_238405_a_(p_230450_1_, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
+        font.func_238405_a_(stackIn, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
+        font.func_238405_a_(stackIn, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
+        font.func_238405_a_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
+        font.func_238405_a_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
         int screenW = (this.field_230708_k_ - 248) / 2;
         int screenH = (this.field_230709_l_ - 166) / 2;
         List<ItemStack> drawnIngredients = new ArrayList<>();
@@ -120,11 +119,11 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         }
         if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.rat_desc");
-            func_238654_b_(p_230450_1_, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
+            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
         if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.input_desc");
-            func_238654_b_(p_230450_1_, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
+            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
     }
 

@@ -141,6 +141,7 @@ public class GuiRadiusStaff extends Screen {
 
             }
         }
+        super.func_230430_a_(stack, p_230430_2_, p_230430_3_, p_230430_4_);
         int i = (this.field_230708_k_ - 248) / 2 + 10;
         int j = (this.field_230709_l_ - 166) / 2 + 8;
         if(this.rat != null){
@@ -148,7 +149,7 @@ public class GuiRadiusStaff extends Screen {
         }
     }
 
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 

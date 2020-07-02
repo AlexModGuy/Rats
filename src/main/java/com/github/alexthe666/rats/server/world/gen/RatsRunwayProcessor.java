@@ -9,11 +9,12 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class RatsRunwayProcessor extends StructureProcessor {
 
-    public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Template.BlockInfo blockInfoIn2, PlacementSettings settings) {
+    public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos pos2, Template.BlockInfo blockInfoIn, Template.BlockInfo blockInfoIn2, PlacementSettings settings, @Nullable Template template) {
         if (blockInfoIn2.state.getBlock() == Blocks.GRASS) {
             Random rand = settings.getRandom(blockInfoIn2.pos);
             if(rand.nextBoolean()){

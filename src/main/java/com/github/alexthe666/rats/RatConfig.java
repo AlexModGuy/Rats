@@ -3,6 +3,7 @@ package com.github.alexthe666.rats;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class RatConfig {
+    public static boolean ratlantisInOverworld = true;
     public static boolean spawnRats = true;
     public static boolean spawnPiper = true;
     public static boolean funnyFluteSound = true;

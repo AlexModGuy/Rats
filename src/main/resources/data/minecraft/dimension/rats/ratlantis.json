@@ -1,0 +1,85 @@
+{
+  "generator": {
+    "biome_source": {
+      "seed": -3283563091455490346,
+      "biome": "rats:ratlantis_biome",
+      "type": "minecraft:fixed"
+    },
+    "seed": -3283563091455490346,
+    "settings": {
+      "structures": {
+        "structures": {
+          "rats:ratlantis_ruins_structure": {
+            "spacing": 3,
+            "separation": 2,
+            "salt": 14357620
+          },
+          "rats:dutchrat_ship": {
+            "spacing": 27,
+            "separation": 7,
+            "salt": 34222645
+          },
+          "rats:runway": {
+            "spacing": 18,
+            "separation": 9,
+            "salt": 14357621
+          },
+          "minecraft:ocean_ruin": {
+            "spacing": 20,
+            "separation": 8,
+            "salt": 14357621
+          },
+          "minecraft:shipwreck": {
+            "spacing": 17,
+            "separation": 4,
+            "salt": 165745295
+          },
+          "minecraft:ruined_portal": {
+            "spacing": 40,
+            "separation": 15,
+            "salt": 34222645
+          }
+        }
+      },
+      "noise": {
+        "height": 128,
+        "sampling": {
+          "xz_scale": 2.0,
+          "y_scale": 1.0,
+          "xz_factor": 80.0,
+          "y_factor": 160.0
+        },
+        "top_slide": {
+          "target": -3000,
+          "size": 64,
+          "offset": -46
+        },
+        "bottom_slide": {
+          "target": -30,
+          "size": 7,
+          "offset": 1
+        },
+        "size_horizontal": 2,
+        "size_vertical": 1,
+        "density_factor": 0.0,
+        "density_offset": 0.0,
+        "simplex_surface_noise": true,
+        "random_density_offset": false,
+        "island_noise_override": true,
+        "amplified": false
+      },
+      "default_block": {
+        "Name": "minecraft:stone"
+      },
+      "default_fluid": {
+        "Name": "minecraft:air"
+      },
+      "bedrock_roof_position": -10,
+      "bedrock_floor_position": -10,
+      "sea_level": 0,
+      "disable_mob_generation": false
+    },
+    "type": "minecraft:noise"
+  },
+  "type": "rats:ratlantis"
+}

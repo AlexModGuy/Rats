@@ -12,8 +12,15 @@
     },
     "parent": "rats:rats/rat_cage",
     "criteria": {
-        "rat_cage_decoration": {
-            "trigger": "rats:rat_cage_decoration"
+        "1": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "tag": "rats:rat_cage_decorations"
+                    }
+                ]
+            }
         }
     }
 }

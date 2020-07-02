@@ -48,7 +48,7 @@ public class GuiCheeseStaff extends Screen {
         int i = (this.field_230708_k_) / 2;
         int j = (this.field_230709_l_ - 166) / 2;
         IFormattableTextComponent topText = new TranslationTextComponent("entity.rats.rat.staff.mark_block_deposit", getPosName()).func_230529_a_(new StringTextComponent(" ").func_230529_a_(new TranslationTextComponent("rats.direction." + ClientProxy.refrencedFacing.getName2())));
-        int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText.toString()) + 20);
+        int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText.getString()) + 20);
         this.func_230480_a_(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
@@ -113,14 +113,17 @@ public class GuiCheeseStaff extends Screen {
 
             }
         }
+        super.func_230430_a_(stack, p_230430_2_, p_230430_3_, p_230430_4_);
         int i = (this.field_230708_k_ - 248) / 2 + 10;
         int j = (this.field_230709_l_ - 166) / 2 + 8;
         if(this.rat != null){
             drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         }
+
     }
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity p_228187_5_) {
+        float rotate = (Minecraft.getInstance().getRenderPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 2F;
         float f = (float)Math.atan((double)(mouseX / 40.0F));
         float f1 = (float)Math.atan((double)(mouseY / 40.0F));
         RenderSystem.pushMatrix();
@@ -131,8 +134,10 @@ public class GuiCheeseStaff extends Screen {
         matrixstack.scale((float)scale, (float)scale, (float)scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        Quaternion quaternion2 = Vector3f.YP.rotationDegrees(rotate);
         quaternion.multiply(quaternion1);
         matrixstack.rotate(quaternion);
+        matrixstack.rotate(quaternion2);
         float f2 = p_228187_5_.renderYawOffset;
         float f3 = p_228187_5_.rotationYaw;
         float f4 = p_228187_5_.rotationPitch;
@@ -161,7 +166,7 @@ public class GuiCheeseStaff extends Screen {
         RenderSystem.popMatrix();
     }
 
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 }

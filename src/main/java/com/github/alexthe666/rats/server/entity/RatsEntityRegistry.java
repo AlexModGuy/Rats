@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
@@ -60,7 +61,38 @@ public class RatsEntityRegistry {
         return (EntityType) builder.build(entityName).setRegistryName(nameLoc);
     }
 
+    public static void initializeAttributes(){
+
+        GlobalEntityTypeAttributes.put(RAT, EntityRat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_SPAWNER, EntityRat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PIED_PIPER, EntityIllagerPiper.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_SPIRIT, EntityRatlanteanSpirit.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_AUTOMATON, EntityMarbleCheeseGolem.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(FERAL_RATLANTEAN, EntityFeralRatlantean.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(NEO_RATLANTEAN, EntityNeoRatlantean.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PIRAT_BOAT, EntityPiratBoat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PIRAT, EntityPirat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PLAGUE_DOCTOR, EntityPlagueDoctor.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(BLACK_DEATH, EntityBlackDeath.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PLAGUE_CLOUD, EntityPlagueCloud.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(PLAGUE_BEAST, EntityPlagueBeast.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(GHOST_PIRAT, EntityGhostPirat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(DUTCHRAT, EntityDutchrat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATFISH, EntityRatfish.func_234176_m_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATTLING_GUN, EntityRattlingGun.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_RATBOT, EntityRatlanteanRatbot.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_AUTOMATON, EntityRatAutomatonMount.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_CHICKEN, EntityRatChickenMount.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_BEAST, EntityRatBeastMount.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_KING, EntityRatKing.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_BARON, EntityRatBaron.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_BARON_PLANE, EntityRatBaronPlane.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_BIPLANE, EntityRatBiplaneMount.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().func_233813_a_());
+    }
     static{
+
+
         EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatSpawner::func_223325_c);
         EntitySpawnPlacementRegistry.register(RAT_SPAWNER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::canEntityTypeSpawn);
         EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::canSpawnOn);

@@ -55,20 +55,20 @@ public class RunwayPiece {
             this.templatePosition = p_i48904_3_;
             this.rotation = p_i48904_4_;
             this.field_204756_e = p_i48904_2_;
-            this.func_204754_a(p_i48904_1_);
             this.template = p_i48904_1_.getTemplate(p_i48904_2_);
             this.random = new Random();
             this.manager = p_i48904_1_;
+            this.func_204754_a(p_i48904_1_);
         }
 
         public Piece(TemplateManager p_i50445_1_, CompoundNBT p_i50445_2_) {
             super(RatlantisStructureRegistry.RUNWAY_TYPE, p_i50445_2_);
             this.field_204756_e = new ResourceLocation(p_i50445_2_.getString("Template"));
             this.rotation = Rotation.valueOf(p_i50445_2_.getString("Rot"));
-            this.func_204754_a(p_i50445_1_);
             this.template = p_i50445_1_.getTemplate(PART_1);
             this.random = new Random();
             this.manager = p_i50445_1_;
+            this.func_204754_a(p_i50445_1_);
         }
 
         protected void readAdditional(CompoundNBT p_143011_1_) {
