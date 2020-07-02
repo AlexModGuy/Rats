@@ -57,6 +57,10 @@ public class RatsItemRegistry {
 
     public static final Item CREATIVE_CHEESE = new ItemCreativeCheese();
 
+    public static final Item BLUE_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "blue_cheese");
+
+    public static final Item NETHER_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "nether_cheese");
+
     public static final Item ASSORTED_VEGETABLES = new ItemGenericFood(7, 0.3F, false, false, false, "assorted_vegetables");
 
     public static final Item RAT_BURGER = new ItemGenericFood(8, 1.0F, true, false, false, "rat_burger");
@@ -145,7 +149,6 @@ public class RatsItemRegistry {
 
     public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
-    public static final Item BLUE_CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "blue_cheese");
 
     public static final Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
 

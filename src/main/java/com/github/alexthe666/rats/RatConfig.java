@@ -6,6 +6,7 @@ public class RatConfig {
     public static boolean ratlantisInOverworld = true;
     public static boolean spawnRats = true;
     public static boolean spawnPiper = true;
+    public static boolean spawnDemonRats = true;
     public static boolean funnyFluteSound = true;
     public static boolean ratOverworldOnly = false;
     public static boolean piperOverworldOnly = true;
@@ -78,6 +79,7 @@ public class RatConfig {
         try {
             spawnRats = ConfigHolder.SERVER.spawnRats.get();
             spawnPiper = ConfigHolder.SERVER.spawnPiper.get();
+            spawnDemonRats = ConfigHolder.SERVER.spawnDemonRats.get();
             funnyFluteSound = ConfigHolder.SERVER.funnyFluteSound.get();
             ratSpawnRate = ConfigHolder.SERVER.ratSpawnRate.get();
             ratSpawnDecrease = ConfigHolder.SERVER.ratSpawnDecrease.get();

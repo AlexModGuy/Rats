@@ -67,6 +67,9 @@ public class ItemGenericFood extends Item {
             if (!(LivingEntity instanceof PlayerEntity) || !((PlayerEntity) LivingEntity).isCreative()) {
                 stack.shrink(1);
             }
+            if (this == RatsItemRegistry.NETHER_CHEESE && LivingEntity instanceof PlayerEntity){
+                LivingEntity.setFire(5);
+            }
             return stack;
         } else {
             return super.onItemUseFinish(stack, worldIn, LivingEntity);

@@ -2879,13 +2879,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        if (this.getRespawnCountdown() > 0) {
-            return true;
-        }
-        if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
-            return true;
-        }
+        public boolean isInvulnerableTo(DamageSource source) {
+            if (this.getRespawnCountdown() > 0) {
+                return true;
+            }
+            if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
+                return true;
+            }
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }

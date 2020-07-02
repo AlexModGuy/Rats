@@ -25,16 +25,8 @@ public class RatlantisRuinsStructure extends Structure<NoFeatureConfig> {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
-    public int getSize() {
-        return 4;
-    }
-
     public Structure.IStartFactory getStartFactory() {
         return RatlantisRuinsStructure.Start::new;
-    }
-
-    protected int getSeedModifier() {
-        return 123456789;
     }
 
 

@@ -6,6 +6,7 @@ public class ServerConfig {
 
     public final ForgeConfigSpec.BooleanValue spawnRats;
     public final ForgeConfigSpec.BooleanValue spawnPiper;
+    public final ForgeConfigSpec.BooleanValue spawnDemonRats;
     public final ForgeConfigSpec.BooleanValue funnyFluteSound;
     public final ForgeConfigSpec.BooleanValue ratOverworldOnly;
     public final ForgeConfigSpec.BooleanValue piperOverworldOnly;
@@ -69,6 +70,7 @@ public class ServerConfig {
     public ServerConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
         this.spawnRats = buildBoolean(builder, "Spawn Rats", "all", true, "True if rats are to spawn naturally");
+        this.spawnDemonRats = buildBoolean(builder, "Spawn Demon Rats", "all", true, "True if demon rats are to spawn naturally in the nether");
         this.ratOverworldOnly = buildBoolean(builder, "Rats Spawn In Overworld Only", "all", false, "True if rats can only spawn in the Overworld(0) dimension.");
         this.piperOverworldOnly = buildBoolean(builder, "Pied Piper Spawn In Overworld Only", "all", true, "True if Pied Pipers can only spawn in the Overworld(0) dimension.");
         this.funnyFluteSound = buildBoolean(builder, "Funny Rat Flute Sound", "all", true, "True if rats flutes can occasionally make a funny sound.");

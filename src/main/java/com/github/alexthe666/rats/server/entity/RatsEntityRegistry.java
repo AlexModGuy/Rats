@@ -54,6 +54,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatBiplaneMount> RAT_MOUNT_BIPLANE = registerEntity(EntityType.Builder.create(EntityRatBiplaneMount::new, EntityClassification.MISC).size(3.5F, 2.3F), "rat_mount_biplane");
     public static final EntityType<EntityRatProtector> RAT_PROTECTOR = registerEntity(EntityType.Builder.create(EntityRatProtector::new, EntityClassification.MISC).size(0.5F, 0.5F), "rat_protector");
     public static final EntityType<EntityRatlantisArrow> RATLANTIS_ARROW = registerEntity(EntityType.Builder.create(EntityRatlantisArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatlantisArrow::new), "ratlantis_arrow");
+    public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MISC).size(1.0F, 0.75F).immuneToFire(), "demon_rat");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
@@ -89,6 +90,7 @@ public class RatsEntityRegistry {
         GlobalEntityTypeAttributes.put(RAT_BARON_PLANE, EntityRatBaronPlane.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(RAT_MOUNT_BIPLANE, EntityRatBiplaneMount.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(DEMON_RAT, EntityDemonRat.func_234290_eH_().func_233813_a_());
     }
     static{
 
@@ -102,6 +104,7 @@ public class RatsEntityRegistry {
         EntitySpawnPlacementRegistry.register(GHOST_PIRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGhostPirat::canSpawn);
         EntitySpawnPlacementRegistry.register(RATFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_RATBOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanRatbot::canSpawn);
+        EntitySpawnPlacementRegistry.register(DEMON_RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityDemonRat::canSpawn);
 
     }
 }

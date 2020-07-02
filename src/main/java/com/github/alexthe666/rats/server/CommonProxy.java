@@ -28,6 +28,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
@@ -44,6 +45,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
 
+    private static final Biome[] HARDCODED_NETHER_BIOMES = new Biome[]{Biomes.field_235254_j_, Biomes.field_235252_ay_, Biomes.field_235250_aA_, Biomes.field_235253_az_, Biomes.field_235251_aB_};
+
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Effect> event) {
         event.getRegistry().registerAll(RatsMod.CONFIT_BYALDI_POTION, RatsMod.PLAGUE_POTION);
@@ -51,7 +54,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerFluids(RegistryEvent.Register<Fluid> event) {
-       // event.getRegistry().register(RatsBlockRegistry.MILK_FLUID);
+        // event.getRegistry().register(RatsBlockRegistry.MILK_FLUID);
     }
 
     @SubscribeEvent
@@ -98,7 +101,6 @@ public class CommonProxy {
         RatsRecipeRegistry.register();
     }
 
-
     @SubscribeEvent
     public static void registerSpawnEggs(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RAT, 0X30333E, 0XDAABA1, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_rat"));
@@ -118,6 +120,7 @@ public class CommonProxy {
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RATLANTEAN_RATBOT, 0XA3A3A3, 0XFF0000, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_ratlantean_ratbot"));
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RAT_KING, 0X30333E, 0X39342F, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_rat_king"));
         event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.RAT_BARON, 0X9F0A03, 0XE3E5DA, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_rat_baron"));
+        event.getRegistry().register(new SpawnEggItem(RatsEntityRegistry.DEMON_RAT, 0X6C191F, 0XFCD500, new Item.Properties().group(RatsMod.TAB)).setRegistryName("rats:spawn_egg_demon_rat"));
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_banner_pattern"));
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.CHEESE_PATTERN, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:cheese_banner_pattern"));
         event.getRegistry().register(new BannerPatternItem(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("rats:rat_and_crossbones_banner_pattern"));
@@ -137,12 +140,11 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Structure<?>> event) {
+        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RUNWAY);
         RatsWorldRegistry.putStructureOnAList("rats:ratlantis_ruins_structure", RatsWorldRegistry.RAT_RUINS);
         RatsWorldRegistry.putStructureOnAList("rats:dutchrat_ship", RatsWorldRegistry.FLYING_DUTCHRAT);
         RatsWorldRegistry.putStructureOnAList("rats:runway", RatsWorldRegistry.RUNWAY);
-        event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RATLANTIS_AQUADUCTS, RatsWorldRegistry.RUNWAY);
     }
-
 
     @SubscribeEvent
     public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
@@ -164,11 +166,12 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerSurfaces(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
-         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
+        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
     }
 
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
+        RatlantisStructureRegistry.init();
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
 
     }
@@ -221,11 +224,18 @@ public class CommonProxy {
     public void setRefrencedItem(ItemStack stack) {
     }
 
-    public World getWorld(){ return null; }
+    public World getWorld() {
+        return null;
+    }
 
-    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){}
-    public void handlePacketCheeseStaffRat(int entityId, boolean clear){}
-    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){}
+    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid) {
+    }
+
+    public void handlePacketCheeseStaffRat(int entityId, boolean clear) {
+    }
+
+    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag) {
+    }
 
     public Item.Properties setupTEISR(Item.Properties props) {
         return props;
@@ -234,11 +244,11 @@ public class CommonProxy {
     public void openRadiusStaffGui() {
     }
 
-    public void addMobSpawns(){
+    public void addMobSpawns() {
         if (RatConfig.spawnRats) {
             for (Biome biome : ForgeRegistries.BIOMES) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
                         if (RatConfig.ratsSpawnLikeMonsters) {
                             List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
                             spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
@@ -254,7 +264,7 @@ public class CommonProxy {
             for (Biome biome : ForgeRegistries.BIOMES) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                    if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.OVERWORLD)){
+                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.OVERWORLD)) {
                         if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
                             //3 times as likely to spawn in dark forests
                             spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate * 3, 1, 1));
@@ -262,6 +272,19 @@ public class CommonProxy {
                             spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
                         }
                     }
+                }
+            }
+        }
+        if (RatConfig.spawnDemonRats) {
+            for (Biome biome : ForgeRegistries.BIOMES) {
+                if (biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) ||
+                        biome == Biomes.field_235254_j_
+                        || biome == Biomes.field_235252_ay_
+                        || biome == Biomes.field_235250_aA_
+                        || biome == Biomes.field_235253_az_
+                        || biome == Biomes.field_235251_aB_) {
+                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
+                    spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 25, 1, 4));
                 }
             }
         }

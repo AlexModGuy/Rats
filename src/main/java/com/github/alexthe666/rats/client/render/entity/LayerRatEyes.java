@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -18,6 +19,7 @@ import net.minecraft.world.LightType;
 public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
     private static final RenderType TEXTURE = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png"));
     private static final RenderType TEXTURE_PLAGUE = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_plague.png"));
+    private static final RenderType TEXTURE_DEMON = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/demon_rat_eye.png"));
     private static final RenderType TEXTURE_ENDER = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_ender_upgrade.png"));
     private static final RenderType TEXTURE_RATINATOR = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_ratinator_upgrade.png"));
     private static final RenderType TEXTURE_NONBELIEVER = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_nonbeliever_upgrade.png"));
@@ -57,6 +59,8 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
                 tex = TEXTURE_RATINATOR;
             } else if (rat.hasPlague()) {
                 tex = TEXTURE_PLAGUE;
+            } else if (rat.getType() == RatsEntityRegistry.DEMON_RAT) {
+                tex = TEXTURE_DEMON;
             } else {
                 tex = TEXTURE;
             }
