@@ -36,7 +36,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 minecraft {
     mappings channel: 'snapshot', version: '20200514-1.16'
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    accessTransformer = file('src/main/resources/META-INF/rats_at.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
