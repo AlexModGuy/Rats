@@ -205,7 +205,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         double d2 = d0 - this.getPosY();
         double d3 = target.getPosZ() + target.getMotion().z - this.getPosZ();
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3);
-        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(this.world, this);
+        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(this.world, this, false);
         entitypotion.rotationPitch -= -20.0F;
         entitypotion.shoot(d1, d2 + (double) (f * 0.2F), d3, 0.75F, 8.0F);
         this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);

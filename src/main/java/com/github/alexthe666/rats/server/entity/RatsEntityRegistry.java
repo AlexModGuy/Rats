@@ -22,7 +22,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityNeoRatlantean> NEO_RATLANTEAN = registerEntity(EntityType.Builder.create(EntityNeoRatlantean::new, EntityClassification.MONSTER).size(0.8F, 1.3F), "neo_ratlantean");
     public static final EntityType<EntityLaserBeam> LASER_BEAM = registerEntity(EntityType.Builder.create(EntityLaserBeam::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityLaserBeam::new), "laser_beam");
     public static final EntityType<EntityLaserPortal> LASER_PORTAL = registerEntity(EntityType.Builder.create(EntityLaserPortal::new, EntityClassification.MISC).size(0.95F, 0.95F).setCustomClientFactory(EntityLaserPortal::new), "laser_portal");
-    public static final EntityType<EntityThrownBlock> THROWN_BLOCK = registerEntity(EntityType.Builder.create(EntityThrownBlock::new, EntityClassification.CREATURE).size(0.95F, 0.95F).setCustomClientFactory(EntityThrownBlock::new), "thrown_block");
+    public static final EntityType<EntityThrownBlock> THROWN_BLOCK = registerEntity(EntityType.Builder.create(EntityThrownBlock::new, EntityClassification.MISC).size(0.95F, 0.95F).setCustomClientFactory(EntityThrownBlock::new), "thrown_block");
     public static final EntityType<EntityVialOfSentience> VIAL_OF_SENTIENCE = registerEntity(EntityType.Builder.create(EntityVialOfSentience::new, EntityClassification.MISC).size(0.25F, 0.25F).setCustomClientFactory(EntityVialOfSentience::new), "vial_of_sentience");
     public static final EntityType<EntityPiratBoat> PIRAT_BOAT = registerEntity(EntityType.Builder.create(EntityPiratBoat::new, EntityClassification.MISC).size(1.75F, 0.8F), "pirat_boat");
     public static final EntityType<EntityPirat> PIRAT = registerEntity(EntityType.Builder.create(EntityPirat::new, EntityClassification.MONSTER).size(0.49F, 0.49F), "pirat");
@@ -54,7 +54,8 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatBiplaneMount> RAT_MOUNT_BIPLANE = registerEntity(EntityType.Builder.create(EntityRatBiplaneMount::new, EntityClassification.MISC).size(3.5F, 2.3F), "rat_mount_biplane");
     public static final EntityType<EntityRatProtector> RAT_PROTECTOR = registerEntity(EntityType.Builder.create(EntityRatProtector::new, EntityClassification.MISC).size(0.5F, 0.5F), "rat_protector");
     public static final EntityType<EntityRatlantisArrow> RATLANTIS_ARROW = registerEntity(EntityType.Builder.create(EntityRatlantisArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatlantisArrow::new), "ratlantis_arrow");
-    public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MISC).size(1.0F, 0.75F).immuneToFire(), "demon_rat");
+    public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MONSTER).size(1.0F, 0.75F).immuneToFire().func_225435_d().func_233606_a_(8), "demon_rat");
+    public static final EntityType<EntityRatStriderMount> RAT_STRIDER_MOUNT = registerEntity(EntityType.Builder.create(EntityRatStriderMount::new, EntityClassification.MISC).immuneToFire().size(0.9F, 1.7F).func_233606_a_(10), "rat_mount_strider");
 
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
@@ -91,6 +92,7 @@ public class RatsEntityRegistry {
         GlobalEntityTypeAttributes.put(RAT_MOUNT_BIPLANE, EntityRatBiplaneMount.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(DEMON_RAT, EntityDemonRat.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_STRIDER_MOUNT, EntityRatStriderMount.buildAttributes().func_233813_a_());
     }
     static{
 
@@ -104,7 +106,7 @@ public class RatsEntityRegistry {
         EntitySpawnPlacementRegistry.register(GHOST_PIRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGhostPirat::canSpawn);
         EntitySpawnPlacementRegistry.register(RATFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_RATBOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanRatbot::canSpawn);
-        EntitySpawnPlacementRegistry.register(DEMON_RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityDemonRat::canSpawn);
+        EntitySpawnPlacementRegistry.register(DEMON_RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityDemonRat::canDemonRatSpawnOn);
 
     }
 }

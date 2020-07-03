@@ -25,6 +25,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
     private static final RenderType TEXTURE_TOGA = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/toga.png"));
     private static final RenderType TEXTURE_RATINATOR = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png"));
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
+    public static final RenderType TEXTURE_DEMON = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/demon_rat.png"));
     private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
     private ResourceLocation TEXTURE_DYED_LOC = new ResourceLocation("rats:textures/entity/rat/rat_dyed.png");
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
@@ -39,6 +40,10 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
      if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
             return;
+        }
+        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_DEMON);
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(rat, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.isDyed()) {
             IVertexBuilder ivertexbuilder;
@@ -72,6 +77,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
         }
+
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RATINATOR);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

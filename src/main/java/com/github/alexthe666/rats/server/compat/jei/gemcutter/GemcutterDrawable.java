@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 
 public class GemcutterDrawable implements IDrawable {
     protected static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/gemcutter_rat_jei.png");
@@ -25,19 +26,20 @@ public class GemcutterDrawable implements IDrawable {
     public void draw(MatrixStack sta, int xOffset, int yOffset) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindTexture(TEXTURE);
-        this.drawTexturedModalRect(xOffset, yOffset, 3, 4, 170, 79);
+        this.drawTexturedModalRect(sta, xOffset, yOffset, 3, 4, 170, 79);
         int scaledProgress = (minecraft.player.ticksExisted % 100) * 24 / 100;
-        this.drawTexturedModalRect(71, 50, 176, 0, scaledProgress + 1, 16);
+        this.drawTexturedModalRect(sta, 71, 50, 176, 0, scaledProgress + 1, 16);
     }
 
-    public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
+    public void drawTexturedModalRect(MatrixStack stackIn, int x, int y, int textureX, int textureY, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos( (x + 0),  (y + height),  0).tex( ((float) (textureX + 0) * 0.00390625F),  ((float) (textureY + height) * 0.00390625F)).endVertex();
-        bufferbuilder.pos( (x + width),  (y + height),  0).tex( ((float) (textureX + width) * 0.00390625F),  ((float) (textureY + height) * 0.00390625F)).endVertex();
-        bufferbuilder.pos( (x + width),  (y + 0),  0).tex( ((float) (textureX + width) * 0.00390625F),  ((float) (textureY + 0) * 0.00390625F)).endVertex();
-        bufferbuilder.pos( (x + 0),  (y + 0),  0).tex( ((float) (textureX + 0) * 0.00390625F),  ((float) (textureY + 0) * 0.00390625F)).endVertex();
+        Matrix4f matrix4f = stackIn.getLast().getMatrix();
+        bufferbuilder.pos(matrix4f, (x + 0),  (y + height),  0).tex( ((float) (textureX + 0) * 0.00390625F),  ((float) (textureY + height) * 0.00390625F)).endVertex();
+        bufferbuilder.pos(matrix4f, (x + width),  (y + height),  0).tex( ((float) (textureX + width) * 0.00390625F),  ((float) (textureY + height) * 0.00390625F)).endVertex();
+        bufferbuilder.pos(matrix4f,  (x + width),  (y + 0),  0).tex( ((float) (textureX + width) * 0.00390625F),  ((float) (textureY + 0) * 0.00390625F)).endVertex();
+        bufferbuilder.pos(matrix4f, (x + 0),  (y + 0),  0).tex( ((float) (textureX + 0) * 0.00390625F),  ((float) (textureY + 0) * 0.00390625F)).endVertex();
         tessellator.draw();
     }
 }

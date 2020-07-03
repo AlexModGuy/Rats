@@ -21,9 +21,12 @@ import java.util.List;
 
 public class ItemPurifyingLiquid extends Item {
 
-    public ItemPurifyingLiquid() {
+    private boolean nether;
+
+    public ItemPurifyingLiquid(boolean nether) {
         super(new Item.Properties().group(RatsMod.TAB));
-        this.setRegistryName(RatsMod.MODID, "purifying_liquid");
+        this.nether = nether;
+        this.setRegistryName(RatsMod.MODID, nether ? "crimson_liquid" : "purifying_liquid");
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -35,7 +38,7 @@ public class ItemPurifyingLiquid extends Item {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         ItemStack itemstack1 = playerIn.isCreative() ? itemstack.copy() : itemstack.split(1);
         worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(worldIn, playerIn);
+        EntityPurifyingLiquid entitypotion = new EntityPurifyingLiquid(worldIn, playerIn, nether);
         Vector3d vector3d = playerIn.getLook(1.0F);
         Vector3f vector3f = new Vector3f(vector3d);
 

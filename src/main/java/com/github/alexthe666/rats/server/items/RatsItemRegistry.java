@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeColor;
@@ -85,7 +86,9 @@ public class RatsItemRegistry {
 
     public static final Item CONTAMINATED_FOOD = new ItemGenericFood(2, 0.5F, false, false, false, "contaminated_food");
 
-    public static final Item PURIFYING_LIQUID = new ItemPurifyingLiquid();
+    public static final Item PURIFYING_LIQUID = new ItemPurifyingLiquid(false);
+
+    public static final Item CRIMSON_FLUID = new ItemPurifyingLiquid(true);
 
     public static final Item HERB_BUNDLE = new ItemPlagueHealer(1, 0.1F, "herb_bundle", 0.1F);
 
@@ -280,6 +283,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_ARMOR = new ItemRatUpgrade("rat_upgrade_armor");
 
+    public static final Item RAT_UPGRADE_DEMON = new ItemRatUpgrade("rat_upgrade_demon", 1, 4);
+
     public static final Item RAT_UPGRADE_STRENGTH = new ItemRatUpgrade("rat_upgrade_strength");
 
     public static final Item RAT_UPGRADE_WARRIOR = new ItemRatUpgrade("rat_upgrade_warrior", 2, 3);
@@ -377,6 +382,8 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_CHICKEN_MOUNT = new ItemRatUpgradeMount("rat_upgrade_chicken_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_CHICKEN);
 
     public static final Item RAT_UPGRADE_GOLEM_MOUNT = new ItemRatUpgradeMount("rat_upgrade_golem_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_GOLEM);
+
+    public static final Item RAT_UPGRADE_STRIDER_MOUNT = new ItemRatUpgradeMount("rat_upgrade_strider_mount", 2, 3, RatsEntityRegistry.RAT_STRIDER_MOUNT);
 
     public static final Item RAT_UPGRADE_BEAST_MOUNT = new ItemRatUpgradeMount("rat_upgrade_beast_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_BEAST);
 

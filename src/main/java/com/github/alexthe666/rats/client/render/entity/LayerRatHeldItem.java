@@ -37,6 +37,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
     private static ItemStack SHEARS_STACK = new ItemStack(Items.SHEARS);
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
+    private static ItemStack FISHING_ROD_FUNGUS_STACK = new ItemStack(Items.field_234774_pk_);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack BEE_WING_STACK = new ItemStack(RatsItemRegistry.BEE_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
@@ -226,6 +227,17 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90F, true));
             matrixStackIn.translate(0.2F, 0, 0.0F);
             minecraft.getItemRenderer().renderItem(FISHING_ROD_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -30F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -180F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.YP, 90F, true));
+            matrixStackIn.translate(0.2F, 0, 0.0F);
+            minecraft.getItemRenderer().renderItem(FISHING_ROD_FUNGUS_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {

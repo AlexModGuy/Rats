@@ -37,10 +37,7 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.OcelotEntity;
-import net.minecraft.entity.passive.RabbitEntity;
-import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -901,6 +898,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             if (this.hasPlague() && entityIn instanceof LivingEntity && rollForPlague((LivingEntity) entityIn)) {
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 6000));
             }
+            if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
+                entityIn.setFire(10);
+            }
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FERAL_BITE)) {
                 entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(RatsMod.PLAGUE_POTION, 600));
@@ -1521,7 +1521,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 this.world.addParticle(ParticleTypes.POOF, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
             }
-            if (entity instanceof MobEntity) {
+            if(entity instanceof  StriderEntity){
+                mountRespawnCooldown = 1000;
+            }
+            if (entity instanceof MobEntity && !(entity instanceof StriderEntity)) {
                 ((MobEntity) entity).onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
             }
             this.startRiding(entity, true);
@@ -2177,6 +2180,22 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 this.stopRiding();
             }
         }
+        if (riding != null && riding.isPassenger(this) && riding instanceof StriderEntity) {
+            StriderEntity strider = (StriderEntity)riding;
+            riding.extinguish();
+            this.setPosition(riding.getPosX() , riding.getPosY() + strider.getMountedYOffset() + 0.15F, riding.getPosZ());
+            strider.boost();
+            //strider.getAttribute(Attributes.field_233821_d_).setBaseValue(0.2D);
+            if(!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)){
+                for (int k = 0; k < 20; ++k) {
+                    double d2 = this.rand.nextGaussian() * 0.02D;
+                    double d0 = this.rand.nextGaussian() * 0.02D;
+                    double d1 = this.rand.nextGaussian() * 0.02D;
+                    this.world.addParticle(ParticleTypes.POOF, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), d2, d0, d1);
+                }
+                strider.remove();
+            }
+        }
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
@@ -2488,10 +2507,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.getRNG().nextInt(15) == 0 && this.world.getDifficulty() != Difficulty.PEACEFUL && RatConfig.plagueRats && reason != SpawnReason.CONVERSION) {
             this.setPlague(true);
         }
-        //TODO
-        // if (this.world.func_230315_m_() == RatsWorldRegistry.RATLANTIS_DIMENSION_TYPE) {
-        //     this.setToga(true);
-        // }
         if (this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
             LocalDate localdate = LocalDate.now();
             int i = localdate.get(ChronoField.DAY_OF_MONTH);
@@ -2534,7 +2549,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean shouldEyesGlow() {
-        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
+        return this.hasPlague() || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -2767,13 +2782,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean holdsItemInHandUpgrade() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
     }
 
     public boolean shouldNotIdleAnimation() {
         return this.holdInMouth && this.getAnimation() != EntityRat.ANIMATION_EAT && this.cookingProgress <= 0
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK)
-                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS);
+                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)
+                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)
+                && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
     }
 
     private void onUpgradeChanged() {
@@ -2788,6 +2805,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SPEED)) {
             tryIncreaseStat(Attributes.field_233821_d_, 0.5D);
             flagSpeed = true;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
+            tryIncreaseStat(Attributes.field_233818_a_, 40D);
+            tryIncreaseStat(Attributes.field_233823_f_, 4D);
+            flagHealth = true;
+            flagAttack = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_GOD)) {
             tryIncreaseStat(Attributes.field_233818_a_, 500D);
@@ -2883,7 +2906,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             if (this.getRespawnCountdown() > 0) {
                 return true;
             }
-            if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON))) {
+            if (source.isFireDamage() && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ASBESTOS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON))) {
                 return true;
             }
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
@@ -3053,6 +3076,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     @Nullable
     private EntityType getMountEntityType() {
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)) {
+            return RatsEntityRegistry.RAT_STRIDER_MOUNT;
+        }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT)) {
             return RatsEntityRegistry.RAT_MOUNT_BIPLANE;
         }
@@ -3123,6 +3149,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         if (this.isPassenger() && this.getRidingEntity() instanceof EntityRatBaronPlane || this.getRidingEntity() instanceof EntityRatBiplaneMount) {
             return 3;
+        }
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT) && isRidingSpecialMount()) {
+            return 2;
         }
         return 0;//normal (down + riding)
     }

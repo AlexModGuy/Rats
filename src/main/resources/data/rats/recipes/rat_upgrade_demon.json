@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FCF",
+    "CUC",
+    "ECE"
+  ],
+  "key": {
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "C": {
+      "item": "rats:nether_cheese"
+    },
+    "F": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "E": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_demon"
+  }
+}

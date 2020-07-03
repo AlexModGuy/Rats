@@ -18,26 +18,23 @@ import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
+import com.github.alexthe666.rats.server.items.ItemRatSack;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
@@ -190,6 +187,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_PROTECTOR, manager -> new RenderRatProtector());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTIS_ARROW, manager -> new RenderRatlantisArrow());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DEMON_RAT, manager -> new RenderDemonRat());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_STRIDER_MOUNT, manager -> new StriderRenderer(Minecraft.getInstance().getRenderManager()));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
@@ -202,6 +200,9 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TOKEN, manager -> new RenderRatlantisToken(manager));
+        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RAT_SACK, new ResourceLocation("rat_count"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+            return Math.min(3, ItemRatSack.getRatsInStack(p_239428_0_));
+        });
     }
 
     @SubscribeEvent

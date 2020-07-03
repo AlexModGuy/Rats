@@ -48,7 +48,7 @@ public class EntityDemonRat extends EntityRat implements IPirat, IRatlantean {
                 .func_233815_a_(Attributes.field_233819_b_, 48.0D);
     }
 
-    public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+    public static boolean canDemonRatSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
         return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn);
     }
@@ -71,8 +71,8 @@ public class EntityDemonRat extends EntityRat implements IPirat, IRatlantean {
         return super.attackEntityAsMob(entityIn);
     }
 
-    public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return canSpawnAtPos(world, pos) || reason == SpawnReason.SPAWNER;
+    public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld p_234351_1_, SpawnReason reason, BlockPos p_234351_3_, Random rand) {
+        return p_234351_1_.getDifficulty() != Difficulty.PEACEFUL && p_234351_1_.getBlockState(p_234351_3_.down()).getBlock() != Blocks.NETHER_WART_BLOCK;
     }
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {

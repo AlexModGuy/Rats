@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "rats:cheese",
-    "rats:blue_cheese"
+    "#forge:cheese",
+    "rats:blue_cheese",
+    "rats:nether_cheese"
   ]
 }

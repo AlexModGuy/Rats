@@ -276,15 +276,15 @@ public class CommonProxy {
             }
         }
         if (RatConfig.spawnDemonRats) {
+            Biomes.field_235254_j_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
+            Biomes.field_235252_ay_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
+            Biomes.field_235250_aA_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
+            Biomes.field_235253_az_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
+            Biomes.field_235251_aB_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
             for (Biome biome : ForgeRegistries.BIOMES) {
-                if (biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) ||
-                        biome == Biomes.field_235254_j_
-                        || biome == Biomes.field_235252_ay_
-                        || biome == Biomes.field_235250_aA_
-                        || biome == Biomes.field_235253_az_
-                        || biome == Biomes.field_235251_aB_) {
+                if (biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                    spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 25, 1, 4));
+                    spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
                 }
             }
         }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FCF",
+    "IUI",
+    "FCF"
+  ],
+  "key": {
+    "C": {
+      "item": "rats:nether_cheese"
+    },
+    "F": {
+      "item": "minecraft:warped_fungus"
+    },
+    "I": {
+      "item": "minecraft:ghast_tear"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_strider_mount"
+  }
+}

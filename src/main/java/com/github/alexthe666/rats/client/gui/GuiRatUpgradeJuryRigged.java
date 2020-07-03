@@ -35,8 +35,5 @@ public class GuiRatUpgradeJuryRigged extends ContainerScreen<ContainerRatUpgrade
         int j = (this.field_230709_l_ - this.ySize) / 2;
         this.func_238474_b_(p_230450_1_,i, j, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
         this.func_238474_b_(p_230450_1_,i, j + this.inventoryRows * 18 + 17, 0, 126, this.xSize, 96);
-        this.field_230712_o_.func_238405_a_(p_230450_1_, this.func_231171_q_().getString().replace("[", "").replace("]", ""), 8, 6, 4210752);
-        this.field_230712_o_.func_238405_a_(p_230450_1_, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 96, 4210752);
-
     }
 }

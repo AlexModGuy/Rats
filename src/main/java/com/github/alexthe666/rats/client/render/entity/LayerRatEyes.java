@@ -59,7 +59,7 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
                 tex = TEXTURE_RATINATOR;
             } else if (rat.hasPlague()) {
                 tex = TEXTURE_PLAGUE;
-            } else if (rat.getType() == RatsEntityRegistry.DEMON_RAT) {
+            } else if (rat.getType() == RatsEntityRegistry.DEMON_RAT || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
                 tex = TEXTURE_DEMON;
             } else {
                 tex = TEXTURE;

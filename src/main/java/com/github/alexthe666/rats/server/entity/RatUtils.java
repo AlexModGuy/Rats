@@ -54,7 +54,7 @@ public class RatUtils {
     };
     public static final ResourceLocation PIRAT_ONLY_BLOCKS = new ResourceLocation("rats", "pirat_blocks");
     public static final ResourceLocation SEED_ITEMS = new ResourceLocation("forge", "seeds");
-    public static final ResourceLocation CHEESE_ITEMS = new ResourceLocation("forge", "cheese");
+    public static final ResourceLocation CHEESE_ITEMS = new ResourceLocation("forge", "all_cheese");
 
     public static boolean isMilk(ItemStack stack) {
         if (stack.getItem() == Items.MILK_BUCKET) {
