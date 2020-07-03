@@ -5,6 +5,7 @@ import net.minecraftforge.fml.config.ModConfig;
 public class RatConfig {
     public static boolean ratlantisInOverworld = true;
     public static boolean spawnRats = true;
+    public static boolean skipExperimentalSettingsGUI = true;
     public static boolean spawnPiper = true;
     public static boolean spawnDemonRats = true;
     public static boolean funnyFluteSound = true;
@@ -68,6 +69,7 @@ public class RatConfig {
     public static void bakeClient(final ModConfig config) {
         try {
             plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
+            skipExperimentalSettingsGUI = ConfigHolder.CLIENT.skipExperimentalSettingsGUI.get();
             funnyFluteSound = ConfigHolder.CLIENT.funnyFluteSound.get();
         }catch (Exception e){
             RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");

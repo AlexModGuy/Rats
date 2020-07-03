@@ -2072,7 +2072,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
                 if (this.hasToga()) {
                     this.entityDropItem(new ItemStack(RatsItemRegistry.RAT_TOGA), 0.0F);
-                    if (this.world.func_234923_W_().toString() == "" + RatConfig.ratlantisDimensionId) {//TODO
+                    if (this.world.func_234923_W_().func_240901_a_().getPath().equals("ratlantis")) {
                         boolean flag = false;
                         if (!flag && rand.nextFloat() < 0.01F) {
                             this.entityDropItem(new ItemStack(Items.DIAMOND), 0.0F);
@@ -2186,7 +2186,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.setPosition(riding.getPosX() , riding.getPosY() + strider.getMountedYOffset() + 0.15F, riding.getPosZ());
             strider.boost();
             //strider.getAttribute(Attributes.field_233821_d_).setBaseValue(0.2D);
-            if(!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)){
+            if(!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT) && this.getType() != RatsEntityRegistry.DEMON_RAT){
                 for (int k = 0; k < 20; ++k) {
                     double d2 = this.rand.nextGaussian() * 0.02D;
                     double d0 = this.rand.nextGaussian() * 0.02D;
@@ -3150,7 +3150,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.isPassenger() && this.getRidingEntity() instanceof EntityRatBaronPlane || this.getRidingEntity() instanceof EntityRatBiplaneMount) {
             return 3;
         }
-        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT) && isRidingSpecialMount()) {
+        if (this.getRidingEntity() instanceof StriderEntity) {
             return 2;
         }
         return 0;//normal (down + riding)

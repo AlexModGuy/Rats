@@ -11,10 +11,7 @@ import com.github.alexthe666.rats.server.message.MessageSwingArm;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -24,6 +21,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -192,7 +190,7 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+    public static void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
         if (event.getEntity() != null && event.getEntity() instanceof IronGolemEntity && RatConfig.golemsTargetRats) {
             IronGolemEntity golem = (IronGolemEntity) event.getEntity();
             golem.targetSelector.addGoal(4, new NearestAttackableTargetGoal(golem, EntityRat.class, 10, false, false, RatUtils.UNTAMED_RAT_SELECTOR));
@@ -206,6 +204,17 @@ public class CommonEvents {
                 event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
             }
         }
+       if(RatConfig.spawnDemonRats){
+           if (event.getEntity() != null && event.getEntity() instanceof StriderEntity && event.getEntity().getType() == EntityType.field_233589_aE_) {
+               StriderEntity strider = (StriderEntity)event.getEntity();
+               if (!strider.isHorseSaddled() && strider.getPassengers().isEmpty() && strider.getRNG().nextFloat() < 0.1F) {
+                   EntityDemonRat demonRat = RatsEntityRegistry.DEMON_RAT.create(event.getWorld().getWorld());
+                   demonRat.copyLocationAndAnglesFrom(strider);
+                   event.getWorld().addEntity(demonRat);
+                   demonRat.startRiding(strider);
+               }
+           }
+       }
     }
 
     @SubscribeEvent

@@ -28,12 +28,7 @@ public class ItemRatSack extends Item {
     public ItemRatSack() {
         super(new Item.Properties().group(RatsMod.TAB).maxStackSize(1));
         this.setRegistryName(RatsMod.MODID, "rat_sack");
-        //TODO
-       /* this.addPropertyOverride(new ResourceLocation("rat_count"), new IItemPropertyGetter() {
-            public float call(ItemStack p_call_1_, @Nullable World p_call_2_, @Nullable LivingEntity p_call_3_) {
-                return Math.min(3, ItemRatSack.getRatsInStack(p_call_1_));
-            }
-        });*/
+
     }
 
     public static int getRatsInStack(ItemStack stack) {

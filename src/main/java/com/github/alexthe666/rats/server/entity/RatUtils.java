@@ -174,7 +174,6 @@ public class RatUtils {
 
     @Nullable
     public static RayTraceResult rayTraceBlocksIgnoreRatholes(World world, Vector3d start, Vector3d end, boolean stopOnLiquid, Entity entity) {
-        //TODO: Redo ray trace code
         return world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
     }
 

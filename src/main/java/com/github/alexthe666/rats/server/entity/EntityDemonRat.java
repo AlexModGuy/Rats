@@ -40,6 +40,10 @@ public class EntityDemonRat extends EntityRat implements IPirat, IRatlantean {
 
     }
 
+    public boolean isChild() {
+        return false;
+    }
+
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
                 .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
@@ -50,7 +54,7 @@ public class EntityDemonRat extends EntityRat implements IPirat, IRatlantean {
 
     public static boolean canDemonRatSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn);
+        return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && randomIn.nextFloat() < 0.3F;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
