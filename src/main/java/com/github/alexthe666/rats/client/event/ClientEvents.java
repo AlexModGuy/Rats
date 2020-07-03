@@ -75,7 +75,7 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onFogColors(EntityViewRenderEvent.FogColors event) {
         ClientWorld world = Minecraft.getInstance().world;
-        if(world.func_234923_W_() == getRatlantisDimension()){
+        if(world.func_234923_W_().func_240901_a_().getPath().equals("ratlantis")){
 
             float p_230494_2_ = Minecraft.getInstance().world.getCelestialAngle(Minecraft.getInstance().getRenderPartialTicks());
             float red = (p_230494_2_ * 1F);
@@ -94,36 +94,30 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onOpenGui(GuiScreenEvent.DrawScreenEvent.Post event) {
-       if(RatConfig.skipExperimentalSettingsGUI){
-           if(event.getGui() instanceof ConfirmBackupScreen){
-               ConfirmBackupScreen confirmBackupScreen = (ConfirmBackupScreen)event.getGui();
-               String name = "";
-               if(confirmBackupScreen.func_231171_q_() instanceof TranslationTextComponent){
-                   name = ((TranslationTextComponent)confirmBackupScreen.func_231171_q_()).getKey();
-               }
-               if(name.equals("selectWorld.backupQuestion.experimental")){
-                   confirmBackupScreen.callback.proceed(false, true);
-               }
-           }
-           if(event.getGui() instanceof ConfirmScreen) {
-               ConfirmScreen confirmScreen = (ConfirmScreen)event.getGui();
-               String testAgainst = "selectWorld.backupQuestion.experimental";
-               String name = "";
-               if(confirmScreen.func_231171_q_() instanceof TranslationTextComponent){
-                   name = ((TranslationTextComponent)confirmScreen.func_231171_q_()).getKey();
-               }
-               if (name.equals(testAgainst)) {
-                   confirmScreen.callbackFunction.accept(true);
-                   System.out.println("BASED");
-               }
-           }
-       }
-    }
-
-    public RegistryKey<World> getRatlantisDimension(){
-        ResourceLocation resourcelocation = new ResourceLocation("rats:ratlantis");
-        RegistryKey<World> registrykey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, resourcelocation);
-        return registrykey;
+        if (RatConfig.skipExperimentalSettingsGUI) {
+            if (event.getGui() instanceof ConfirmBackupScreen) {
+                ConfirmBackupScreen confirmBackupScreen = (ConfirmBackupScreen) event.getGui();
+                String name = "";
+                if (confirmBackupScreen.func_231171_q_() instanceof TranslationTextComponent) {
+                    name = ((TranslationTextComponent) confirmBackupScreen.func_231171_q_()).getKey();
+                }
+                if (name.equals("selectWorld.backupQuestion.experimental")) {
+                    confirmBackupScreen.callback.proceed(false, true);
+                }
+            }
+            if (event.getGui() instanceof ConfirmScreen) {
+                ConfirmScreen confirmScreen = (ConfirmScreen) event.getGui();
+                String testAgainst = "selectWorld.backupQuestion.experimental";
+                String name = "";
+                if (confirmScreen.func_231171_q_() instanceof TranslationTextComponent) {
+                    name = ((TranslationTextComponent) confirmScreen.func_231171_q_()).getKey();
+                }
+                if (name.equals(testAgainst)) {
+                    confirmScreen.callbackFunction.accept(true);
+                    System.out.println("BASED");
+                }
+            }
+        }
     }
 
     @SubscribeEvent
