@@ -15,6 +15,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -99,46 +100,7 @@ public class RatAIDepositInInventory extends Goal {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
             if (this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && !entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()&& !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
-                BlockPos rayPos = this.entity.rayTraceBlockPos(this.targetBlock.up());
-                if (rayPos != null && !rayPos.equals(targetBlock)) {
-                    BlockState block = this.entity.world.getBlockState(rayPos);
-                    if (RatUtils.canRatBreakBlock(this.entity.world, rayPos, this.entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                        double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
-                        SoundType soundType = block.getBlock().getSoundType(block, this.entity.world, rayPos, null);
-                        if (distance < 6F * entity.getRatDistanceModifier()) {
-                            this.entity.world.setEntityState(this.entity, (byte) 85);
-                            this.entity.crafting = true;
-                            if (distance < 0.6F * entity.getRatDistanceModifier()) {
-                                this.entity.setMotion(0, 0, 0);
-                                this.entity.getNavigator().clearPath();
-                                //this.entity.moveController.action = MovementController.Action.WAIT;
-                            }
-                            breakingTime++;
-                            int hardness = (int) (block.getBlockHardness(this.entity.world, rayPos) * 100);
-                            int i = (int) ((float) this.breakingTime / hardness * 10.0F);
-                            if (breakingTime % 10 == 0) {
-                                this.entity.playSound(soundType.getHitSound(), soundType.volume, soundType.pitch);
-                                this.entity.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1, 0.5F);
-                            }
-                            if (i != this.previousBreakProgress) {
-                                this.entity.world.sendBlockBreakProgress(this.entity.getEntityId(), rayPos, i);
-                                this.previousBreakProgress = i;
-                            }
-                            if (this.breakingTime == hardness) {
-                                this.entity.world.setEntityState(this.entity, (byte) 86);
-                                entity.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1F);
-                                this.entity.playSound(soundType.getBreakSound(), soundType.volume, soundType.pitch);
-                                this.breakingTime = 0;
-                                this.previousBreakProgress = -1;
-                                destroyBlock(rayPos, block);
-                                this.entity.fleePos = rayPos;
-                                targetBlock = null;
-                                this.entity.crafting = false;
-                                this.resetTask();
-                            }
-                        }
-                    }
-                }
+                RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
                 double distance = Math.sqrt(this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D));

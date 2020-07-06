@@ -178,8 +178,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private RatStatus status = RatStatus.IDLE;
     private BlockPos finalDigPathPoint = null;
     private BlockPos diggingPos = null;
-    private int breakingTime;
-    private int previousBreakProgress = -1;
+    protected int breakingTime;
+    protected int previousBreakProgress = -1;
     private int digCooldown = 0;
     private int eatingTicks = 0;
     private ItemStack prevUpgrade = ItemStack.EMPTY;
@@ -494,6 +494,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.inTube()) {
             return climbingTube;
         }
+
         return super.isOnLadder();
     }
 

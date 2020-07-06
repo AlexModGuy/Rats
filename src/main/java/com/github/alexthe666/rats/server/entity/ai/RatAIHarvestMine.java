@@ -114,8 +114,8 @@ public class RatAIHarvestMine extends Goal {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                    double distance = this.entity.getDistanceSq(rayPos.getX(), rayPos.getY(), rayPos.getZ());
-                    if (distance < 4.5F * this.entity.getRatDistanceModifier()) {
+                    double distance = this.entity.getDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ()  + 0.5D);
+                    if (distance < 6F * this.entity.getRatDistanceModifier()) {
                         entity.world.setEntityState(entity, (byte) 85);
                         entity.crafting = true;
                         if (block == prevMiningState) {
@@ -131,7 +131,7 @@ public class RatAIHarvestMine extends Goal {
                             //entity.moveController.action = MovementController.Action.WAIT;
                         }
                         breakingTime++;
-                        int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 50);
+                        int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 20);
                         int i = (int) ((float) this.breakingTime / hardness * 10.0F);
                         if (breakingTime % 5 == 0) {
                             entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
@@ -140,7 +140,7 @@ public class RatAIHarvestMine extends Goal {
                             entity.world.sendBlockBreakProgress(entity.getEntityId(), rayPos, i);
                             this.previousBreakProgress = i;
                         }
-                        if (this.breakingTime == hardness) {
+                        if (this.breakingTime >= hardness) {
                             entity.world.setEntityState(entity, (byte) 86);
                             entity.playSound(soundType.getBreakSound(), soundType.volume, soundType.pitch);
                             entity.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1F);

@@ -10,6 +10,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CowEntity;
@@ -19,6 +20,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.tags.ItemTags;
@@ -26,6 +29,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
@@ -559,9 +563,82 @@ public class RatUtils {
         }
     }
 
+    public static void doRatMinerLogic(EntityRat entity, BlockPos targetBlock, Goal goal){
+        BlockPos ratPos = new BlockPos(entity.getPositionVec());
+        BlockPos rayPos = entity.rayTraceBlockPos(targetBlock);
+        BlockPos subPos = targetBlock.subtract(rayPos);
+        if(ratPos.getY() < targetBlock.getY()){
+            if(entity.world.getBlockState(ratPos.up()).getMaterial().blocksMovement()){
+                rayPos = ratPos.up();
+            }else{
+                if(Math.abs(subPos.getX()) > Math.abs(subPos.getZ())){
+                    rayPos = ratPos.add(subPos.getX() < 0 ? -1 : 1, 0, 0);
+                }else{
+                    rayPos = ratPos.add(0, 0, subPos.getZ() < 0 ? -1 : 1);
+                }
+            }
+        }
+        if (rayPos != null && !rayPos.equals(targetBlock)) {
+            BlockState block = entity.world.getBlockState(rayPos);
+            if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
+                double distance = entity.getDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
+                SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
+                if (distance < 7F * entity.getRatDistanceModifier()) {
+                    entity.world.setEntityState(entity, (byte) 85);
+                    entity.crafting = true;
+                    if (distance < 0.6F * entity.getRatDistanceModifier()) {
+                        entity.setMotion(0, 0, 0);
+                        entity.getNavigator().clearPath();
+                        //entity.moveController.action = MovementController.Action.WAIT;
+                    }
+                    entity.breakingTime++;
+                    int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 100);
+                    int i = (int) ((float) entity.breakingTime / hardness * 10.0F);
+                    if (entity.breakingTime % 10 == 0) {
+                        entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
+                        entity.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1, 0.5F);
+                    }
+                    if (i != entity.previousBreakProgress) {
+                        entity.world.sendBlockBreakProgress(entity.getEntityId(), rayPos, i);
+                        entity.previousBreakProgress = i;
+                    }
+                    if (entity.breakingTime == hardness) {
+                        entity.world.setEntityState(entity, (byte) 86);
+                        entity.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1, 1F);
+                        entity.playSound(soundType.getBreakSound(), soundType.volume, soundType.pitch);
+                        entity.breakingTime = 0;
+                        entity.previousBreakProgress = -1;
+                        destroyBlock(entity, rayPos, block);
+                        entity.fleePos = rayPos;
+                        targetBlock = null;
+                        entity.crafting = false;
+                        goal.resetTask();
+                    }
+                }
+            }
+        }
+    }
+
+    private static void destroyBlock(EntityRat entity, BlockPos pos, BlockState state) {
+        if(entity.world instanceof ServerWorld){
+            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(entity.getRNG()).withLuck((float)1.0F);
+            List<ItemStack> drops = state.getBlock().getDrops(state, loot);
+            if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
+                for (ItemStack drop : drops) {
+                    entity.entityDropItem(drop, 0);
+                }
+                entity.world.destroyBlock(pos, false);
+                entity.fleePos = pos;
+            }
+        }
+
+    }
 
     public static boolean canRatBreakBlock(World world, BlockPos pos, EntityRat rat) {
         BlockState blockState = world.getBlockState(pos);
+        if(world.getTileEntity(pos) != null){
+            return false;
+        }
         float hardness = blockState.getBlockHardness(world, pos);
         return hardness != -1.0F && hardness <= RatConfig.ratStrengthThreshold
                 && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && WitherEntity.canDestroyBlock(blockState);
@@ -780,14 +857,14 @@ public class RatUtils {
         private final EntityRat theEntity;
 
         public TubeSorter(EntityRat theEntityIn) {
-            this.theEntity = theEntityIn;
+            theEntity = theEntityIn;
         }
 
         public int compare(Direction p_compare_1_, Direction p_compare_2_) {
             BlockPos pos1 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_1_);
             BlockPos pos2 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_2_);
-            double d0 = this.theEntity.tubeTarget.distanceSq(pos1.getX(), pos1.getY(), pos1.getZ(), true);
-            double d1 = this.theEntity.tubeTarget.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ(), true);
+            double d0 = theEntity.tubeTarget.distanceSq(pos1.getX(), pos1.getY(), pos1.getZ(), true);
+            double d1 = theEntity.tubeTarget.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ(), true);
             return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
         }
     }
