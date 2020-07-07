@@ -63,8 +63,10 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         this.wingRotation += this.wingRotDelta * 2.0F;
     }
 
-    public void fall(float distance, float damageMultiplier) {
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+        return false;
     }
+
 
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_CHICKEN_AMBIENT;

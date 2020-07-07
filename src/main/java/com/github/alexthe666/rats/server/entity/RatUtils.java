@@ -572,9 +572,9 @@ public class RatUtils {
                 rayPos = ratPos.up();
             }else{
                 if(Math.abs(subPos.getX()) > Math.abs(subPos.getZ())){
-                    rayPos = ratPos.add(subPos.getX() < 0 ? -1 : 1, 0, 0);
+                    rayPos = ratPos.add(subPos.getX() < 0 ? -1 : 1, 1, 0);
                 }else{
-                    rayPos = ratPos.add(0, 0, subPos.getZ() < 0 ? -1 : 1);
+                    rayPos = ratPos.add(0, 1, subPos.getZ() < 0 ? -1 : 1);
                 }
             }
         }
@@ -596,7 +596,6 @@ public class RatUtils {
                     int i = (int) ((float) entity.breakingTime / hardness * 10.0F);
                     if (entity.breakingTime % 10 == 0) {
                         entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
-                        entity.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1, 0.5F);
                     }
                     if (i != entity.previousBreakProgress) {
                         entity.world.sendBlockBreakProgress(entity.getEntityId(), rayPos, i);

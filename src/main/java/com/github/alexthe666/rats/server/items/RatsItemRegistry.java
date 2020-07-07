@@ -313,6 +313,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_LUMBERJACK = new ItemRatUpgrade("rat_upgrade_lumberjack", 1, 1);
 
+    public static final Item RAT_UPGRADE_MINER_ORE = new ItemRatUpgrade("rat_upgrade_miner_ore", 1, 2);
+
     public static final Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
 
     public static final Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 3);

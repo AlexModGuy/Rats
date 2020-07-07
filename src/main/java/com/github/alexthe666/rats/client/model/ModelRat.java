@@ -251,7 +251,7 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
         float degreeDance = 0.4F;
         boolean running = rat.isSprinting() || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT);
         boolean holdingInHands = !rat.getHeldItem(Hand.MAIN_HAND).isEmpty() && (!rat.holdInMouth || rat.cookingProgress > 0) || rat.getAnimation() == EntityRat.ANIMATION_EAT ||
-                rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || rat.getMBTransferRate() > 0;
+                rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || rat.getMBTransferRate() > 0;
         float maxTailRotation = (float) Math.toRadians(15);
 
         float f12 = (float) Math.toRadians(-15) + f1;
@@ -443,7 +443,7 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
             leftHand.rotateAngleY = 0.17453292519943295F;
             leftHand.rotateAngleZ = -0.08726646259971647F;
         }
-        if ((rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) && rat.crafting) {
+        if ((rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CRAFTING) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN)) && rat.crafting) {
             this.walk(this.leftArm, speedRun, degreeRun * 1F, true, 2, 0, f2, 1);
             this.walk(this.rightArm, speedRun, degreeRun * 1F, false, 2, 0, f2, 1);
             this.walk(this.rightHand, speedRun, degreeRun * 1F, true, 5, -0.1F, f2, 1);

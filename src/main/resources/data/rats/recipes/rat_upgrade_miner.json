@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DPD",
-    "CUC",
-    "DCD"
+    "GPG",
+    "GUG",
+    "GIG"
   ],
   "key": {
-    "D": {
-      "tag": "forge:gems/diamond"
+    "G": {
+      "tag": "forge:ingots/gold"
     },
-    "C": {
-      "tag": "forge:cheese"
+    "I": {
+      "tag": "forge:storage_blocks/iron"
     },
     "P": {
       "item": "minecraft:diamond_pickaxe"
     },
     "U": {
-      "item": "rats:rat_upgrade_basic",
+      "item": "rats:rat_upgrade_miner_ore",
       "data": 0
     }
   },

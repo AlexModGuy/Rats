@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
@@ -20,6 +21,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.Tags;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -43,7 +46,7 @@ public class RatAIHarvestMine extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() ||  !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) &&  !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE)) {
             return false;
         }
         if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
@@ -69,20 +72,35 @@ public class RatAIHarvestMine extends Goal {
     }
 
     private NonNullList<ItemStack> getMiningList() {
-        CompoundNBT CompoundNBT1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTag();
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-        if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-            ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)){
+            CompoundNBT CompoundNBT1 = entity.getUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER).getTag();
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+            if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+            }
+            return nonnulllist;
+        }else{
+            return null;
         }
-        return nonnulllist;
+
     }
 
     private boolean doesListContainBlock(World world, NonNullList<ItemStack> list, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         ItemStack getStack = state.getBlock().getItem(world, pos, state);
-        for (ItemStack stack : list) {
-            if (stack.isItemEqual(getStack)) {
-                return true;
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) && list != null) {
+            for (ItemStack stack : list) {
+                if (stack.isItemEqual(getStack)) {
+                    return true;
+                }
+            }
+        }
+        if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE)){
+            List<Item> itemList = Tags.Items.ORES.func_230236_b_();
+            for (Item stack : itemList) {
+                if (getStack.getItem() == stack) {
+                    return true;
+                }
             }
         }
         return false;
@@ -110,7 +128,7 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
-            if (!entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()) {
+            if (!entity.getMoveHelper().isUpdating() &&( entity.func_233570_aj_() || entity.isRidingSpecialMount())) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {

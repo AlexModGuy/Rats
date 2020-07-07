@@ -33,6 +33,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
     private static ItemStack AXE_STACK = new ItemStack(Items.STONE_AXE);
     private static ItemStack PICKAXE_STACK = new ItemStack(Items.STONE_PICKAXE);
     private static ItemStack IRON_AXE_STACK = new ItemStack(Items.IRON_AXE);
+    private static ItemStack IRON_PICKAXE_STACK = new ItemStack(Items.IRON_PICKAXE);
     private static ItemStack IRON_HOE_STACK = new ItemStack(Items.IRON_HOE);
     private static ItemStack SHEARS_STACK = new ItemStack(Items.SHEARS);
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
@@ -196,6 +197,15 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
             matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
             minecraft.getItemRenderer().renderItem(new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, -90F, true));
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, -90F, true));
+            minecraft.getItemRenderer().renderItem(IRON_PICKAXE_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER)) {
