@@ -23,6 +23,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -67,6 +68,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -295,18 +297,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
         }, 10.0F, 0.8D, 1.225D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
-        this.goalSelector.addGoal(5, new RatAIFleeSun(this, 1.225D));
-        this.goalSelector.addGoal(5, new RatAISit(this));
-        this.goalSelector.addGoal(6, new RatAIWander(this, 1.0D));
-        this.goalSelector.addGoal(6, new RatAIWanderFlight(this));
-        this.goalSelector.addGoal(6, new RatAIWanderAquatic(this));
-        this.goalSelector.addGoal(7, new RatAIRaidChests(this));
-        this.goalSelector.addGoal(7, new RatAIRaidCrops(this));
-        this.goalSelector.addGoal(7, new RatAIEnterTrap(this));
-        this.goalSelector.addGoal(7, new RatAIFleePosition(this));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 6.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(0, new RatAITargetItems(this, false));
+        this.goalSelector.addGoal(6, new RatAIFleeSun(this, 1.225D));
+        this.goalSelector.addGoal(6, new RatAISit(this));
+        this.goalSelector.addGoal(7, new RatAIWander(this, 1.0D));
+        this.goalSelector.addGoal(7, new RatAIWanderFlight(this));
+        this.goalSelector.addGoal(7, new RatAIWanderAquatic(this));
+        this.goalSelector.addGoal(8, new RatAIRaidChests(this));
+        this.goalSelector.addGoal(8, new RatAIRaidCrops(this));
+        this.goalSelector.addGoal(8, new RatAIEnterTrap(this));
+        this.goalSelector.addGoal(8, new RatAIFleePosition(this));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, LivingEntity.class, 6.0F));
+        this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(0, new RatAITargetItems(this, true));
         this.targetSelector.addGoal(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
@@ -369,19 +371,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.aiHarvest == null || !flag) {
             aiHarvest = new RatAIHarvestCrops(this);
         }
+        aiDeposit = new RatAIDepositInInventory(this);
+        aiPickup = new RatAIPickupFromInventory(this);
         if (this.getMBTransferRate() > 0) {
             aiDeposit = new RatAIPickupFluid(this);
             aiPickup = new RatAIDepositFluid(this);
         } else if (this.getRFTransferRate() > 0) {
             aiDeposit = new RatAIPickupEnergy(this);
             aiPickup = new RatAIDepositEnergy(this);
-        } else {
-            aiDeposit = new RatAIDepositInInventory(this);
-            aiPickup = new RatAIPickupFromInventory(this);
         }
-        this.goalSelector.addGoal(3, this.aiHarvest);
-        this.goalSelector.addGoal(4, this.aiDeposit);
-        this.goalSelector.addGoal(4, this.aiPickup);
+        this.goalSelector.addGoal(4, this.aiHarvest);
+        this.goalSelector.addGoal(5, this.aiDeposit);
+        this.goalSelector.addGoal(5, this.aiPickup);
     }
 
     @Nullable
@@ -1932,7 +1933,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public BlockPos rayTraceBlockPos(BlockPos targetPos) {
-        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, this.getPositionVec(), new Vector3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5), false, this);
+        RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(world, this.getPositionVec().add(0, this.getEyeHeight(), 0), new Vector3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5), false, this);
         if (rayTrace instanceof BlockRayTraceResult) {
             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) rayTrace;
             BlockPos pos = blockRayTraceResult.getPos();
@@ -2046,7 +2047,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean canPhaseThroughBlock(IWorld world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() instanceof FenceBlock || world.getBlockState(pos).getBlock() instanceof FenceBlock;
+        return world.getBlockState(pos).getBlock() instanceof FenceBlock
+                || world.getBlockState(pos).getBlock() instanceof LeavesBlock && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK);
     }
 
     public void setKilledInTrap() {
@@ -3189,6 +3191,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     protected ResourceLocation getLootTable() {
         return this.hasPlague() ? PLAGUE_RAT_LOOT_TABLE : this.getType().getLootTable();
     }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return super.isNotColliding(worldIn);
+    }
+
 
     public boolean hasFlightUpgrade() {
         return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT) && this.isRidingSpecialMount();

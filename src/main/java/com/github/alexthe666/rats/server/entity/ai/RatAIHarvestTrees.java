@@ -4,6 +4,8 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -59,7 +61,7 @@ public class RatAIHarvestTrees extends Goal {
         List<BlockPos> allBlocks = new ArrayList<>();
         int RADIUS = entity.getSearchRadius();
         for (BlockPos pos : BlockPos.getAllInBox(this.entity.getSearchCenter().add(-RADIUS, -RADIUS, -RADIUS), this.entity.getSearchCenter().add(RADIUS, RADIUS, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-            if (isBlockLog(world, pos)) {
+            if (isBlockLog(world, pos) && world.getBlockState(pos.down()).isSolid() && !isBlockLog(world, pos.down())) {
                 BlockPos topOfLog = new BlockPos(pos);
                 while (!world.isAirBlock(topOfLog.up()) && topOfLog.getY() < world.getHeight()) {
                     topOfLog = topOfLog.up();
@@ -103,18 +105,25 @@ public class RatAIHarvestTrees extends Goal {
     @Override
     public void tick() {
         if (this.targetBlock != null) {
-            if (!this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D)) {
-                RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVec(), new Vector3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false, entity);
-                if (rayTrace instanceof BlockRayTraceResult) {
-                    BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTrace;
-                    BlockPos pos = blockRayTraceResult.getPos();
-                    BlockPos sidePos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
-                    this.entity.getNavigator().tryMoveToXYZ(sidePos.getX() + 0.5D, sidePos.getY() + 0.5D, sidePos.getZ() + 0.5D, 1.25D);
+            RayTraceResult rayTrace = RatUtils.rayTraceBlocksIgnoreRatholes(entity.world, entity.getPositionVec().add(0, entity.getEyeHeight(), 0), new Vector3d(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D), false, entity);
+            if (rayTrace instanceof BlockRayTraceResult) {
+                BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) rayTrace;
+                BlockPos rayPos = entity.rayTraceBlockPos(this.targetBlock);
+                if (rayPos == null) {
+                    rayPos = this.targetBlock;
                 }
+                if (isBlockLeaf(this.entity.world, rayPos)) {
+                    this.entity.world.destroyBlock(rayPos, true);
+                }
+
             }
+            if (isBlockLeaf(this.entity.world, new BlockPos(this.entity.getPositionVec().subtract(0, -1 ,0)))) {
+                this.entity.world.destroyBlock(new BlockPos(this.entity.getPositionVec().subtract(0, -1 ,0)), true);
+            }
+            this.entity.getNavigator().tryMoveToXYZ(targetBlock.getX() + 0.5D, targetBlock.getY(), targetBlock.getZ() + 0.5D, 1.25D);
             if (isBlockLog(this.entity.world, this.targetBlock)) {
                 double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
-                if (distance < 2.5F) {
+                if (distance < 6F * entity.getRatDistanceModifier()) {
                     entity.world.setEntityState(entity, (byte) 85);
                     entity.crafting = true;
                     if (distance < 0.6F * entity.getRatDistanceModifier()) {
@@ -132,7 +141,7 @@ public class RatAIHarvestTrees extends Goal {
                         entity.world.sendBlockBreakProgress(entity.getEntityId(), targetBlock, i);
                         this.previousBreakProgress = i;
                     }
-                    if (this.breakingTime == 160) {
+                    if (this.breakingTime >= 160) {
                         entity.world.setEntityState(entity, (byte) 86);
                         entity.playSound(SoundEvents.BLOCK_WOOD_BREAK, 1, 1);
                         this.breakingTime = 0;
@@ -161,7 +170,7 @@ public class RatAIHarvestTrees extends Goal {
             if (!queue.contains(base)) {
                 queue.add(base);
             }
-            for (BlockPos pos : BlockPos.getAllInBox(base.add(-8, 0, -8), base.add(8, 2, 8)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
+            for (BlockPos pos : BlockPos.getAllInBox(base.add(-2, 0, -2), base.add(2, 2, 2)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if (isBlockLog(world, pos) && !queue.contains(pos)) {
                     if (isBlockLog(world, pos.up()) && !isBlockLog(world, base.up())) {
                         base = pos;
