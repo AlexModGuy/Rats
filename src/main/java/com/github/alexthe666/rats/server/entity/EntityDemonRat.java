@@ -54,7 +54,7 @@ public class EntityDemonRat extends EntityRat implements IPirat, IRatlantean {
 
     public static boolean canDemonRatSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && randomIn.nextFloat() < 0.3F;
+        return reason == SpawnReason.SPAWNER || worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && randomIn.nextInt(200) == 0;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
