@@ -3170,7 +3170,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             Entity entity = this.getRidingEntity();
             if (entity != null) {
                 if (entity instanceof EntityRatBiplaneMount) {
-                    return 3.5D;
+                    return 3.95D;
                 }
                 return 1.5D;
             }
