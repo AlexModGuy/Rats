@@ -305,12 +305,12 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         BlockState blockstate4 = iblockreader.getBlockState(blockpos5);
         BlockState blockstate5 = iblockreader.getBlockState(blockpos6);
         return state
-                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
-                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
-                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
-                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
-                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.canBeConnectedTo(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
-                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.canBeConnectedTo(iblockreader, blockpos6, Direction.UP), Direction.UP)));
+                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, false, Direction.SOUTH)))
+                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, false, Direction.WEST)))
+                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, false, Direction.NORTH)))
+                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, false, Direction.EAST)))
+                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, false, Direction.DOWN)))
+                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, false, Direction.UP)));
 
     }
 
@@ -331,12 +331,12 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         BlockState blockstate4 = iblockreader.getBlockState(blockpos5);
         BlockState blockstate5 = iblockreader.getBlockState(blockpos6);
         return super.getStateForPlacement(context)
-                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)))
-                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST)))
-                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)))
-                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)))
-                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, blockstate4.canBeConnectedTo(iblockreader, blockpos5, Direction.DOWN), Direction.DOWN)))
-                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, blockstate5.canBeConnectedTo(iblockreader, blockpos6, Direction.UP), Direction.UP)));
+                .with(NORTH, Boolean.valueOf(this.canFenceConnectTo(blockstate, false, Direction.SOUTH)))
+                .with(EAST, Boolean.valueOf(this.canFenceConnectTo(blockstate1, false, Direction.WEST)))
+                .with(SOUTH, Boolean.valueOf(this.canFenceConnectTo(blockstate2, false, Direction.NORTH)))
+                .with(WEST, Boolean.valueOf(this.canFenceConnectTo(blockstate3, false, Direction.EAST)))
+                .with(UP, Boolean.valueOf(this.canFenceConnectTo(blockstate4, false, Direction.DOWN)))
+                .with(DOWN, Boolean.valueOf(this.canFenceConnectTo(blockstate5, false, Direction.UP)));
     }
 
     private boolean canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
