@@ -37,7 +37,7 @@ public class EntityRatGolemMount extends EntityRatMountBase {
         this.upgrade = RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT;
     }
 
-    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
         return MobEntity.func_233666_p_()
                 .func_233815_a_(Attributes.field_233818_a_, 100.0D)            //HEALTH
                 .func_233815_a_(Attributes.field_233821_d_, 0.2D)           //SPEED

@@ -93,6 +93,7 @@ public class RatsEntityRegistry {
         GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(DEMON_RAT, EntityDemonRat.func_234290_eH_().func_233813_a_());
         GlobalEntityTypeAttributes.put(RAT_STRIDER_MOUNT, EntityRatStriderMount.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_GOLEM, EntityRatGolemMount.buildAttributes().func_233813_a_());
     }
     static{
 
