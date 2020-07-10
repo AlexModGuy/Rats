@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockState;
@@ -30,7 +31,7 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
     }
 
     public boolean canEntityStandOnPos(BlockPos pos) {
-        return this.world.getBlockState(pos.down()).isSolid() || this.world.getBlockState(pos).getBlock() instanceof BlockRatTube;
+        return this.world.getBlockState(pos.down()).isSolid() || this.world.getBlockState(pos).getBlock() instanceof BlockRatTube || this.world.getBlockState(pos).getBlock() instanceof BlockRatCage;
     }
 
     public Path getPathToPos(BlockPos pos, int idk) {
@@ -68,6 +69,9 @@ public class RatPathPathNavigateGround extends GroundPathNavigator {
         boolean supe = super.tryMoveToXYZ(x, y, z, speedIn);
         this.targetPosition = new BlockPos(x, y, z);
         if(this.rat.hasFlightUpgrade()){
+            this.rat.getMoveHelper().setMoveTo(x, y, z, speedIn);
+        }
+        if(this.rat.isInCage()){
             this.rat.getMoveHelper().setMoveTo(x, y, z, speedIn);
         }
         return supe;

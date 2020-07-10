@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
@@ -387,7 +388,7 @@ public class RatUtils {
 
                 BlockPos blockpos1 = new BlockPos((double) l + rat.getPosX(), (double) i1 + rat.getPosY(), (double) j1 + rat.getPosZ());
 
-                if ((!flag || rat.isWithinHomeDistanceFromPosition(blockpos1)) && (rat.world.getBlockState(blockpos1).getBlock() == RatsBlockRegistry.RAT_CAGE || rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube)) {
+                if ((rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatCage || rat.world.getBlockState(blockpos1).getBlock() instanceof BlockRatTube)) {
                     blockpos1 = findLowestRatCage(blockpos1, rat);
                     float f1 = rat.getBlockPathWeight(blockpos1);
 
@@ -396,6 +397,7 @@ public class RatUtils {
                         k1 = l;
                         i = i1;
                         j = j1;
+
                         flag1 = true;
                     }
                 }

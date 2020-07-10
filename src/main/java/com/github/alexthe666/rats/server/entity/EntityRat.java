@@ -524,11 +524,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     protected void switchNavigator(int type) {
         if (type == 1) {//cage or wild
-            this.moveController = new MovementController(this);
+            this.moveController = new RatMoveHelper(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {//tamed
-            this.moveController = new MovementController(this);
+            this.moveController = new RatMoveHelper(this);
             this.navigator = new RatPathPathNavigateGround(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying

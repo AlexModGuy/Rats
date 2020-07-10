@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -11,11 +12,12 @@ import net.minecraft.util.math.vector.Vector3d;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
+public class RatAIWander extends RandomWalkingGoal {
     private EntityRat rat;
+    protected final float probability = 0.01F;
 
     public RatAIWander(EntityRat creatureIn, double speedIn) {
-        super(creatureIn, speedIn);
+        super(creatureIn, speedIn, 200, false);
         this.rat = creatureIn;
         this.executionChance = 200;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -55,17 +57,23 @@ public class RatAIWander extends WaterAvoidingRandomWalkingGoal {
             if (rat.waterBased) {
                 vec3d = RatUtils.generateRandomWaterPos(this.rat, this.rat.isTamed() ? 5 : 10, 7, null, true);
             } else {
-                vec3d = RandomPositionGenerator.findRandomTarget(this.rat, this.rat.isTamed() ? 5 : 10, 7);
+                if (this.creature.isInWaterOrBubbleColumn()) {
+                    Vector3d lvt_1_1_ = RandomPositionGenerator.getLandPos(this.creature, 15, 7);
+                    vec3d = lvt_1_1_ == null ? super.getPosition() : lvt_1_1_;
+                } else {
+                    vec3d = this.creature.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.creature, 10, 7) : super.getPosition();
+                }
 
             }
         }
-        return vec3d == null ? super.getPosition() : vec3d;
+        return vec3d;
     }
 
     public boolean shouldExecute() {
         executionChance = rat.isInCage() ? 15 : 200;
 
-        return shouldRatAIExecute() && super.shouldExecute();
+        return shouldRatAIExecute() &&
+                super.shouldExecute();
     }
 
     private boolean shouldRatAIExecute() {
