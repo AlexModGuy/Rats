@@ -109,7 +109,7 @@ public class BlockRatCage extends Block {
         BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
         BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
         BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-        return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, blockstate.canBeConnectedTo(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, blockstate1.canBeConnectedTo(iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, blockstate2.canBeConnectedTo(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, blockstate3.canBeConnectedTo(iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
+        return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, false, Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, false, Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, false, Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, false, Direction.EAST)));
     }
 
     public int canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
@@ -284,7 +284,7 @@ public class BlockRatCage extends Block {
                 connect = UP;
                 break;
         }
-        return stateIn.with(connect, Integer.valueOf(this.canFenceConnectTo(facingState, facingState.canBeConnectedTo(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        return stateIn.with(connect, Integer.valueOf(this.canFenceConnectTo(facingState, false, facing.getOpposite())));
     }
 
 }

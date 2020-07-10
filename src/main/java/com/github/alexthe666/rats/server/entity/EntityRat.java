@@ -2117,7 +2117,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     public void spawnAngelCopy() {
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL)) {
-            EntityRat copy = new EntityRat(RatsEntityRegistry.RAT, world);
+            EntityRat copy = RatsEntityRegistry.RAT.create(world);
             CompoundNBT nbt = new CompoundNBT();
             this.writeAdditional(nbt);
             nbt.putBoolean("NoAI", false);
