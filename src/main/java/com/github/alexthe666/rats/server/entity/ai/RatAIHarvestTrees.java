@@ -10,6 +10,7 @@ import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +29,7 @@ public class RatAIHarvestTrees extends Goal {
     private int destroyedLeaves;
     private int breakingTime;
     private int previousBreakProgress;
+    private BlockPos offsetToAirPos = null;
 
     public RatAIHarvestTrees(EntityRat entity) {
         super();
@@ -102,6 +104,18 @@ public class RatAIHarvestTrees extends Goal {
         resetTarget();
     }
 
+    public BlockPos getOffsetedToAirPos(){
+        if(targetBlock != null){
+            for(Direction direction : Direction.values()){
+                BlockPos offsetPos = targetBlock.offset(direction);
+                if(entity.world.isAirBlock(offsetPos) || !entity.world.getBlockState(offsetPos).isSolid()){
+                    return offsetPos;
+                }
+            }
+        }
+        return targetBlock;
+    }
+
     @Override
     public void tick() {
         if (this.targetBlock != null) {
@@ -120,7 +134,8 @@ public class RatAIHarvestTrees extends Goal {
             if (isBlockLeaf(this.entity.world, new BlockPos(this.entity.getPositionVec().subtract(0, -1 ,0)))) {
                 this.entity.world.destroyBlock(new BlockPos(this.entity.getPositionVec().subtract(0, -1 ,0)), true);
             }
-            this.entity.getNavigator().tryMoveToXYZ(targetBlock.getX() + 0.5D, targetBlock.getY(), targetBlock.getZ() + 0.5D, 1.25D);
+            offsetToAirPos = getOffsetedToAirPos();
+            this.entity.getNavigator().tryMoveToXYZ(offsetToAirPos.getX() + 0.5D, offsetToAirPos.getY(), offsetToAirPos.getZ() + 0.5D, 1.25D);
             if (isBlockLog(this.entity.world, this.targetBlock)) {
                 double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 6F * entity.getRatDistanceModifier()) {
