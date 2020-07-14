@@ -67,6 +67,10 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
                     this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
                     0.92F, 0.82, 0.0F);
         }
+        if(this.isInWater()){
+            this.extinguish();
+            this.remove();
+        }
     }
 
     protected void onImpact(RayTraceResult result) {

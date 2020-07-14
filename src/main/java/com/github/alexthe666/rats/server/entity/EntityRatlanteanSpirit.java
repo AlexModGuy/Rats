@@ -72,7 +72,7 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
         this.noClip = false;
         this.setNoGravity(true);
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if (world.isRemote) {
+        if (world.isRemote  && world.getClosestPlayer(this, 64.0D) != null) {
             RatsMod.PROXY.addParticle("rat_ghost", this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
                     this.getPosY() + (double) (this.rand.nextFloat() * this.getHeight()),
                     this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2F) - (double) this.getWidth(),
