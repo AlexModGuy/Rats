@@ -76,11 +76,11 @@ public class ClientEvents {
     public void onFogColors(EntityViewRenderEvent.FogColors event) {
         ClientWorld world = Minecraft.getInstance().world;
         if(world.func_234923_W_().func_240901_a_().getPath().equals("ratlantis")){
-
-            float p_230494_2_ = Minecraft.getInstance().world.getCelestialAngle(Minecraft.getInstance().getRenderPartialTicks());
-            float red = (p_230494_2_ * 1F);
-            float green = (p_230494_2_ * 1F);
-            float blue = (p_230494_2_ * 0.7F);
+            float f12 = MathHelper.clamp(MathHelper.cos(world.getCelestialAngle((float)event.getRenderPartialTicks()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
+            System.out.println(f12);
+            float red = (f12 * 1F);
+            float green = (f12 * 1F);
+            float blue = (f12 * 0.7F);
             FluidState fluidstate = event.getInfo().getFluidState();
             if (!fluidstate.isTagged(FluidTags.WATER)) {
                 event.setRed(red);
