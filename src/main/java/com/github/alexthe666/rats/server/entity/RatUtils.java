@@ -642,7 +642,8 @@ public class RatUtils {
         }
         float hardness = blockState.getBlockHardness(world, pos);
         return hardness != -1.0F && hardness <= RatConfig.ratStrengthThreshold
-                && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && WitherEntity.canDestroyBlock(blockState);
+                && blockState.getBlock().canEntityDestroy(blockState, world, pos, rat) && WitherEntity.canDestroyBlock(blockState)
+                && blockState.getMaterial() != Material.ROCK && blockState.getMaterial() != Material.IRON;
     }
 
     public static boolean isRatTube(IWorldReader world, BlockPos offset) {
