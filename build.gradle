@@ -27,7 +27,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '6.0.3-1.16.1'
+version = '6.0.4-1.16.1'
 group = 'com.yourname.modid' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'rats'
 
@@ -105,7 +105,7 @@ jar {
         attributes([
                 "Specification-Title": "rats",
                 "Specification-Vendor": "rats",
-                "Specification-Version": "6.0.3",
+                "Specification-Version": "6.0.4",
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"rats",
