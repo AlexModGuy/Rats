@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -110,7 +111,7 @@ public class RatAIHarvestCrops extends Goal {
                     this.entity.fleePos = this.targetBlock;
 
                     if ((!RatConfig.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER))) {
-                        if(block.getMaterial() == Material.GOURD){
+                        if(block.getMaterial() == Material.GOURD || !BlockTags.CROPS.func_230235_a_(block.getBlock())){
                             this.entity.world.destroyBlock(targetBlock, false);
                         }else{
                             if(block.getBlock() instanceof IGrowable){
