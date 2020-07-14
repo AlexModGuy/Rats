@@ -93,7 +93,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.29'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.66'
     compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2")
     compile 'citadel:citadel:1.2.0:deobf'

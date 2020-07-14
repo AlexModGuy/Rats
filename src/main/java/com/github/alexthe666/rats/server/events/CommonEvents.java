@@ -46,7 +46,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -239,13 +238,6 @@ public class CommonEvents {
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         ItemStack itemstack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
         //TinkersCompatBridge.onPlayerSwing(event.getPlayer(), itemstack);
-    }
-
-    @SubscribeEvent
-    public static void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
-        if (event.getEntity() instanceof EntityRat) {
-            event.getCollisionBoxesList().removeIf(aabb -> ((EntityRat) event.getEntity()).canPhaseThroughBlock(event.getWorld(), new BlockPos(aabb.minX, aabb.minY, aabb.minZ)));
-        }
     }
 
     @SubscribeEvent

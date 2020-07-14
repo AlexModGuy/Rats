@@ -99,7 +99,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
-                func_238654_b_(stackIn, Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize)), mouseX - screenW, mouseY - screenH + 10, Minecraft.getInstance().fontRenderer);
+                func_238654_b_(stackIn, Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize)), mouseX - screenW, mouseY - screenH + 10);
             }
         }
     }

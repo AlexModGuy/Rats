@@ -54,7 +54,7 @@ public class GuiUpgradeCombiner extends ContainerScreen<ContainerUpgradeCombiner
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityUpgradeCombiner && !((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).canCombine(this.tileFurnace.getStackInSlot(0), this.tileFurnace.getStackInSlot(2)) && !this.tileFurnace.getStackInSlot(0).isEmpty() && !this.tileFurnace.getStackInSlot(2).isEmpty()) {
             if (mouseX > screenW + 42 && mouseX < screenW + 63 && mouseY > screenH + 34 && mouseY < screenH + 55) {
                 TranslationTextComponent ratDesc = new TranslationTextComponent("container.upgrade_combiner.cannot_combine");
-                func_238654_b_(p_230450_1_, Arrays.asList(ratDesc), mouseX - screenW, mouseY - screenH + 10, field_230712_o_);
+                func_238654_b_(p_230450_1_, Arrays.asList(ratDesc), mouseX - screenW, mouseY - screenH + 10);
             }
         }
     }

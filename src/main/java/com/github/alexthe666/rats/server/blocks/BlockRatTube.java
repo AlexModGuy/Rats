@@ -485,7 +485,7 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
                 break;
         }
         BlockState newState = stateIn;
-        newState = newState.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, facingState.canBeConnectedTo(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())));
+        newState = newState.with(connect, Boolean.valueOf(this.canFenceConnectTo(facingState, false, facing.getOpposite())));
         newState = newState.with(notOpen, false);
         return newState;
     }

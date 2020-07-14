@@ -156,7 +156,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, field_230712_o_);
+            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10);
         }
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
             IFormattableTextComponent commandText = new TranslationTextComponent(command1.getTranslateDescription());
@@ -177,7 +177,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, field_230712_o_);
+            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10);
         }
     }
 }

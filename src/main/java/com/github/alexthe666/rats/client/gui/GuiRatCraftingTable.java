@@ -119,11 +119,11 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         }
         if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.rat_desc");
-            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
+            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10);
         }
         if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.input_desc");
-            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10, font);
+            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10);
         }
     }
 
