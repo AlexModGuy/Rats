@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "rats:marbled_cheese"
+  },
+  "result": "rats:black_marbled_cheese",
+  "count": 1
+}
