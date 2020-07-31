@@ -81,10 +81,10 @@ public class RatAIPickupFluid extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity entity = this.entity.world.getTileEntity(this.targetBlock);
             this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
-            double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
+            double distance = this.entity.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D);
             if (distance <= 2.89F * this.entity.getRatDistanceModifier() && canSeeChest()) {
                 LazyOptional<IFluidHandler> handler = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN);
-                if (handler.orElse(null) == null) {
+                if (!handler.isPresent()) {
                     return;
                 }
                 int currentAmount = 0;

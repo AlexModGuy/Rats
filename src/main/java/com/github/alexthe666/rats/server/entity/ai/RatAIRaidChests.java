@@ -95,7 +95,7 @@ public class RatAIRaidChests extends RatAIMoveToBlock {
             TileEntity entity = this.entity.world.getTileEntity(this.destinationBlock);
             if (entity instanceof IInventory) {
                 IInventory feeder = (IInventory) entity;
-                double distance = this.entity.getDistanceSq(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ());
+                double distance = this.entity.getRatDistanceCenterSq(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ());
                 if (distance < 6.25F * this.entity.getRatDistanceModifier() && distance > 2.72F * this.entity.getRatDistanceModifier() && canSeeChest() && entity instanceof IInventory) {
                     toggleChest(feeder, true);
                 }

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
-import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -132,7 +131,7 @@ public class RatAIHarvestMine extends Goal {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                    double distance = this.entity.getDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ()  + 0.5D);
+                    double distance = this.entity.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ()  + 0.5D);
                     if (distance < 6F * this.entity.getRatDistanceModifier()) {
                         entity.world.setEntityState(entity, (byte) 85);
                         entity.crafting = true;

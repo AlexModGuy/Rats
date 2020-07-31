@@ -5,14 +5,11 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -91,8 +88,8 @@ public class RatAIDepositEnergy extends Goal {
                 RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
-                double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-                if (distance < 3.4 && canSeeChest() && te != null) {
+                double distance = this.entity.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D);
+                if (distance < 4.5F * this.entity.getRatDistanceModifier() && canSeeChest() && te != null) {
                     LazyOptional<IEnergyStorage> handler = te.getCapability(CapabilityEnergy.ENERGY, this.entity.depositFacing);
                     if (handler.orElse(null) == null) {
                         this.targetBlock = null;

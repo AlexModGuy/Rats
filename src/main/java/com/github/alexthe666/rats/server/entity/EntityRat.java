@@ -31,7 +31,6 @@ import net.minecraft.entity.ai.EntitySenses;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
@@ -68,7 +67,6 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -1239,7 +1237,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             if (!world.isRemote) {
                 if (this.getNavigator().getPath() != null && this.getNavigator().getPath().getFinalPathPoint() != null && !this.isPassenger()) {
                     Vector3d target = new Vector3d(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z);
-                    if (this.getDistanceSq(target.x, target.y, target.z) > 20 || !this.isDirectPathBetweenPoints(target)) {
+                    if (this.getRatDistanceCenterSq(target.x, target.y, target.z) > 20 || !this.isDirectPathBetweenPoints(target)) {
                         this.attemptTeleport(target.x, target.y, target.z);
                     }
                 }
@@ -1863,7 +1861,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 digCooldown = 3000;
                 diggingPos = null;
             }
-            if (diggingPos != null && this.getDistanceSq(diggingPos.getX(), diggingPos.getY(), diggingPos.getZ()) > 2F) {
+            if (diggingPos != null && this.getRatDistanceCenterSq(diggingPos.getX(), diggingPos.getY(), diggingPos.getZ()) > 2F) {
                 this.breakingTime = 0;
                 this.previousBreakProgress = -1;
                 this.world.sendBlockBreakProgress(this.getEntityId(), diggingPos, 0);
@@ -1916,7 +1914,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
             if (finalDigPathPoint != null) {
                 BlockPos digPos = rayTraceBlockPos(finalDigPathPoint);
-                if (digPos != null && this.getDistanceSq(digPos.getX(), digPos.getY(), digPos.getZ()) < 2) {
+                if (digPos != null && this.getRatDistanceCenterSq(digPos.getX(), digPos.getY(), digPos.getZ()) < 2) {
                     if (world.getTileEntity(digPos) == null) {
                         Material material = world.getBlockState(digPos).getMaterial();
                         if (RatUtils.canRatBreakBlock(world, digPos, this) && canDigBlock(world, digPos) && digPos.getY() == (int) Math.round(this.getPosY())) {
@@ -3105,8 +3103,19 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return null;
     }
 
-    @Override
-    public double getDistanceSq(double x, double y, double z) {
+    public double getRatDistanceCenterSq(double x, double y, double z) {
+        double d0 = this.getPosX() - x - 0.5D;
+        double d1 = this.getPosY() - y - 0.5D;
+        double d2 = this.getPosZ() - z - 0.5D;
+        if (this.getRidingEntity() != null && getMountEntityType() != null && this.getRidingEntity().getType() == getMountEntityType()) {
+            d0 = this.getRidingEntity().getPosX() - x - 0.5D;
+            d1 = this.getRidingEntity().getPosY() - y - 0.5D;
+            d2 = this.getRidingEntity().getPosZ() - z - 0.5D;
+        }
+        return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+
+    public double getRatDistanceSq(double x, double y, double z) {
         double d0 = this.getPosX() - x;
         double d1 = this.getPosY() - y;
         double d2 = this.getPosZ() - z;

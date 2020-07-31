@@ -74,7 +74,7 @@ public class RatAIEnterTrap extends RatAIMoveToBlock {
             BlockPos trapPos = this.destinationBlock.up();
             TileEntity entity = this.entity.world.getTileEntity(trapPos);
             if (entity instanceof TileEntityRatTrap && !((TileEntityRatTrap) entity).isShut && !((TileEntityRatTrap) entity).getBait().isEmpty()) {
-                double distance = this.entity.getDistanceSq(trapPos.getX(), trapPos.getY(), trapPos.getZ());
+                double distance = this.entity.getRatDistanceCenterSq(trapPos.getX(), trapPos.getY(), trapPos.getZ());
                 if (distance < 1.0F && canSeeChest()) {
                     ItemStack duplicate = ((TileEntityRatTrap) entity).getBait().copy();
                     duplicate.setCount(1);

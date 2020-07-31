@@ -7,8 +7,6 @@ import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateRatFluid;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
@@ -95,8 +93,8 @@ public class RatAIDepositFluid extends Goal {
                 RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
-                double distance = this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D);
-                if (distance < 3.4 && canSeeChest() && te != null) {
+                double distance = this.entity.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D);
+                if (distance < 4.5F * this.entity.getRatDistanceModifier() && canSeeChest() && te != null) {
                     FluidStack copiedFluid = this.entity.transportingFluid.copy();
                     LazyOptional<IFluidHandler> handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this.entity.depositFacing);
                     if (handler.orElse(null) == null) {

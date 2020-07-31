@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -137,7 +135,7 @@ public class RatAIHarvestTrees extends Goal {
             offsetToAirPos = getOffsetedToAirPos();
             this.entity.getNavigator().tryMoveToXYZ(offsetToAirPos.getX() + 0.5D, offsetToAirPos.getY(), offsetToAirPos.getZ() + 0.5D, 1.25D);
             if (isBlockLog(this.entity.world, this.targetBlock)) {
-                double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 6F * entity.getRatDistanceModifier()) {
                     entity.world.setEntityState(entity, (byte) 85);
                     entity.crafting = true;

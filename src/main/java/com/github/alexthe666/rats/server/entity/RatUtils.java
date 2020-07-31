@@ -597,7 +597,7 @@ public class RatUtils {
         if (rayPos != null && !rayPos.equals(targetBlock)) {
             BlockState block = entity.world.getBlockState(rayPos);
             if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
-                double distance = entity.getDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
+                double distance = entity.getRatDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (distance < 7F * entity.getRatDistanceModifier()) {
                     entity.world.setEntityState(entity, (byte) 85);

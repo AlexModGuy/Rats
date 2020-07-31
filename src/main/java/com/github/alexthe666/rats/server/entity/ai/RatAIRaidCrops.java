@@ -58,7 +58,7 @@ public class RatAIRaidCrops extends RatAIMoveToBlock {
             BlockPos cropsPos = this.destinationBlock.up();
             BlockState block = this.entity.world.getBlockState(cropsPos);
             if (block.getBlock() instanceof CropsBlock) {
-                double distance = this.entity.getDistanceSq(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
+                double distance = this.entity.getRatDistanceCenterSq(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
                 if (distance < 2.5F * this.entity.getRatDistanceModifier()) {
                     LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(destinationBlock)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> drops = block.getBlock().getDrops(block, loot);

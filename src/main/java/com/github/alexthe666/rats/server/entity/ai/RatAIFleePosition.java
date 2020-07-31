@@ -24,7 +24,7 @@ public class RatAIFleePosition extends Goal {
             Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.rat, 32, 7, new Vector3d(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ()).add(0.5D, 0.5D, 0.5D));
             if (vec3d == null) {
                 return false;
-            } else if (this.rat.fleePos.distanceSq(vec3d.x, vec3d.y, vec3d.z, true) < this.rat.getDistanceSq(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ())) {
+            } else if (this.rat.fleePos.distanceSq(vec3d.x, vec3d.y, vec3d.z, true) < this.rat.getRatDistanceCenterSq(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ())) {
                 return false;
             } else {
                 this.path = this.rat.getNavigator().getPathToPos(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
@@ -36,7 +36,7 @@ public class RatAIFleePosition extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return !this.rat.getNavigator().noPath() && this.rat.fleePos != null && this.rat.getDistanceSq(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ()) < 32;
+        return !this.rat.getNavigator().noPath() && this.rat.fleePos != null && this.rat.getRatDistanceCenterSq(this.rat.fleePos.getX(), this.rat.fleePos.getY(), this.rat.fleePos.getZ()) < 32;
     }
 
     public void startExecuting() {

@@ -5,8 +5,6 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.IInventory;
@@ -15,9 +13,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -103,11 +99,12 @@ public class RatAIDepositInInventory extends Goal {
                 RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D);
-                double distance = Math.sqrt(this.entity.getDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 1, this.targetBlock.getZ() + 0.5D));
-                if (distance < 3D * entity.getRatDistanceModifier() && distance > 2D * entity.getRatDistanceModifier() && canSeeChest() && te instanceof IInventory) {
+
+                double distance = Math.sqrt(this.entity.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D));
+                if (distance < 3.5D * entity.getRatDistanceModifier() && distance > 2.5D * entity.getRatDistanceModifier() && canSeeChest() && te instanceof IInventory) {
                     toggleChest((IInventory) te, true);
                 }
-                if (distance <= 2 * entity.getRatDistanceModifier() && canSeeChest()) {
+                if (distance <= 2.5D * entity.getRatDistanceModifier() && canSeeChest()) {
                     if (te instanceof IInventory) {
                         toggleChest((IInventory) te, false);
                     }

@@ -74,7 +74,7 @@ public class RatAIHarvestFarmer extends Goal {
                 BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (block.getBlock().isFertile(block, entity.world, targetBlock) && entity.world.isAirBlock(targetBlock.up())) {
-                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 4.5F * this.entity.getRatDistanceModifier()) {
                         if (holdingSeeds()) {
                             ItemStack seedStack = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
@@ -98,7 +98,7 @@ public class RatAIHarvestFarmer extends Goal {
                 BlockState block = this.entity.world.getBlockState(this.targetBlock);
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (canPlantBeBonemealed(targetBlock, block)) {
-                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 4.5F) {
                         if (holdingBonemeal()) {
                             this.entity.getHeldItem(Hand.MAIN_HAND).shrink(1);
@@ -125,7 +125,7 @@ public class RatAIHarvestFarmer extends Goal {
                 BlockItem itemBlock = ((BlockItem) entity.getHeldItem(Hand.MAIN_HAND).getItem());
                 this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D);
                 if (entity.world.isAirBlock(targetBlock.up())) {
-                    double distance = this.entity.getDistanceSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
+                    double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                     if (distance < 4.5F) {
                         if (holdingBlock()) {
                             BlockRayTraceResult raytrace = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), new Vector3d(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));

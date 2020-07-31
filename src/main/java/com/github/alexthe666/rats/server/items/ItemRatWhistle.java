@@ -71,7 +71,7 @@ public class ItemRatWhistle extends Item {
                 EntityRat rat = (EntityRat)entity;
                 if(rat.detachHome()){
                     BlockPos homePos = rat.getHomePosition();
-                    double dist = Math.sqrt(rat.getDistanceSq(homePos.getX() + 0.5D, homePos.getY() + 0.5D, homePos.getZ() + 0.5D));
+                    double dist = Math.sqrt(rat.getRatDistanceSq(homePos.getX() + 0.5D, homePos.getY() + 0.5D, homePos.getZ() + 0.5D));
                     if(dist > 2F && rat.canMove()){
                         if(!rat.getNavigator().tryMoveToXYZ(homePos.getX() + 0.5D, homePos.getY() + 0.5D, homePos.getZ() + 0.5D, 1.5F) || dist > 1000F){
                             rat.attemptTeleport(homePos.getX() + 0.5D, homePos.getY() + 1.5D, homePos.getZ() + 0.5D);
