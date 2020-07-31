@@ -128,10 +128,10 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
-            if (!entity.getMoveHelper().isUpdating() &&( entity.func_233570_aj_() || entity.isRidingSpecialMount())) {
+            if (!entity.getMoveHelper().isUpdating() &&(entity.func_233570_aj_() || entity.isRidingSpecialMount())) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
-                if (RatUtils.canRatBreakBlock(entity.world, rayPos, entity) && block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
+                if (block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {
                     double distance = this.entity.getDistanceSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ()  + 0.5D);
                     if (distance < 6F * this.entity.getRatDistanceModifier()) {
                         entity.world.setEntityState(entity, (byte) 85);
