@@ -18,6 +18,7 @@ import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.HuskEntity;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -194,16 +195,24 @@ public class CommonEvents {
             IronGolemEntity golem = (IronGolemEntity) event.getEntity();
             golem.targetSelector.addGoal(4, new NearestAttackableTargetGoal(golem, EntityRat.class, 10, false, false, RatUtils.UNTAMED_RAT_SELECTOR));
         }
+
         if (event.getEntity() != null && RatUtils.isPredator(event.getEntity()) && event.getEntity() instanceof AnimalEntity) {
             AnimalEntity animal = (AnimalEntity) event.getEntity();
             animal.targetSelector.addGoal(5, new NearestAttackableTargetGoal(animal, EntityRat.class, true));
         }
+
         if (event.getEntity() != null && event.getEntity() instanceof HuskEntity) {
             if (((HuskEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
                 event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
             }
         }
-       if(RatConfig.spawnDemonRats){
+        if (event.getEntity() != null && event.getEntity() instanceof SkeletonEntity) {
+            if (((SkeletonEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
+                event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+            }
+        }
+
+        if(RatConfig.spawnDemonRats){
            if (event.getEntity() != null && event.getEntity() instanceof StriderEntity && event.getEntity().getType() == EntityType.field_233589_aE_) {
                StriderEntity strider = (StriderEntity)event.getEntity();
                if (!strider.isHorseSaddled() && strider.getPassengers().isEmpty() && strider.getRNG().nextFloat() < 0.1F) {
