@@ -207,7 +207,7 @@ public class CommonEvents {
             }
         }
         if (event.getEntity() != null && event.getEntity() instanceof SkeletonEntity) {
-            if (((SkeletonEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
+            if (((SkeletonEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate * 0.05F) {
                 event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
             }
         }
