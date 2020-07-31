@@ -43,6 +43,12 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.rat = RatsMod.PROXY.getRefrencedRat();
     }
 
+    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+        this.func_230446_a_(p_230430_1_);
+        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    }
+
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity p_228187_5_) {
         float f = (float)Math.atan((double)(mouseX / 40.0F));
         float f1 = (float)Math.atan((double)(mouseY / 40.0F));

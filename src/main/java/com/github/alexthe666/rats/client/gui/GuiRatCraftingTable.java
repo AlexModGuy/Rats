@@ -35,6 +35,12 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         this.ySize = 211;
     }
 
+    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+        this.func_230446_a_(p_230430_1_);
+        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    }
+
     protected void func_231160_c_() {
         super.func_231160_c_();
         this.field_230710_m_.clear();

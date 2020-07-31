@@ -38,6 +38,12 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         this.name = name;
     }
 
+    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+        this.func_230446_a_(p_230430_1_);
+        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    }
+
     @Override
     protected void func_230450_a_(MatrixStack p_230430_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
         this.func_230446_a_(p_230430_1_);
