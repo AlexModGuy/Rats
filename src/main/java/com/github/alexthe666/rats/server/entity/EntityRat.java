@@ -2060,6 +2060,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return super.canDropLoot() && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL);
     }
 
+    protected boolean func_230282_cS_() {
+        return canDropLoot();
+    }
+
     protected void onDeathUpdate() {
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
