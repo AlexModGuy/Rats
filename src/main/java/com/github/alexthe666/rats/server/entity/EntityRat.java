@@ -1282,7 +1282,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 this.setAttackTarget(null);
             }
         }
-        if (this.getAttackTarget() != null && this.isRidingSpecialMount() && this.getAttackTarget().isRidingOrBeingRiddenBy(this)) {
+        if (this.getAttackTarget() != null && this.isRidingSpecialMount() && !RatUtils.isRidingOrBeingRiddenBy(this.getAttackTarget(), this)) {
             this.setAttackTarget(null);
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().getEntityId() == this.getEntityId()) {
@@ -3166,7 +3166,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return !isRidingSpecialMount() || !isRidingOrBeingRiddenBy(target);
+        return !isRidingSpecialMount() || !RatUtils.isRidingOrBeingRiddenBy(this, target);
     }
 
     public double getRatDistanceModifier() {

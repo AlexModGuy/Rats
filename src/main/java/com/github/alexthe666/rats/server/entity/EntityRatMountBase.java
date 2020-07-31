@@ -118,7 +118,7 @@ public class EntityRatMountBase extends MobEntity {
         if (this.getAttackTarget() != null && this.getAttackTarget().getEntityId() == this.getEntityId()) {
             this.setAttackTarget(null);
         }
-        if (this.getAttackTarget() != null && this.getAttackTarget().isRidingOrBeingRiddenBy(this)) {
+        if (this.getAttackTarget() != null && RatUtils.isRidingOrBeingRiddenBy(this.getAttackTarget(), this)) {
             this.setAttackTarget(null);
         }
         if (rat != null && rat.hasUpgrade(upgrade)) {

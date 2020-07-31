@@ -61,6 +61,20 @@ public class RatUtils {
     public static final ResourceLocation SEED_ITEMS = new ResourceLocation("forge", "seeds");
     public static final ResourceLocation CHEESE_ITEMS = new ResourceLocation("forge", "all_cheese");
 
+    public static boolean isRidingOrBeingRiddenBy(Entity us, Entity entityIn) {
+        for(Entity entity : us.getPassengers()) {
+            if (entity.equals(entityIn)) {
+                return true;
+            }
+
+            if (isRidingOrBeingRiddenBy(entity, entityIn)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean isMilk(ItemStack stack) {
         if (stack.getItem() == Items.MILK_BUCKET) {
             return true;
