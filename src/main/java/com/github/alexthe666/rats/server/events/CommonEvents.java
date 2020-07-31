@@ -295,7 +295,7 @@ public class CommonEvents {
         }
     }
 
-    private static final Map<ServerWorld, PlagueDoctorSpawner> PLAGUE_DOCTOR_SPAWNER_MAP = new HashMap<ServerWorld, PlagueDoctorSpawner>();
+    private static final Map<ServerWorld, PlagueDoctorSpawner> PLAGUE_DOCTOR_SPAWNER_MAP = new WeakHashMap<ServerWorld, PlagueDoctorSpawner>();
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick){
