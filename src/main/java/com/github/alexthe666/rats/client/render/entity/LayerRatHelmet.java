@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
@@ -24,6 +25,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BannerItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -115,6 +117,7 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
                     matrixStackIn.translate(-0.15F, -0.05F, -0.1F);
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
                 }
+
                 if (itemstack.getItem() == RatsItemRegistry.TOP_HAT) {
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
@@ -178,6 +181,11 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
             matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
             matrixStackIn.scale(0.8F, 0.8F, 0.8F);
+            if (itemstack.getItem() == RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD.asItem()) {
+                matrixStackIn.translate(0, -0.2F, 0.65F);
+                matrixStackIn.rotate(new Quaternion(Vector3f.XP, 20, true));
+                matrixStackIn.scale(1.425F, 1.425F, 1.425F);
+            }
             Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         }
         matrixStackIn.pop();

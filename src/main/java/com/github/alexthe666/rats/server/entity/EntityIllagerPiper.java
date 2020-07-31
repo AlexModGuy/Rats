@@ -53,7 +53,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
                 .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
                 .func_233815_a_(Attributes.field_233821_d_, 0.3D)                //SPEED
                 .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 64D);               //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233819_b_, 32D);               //FOLLOW RANGE
     }
 
     protected void registerData() {

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
+import com.github.alexthe666.rats.server.items.ItemBlockWearable;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -122,6 +123,9 @@ public class RatsBlockRegistry {
                         props = RatsMod.PROXY.setupTEISR(props);
                     }
                     BlockItem blockItem = new BlockItem((Block) obj, props);
+                    if(obj instanceof IWearableBlock){
+                        blockItem = new ItemBlockWearable((Block) obj, props);
+                    }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 } else if (obj instanceof Block[]) {

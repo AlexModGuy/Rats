@@ -113,7 +113,6 @@ public class ClientEvents {
                 }
                 if (name.equals(testAgainst)) {
                     confirmScreen.callbackFunction.accept(true);
-                    System.out.println("BASED");
                 }
             }
         }

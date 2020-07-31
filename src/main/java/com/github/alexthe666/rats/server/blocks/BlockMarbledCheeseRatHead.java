@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTEISR {
+public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTEISR, IWearableBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
