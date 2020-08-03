@@ -1,4 +1,4 @@
-﻿// Created by ntaklive <ntaklive@mail.ru>
+// Created by ntaklive <ntaklive@mail.ru>
 {
   "itemGroup.rats": "Крысы",
   "itemGroup.rats.upgrades": "Улучшения крыс",
@@ -76,7 +76,7 @@
   "block.rats.dutchrat_bell": "Колокол летучего голлкрысца",
   "block.rats.brain_block": "Мозговой блок",
   "block.rats.manhole": "Крышка люка",
-  "block.rats.trash_can": "Мусорное ведро",
+  "block.rats.trash_can": "Мусорный бак",
   "block.rats.cursed_garbage": "Заражённая куча мусора",
   "block.rats.cursed_garbage.desc": "На этом блоке спаунятся чумные крысы",
   "block.rats.compressed_garbage": "Скомпрессованная куча мусора",
@@ -797,7 +797,7 @@
   "advancements.rats.ratlantean_ratbot.title": "Крыса из нержавеющей стали",
   "advancements.rats.ratlantean_ratbot.description": "Встречайте ратлантианского крысо-бота - пережиток прошлого века автоматизации",
   "advancements.rats.trash_can.title": "Этот мод - мусор",
-  "advancements.rats.trash_can.description": "Создайте мусорное ведро из котла, железных слитков и железного самородка. Используйте его, чтобы создать кучи мусора!",
+  "advancements.rats.trash_can.description": "Создайте мусорный бак из котла, железных слитков и железного самородка. Используйте его, чтобы создать кучи мусора!",
   "advancements.rats.garbage_pile.title": "Слишком много мусора на вашем лице? В космосе нет мусора!",
   "advancements.rats.garbage_pile.description": "Получить кучу мусора, положив блоки в мусорный бак. Они могут быть использованы для создания эксклюзивных крысиных ферм!",
   "advancements.rats.ball_of_filth.title": "Чистота, близкая к божественной!",
