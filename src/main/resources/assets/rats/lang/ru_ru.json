@@ -602,7 +602,7 @@
   "entity.rats.rat.command.hunt_monsters.desc": "Крыса убьет любых монстров и поместит их останки в контейнер. Используйте §6Сырный посох§r, чтобы задать контейнер для хранения",
   "entity.rats.rat.command.gather.desc": "Крыса попытается поднять выброшенные предметы и поместит их в контейнер. Используйте §6Сырный посох§r, чтобы задать контейнер для хранения",
   "entity.rats.rat.command.harvest.desc": "Крыса будет ломать траву и собирать урожай, после чего поместит их в контейнер. Если крыса имеет улучшение §6Шахтёр§r или §6Лесоруб§r, то они будут добывать руду или рубить деревья, соответственно. Используйте §6Сырный посох§r, чтобы задать контейнер для хранения",
-  "entity.rats.rat.command.transport.desc": "The rat will move items from one container to another. Use the §6Cheese Staff§r to mark deposit and pickup containers.",
+  "entity.rats.rat.command.transport.desc": "Крыса будет перемещать предметы из одного контейнера в другой. Используйте §6Сырный посох§r, чтобы задать контейнер для хранения",
   "entity.rats.rat.status.current": "Статус:",
   "entity.rats.rat.status.idle": "Бездействие",
   "entity.rats.rat.status.moving": "Движение",
