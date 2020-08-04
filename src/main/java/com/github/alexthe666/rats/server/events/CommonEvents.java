@@ -307,7 +307,7 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void worldUnload(WorldEvent.Unload evt) {
-        if (evt.getWorld() instanceof ServerWorld) {
+        if (!evt.getWorld().isRemote() && evt.getWorld() instanceof ServerWorld) {
             PLAGUE_DOCTOR_SPAWNER_MAP.remove(evt.getWorld());
         }
     }
