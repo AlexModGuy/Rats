@@ -2372,6 +2372,9 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
     }
 
     public boolean canRatPickupItem(ItemStack stack) {
+        if(stack.isEmpty()){
+            return false;
+        }
         if ((this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST)) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
             NBTTagCompound nbttagcompound1;
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
@@ -2379,20 +2382,22 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
             } else {
                 nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTagCompound();
             }
+            String ourItemID = stack.getItem().getRegistryName().toString();
             if (nbttagcompound1 != null && nbttagcompound1.hasKey("Items", 9)) {
-                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                NBTTagList nbttaglist = nbttagcompound1.getTagList("Items", 10);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
-                    for (ItemStack itemstack : nonnulllist) {
-                        if (itemstack.isItemEqual(stack)) {
+                    for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                        String itemID = nbttaglist.getCompoundTagAt(i).getString("id");
+                        if (ourItemID != null && ourItemID.equals(itemID)) {
                             return false;
                         }
                     }
                     return true;
                 } else {
                     //whitelist
-                    for (ItemStack itemstack : nonnulllist) {
-                        if (itemstack.isItemEqual(stack)) {
+                    for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                        String itemID = nbttaglist.getCompoundTagAt(i).getString("id");
+                        if (ourItemID != null && ourItemID.equals(itemID)) {
                             return true;
                         }
                     }

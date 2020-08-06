@@ -108,6 +108,9 @@ public class RatUtils {
         }
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.extractItem(i, handler.getSlotLimit(i), true);
+            if (stack.isEmpty()) {
+                continue;
+            }
             if (rat.canRatPickupItem(stack)) {
                 items.add(i);
             }
