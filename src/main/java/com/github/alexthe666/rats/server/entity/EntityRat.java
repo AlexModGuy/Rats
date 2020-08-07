@@ -2388,7 +2388,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
                     for (int i = 0; i < nbttaglist.tagCount(); ++i) {
                         String itemID = nbttaglist.getCompoundTagAt(i).getString("id");
-                        if (ourItemID != null && ourItemID.equals(itemID)) {
+                        int damage = nbttaglist.getCompoundTagAt(i).getShort("Damage");
+                        if (ourItemID != null && ourItemID.equals(itemID) && stack.getMetadata() == damage) {
                             return false;
                         }
                     }
@@ -2397,7 +2398,8 @@ public class EntityRat extends EntityTameable implements IAnimatedEntity {
                     //whitelist
                     for (int i = 0; i < nbttaglist.tagCount(); ++i) {
                         String itemID = nbttaglist.getCompoundTagAt(i).getString("id");
-                        if (ourItemID != null && ourItemID.equals(itemID)) {
+                        int damage = nbttaglist.getCompoundTagAt(i).getShort("Damage");
+                        if (ourItemID != null && ourItemID.equals(itemID) && stack.getMetadata() == damage) {
                             return true;
                         }
                     }
