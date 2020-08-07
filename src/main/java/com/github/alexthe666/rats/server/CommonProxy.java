@@ -64,6 +64,7 @@ public class CommonProxy {
         if (RatsMod.CONFIG_OPTIONS.villagePetShops) {
             event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
         }
+        event.getRegistry().register(RatsVillageRegistry.PLAGUE_DOCTOR);
     }
 
     @SubscribeEvent
