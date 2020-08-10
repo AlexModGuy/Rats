@@ -47,6 +47,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -295,17 +296,30 @@ public class CommonEvents {
         }
     }
 
-    private static final Map<ServerWorld, PlagueDoctorSpawner> PLAGUE_DOCTOR_SPAWNER_MAP = new WeakHashMap<ServerWorld, PlagueDoctorSpawner>();
+    private static final Map<ServerWorld, PlagueDoctorSpawner> PLAGUE_DOCTOR_SPAWNER_MAP = new HashMap<>();
+
+    @SubscribeEvent
+    public static void worldLoad(WorldEvent.Load evt) {
+        if (!evt.getWorld().isRemote() && evt.getWorld() instanceof ServerWorld) {
+            PLAGUE_DOCTOR_SPAWNER_MAP.put((ServerWorld) evt.getWorld(), new PlagueDoctorSpawner((ServerWorld) evt.getWorld()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void worldUnload(WorldEvent.Unload evt) {
+        if (!evt.getWorld().isRemote() && evt.getWorld() instanceof ServerWorld) {
+            PLAGUE_DOCTOR_SPAWNER_MAP.remove(evt.getWorld());
+        }
+    }
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick){
         if(!tick.world.isRemote && tick.world instanceof ServerWorld){
             ServerWorld serverWorld = (ServerWorld)tick.world;
-            if(PLAGUE_DOCTOR_SPAWNER_MAP.get(serverWorld) == null){
-                PLAGUE_DOCTOR_SPAWNER_MAP.put(serverWorld, new PlagueDoctorSpawner(serverWorld));
-            }
             PlagueDoctorSpawner spawner = PLAGUE_DOCTOR_SPAWNER_MAP.get(serverWorld);
-            spawner.tick();
+            if (spawner != null) {
+                spawner.tick();
+            }
         }
 
     }
