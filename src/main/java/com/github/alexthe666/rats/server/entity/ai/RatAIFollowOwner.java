@@ -18,7 +18,7 @@ public class RatAIFollowOwner extends Goal {
     World world;
     float maxDist;
     float minDist;
-    private LivingEntity owner;
+    private LivingEntity owner = null;
     private int timeToRecalcPath;
     private float oldWaterCost;
 
@@ -36,20 +36,20 @@ public class RatAIFollowOwner extends Goal {
      */
     public boolean shouldExecute() {
         if ((this.rat.isTamed() || this.rat.wasTamedByMonster()) && rat.isFollowing()) {
-            LivingEntity LivingEntity = this.rat.getOwner();
-            if(LivingEntity == null){
-                LivingEntity = this.rat.getMonsterOwner();
+            LivingEntity ratOwner = this.rat.getOwner();
+            if(ratOwner == null){
+                ratOwner = this.rat.getMonsterOwner();
             }
-            if (LivingEntity == null) {
+            if (ratOwner == null) {
                 return false;
-            } else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity) LivingEntity).isSpectator()) {
+            } else if (ratOwner instanceof PlayerEntity && ((PlayerEntity) ratOwner).isSpectator()) {
                 return false;
             } else if (this.rat.func_233684_eK_()) {
                 return false;
-            } else if (this.rat.getDistanceSq(LivingEntity) < (double) (this.minDist * this.minDist)) {
+            } else if (this.rat.getDistanceSq(ratOwner) < (double) (this.minDist * this.minDist)) {
                 return false;
             } else {
-                this.owner = LivingEntity;
+                this.owner = ratOwner;
                 return true;
             }
         }
@@ -57,7 +57,7 @@ public class RatAIFollowOwner extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return !this.rat.getNavigator().noPath() && rat.isFollowing() && this.rat.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist);
+        return !this.rat.getNavigator().noPath() && (rat.isTamed() || this.rat.wasTamedByMonster()) && owner != null && rat.isFollowing() && this.rat.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist);
     }
 
     public void startExecuting() {
@@ -74,13 +74,11 @@ public class RatAIFollowOwner extends Goal {
 
     public void tick() {
         this.rat.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float) this.rat.getVerticalFaceSpeed());
-        if (rat.isFollowing()) {
+        if (rat.isFollowing() && (rat.isTamed() || this.rat.wasTamedByMonster())) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
-                boolean teleport = false;
-                if (!this.rat.getLeashed() && !this.rat.isPassenger() && owner instanceof PlayerEntity) {
-                    if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
-                        teleport = true;
+                if (this.rat.getDistanceSq(this.owner) >= 144.0D) {
+                    if (!this.rat.getLeashed() && !this.rat.isPassenger() && owner instanceof PlayerEntity) {
                         int i = MathHelper.floor(this.owner.getPosX()) - 2;
                         int j = MathHelper.floor(this.owner.getPosZ()) - 2;
                         int k = MathHelper.floor(this.owner.getBoundingBox().minY);
@@ -94,13 +92,11 @@ public class RatAIFollowOwner extends Goal {
                             }
                         }
                     }
-                }
-                if (!teleport) {
+                }else{
                     if(rat.hasFlightUpgrade()){
                         this.rat.getMoveHelper().setMoveTo(this.owner.getPosX(), this.owner.getPosY() + 3.5F, this.owner.getPosZ(), 0.3F);
                     }else{
                         this.rat.getNavigator().tryMoveToEntityLiving(this.owner, this.followSpeed);
-
                     }
                 }
             }
