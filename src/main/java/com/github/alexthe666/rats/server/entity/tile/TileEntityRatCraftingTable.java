@@ -47,10 +47,10 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     private static List<IRecipe> EMPTY_LIST = new ArrayList<>();
     public int prevCookTime;
     public boolean hasRat;
+    public int cookTime;
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private NonNullList<ItemStack> inventory = NonNullList.withSize(11, ItemStack.EMPTY);
-    public int cookTime;
     private int totalCookTime = 200;
     public final IIntArray furnaceData = new IIntArray() {
         public int get(int index) {
@@ -145,8 +145,11 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         for (int i = 0; i < stacks.size(); i++) {
             inv.set(i + 2, stacks.get(i));
         }
-        for (int i = 0; i < removedItems.size(); i++) {
-            inventoryCrafting.setInventorySlotContents(i, removedItems.get(i));
+        for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            ItemStack[] matching = ((Ingredient)recipe.getIngredients().get(i)).getMatchingStacks();
+            if(matching.length > 0){
+                inventoryCrafting.setInventorySlotContents(i, matching[0]);
+            }
         }
         NonNullList<ItemStack> remainWEmpties = recipe.getRemainingItems(inventoryCrafting);
         NonNullList<ItemStack> remain = NonNullList.create();
@@ -204,8 +207,6 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
     }
 
     private List<IRecipe> findMatchingRecipesFor(ItemStack stack) {
-
-
         List<IRecipe> matchingRecipes = EMPTY_LIST;
         if (!stack.isEmpty()) {
             matchingRecipes = new ArrayList<>();
@@ -281,7 +282,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
             this.selectedRecipeIndex = 0;
             this.markDirty();
         }
-        if(!world.isRemote){
+        if (!world.isRemote) {
             RatsMod.sendMSGToAll(new MessageUpdateTileSlots(this.getPos().toLong(), this.getUpdateTag()));
         }
     }
@@ -328,7 +329,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
         boolean flag = false;
         hasRat = false;
         this.prevCookTime = cookTime;
-        if(forceUpdateRecipes){
+        if (forceUpdateRecipes) {
             this.currentApplicableRecipes.clear();
             this.currentApplicableRecipes = findMatchingRecipesFor(this.inventory.get(0));
             forceUpdateRecipes = false;
@@ -339,7 +340,7 @@ public class TileEntityRatCraftingTable extends LockableTileEntity implements IT
             }
         }
         if (!this.currentApplicableRecipes.isEmpty()) {
-            selectedRecipeIndex = MathHelper.clamp(selectedRecipeIndex, 0, currentApplicableRecipes.size()-1);
+            selectedRecipeIndex = MathHelper.clamp(selectedRecipeIndex, 0, currentApplicableRecipes.size() - 1);
             if (this.currentApplicableRecipes.size() <= 1) {
                 selectedRecipe = currentApplicableRecipes.get(0);
             } else {

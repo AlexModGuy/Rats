@@ -82,10 +82,10 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
     protected void func_230451_b_(MatrixStack stackIn, int mouseX, int mouseY) {
         FontRenderer font = this.field_230712_o_;
         String s = this.func_231171_q_().getString();
-        font.func_238405_a_(stackIn, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
-        font.func_238405_a_(stackIn, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
-        font.func_238405_a_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
-        font.func_238405_a_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
+        font.func_238421_b_(stackIn, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
+        font.func_238421_b_(stackIn, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
+        font.func_238421_b_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
+        font.func_238421_b_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
         int screenW = (this.field_230708_k_ - 248) / 2;
         int screenH = (this.field_230709_l_ - 166) / 2;
         List<ItemStack> drawnIngredients = new ArrayList<>();
@@ -159,6 +159,7 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
         if (font == null) font = this.field_230712_o_;
         this.field_230707_j_.renderItemAndEffectIntoGUI(stack, x, y);
+        this.field_230707_j_.renderItemOverlays(font, stack, x, y);
         this.func_230926_e_(0);
         this.field_230707_j_.zLevel = 0.0F;
 
