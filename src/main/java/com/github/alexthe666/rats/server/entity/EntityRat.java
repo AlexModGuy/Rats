@@ -2605,33 +2605,37 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean canRatPickupItem(ItemStack stack) {
+        if(stack.isEmpty()){
+            return false;
+        }
         if ((this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST)) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) {
-            CompoundNBT CompoundNBT1;
+            CompoundNBT nbttagcompound1;
             if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
-                CompoundNBT1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST).getTag();
+                nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST).getTag();
             } else {
-                CompoundNBT1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTag();
+                nbttagcompound1 = this.getUpgrade(RatsItemRegistry.RAT_UPGRADE_WHITELIST).getTag();
             }
-            if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+            String ourItemID = stack.getItem().getRegistryName().toString();
+            if (nbttagcompound1 != null && nbttagcompound1.contains("Items", 9)) {
+                ListNBT nbttaglist = nbttagcompound1.getList("Items", 10);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BLACKLIST)) {
-                    for (ItemStack itemstack : nonnulllist) {
-                        if (itemstack.isItemEqual(stack)) {
+                    for (int i = 0; i < nbttaglist.size(); ++i) {
+                        String itemID = nbttaglist.getCompound(i).getString("id");
+                        if (ourItemID != null && ourItemID.equals(itemID)) {
                             return false;
                         }
                     }
                     return true;
                 } else {
                     //whitelist
-                    for (ItemStack itemstack : nonnulllist) {
-                        if (itemstack.isItemEqual(stack)) {
+                    for (int i = 0; i < nbttaglist.size(); ++i) {
+                        String itemID = nbttaglist.getCompound(i).getString("id");
+                        if (ourItemID != null && ourItemID.equals(itemID)) {
                             return true;
                         }
                     }
                     return false;
                 }
-
             }
         }
         return true;
