@@ -25,7 +25,9 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BiomeRatlantis extends Biome {
+public class BiomeRatlantis {
+    //extends
+}/* Biome {
 
     public static final SurfaceBuilderConfig SURFACE_BUILDER_CONFIG = new SurfaceBuilderConfig(Blocks.GRASS.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.SAND.getDefaultState());
     public static final BlockClusterFeatureConfig RATGLOVE_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(RatsBlockRegistry.RATGLOVE_FLOWER.getDefaultState()), new SimpleBlockPlacer())).tries(64).build();
@@ -109,4 +111,4 @@ public class BiomeRatlantis extends Biome {
     public int getFoliageColor() {
         return 0X26DD00;
     }
-}
+}*/

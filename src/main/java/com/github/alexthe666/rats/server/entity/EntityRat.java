@@ -238,7 +238,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public static boolean canEntityTypeSpawn(EntityType<? extends MobEntity> p_223315_0_, IWorld p_223315_1_, SpawnReason p_223315_2_, BlockPos p_223315_3_, Random p_223315_4_) {
-        if (RatConfig.ratOverworldOnly && p_223315_1_.getWorld().func_234923_W_() != World.field_234918_g_) {
+        if (RatConfig.ratOverworldOnly && ((ServerWorld)(p_223315_1_)).func_234923_W_() != World.field_234918_g_) {
             return false;
         }
         BlockPos blockpos = p_223315_3_.down();
@@ -270,7 +270,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (world.getLightFor(LightType.SKY, pos) > rand.nextInt(32)) {
             return false;
         } else {
-            int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(pos, 10) : world.getLight(pos);
+            int i = ((ServerWorld)world).isThundering() ? world.getNeighborAwareLightSubtracted(pos, 10) : world.getLight(pos);
             return i <= rand.nextInt(8);
         }
     }
@@ -495,6 +495,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
 
         return super.isOnLadder();
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
     }
 
     @Override
@@ -1525,7 +1531,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 mountRespawnCooldown = 1000;
             }
             if (entity instanceof MobEntity && !(entity instanceof StriderEntity)) {
-                ((MobEntity) entity).onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                ((MobEntity) entity).onInitialSpawn(((ServerWorld)world), world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
             }
             this.startRiding(entity, true);
         }
@@ -2004,12 +2010,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return inCage;
     }
 
-    @Nullable
-    @Override
-    public AgeableEntity createChild(AgeableEntity ageable) {
-        return null;
-    }
-
     @Override
     public int getAnimationTick() {
         return animationTick;
@@ -2213,7 +2213,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.remove();
             EntityRatKing ratKing = new EntityRatKing(RatsEntityRegistry.RAT_KING, this.world);
             ratKing.copyLocationAndAnglesFrom(this);
-            ratKing.onInitialSpawn(world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.CONVERSION, null, null);
+            if(!world.isRemote){
+                ratKing.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.CONVERSION, null, null);
+            }
             world.addEntity(ratKing);
             if (!player.isCreative()) {
                 itemstack.shrink(1);
@@ -2505,7 +2507,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setColorVariant(this.getRNG().nextInt(4));
         this.setMale(this.getRNG().nextBoolean());

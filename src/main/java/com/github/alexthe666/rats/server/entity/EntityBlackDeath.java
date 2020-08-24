@@ -30,11 +30,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
@@ -236,7 +234,9 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             world.setEntityState(this, (byte) 82);
             if (type == 0 && this.getRatsSummoned() < 15) {
                 EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
-                rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                if(!world.isRemote){
+                    rat.onInitialSpawn((ServerWorld)this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                }
                 rat.copyLocationAndAnglesFrom(this);
                 rat.setPlague(true);
                 if (!world.isRemote) {
@@ -253,7 +253,9 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             }
             if (type == 1 && this.getCloudsSummoned() < 4) {
                 EntityPlagueCloud cloud = new EntityPlagueCloud(RatsEntityRegistry.PLAGUE_CLOUD, this.world);
-                cloud.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                if(!world.isRemote){
+                    cloud.onInitialSpawn((ServerWorld)this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                }
                 cloud.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(cloud);
@@ -266,7 +268,9 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
             }
             if (type == 2 && this.getBeastsSummoned() < 3) {
                 EntityPlagueBeast beast = new EntityPlagueBeast(RatsEntityRegistry.PLAGUE_BEAST, this.world);
-                beast.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                if(!world.isRemote){
+                    beast.onInitialSpawn((IServerWorld) this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+                }
                 beast.copyLocationAndAnglesFrom(this);
                 if (!world.isRemote) {
                     world.addEntity(beast);
@@ -335,7 +339,7 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         ILivingEntityData iLivingEntitydata = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setEquipmentBasedOnDifficulty(difficultyIn);
         this.setEnchantmentBasedOnDifficulty(difficultyIn);

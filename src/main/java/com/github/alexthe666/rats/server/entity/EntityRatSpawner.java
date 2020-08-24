@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -24,7 +25,9 @@ public class EntityRatSpawner extends CreatureEntity {
             hasSpawnedRat = true;
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
             rat.copyLocationAndAnglesFrom(this);
-            rat.onInitialSpawn(world, world.getDifficultyForLocation(this.getOnPosition()), SpawnReason.NATURAL, null, null);
+            if(!world.isRemote){
+                rat.onInitialSpawn((ServerWorld)world, world.getDifficultyForLocation(this.getOnPosition()), SpawnReason.NATURAL, null, null);
+            }
             if (!world.isRemote) {
                 world.addEntity(rat);
             }
@@ -36,7 +39,7 @@ public class EntityRatSpawner extends CreatureEntity {
         if(peaceful){
             return false;
         }
-        if(RatConfig.ratOverworldOnly && p_223325_1_.getWorld().func_234922_V_() != DimensionType.field_235999_c_){
+        if(RatConfig.ratOverworldOnly && ((ServerWorld)p_223325_1_).func_234923_W_() != World.field_234918_g_){
             return false;
         }
         return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_) && p_223325_4_.nextInt(peaceful ? 32 : 3) == 0;
@@ -46,7 +49,7 @@ public class EntityRatSpawner extends CreatureEntity {
         if (p_223323_0_.getLightFor(LightType.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
             return false;
         } else {
-            int i = p_223323_0_.getWorld().isThundering() ? p_223323_0_.getNeighborAwareLightSubtracted(p_223323_1_, 10) : p_223323_0_.getLight(p_223323_1_);
+            int i = ((ServerWorld)p_223323_0_).isThundering() ? p_223323_0_.getNeighborAwareLightSubtracted(p_223323_1_, 10) : p_223323_0_.getLight(p_223323_1_);
             return i <= p_223323_2_.nextInt(8);
         }
     }

@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -73,11 +74,11 @@ public class DutchratShipPiece {
             this.setup(lvt_2_1_, this.templatePosition, lvt_3_1_);
         }
 
-        protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
+        protected void handleDataMarker(String function, BlockPos pos, IServerWorld worldIn, Random rand, MutableBoundingBox sbb) {
             if(function.equals("load_second_half")){
                 PlacementSettings settings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK).addProcessor(new RatsDutchratShipProcessor());
                 Template secondTemplate = manager.getTemplateDefaulted(PART_2);
-                if(secondTemplate.func_237146_a_(worldIn, pos, pos, settings, rand, 2)){
+                if(secondTemplate.func_237146_a_((IServerWorld) worldIn, pos, pos, settings, rand, 2)){
                     for(Template.BlockInfo template$blockinfo : secondTemplate.func_215381_a(pos, settings, Blocks.STRUCTURE_BLOCK)) {
                         if (template$blockinfo.nbt != null) {
                             StructureMode structuremode = StructureMode.valueOf(template$blockinfo.nbt.getString("mode"));

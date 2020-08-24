@@ -55,17 +55,12 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                 boolean inOverworld = entity.world.func_234923_W_() != getRatlantisDimension();
                 if ((entity instanceof ServerPlayerEntity)) {
                     ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
-                    if (thePlayer.timeUntilPortal > 0) {
-                        thePlayer.timeUntilPortal = 10;
-                    }
-                    else if (inOverworld) {
-                        thePlayer.timeUntilPortal = 10;
+                     if (inOverworld) {
                         ServerWorld dimWorld = server.getWorld(getRatlantisDimension());
                         if(dimWorld != null){
                             teleportEntity(thePlayer, dimWorld, pos, true);
                         }
                     } else {
-                        thePlayer.timeUntilPortal = 10;
                         ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
                         if(dimWorld != null){
                             teleportEntity(thePlayer, dimWorld, pos, false);
@@ -74,14 +69,12 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                 }
                 if (!(entity instanceof PlayerEntity)) {
                     if (inOverworld) {
-                        entity.timeUntilPortal = 10;
                         ServerWorld dimWorld = server.getWorld(getRatlantisDimension());
                         if(dimWorld != null){
                             teleportEntity(entity, dimWorld, pos, true);
                         }
                     } else {
                         ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
-                        entity.timeUntilPortal = 10;
                         if(dimWorld != null){
                             teleportEntity(entity, dimWorld, pos, false);
                         }

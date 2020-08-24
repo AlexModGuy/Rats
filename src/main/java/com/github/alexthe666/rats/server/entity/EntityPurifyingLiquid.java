@@ -21,6 +21,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -77,7 +78,9 @@ public class EntityPurifyingLiquid extends ProjectileItemEntity implements IRend
                                 if (LivingEntity instanceof EntityDemonRat) {
                                     EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, world);
                                     rat.copyLocationAndAnglesFrom(LivingEntity);
-                                    rat.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.SPAWNER, null, null);
+                                    if(!world.isRemote){
+                                        rat.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.SPAWNER, null, null);
+                                    }
                                     rat.setPlague(false);
                                     rat.setTamed(false);
                                     rat.setOwnerId(null);

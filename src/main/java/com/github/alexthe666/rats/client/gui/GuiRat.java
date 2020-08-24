@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.inventory.ContainerRat;
 import com.github.alexthe666.rats.server.message.MessageRatCommand;
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -162,7 +163,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10);
+            func_238654_b_(stackIn, Lists.transform(convertedList, ITextComponent::func_241878_f), mouseX - i - 40, mouseY - j + 10);
         }
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
             IFormattableTextComponent commandText = new TranslationTextComponent(command1.getTranslateDescription());
@@ -183,7 +184,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10);
+            func_238654_b_(stackIn, Lists.transform(convertedList, ITextComponent::func_241878_f), mouseX - i - 40, mouseY - j + 10);
         }
     }
 }

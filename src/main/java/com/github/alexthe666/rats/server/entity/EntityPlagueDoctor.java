@@ -29,7 +29,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -74,6 +76,12 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LivingEntity.class, 0, false, false, PLAGUE_PREDICATE));
     }
 
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
+    }
+
     @Override
     protected void registerData() {
         super.registerData();
@@ -93,13 +101,6 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
                 .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
                 .func_233815_a_(Attributes.field_233821_d_, 0.5D);
     }
-
-    @Nullable
-    @Override
-    public AgeableEntity createChild(AgeableEntity ageable) {
-        return null;
-    }
-
 
     public void livingTick() {
         super.livingTick();
@@ -216,7 +217,9 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         if (!this.world.isRemote && this.isAlive()) {
             EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, this.world);
             entitywitch.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
-            entitywitch.onInitialSpawn(world, this.world.getDifficultyForLocation(new BlockPos(entitywitch.getPositionVec())), SpawnReason.NATURAL, null, null);
+            if(!world.isRemote){
+                entitywitch.onInitialSpawn((IServerWorld) this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+            }
             entitywitch.setNoAI(this.isAIDisabled());
             if (this.hasCustomName()) {
                 entitywitch.setCustomName(this.getCustomName());

@@ -15,10 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -43,7 +40,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return BlockTags.getCollection().getOrCreate(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
+        return BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
     }
 
     protected void registerGoals() {
@@ -86,7 +83,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setMale(this.getRNG().nextBoolean());
         this.setPlague(false);

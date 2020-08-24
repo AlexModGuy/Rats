@@ -19,6 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -74,7 +75,9 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
                     EntityDutchrat dutchrat = new EntityDutchrat(RatsEntityRegistry.DUTCHRAT, world);
                     dutchrat.setPosition(this.pos.getX() + 0.5D, this.pos.getY() + 10D, this.pos.getZ() + 0.5D);
                     dutchrat.setHomePosAndDistance(pos, 20);
-                    dutchrat.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+                    if(!world.isRemote){
+                        dutchrat.onInitialSpawn((IServerWorld) this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPos())), SpawnReason.MOB_SUMMONED, null, null);
+                    }
                     if (!world.isRemote) {
                         world.addEntity(dutchrat);
                         ticksToExplode = 0;

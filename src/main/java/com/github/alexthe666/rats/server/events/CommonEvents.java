@@ -40,6 +40,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -104,8 +106,8 @@ public class CommonEvents {
                 doctor.copyLocationAndAnglesFrom(villager);
                 villager.remove();
                 doctor.setWillDespawn(false);
-                doctor.onInitialSpawn(event.getWorld(), event.getWorld().getDifficultyForLocation(event.getPos()), SpawnReason.MOB_SUMMONED, null, null);
                 if (!event.getWorld().isRemote) {
+                    doctor.onInitialSpawn((IServerWorld) event.getWorld(), event.getWorld().getDifficultyForLocation(event.getPos()), SpawnReason.MOB_SUMMONED, null, null);
                     event.getWorld().addEntity(doctor);
                 }
                 doctor.setNoAI(villager.isAIDisabled());
@@ -123,7 +125,10 @@ public class CommonEvents {
             if (heldItem.getItem() == RatsItemRegistry.PLAGUE_TOME && !((EntityPlagueDoctor) event.getTarget()).isChild()) {
                 EntityBlackDeath entitywitch = new EntityBlackDeath(RatsEntityRegistry.BLACK_DEATH, event.getWorld());
                 entitywitch.setLocationAndAngles(event.getTarget().getPosX(), event.getTarget().getPosY(), event.getTarget().getPosZ(), event.getTarget().rotationYaw, event.getTarget().rotationPitch);
-                entitywitch.onInitialSpawn(event.getTarget().getEntityWorld(), event.getTarget().world.getDifficultyForLocation(new BlockPos(entitywitch.getPositionVec())), SpawnReason.NATURAL, null, null);
+                if(!event.getTarget().world.isRemote){
+                    entitywitch.onInitialSpawn((IServerWorld) event.getTarget().getEntityWorld(), event.getTarget().world.getDifficultyForLocation(new BlockPos(entitywitch.getPositionVec())), SpawnReason.NATURAL, null, null);
+                }
+
                 if (event.getTarget().hasCustomName()) {
                     entitywitch.setCustomName(event.getTarget().getCustomName());
                 }
@@ -216,8 +221,8 @@ public class CommonEvents {
         if(RatConfig.spawnDemonRats){
            if (event.getEntity() != null && event.getEntity() instanceof StriderEntity && event.getEntity().getType() == EntityType.field_233589_aE_) {
                StriderEntity strider = (StriderEntity)event.getEntity();
-               if (!strider.isHorseSaddled() && strider.getPassengers().isEmpty() && strider.getRNG().nextFloat() < 0.1F) {
-                   EntityDemonRat demonRat = RatsEntityRegistry.DEMON_RAT.create(event.getWorld().getWorld());
+               if (!strider.isHorseSaddled() && strider.getPassengers().isEmpty() && strider.getRNG().nextFloat() < 0.1F && !strider.world.isRemote) {
+                   EntityDemonRat demonRat = RatsEntityRegistry.DEMON_RAT.create((World) event.getWorld());
                    demonRat.copyLocationAndAnglesFrom(strider);
                    event.getWorld().addEntity(demonRat);
                    demonRat.startRiding(strider);

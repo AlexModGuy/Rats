@@ -93,7 +93,7 @@ public class RatUtils {
 
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
-        return ItemTags.getCollection().getOrCreate(RatUtils.SEED_ITEMS).func_230235_a_(item);
+        return ItemTags.getCollection().get(RatUtils.SEED_ITEMS).func_230235_a_(item);
     }
 
     public static boolean doesContainFood(IInventory inventory) {
@@ -350,7 +350,7 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return ItemTags.getCollection().getOrCreate(RatUtils.CHEESE_ITEMS).func_230235_a_(cheese.getItem());
+        return ItemTags.getCollection().get(RatUtils.CHEESE_ITEMS).func_230235_a_(cheese.getItem());
     }
 
     @Nullable
@@ -636,7 +636,7 @@ public class RatUtils {
 
     private static void destroyBlock(EntityRat entity, BlockPos pos, BlockState state) {
         if(entity.world instanceof ServerWorld){
-            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(entity.getRNG()).withLuck((float)1.0F);
+            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(entity.getRNG()).withLuck((float)1.0F);
             List<ItemStack> drops = state.getBlock().getDrops(state, loot);
             if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                 for (ItemStack drop : drops) {

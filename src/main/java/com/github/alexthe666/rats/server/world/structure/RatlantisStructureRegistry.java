@@ -20,7 +20,6 @@ public class RatlantisStructureRegistry {
         RAT_AQUADUCT_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:ratlantis_aquaduct", RatlantisAquaductPiece.Piece::new);
         FLYING_DUTCHRAT_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:flying_dutchrat", DutchratShipPiece.Piece::new);
         RUNWAY_TYPE = Registry.register(Registry.STRUCTURE_PIECE, "rats:runway", RunwayPiece.Piece::new);
-        MARBLE_PILE = Registry.register(Registry.FEATURE, "rats:marble_pile", new FeatureMarblePile(NoFeatureConfig.field_236558_a_));
     }
 
 

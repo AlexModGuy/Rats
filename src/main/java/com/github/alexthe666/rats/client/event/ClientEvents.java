@@ -76,7 +76,7 @@ public class ClientEvents {
     public void onFogColors(EntityViewRenderEvent.FogColors event) {
         ClientWorld world = Minecraft.getInstance().world;
         if(world.func_234923_W_().func_240901_a_().getPath().equals("ratlantis")){
-            float f12 = MathHelper.clamp(MathHelper.cos(world.getCelestialAngle((float)event.getRenderPartialTicks()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
+            float f12 = MathHelper.clamp(MathHelper.cos(world.func_242415_f((float)event.getRenderPartialTicks()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
             float red = (f12 * 1F);
             float green = (f12 * 1F);
             float blue = (f12 * 0.7F);

@@ -27,6 +27,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -135,7 +136,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         this.setEquipmentBasedOnDifficulty(difficultyIn);
         this.setEnchantmentBasedOnDifficulty(difficultyIn);
@@ -179,7 +180,9 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
         if (this.getRatsSummoned() < 6 && ratCooldown == 0) {
             world.setEntityState(this, (byte) 82);
             EntityRat rat = new EntityRat(RatsEntityRegistry.RAT, this.world);
-            rat.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.NATURAL, null, null);
+            if(!world.isRemote){
+                rat.onInitialSpawn((ServerWorld)this.world, this.world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
+            }
             rat.copyLocationAndAnglesFrom(this);
             rat.setPlague(false);
             world.addEntity(rat);
@@ -216,12 +219,12 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
     }
 
     public static boolean canPiperSpawnInLight(EntityType<? extends MobEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(worldIn, pos, randomIn);
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel((IServerWorld) worldIn, pos, randomIn);
     }
 
-    public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+    public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        if(RatConfig.piperOverworldOnly && worldIn.getWorld().func_234922_V_() != DimensionType.field_235999_c_){
+        if(RatConfig.piperOverworldOnly && ((ServerWorld) worldIn).func_234923_W_() != World.field_234918_g_){
             return false;
         }
         boolean b = canPiperSpawnInLight(typeIn, worldIn, reason, pos, randomIn);

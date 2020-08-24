@@ -126,7 +126,7 @@ public class RatAIDepositInInventory extends Goal {
 
     private void destroyBlock(BlockPos pos, BlockState state) {
         if(entity.world instanceof ServerWorld){
-            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+            LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
             List<ItemStack> drops = state.getBlock().getDrops(state, loot);
             if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                 for (ItemStack drop : drops) {

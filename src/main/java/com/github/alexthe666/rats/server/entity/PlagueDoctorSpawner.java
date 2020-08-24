@@ -81,7 +81,7 @@ public class PlagueDoctorSpawner {
             BlockPos blockpos1 = (BlockPos)optional.orElse(blockpos);
             BlockPos blockpos2 = this.func_221244_a(blockpos1, 48);
             if (blockpos2 != null && this.func_226559_a_(blockpos2)) {
-                if (this.world.getBiome(blockpos2) == Biomes.THE_VOID) {
+                if (world.func_242406_i(blockpos2).equals(Optional.of(Biomes.THE_VOID))) {
                     return false;
                 }
 

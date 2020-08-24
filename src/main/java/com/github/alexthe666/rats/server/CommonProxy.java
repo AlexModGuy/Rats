@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.world.BiomeRatlantis;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
+import com.github.alexthe666.rats.server.world.gen.FeatureMarblePile;
 import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -24,14 +25,17 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,7 +49,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
 
-    private static final Biome[] HARDCODED_NETHER_BIOMES = new Biome[]{Biomes.field_235254_j_, Biomes.field_235252_ay_, Biomes.field_235250_aA_, Biomes.field_235253_az_, Biomes.field_235251_aB_};
+    private static final RegistryKey<Biome>[] HARDCODED_NETHER_BIOMES = new RegistryKey[]{Biomes.field_235254_j_, Biomes.field_235252_ay_, Biomes.field_235250_aA_, Biomes.field_235253_az_, Biomes.field_235251_aB_};
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Effect> event) {
@@ -139,7 +143,13 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
+    public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
+        RatlantisStructureRegistry.MARBLE_PILE = Registry.register(Registry.FEATURE, "rats:marble_pile", new FeatureMarblePile(NoFeatureConfig.field_236558_a_));
+    }
+
+        @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Structure<?>> event) {
+            RatlantisStructureRegistry.init();
         event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RUNWAY);
         RatsWorldRegistry.putStructureOnAList("rats:ratlantis_ruins_structure", RatsWorldRegistry.RAT_RUINS);
         RatsWorldRegistry.putStructureOnAList("rats:dutchrat_ship", RatsWorldRegistry.FLYING_DUTCHRAT);
@@ -167,13 +177,6 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerSurfaces(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
         event.getRegistry().register(RatsWorldRegistry.RATLANTIS_SURFACE);
-    }
-
-    @SubscribeEvent
-    public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
-        RatlantisStructureRegistry.init();
-        event.getRegistry().register(RatsWorldRegistry.RATLANTIS_BIOME = new BiomeRatlantis());
-
     }
 
     public void preInit() {
@@ -246,7 +249,8 @@ public class CommonProxy {
 
     public void addMobSpawns() {
         if (RatConfig.spawnRats) {
-            for (Biome biome : ForgeRegistries.BIOMES) {
+            /*
+            for (RegistryKey<Registry<Biome>> biome : Registry.field_239720_u_) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
                         if (RatConfig.ratsSpawnLikeMonsters) {
@@ -258,9 +262,10 @@ public class CommonProxy {
                         }
                     }
                 }
-            }
+            }*/
         }
         if (RatConfig.spawnPiper) {
+            /*
             for (Biome biome : ForgeRegistries.BIOMES) {
                 if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
@@ -273,9 +278,10 @@ public class CommonProxy {
                         }
                     }
                 }
-            }
+            }*/
         }
         if (RatConfig.spawnDemonRats) {
+            /*
             Biomes.field_235254_j_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
             Biomes.field_235252_ay_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
             Biomes.field_235250_aA_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
@@ -287,6 +293,7 @@ public class CommonProxy {
                     spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
                 }
             }
+             */
         }
     }
 

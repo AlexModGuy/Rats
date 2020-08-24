@@ -53,7 +53,7 @@ public class RatAIHarvestCrops extends Goal {
             BlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD)) {
                 if(!(block.getBlock() instanceof StemBlock) && !(block.getBlock() instanceof AttachedStemBlock)){
-                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(pos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> items = block.getBlock().getDrops(block, loot);
                     for(ItemStack stack : items){
                         if (entity.canRatPickupItem(stack)) {
@@ -92,7 +92,7 @@ public class RatAIHarvestCrops extends Goal {
                 }
                 double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 4.25F * this.entity.getRatDistanceModifier()) {
-                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.POSITION, new BlockPos(targetBlock)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                         ItemStack duplicate = drops.get(0).copy();

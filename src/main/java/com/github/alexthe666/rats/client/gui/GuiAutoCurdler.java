@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.inventory.ContainerAutoCurdler;
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/gui/auto_curdler.png");
@@ -105,7 +107,9 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
-                func_238654_b_(stackIn, Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize)), mouseX - screenW, mouseY - screenH + 10);
+                List list = Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize));
+
+                func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW, mouseY - screenH + 10);
             }
         }
     }

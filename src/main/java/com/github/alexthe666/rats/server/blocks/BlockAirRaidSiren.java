@@ -22,6 +22,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -50,7 +51,7 @@ public class BlockAirRaidSiren extends Block {
             worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
             EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
             baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
-            baron.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+            baron.onInitialSpawn((IServerWorld) worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
             worldIn.addEntity(baron);
         }
         for(int i = 0; i < 2; i++){
@@ -73,7 +74,7 @@ public class BlockAirRaidSiren extends Block {
                     worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
                     EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
                     baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
-                    baron.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
+                    baron.onInitialSpawn((IServerWorld) worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
                     worldIn.addEntity(baron);
                 }
                 for(int i = 0; i < 2; i++){

@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.message.MessageIncreaseRatRecipe;
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,6 +18,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -125,11 +127,13 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         }
         if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.rat_desc");
-            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10);
+            List list = Arrays.asList(ratDesc);
+            func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW - 40, mouseY - screenH + 10);
         }
         if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.input_desc");
-            func_238654_b_(stackIn, Arrays.asList(ratDesc), mouseX - screenW - 40, mouseY - screenH + 10);
+            List list = Arrays.asList(ratDesc);
+            func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW - 40, mouseY - screenH + 10);
         }
     }
 

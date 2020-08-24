@@ -1,0 +1,105 @@
+{
+  "effects": {
+    "sky_color": 4445678,
+    "foliage_color": 270131,
+    "grass_color": 12638463,
+    "fog_color": 12638463,
+    "water_color": 14402413,
+    "water_fog_color": 11700268
+  },
+  "surface_builder": "default",
+  "carvers": {},
+  "features": [
+    [
+      "rats:marble_pile"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "starts": [],
+  "spawners": {
+    "monster": [
+      {
+        "type": "rats:feral_ratlantean",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "rats:pirat",
+        "weight": 50,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "rats:ratlantean_spirit",
+        "weight": 15,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "rats:ghost_pirat",
+        "weight": 90,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "rats:ratlantean_ratbot",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "creature": [
+      {
+        "type": "minecraft:parrot",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "minecraft:panda",
+        "weight": 14,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "ambient": [],
+    "water_creature": [
+      {
+        "type": "minecraft:pufferfish",
+        "weight": 15,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "rats:ratfish",
+        "weight": 45,
+        "minCount": 8,
+        "maxCount": 8
+      },
+      {
+        "type": "minecraft:dolphin",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "water_ambient": [],
+    "misc": []
+  },
+  "creature_spawn_probability": 0.4,
+  "spawn_costs": {
+  },
+  "player_spawn_friendly": true,
+  "precipitation": "rain",
+  "temperature": 0.55,
+  "downfall": 0.5,
+  "category": "none",
+  "depth": 1,
+  "scale": 0.1
+}
