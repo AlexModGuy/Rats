@@ -29,14 +29,18 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
@@ -147,9 +151,9 @@ public class CommonProxy {
         RatlantisStructureRegistry.MARBLE_PILE = Registry.register(Registry.FEATURE, "rats:marble_pile", new FeatureMarblePile(NoFeatureConfig.field_236558_a_));
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
     public static void registerWorldGenFeatures(RegistryEvent.Register<Structure<?>> event) {
-            RatlantisStructureRegistry.init();
+        RatlantisStructureRegistry.init();
         event.getRegistry().registerAll(RatsWorldRegistry.RAT_RUINS, RatsWorldRegistry.FLYING_DUTCHRAT, RatsWorldRegistry.RUNWAY);
         RatsWorldRegistry.putStructureOnAList("rats:ratlantis_ruins_structure", RatsWorldRegistry.RAT_RUINS);
         RatsWorldRegistry.putStructureOnAList("rats:dutchrat_ship", RatsWorldRegistry.FLYING_DUTCHRAT);
@@ -247,55 +251,6 @@ public class CommonProxy {
     public void openRadiusStaffGui() {
     }
 
-    public void addMobSpawns() {
-        if (RatConfig.spawnRats) {
-            /*
-            for (RegistryKey<Registry<Biome>> biome : Registry.field_239720_u_) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
-                        if (RatConfig.ratsSpawnLikeMonsters) {
-                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
-                        } else {
-                            List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.CREATURE);
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
-                        }
-                    }
-                }
-            }*/
-        }
-        if (RatConfig.spawnPiper) {
-            /*
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                if (biome != null && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.OVERWORLD)) {
-                        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.SPOOKY)) {
-                            //3 times as likely to spawn in dark forests
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate * 3, 1, 1));
-                        } else {
-                            spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
-                        }
-                    }
-                }
-            }*/
-        }
-        if (RatConfig.spawnDemonRats) {
-            /*
-            Biomes.field_235254_j_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
-            Biomes.field_235252_ay_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
-            Biomes.field_235250_aA_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
-            Biomes.field_235253_az_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
-            Biomes.field_235251_aB_.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 55, 1, 2));
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                if (biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
-                    List<Biome.SpawnListEntry> spawnList = biome.getSpawns(EntityClassification.MONSTER);
-                    spawnList.add(new Biome.SpawnListEntry(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
-                }
-            }
-             */
-        }
-    }
 
     public float getPartialTicks() {
         return 0;

@@ -2,16 +2,22 @@ package com.github.alexthe666.rats;
 
 import com.github.alexthe666.rats.client.ClientProxy;
 import com.github.alexthe666.rats.server.CommonProxy;
+import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -69,8 +75,33 @@ public class RatsMod {
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
+
         PROXY.init();
         RatsWorldRegistry.init();
+    }
+
+    @SubscribeEvent
+    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
+        if (RatConfig.spawnRats) {
+           if(RatConfig.ratSpawnBiomes.contains(event.getName().toString())){
+               if (RatConfig.ratsSpawnLikeMonsters) {
+                   event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
+               }else{
+                   event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
+               }
+           }
+        }
+        if (RatConfig.spawnPiper) {
+            if(RatConfig.piperSpawnBiomes.contains(event.getName().toString())) {
+                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
+            }
+        }
+        if (RatConfig.spawnDemonRats) {
+            if(RatConfig.demonRatSpawnBiomes.contains(event.getName().toString())) {
+                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
+            }
+        }
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {
@@ -101,7 +132,6 @@ public class RatsMod {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncThrownBlock.class, MessageSyncThrownBlock::write, MessageSyncThrownBlock::read, MessageSyncThrownBlock.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTileSlots.class, MessageUpdateTileSlots::write, MessageUpdateTileSlots::read, MessageUpdateTileSlots.Handler::handle);
-        PROXY.addMobSpawns();
     }
 
     private void setupClient(FMLClientSetupEvent event) {

@@ -1,26 +1,93 @@
 {
   "effects": {
-    "sky_color": 4445678,
-    "foliage_color": 270131,
-    "grass_color": 12638463,
-    "fog_color": 12638463,
-    "water_color": 14402413,
-    "water_fog_color": 11700268
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "sky_color": 16762410,
+    "foliage_color": 2546944,
+    "grass_color": 8177920,
+    "fog_color": 16767615,
+    "water_color": 4445678,
+    "water_fog_color": 270131
   },
-  "surface_builder": "default",
-  "carvers": {},
+  "surface_builder": "rats:ratlantis_surface",
+  "carvers": {
+    "air": [
+      "minecraft:cave"
+    ]
+  },
   "features": [
+    [],
+    [
+      "minecraft:lake_water",
+      "minecraft:lake_lava"
+    ],
+    [
+      "minecraft:forest_rock"
+    ],
+    [
+      "minecraft:monster_room"
+    ],
     [
       "rats:marble_pile"
     ],
     [],
     [],
-    [],
-    [],
-    [],
-    []
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite",
+      "minecraft:ore_diorite",
+      "minecraft:ore_andesite",
+      "minecraft:ore_coal",
+      "minecraft:ore_iron",
+      "minecraft:ore_gold",
+      "minecraft:ore_redstone",
+      "minecraft:ore_diamond",
+      "minecraft:ore_lapis",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "rats:ore_cheese",
+      "rats:ore_ratlantean_gem",
+      "rats:ore_oratchalcum"
+    ],
+    [
+      "minecraft:trees_jungle",
+      "minecraft:bamboo_light",
+      "minecraft:flower_warm",
+      "minecraft:patch_large_fern",
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_melon",
+      "minecraft:spring_water",
+      "minecraft:spring_lava",
+      "minecraft:vines",
+      "minecraft:trees_water",
+      "minecraft:brown_mushroom_normal",
+      "minecraft:red_mushroom_normal",
+      "minecraft:warm_ocean_vegetation",
+      "minecraft:seagrass_warm",
+      "minecraft:sea_pickle",
+      "rats:flower_ratglove"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
   ],
-  "starts": [],
+  "starts": [
+    "minecraft:ocean_ruin_warm",
+    "minecraft:jungle_pyramid",
+    "minecraft:mineshaft",
+    "minecraft:shipwreck",
+    "rats:ratlantis_ruins_structure",
+    "rats:runway",
+    "rats:dutchrat_ship"
+  ],
   "spawners": {
     "monster": [
       {
@@ -99,7 +166,7 @@
   "precipitation": "rain",
   "temperature": 0.55,
   "downfall": 0.5,
-  "category": "none",
+  "category": "ocean",
   "depth": 1,
   "scale": 0.1
 }

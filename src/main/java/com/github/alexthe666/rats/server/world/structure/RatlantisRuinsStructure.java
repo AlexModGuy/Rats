@@ -26,6 +26,7 @@ public class RatlantisRuinsStructure extends Structure<NoFeatureConfig> {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
+    @Override
     public Structure.IStartFactory getStartFactory() {
         return RatlantisRuinsStructure.Start::new;
     }
