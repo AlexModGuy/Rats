@@ -152,7 +152,6 @@ public class RatsItemRegistry {
 
     public static final Item TOKEN_PIECE = new ItemGeneric("token_piece");
 
-
     public static final Item ARCHEOLOGIST_HAT = new ItemHat("archeologist_hat", 3);
 
     public static final Item FARMER_HAT = new ItemHat("farmer_hat", 4);

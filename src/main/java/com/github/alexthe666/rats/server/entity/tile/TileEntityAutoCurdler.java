@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class TileEntityAutoCurdler extends LockableTileEntity implements ITickableTileEntity, ISidedInventory, INamedContainerProvider {
     private static final int[] SLOTS_TOP = new int[]{0};
@@ -84,7 +85,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         if (stack.getItem() == Items.MILK_BUCKET) {
             return true;
         }
-        LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
+        Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
         return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().func_230531_f_().toString().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
     }
 
@@ -202,7 +203,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
 
         } else if (isMilk(curdlerStacks.get(0))) {
             FluidStack def = null;
-            LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
+            Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
             if (fluidStack != null) {
                 IFluidHandlerItem fluidHandler = (IFluidHandlerItem) FluidUtil.getFluidHandler(curdlerStacks.get(0));
                 if (fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE) != null && fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE).getAmount() > 0) {

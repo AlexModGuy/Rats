@@ -44,10 +44,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RatUtils {
@@ -79,7 +76,7 @@ public class RatUtils {
         if (stack.getItem() == Items.MILK_BUCKET) {
             return true;
         }
-        LazyOptional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
+        Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
         return fluidStack.orElse(null) != null && fluidStack.orElse(null).getAmount() >= 1000 && (fluidStack.orElse(null).getFluid().getRegistryName().getPath().contains("milk") || fluidStack.orElse(null).getFluid().getRegistryName().getPath().contains("Milk"));
     }
 
