@@ -53,7 +53,7 @@ public class RatAIHarvestCrops extends Goal {
             BlockState block = this.entity.world.getBlockState(pos);
             if ((block.getBlock() instanceof CropsBlock && ((CropsBlock) block.getBlock()).isMaxAge(block) || !(block.getBlock() instanceof CropsBlock) && block.getBlock() instanceof BushBlock || block.getMaterial() == Material.GOURD)) {
                 if(!(block.getBlock() instanceof StemBlock) && !(block.getBlock() instanceof AttachedStemBlock)){
-                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.field_237457_g_, entity.getPositionVec()).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> items = block.getBlock().getDrops(block, loot);
                     for(ItemStack stack : items){
                         if (entity.canRatPickupItem(stack)) {
