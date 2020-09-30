@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.ModelBiplane;
 import com.github.alexthe666.rats.client.model.ModelPinkie;
 import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.EntityRatBaronPlane;
 import com.github.alexthe666.rats.server.entity.EntityRatBiplaneMount;
@@ -35,6 +36,8 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Map;
 
@@ -239,7 +242,9 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
                 //Minecraft.getInstance().getTextureManager().loadTexture(resourcelocation, new LayeredTexture(entity.getVariantTexturePaths()));
                 LAYERED_LOCATION_CACHE.put(s, resourcelocation);
             }
-            return resourcelocation;
+            RatClientEvent.GetTexture textureEvent = new RatClientEvent.GetTexture(entity, this, resourcelocation);
+            MinecraftForge.EVENT_BUS.post(textureEvent);
+            return textureEvent.getResult() == Event.Result.ALLOW ? textureEvent.getTexture() : resourcelocation;
         }
     }
 

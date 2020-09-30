@@ -92,7 +92,7 @@ public class RatAIHarvestCrops extends Goal {
                 }
                 double distance = this.entity.getRatDistanceCenterSq(this.targetBlock.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
                 if (distance < 4.25F * this.entity.getRatDistanceModifier()) {
-                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
+                    LootContext.Builder loot = new LootContext.Builder((ServerWorld)entity.world).withParameter(LootParameters.field_237457_g_, entity.getPositionVec()).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck((float)1.0F);
                     List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                     if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                         ItemStack duplicate = drops.get(0).copy();

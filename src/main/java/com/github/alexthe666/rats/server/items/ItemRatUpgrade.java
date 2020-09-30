@@ -1,7 +1,10 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -35,7 +38,7 @@ public class ItemRatUpgrade extends Item {
     }
 
     public ItemRatUpgrade(String name, int rarity, int textLength) {
-        this(name, 64,rarity, textLength);
+        this(name, 64, rarity, textLength);
     }
 
     public Rarity getRarity(ItemStack stack) {
@@ -59,5 +62,63 @@ public class ItemRatUpgrade extends Item {
         } else {
             tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").func_240699_a_(TextFormatting.GRAY));
         }
+    }
+
+    // START OF RATS API ADDON SUPPORT //
+
+    /**
+     * Called when Upgrade slot is changed/updated.
+     * Used primarily for stat increases for health, damage, etc.
+     * Make sure you call {@link EntityRat#tryIncreaseStat} and {@link LivingEntity#getAttribute} too.
+     */
+    public void onUpgradeChanged(EntityRat rat) {
+    }
+
+    /**
+     * Called when Rat AI is changed/updated.
+     * Used primarily for harvest AI changes and RF transfer.
+     * Called when Upgrade slot is changed/updated.
+     * Used primarily for stat increases for health, damage, etc.
+     * Set either aiHarvest, aiPickup or aiDeposit in rat to something new.
+     */
+    public void onInitalizeAI(EntityRat rat) {
+    }
+
+    public boolean isRatHoldingFood(EntityRat rat) {
+        return false;
+    }
+
+    public boolean shouldSitAnimation(EntityRat rat) {
+        return false;
+    }
+
+    public boolean shouldHoldItemInHands(EntityRat rat) {
+        return false;
+    }
+
+    public boolean shouldNotIdleAnimation(EntityRat rat) {
+        return false;
+    }
+
+    public boolean canFly(EntityRat rat) {
+        return false;
+    }
+
+    /**
+     * True if the rat should deposit or cook an item instead of holding it.
+     */
+    public boolean shouldDepositItem(EntityRat rat, ItemStack stack) {
+        return true;
+    }
+    /**
+     * Called after a rat hits a mob.
+     */
+    public void onPostAttack(EntityRat rat, Entity target) {
+    }
+
+    /**
+     * Called each tick.
+     */
+    public void onRatUpdate(EntityRat rat) {
     }
 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.EntityRat;
@@ -16,8 +17,11 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 
 public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
+    public static final RenderType TEXTURE_DEMON = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/demon_rat.png"));
     private static final RenderType TEXTURE = RenderType.getEntityNoOutline(new ResourceLocation("rats:textures/entity/rat/rat_plague_overlay.png"));
     private static final RenderType TEXTURE_DYED_NOT = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/rat_dyed_not.png"));
     private static final RenderType TEXTURE_DYED = RenderType.getEntityNoOutline(new ResourceLocation("rats:textures/entity/rat/rat_dyed.png"));
@@ -25,11 +29,10 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
     private static final RenderType TEXTURE_TOGA = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/toga.png"));
     private static final RenderType TEXTURE_RATINATOR = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/rat_ratinator_upgrade.png"));
     private static final ResourceLocation TEXTURE_PSYCHIC = new ResourceLocation("rats:textures/entity/ratlantis/psychic.png");
-    public static final RenderType TEXTURE_DEMON = RenderType.getEntitySmoothCutout(new ResourceLocation("rats:textures/entity/rat/demon_rat.png"));
-    private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
-    private ResourceLocation TEXTURE_DYED_LOC = new ResourceLocation("rats:textures/entity/rat/rat_dyed.png");
     private static final ModelRat RAT_MODEL = new ModelRat(0.5F);
     private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRenderer;
+    private ResourceLocation TEXTURE_GHOST = new ResourceLocation("rats:textures/entity/ratlantis/ghost_pirat_overlay.png");
+    private ResourceLocation TEXTURE_DYED_LOC = new ResourceLocation("rats:textures/entity/rat/rat_dyed.png");
 
     public LayerRatPlague(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> ratRendererIn) {
         super(ratRendererIn);
@@ -38,7 +41,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-     if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
+        if (!(ratRenderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
@@ -57,7 +60,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
                 b = 1.0F;
                 this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(rat, 0), r, g, b, 1.0F);
                 IVertexBuilder ivertexbuilder2 = bufferIn.getBuffer(TEXTURE_DYED_NOT);
-                 this.getEntityModel().render(matrixStackIn, ivertexbuilder2, packedLightIn, LivingRenderer.getPackedOverlay(rat, 0), r, g, b, 1.0F);
+                this.getEntityModel().render(matrixStackIn, ivertexbuilder2, packedLightIn, LivingRenderer.getPackedOverlay(rat, 0), r, g, b, 1.0F);
             } else {
                 ivertexbuilder = bufferIn.getBuffer(TEXTURE_DYED);
                 float[] lvt_14_2_ = RatColorUtil.getDyeRgb(DyeColor.byId(rat.getDyeColor()));
@@ -72,7 +75,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(rat, 0), 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BASIC_ENERGY) && rat.getHeldRF() > 0) {//rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
-            float f = (float)rat.ticksExisted + partialTicks;
+            float f = (float) rat.ticksExisted + partialTicks;
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(TEXTURE_PSYCHIC, f * 0.01F, f * 0.01F));
             ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
@@ -91,10 +94,17 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
-            float f = (float)rat.ticksExisted + partialTicks;
+            float f = (float) rat.ticksExisted + partialTicks;
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(TEXTURE_GHOST, f * 0.01F, f * 0.01F));
             ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
+        }
+        RatClientEvent.GetPlagueOverlayTexture textureEvent = new RatClientEvent.GetPlagueOverlayTexture(rat, (RenderRat) ratRenderer);
+        MinecraftForge.EVENT_BUS.post(textureEvent);
+        if(textureEvent.getResult() == Event.Result.ALLOW && textureEvent.getTexture() != null){
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(textureEvent.getTexture());
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+
         }
     }
 

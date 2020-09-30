@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
@@ -15,6 +16,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 
 public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
     private static final RenderType TEXTURE = RenderType.getEyes(new ResourceLocation("rats:textures/entity/rat/rat_eye_glow.png"));
@@ -62,7 +65,12 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
             } else if (rat.getType() == RatsEntityRegistry.DEMON_RAT || rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DEMON)) {
                 tex = TEXTURE_DEMON;
             } else {
+                RatClientEvent.GetEyesTexture textureEvent = new RatClientEvent.GetEyesTexture(rat, (RenderRat) ratRenderer);
+                MinecraftForge.EVENT_BUS.post(textureEvent);
                 tex = TEXTURE;
+                if(textureEvent.getResult() == Event.Result.ALLOW && textureEvent.getTexture() != null){
+                    tex = textureEvent.getTexture();
+                }
             }
             if(tex != null){
                 IVertexBuilder ivertexbuilder = bufferIn.getBuffer(tex);

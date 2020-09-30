@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelChristmasChest;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
@@ -25,6 +26,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 
 public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
 
@@ -366,6 +368,9 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             minecraft.getItemRenderer().renderItem(new ItemStack(RatsBlockRegistry.BRAIN_BLOCK), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
+        RatClientEvent.RatItemTranslation itemEvent = new RatClientEvent.RatItemTranslation(entity, (RenderRat) renderer, matrixStackIn);
+        MinecraftForge.EVENT_BUS.post(itemEvent);
+
     }
 
     protected void translateToHead(MatrixStack matrixStack) {

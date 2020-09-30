@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
@@ -32,25 +34,26 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelRat<T>> {
+public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
     private float alpha = 1.0F;
     private float colorR = 1.0F;
     private float colorG = 1.0F;
     private float colorB = 1.0F;
-    private final IEntityRenderer<T, ModelRat<T>> renderer;
+    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderer;
     private final BipedModel defaultBipedModel = new BipedModel(1.0F);
     private static final BipedModel backup = new BipedModel(1);
-    public LayerRatHelmet(IEntityRenderer<T, ModelRat<T>> rendererIn) {
+    public LayerRatHelmet(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> rendererIn) {
         super(rendererIn);
         this.renderer = rendererIn;
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!(this.renderer.getEntityModel() instanceof ModelRat)) {
             return;
         }
@@ -64,6 +67,8 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
             IVertexBuilder vertexBuilder = bufferIn.getBuffer(RatsRenderType.GREEN_ENTITY_GLINT);
             renderer.getEntityModel().render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
+        RatClientEvent.RatHelmetSheen sheenEvent = new RatClientEvent.RatHelmetSheen(rat, (RenderRat) renderer);
+        MinecraftForge.EVENT_BUS.post(sheenEvent);
 
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);
         if (itemstack.getItem() instanceof ArmorItem) {
@@ -117,7 +122,6 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
                     matrixStackIn.translate(-0.15F, -0.05F, -0.1F);
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
                 }
-
                 if (itemstack.getItem() == RatsItemRegistry.TOP_HAT) {
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
@@ -149,6 +153,8 @@ public class LayerRatHelmet<T extends EntityRat> extends LayerRenderer<T, ModelR
                     matrixStackIn.translate(0, -0.1F, 0.01F);
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
                 }
+                RatClientEvent.RatHelmetTranslation translationEvent = new RatClientEvent.RatHelmetTranslation(rat, (RenderRat) renderer, matrixStackIn);
+                MinecraftForge.EVENT_BUS.post(translationEvent);
                 boolean flag1 = itemstack.hasEffect();
                 if (armoritem instanceof net.minecraft.item.IDyeableArmorItem) { // Allow this for anything, not only cloth
                     int i = ((net.minecraft.item.IDyeableArmorItem)armoritem).getColor(itemstack);
