@@ -745,6 +745,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     }
 
+    @Override
+    public boolean isPushedByWater() {
+        return !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) && super.isPushedByWater();
+    }
+
+    protected float getWaterSlowDown() {
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) ? 1F : 0.8F;
+    }
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source) || source == DamageSource.IN_WALL && this.isPassenger()) {
             return false;

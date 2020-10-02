@@ -7,9 +7,11 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Item;
@@ -17,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -68,9 +71,9 @@ public class RatAIHarvestQuarry extends Goal {
             TileEntityRatQuarry quarry = ((TileEntityRatQuarry) entity.world.getTileEntity(quarryPos));
             int RADIUS = quarry.getRadius();
             for (BlockPos pos : BlockPos.getAllInBox(quarryPos.add(-RADIUS, -1, -RADIUS), quarryPos.add(RADIUS, -quarryPos.getY() - 1, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-                if (!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) {
+                if ((!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) || entity.world.getFluidState(pos).isSource()) {
                     BlockState state = entity.world.getBlockState(pos);
-                    if (state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlockHardness(entity.world, pos) > 0F && state.getFluidState().isEmpty()) {
+                    if (state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlockHardness(entity.world, pos) > 0F && (state.getFluidState().isEmpty() || state.getFluidState().isSource())) {
                         allBlocks.add(pos);
                     }
                 }
@@ -119,13 +122,13 @@ public class RatAIHarvestQuarry extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
-            if (!entity.getMoveHelper().isUpdating() && (entity.func_233570_aj_() || entity.isRidingSpecialMount())) {
+            double distance = this.entity.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
+            if (!entity.getMoveHelper().isUpdating() && (entity.func_233570_aj_() || entity.isInWater() || entity.isInLava() || entity.isRidingSpecialMount())) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (buildStairs) {
-                    double distance = this.entity.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
                     if (distance < 6F * this.entity.getRatDistanceModifier()) {
-                        entity.world.setBlockState(targetBlock, Blocks.COBBLESTONE_STAIRS.getDefaultState());
+                        entity.world.setBlockState(targetBlock, Blocks.COBBLESTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, stairDirection.getOpposite()));
                         entity.world.setEntityState(entity, (byte) 86);
                         targetBlock = null;
                         prevMiningState = block;
@@ -134,8 +137,17 @@ public class RatAIHarvestQuarry extends Goal {
                     }
                 } else {
                     if (block.getMaterial() != Material.AIR) {
-                        double distance = this.entity.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
                         if (distance < 6F * this.entity.getRatDistanceModifier()) {
+                            if(block.getFluidState().isSource()){
+                                BlockState replace = Blocks.COBBLESTONE.getDefaultState();
+                                if(block.getFluidState().isTagged(FluidTags.LAVA)){
+                                    replace = Blocks.OBSIDIAN.getDefaultState();
+                                }
+                                this.entity.world.setBlockState(rayPos, replace);
+                                this.entity.setPosition(entity.getPosX(), entity.getPosY() + 1F, entity.getPosZ());
+                                this.entity.heal(2);
+                                this.resetTask();
+                            }
                             entity.world.setEntityState(entity, (byte) 85);
                             entity.crafting = true;
                             if (block == prevMiningState) {
@@ -205,8 +217,16 @@ public class RatAIHarvestQuarry extends Goal {
 
         @Override
         public int compare(BlockPos pos1, BlockPos pos2) {
-            double distance1 = pos1.getY();
-            double distance2 = pos2.getY();
+            FluidState state1 = entity.world.getFluidState(pos2);
+            FluidState state2 = entity.world.getFluidState(pos1);
+            double distance1 = pos2.getY();
+            double distance2 = pos1.getY();
+            if(state1.isSource() && !state2.isSource()){
+                return 1;
+            }
+            if(state2.isSource() && !state1.isSource()){
+                return -1;
+            }
             return Double.compare(distance1, distance2);
         }
 

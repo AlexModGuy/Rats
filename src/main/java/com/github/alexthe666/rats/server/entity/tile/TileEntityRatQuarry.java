@@ -213,14 +213,11 @@ public class TileEntityRatQuarry extends LockableTileEntity implements ITickable
         }
         stairPos = stairPos.down(passedLevels);
         Direction buildDir = Direction.SOUTH;
-        int lvlCounter = 0;
         for(int i = 0; i < passedLevels; i++){
-            lvlCounter++;
-            if(lvlCounter > this.getRadius() * 2 - 1){
-                buildDir = buildDir.rotateY();
-                lvlCounter = 0;
+            if(i > 0 && i % (this.getRadius() * 2) == 0){
+                buildDir = buildDir.rotateYCCW();
             }
-            stairPos = stairPos.offset(buildDir, lvlCounter);
+            stairPos = stairPos.offset(buildDir);
         }
         stairDirection = buildDir;
         return stairPos;

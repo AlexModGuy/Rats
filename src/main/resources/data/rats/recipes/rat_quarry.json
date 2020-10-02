@@ -7,7 +7,7 @@
   ],
   "key": {
     "C": {
-      "tag": "rats:block_of_blue_cheese"
+      "item": "rats:block_of_blue_cheese"
     },
     "T": {
       "tag": "forge:workbench"
