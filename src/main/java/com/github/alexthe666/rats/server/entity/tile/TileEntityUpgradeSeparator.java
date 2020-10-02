@@ -1,13 +1,18 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -49,12 +54,20 @@ public class TileEntityUpgradeSeparator extends TileEntity implements ITickableT
                 if (spawnedItem > 0) {
                     ItemEntity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1, 1);
                     ItemEntity.onKillCommand();
-                    ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.getPosX(), ItemEntity.getPosY(), ItemEntity.getPosZ(), new ItemStack(RatsItemRegistry.GEM_OF_RATLANTIS, spawnedItem));
+                    ItemEntity splitEntity = new ItemEntity(this.getWorld(), ItemEntity.getPosX(), ItemEntity.getPosY(), ItemEntity.getPosZ(), new ItemStack(getFuel(), spawnedItem));
                     if (!world.isRemote) {
                         world.addEntity(splitEntity);
                     }
                 }
             }
+        }
+    }
+
+    public static Item getFuel(){
+        if(RatsMod.RATLANTIS_LOADED){
+            return RatlantisItemRegistry.GEM_OF_RATLANTIS;
+        }else{
+            return Items.EMERALD;
         }
     }
 

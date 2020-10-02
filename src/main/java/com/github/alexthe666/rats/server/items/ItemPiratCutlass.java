@@ -14,7 +14,7 @@ public class ItemPiratCutlass extends SwordItem {
     private boolean ghost;
 
     public ItemPiratCutlass(boolean ghost) {
-        super(RatsItemRegistry.PIRAT_CUTLASS_MATERIAL, ghost ? 7 : 5, 6.0F, new Item.Properties().group(RatsMod.TAB));
+        super(RatsItemRegistry.PIRAT_CUTLASS_MATERIAL, ghost ? 7 : 5, 6.0F, new Item.Properties().group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID,  ghost? "ghost_pirat_cutlass" : "pirat_cutlass");
         this.ghost = ghost;
     }

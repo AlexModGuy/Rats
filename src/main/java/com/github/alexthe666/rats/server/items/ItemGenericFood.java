@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -29,6 +30,13 @@ public class ItemGenericFood extends Item {
 
     public ItemGenericFood(int amount, float saturation, boolean isWolfFood, boolean eatFast, boolean alwaysEdible, String name) {
         super(new Item.Properties().food(createFood(amount, saturation, isWolfFood, eatFast, alwaysEdible, null)).group(RatsMod.TAB));
+        this.setRegistryName(RatsMod.MODID, name);
+        this.healAmount = amount;
+        this.saturation = saturation;
+    }
+
+    public ItemGenericFood(int amount, float saturation, boolean isWolfFood, boolean eatFast, boolean alwaysEdible, String name, ItemGroup group) {
+        super(new Item.Properties().food(createFood(amount, saturation, isWolfFood, eatFast, alwaysEdible, null)).group(group));
         this.setRegistryName(RatsMod.MODID, name);
         this.healAmount = amount;
         this.saturation = saturation;

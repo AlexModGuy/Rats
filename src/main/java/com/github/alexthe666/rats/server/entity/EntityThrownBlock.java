@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity;
 
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.RatlantisConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -152,7 +153,7 @@ public class EntityThrownBlock extends Entity {
             }
             if (pos != null) {
                 for (Entity hitMobs : world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0F, 1.0F, 1.0F))) {
-                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatConfig.neoRatlanteanAttack);
+                    hitMobs.attackEntityFrom(DamageSource.IN_WALL, RatlantisConfig.neoRatlanteanAttack);
                 }
                 BlockPos blockpos1 = pos.up();
                 if (true) {

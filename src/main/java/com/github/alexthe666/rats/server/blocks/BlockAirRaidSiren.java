@@ -1,8 +1,9 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRatBaron;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatBaron;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -49,7 +50,7 @@ public class BlockAirRaidSiren extends Block {
             lightningboltentity.func_233623_a_(true);
             worldIn.addEntity(lightningboltentity);
             worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
-            EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
+            EntityRatBaron baron = new EntityRatBaron(RatlantisEntityRegistry.RAT_BARON, worldIn);
             baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
             baron.onInitialSpawn((IServerWorld) worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
             worldIn.addEntity(baron);
@@ -72,7 +73,7 @@ public class BlockAirRaidSiren extends Block {
                     lightningboltentity.func_233623_a_(true);
                     worldIn.addEntity(lightningboltentity);
                     worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
-                    EntityRatBaron baron = new EntityRatBaron(RatsEntityRegistry.RAT_BARON, worldIn);
+                    EntityRatBaron baron = new EntityRatBaron(RatlantisEntityRegistry.RAT_BARON, worldIn);
                     baron.setPosition(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
                     baron.onInitialSpawn((IServerWorld) worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.MOB_SUMMONED, null, null);
                     worldIn.addEntity(baron);

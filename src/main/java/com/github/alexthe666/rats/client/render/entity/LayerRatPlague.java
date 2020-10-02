@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatColorUtil;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -81,7 +82,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             ratRenderer.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
         }
 
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
+        if (rat.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_RATINATOR)) {
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RATINATOR);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -93,7 +94,7 @@ public class LayerRatPlague extends LayerRenderer<EntityRat, SegmentedModel<Enti
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_TOGA);
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
+        if (rat.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL)) {
             float f = (float) rat.ticksExisted + partialTicks;
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEnergySwirl(TEXTURE_GHOST, f * 0.01F, f * 0.01F));
             ratRenderer.getEntityModel().setRotationAngles(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

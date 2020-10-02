@@ -19,7 +19,7 @@ public class BlockMarbledCheeseGrass extends GrassBlock implements IGrowable {
         if (!worldIn.isRemote) {
             if (!worldIn.isAreaLoaded(pos, 3)) return;
             if (worldIn.getLight(pos.up()) < 4 && worldIn.getBlockState(pos.up()).getOpacity(worldIn, pos.up()) > 2) {
-                worldIn.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState());
+                worldIn.setBlockState(pos, RatlantisBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState());
             } else {
                 if (worldIn.getLight(pos.up()) >= 9) {
                     for (int i = 0; i < 4; ++i) {

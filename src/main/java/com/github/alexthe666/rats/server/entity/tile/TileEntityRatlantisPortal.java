@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,7 +13,7 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
     private long age;
 
     public TileEntityRatlantisPortal() {
-        super(RatsTileEntityRegistry.RATLANTIS_PORTAL);
+        super(RatlantisTileEntityRegistry.RATLANTIS_PORTAL);
     }
 
     public CompoundNBT write(CompoundNBT compound) {
@@ -40,6 +41,6 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
             return true;
         }
         Block block = this.getWorld().getBlockState(this.getPos().offset(p_184313_1_)).getBlock();
-        return block != RatsBlockRegistry.RATLANTIS_PORTAL;
+        return block != RatlantisBlockRegistry.RATLANTIS_PORTAL;
     }
 }

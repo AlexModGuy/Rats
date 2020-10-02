@@ -4,14 +4,14 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlanteanAutomaton;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends AdvancedEntityModel<T> {
+public class ModelMarbledCheeseGolem<T extends EntityRatlanteanAutomaton> extends AdvancedEntityModel<T> {
     public AdvancedModelBox body;
     public AdvancedModelBox headBase;
     public AdvancedModelBox armLeft1;
@@ -125,9 +125,9 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
 
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
-        EntityMarbleCheeseGolem golem = (EntityMarbleCheeseGolem) entity;
+        EntityRatlanteanAutomaton golem = (EntityRatlanteanAutomaton) entity;
         animator.update(entity);
-        animator.setAnimation(EntityMarbleCheeseGolem.ANIMATION_MELEE);
+        animator.setAnimation(EntityRatlanteanAutomaton.ANIMATION_MELEE);
         animator.startKeyframe(5);
         rotateFrom(body, 0, -20, 0);
         rotateFrom(armLeft1, -60, -20, 10);
@@ -138,7 +138,7 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
         rotateFrom(armLeft2, -30, 40, -30);
         animator.endKeyframe();
         animator.resetKeyframe(5);
-        animator.setAnimation(EntityMarbleCheeseGolem.ANIMATION_RANGED);
+        animator.setAnimation(EntityRatlanteanAutomaton.ANIMATION_RANGED);
         animator.startKeyframe(5);
         animator.move(armRight2, -1F, 0, 2.5F);
         rotateFrom(armRight1, -90, -10, 10);
@@ -168,7 +168,7 @@ public class ModelMarbledCheeseGolem<T extends EntityMarbleCheeseGolem> extends 
         this.swing(ear2, idleSpeed * 0.4F, idleDegree * 0.4F, true, 0, 0, ticksExisted, 1);
     }
 
-    public void setRotationAngles(EntityMarbleCheeseGolem rat, float f, float f1, float f2, float f3, float f4) {
+    public void setRotationAngles(EntityRatlanteanAutomaton rat, float f, float f1, float f2, float f3, float f4) {
         animate((IAnimatedEntity) rat, f, f1, f2, f3, f4);
         this.blade.rotateAngleX = (float) Math.toRadians(MathHelper.wrapDegrees(f2 * 50));
         float idleSpeed = 0.3F;

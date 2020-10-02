@@ -1,13 +1,16 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.entity.EntityGhostPirat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityGhostPirat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemChefToque;
 import com.github.alexthe666.rats.server.items.ItemPiperHat;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -27,7 +30,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BannerItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -63,7 +65,7 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
             IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(renderer.getEntityTexture(rat)), false, true);
             renderer.getEntityModel().render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
-        if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+        if (rat.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
             IVertexBuilder vertexBuilder = bufferIn.getBuffer(RatsRenderType.GREEN_ENTITY_GLINT);
             renderer.getEntityModel().render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -97,7 +99,7 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                     matrixStackIn.translate(0, -0.125F, 0);
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
                 }
-                if(itemstack.getItem() == RatsItemRegistry.GHOST_PIRAT_HAT){
+                if(itemstack.getItem() == RatlantisItemRegistry.GHOST_PIRAT_HAT){
                     float piratScale = rat instanceof EntityGhostPirat ? 1.1F : 1.425F;
                     float piratTranslate = rat instanceof EntityGhostPirat ? 0.05F : -0.125F;
                     GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.3F);
@@ -135,7 +137,7 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                     matrixStackIn.translate(0, 0.075F, -0.05F);
                     matrixStackIn.scale(1.25F, 1.25F, 1.25F);
                 }
-                if (itemstack.getItem() == RatsItemRegistry.MILITARY_HAT) {
+                if (itemstack.getItem() == RatlantisItemRegistry.MILITARY_HAT) {
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
                 }
@@ -144,11 +146,11 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                     matrixStackIn.translate(0, 0.075F, 0F);
                     matrixStackIn.scale(1.25F, 1.25F, 1.25F);
                 }
-                if (itemstack.getItem() == RatsItemRegistry.AVIATOR_HAT) {
+                if (itemstack.getItem() == RatlantisItemRegistry.AVIATOR_HAT) {
                     matrixStackIn.scale(1.25F, 1.25F, 1.25F);
                     matrixStackIn.translate(0, 0.035F, 0.01F);
                 }
-                if (itemstack.getItem() == RatsItemRegistry.RATLANTIS_HELMET) {
+                if (itemstack.getItem() == RatlantisItemRegistry.RATLANTIS_HELMET) {
                     matrixStackIn.scale(1.25F, 1.25F, 1.25F);
                     matrixStackIn.translate(0, -0.1F, 0.01F);
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
@@ -187,7 +189,7 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
             matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
             matrixStackIn.scale(0.8F, 0.8F, 0.8F);
-            if (itemstack.getItem() == RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD.asItem()) {
+            if (RatsMod.RATLANTIS_LOADED && itemstack.getItem() == RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.asItem()) {
                 matrixStackIn.translate(0, -0.2F, 0.65F);
                 matrixStackIn.rotate(new Quaternion(Vector3f.XP, 20, true));
                 matrixStackIn.scale(1.425F, 1.425F, 1.425F);

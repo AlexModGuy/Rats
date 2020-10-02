@@ -1,8 +1,9 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityMarbleCheeseGolem;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlanteanAutomaton;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -34,14 +35,14 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
     private static final Predicate<BlockState> IS_MARBLE = new Predicate<BlockState>() {
         public boolean apply(@Nullable BlockState p_apply_1_) {
             return p_apply_1_ != null && (p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_PILLAR
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_TILE
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_CHISELED
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY
-                    || p_apply_1_.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_TILE
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_CHISELED
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_BRICK
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY
+                    || p_apply_1_.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED
             );
         }
     };
@@ -93,7 +94,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
             }
 
             BlockPos blockpos = blockpattern$patternhelper.translateOffset(1, 2, 0).getPos();
-            EntityMarbleCheeseGolem entityirongolem = new EntityMarbleCheeseGolem(RatsEntityRegistry.RATLANTEAN_AUTOMATON, worldIn);
+            EntityRatlanteanAutomaton entityirongolem = new EntityRatlanteanAutomaton(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON, worldIn);
             entityirongolem.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
             worldIn.addEntity(entityirongolem);
             for (ServerPlayerEntity serverplayerentity1 : worldIn.getEntitiesWithinAABB(ServerPlayerEntity.class, entityirongolem.getBoundingBox().grow(5.0D))) {
@@ -120,7 +121,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
 
     protected BlockPattern getGolemBasePattern() {
         if (this.golemBasePattern == null) {
-            this.golemBasePattern = BlockPatternBuilder.start().aisle("~ ~", "#X#", "~#~").where('#', CachedBlockInfo.hasState(IS_MARBLE)).where('~', CachedBlockInfo.hasState(BlockMaterialMatcher.forMaterial(Material.AIR))).where('X', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatsBlockRegistry.MARBLED_CHEESE_GOLEM_CORE))).build();
+            this.golemBasePattern = BlockPatternBuilder.start().aisle("~ ~", "#X#", "~#~").where('#', CachedBlockInfo.hasState(IS_MARBLE)).where('~', CachedBlockInfo.hasState(BlockMaterialMatcher.forMaterial(Material.AIR))).where('X', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE))).build();
         }
 
         return this.golemBasePattern;
@@ -128,7 +129,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
 
     protected BlockPattern getGolemPattern() {
         if (this.golemPattern == null) {
-            this.golemPattern = BlockPatternBuilder.start().aisle("~^~", "#X#", "~#~").where('^', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD))).where('#', CachedBlockInfo.hasState(IS_MARBLE)).where('~', CachedBlockInfo.hasState(BlockMaterialMatcher.forMaterial(Material.AIR))).where('X', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatsBlockRegistry.MARBLED_CHEESE_GOLEM_CORE))).build();
+            this.golemPattern = BlockPatternBuilder.start().aisle("~^~", "#X#", "~#~").where('^', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD))).where('#', CachedBlockInfo.hasState(IS_MARBLE)).where('~', CachedBlockInfo.hasState(BlockMaterialMatcher.forMaterial(Material.AIR))).where('X', CachedBlockInfo.hasState(BlockStateMatcher.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE))).build();
         }
 
         return this.golemPattern;

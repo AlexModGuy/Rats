@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntityType;
 public class TileEntityRatlantisReactor extends TileEntity implements ITickableTileEntity {
 
     public TileEntityRatlantisReactor() {
-        super(RatsTileEntityRegistry.RATLANTIS_REACTOR);
+        super(RatlantisTileEntityRegistry.RATLANTIS_REACTOR);
     }
 
     @Override

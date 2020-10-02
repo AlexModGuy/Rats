@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelFlyingDutchrat;
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityDutchrat;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

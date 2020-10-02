@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "DSD",
-    "DUD",
+    "FUF",
     "DPD"
   ],
   "key": {
@@ -15,8 +15,11 @@
     "U": {
       "item": "rats:rat_upgrade_basic_mount"
     },
+    "F": {
+      "item": "rats:filth"
+    },
     "D": {
-      "item": "rats:feral_rat_claw"
+      "item": "rats:plague_leech"
     }
   },
   "result": {

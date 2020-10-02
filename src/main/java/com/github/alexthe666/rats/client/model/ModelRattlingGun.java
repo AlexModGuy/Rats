@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGun;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 

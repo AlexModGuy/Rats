@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.event;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.ModelStaticRat;
 import com.github.alexthe666.rats.client.render.entity.RenderRatProtector;
@@ -93,7 +94,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onOpenGui(GuiScreenEvent.DrawScreenEvent.Post event) {
-        if (RatConfig.skipExperimentalSettingsGUI) {
+        if (RatsMod.RATLANTIS_LOADED && RatlantisConfig.skipExperimentalSettingsGUI) {
             if (event.getGui() instanceof ConfirmBackupScreen) {
                 ConfirmBackupScreen confirmBackupScreen = (ConfirmBackupScreen) event.getGui();
                 String name = "";

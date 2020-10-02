@@ -28,7 +28,7 @@ public class ItemChunkyCheeseToken extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String formattedChance = NumberFormat.getNumberInstance().format(RatConfig.tokenDropRate);
         tooltip.add(new TranslationTextComponent("item.rats.chunky_cheese_token.desc0", formattedChance).func_240699_a_(TextFormatting.GRAY));
-        if (!RatConfig.disableRatlantis) {
+        if (RatsMod.RATLANTIS_LOADED) {
             tooltip.add(new TranslationTextComponent("item.rats.chunky_cheese_token.desc1").func_240699_a_(TextFormatting.GRAY));
         }
     }

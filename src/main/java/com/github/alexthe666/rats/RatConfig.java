@@ -6,9 +6,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import java.util.List;
 
 public class RatConfig {
-    public static boolean ratlantisInOverworld = true;
     public static boolean spawnRats = true;
-    public static boolean skipExperimentalSettingsGUI = true;
     public static boolean spawnPiper = true;
     public static boolean spawnDemonRats = true;
     public static boolean funnyFluteSound = true;
@@ -19,13 +17,6 @@ public class RatConfig {
     public static int piperSpawnDecrease = 1;
     public static int piperSpawnRate = 6;
     public static float piperHatDropRate = 0.09F;
-    public static float archeologistHatSpawnRate = 0.12F;
-    public static float ratlanteanAutomatonHealth = 600F;
-    public static float ratlanteanAutomatonAttack = 6F;
-    public static float neoRatlanteanHealth = 300F;
-    public static float neoRatlanteanAttack = 8F;
-    public static float dutchratHealth = 400F;
-    public static float dutchratAttack = 8F;
     public static boolean ratsSpawnLikeMonsters = true;
     public static boolean cheesemaking = true;
     public static boolean plagueRats = true;
@@ -49,9 +40,6 @@ public class RatConfig {
     public static int tokenDropRate = 10000;
     public static String[] blacklistedRatBlocks = new String[0];
     public static int[] blacklistedRatDimensions = new int[0];
-    public static boolean disableRatlantis = false;
-    public static int ratlantisDimensionId = -8;
-    public static int ratlantisPortalExitDimension = 0;
     public static int maxDestroyedLeaves = 10000;
     public static float blackDeathHealth = 400F;
     public static float blackDeathAttack = 4F;
@@ -168,7 +156,6 @@ public class RatConfig {
     public static void bakeClient(final ModConfig config) {
         try {
             plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
-            skipExperimentalSettingsGUI = ConfigHolder.CLIENT.skipExperimentalSettingsGUI.get();
             funnyFluteSound = ConfigHolder.CLIENT.funnyFluteSound.get();
         }catch (Exception e){
             RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
@@ -187,13 +174,7 @@ public class RatConfig {
             piperSpawnDecrease = ConfigHolder.SERVER.piperSpawnDecrease.get();
             piperSpawnRate = ConfigHolder.SERVER.piperSpawnRate.get();
             piperHatDropRate = ConfigHolder.SERVER.piperHatDropRate.get().floatValue();
-            archeologistHatSpawnRate = ConfigHolder.SERVER.archeologistHatSpawnRate.get().floatValue();
-            ratlanteanAutomatonHealth = ConfigHolder.SERVER.ratlanteanAutomatonHealth.get().floatValue();
-            ratlanteanAutomatonAttack = ConfigHolder.SERVER.ratlanteanAutomatonAttack.get().floatValue();
-            neoRatlanteanHealth = ConfigHolder.SERVER.neoRatlanteanHealth.get().floatValue();
-            neoRatlanteanAttack = ConfigHolder.SERVER.neoRatlanteanAttack.get().floatValue();
-            dutchratHealth = ConfigHolder.SERVER.dutchratHealth.get().floatValue();
-            dutchratAttack = ConfigHolder.SERVER.dutchratAttack.get().floatValue();
+
             ratsSpawnLikeMonsters = ConfigHolder.SERVER.ratsSpawnLikeMonsters.get();
             cheesemaking = ConfigHolder.SERVER.cheesemaking.get();
             plagueRats = ConfigHolder.SERVER.plagueRats.get();
@@ -214,9 +195,6 @@ public class RatConfig {
             ratCageCramming = ConfigHolder.SERVER.ratCageCramming.get();
             ratUpdateDelay = ConfigHolder.SERVER.ratUpdateDelay.get();
             tokenDropRate = ConfigHolder.SERVER.tokenDropRate.get();
-            disableRatlantis = ConfigHolder.SERVER.disableRatlantis.get();
-            ratlantisDimensionId = ConfigHolder.SERVER.ratlantisDimensionId.get();
-            ratlantisPortalExitDimension = ConfigHolder.SERVER.ratlantisPortalExitDimension.get();
             maxDestroyedLeaves = ConfigHolder.SERVER.maxDestroyedLeaves.get();
             blackDeathHealth = ConfigHolder.SERVER.blackDeathHealth.get().floatValue();
             blackDeathAttack = ConfigHolder.SERVER.blackDeathAttack.get().floatValue();

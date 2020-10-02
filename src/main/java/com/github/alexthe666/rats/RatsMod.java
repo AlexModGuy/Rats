@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.CommonProxy;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.*;
+import com.github.alexthe666.rats.server.misc.TabRatlantis;
 import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
 import com.github.alexthe666.rats.server.potion.PotionPlague;
 import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
@@ -15,10 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -55,7 +58,9 @@ public class RatsMod {
     public static Effect CONFIT_BYALDI_POTION = new PotionConfitByaldi();
     public static Effect PLAGUE_POTION = new PotionPlague();
     public static boolean ICEANDFIRE_LOADED;
+    public static boolean RATLANTIS_LOADED = false;
     private static int packetsRegistered = 0;
+    private static ItemGroup ratlantisTab = null;
 
     static {
         NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("rats", "main_channel"));
@@ -70,13 +75,13 @@ public class RatsMod {
     }
 
     public RatsMod() {
+        RATLANTIS_LOADED = ModList.get().isLoaded("ratlantis");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
-
         PROXY.init();
         RatsWorldRegistry.init();
     }
@@ -136,5 +141,9 @@ public class RatsMod {
 
     private void setupClient(FMLClientSetupEvent event) {
         PROXY.preInit();
+    }
+
+    public static ItemGroup getRatlantisTab(){
+        return RATLANTIS_LOADED ? ratlantisTab == null ? ratlantisTab = new TabRatlantis() : ratlantisTab : TAB;
     }
 }

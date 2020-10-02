@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "brain_block",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:brain_block"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

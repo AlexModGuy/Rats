@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "marbled_cheese_brick_stairs",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:marbled_cheese_brick_stairs"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

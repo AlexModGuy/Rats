@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "rats:block/rat_quarry_side",
+        "down": "rats:block/rat_quarry_bottom",
+        "up": "rats:block/rat_quarry_top",
+        "north": "rats:block/rat_quarry_side",
+        "east": "rats:block/rat_quarry_side",
+        "south": "rats:block/rat_quarry_side",
+        "west": "rats:block/rat_quarry_side"
+    }
+}

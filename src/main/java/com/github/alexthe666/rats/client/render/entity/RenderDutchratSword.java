@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.server.entity.EntityDutchratSword;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityDutchratSword;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 public class RenderDutchratSword extends EntityRenderer<EntityDutchratSword> {
 
-    private static final ItemStack PIRAT_SWORD = new ItemStack(RatsItemRegistry.GHOST_PIRAT_CUTLASS);
+    private static final ItemStack PIRAT_SWORD = new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS);
 
     public RenderDutchratSword() {
         super(Minecraft.getInstance().getRenderManager());

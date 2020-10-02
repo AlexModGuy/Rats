@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelFlyingDutchrat;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityDutchrat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

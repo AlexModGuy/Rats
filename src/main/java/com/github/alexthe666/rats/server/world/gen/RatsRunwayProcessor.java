@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -18,14 +19,14 @@ public class RatsRunwayProcessor extends StructureProcessor {
         if (blockInfoIn2.state.getBlock() == Blocks.GRASS) {
             Random rand = settings.getRandom(blockInfoIn2.pos);
             if(rand.nextBoolean()){
-                Template.BlockInfo newInfo = new Template.BlockInfo(blockInfoIn2.pos, RatsBlockRegistry.MARBLED_CHEESE_GRASS.getDefaultState(), null);
+                Template.BlockInfo newInfo = new Template.BlockInfo(blockInfoIn2.pos, RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.getDefaultState(), null);
                 return newInfo;
             }
         }
         if (blockInfoIn2.state.getBlock() == Blocks.DIRT) {
             Random rand = settings.getRandom(blockInfoIn2.pos);
             if(rand.nextBoolean()){
-                Template.BlockInfo newInfo = new Template.BlockInfo(blockInfoIn2.pos, RatsBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState(), null);
+                Template.BlockInfo newInfo = new Template.BlockInfo(blockInfoIn2.pos, RatlantisBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState(), null);
                 return newInfo;
             }
         }

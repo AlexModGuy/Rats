@@ -330,6 +330,12 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             if (merchantoffer3 != null) {
                 merchantoffers.add(merchantoffer3);
             }
+            if(RatsMod.RATLANTIS_LOADED){
+                MerchantOffer combiner = RatsVillagerTrades.COMBINER_TRADE.getOffer(this, this.rand);
+                if (combiner != null) {
+                    merchantoffers.add(combiner);
+                }
+            }
         }
     }
 

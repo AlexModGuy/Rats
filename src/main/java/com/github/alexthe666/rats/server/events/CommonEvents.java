@@ -1,9 +1,12 @@
 package com.github.alexthe666.rats.server.events;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.*;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
@@ -44,6 +47,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -146,16 +150,16 @@ public class CommonEvents {
 
     public static int getProtectorCount(LivingEntity entity){
         int protectors = 0;
-        if(entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatsItemRegistry.RATLANTIS_HELMET){
+        if(entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == RatlantisItemRegistry.RATLANTIS_HELMET){
             protectors++;
         }
-        if(entity.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() == RatsItemRegistry.RATLANTIS_CHESTPLATE){
+        if(entity.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() == RatlantisItemRegistry.RATLANTIS_CHESTPLATE){
             protectors++;
         }
-        if(entity.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == RatsItemRegistry.RATLANTIS_LEGGINGS){
+        if(entity.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == RatlantisItemRegistry.RATLANTIS_LEGGINGS){
             protectors++;
         }
-        if(entity.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == RatsItemRegistry.RATLANTIS_BOOTS){
+        if(entity.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == RatlantisItemRegistry.RATLANTIS_BOOTS){
             protectors++;
         }
         return protectors;
@@ -207,14 +211,16 @@ public class CommonEvents {
             animal.targetSelector.addGoal(5, new NearestAttackableTargetGoal(animal, EntityRat.class, true));
         }
 
-        if (event.getEntity() != null && event.getEntity() instanceof HuskEntity) {
-            if (((HuskEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate) {
-                event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+        if(RatsMod.RATLANTIS_LOADED){
+            if (event.getEntity() != null && event.getEntity() instanceof HuskEntity) {
+                if (((HuskEntity) event.getEntity()).getRNG().nextFloat() < RatlantisConfig.archeologistHatSpawnRate) {
+                    event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                }
             }
-        }
-        if (event.getEntity() != null && event.getEntity() instanceof SkeletonEntity) {
-            if (((SkeletonEntity) event.getEntity()).getRNG().nextFloat() < RatConfig.archeologistHatSpawnRate * 0.05F) {
-                event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+            if (event.getEntity() != null && event.getEntity() instanceof SkeletonEntity) {
+                if (((SkeletonEntity) event.getEntity()).getRNG().nextFloat() < RatlantisConfig.archeologistHatSpawnRate * 0.05F) {
+                    event.getEntity().setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT));
+                }
             }
         }
 
@@ -259,6 +265,14 @@ public class CommonEvents {
     public static void onDrops(LivingDropsEvent event) {
         if (event.getEntityLiving() instanceof EntityIllagerPiper && event.getSource().getTrueSource() instanceof PlayerEntity && event.getEntityLiving().world.rand.nextFloat() < RatConfig.piperHatDropRate + (RatConfig.piperHatDropRate / 2) * event.getLootingLevel()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.PIPER_HAT)));
+        }
+        if(RatsMod.RATLANTIS_LOADED){
+            if (event.getEntityLiving() != null && event.getEntityLiving() instanceof EntityRat) {
+                int level = event.getLootingLevel();
+                if (((EntityRat) event.getEntity()).getRNG().nextFloat() <= (0.0002F + level * 0.0001F)) {
+                    event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN,  1)));
+                }
+            }
         }
         if (event.getEntityLiving() instanceof CreeperEntity && ((CreeperEntity) event.getEntityLiving()).isCharged()) {
             event.getDrops().add(new ItemEntity(event.getEntity().world, event.getEntityLiving().getPosX(), event.getEntityLiving().getPosY(), event.getEntityLiving().getPosZ(), new ItemStack(RatsItemRegistry.CHARGED_CREEPER_CHUNK, event.getLootingLevel() + 1 + event.getEntityLiving().world.rand.nextInt(2))));
@@ -422,10 +436,11 @@ public class CommonEvents {
         }
     }
 
-   /* @SubscribeEvent
-    public static void onChestGenerated(LootTableLoadEvent event) {
+    @SubscribeEvent
+    public static void onLootTableRolled(LootTableLoadEvent event) {
+
         //if (false){//RatConfig.addLoot) {
-            if (event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT)
+        /*    if (event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON) || event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT)
                     || event.getName().equals(LootTables.CHESTS_DESERT_PYRAMID) || event.getName().equals(LootTables.CHESTS_JUNGLE_TEMPLE)
                     || event.getName().equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || event.getName().equals(LootTables.CHESTS_STRONGHOLD_CROSSING)
                     || event.getName().equals(LootTables.CHESTS_IGLOO_CHEST) || event.getName().equals(LootTables.CHESTS_WOODLAND_MANSION)
@@ -453,4 +468,5 @@ public class CommonEvents {
             }
         }
     }*/
+    }
 }

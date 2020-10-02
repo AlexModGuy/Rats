@@ -6,9 +6,10 @@ import com.github.alexthe666.rats.client.model.ModelPinkie;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.EntityRatBaronPlane;
-import com.github.alexthe666.rats.server.entity.EntityRatBiplaneMount;
-import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatBaronPlane;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGun;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -188,7 +189,7 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
         if (entity.isChild()) {
             return PINKIE_TEXTURE;
         } else {
-            if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ETHEREAL)) {
+            if (entity.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL)) {
                 return ETHEREAL_UPGRADE_TEXTURE;
             }
             if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE)) {

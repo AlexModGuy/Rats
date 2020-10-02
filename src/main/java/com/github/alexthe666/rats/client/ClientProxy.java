@@ -12,13 +12,17 @@ import com.github.alexthe666.rats.client.render.RenderNothing;
 import com.github.alexthe666.rats.client.render.entity.*;
 import com.github.alexthe666.rats.client.render.tile.*;
 import com.github.alexthe666.rats.server.CommonProxy;
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
+import com.github.alexthe666.rats.server.entity.tile.RatlantisTileEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.RatsTileEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatTube;
 import com.github.alexthe666.rats.server.items.ItemRatSack;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -117,126 +121,31 @@ public class ClientProxy extends CommonProxy {
         }*/
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void preInit() {
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_DECORATED, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RATGLOVE_FLOWER, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_TUBE_COLOR, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AUTO_CURDLER, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_HOLE, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MANHOLE, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.TRASH_CAN, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_ATTRACTOR, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MARBLED_CHEESE_GRASS, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AIR_RAID_SIREN, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.CHUNKY_CHEESE_TOKEN, RenderType.getCutout());
-
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void init() {
-        RatsGuiRegistry.register();
-        MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT, manager -> new RenderRat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SPAWNER, manager -> new RenderNothing());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIED_PIPER, manager -> new RenderIllagerPiper());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit(false));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_FLAME, manager -> new SpriteRenderer(manager, Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON, manager -> new RenderMarbledCheeseGolem());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, manager -> new RenderGolemBeam());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.FERAL_RATLANTEAN, manager -> new RenderFeralRatlantean());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.NEO_RATLANTEAN, manager -> new RenderNeoRatlantean());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.LASER_BEAM, manager -> new RenderLaserBeam());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.LASER_PORTAL, manager -> new RenderLaserPortal());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.THROWN_BLOCK, manager -> new RenderThrownBlock());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.VIAL_OF_SENTIENCE, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIRAT_BOAT, manager -> new RenderPiratBoat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.CHEESE_CANNONBALL, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_DOCTOR, manager -> new RenderPlagueDoctor());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PURIFYING_LIQUID, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.BLACK_DEATH, manager -> new RenderBlackDeath());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_CLOUD, manager -> new RenderRatlateanSpirit(true));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_BEAST, manager -> new RenderPlagueBeast());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_SHOT, manager -> new RenderPlagueShot());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_CAPTURE_NET, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_DRAGON_FIRE, manager -> new RenderNothing());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_ARROW, manager -> new RenderRatArrow());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DUTCHRAT, manager -> new RenderDutchrat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DUTCHRAT_SWORD, manager -> new RenderDutchratSword());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATFISH, manager -> new RenderRatfish());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATTLING_GUN, manager -> new RenderRattlingGun());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATTLING_GUN_BULLET, manager -> new RenderRattlingGunBullet());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTEAN_RATBOT, manager -> new RenderRatlanteanRatbot());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_GOLEM, manager -> new RenderRatGolemMount());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_CHICKEN, manager -> new RenderRatChickenMount());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BEAST, manager -> new RenderRatBeastMount());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIRAT, manager -> new RenderPirat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_AUTOMATON, manager -> new RenderRatAutomatonMount());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.GHOST_PIRAT, manager -> new RenderGhostPirat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_KING, manager -> new RenderRatKing());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SHOT, manager -> new RenderRatShot());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON, manager -> new RenderRat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_BARON_PLANE, manager -> new RenderRatBaronPlane());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BIPLANE, manager -> new RenderRatBiplaneMount());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_PROTECTOR, manager -> new RenderRatProtector());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RATLANTIS_ARROW, manager -> new RenderRatlantisArrow());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DEMON_RAT, manager -> new RenderDemonRat());
-        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_STRIDER_MOUNT, manager -> new StriderRenderer(Minecraft.getInstance().getRenderManager()));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RATLANTIS_PORTAL, manager -> new RenderRatlantisPortal(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_DECORATED, manager -> new RenderRatCageDecorated(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN, manager -> new RenderRatCageDecorated(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));
-        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TOKEN, manager -> new RenderRatlantisToken(manager));
-        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RAT_SACK, new ResourceLocation("rat_count"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
-            return Math.min(3, ItemRatSack.getRatsInStack(p_239428_0_));
-        });
-        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RATLANTIS_BOW, new ResourceLocation("pull"), (p_239429_0_, p_239429_1_, p_239429_2_) -> {
-            if (p_239429_2_ == null) {
-                return 0.0F;
-            } else {
-                return p_239429_2_.getActiveItemStack() != p_239429_0_ ? 0.0F : (float)(p_239429_0_.getUseDuration() - p_239429_2_.getItemInUseCount()) / 20.0F;
-            }
-        });
-        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RATLANTIS_BOW, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
-            return p_239428_2_ != null && p_239428_2_.isHandActive() && p_239428_2_.getActiveItemStack() == p_239428_0_ ? 1.0F : 0.0F;
-        });
-    }
-
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onBlockColors(ColorHandlerEvent.Block event) {
         RatsMod.LOGGER.info("loaded in block colorizer");
-        event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
-            int meta = 0;
-            if(worldIn.getTileEntity(pos) instanceof TileEntityRatTube){
-                TileEntityRatTube tube = (TileEntityRatTube)worldIn.getTileEntity(pos);
-                meta = tube.getColor();
-            }
-            DyeColor color = DyeColor.byId(meta);
-            return color.getFireworkColor();
-        }, RatsBlockRegistry.RAT_TUBE_COLOR);
-        event.getBlockColors().register((state, worldIn, pos, colorIn) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), RatsBlockRegistry.MARBLED_CHEESE_GRASS);
+        if (RatsMod.RATLANTIS_LOADED) {
+            event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
+                int meta = 0;
+                if (worldIn.getTileEntity(pos) instanceof TileEntityRatTube) {
+                    TileEntityRatTube tube = (TileEntityRatTube) worldIn.getTileEntity(pos);
+                    meta = tube.getColor();
+                }
+                DyeColor color = DyeColor.byId(meta);
+                return color.getFireworkColor();
+            }, RatsBlockRegistry.RAT_TUBE_COLOR);
+            event.getBlockColors().register((state, worldIn, pos, colorIn) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), RatlantisBlockRegistry.MARBLED_CHEESE_GRASS);
+        }
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onItemColors(ColorHandlerEvent.Item event) {
         RatsMod.LOGGER.info("loaded in item colorizer");
-        event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> GrassColors.get(0.5D, 1.0D), Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_GRASS));
-
+        if (RatsMod.RATLANTIS_LOADED) {
+            event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> GrassColors.get(0.5D, 1.0D), Item.getItemFromBlock(RatlantisBlockRegistry.MARBLED_CHEESE_GRASS));
+        }
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
             int meta = 0;
             for (int i = 0; i < RatsItemRegistry.RAT_TUBES.length; i++) {
@@ -279,6 +188,115 @@ public class ClientProxy extends CommonProxy {
                 return -1;
             }
         }, RatsItemRegistry.RAT_NUGGET_ORE);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> getTEISR() {
+        return com.github.alexthe666.rats.client.render.tile.RatsTEISR::new;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void preInit() {
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_DECORATED, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_TUBE_COLOR, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AUTO_CURDLER, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_HOLE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MANHOLE, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.TRASH_CAN, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_ATTRACTOR, RenderType.getCutout());
+        if (RatsMod.RATLANTIS_LOADED) {
+            RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.RATGLOVE_FLOWER, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.MARBLED_CHEESE_GRASS, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.AIR_RAID_SIREN, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN, RenderType.getCutout());
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void init() {
+        RatsGuiRegistry.register();
+        MinecraftForge.EVENT_BUS.register(new com.github.alexthe666.rats.client.event.ClientEvents());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT, manager -> new RenderRat());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SPAWNER, manager -> new RenderNothing());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PIED_PIPER, manager -> new RenderIllagerPiper());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.THROWN_BLOCK, manager -> new RenderThrownBlock());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_DOCTOR, manager -> new RenderPlagueDoctor());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PURIFYING_LIQUID, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.BLACK_DEATH, manager -> new RenderBlackDeath());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_CLOUD, manager -> new RenderRatlateanSpirit(true));
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_BEAST, manager -> new RenderPlagueBeast());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.PLAGUE_SHOT, manager -> new RenderPlagueShot());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_CAPTURE_NET, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_DRAGON_FIRE, manager -> new RenderNothing());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_ARROW, manager -> new RenderRatArrow());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_GOLEM, manager -> new RenderRatGolemMount());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_CHICKEN, manager -> new RenderRatChickenMount());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_MOUNT_BEAST, manager -> new RenderRatBeastMount());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_KING, manager -> new RenderRatKing());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SHOT, manager -> new RenderRatShot());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DEMON_RAT, manager -> new RenderDemonRat());
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_STRIDER_MOUNT, manager -> new StriderRenderer(Minecraft.getInstance().getRenderManager()));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_DECORATED, manager -> new RenderRatCageDecorated(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN, manager -> new RenderRatCageDecorated(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));
+        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RAT_SACK, new ResourceLocation("rat_count"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+            return Math.min(3, ItemRatSack.getRatsInStack(p_239428_0_));
+        });
+        if (RatsMod.RATLANTIS_LOADED) {
+            ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.RATLANTIS_PORTAL, manager -> new RenderRatlantisPortal(manager));
+            ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.DUTCHRAT_BELL, manager -> new RenderDutchratBell(manager));
+            ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
+            ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.TOKEN, manager -> new RenderRatlantisToken(manager));
+
+            ItemModelsProperties.func_239418_a_(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pull"), (p_239429_0_, p_239429_1_, p_239429_2_) -> {
+                if (p_239429_2_ == null) {
+                    return 0.0F;
+                } else {
+                    return p_239429_2_.getActiveItemStack() != p_239429_0_ ? 0.0F : (float) (p_239429_0_.getUseDuration() - p_239429_2_.getItemInUseCount()) / 20.0F;
+                }
+            });
+        }
+        ItemModelsProperties.func_239418_a_(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+            return p_239428_2_ != null && p_239428_2_.isHandActive() && p_239428_2_.getActiveItemStack() == p_239428_0_ ? 1.0F : 0.0F;
+        });
+        if (RatsMod.RATLANTIS_LOADED) {
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.DUTCHRAT, manager -> new RenderDutchrat());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.DUTCHRAT_SWORD, manager -> new RenderDutchratSword());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATFISH, manager -> new RenderRatfish());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATTLING_GUN, manager -> new RenderRattlingGun());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATTLING_GUN_BULLET, manager -> new RenderRattlingGunBullet());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTEAN_RATBOT, manager -> new RenderRatlanteanRatbot());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.PIRAT, manager -> new RenderPirat());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON, manager -> new RenderRatAutomatonMount());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.GHOST_PIRAT, manager -> new RenderGhostPirat());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RAT_BARON, manager -> new RenderRat());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RAT_BARON_PLANE, manager -> new RenderRatBaronPlane());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RAT_MOUNT_BIPLANE, manager -> new RenderRatBiplaneMount());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RAT_PROTECTOR, manager -> new RenderRatProtector());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTIS_ARROW, manager -> new RenderRatlantisArrow());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTEAN_SPIRIT, manager -> new RenderRatlateanSpirit(false));
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTEAN_FLAME, manager -> new SpriteRenderer(manager, Minecraft.getInstance().getItemRenderer()));
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON, manager -> new RenderMarbledCheeseGolem());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON_BEAM, manager -> new RenderGolemBeam());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.FERAL_RATLANTEAN, manager -> new RenderFeralRatlantean());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.NEO_RATLANTEAN, manager -> new RenderNeoRatlantean());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.LASER_BEAM, manager -> new RenderLaserBeam());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.LASER_PORTAL, manager -> new RenderLaserPortal());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.VIAL_OF_SENTIENCE, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.PIRAT_BOAT, manager -> new RenderPiratBoat());
+            RenderingRegistry.registerEntityRenderingHandler(RatlantisEntityRegistry.CHEESE_CANNONBALL, manager -> new SpriteRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()));
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -354,23 +372,23 @@ public class ClientProxy extends CommonProxy {
             return new ModelRatFez(1.0F);
         } else if (index == 7) {
             return new ModelTopHat(1.0F);
-        } else if(index == 8){
+        } else if (index == 8) {
             return new ModelSantaHat(1.0F);
-        }else if(index == 9){
+        } else if (index == 9) {
             return new ModelGhostPiratHat(1.0F);
-        }else  if(index == 10){
+        } else if (index == 10) {
             return new ModelHaloHat(0.5F);
-        }else  if(index == 11){
+        } else if (index == 11) {
             return new ModelPartyHat(0.5F);
-        }else if(index == 12){
+        } else if (index == 12) {
             return new ModelMilitaryHat(1.2F);
-        }else if(index == 13){
+        } else if (index == 13) {
             return new ModelAviatorHat(1.0F);
-        }else if(index == 14){
+        } else if (index == 14) {
             return new ModelRatlantisArmor(1.0F);
-        }else if(index == 15){
+        } else if (index == 15) {
             return new ModelRatlantisArmor(0.5F);
-        }else{
+        } else {
             return null;
         }
     }
@@ -402,7 +420,7 @@ public class ClientProxy extends CommonProxy {
             return;
         }
         if (name.equals("rat_ghost")) {
-           Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleRatGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("pirat_ghost")) {
             Minecraft.getInstance().particles.addEffect(new ParticlePiratGhost(world, x, y, z, (float) motX, (float) motY, (float) motZ));
@@ -414,7 +432,7 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getInstance().particles.addEffect(new ParticleFlea(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("upgrade_combiner")) {
-          Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
+            Minecraft.getInstance().particles.addEffect(new ParticleUpgradeCombiner(world, x, y, z, (float) motX, (float) motY, (float) motZ));
         }
         if (name.equals("saliva")) {
             Minecraft.getInstance().particles.addEffect(new ParticleSaliva(world, x, y, z, Fluids.WATER));
@@ -445,20 +463,22 @@ public class ClientProxy extends CommonProxy {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public World getWorld(){ return Minecraft.getInstance().world; }
+    public World getWorld() {
+        return Minecraft.getInstance().world;
+    }
 
     @OnlyIn(Dist.CLIENT)
-    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid){
+    public void handlePacketAutoCurdlerFluid(long blockPos, FluidStack fluid) {
         BlockPos pos = BlockPos.fromLong(blockPos);
         World world = Minecraft.getInstance().world;
-        if ( world != null && world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
+        if (world != null && world.getTileEntity(pos) instanceof TileEntityAutoCurdler) {
             TileEntityAutoCurdler table = (TileEntityAutoCurdler) world.getTileEntity(pos);
             table.tank.setFluid(fluid);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handlePacketCheeseStaffRat(int entityId, boolean clear){
+    public void handlePacketCheeseStaffRat(int entityId, boolean clear) {
         Entity e = Minecraft.getInstance().player.world.getEntityByID(entityId);
         if (e instanceof EntityRat) {
             setRefrencedRat((EntityRat) e);
@@ -466,7 +486,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag){
+    public void handlePacketUpdateTileSlots(long blockPos, CompoundNBT tag) {
         BlockPos pos = BlockPos.fromLong(blockPos);
         World world = Minecraft.getInstance().world;
         if (world.getTileEntity(pos) != null) {
@@ -477,11 +497,6 @@ public class ClientProxy extends CommonProxy {
 
     public Item.Properties setupTEISR(Item.Properties props) {
         return props.setISTER(ClientProxy::getTEISR);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> getTEISR() {
-        return com.github.alexthe666.rats.client.render.tile.RatsTEISR::new;
     }
 
     @OnlyIn(Dist.CLIENT)

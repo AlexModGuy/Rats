@@ -24,7 +24,7 @@ public class ItemRatlantisTool {
     public static class Pickaxe extends PickaxeItem{
 
         public Pickaxe() {
-            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 1, -2.8F, new Item.Properties().group(RatsMod.TAB));
+            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 1, -2.8F, new Item.Properties().group(RatsMod.getRatlantisTab()));
             this.setRegistryName(RatsMod.MODID, "ratlantis_pickaxe");
         }
 
@@ -54,7 +54,7 @@ public class ItemRatlantisTool {
 
     public static class Axe extends AxeItem {
         public Axe() {
-            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 5.0F, -3.0F, new Item.Properties().group(RatsMod.TAB));
+            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 5.0F, -3.0F, new Item.Properties().group(RatsMod.getRatlantisTab()));
             this.setRegistryName(RatsMod.MODID, "ratlantis_axe");
         }
 
@@ -87,7 +87,7 @@ public class ItemRatlantisTool {
 
     public static class Shovel extends ShovelItem {
         public Shovel() {
-            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 1.5F, -3.0F, new Item.Properties().group(RatsMod.TAB));
+            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, 1.5F, -3.0F, new Item.Properties().group(RatsMod.getRatlantisTab()));
             this.setRegistryName(RatsMod.MODID, "ratlantis_shovel");
         }
 
@@ -113,7 +113,7 @@ public class ItemRatlantisTool {
 
     public static class Hoe extends HoeItem {
         public Hoe() {
-            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, -3, 0, new Item.Properties().group(RatsMod.TAB));
+            super(RatsItemRegistry.RATLANTIS_TOOL_MATERIAL, -3, 0, new Item.Properties().group(RatsMod.getRatlantisTab()));
             this.setRegistryName(RatsMod.MODID, "ratlantis_hoe");
         }
 

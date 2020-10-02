@@ -47,6 +47,9 @@ public class GuiUpgradeCombiner extends ContainerScreen<ContainerUpgradeCombiner
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityUpgradeCombiner && !((TileEntityUpgradeCombiner) RatsMod.PROXY.getRefrencedTE()).canCombine(this.tileFurnace.getStackInSlot(0), this.tileFurnace.getStackInSlot(2)) && !this.tileFurnace.getStackInSlot(0).isEmpty() && !this.tileFurnace.getStackInSlot(2).isEmpty()) {
             this.func_238474_b_(p_230450_1_, i + 42, j + 34, 198, 31, 21, 21);
         }
+        if(!RatsMod.RATLANTIS_LOADED){
+            this.func_238474_b_(p_230450_1_, i + 44, j + 57, 0, 166, 16, 16);
+        }
         if (container.getBurnLeftScaled(13) > 0) {
             int k = container.getBurnLeftScaled(13);
             this.func_238474_b_(p_230450_1_, i + 70, j + 58 + 12 - k, 176, 12 - k, 14, k + 1);

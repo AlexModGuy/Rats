@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRatlanteanRatbot;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanRatbot;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlanteanRatbot;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

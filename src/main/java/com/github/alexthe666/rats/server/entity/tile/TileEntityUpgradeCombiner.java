@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.ContainerUpgradeCombiner;
 import com.github.alexthe666.rats.server.items.ItemRatUpgrade;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeCombined;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
 import net.minecraft.block.BlockState;
@@ -15,6 +16,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -88,7 +90,15 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
     }
 
     public static int getItemBurnTime(ItemStack stack) {
-        return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS ? 150 : 0;
+        return stack.getItem() == getFuel() ? 150 : 0;
+    }
+
+    public static Item getFuel(){
+        if(RatsMod.RATLANTIS_LOADED){
+            return RatlantisItemRegistry.GEM_OF_RATLANTIS;
+        }else{
+            return Items.EMERALD;
+        }
     }
 
     public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
@@ -336,7 +346,7 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
         } else if (index == 2) {
             return stack.getItem() instanceof ItemRatUpgrade && !(stack.getItem() instanceof ItemRatUpgradeCombined);
         } else if (index == 1) {
-            return stack.getItem() == RatsItemRegistry.GEM_OF_RATLANTIS;
+            return stack.getItem() == getFuel();
         } else {
             return stack.getItem() instanceof ItemRatUpgradeCombined;
         }

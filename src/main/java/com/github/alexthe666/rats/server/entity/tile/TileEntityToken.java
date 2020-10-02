@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,7 @@ public class TileEntityToken extends TileEntity implements ITickableTileEntity {
     public float tRot;
 
     public TileEntityToken() {
-        super(RatsTileEntityRegistry.TOKEN);
+        super(RatlantisTileEntityRegistry.TOKEN);
     }
 
     public CompoundNBT write(CompoundNBT compound) {
@@ -73,8 +74,8 @@ public class TileEntityToken extends TileEntity implements ITickableTileEntity {
             BlockPos pos = this.getPos();
             world.createExplosion(null, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ(), 3, Explosion.Mode.NONE);
             world.setBlockState(pos.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-            world.setBlockState(pos.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-            world.setBlockState(pos.up(1), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+            world.setBlockState(pos.up(2), RatlantisBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+            world.setBlockState(pos.up(1), RatlantisBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
             world.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
         }
 

@@ -13,7 +13,7 @@ import net.minecraft.item.SwordItem;
 public class ItemBaghNakhs extends SwordItem {
 
     public ItemBaghNakhs() {
-        super(RatsItemRegistry.BAGHNAKHS_MATERIAL, 3, -0.1F, new Item.Properties().group(RatsMod.TAB));
+        super(RatsItemRegistry.BAGHNAKHS_MATERIAL, 3, -0.1F, new Item.Properties().group(RatsMod.getRatlantisTab()));
          this.setRegistryName(RatsMod.MODID, "feral_bagh_nakhs");
     }
 

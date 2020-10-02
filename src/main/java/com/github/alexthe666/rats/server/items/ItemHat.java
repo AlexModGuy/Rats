@@ -6,10 +6,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -26,6 +23,13 @@ public class ItemHat extends ArmorItem {
 
     public ItemHat(String name, int modelIndex) {
         super(RatsItemRegistry.HAT_ARMOR_MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(RatsMod.TAB));
+        this.setRegistryName(RatsMod.MODID, name);
+        this.modelIndex = modelIndex;
+        this.name = name;
+    }
+
+    public ItemHat(String name, int modelIndex, ItemGroup group) {
+        super(RatsItemRegistry.HAT_ARMOR_MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(group));
         this.setRegistryName(RatsMod.MODID, name);
         this.modelIndex = modelIndex;
         this.name = name;

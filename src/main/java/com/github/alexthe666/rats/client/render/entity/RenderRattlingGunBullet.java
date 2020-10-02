@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.server.entity.EntityRattlingGunBullet;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGunBullet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.util.ResourceLocation;

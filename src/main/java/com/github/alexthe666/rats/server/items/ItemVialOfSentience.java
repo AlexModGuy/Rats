@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityVialOfSentience;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityVialOfSentience;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemVialOfSentience extends Item {
 
     public ItemVialOfSentience() {
-        super(new Item.Properties().group(RatsMod.TAB));
+        super(new Item.Properties().group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID, "vial_of_sentience");
     }
 

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.tile;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.tile.*;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -39,10 +40,10 @@ public class RatsTEISR extends ItemStackTileEntityRenderer {
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.AUTO_CURDLER)) {
             renderAutoCurdler.render(teAutoCurdler, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
-        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.RATLANTIS_PORTAL)) {
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatlantisBlockRegistry.RATLANTIS_PORTAL)) {
             renderRatlantisPortal.render(teRatlantisPortal, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
-        if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.MARBLED_CHEESE_RAT_HEAD)) {
+        if (itemStackIn.getItem() == Item.getItemFromBlock(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD)) {
             renderRatlanteanAutomatonHead.render(teHead, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         if (itemStackIn.getItem() == Item.getItemFromBlock(RatsBlockRegistry.TRASH_CAN)) {

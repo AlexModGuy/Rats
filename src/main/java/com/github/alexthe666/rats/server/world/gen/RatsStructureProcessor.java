@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.block.BlockState;
@@ -35,7 +36,7 @@ public class RatsStructureProcessor extends StructureProcessor {
     public Template.BlockInfo process(IWorldReader worldReader, BlockPos pos, BlockPos pos2, Template.BlockInfo infoIn1, Template.BlockInfo infoIn2, PlacementSettings settings, @Nullable Template template) {
         Random random = settings.getRandom(infoIn2.pos);
         if (random.nextFloat() <= integrity) {
-            if (infoIn2.state.getBlock() == RatsBlockRegistry.MARBLED_CHEESE_BRICK) {
+            if (infoIn2.state.getBlock() == RatlantisBlockRegistry.MARBLED_CHEESE_BRICK) {
                 return new Template.BlockInfo(infoIn2.pos, RatStructure.getRandomCrackedBlock(infoIn2.state, random), null);
             }
         }

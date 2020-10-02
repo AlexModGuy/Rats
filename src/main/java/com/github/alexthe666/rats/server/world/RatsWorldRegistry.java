@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.world.structure.*;
 import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;
@@ -36,9 +37,9 @@ public class RatsWorldRegistry {
     public static final Structure<NoFeatureConfig> RAT_RUINS = new RatlantisRuinsStructure(NoFeatureConfig.field_236558_a_);
     public static final Structure<NoFeatureConfig> FLYING_DUTCHRAT = new DutchratShipStructure(NoFeatureConfig.field_236558_a_);
     public static final Structure<NoFeatureConfig> RUNWAY = new RunwayStructure(NoFeatureConfig.field_236558_a_);
-    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> RAT_RUINS_SF = func_244162_a("rats:ratlantis_ruins_structure", RAT_RUINS.func_236391_a_(NoFeatureConfig.field_236559_b_));
-    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> FLYING_DUTCHRAT_SF = func_244162_a("rats:dutchrat_ship", FLYING_DUTCHRAT.func_236391_a_(NoFeatureConfig.field_236559_b_));
-    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> RUNWAY_SF = func_244162_a("rats:runway", RUNWAY.func_236391_a_(NoFeatureConfig.field_236559_b_));
+    public static StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> RAT_RUINS_SF;
+    public static StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> FLYING_DUTCHRAT_SF;
+    public static StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> RUNWAY_SF;
 
     public static <F extends Structure<?>> void putStructureOnAList(String nameForList, F structure) {
         Structure.field_236365_a_.put(nameForList.toLowerCase(Locale.ROOT), structure);
@@ -48,11 +49,11 @@ public class RatsWorldRegistry {
         return WorldGenRegistries.func_243663_a(WorldGenRegistries.field_243654_f, p_244162_0_, p_244162_1_);
     }
 
-    private static DimensionSettings func_242745_a(RegistryKey<DimensionSettings> p_242745_0_, DimensionSettings p_242745_1_) {
-        WorldGenRegistries.func_243664_a(WorldGenRegistries.field_243658_j, p_242745_0_.func_240901_a_(), p_242745_1_);
-        return p_242745_1_;
-    }
-
     public static void init() {
+        if(RatsMod.RATLANTIS_LOADED){
+            RAT_RUINS_SF = func_244162_a("rats:ratlantis_ruins_structure", RAT_RUINS.func_236391_a_(NoFeatureConfig.field_236559_b_));
+            FLYING_DUTCHRAT_SF = func_244162_a("rats:dutchrat_ship", FLYING_DUTCHRAT.func_236391_a_(NoFeatureConfig.field_236559_b_));
+            RUNWAY_SF = func_244162_a("rats:runway", RUNWAY.func_236391_a_(NoFeatureConfig.field_236559_b_));
+        }
     }
 }

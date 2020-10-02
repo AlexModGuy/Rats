@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -82,6 +83,7 @@ public class ItemRatUpgrade extends Item {
      * Set either aiHarvest, aiPickup or aiDeposit in rat to something new.
      */
     public void onInitalizeAI(EntityRat rat) {
+
     }
 
     public boolean isRatHoldingFood(EntityRat rat) {
@@ -110,6 +112,14 @@ public class ItemRatUpgrade extends Item {
     public boolean shouldDepositItem(EntityRat rat, ItemStack stack) {
         return true;
     }
+
+    /**
+     * True if the rat cannot take damage from the source.
+     */
+    public boolean isRatInvulnerableTo(EntityRat rat, DamageSource source) {
+        return false;
+    }
+
     /**
      * Called after a rat hits a mob.
      */
@@ -121,4 +131,5 @@ public class ItemRatUpgrade extends Item {
      */
     public void onRatUpdate(EntityRat rat) {
     }
+
 }

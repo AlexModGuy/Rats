@@ -88,4 +88,27 @@ public class RatServerEvent extends Event {
             this.tailBehavior = tailBehavior;
         }
     }
+
+    /*
+        Reach distance modifier for rats when depositing items or
+        picking them up. Defaults to 1, change based on rat mount.
+     */
+    @HasResult
+    public static class GetRatReachDistance extends RatServerEvent {
+
+        private double distance;
+
+        public GetRatReachDistance(EntityRat rat, double distance) {
+            super(rat);
+            this.distance = distance;
+        }
+
+        public double getReachDistance() {
+            return distance;
+        }
+
+        public void setReachDistance(double distance) {
+            this.distance = distance;
+        }
+    }
 }

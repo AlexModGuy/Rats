@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "ratglove_flower",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:ratglove_flower"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

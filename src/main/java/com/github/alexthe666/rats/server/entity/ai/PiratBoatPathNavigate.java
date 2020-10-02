@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPiratBoat;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.world.World;

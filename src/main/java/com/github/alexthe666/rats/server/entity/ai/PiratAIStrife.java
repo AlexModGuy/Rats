@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.entity.EntityPirat;
-import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPirat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPiratBoat;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;

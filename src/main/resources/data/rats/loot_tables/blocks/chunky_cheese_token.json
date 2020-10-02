@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "chunky_cheese_token",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:chunky_cheese_token"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

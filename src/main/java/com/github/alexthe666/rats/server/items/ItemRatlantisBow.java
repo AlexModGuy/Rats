@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRatlantisArrow;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlantisArrow;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.BowItem;
@@ -19,7 +21,7 @@ import java.util.List;
 public class ItemRatlantisBow extends BowItem {
 
     public ItemRatlantisBow() {
-        super((new Item.Properties()).maxDamage(1500).group(RatsMod.TAB));
+        super((new Item.Properties()).maxDamage(1500).group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID, "ratlantis_bow");
     }
 
@@ -29,7 +31,7 @@ public class ItemRatlantisBow extends BowItem {
 
     @Override
     public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
-        EntityRatlantisArrow ratlantisArrow = new EntityRatlantisArrow(RatsEntityRegistry.RATLANTIS_ARROW, arrow.world);
+        EntityRatlantisArrow ratlantisArrow = new EntityRatlantisArrow(RatlantisEntityRegistry.RATLANTIS_ARROW, arrow.world);
         ratlantisArrow.copyDataFromOld(arrow);
         return ratlantisArrow;
     }

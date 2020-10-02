@@ -23,7 +23,7 @@ import java.util.List;
 public class ItemRatlantisArmor extends ArmorItem {
 
     public ItemRatlantisArmor(IArmorMaterial material, EquipmentSlotType slot, String name) {
-        super(material, slot, new Item.Properties().group(RatsMod.TAB));
+        super(material, slot, new Item.Properties().group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID, name);
     }
 

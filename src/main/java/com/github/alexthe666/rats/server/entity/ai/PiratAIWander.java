@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.entity.EntityPirat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPirat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;

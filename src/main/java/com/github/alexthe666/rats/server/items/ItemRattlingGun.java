@@ -1,8 +1,9 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGun;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -24,12 +25,12 @@ import java.util.List;
 public class ItemRattlingGun extends Item {
 
     public ItemRattlingGun() {
-        super(new Item.Properties().group(RatsMod.TAB));
+        super(new Item.Properties().group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID, "rattling_gun");
     }
 
     public ActionResultType onItemUse(ItemUseContext context) {
-        EntityRattlingGun entity = new EntityRattlingGun(RatsEntityRegistry.RATTLING_GUN, context.getWorld());
+        EntityRattlingGun entity = new EntityRattlingGun(RatlantisEntityRegistry.RATTLING_GUN, context.getWorld());
         PlayerEntity player = context.getPlayer();
         BlockPos offset = context.getPos().offset(context.getFace());
         if(context.getWorld().getBlockState(offset).getMaterial().isReplaceable()){

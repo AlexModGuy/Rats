@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelPiratBoat;
-import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPiratBoat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;

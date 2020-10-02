@@ -1,11 +1,13 @@
 package com.github.alexthe666.rats.server.compat.jei;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.compat.jei.archeologist.ArcheologistRecipeCategory;
 import com.github.alexthe666.rats.server.compat.jei.cauldron.CauldronRecipeCategory;
 import com.github.alexthe666.rats.server.compat.jei.chef.ChefRecipeCategory;
 import com.github.alexthe666.rats.server.compat.jei.gemcutter.GemcutterRecipeCategory;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import mezz.jei.api.IModPlugin;
@@ -61,19 +63,24 @@ public class RatsJEIPlugin implements IModPlugin {
             registry.addRecipes(RatsRecipeRegistry.CAULDRON_RECIPES, CAULDRON_ID);
         }
         registry.addRecipes(RatsRecipeRegistry.RAT_CHEF_RECIPES, CHEF_RAT_ID);
-        registry.addRecipes(RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES, ARCHEOLOGIST_RAT_ID);
+        if(RatsMod.RATLANTIS_LOADED){
+            registry.addRecipes(RatsRecipeRegistry.RAT_ARCHEOLOGIST_RECIPES, ARCHEOLOGIST_RAT_ID);
+        }
         registry.addRecipes(RatsRecipeRegistry.RAT_GEMCUTTER_RECIPES, GEMCUTTER_RAT_ID);
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE));
         addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE_STICK));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_FLUTE));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_CHEF));
-        addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_WHITELIST));
         addDescription(registry, new ItemStack(RatsItemRegistry.RAT_UPGRADE_BLACKLIST));
         addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_TRAP));
         addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_CAGE));
         addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_CRAFTING_TABLE));
+        if(RatsMod.RATLANTIS_LOADED){
+            addDescription(registry, new ItemStack(RatlantisItemRegistry.RAT_UPGRADE_ARCHEOLOGIST));
+        }
+
     }
 
     public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -81,7 +88,9 @@ public class RatsJEIPlugin implements IModPlugin {
             registry.addRecipeCategories(new CauldronRecipeCategory());
         }
         registry.addRecipeCategories(new ChefRecipeCategory());
-        registry.addRecipeCategories(new ArcheologistRecipeCategory());
+        if(RatsMod.RATLANTIS_LOADED) {
+            registry.addRecipeCategories(new ArcheologistRecipeCategory());
+        }
         registry.addRecipeCategories(new GemcutterRecipeCategory());
     }
 
@@ -89,7 +98,9 @@ public class RatsJEIPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
         registry.addRecipeCatalyst(new ItemStack(Items.CAULDRON), CAULDRON_ID);
         registry.addRecipeCatalyst(new ItemStack(RatsItemRegistry.RAT_UPGRADE_CHEF), CHEF_RAT_ID);
-        registry.addRecipeCatalyst(new ItemStack(RatsItemRegistry.RAT_UPGRADE_ARCHEOLOGIST), ARCHEOLOGIST_RAT_ID);
+        if(RatsMod.RATLANTIS_LOADED) {
+            registry.addRecipeCatalyst(new ItemStack(RatlantisItemRegistry.RAT_UPGRADE_ARCHEOLOGIST), ARCHEOLOGIST_RAT_ID);
+        }
         registry.addRecipeCatalyst(new ItemStack(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER), GEMCUTTER_RAT_ID);
     }
 

@@ -9,7 +9,7 @@ public class TileEntityRatlanteanAutomatonHead extends TileEntity implements ITi
 
 
     public TileEntityRatlanteanAutomatonHead() {
-        super(RatsTileEntityRegistry.AUTOMATON_HEAD);
+        super(RatlantisTileEntityRegistry.AUTOMATON_HEAD);
     }
 
     @Override

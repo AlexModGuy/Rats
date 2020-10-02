@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CDC",
+    "CTC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "tag": "rats:block_of_blue_cheese"
+    },
+    "T": {
+      "tag": "forge:workbench"
+    },
+    "T": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "result": {
+    "item": "rats:rat_quarry"
+  }
+}

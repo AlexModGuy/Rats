@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.IRatlantean;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class EntityRatfish extends AbstractGroupFishEntity implements IRatlantea
     }
 
     protected ItemStack getFishBucket() {
-        return new ItemStack(RatsItemRegistry.RATFISH_BUCKET);
+        return new ItemStack(RatlantisItemRegistry.RATFISH_BUCKET);
     }
 
     protected SoundEvent getAmbientSound() {

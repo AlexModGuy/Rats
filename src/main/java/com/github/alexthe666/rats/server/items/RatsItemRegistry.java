@@ -78,8 +78,6 @@ public class RatsItemRegistry {
 
     public static final Item BEE_WING = new ItemGeneric("bee_wing", null);
 
-    public static final Item BEE_FEELERS = new ItemGeneric("bee_feelers", null);
-
     public static final Item PLASTIC_WASTE = new ItemGeneric("plastic_waste");
 
     public static final Item RAW_PLASTIC = new ItemGeneric("raw_plastic");
@@ -89,6 +87,10 @@ public class RatsItemRegistry {
     public static final Item PURIFYING_LIQUID = new ItemPurifyingLiquid(false);
 
     public static final Item CRIMSON_FLUID = new ItemPurifyingLiquid(true);
+
+    public static final Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
+
+    public static final Item PLAGUE_DOCTORATE = new ItemGeneric("plague_doctorate", 1);
 
     public static final Item HERB_BUNDLE = new ItemPlagueHealer(1, 0.1F, "herb_bundle", 0.1F);
 
@@ -103,8 +105,6 @@ public class RatsItemRegistry {
     public static final Item GOLDEN_RAT_SKULL = new ItemGeneric("golden_rat_skull");
 
     public static final Item CORRUPT_RAT_SKULL = new ItemGeneric("corrupt_rat_skull");
-
-    public static final Item RATLANTIS_RAT_SKULL = new ItemGeneric("ratlantis_rat_skull");
 
     public static final Item PLAGUE_TOME = new ItemGeneric("plague_tome", 2);
 
@@ -146,6 +146,8 @@ public class RatsItemRegistry {
 
     public static final Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes");
 
+    public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
+
     public static final Item TINY_COIN = new ItemGeneric("tiny_coin");
 
     public static final Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
@@ -166,10 +168,6 @@ public class RatsItemRegistry {
 
     public static final Item HALO_HAT = new ItemHat("halo_hat", 10);
 
-    public static final Item MILITARY_HAT = new ItemHat("military_hat", 12);
-
-    public static final Item AVIATOR_HAT = new ItemHat("aviator_hat", 13);
-
     public static final Item PARTY_HAT_1 = new ItemHat("party_hat_1", 11);
 
     public static final Item PARTY_HAT_2 = new ItemHat("party_hat_2", 11);
@@ -178,95 +176,19 @@ public class RatsItemRegistry {
 
     public static final Item PARTY_HAT_4 = new ItemHat("party_hat_4", 11);
 
+    public static final Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
+
+    public static final Item RAT_KING_CROWN = new ItemHat("rat_king_crown", 4);
+
     public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
 
-    public static final Item RAT_KING_CROWN = new ItemHat("rat_king_crown", 4);
-
-    public static final Item PLAGUE_ESSENCE = new ItemGeneric("plague_essence", 1);
-
-    public static final Item PLAGUE_DOCTORATE = new ItemGeneric("plague_doctorate", 1);
-
-    public static final Item RAT_TOGA = new ItemGeneric("rat_toga", 2);
-
-    public static final Item RATGLOVE_PETALS = new ItemGeneric("ratglove_petals");
-
-    public static final Item FERAL_RAT_CLAW = new ItemGeneric("feral_rat_claw");
-
-    public static final Item FERAL_BAGH_NAKHS = new ItemBaghNakhs();
-
-    public static final Item GEM_OF_RATLANTIS = new ItemGeneric("gem_of_ratlantis");
-
-    public static final Item ORATCHALCUM_INGOT = new ItemGeneric("oratchalcum_ingot");
-
-    public static final Item ORATCHALCUM_NUGGET = new ItemGeneric("oratchalcum_nugget");
-
-    public static final Item RATLANTIS_HELMET = new ItemRatlantisArmor(RATLANTIS_ARMOR_MATERIAL, EquipmentSlotType.HEAD, "ratlantis_helmet");
-
-    public static final Item RATLANTIS_CHESTPLATE = new ItemRatlantisArmor(RATLANTIS_ARMOR_MATERIAL, EquipmentSlotType.CHEST, "ratlantis_chestplate");
-
-    public static final Item RATLANTIS_LEGGINGS = new ItemRatlantisArmor(RATLANTIS_ARMOR_MATERIAL, EquipmentSlotType.LEGS, "ratlantis_leggings");
-
-    public static final Item RATLANTIS_BOOTS = new ItemRatlantisArmor(RATLANTIS_ARMOR_MATERIAL, EquipmentSlotType.FEET, "ratlantis_boots");
-
-    public static final Item RATLANTIS_SWORD = new ItemRatlantisSword();
-
-    public static final Item RATLANTIS_PICKAXE = new ItemRatlantisTool.Pickaxe();
-
-    public static final Item RATLANTIS_AXE = new ItemRatlantisTool.Axe();
-
-    public static final Item RATLANTIS_SHOVEL = new ItemRatlantisTool.Shovel();
-
-    public static final Item RATLANTIS_HOE = new ItemRatlantisTool.Hoe();
-
-    public static final Item RATLANTIS_BOW = new ItemRatlantisBow();
-
-    public static final Item ARCANE_TECHNOLOGY = new ItemGeneric("arcane_technology", 2);
-
-    public static final Item ANCIENT_SAWBLADE = new ItemGeneric("ancient_sawblade");
-
-    public static final Item RATLANTEAN_FLAME = new ItemRatlanteanFlame();
-
-    public static final Item VIAL_OF_SENTIENCE = new ItemVialOfSentience();
-
-    public static final Item PSIONIC_RAT_BRAIN = new ItemGeneric("psionic_rat_brain", 2);
-
-    public static final Item PIRAT_HAT = new ItemHat("pirat_hat", 2);
-
-    public static final Item PIRAT_CUTLASS = new ItemPiratCutlass(false);
-
-    public static final Item CHEESE_CANNONBALL = new ItemGeneric("cheese_cannonball", 1);
-
-    public static final Item GHOST_PIRAT_HAT = new ItemHat("ghost_pirat_hat", 9);
-
-    public static final Item GHOST_PIRAT_ECTOPLASM = new ItemGeneric("ghost_pirat_ectoplasm");
-
-    public static final Item GHOST_PIRAT_CUTLASS = new ItemPiratCutlass(true);
-
-    public static final Item DUTCHRAT_WHEEL = new ItemGeneric("dutchrat_wheel");
-
-    public static final Item BIPLANE_WING = new ItemGeneric("biplane_wing");
-
-    public static final Item RATFISH = new ItemGenericFood(1, 0.35F, false, false, false, "ratfish");
-
-    public static final Item RATFISH_BUCKET = new FishBucketItem(RatsEntityRegistry.RATFISH, Fluids.WATER, (new Item.Properties()).maxStackSize(1).group(RatsMod.TAB)).setRegistryName("ratfish_bucket");
-
-    public static final Item RATBOT_BARREL = new ItemGeneric("ratbot_barrel");
-
-    public static final Item CHARGED_RATBOT_BARREL = new ItemGeneric("charged_ratbot_barrel");
-
-    public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
-
     public static final Item RAT_UPGRADE_FRAGMENT = new ItemGeneric("rat_upgrade_fragment", 1);
-
-    public static final Item RATTLING_GUN = new ItemRattlingGun();
 
     public static final Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 
     public static final Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);
-
-    public static final Item IDOL_OF_RATLANTIS = new ItemGeneric("idol_of_ratlantis", 1);
 
     public static final Item RAT_UPGRADE_BASIC = new ItemRatUpgrade("rat_upgrade_basic");
 
@@ -315,6 +237,8 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_MINER_ORE = new ItemRatUpgrade("rat_upgrade_miner_ore", 1, 2);
 
     public static final Item RAT_UPGRADE_MINER = new ItemRatListUpgrade("rat_upgrade_miner", 1, 3, true);
+
+    public static final Item RAT_UPGRADE_QUARRY = new ItemRatUpgrade("rat_upgrade_quarry", 1, 2);
 
     public static final Item RAT_UPGRADE_FARMER = new ItemRatUpgrade("rat_upgrade_farmer", 1, 3);
 
@@ -376,8 +300,6 @@ public class RatsItemRegistry {
 
     public static final Item RAT_UPGRADE_UNDEAD = new ItemRatUpgrade("rat_upgrade_undead", 2, 2);
 
-    public static final Item RAT_UPGRADE_ARCHEOLOGIST = new ItemRatUpgrade("rat_upgrade_archeologist", 2, 1);
-
     public static final Item RAT_UPGRADE_BASIC_MOUNT = new ItemRatUpgrade("rat_upgrade_basic_mount");
 
     public static final Item RAT_UPGRADE_CHICKEN_MOUNT = new ItemRatUpgradeMount("rat_upgrade_chicken_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_CHICKEN);
@@ -387,24 +309,6 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_STRIDER_MOUNT = new ItemRatUpgradeMount("rat_upgrade_strider_mount", 2, 3, RatsEntityRegistry.RAT_STRIDER_MOUNT);
 
     public static final Item RAT_UPGRADE_BEAST_MOUNT = new ItemRatUpgradeMount("rat_upgrade_beast_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_BEAST);
-
-    public static final Item RAT_UPGRADE_AUTOMATON_MOUNT = new ItemRatUpgradeMount("rat_upgrade_automaton_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_AUTOMATON);
-
-    public static final Item RAT_UPGRADE_BIPLANE_MOUNT = new ItemRatUpgradeMount("rat_upgrade_biplane_mount", 2, 3, RatsEntityRegistry.RAT_MOUNT_BIPLANE);
-
-    public static final Item RAT_UPGRADE_BASIC_RATLANTEAN = new ItemRatUpgrade("rat_upgrade_basic_ratlantean");
-
-    public static final Item RAT_UPGRADE_FERAL_BITE = new ItemRatUpgrade("rat_upgrade_feral_bite");
-
-    public static final Item RAT_UPGRADE_BUCCANEER = new ItemRatUpgrade("rat_upgrade_buccaneer", 1, 2);
-
-    public static final Item RAT_UPGRADE_RATINATOR = new ItemRatUpgrade("rat_upgrade_ratinator", 2, 3);
-
-    public static final Item RAT_UPGRADE_PSYCHIC = new ItemRatUpgrade("rat_upgrade_psychic", 2, 3);
-
-    public static final Item RAT_UPGRADE_ETHEREAL = new ItemRatUpgrade("rat_upgrade_ethereal", 1, 2);
-
-    public static final Item RAT_UPGRADE_NONBELIEVER = new ItemRatUpgrade("rat_upgrade_nonbeliever", 4, 4);
 
     public static final Item RAT_UPGRADE_COMBINED = new ItemRatUpgradeCombined("rat_upgrade_combined");
 
@@ -445,6 +349,23 @@ public class RatsItemRegistry {
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+        if(RatsMod.RATLANTIS_LOADED){
+            try {
+                for (Field f : RatlantisItemRegistry.class.getDeclaredFields()) {
+                    Object obj = f.get(null);
+
+                    if (obj instanceof Item && ((Item) obj).getRegistryName() != null) {
+                        event.getRegistry().register((Item) obj);
+                    } else if (obj instanceof Item[]) {
+                        for (Item item : (Item[]) obj) {
+                            event.getRegistry().register((item));
+                        }
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
         RatsUpgradeConflictRegistry.init();
     }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -30,12 +31,12 @@ public enum RatStructure {
     FORUM("marble_forum", true, 20),
     GIANT_CHEESE("marble_giant_cheese", true, 4);
 
-    private static final BlockState MARBLED_CHEESE_TILE = RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState();
-    private static final BlockState MARBLED_CHEESE_BRICK = RatsBlockRegistry.MARBLED_CHEESE_BRICK.getDefaultState();
-    private static final BlockState MARBLED_CHEESE_BRICK_MOSSY = RatsBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.getDefaultState();
-    private static final BlockState MARBLED_CHEESE_BRICK_CRACK = RatsBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.getDefaultState();
-    private static final BlockState MARBLED_GRASS = RatsBlockRegistry.MARBLED_CHEESE_GRASS.getDefaultState();
-    private static final BlockState MARBLED_DIRT = RatsBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState();
+    private static final BlockState MARBLED_CHEESE_TILE = RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState();
+    private static final BlockState MARBLED_CHEESE_BRICK = RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.getDefaultState();
+    private static final BlockState MARBLED_CHEESE_BRICK_MOSSY = RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.getDefaultState();
+    private static final BlockState MARBLED_CHEESE_BRICK_CRACK = RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.getDefaultState();
+    private static final BlockState MARBLED_GRASS = RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.getDefaultState();
+    private static final BlockState MARBLED_DIRT = RatlantisBlockRegistry.MARBLED_CHEESE_DIRT.getDefaultState();
     private static NavigableMap<Float, RatStructure> weightMap = new TreeMap<Float, RatStructure>();
     private static float totalWeight;
     public ResourceLocation structureLoc;

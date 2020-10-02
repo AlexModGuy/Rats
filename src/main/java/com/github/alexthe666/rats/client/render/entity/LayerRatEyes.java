@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -54,11 +55,11 @@ public class LayerRatEyes extends LayerRenderer<EntityRat, SegmentedModel<Entity
             RenderType tex = null;
             if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
                 tex = TEXTURE_DRAGON;
-            } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
+            } else if (rat.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_NONBELIEVER)) {
                 tex = TEXTURE_NONBELIEVER;
             } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ENDER)) {
                 tex = TEXTURE_ENDER;
-            } else if (rat.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_RATINATOR)) {
+            } else if (rat.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_RATINATOR)) {
                 tex = TEXTURE_RATINATOR;
             } else if (rat.hasPlague()) {
                 tex = TEXTURE_PLAGUE;

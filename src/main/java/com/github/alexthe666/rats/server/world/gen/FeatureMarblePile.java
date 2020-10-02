@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
@@ -40,15 +41,15 @@ public class FeatureMarblePile extends Feature<NoFeatureConfig> {
                 if (rand.nextInt(3) == 0) {
                     BlockPos height = new BlockPos(blockpos);
                     int h = 0;
-                    worldIn.setBlockState(height.down(), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState(), 2);
+                    worldIn.setBlockState(height.down(), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState(), 2);
                     for (; h < 3 + rand.nextInt(3); h++) {
-                        worldIn.setBlockState(height.up(h), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 2);
+                        worldIn.setBlockState(height.up(h), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 2);
                     }
-                    worldIn.setBlockState(height.up(h), RatsBlockRegistry.MARBLED_CHEESE_CHISELED.getDefaultState(), 2);
-                    worldIn.setBlockState(height.up(h + 1), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState(), 2);
+                    worldIn.setBlockState(height.up(h), RatlantisBlockRegistry.MARBLED_CHEESE_CHISELED.getDefaultState(), 2);
+                    worldIn.setBlockState(height.up(h + 1), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState(), 2);
                     for (Direction facing : HORIZONTALS) {
                         BlockPos stairPos = height.up(h + 1).offset(facing);
-                        BlockState stairState = RatsBlockRegistry.MARBLED_CHEESE_STAIRS.getDefaultState().with(StairsBlock.FACING, facing.getOpposite()).with(StairsBlock.HALF, Half.TOP);
+                        BlockState stairState = RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.getDefaultState().with(StairsBlock.FACING, facing.getOpposite()).with(StairsBlock.HALF, Half.TOP);
                         FluidState ifluidstate = worldIn.getFluidState(stairPos);
                         stairState = stairState.with(StairsBlock.WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
                         worldIn.setBlockState(stairPos, stairState, 2);
@@ -56,10 +57,10 @@ public class FeatureMarblePile extends Feature<NoFeatureConfig> {
                 } else if (rand.nextInt(2) == 0) {
                     Direction randFacing = HORIZONTALS[rand.nextInt(HORIZONTALS.length - 1)];
                     Direction.Axis axis = randFacing.getAxis();
-                    worldIn.setBlockState(blockpos, RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, axis), 2);
-                    worldIn.setBlockState(blockpos.offset(randFacing), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, axis), 2);
+                    worldIn.setBlockState(blockpos, RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, axis), 2);
+                    worldIn.setBlockState(blockpos.offset(randFacing), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, axis), 2);
                 } else {
-                    worldIn.setBlockState(blockpos, RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.values()[rand.nextInt(Direction.Axis.values().length - 1)]), 2);
+                    worldIn.setBlockState(blockpos, RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.values()[rand.nextInt(Direction.Axis.values().length - 1)]), 2);
 
                 }
             }

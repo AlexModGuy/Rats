@@ -34,6 +34,13 @@ public class ItemGeneric extends Item {
         this.textLength = textLength;
     }
 
+    public ItemGeneric(String name, ItemGroup group, int textLength) {
+        super(new Item.Properties().group(group));
+        this.setRegistryName(RatsMod.MODID, name);
+        this.textLength = textLength;
+    }
+
+
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {

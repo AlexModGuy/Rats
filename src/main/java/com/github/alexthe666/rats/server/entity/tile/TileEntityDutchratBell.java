@@ -1,7 +1,8 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
-import com.github.alexthe666.rats.server.entity.EntityDutchrat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityDutchrat;
 import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
@@ -36,7 +37,7 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
     private int ticksToExplode = -1;
 
     public TileEntityDutchratBell() {
-        super(RatsTileEntityRegistry.DUTCHRAT_BELL);
+        super(RatlantisTileEntityRegistry.DUTCHRAT_BELL);
     }
 
     public boolean receiveClientEvent(int id, int type) {
@@ -72,7 +73,7 @@ public class TileEntityDutchratBell extends TileEntity implements ITickableTileE
                         players.sendStatusMessage(new TranslationTextComponent("entity.rats.dutchrat.daytime"), true);
                     }
                 } else if (ticksToExplode == -1) {
-                    EntityDutchrat dutchrat = new EntityDutchrat(RatsEntityRegistry.DUTCHRAT, world);
+                    EntityDutchrat dutchrat = new EntityDutchrat(RatlantisEntityRegistry.DUTCHRAT, world);
                     dutchrat.setPosition(this.pos.getX() + 0.5D, this.pos.getY() + 10D, this.pos.getZ() + 0.5D);
                     dutchrat.setHomePosAndDistance(pos, 20);
                     if(!world.isRemote){

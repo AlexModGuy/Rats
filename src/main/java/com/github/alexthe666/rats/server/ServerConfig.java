@@ -20,13 +20,6 @@ public class ServerConfig {
     public final ForgeConfigSpec.DoubleValue piperHatDropRate;
     public final ForgeConfigSpec.DoubleValue plagueEssenceDropRate;
     public final ForgeConfigSpec.DoubleValue plagueTomeDropRate;
-    public final ForgeConfigSpec.DoubleValue archeologistHatSpawnRate;
-    public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonHealth;
-    public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonAttack;
-    public final ForgeConfigSpec.DoubleValue neoRatlanteanHealth;
-    public final ForgeConfigSpec.DoubleValue neoRatlanteanAttack;
-    public final ForgeConfigSpec.DoubleValue dutchratHealth;
-    public final ForgeConfigSpec.DoubleValue dutchratAttack;
     public final ForgeConfigSpec.BooleanValue ratsSpawnLikeMonsters;
     public final ForgeConfigSpec.BooleanValue cheesemaking;
     public final ForgeConfigSpec.BooleanValue plagueRats;
@@ -47,9 +40,6 @@ public class ServerConfig {
     public final ForgeConfigSpec.IntValue ratCageCramming;
     public final ForgeConfigSpec.IntValue ratUpdateDelay;
     public final ForgeConfigSpec.IntValue tokenDropRate;
-    public final ForgeConfigSpec.BooleanValue disableRatlantis;
-    public final ForgeConfigSpec.IntValue ratlantisDimensionId;
-    public final ForgeConfigSpec.IntValue ratlantisPortalExitDimension;
     public final ForgeConfigSpec.IntValue maxDestroyedLeaves;
     public final ForgeConfigSpec.DoubleValue blackDeathHealth;
     public final ForgeConfigSpec.DoubleValue blackDeathAttack;
@@ -70,8 +60,14 @@ public class ServerConfig {
     public ForgeConfigSpec.ConfigValue<List<? extends String>> piperSpawnBiomes;
     public ForgeConfigSpec.ConfigValue<List<? extends String>> demonRatSpawnBiomes;
 
-    //public static String[] blacklistedRatBlocks = new String[0];
-    //public final ForgeConfigSpec.IntValue[] blacklistedRatDimensions = new int[0];
+
+    public final ForgeConfigSpec.DoubleValue archeologistHatSpawnRate;
+    public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonHealth;
+    public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonAttack;
+    public final ForgeConfigSpec.DoubleValue neoRatlanteanHealth;
+    public final ForgeConfigSpec.DoubleValue neoRatlanteanAttack;
+    public final ForgeConfigSpec.DoubleValue dutchratHealth;
+    public final ForgeConfigSpec.DoubleValue dutchratAttack;
 
     public ServerConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -89,13 +85,6 @@ public class ServerConfig {
         this.piperHatDropRate = buildDouble(builder, "Pied Piper Hat Drop Rate", "all", 0.09F, 0F, 1F, "percent chance for piper to drop hat on death");
         this.plagueEssenceDropRate = buildDouble(builder, "Plague Essence Drop Rate", "all", 0.1F, 0F, 1F, "percent chance for plague rat to drop plague essence on death");
         this.plagueTomeDropRate = buildDouble(builder, "Plague Tome Drop Rate", "all", 0.0035F, 0F, 1F, "percent chance for plague rat to drop plague tome on death");
-        this.archeologistHatSpawnRate = buildDouble(builder, "Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
-        this.ratlanteanAutomatonHealth = buildDouble(builder, "Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
-        this.ratlanteanAutomatonAttack = buildDouble(builder, "Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");
-        this.neoRatlanteanHealth = buildDouble(builder, "Neo-Ratlantean Max Health", "all", 300F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Max Health");
-        this.neoRatlanteanAttack = buildDouble(builder, "Neo-Ratlantean Automaton Attack Damage", "all", 8F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Attack Damage");
-        this.dutchratHealth = buildDouble(builder, "Flying Dutchrat Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Flying Dutchrat Max Health");
-        this.dutchratAttack = buildDouble(builder, "Flying Dutchrat Automaton Attack Damage", "all", 10F, 0F, Float.MAX_VALUE, "Flying Dutchrat Attack Damage");
         this.ratsBreakCrops = buildBoolean(builder, "Rats Raid Crops", "all", true, "True if wild rats will destroy and eat crops");
         this.ratsStealItems = buildBoolean(builder, "Rats Steal From Chests", "all", true, "True if wild rats will steal from chests");
         this.ratsContaminateFood = buildBoolean(builder, "Rats Contaminate Food", "all", true, "True if wild rats contaminate food when they steal from chests");
@@ -114,13 +103,8 @@ public class ServerConfig {
         this.ratFluteDistance = buildInt(builder, "Rat Flute Distance", "all", 2, 1, 100, "The how many chunks away can a rat here a rat flute");
         this.ratCageCramming = buildInt(builder, "Rat Cage Max Occupancy", "all", 5, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
         this.ratUpdateDelay = buildInt(builder, "Rat Upgrade Delay", "all", 100, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests, once every this number of ticks(with added standard deviation for servers)");
-        //this.blacklistedRatBlocks = config.getStringList("Blacklisted Rat Inventory Blocks", "all", new String[0], "Blacklist for blocks that rats are not allowed to steal from. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
-        //this.blacklistedRatDimensions = config.get("all", "Blacklisted Rat Spawn Dimensions", new int[0], "Blacklist for dimensions that rats and pipers cannot spawn in").getIntList();
         this.tokenDropRate = buildInt(builder, "Rat Token Drop Rate", "all", 10000, 1, Integer.MAX_VALUE, "1/This number chance for a rat to drop a Token");
-        this.disableRatlantis = buildBoolean(builder, "Disable Ratlantis", "all", false, "True if Ratlantis dimension is disabled - alternative methods of getting resources will be provided. WARNING: Leave the dimension and restart the game before changing this. You must be fun at parties.");
         this.disablePlastic = buildBoolean(builder, "Disable Plastic", "all", false, "True if Plastic item is disabled - alternative methods of getting rat cage deco will be provided. WARNING: Leave the restard the game after changing this. You must be fun at parties.");
-        this.ratlantisDimensionId = buildInt(builder, "Ratlantis Dimension ID", "all", -8, Integer.MIN_VALUE, Integer.MAX_VALUE, "Ratlantis Dimension ID");
-        this.ratlantisPortalExitDimension = buildInt(builder, "Ratlantis Portal Exit Dimension ID", "all", 0, Integer.MIN_VALUE, Integer.MAX_VALUE, "What Dimension ID you are teleported to upon leaving Ratlantis");
         this.maxDestroyedLeaves = buildInt(builder, "Rat Upgrade Lumberjack: Max Tree Blocks", "all", 10000, 0, Integer.MAX_VALUE, "How many blocks the Lumberjack Rat is able to destroy when felling a tree. Be careful when changing this to a large number.");
         this.blackDeathHealth = buildDouble(builder, "Black Death Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Black Death Max Health");
         this.blackDeathAttack = buildDouble(builder, "Black Death Automaton Attack Damage", "all", 4F, 0F, Float.MAX_VALUE, "Black Death Attack Damage");
@@ -234,6 +218,14 @@ public class ServerConfig {
                         "minecraft:nether_wastes",
                         "minecraft:crimson_forest",
                         "minecraft:warped_forest"), o -> o instanceof String);
+        this.archeologistHatSpawnRate = buildDouble(builder, "Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
+        this.ratlanteanAutomatonHealth = buildDouble(builder, "Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
+        this.ratlanteanAutomatonAttack = buildDouble(builder, "Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");
+        this.neoRatlanteanHealth = buildDouble(builder, "Neo-Ratlantean Max Health", "all", 300F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Max Health");
+        this.neoRatlanteanAttack = buildDouble(builder, "Neo-Ratlantean Automaton Attack Damage", "all", 8F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Attack Damage");
+        this.dutchratHealth = buildDouble(builder, "Flying Dutchrat Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Flying Dutchrat Max Health");
+        this.dutchratAttack = buildDouble(builder, "Flying Dutchrat Automaton Attack Damage", "all", 10F, 0F, Float.MAX_VALUE, "Flying Dutchrat Attack Damage");
+
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

@@ -49,7 +49,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-        if (!RatConfig.disableRatlantis && !worldIn.isRemote) {
+        if (RatsMod.RATLANTIS_LOADED && !worldIn.isRemote) {
             MinecraftServer server = worldIn.getServer();
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
                 boolean inOverworld = entity.world.func_234923_W_() != getRatlantisDimension();
@@ -124,18 +124,18 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
         entity.setMotion(0, 0, 0);
         BlockPos portalBottom = new BlockPos(1, 111, 1);
         for (BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-            serverWorld.setBlockState(pos, RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
-            serverWorld.setBlockState(pos.up(4), RatsBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+            serverWorld.setBlockState(pos, RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
+            serverWorld.setBlockState(pos.up(4), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
         }
         for (int i = 1; i < 4; i++) {
-            serverWorld.setBlockState(portalBottom.add(2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
-            serverWorld.setBlockState(portalBottom.add(2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
-            serverWorld.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
-            serverWorld.setBlockState(portalBottom.add(-2, 0, -2).up(i), RatsBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(2, 0, 2).up(i), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(2, 0, -2).up(i), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(-2, 0, 2).up(i), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+            serverWorld.setBlockState(portalBottom.add(-2, 0, -2).up(i), RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y));
         }
         serverWorld.setBlockState(portalBottom, RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
-        serverWorld.setBlockState(portalBottom.up(), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
-        serverWorld.setBlockState(portalBottom.up(2), RatsBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        serverWorld.setBlockState(portalBottom.up(), RatlantisBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
+        serverWorld.setBlockState(portalBottom.up(2), RatlantisBlockRegistry.RATLANTIS_PORTAL.getDefaultState());
         serverWorld.setBlockState(portalBottom.up(3), RatsBlockRegistry.MARBLED_CHEESE_RAW.getDefaultState());
     }
 
@@ -153,13 +153,13 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
     }
 
     public boolean canSurviveAt(World world, BlockPos pos) {
-        return (world.getBlockState(pos.up()).getBlock() == RatsBlockRegistry.RATLANTIS_PORTAL || world.getBlockState(pos.up()).getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW) &&
-                (world.getBlockState(pos.down()).getBlock() == RatsBlockRegistry.RATLANTIS_PORTAL || world.getBlockState(pos.down()).getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW);
+        return (world.getBlockState(pos.up()).getBlock() == RatlantisBlockRegistry.RATLANTIS_PORTAL || world.getBlockState(pos.up()).getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW) &&
+                (world.getBlockState(pos.down()).getBlock() == RatlantisBlockRegistry.RATLANTIS_PORTAL || world.getBlockState(pos.down()).getBlock() == RatsBlockRegistry.MARBLED_CHEESE_RAW);
     }
 
     public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
         Block block = adjacentBlockState.getBlock();
-        return block != RatsBlockRegistry.RATLANTIS_PORTAL;
+        return block != RatlantisBlockRegistry.RATLANTIS_PORTAL;
     }
 
     public boolean isOpaqueCube(BlockState state) {

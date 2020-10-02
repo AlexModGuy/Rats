@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelRattlingGun;
 import com.github.alexthe666.rats.client.model.ModelRattlingGunBase;
-import com.github.alexthe666.rats.server.entity.EntityRattlingGun;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGun;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;

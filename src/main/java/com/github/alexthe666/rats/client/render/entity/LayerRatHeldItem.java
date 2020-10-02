@@ -1,11 +1,14 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelChristmasChest;
 import com.github.alexthe666.rats.client.model.ModelRat;
+import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
+import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -97,7 +100,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             minecraft.getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
-        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BUCCANEER)) {
+        if (entity.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_BUCCANEER)) {
             matrixStackIn.push();
             ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
             matrixStackIn.push();
@@ -201,7 +204,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             minecraft.getItemRenderer().renderItem(new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
-        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE)) {
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY)) {
             Minecraft minecraft = Minecraft.getInstance();
             matrixStackIn.push();
             translateToHand(false, matrixStackIn);
@@ -356,16 +359,15 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             minecraft.getItemRenderer().renderItem(CARROT_STACK, ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
-        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PSYCHIC)) {
+        if (RatsMod.RATLANTIS_LOADED && entity.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_PSYCHIC)) {
             Minecraft minecraft = Minecraft.getInstance();
             matrixStackIn.push();
             translateToHead(matrixStackIn);
             matrixStackIn.translate(0F, 0.1F, 0.035F);
             matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180F, true));
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180F, true));
-
             matrixStackIn.scale(0.9F, 0.9F, 0.9F);
-            minecraft.getItemRenderer().renderItem(new ItemStack(RatsBlockRegistry.BRAIN_BLOCK), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            minecraft.getItemRenderer().renderItem(new ItemStack(RatlantisBlockRegistry.BRAIN_BLOCK), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
         RatClientEvent.RatItemTranslation itemEvent = new RatClientEvent.RatItemTranslation(entity, (RenderRat) renderer, matrixStackIn);

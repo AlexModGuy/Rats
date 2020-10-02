@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.ModelPiratBoat;
 import com.github.alexthe666.rats.client.model.ModelPiratCannon;
-import com.github.alexthe666.rats.server.entity.EntityPiratBoat;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPiratBoat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;

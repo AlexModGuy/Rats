@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.EntityRatlanteanFlame;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlanteanFlame;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ItemRatlanteanFlame extends Item {
 
     public ItemRatlanteanFlame() {
-        super(new Item.Properties().group(RatsMod.TAB));
+        super(new Item.Properties().group(RatsMod.getRatlantisTab()));
         this.setRegistryName(RatsMod.MODID, "ratlantean_flame");
     }
 
