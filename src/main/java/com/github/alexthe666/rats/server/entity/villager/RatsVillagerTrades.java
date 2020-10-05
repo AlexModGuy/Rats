@@ -35,6 +35,7 @@ public class RatsVillagerTrades {
     public static final Int2ObjectMap<VillagerTrades.ITrade[]> PLAGUE_DOCTOR_TRADES;
     public static final VillagerTrades.ITrade COMBINER_TRADE = new ItemsForEmeraldsAndItemsTrade(RatsItemRegistry.RAT_UPGRADE_GOD, 1, 40, RatsBlockRegistry.UPGRADE_COMBINER.asItem(), 1, 1, 30);
     public static final VillagerTrades.ITrade SEPERATOR_TRADE = new ItemsForEmeraldsAndItemsTrade(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED, 1, 4, RatsBlockRegistry.UPGRADE_SEPARATOR.asItem(), 1, 1, 30);
+    public static final VillagerTrades.ITrade UPGRADE_COMBINED_TRADE = new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_UPGRADE_COMBINED, 6, 1, 1);
     static {
         PLAGUE_DOCTOR_TRADES = createTrades(ImmutableMap.of(1,
                 new VillagerTrades.ITrade[]{
@@ -62,7 +63,6 @@ public class RatsVillagerTrades {
                         new ItemsForEmeraldsTrade(RatsItemRegistry.TOKEN_FRAGMENT, 3, 1, 20, 2),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_UPGRADE_BASIC, 4, 2, 6, 10),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_ESSENCE, 2, 1, 10, 6),
-                        new ItemsForEmeraldsTrade(RatlantisItemRegistry.FERAL_RAT_CLAW, 2, 3, 10, 6),
                         new ItemsForEmeraldsTrade(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rats:cheese_banner_pattern")), 1, 1, 5, 2),
                         new ItemsForEmeraldsTrade(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rats:rat_banner_pattern")), 1, 1, 5, 2),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.STRING_CHEESE, 2, 8, 5, 6),
