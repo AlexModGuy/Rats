@@ -11,6 +11,7 @@ import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
+import com.github.alexthe666.rats.server.entity.ai.navigation.*;
 import com.github.alexthe666.rats.server.entity.ratlantis.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
@@ -1558,7 +1559,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             if (entity instanceof StriderEntity) {
                 mountRespawnCooldown = 1000;
             }
-            if (entity instanceof MobEntity && !(entity instanceof StriderEntity)) {
+            if (entity instanceof MobEntity && !(entity instanceof StriderEntity) && world instanceof ServerWorld) {
                 ((MobEntity) entity).onInitialSpawn(((ServerWorld) world), world.getDifficultyForLocation(new BlockPos(this.getPositionVec())), SpawnReason.MOB_SUMMONED, null, null);
             }
             this.startRiding(entity, true);

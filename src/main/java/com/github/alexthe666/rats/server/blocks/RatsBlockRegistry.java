@@ -45,10 +45,11 @@ public class RatsBlockRegistry {
     public static final Block PIED_WOOL = new BlockGeneric("pied_wool", Material.WOOL, 1.0F, 0F, SoundType.CLOTH);
     public static final Block UPGRADE_COMBINER = new BlockUpgradeCombiner();
     public static final Block UPGRADE_SEPARATOR = new BlockUpgradeSeparator();
-    public static final Block MANHOLE = new BlockGenericTrapDoor(Block.Properties.create(Material.IRON, MaterialColor.BROWN_TERRACOTTA).hardnessAndResistance(10.0F).sound(SoundType.ANVIL)).setRegistryName("rats:manhole");
+    public static final Block MANHOLE = new BlockGenericTrapDoor(Block.Properties.create(Material.IRON, MaterialColor.BROWN_TERRACOTTA).hardnessAndResistance(10.0F).sound(SoundType.ANVIL).notSolid().variableOpacity()).setRegistryName("rats:manhole");
     public static final Block TRASH_CAN = new BlockTrashCan();
     public static final Block RAT_ATTRACTOR = new BlockRatAttractor();
     public static final Block RAT_QUARRY = new BlockRatQuarry();
+    public static final Block RAT_QUARRY_PLATFORM = new BlockRatQuarryPlatform();
 
 
     @SubscribeEvent

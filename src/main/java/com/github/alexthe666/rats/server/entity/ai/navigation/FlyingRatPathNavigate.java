@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai;
+package com.github.alexthe666.rats.server.entity.ai.navigation;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
@@ -26,8 +26,8 @@ public class FlyingRatPathNavigate extends FlyingPathNavigator {
 
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         if (rat.hasFlightUpgrade()) {
-            rat.getMoveHelper().setMoveTo(x, y, z, 0.25D);
+            rat.getMoveHelper().setMoveTo(x, y, z, speedIn * 0.25D);
         }
-        return this.setPath(getPathToPos(new BlockPos(x, y, z), 0), speedIn);
+        return true;
     }
 }

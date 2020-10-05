@@ -40,6 +40,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_PELT = new ItemGeneric("rat_pelt");
 
+    public static final Item RAT_PAW = new ItemGeneric("rat_paw");
+
     public static final Item CHEESE_STICK = new ItemCheeseStick();
 
     public static final Item RADIUS_STICK = new ItemRadiusStick();

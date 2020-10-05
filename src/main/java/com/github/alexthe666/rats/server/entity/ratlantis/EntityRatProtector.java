@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.server.entity.ratlantis;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.ai.EtherealRatPathNavigate;
-import com.github.alexthe666.rats.server.entity.ai.RatEtherealMoveHelper;
+import com.github.alexthe666.rats.server.entity.ai.navigation.EtherealRatPathNavigate;
+import com.github.alexthe666.rats.server.entity.ai.navigation.RatEtherealMoveHelper;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

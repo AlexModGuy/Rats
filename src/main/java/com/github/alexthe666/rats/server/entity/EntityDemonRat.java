@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.server.entity.ai.*;
+import com.github.alexthe666.rats.server.entity.ai.navigation.RatPathPathNavigateGround;
 import com.github.alexthe666.rats.server.entity.ratlantis.IPirat;
 import com.github.alexthe666.rats.server.entity.ratlantis.IRatlantean;
 import com.google.common.base.Predicate;

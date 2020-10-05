@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai;
+package com.github.alexthe666.rats.server.entity.ai.navigation;
 
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.SwimmerPathNavigator;

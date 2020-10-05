@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatQuarry;
@@ -73,7 +74,7 @@ public class RatAIHarvestQuarry extends Goal {
             for (BlockPos pos : BlockPos.getAllInBox(quarryPos.add(-RADIUS, -1, -RADIUS), quarryPos.add(RADIUS, -quarryPos.getY() - 1, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if ((!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) || entity.world.getFluidState(pos).isSource()) {
                     BlockState state = entity.world.getBlockState(pos);
-                    if (state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlockHardness(entity.world, pos) > 0F && (state.getFluidState().isEmpty() || state.getFluidState().isSource())) {
+                    if (state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && state.getBlockHardness(entity.world, pos) > 0F) {
                         allBlocks.add(pos);
                     }
                 }
@@ -82,11 +83,12 @@ public class RatAIHarvestQuarry extends Goal {
                 allBlocks.sort(this.targetSorter);
                 this.targetBlock = allBlocks.get(0);
                 BlockPos stairs = quarry.getNextPosForStairs();
-                if (targetBlock.getY() < stairs.getY()) {
+                if (stairs.getY() >= targetBlock.getY()) {
                     this.buildStairs = true;
                     stairDirection = quarry.stairDirection;
                     targetBlock = stairs;
                 }
+
             }
         }
 
@@ -114,7 +116,15 @@ public class RatAIHarvestQuarry extends Goal {
     public void tick() {
         if (this.targetBlock != null) {
             BlockPos rayPos = entity.rayTraceBlockPos(this.targetBlock);
-            if (rayPos == null) {
+            if(this.entity.world.getFluidState(this.targetBlock).isEmpty() && this.entity.world.isAirBlock(this.targetBlock)){
+                this.resetTask();
+            }
+            if(this.entity.isInLava() && entity.world.getBlockState(this.entity.func_233580_cy_().up()).isAir()){
+                entity.world.setBlockState(this.entity.func_233580_cy_().up(), Blocks.WATER.getDefaultState());
+                this.entity.heal(15F);
+                this.entity.getJumpController().setJumping();
+            }
+            if (rayPos == null || !this.canMineBlock(rayPos)) {
                 rayPos = this.targetBlock;
             }
             if (this.entity.getNavigator().tryMoveToXYZ(this.targetBlock.getX() + 0.5D, this.targetBlock.getY(), this.targetBlock.getZ() + 0.5D, 1.25D)) {
@@ -122,6 +132,7 @@ public class RatAIHarvestQuarry extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
+
             double distance = this.entity.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
             if (!entity.getMoveHelper().isUpdating() && (entity.func_233570_aj_() || entity.isInWater() || entity.isInLava() || entity.isRidingSpecialMount())) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
@@ -163,7 +174,7 @@ public class RatAIHarvestQuarry extends Goal {
                                 //entity.moveController.action = MovementController.Action.WAIT;
                             }
                             breakingTime++;
-                            int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 20);
+                            int hardness = (int) (block.getBlockHardness(entity.world, rayPos) * 10);
                             int i = (int) ((float) this.breakingTime / hardness * 10.0F);
                             if (breakingTime % 5 == 0) {
                                 entity.playSound(soundType.getHitSound(), soundType.volume + 1, soundType.pitch);
@@ -193,13 +204,18 @@ public class RatAIHarvestQuarry extends Goal {
         }
     }
 
+    private boolean canMineBlock(BlockPos rayPos) {
+        BlockState state = entity.world.getBlockState(rayPos);
+        return state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
+    }
+
     private void destroyBlock(BlockPos pos, BlockState state) {
         if (entity.world instanceof ServerWorld) {
             LootContext.Builder loot = new LootContext.Builder((ServerWorld) entity.world).withParameter(LootParameters.field_237457_g_, entity.getPositionVec()).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.entity.getRNG()).withLuck(1.0F);
             List<ItemStack> drops = state.getBlock().getDrops(state, loot);
             if (!drops.isEmpty() && entity.canRatPickupItem(drops.get(0))) {
                 for (ItemStack drop : drops) {
-                    //    this.entity.entityDropItem(drop, 0);
+                        this.entity.entityDropItem(drop, 0);
                 }
                 this.entity.world.destroyBlock(pos, false);
                 this.entity.fleePos = pos;

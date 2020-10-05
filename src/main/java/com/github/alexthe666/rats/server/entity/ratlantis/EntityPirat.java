@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ai.*;
+import com.github.alexthe666.rats.server.entity.ai.navigation.PiratPathNavigate;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.base.Predicate;

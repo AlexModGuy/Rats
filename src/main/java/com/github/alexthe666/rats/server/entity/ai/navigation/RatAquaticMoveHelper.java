@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai;
+package com.github.alexthe666.rats.server.entity.ai.navigation;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -7,7 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class RatAquaticMoveHelper extends MovementController {
-    EntityRat rat;
+        EntityRat rat;
 
     public RatAquaticMoveHelper(EntityRat rat) {
         super(rat);

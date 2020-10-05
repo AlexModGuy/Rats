@@ -132,6 +132,24 @@
                     "weight": 1
                 }
             ]
+        },
+        {
+            "name": "rat_paw",
+            "conditions": [
+                {
+                    "condition": "random_chance_with_looting",
+                    "chance": 0.1,
+                    "looting_multiplier": 0.02
+                }
+            ],
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "rats:rat_paw",
+                    "weight": 1
+                }
+            ]
         }
     ]
 }

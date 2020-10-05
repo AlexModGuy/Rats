@@ -1,20 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CCC",
-    "CRC",
-    "CCC"
-  ],
-  "key": {
-    "C": {
-      "tag": "forge:cheese"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "rats:block_of_cheese"
     },
-    "R": {
-      "item": "rats:contaminated_food"
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
     }
-  },
+  ],
   "result": {
-    "item": "rats:blue_cheese",
-    "count": 8
+    "item": "rats:block_of_blue_cheese",
+    "count": 1
   }
 }

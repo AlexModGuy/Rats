@@ -6,6 +6,8 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.ModelStaticRat;
 import com.github.alexthe666.rats.client.render.entity.RenderRatProtector;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatQuarry;
 import com.github.alexthe666.rats.server.events.CommonEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -38,9 +40,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -59,6 +59,7 @@ import java.util.Random;
 public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
     private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_radius.png");
+    private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation("rats:textures/model/quarry_radius.png");
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
     public static int left_height = 39;
     public static int right_height = 39;
@@ -295,6 +296,41 @@ public class ClientEvents {
                 GlStateManager.depthMask(true);
                 GlStateManager.enableCull();
                 GlStateManager.disableBlend();
+            }
+        }
+
+        if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
+            if(Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.BLOCK){
+                BlockRayTraceResult over = (BlockRayTraceResult)Minecraft.getInstance().objectMouseOver;
+                if (Minecraft.getInstance().world.getBlockState(over.getPos()).getBlock() == RatsBlockRegistry.RAT_QUARRY) {
+                    if (Minecraft.getInstance().world.getTileEntity(over.getPos()) instanceof TileEntityRatQuarry) {
+                        TileEntityRatQuarry quarry = (TileEntityRatQuarry) Minecraft.getInstance().world.getTileEntity(over.getPos());
+                        BlockPos blockPos = quarry.getPos().add(-quarry.getRadius(), 0, -quarry.getRadius());
+                        AxisAlignedBB aabb = new AxisAlignedBB(0, -0.05, 0, 1 + quarry.getRadius() * 2, 0.1, 1 + quarry.getRadius() * 2);
+                        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                        GlStateManager.enableBlend();
+                        Minecraft.getInstance().getTextureManager().bindTexture(QUARRY_TEXTURE);
+                        GlStateManager.disableCull();
+                        GlStateManager.depthMask(false);
+                        Entity viewEntity = Minecraft.getInstance().player;
+                        ActiveRenderInfo activerenderinfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+                        Vector3d viewPosition = activerenderinfo.getProjectedView();
+                        double px = viewPosition.x;
+                        double py = viewPosition.y;
+                        double pz = viewPosition.z;
+                        MatrixStack stack = event.getMatrixStack();
+                        stack.push();
+                        stack.translate(-px, -py, -pz);
+                        stack.translate(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                        stack.push();
+                        renderMovingAABB(aabb, event.getPartialTicks(), stack);
+                        stack.pop();
+                        stack.pop();
+                        GlStateManager.depthMask(true);
+                        GlStateManager.enableCull();
+                        GlStateManager.disableBlend();
+                    }
+                }
             }
         }
     }

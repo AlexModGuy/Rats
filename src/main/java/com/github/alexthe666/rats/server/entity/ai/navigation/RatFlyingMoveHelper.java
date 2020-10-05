@@ -1,29 +1,41 @@
-package com.github.alexthe666.rats.server.entity.ai;
+package com.github.alexthe666.rats.server.entity.ai.navigation;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
-public class RatEtherealMoveHelper extends MovementController {
+public class RatFlyingMoveHelper extends MovementController {
     EntityRat rat;
 
-    public RatEtherealMoveHelper(EntityRat rat) {
+    public RatFlyingMoveHelper(EntityRat rat) {
         super(rat);
-        this.speed = 1F;
+        this.speed = 4F;
         this.rat = rat;
     }
 
     public void tick() {
-        if (this.action == Action.MOVE_TO) {
+        if (this.action == MovementController.Action.MOVE_TO) {
+            if (rat.collidedHorizontally && !rat.func_233570_aj_()) {
+                rat.rotationYaw += 180.0F;
+                int dist = 3;
+                if (!rat.isInCage()) {
+                    this.speed = 0.1F;
+                    dist = 8;
+                }
+                BlockPos target = EntityRat.getPositionRelativetoGround(rat, rat.world, rat.getPosX() + rat.getRNG().nextInt(dist * 2) - dist, rat.getPosZ() + rat.getRNG().nextInt(dist * 2) - dist, rat.getRNG());
+                this.setMoveTo(target.getX(), target.getY(), target.getZ(), this.speed);
+
+            }
             Vector3d vec3d = new Vector3d(this.getX() - rat.getPosX(), this.getY() - rat.getPosY(), this.getZ() - rat.getPosZ());
             double d0 = vec3d.length();
             double edgeLength = rat.getBoundingBox().getAverageEdgeLength();
             if (d0 < edgeLength) {
-                this.action = Action.WAIT;
+                this.action = MovementController.Action.WAIT;
                 rat.setMotion(rat.getMotion().scale(0.5D));
             } else {
-                rat.setMotion(rat.getMotion().add(vec3d.scale(this.speed * 0.05D / d0)));
+                rat.setMotion(rat.getMotion().add(vec3d.scale(this.speed * 0.1D / d0)));
                 if (rat.getAttackTarget() == null) {
                     Vector3d vec3d1 = rat.getMotion();
                     rat.rotationYaw = -((float)MathHelper.atan2(vec3d1.x, vec3d1.z)) * (180F / (float)Math.PI);

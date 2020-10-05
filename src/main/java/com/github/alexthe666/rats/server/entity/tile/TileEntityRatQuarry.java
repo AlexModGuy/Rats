@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.inventory.ContainerRatCraftingTable;
 import com.github.alexthe666.rats.server.message.MessageUpdateTileSlots;
 import net.minecraft.block.BlockState;
@@ -22,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -129,7 +131,42 @@ public class TileEntityRatQuarry extends LockableTileEntity implements ITickable
 
     @Override
     public void tick() {
+        checkAndReplacePlatforms();
+    }
 
+    private void checkAndReplacePlatforms() {
+        BlockPos checkingPos = this.pos.down();
+        for(int i = 0; i < getRadius(); i++){
+            if(world.isAirBlock(checkingPos)){
+                world.setBlockState(checkingPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.getDefaultState());
+            }
+            checkingPos = checkingPos.offset(Direction.NORTH);
+        }
+        for(int i = 0; i < getRadius(); i++){
+            if(world.isAirBlock(checkingPos)){
+                world.setBlockState(checkingPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.getDefaultState());
+            }
+            checkingPos = checkingPos.offset(Direction.WEST);
+        }
+    }
+
+    public void remove() {
+        if(!world.isRemote){
+            BlockPos checkingPos = this.pos.down();
+            for(int i = 0; i < getRadius(); i++){
+                if(world.getBlockState(checkingPos).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM){
+                    world.destroyBlock(checkingPos, true);
+                }
+                checkingPos = checkingPos.offset(Direction.NORTH);
+            }
+            for(int i = 0; i < getRadius(); i++){
+                if(world.getBlockState(checkingPos).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM){
+                    world.destroyBlock(checkingPos, true);
+                }
+                checkingPos = checkingPos.offset(Direction.WEST);
+            }
+        }
+        super.remove();
     }
 
     public void func_230337_a_(BlockState state, CompoundNBT compound) {

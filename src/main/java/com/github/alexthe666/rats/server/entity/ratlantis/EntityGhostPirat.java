@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ratlantis;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
 import com.github.alexthe666.rats.server.entity.ai.*;
+import com.github.alexthe666.rats.server.entity.ai.navigation.RatPathPathNavigateGround;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
