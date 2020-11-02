@@ -105,7 +105,7 @@ jar {
         attributes([
                 "Specification-Title": "rats",
                 "Specification-Vendor": "rats",
-                "Specification-Version": "7.0.0",
+                "Specification-Version": "7.0.1",
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"rats",
