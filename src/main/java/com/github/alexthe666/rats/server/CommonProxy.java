@@ -83,7 +83,8 @@ public class CommonProxy {
         // event.getRegistry().register(RatsVillageRegistry.PET_SHOP_OWNER);
     }
 
-    @SubscribeEvent
+
+        @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
         try {
             for (Field f : RatsEntityRegistry.class.getDeclaredFields()) {
@@ -166,7 +167,7 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
         if (RatsMod.RATLANTIS_LOADED) {
-            RatlantisStructureRegistry.MARBLE_PILE = Registry.register(Registry.FEATURE, "rats:marble_pile", new FeatureMarblePile(NoFeatureConfig.field_236558_a_));
+            event.getRegistry().register(RatlantisStructureRegistry.MARBLE_PILE.setRegistryName("rats:marble_pile"));
         }
     }
 
