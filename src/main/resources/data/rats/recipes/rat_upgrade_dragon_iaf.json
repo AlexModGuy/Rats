@@ -17,7 +17,7 @@
       "data": 0
     },
     "C": {
-      "tag": "iceandfire:dragon_scales_block"
+      "tag": "forge:storage_blocks/fire_dragon_scale"
     },
     "W": {
       "item": "rats:rat_upgrade_warrior",
