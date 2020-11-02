@@ -1108,6 +1108,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                     poopTag.put("OreItem", oreTag);
                     pooStack.setTag(poopTag);
                 }
+                int healAmount = 1;
+                if (this.getHeldItem(Hand.MAIN_HAND).getItem().isFood()) {
+                    healAmount = this.getHeldItem(Hand.MAIN_HAND).getItem().getFood().getHealing();
+                }
                 this.getHeldItem(Hand.MAIN_HAND).shrink(1);
                 if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING) || rand.nextFloat() <= 0.05F && this.isTamed()) {
                     if (RatConfig.ratFartNoises) {
@@ -1126,10 +1130,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                             this.entityDropItem(pooStack, 0.0F);
                         }
                     }
-                }
-                int healAmount = 1;
-                if (this.getHeldItem(Hand.MAIN_HAND).getItem().isFood()) {
-                    healAmount = this.getHeldItem(Hand.MAIN_HAND).getItem().getFood().getHealing();
                 }
                 this.heal(healAmount);
                 eatingTicks = 0;
@@ -2333,8 +2333,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     public void setTamed(boolean tamed) {
         if (tamed) {
-            Arrays.fill(this.inventoryArmorDropChances, 1.0F);
-            Arrays.fill(this.inventoryHandsDropChances, 1.0F);
+            Arrays.fill(this.inventoryArmorDropChances, 2.0F);
+            Arrays.fill(this.inventoryHandsDropChances, 2.0F);
         }
         super.setTamed(tamed);
     }
