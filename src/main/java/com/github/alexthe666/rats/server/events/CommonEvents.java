@@ -422,13 +422,16 @@ public class CommonEvents {
                 event.getPlayer().playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1, 1);
                 if (!event.getPlayer().isCreative()) {
                     if (event.getItemStack().getItem() == Items.MILK_BUCKET) {
-                        event.getItemStack().shrink(1);
-                        event.getPlayer().addItemStackToInventory(new ItemStack(Items.BUCKET));
+                        event.getPlayer().setHeldItem(event.getHand(), new ItemStack(Items.BUCKET));
                     } else if (RatUtils.isMilk(event.getItemStack())) {
-                        LazyOptional<IFluidHandlerItem> fluidHandler = FluidUtil.getFluidHandler(event.getItemStack());
-                        if (fluidHandler.isPresent() && fluidHandler.orElse(null) != null) {
-                            fluidHandler.orElse(null).drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                        }
+                        LazyOptional<IFluidHandlerItem> fluidHandlerOptional = FluidUtil.getFluidHandler(event.getItemStack());
+                        fluidHandlerOptional.ifPresent(fluidHandler -> {
+                            fluidHandler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                            ItemStack container = fluidHandler.getContainer();
+                            if (event.getItemStack() != container) {
+                                event.getPlayer().setHeldItem(event.getHand(), container);
+                            }
+                        });
                     }
                 }
                 event.setCanceled(true);
