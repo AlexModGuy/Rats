@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "rats:rat_upgrade_warrior",
+    "rats:rat_upgrade_chef",
+    "rats:rat_upgrade_tick_accelerator"
+  ]
+}
