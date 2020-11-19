@@ -6,6 +6,7 @@
     "rats:rat_upgrade_aristocrat",
     "rats:rat_upgrade_tnt_survivor",
     "rats:rat_upgrade_voodoo",
-    "rats:rat_upgrade_automaton_mount"
+    "rats:rat_upgrade_automaton_mount",
+    "rats:creative_cheese"
   ]
 }
