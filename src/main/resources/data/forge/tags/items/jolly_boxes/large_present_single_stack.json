@@ -5,6 +5,7 @@
     "rats:rat_upgrade_chef",
     "rats:rat_upgrade_tick_accelerator",
     "rats:rat_upgrade_fisherman",
-    "rats:rat_upgrade_lumberjack"
+    "rats:rat_upgrade_lumberjack",
+    "rats:rat_upgrade_miner"
   ]
 }
