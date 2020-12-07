@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "rats:rat_upgrade_fisherman",
+    "rats:rat_upgrade_lumberjack"
+  ]
+}
