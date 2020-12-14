@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity.ai.navigation;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
-import com.github.alexthe666.rats.server.pathfinding.AStar;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.pathfinding.PathNodeType;
@@ -26,13 +25,13 @@ public class RatTubeNodeProcessor extends WalkNodeProcessor {
                     Block block = p_193577_1_.getBlockState(new BlockPos(l, i1, j1)).getBlock();
                     if (block instanceof BlockRatTube || block instanceof BlockRatCage || block instanceof BlockRatHole) {
                         pathnodetype = PathNodeType.WALKABLE;
-                    } else {
-                        if (block instanceof AirBlock && AStar.getConnectedToRatTube(p_193577_1_, new BlockPos(l, i1, j1)) != null) {
+                    }/*   if (block instanceof AirBlock && AStar.getConnectedToRatTube(p_193577_1_, new BlockPos(l, i1, j1)) != null) {
                             pathnodetype = PathNodeType.WALKABLE;
                         }else{
                             pathnodetype = PathNodeType.BLOCKED;
                         }
-                    }
+                        */
+                    pathnodetype = PathNodeType.BLOCKED;
                     if (i == 0 && j == 0 && k == 0) {
                         nodeType = pathnodetype;
                     }

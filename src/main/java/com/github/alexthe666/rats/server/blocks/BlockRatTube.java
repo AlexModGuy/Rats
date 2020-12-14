@@ -455,6 +455,37 @@ public class BlockRatTube extends ContainerBlock implements ICustomRendered, INo
         return new TileEntityRatTube();
     }
 
+    public static boolean isOpenInDirection(BlockState state, Direction facing){
+        BooleanProperty notOpen = null;
+        BooleanProperty connect = null;
+        switch (facing) {
+            case NORTH:
+                notOpen = OPEN_NORTH;
+                connect = NORTH;
+                break;
+            case SOUTH:
+                notOpen = OPEN_SOUTH;
+                connect = SOUTH;
+                break;
+            case EAST:
+                notOpen = OPEN_EAST;
+                connect = EAST;
+                break;
+            case WEST:
+                notOpen = OPEN_WEST;
+                connect = WEST;
+                break;
+            case DOWN:
+                notOpen = OPEN_DOWN;
+                connect = DOWN;
+                break;
+            default:
+                notOpen = OPEN_UP;
+                connect = UP;
+                break;
+        }
+        return state.get(notOpen);
+    }
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
         BooleanProperty notOpen = null;
         BooleanProperty connect = null;

@@ -28,7 +28,7 @@ public class RatAIFleeMobs extends Goal {
     private final Predicate<Entity> avoidTargetSelector;
     protected EntityRat entity;
     protected LivingEntity closestLivingEntity;
-    private Path path;
+    private Vector3d runToPos;
 
     public RatAIFleeMobs(EntityRat entityIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
         this(entityIn, Predicates.alwaysTrue(), avoidDistanceIn, farSpeedIn, nearSpeedIn);
@@ -73,8 +73,8 @@ public class RatAIFleeMobs extends Goal {
                 return false;
             } else {
                 entity.isFleeing = true;
-                this.path = entity.getNavigator().getPathToPos(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
-                return this.path != null;
+                runToPos = vec3d;
+                return true;
             }
         }
     }
@@ -93,16 +93,24 @@ public class RatAIFleeMobs extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return !entity.getNavigator().noPath();
+
+        if (this.entity.getDistanceSq(runToPos.getX(), runToPos.getY(), runToPos.getZ()) <= 4) {
+            return false;
+        }
+        return true;
     }
 
     public void startExecuting() {
-        entity.getNavigator().setPath(this.path, farSpeed);
+        if(runToPos != null){
+            double speed = closestLivingEntity instanceof PlayerEntity ? getRunSpeed() : nearSpeed;
+            entity.getNavigator().tryMoveToXYZ(runToPos.x, runToPos.y, runToPos.z, speed);
+        }
     }
 
     public void resetTask() {
         entity.isFleeing = false;
         this.closestLivingEntity = null;
+        this.runToPos = null;
     }
 
     public void tick() {

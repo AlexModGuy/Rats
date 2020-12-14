@@ -152,6 +152,8 @@ public class RatConfig {
             "minecraft:crimson_forest",
             "minecraft:warped_forest"
     );
+    public static int maxRatPathingNodes = 5000;
+    public static int ratsPathfindingThreads = 3;
 
     public static void bakeClient(final ModConfig config) {
         try {

@@ -11,6 +11,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatQuarry;
 import com.github.alexthe666.rats.server.events.CommonEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.pathfinding.Pathfinding;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -268,6 +269,9 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorld(RenderWorldLastEvent event) {
+        if(Pathfinding.isDebug()){
+            Pathfinding.debugDraw(event.getPartialTicks(), event.getMatrixStack());
+        }
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
                 BlockPos blockPos = RatsMod.PROXY.getRefrencedRat().getSearchCenter();

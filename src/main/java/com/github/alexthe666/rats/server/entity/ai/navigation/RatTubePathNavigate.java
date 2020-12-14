@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity.ai.navigation;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.entity.EntityRat;
-import com.github.alexthe666.rats.server.pathfinding.AStar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.GroundPathNavigator;
@@ -55,15 +54,6 @@ public class RatTubePathNavigate extends GroundPathNavigator {
     private Path generatePath(){
         if(prevPath == null || prevPath.isFinished() || prevPath.getFinalPathPoint() != null && prevPath.getFinalPathPoint().x != targetPosition.getX() && prevPath.getFinalPathPoint().y != targetPosition.getY() && prevPath.getFinalPathPoint().y != targetPosition.getZ()) {
             BlockPos startPos = new BlockPos(this.getEntityPosition());
-            AStar aStar = new AStar(startPos, targetPosition, 1000, false);
-            BlockPos[] pathBlocks = aStar.getPath(world);
-            PathPoint[] fromPos = new PathPoint[pathBlocks.length - 1];
-            for (int i = 1; i < pathBlocks.length; i++) {
-                fromPos[i - 1] = new PathPoint(pathBlocks[i].getX(), pathBlocks[i].getY(), pathBlocks[i].getZ());
-            }
-            List<PathPoint> pathPointList = new ArrayList<>(Arrays.asList(fromPos));
-            prevPath = new Path(pathPointList, targetPosition, false);
-            return prevPath;
         }
         return prevPath;
     }

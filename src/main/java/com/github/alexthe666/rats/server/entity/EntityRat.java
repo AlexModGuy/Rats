@@ -20,6 +20,9 @@ import com.github.alexthe666.rats.server.items.*;
 import com.github.alexthe666.rats.server.message.MessageDancingRat;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.pathfinding.IPassabilityNavigator;
+import com.github.alexthe666.rats.server.pathfinding.RatAdvancedPathNavigate;
+import com.github.alexthe666.rats.server.pathfinding.pathjobs.ICustomSizeNavigator;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.recipes.SharedRecipe;
 import com.google.common.base.Predicate;
@@ -99,7 +102,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatlantean {
+public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatlantean, IPassabilityNavigator, ICustomSizeNavigator {
 
     public static final Animation ANIMATION_EAT = Animation.create(10);
     public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);
@@ -299,7 +302,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.goalSelector.addGoal(1, new RatAISwimming(this));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
-                return entity.isAlive() && ((entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative()) || entity instanceof OcelotEntity;
+                return entity.isAlive() && ((entity instanceof PlayerEntity && ((PlayerEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.PIPER_HAT) && !((PlayerEntity) entity).isCreative()) || entity instanceof OcelotEntity || entity instanceof CatEntity;
             }
         }, 10.0F, 0.8D, 1.225D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
@@ -544,11 +547,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     protected void switchNavigator(int type) {
         if (type == 1) {//cage or wild
             this.moveController = new RatMoveHelper(this);
-            this.navigator = new RatPathPathNavigateGround(this, world);
+            this.navigator = new RatAdvancedPathNavigate(this, world);
             this.navigatorType = 1;
         } else if (type == 0) {//tamed
             this.moveController = new RatMoveHelper(this);
-            this.navigator = new RatPathPathNavigateGround(this, world);
+            this.navigator = new RatAdvancedPathNavigate(this, world);
             this.navigatorType = 0;
         } else if (type == 2) {//flying
             this.moveController = new RatFlyingMoveHelper(this);
@@ -556,14 +559,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.navigatorType = 2;
         } else if (type == 3) {//tube
             this.moveController = new RatTubeMoveHelper(this);
-
-            RatTubePathNavigate newNav = new RatTubePathNavigate(this, world);
-            if (this.navigator.getPath() != null && this.navigator.getPath().getFinalPathPoint() != null) {
-                PathPoint point = this.navigator.getPath().getFinalPathPoint();
-                newNav.tryMoveToXYZ(point.x, point.y, point.z, 1.0F);
-                this.navigator.clearPath();
-            }
-            this.navigator = newNav;
+            this.navigator = new RatAdvancedPathNavigate(this, world);
             this.navigatorType = 3;
         } else if (type == 4) {//aquatic
             this.moveController = new RatAquaticMoveHelper(this);
@@ -2762,10 +2758,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         return false;
     }
-
     public boolean isAIDisabled() {
         return super.isAIDisabled() || this.getRespawnCountdown() > 0;
     }
+
 
     public void setTubeTarget(BlockPos targetPosition) {
         tubeTarget = targetPosition;
@@ -3329,4 +3325,28 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return bool || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE) || this.hasUpgrade(RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT) && this.isRidingSpecialMount();
     }
 
+    @Override
+    public int maxSearchNodes() {
+        return 50;
+    }
+
+    @Override
+    public boolean isBlockPassable(BlockState state, BlockPos pos, BlockPos entityPos) {
+        return false;
+    }
+
+    @Override
+    public boolean isSmallerThanBlock() {
+        return !this.isRidingSpecialMount();
+    }
+
+    @Override
+    public float getXZNavSize() {
+        return 1;
+    }
+
+    @Override
+    public int getYNavSize() {
+        return 1;
+    }
 }
