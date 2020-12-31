@@ -76,7 +76,7 @@ public class RatAIHarvestQuarry extends Goal {
             for (BlockPos pos : BlockPos.getAllInBox(quarryPos.add(-RADIUS, -1, -RADIUS), quarryPos.add(RADIUS, -quarryPos.getY() - 1, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if ((!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) || entity.world.getFluidState(pos).isSource()) {
                     BlockState state = entity.world.getBlockState(pos);
-                    if (state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && state.getBlock() != RatsBlockRegistry.PIED_WOOL && state.getBlockHardness(entity.world, pos) > 0F) {
+                    if (state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM  && state.getBlockHardness(entity.world, pos) > 0F) {
                         allBlocks.add(pos);
                     }
                 }
@@ -108,7 +108,6 @@ public class RatAIHarvestQuarry extends Goal {
 
     public void resetTask() {
         buildStairs = false;
-        this.entity.getNavigator().clearPath();
         resetTarget();
     }
 
@@ -139,7 +138,7 @@ public class RatAIHarvestQuarry extends Goal {
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (buildStairs) {
                     if (distance < 6F * this.entity.getRatDistanceModifier()) {
-                        entity.world.setBlockState(targetBlock, RatsBlockRegistry.PIED_WOOL.getDefaultState());
+                        entity.world.setBlockState(targetBlock, RatsBlockRegistry.RAT_QUARRY_PLATFORM.getDefaultState());
                         entity.world.setEntityState(entity, (byte) 86);
                         targetBlock = null;
                         prevMiningState = block;
@@ -206,7 +205,7 @@ public class RatAIHarvestQuarry extends Goal {
 
     private boolean canMineBlock(BlockPos rayPos) {
         BlockState state = entity.world.getBlockState(rayPos);
-        return state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.PIED_WOOL && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
+        return state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
     }
 
     private void destroyBlock(BlockPos pos, BlockState state) {

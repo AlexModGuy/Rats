@@ -98,6 +98,7 @@ public class RatAIDepositInInventory extends Goal {
             if ((this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) && !entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()&& !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
                 RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
+                if(entity.getNavigator().noPath())
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY() + 0.5D, getMovePos().getZ() + 0.5D, 1.25D);
 
                 double distance = Math.sqrt(this.entity.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D));

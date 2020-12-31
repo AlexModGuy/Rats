@@ -117,7 +117,7 @@ public final class Pathfinding {
             }
 
             for (final Node n : debugNodesVisited) {
-            //   debugDrawNode(n, 0F, 0F, 1.0F, matrixStack);
+               debugDrawNode(n, 0F, 0F, 1.0F, matrixStack);
             }
 
             for (final Node n : debugNodesPath) {

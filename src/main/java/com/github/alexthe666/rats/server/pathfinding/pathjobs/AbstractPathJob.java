@@ -6,6 +6,8 @@ package com.github.alexthe666.rats.server.pathfinding.pathjobs;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
+import com.github.alexthe666.rats.server.blocks.BlockRatQuarry;
+import com.github.alexthe666.rats.server.blocks.BlockRatQuarryPlatform;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.pathfinding.*;
 import net.minecraft.block.*;
@@ -352,7 +354,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
             cost *= pathingOptions.jumpDropCost * Math.abs(dPos.getY());
         }
 
-        if (onPath || world.getBlockState(blockPos).getBlock() instanceof BlockRatTube) {
+        if (onPath || world.getBlockState(blockPos).getBlock() instanceof BlockRatTube || world.getBlockState(blockPos).getBlock() instanceof BlockRatQuarryPlatform) {
             cost *= 0.1D;
         }
 
@@ -1131,7 +1133,9 @@ public abstract class AbstractPathJob implements Callable<Path> {
         if (fluid != null && !fluid.isEmpty() && (fluid.getFluid() == Fluids.LAVA || fluid.getFluid() == Fluids.FLOWING_LAVA)) {
             return SurfaceType.NOT_PASSABLE;
         }
-
+        if(block instanceof BlockRatQuarryPlatform){
+            return SurfaceType.WALKABLE;
+        }
         if (block instanceof AbstractSignBlock || block instanceof BlockRatTube || block instanceof BlockRatCage) {
             return SurfaceType.DROPABLE;
         }

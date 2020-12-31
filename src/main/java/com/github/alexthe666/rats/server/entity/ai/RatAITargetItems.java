@@ -105,7 +105,6 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
         super.tick();
         if (this.targetEntity == null || this.targetEntity != null && !this.targetEntity.isAlive()) {
             this.resetTask();
-            this.goalOwner.getNavigator().clearPath();
         }
         if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 3.5F * rat.getRatDistanceModifier() && rat.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             EntityRat rat = (EntityRat) this.goalOwner;
