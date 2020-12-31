@@ -890,6 +890,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public void setCommand(RatCommand command) {
+        if(!world.isRemote && command.ordinal() != this.getCommandInteger()){
+            this.getNavigator().clearPath();
+        }
         setCommandInteger(command.ordinal());
     }
 

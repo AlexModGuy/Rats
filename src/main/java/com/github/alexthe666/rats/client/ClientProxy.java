@@ -206,6 +206,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.MANHOLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.TRASH_CAN, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_ATTRACTOR, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_QUARRY_PLATFORM, RenderType.getCutout());
         if (RatsMod.RATLANTIS_LOADED) {
             RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.RATGLOVE_FLOWER, RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(RatlantisBlockRegistry.MARBLED_CHEESE_DIRT, RenderType.getCutout());

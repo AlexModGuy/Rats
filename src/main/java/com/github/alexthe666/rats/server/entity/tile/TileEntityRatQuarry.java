@@ -237,7 +237,7 @@ public class TileEntityRatQuarry extends LockableTileEntity implements ITickable
         while(yLevel > 1){
             boolean atLevel = false;
             for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(this.pos.getX() - getRadius(), yLevel, this.pos.getZ() - getRadius()), new BlockPos(this.pos.getX() + getRadius(), yLevel, this.pos.getZ() + getRadius())).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-                if(world.getBlockState(pos).getBlock() == Blocks.COBBLESTONE_STAIRS){
+                if(world.getBlockState(pos).getBlock() == RatsBlockRegistry.PIED_WOOL){
                     atLevel = true;
                     break;
                 }

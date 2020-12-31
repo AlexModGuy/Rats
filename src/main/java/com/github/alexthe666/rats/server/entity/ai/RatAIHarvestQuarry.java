@@ -12,6 +12,7 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.BlockNamedItem;
@@ -35,6 +36,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RatAIHarvestQuarry extends Goal {
     private final EntityRat entity;
@@ -74,26 +76,24 @@ public class RatAIHarvestQuarry extends Goal {
             for (BlockPos pos : BlockPos.getAllInBox(quarryPos.add(-RADIUS, -1, -RADIUS), quarryPos.add(RADIUS, -quarryPos.getY() - 1, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if ((!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) || entity.world.getFluidState(pos).isSource()) {
                     BlockState state = entity.world.getBlockState(pos);
-                    if (state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && state.getBlockHardness(entity.world, pos) > 0F) {
+                    if (state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && state.getBlock() != RatsBlockRegistry.PIED_WOOL && state.getBlockHardness(entity.world, pos) > 0F) {
                         allBlocks.add(pos);
                     }
                 }
             }
             if (!allBlocks.isEmpty()) {
                 allBlocks.sort(this.targetSorter);
-                this.targetBlock = allBlocks.get(0);
+                this.targetBlock = allBlocks.get(allBlocks.size() - 1);
                 BlockPos stairs = quarry.getNextPosForStairs();
                 if (stairs.getY() >= targetBlock.getY()) {
                     this.buildStairs = true;
                     stairDirection = quarry.stairDirection;
                     targetBlock = stairs;
                 }
-
             }
         }
 
     }
-
 
     private boolean doesListContainBlock(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
@@ -139,7 +139,7 @@ public class RatAIHarvestQuarry extends Goal {
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (buildStairs) {
                     if (distance < 6F * this.entity.getRatDistanceModifier()) {
-                        entity.world.setBlockState(targetBlock, Blocks.COBBLESTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, stairDirection.getOpposite()));
+                        entity.world.setBlockState(targetBlock, RatsBlockRegistry.PIED_WOOL.getDefaultState());
                         entity.world.setEntityState(entity, (byte) 86);
                         targetBlock = null;
                         prevMiningState = block;
@@ -206,7 +206,7 @@ public class RatAIHarvestQuarry extends Goal {
 
     private boolean canMineBlock(BlockPos rayPos) {
         BlockState state = entity.world.getBlockState(rayPos);
-        return state.getBlock() != Blocks.COBBLESTONE_STAIRS && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
+        return state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.PIED_WOOL && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
     }
 
     private void destroyBlock(BlockPos pos, BlockState state) {
@@ -243,7 +243,8 @@ public class RatAIHarvestQuarry extends Goal {
             if(state2.isSource() && !state1.isSource()){
                 return -1;
             }
-            return Double.compare(distance1, distance2);
+            int d = Double.compare(distance2, distance1);
+            return d;
         }
 
         private double getDistance(BlockPos pos) {

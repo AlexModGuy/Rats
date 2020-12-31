@@ -14,7 +14,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
 public class BlockRatQuarryPlatform extends Block implements INoTab{
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     public BlockRatQuarryPlatform() {
         super(Block.Properties.create(Material.WOOL).sound(SoundType.SLIME).notSolid().variableOpacity().hardnessAndResistance(1.0F, 0.0F));
