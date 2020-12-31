@@ -117,7 +117,7 @@ public final class Pathfinding {
             }
 
             for (final Node n : debugNodesVisited) {
-               debugDrawNode(n, 0F, 0F, 1.0F, matrixStack);
+            //   debugDrawNode(n, 0F, 0F, 1.0F, matrixStack);
             }
 
             for (final Node n : debugNodesPath) {
@@ -265,7 +265,7 @@ public final class Pathfinding {
     }
 
     /**
-     * Ice and Fire specific thread factory.
+     * Rats specific thread factory.
      */
     public static class IafThreadFactory implements ThreadFactory {
         /**
@@ -275,10 +275,10 @@ public final class Pathfinding {
 
         @Override
         public Thread newThread(final Runnable runnable) {
-            final Thread thread = new Thread(runnable, "Ice and Fire Pathfinding Worker #" + (id++));
+            final Thread thread = new Thread(runnable, "Rats Pathfinding Worker #" + (id++));
             thread.setDaemon(true);
 
-            thread.setUncaughtExceptionHandler((thread1, throwable) -> RatsMod.LOGGER.error("Ice and Fire Pathfinding Thread errored! ", throwable));
+            thread.setUncaughtExceptionHandler((thread1, throwable) -> RatsMod.LOGGER.error("Rats Pathfinding Thread errored! ", throwable));
             return thread;
         }
     }

@@ -5,6 +5,7 @@ package com.github.alexthe666.rats.server.pathfinding.pathjobs;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.pathfinding.*;
 import net.minecraft.block.*;
@@ -351,8 +352,8 @@ public abstract class AbstractPathJob implements Callable<Path> {
             cost *= pathingOptions.jumpDropCost * Math.abs(dPos.getY());
         }
 
-        if (onPath) {
-            cost *= pathingOptions.onPathCost;
+        if (onPath || world.getBlockState(blockPos).getBlock() instanceof BlockRatTube) {
+            cost *= 0.1D;
         }
 
         if (onRails) {
@@ -478,12 +479,12 @@ public abstract class AbstractPathJob implements Callable<Path> {
         }
 
         //  On a ladder, we can go 1 straight-up
-        if (onLadderGoingUp(currentNode, dPos)) {
+        if (onLadderGoingUp(currentNode, dPos) || world.getBlockState(currentNode.pos).getBlock() instanceof BlockRatTube && world.getBlockState(dPos).getBlock() instanceof BlockRatTube) {
             walk(currentNode, BLOCKPOS_UP);
         }
 
         //  We can also go down 1, if the lower block is a ladder
-        if (onLadderGoingDown(currentNode, dPos)) {
+        if (onLadderGoingDown(currentNode, dPos) || world.getBlockState(currentNode.pos).getBlock() instanceof BlockRatTube && world.getBlockState(dPos).getBlock() instanceof BlockRatTube) {
             walk(currentNode, BLOCKPOS_DOWN);
         }
 
@@ -807,11 +808,18 @@ public abstract class AbstractPathJob implements Callable<Path> {
      * @return y height of first open, viable block above ground, or -1 if blocked or too far a drop.
      */
     protected int getGroundHeight(final Node parent, final BlockPos pos) {
+        if(world.getBlockState(pos).getBlock() instanceof BlockRatTube){
+            return pos.getY();
+        }
+        if(parent != null && world.getBlockState(parent.pos).getBlock() instanceof BlockRatTube){
+            return parent.pos.getY();
+        }
         //  Check (y+1) first, as it's always needed, either for the upper body (level),
         //  lower body (headroom drop) or lower body (jump up)
         if (checkHeadBlock(parent, pos)) {
-            return handleTargetNotPassable(parent, pos.up(), world.getBlockState(pos.up()));
+            return handleTargetNotPassable(parent, pos, world.getBlockState(pos));
         }
+
 
         //  Now check the block we want to move to
         final BlockState target = world.getBlockState(pos);
@@ -897,7 +905,6 @@ public abstract class AbstractPathJob implements Callable<Path> {
             return -1;
         }
 
-
         final BlockState parentBelow = world.getBlockState(parent.pos.down());
         final VoxelShape parentBB = parentBelow.getCollisionShape(world, parent.pos.down());
 
@@ -922,7 +929,9 @@ public abstract class AbstractPathJob implements Callable<Path> {
         if (bb.getEnd(Direction.Axis.Y) < 1) {
             localPos = pos.up();
         }
-
+        if (parent != null && world.getBlockState(parent.pos).getBlock() instanceof BlockRatTube && !(world.getBlockState(pos).getBlock() instanceof BlockRatTube)) {
+            return false;
+        }
         if (parent == null || !isPassableBB(parent.pos, pos)) {
             final VoxelShape bb1 = world.getBlockState(pos.down()).getCollisionShape(world, pos.down());
             final VoxelShape bb2 = world.getBlockState(pos.up()).getCollisionShape(world, pos.up());
@@ -1057,20 +1066,22 @@ public abstract class AbstractPathJob implements Callable<Path> {
 
     protected boolean isPassableRattube(final BlockPos pos, final boolean head, final BlockPos parentPos) {
         final BlockState state = world.getBlockState(pos);
+        final BlockState parentState = world.getBlockState(parentPos);
         final VoxelShape shape = state.getCollisionShape(world, pos);
-        if(state.getBlock() instanceof BlockRatTube){
-            if(world.getBlockState(parentPos).getBlock() instanceof BlockRatTube){
-                return true;
-            }else{
-                Direction from = getAnyFacing(parentPos, pos);
-                return BlockRatTube.isOpenInDirection(state, from.getOpposite());
-            }
-
-        }else if(world.getBlockState(parentPos).getBlock() instanceof BlockRatTube){
+        final boolean parentTube = parentState.getBlock() instanceof BlockRatTube;
+        final boolean currentTube = state.getBlock() instanceof BlockRatTube;
+        if(currentTube && parentTube){
             Direction from = getAnyFacing(parentPos, pos);
-            BlockState parent = world.getBlockState(parentPos);
-            return BlockRatTube.isOpenInDirection(parent, from);
-
+            return true;
+        }
+        if(parentTube && !currentTube){ // parent tube, current is not
+            Direction from = getAnyFacing(parentPos, pos);
+            return BlockRatTube.isOpenInDirection(parentState, from) && shape.isEmpty();
+        }
+        if(currentTube && !parentTube){ // parent is not, current is tube
+            Direction from = getAnyFacing(parentPos, pos);
+            boolean b = BlockRatTube.isOpenInDirection(state, from.getOpposite());
+            return b;
         }
         if (!shape.isEmpty() && passabilityNavigator != null && passabilityNavigator.isBlockPassable(state, pos, pos)) {
             return true;
@@ -1121,7 +1132,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
             return SurfaceType.NOT_PASSABLE;
         }
 
-        if (block instanceof AbstractSignBlock) {
+        if (block instanceof AbstractSignBlock || block instanceof BlockRatTube || block instanceof BlockRatCage) {
             return SurfaceType.DROPABLE;
         }
 
@@ -1142,7 +1153,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
      * @return true if the block is a ladder.
      */
     protected boolean isLadder(final Block block, final BlockPos pos) {
-        return block.isLadder(this.world.getBlockState(pos), world, pos, entity.get()) ;
+        return block.isLadder(this.world.getBlockState(pos), world, pos, entity.get());
     }
 
     protected boolean isLadder(final BlockPos pos) {

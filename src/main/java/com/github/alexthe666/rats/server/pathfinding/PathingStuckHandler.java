@@ -173,7 +173,7 @@ public class PathingStuckHandler implements IStuckHandler
             // Stuck when we have no path and had no path last update before
             if (!hadPath)
             {
-                tryUnstuck(navigator);
+            //    tryUnstuck(navigator);
             }
         }
         else

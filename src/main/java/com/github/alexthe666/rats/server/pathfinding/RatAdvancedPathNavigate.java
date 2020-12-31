@@ -84,7 +84,7 @@ public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
         this.nodeProcessor.setCanSwim(true);
         getPathingOptions().setCanSwim(true);
 
-        stuckHandler = PathingStuckHandler.createStuckHandler().withTakeDamageOnStuck(0.2f).withTeleportSteps(6).withTeleportOnFullStuck();
+        stuckHandler = PathingStuckHandler.createStuckHandler().withTakeDamageOnStuck(0F).withDelayBeforeStuckActions(100).withTeleportSteps(6).withTeleportOnFullStuck();
     }
 
     public static boolean isEqual(final BlockPos coords, final int x, final int y, final int z) {
