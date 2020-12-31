@@ -1580,6 +1580,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (randomEffectCooldown > 0) {
             randomEffectCooldown--;
         }
+        if(isJumping && !world.isRemote && world.getBlockState(this.getPosition().up()).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM && world.isAirBlock(this.getPosition().up(2))){
+            this.setPosition(this.getPosX(), this.getPosY() + 1, this.getPosZ());
+            this.getNavigator().clearPath();
+        }
     }
 
     private BlockPos getPosition() {
@@ -3017,7 +3021,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
-        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
         if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR) || this.hasFlightUpgrade())) {

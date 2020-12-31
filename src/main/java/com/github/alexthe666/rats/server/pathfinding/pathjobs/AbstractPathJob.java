@@ -324,7 +324,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
         }
         entitySizeXZ = entity.getWidth() / 2.0F;
         entitySizeY = MathHelper.ceil(entity.getHeight());
-        allowJumpPointSearchTypeWalk = true;
+        allowJumpPointSearchTypeWalk = false;
     }
 
     /**
@@ -990,6 +990,9 @@ public abstract class AbstractPathJob implements Callable<Path> {
      * @return true if the block does not block movement.
      */
     protected boolean isPassable(final BlockState block, final BlockPos pos) {
+        if(world.getBlockState(pos.up()).getBlock() instanceof BlockRatQuarryPlatform){
+            return false;
+        }
         if (block.getMaterial() != Material.AIR) {
             if (block.getMaterial().blocksMovement()) {
                 return pathingOptions.canEnterDoors() && (block.getBlock() instanceof DoorBlock
@@ -1099,6 +1102,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
     protected boolean isPassable(final BlockPos pos, final boolean head) {
         final BlockState state = world.getBlockState(pos);
         final VoxelShape shape = state.getCollisionShape(world, pos);
+
         if (!shape.isEmpty() && passabilityNavigator != null && passabilityNavigator.isBlockPassable(state, pos, pos)) {
             return true;
         }

@@ -16,10 +16,13 @@ import net.minecraft.world.IBlockReader;
 public class BlockRatQuarryPlatform extends Block implements INoTab{
 
     public BlockRatQuarryPlatform() {
-        super(Block.Properties.create(Material.WOOL).sound(SoundType.SLIME).variableOpacity().hardnessAndResistance(1.0F, 0.0F));
+        super(Block.Properties.create(Material.WOOL).sound(SoundType.SLIME).notSolid().variableOpacity().hardnessAndResistance(1.0F, 0.0F));
         this.setRegistryName(RatsMod.MODID, "rat_quarry_platform");
     }
 
+    public boolean isOpaqueCube(IBlockReader worldIn, BlockPos pos) {
+        return false;
+    }
 
     @Deprecated
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {

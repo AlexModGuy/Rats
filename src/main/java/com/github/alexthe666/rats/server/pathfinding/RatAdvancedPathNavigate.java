@@ -463,7 +463,7 @@ public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
             double yDist = Math.abs(this.entity.getPosY() - vec3d2.y);
             if (Math.abs(this.entity.getPosX() - vec3d2.x) < (double) this.maxDistanceToWaypoint
                     && Math.abs(this.entity.getPosZ() - vec3d2.z) < (double) this.maxDistanceToWaypoint &&
-                    yDist < 1D) {
+                    yDist < 0.9D) {
                 this.currentPath.incrementPathIndex();
                 // Mark reached nodes for debug path drawing
                 if (AbstractPathJob.lastDebugNodesPath != null) {
