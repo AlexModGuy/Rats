@@ -125,16 +125,16 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     public static void onBlockColors(ColorHandlerEvent.Block event) {
         RatsMod.LOGGER.info("loaded in block colorizer");
+        event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
+            int meta = 0;
+            if (worldIn.getTileEntity(pos) instanceof TileEntityRatTube) {
+                TileEntityRatTube tube = (TileEntityRatTube) worldIn.getTileEntity(pos);
+                meta = tube.getColor();
+            }
+            DyeColor color = DyeColor.byId(meta);
+            return color.getFireworkColor();
+        }, RatsBlockRegistry.RAT_TUBE_COLOR);
         if (RatsMod.RATLANTIS_LOADED) {
-            event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
-                int meta = 0;
-                if (worldIn.getTileEntity(pos) instanceof TileEntityRatTube) {
-                    TileEntityRatTube tube = (TileEntityRatTube) worldIn.getTileEntity(pos);
-                    meta = tube.getColor();
-                }
-                DyeColor color = DyeColor.byId(meta);
-                return color.getFireworkColor();
-            }, RatsBlockRegistry.RAT_TUBE_COLOR);
             event.getBlockColors().register((state, worldIn, pos, colorIn) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), RatlantisBlockRegistry.MARBLED_CHEESE_GRASS);
         }
     }
