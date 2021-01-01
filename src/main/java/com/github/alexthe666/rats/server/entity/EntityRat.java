@@ -3031,6 +3031,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
+        if(source == DamageSource.IN_WALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK))){
+            return true;
+        }
         if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR) || this.hasFlightUpgrade())) {
             return true;
         }
