@@ -87,18 +87,9 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     private Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint, boolean ratlantis) {
         if(ratlantis){
-            endpoint = new BlockPos(0, 112, 0);
             placeInPortal(entity, endpointWorld);
         }else{
-            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedPosition().isPresent()) {
-                BlockPos bedPos = ((PlayerEntity) entity).getBedPosition().get();
-                endpoint = bedPos;
-                entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
-            } else {
-                BlockPos height = entity.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(entity.getPositionVec()));
-                endpoint = height;
-                entity.setLocationAndAngles(height.getX() + 0.5D, height.getY() + 0.5D, height.getZ() + 0.5D, entity.rotationYaw, 0.0F);
-            }
+
         }
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
@@ -120,9 +111,10 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
     }
 
     public void placeInPortal(Entity entity, ServerWorld serverWorld) {
-        entity.setPositionAndRotation(0, 110, 0, 0, 0);
         entity.setMotion(0, 0, 0);
-        BlockPos portalBottom = new BlockPos(1, 111, 1);
+        serverWorld.setBlockState(new BlockPos(entity.getPositionVec()), Blocks.AIR.getDefaultState());
+        serverWorld.setBlockState(new BlockPos(entity.getPositionVec()).up(), Blocks.AIR.getDefaultState());
+        BlockPos portalBottom = new BlockPos(entity.getPositionVec()).add(1, -1, 1);
         for (BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             serverWorld.setBlockState(pos, RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
             serverWorld.setBlockState(pos.up(4), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
