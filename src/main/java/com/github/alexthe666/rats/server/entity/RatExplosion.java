@@ -56,19 +56,8 @@ public class RatExplosion extends Explosion {
     private final Map<PlayerEntity, Vector3d> playerKnockbackMap;
     private final Vector3d position;
 
-    @OnlyIn(Dist.CLIENT)
-    public RatExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, List<BlockPos> affectedPositions) {
-        this(worldIn, entityIn, x, y, z, size, false, true, affectedPositions);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public RatExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, boolean causesFire, boolean damagesTerrain, List<BlockPos> affectedPositions) {
-        this(worldIn, entityIn, x, y, z, size, causesFire, damagesTerrain);
-        this.affectedBlockPositions.addAll(affectedPositions);
-    }
-
     public RatExplosion(World worldIn, Entity entityIn, double x, double y, double z, float size, boolean causesFire, boolean damagesTerrain) {
-        super(worldIn, entityIn, x, y, z, size, causesFire, damagesTerrain ? Mode.DESTROY : Mode.NONE);
+        super(worldIn, entityIn, null, null, x, y, z, size, causesFire, damagesTerrain ? Mode.DESTROY : Mode.NONE);
         this.random = new Random();
         this.affectedBlockPositions = Lists.newArrayList();
         this.playerKnockbackMap = Maps.newHashMap();
