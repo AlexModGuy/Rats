@@ -492,7 +492,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     @Override
     public boolean canBreatheUnderwater() {
-        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC);
+        return this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_AQUATIC) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDERWATER);
     }
 
     public boolean isValidLightLevel() {
@@ -3028,7 +3028,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if ((source.isMagicDamage() || source == DamageSource.WITHER) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
             return true;
         }
-        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION))) {
+        if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDERWATER))) {
             return true;
         }
         if(source == DamageSource.IN_WALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK))){
