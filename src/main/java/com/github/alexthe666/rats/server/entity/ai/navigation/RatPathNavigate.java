@@ -68,7 +68,6 @@ public class RatPathNavigate extends GroundPathNavigator {
 
     public void tick() {
         ++this.totalTicks;
-        ((EntityRat) this.entity).setTubeTarget(this.targetPosition);
 
         if (this.tryUpdatePath) {
             this.updatePath();

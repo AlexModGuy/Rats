@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -42,7 +43,7 @@ public class ItemCheeseStick extends Item {
     }
 
     public ActionResultType onItemUse(ItemUseContext context) {
-        RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
+      /*  RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
         Entity rat = null;
         ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
         if (stack.getTag() != null && stack.getTag().hasUniqueId("RatUUID")) {
@@ -50,15 +51,15 @@ public class ItemCheeseStick extends Item {
                 rat = ((ServerWorld)context.getWorld()).getEntityByUuid(stack.getTag().getUniqueId("RatUUID"));
             }
         }
-        if (!context.getWorld().isRemote) {
-            if (rat == null || !(rat instanceof EntityRat)) {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true));
-                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.no_rat"), true);
-            } else {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+        if (!context.getWorld().isRemote && context.getPlayer() instanceof ServerPlayerEntity) {
+            if (rat instanceof EntityRat) {
+                RatsMod.sendNonLocal(new MessageCheeseStaffRat(rat.getEntityId(), false), (ServerPlayerEntity) context.getPlayer());
                 context.getPlayer().swingArm(context.getHand());
+            } else {
+                RatsMod.sendNonLocal(new MessageCheeseStaffRat(0, true), (ServerPlayerEntity) context.getPlayer());
+                context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.no_rat"), true);
             }
-        }
+        }*/
         return ActionResultType.SUCCESS;
     }
 

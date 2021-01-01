@@ -65,11 +65,11 @@ public class MessageCheeseStaffSync {
                     EntityRat rat = (EntityRat) e;
                     switch (message.control) {
                         case 0://deposit
-                            rat.depositPos = BlockPos.fromLong(message.posLg);
+                            rat.setDepositPos(BlockPos.fromLong(message.posLg));
                             rat.depositFacing = Direction.values()[message.facingID];
                             break;
                         case 1://pickup
-                            rat.pickupPos = BlockPos.fromLong(message.posLg);
+                            rat.setPickupPos(BlockPos.fromLong(message.posLg));
                             break;
                         case 2://set homepoint
                             rat.setHomePosAndDistance(BlockPos.fromLong(message.posLg), 32);

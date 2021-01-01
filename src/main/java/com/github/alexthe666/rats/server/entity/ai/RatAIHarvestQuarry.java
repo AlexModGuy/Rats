@@ -57,7 +57,7 @@ public class RatAIHarvestQuarry extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) && entity.depositPos != null) {
+        if (!this.entity.canMove() || !this.entity.isTamed() || this.entity.getCommand() != RatCommand.HARVEST || this.entity.isInCage() || !entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) && entity.getDepositPos() != null) {
             return false;
         }
         if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
@@ -69,7 +69,7 @@ public class RatAIHarvestQuarry extends Goal {
 
     private void resetTarget() {
         List<BlockPos> allBlocks = new ArrayList<>();
-        BlockPos quarryPos = entity.depositPos;
+        BlockPos quarryPos = entity.getDepositPos();
         if (quarryPos != null && entity.world.getTileEntity(quarryPos) instanceof TileEntityRatQuarry) {
             TileEntityRatQuarry quarry = ((TileEntityRatQuarry) entity.world.getTileEntity(quarryPos));
             int RADIUS = quarry.getRadius();
@@ -247,7 +247,7 @@ public class RatAIHarvestQuarry extends Goal {
         }
 
         private double getDistance(BlockPos pos) {
-            BlockPos depositPos = entity.depositPos;
+            BlockPos depositPos = entity.getDepositPos();
             if (depositPos != null && entity.world.getTileEntity(depositPos) instanceof TileEntityRatQuarry) {
                 TileEntityRatQuarry quarry = (TileEntityRatQuarry) entity.world.getTileEntity(depositPos);
                 BlockPos perspective = depositPos.add(-quarry.getRadius(), -1, -quarry.getRadius());

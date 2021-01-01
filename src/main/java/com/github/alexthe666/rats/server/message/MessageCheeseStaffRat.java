@@ -26,6 +26,7 @@ public class MessageCheeseStaffRat {
                 RatsMod.PROXY.setRefrencedRat(null);
             } else {
                 RatsMod.PROXY.handlePacketCheeseStaffRat(message.entityId, message.clear);
+                RatsMod.PROXY.openCheeseStaffGui();
             }
         }
     }

@@ -403,14 +403,11 @@ public class CommonEvents {
             event.getPlayer().swingArm(event.getHand());
             if (!event.getWorld().isRemote) {
                 if (rat != null && rat instanceof EntityRat) {
-                    RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+                    RatsMod.sendNonLocal(new MessageCheeseStaffRat(rat.getEntityId(), false), (ServerPlayerEntity)event.getPlayer());
                     EntityRat boundRat = (EntityRat) rat;
                     RatsMod.PROXY.setRefrencedRat(boundRat);
                     event.getPlayer().swingArm(event.getHand());
                 }
-            }
-            if(event.getWorld().isRemote){
-                RatsMod.PROXY.openCheeseStaffGui();
             }
         }
         if (RatConfig.cheesemaking && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON && RatUtils.isMilk(event.getItemStack())) {

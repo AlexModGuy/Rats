@@ -865,20 +865,4 @@ public class RatUtils {
         }
     }
 
-
-    public static class TubeSorter implements Comparator<Direction> {
-        private final EntityRat theEntity;
-
-        public TubeSorter(EntityRat theEntityIn) {
-            theEntity = theEntityIn;
-        }
-
-        public int compare(Direction p_compare_1_, Direction p_compare_2_) {
-            BlockPos pos1 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_1_);
-            BlockPos pos2 = new BlockPos(theEntity.getPositionVec()).offset(p_compare_2_);
-            double d0 = theEntity.tubeTarget.distanceSq(pos1.getX(), pos1.getY(), pos1.getZ(), true);
-            double d1 = theEntity.tubeTarget.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ(), true);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
-        }
-    }
 }

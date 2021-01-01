@@ -49,7 +49,7 @@ public class RatAIDepositEnergy extends Goal {
     }
 
     private void resetTarget() {
-        this.targetBlock = entity.depositPos;
+        this.targetBlock = entity.getDepositPos();
     }
 
     @Override

@@ -127,6 +127,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DYED = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(EntityRat.class, DataSerializers.BYTE);
+    private static final DataParameter<Optional<BlockPos>> PICKUP_POS = EntityDataManager.createKey(EntityRat.class, DataSerializers.OPTIONAL_BLOCK_POS);
+    private static final DataParameter<Optional<BlockPos>> DEPOSIT_POS = EntityDataManager.createKey(EntityRat.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final ResourceLocation PLAGUE_RAT_LOOT_TABLE = new ResourceLocation("rats", "entities/plague_rat");
     private static final String[] RAT_TEXTURES = new String[]{
             "rats:textures/entity/rat/rat_blue.png",
@@ -145,7 +147,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     };
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR};
-    private static final ItemStack[] EMPTY_STACKS = new ItemStack[0];
     public float sitProgress;
     public float holdProgress;
     public float deadInTrapProgress;
@@ -154,10 +155,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public BlockPos fleePos;
     public boolean holdInMouth = true;
     public int wildTrust = 0;
-    public BlockPos depositPos;
     public Direction depositFacing = Direction.UP;
-    public BlockPos pickupPos;
-    public BlockPos tubeTarget = null;
     public int cheeseFeedings = 0;
     public boolean climbingTube = false;
     public boolean waterBased = false;
@@ -171,7 +169,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public boolean isFleeing = false;
     public FluidStack transportingFluid = FluidStack.EMPTY;
     public int mountRespawnCooldown = 0;
-    public List<BlockPos> openRatTubes = new ArrayList<>();
     public Goal aiHarvest;
     public Goal aiPickup;
     public Goal aiDeposit;
@@ -541,6 +538,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.dataManager.register(DYED, Boolean.valueOf(false));
         this.dataManager.register(DYE_COLOR, Byte.valueOf((byte) 0));
         this.dataManager.register(MONSTER_OWNER_UNIQUE_ID, Optional.empty());
+        this.dataManager.register(DEPOSIT_POS, Optional.empty());
+        this.dataManager.register(PICKUP_POS, Optional.empty());
 
     }
 
@@ -569,14 +568,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.moveController = new RatEtherealMoveHelper(this);
             this.navigator = new EtherealRatPathNavigate(this, world);
             this.navigatorType = 5;
-        }
-    }
-
-    protected PathNavigator createNavigator(World worldIn) {
-        if (isTamed() && !this.isInCage()) {
-            return super.createNavigator(worldIn);
-        } else {
-            return new RatPathNavigate(this, worldIn);
         }
     }
 
@@ -628,15 +619,15 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             compound.put("Items", nbttaglist);
         }
         compound.putInt("EatenItems", eatenItems);
-        if (pickupPos != null) {
-            compound.putInt("PickupPosX", pickupPos.getX());
-            compound.putInt("PickupPosY", pickupPos.getY());
-            compound.putInt("PickupPosZ", pickupPos.getZ());
+        if (this.getPickupPos() != null) {
+            compound.putInt("PickupPosX", this.getPickupPos().getX());
+            compound.putInt("PickupPosY", this.getPickupPos().getY());
+            compound.putInt("PickupPosZ", this.getPickupPos().getZ());
         }
-        if (depositPos != null) {
-            compound.putInt("DepositPosX", depositPos.getX());
-            compound.putInt("DepositPosY", depositPos.getY());
-            compound.putInt("DepositPosZ", depositPos.getZ());
+        if (this.getDepositPos() != null) {
+            compound.putInt("DepositPosX", this.getDepositPos().getX());
+            compound.putInt("DepositPosY", this.getDepositPos().getY());
+            compound.putInt("DepositPosZ", this.getDepositPos().getZ());
             compound.putInt("DepositFacing", depositFacing.ordinal());
         }
         compound.putInt("RandomEffectCooldown", randomEffectCooldown);
@@ -709,10 +700,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
         }
         if (compound.contains("PickupPosX") && compound.contains("PickupPosY") && compound.contains("PickupPosZ")) {
-            pickupPos = new BlockPos(compound.getInt("PickupPosX"), compound.getInt("PickupPosY"), compound.getInt("PickupPosZ"));
+            this.setPickupPos(new BlockPos(compound.getInt("PickupPosX"), compound.getInt("PickupPosY"), compound.getInt("PickupPosZ")));
         }
         if (compound.contains("DepositPosX") && compound.contains("DepositPosY") && compound.contains("DepositPosZ")) {
-            depositPos = new BlockPos(compound.getInt("DepositPosX"), compound.getInt("DepositPosY"), compound.getInt("DepositPosZ"));
+            this.setDepositPos(new BlockPos(compound.getInt("DepositPosX"), compound.getInt("DepositPosY"), compound.getInt("DepositPosZ")));
             if (compound.contains("DepositFacing")) {
                 depositFacing = Direction.values()[compound.getInt("DepositFacing")];
             }
@@ -895,6 +886,23 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         setCommandInteger(command.ordinal());
     }
+
+    public BlockPos getPickupPos() {
+        return this.dataManager.get(PICKUP_POS).orElse(null);
+    }
+
+    public void setPickupPos(BlockPos pos) {
+        this.dataManager.set(PICKUP_POS, Optional.ofNullable(pos));
+    }
+
+    public BlockPos getDepositPos() {
+        return this.dataManager.get(DEPOSIT_POS).orElse(null);
+    }
+
+    public void setDepositPos(BlockPos pos) {
+        this.dataManager.set(DEPOSIT_POS, Optional.ofNullable(pos));
+    }
+
 
     public boolean isFollowing() {
         return getCommandInteger() == 2;
@@ -2585,7 +2593,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     public boolean shouldWander() {
         int cmd = this.getCommandInteger();
-        return cmd != 4 && cmd != 5 && cmd != 6;
+        return cmd != 1 && cmd != 4 && cmd != 5 && cmd != 6;
     }
 
     public boolean shouldEyesGlow() {
@@ -2767,11 +2775,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
     public boolean isAIDisabled() {
         return super.isAIDisabled() || this.getRespawnCountdown() > 0;
-    }
-
-
-    public void setTubeTarget(BlockPos targetPosition) {
-        tubeTarget = targetPosition;
     }
 
     public ItemStack getUpgradeSlot() {

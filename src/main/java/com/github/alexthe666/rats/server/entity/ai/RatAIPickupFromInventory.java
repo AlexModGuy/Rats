@@ -50,7 +50,7 @@ public class RatAIPickupFromInventory extends Goal {
     }
 
     private void resetTarget() {
-        this.targetBlock = entity.pickupPos;
+        this.targetBlock = entity.getPickupPos();
     }
 
     private boolean canPickUp() {

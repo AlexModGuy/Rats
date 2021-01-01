@@ -142,7 +142,7 @@ public class TileEntityRatQuarry extends LockableTileEntity implements ITickable
             }
             checkingPos = checkingPos.offset(Direction.NORTH);
         }
-        for(int i = 0; i < getRadius(); i++){
+        for(int i = 0; i <= getRadius(); i++){
             if(world.isAirBlock(checkingPos)){
                 world.setBlockState(checkingPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.getDefaultState());
             }
@@ -159,7 +159,7 @@ public class TileEntityRatQuarry extends LockableTileEntity implements ITickable
                 }
                 checkingPos = checkingPos.offset(Direction.NORTH);
             }
-            for(int i = 0; i < getRadius(); i++){
+            for(int i = 0; i <= getRadius(); i++){
                 if(world.getBlockState(checkingPos).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM){
                     world.destroyBlock(checkingPos, true);
                 }

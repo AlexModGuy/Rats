@@ -41,7 +41,7 @@ public final class Pathfinding {
     }
 
     public static boolean isDebug(){
-        return true;
+        return false;
     }
     /**
      * Creates a new thread pool for pathfinding jobs

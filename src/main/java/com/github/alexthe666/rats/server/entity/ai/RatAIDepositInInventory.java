@@ -60,7 +60,7 @@ public class RatAIDepositInInventory extends Goal {
     }
 
     private void resetTarget() {
-        this.targetBlock = entity.depositPos;
+        this.targetBlock = entity.getDepositPos();
     }
 
     @Override
