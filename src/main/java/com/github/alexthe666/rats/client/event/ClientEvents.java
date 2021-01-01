@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.client.model.ModelStaticRat;
 import com.github.alexthe666.rats.client.render.entity.RenderRatProtector;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatQuarry;
 import com.github.alexthe666.rats.server.events.CommonEvents;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -61,6 +62,9 @@ public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
     private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_radius.png");
     private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation("rats:textures/model/quarry_radius.png");
+    private static final ResourceLocation HOME_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_home.png");
+    private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_deposit.png");
+    private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_pickup.png");
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
     public static int left_height = 39;
     public static int right_height = 39;
@@ -272,6 +276,81 @@ public class ClientEvents {
         if(Pathfinding.isDebug()){
             Pathfinding.debugDraw(event.getPartialTicks(), event.getMatrixStack());
         }
+        if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
+            if (RatsMod.PROXY.getRefrencedRat() != null) {
+                EntityRat rat = RatsMod.PROXY.getRefrencedRat();
+                Tessellator tessellator = Tessellator.getInstance();
+                IVertexBuilder vertexbuffer = tessellator.getBuffer().getVertexBuilder();
+                BufferBuilder buffer = tessellator.getBuffer();
+                float f7 = 0;
+                float f8 = 1;
+                float f5 = 0;
+                float f6 = 1;
+                final Vector3d viewPosition = Minecraft.getInstance().getRenderManager().info.getProjectedView();
+                double px = viewPosition.x;
+                double py = viewPosition.y;
+                double pz = viewPosition.z;
+                MatrixStack stack = event.getMatrixStack();
+                float bob = 1.5F + 0.3F * (MathHelper.sin((event.getPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 0.1F) + 1F);
+                if(rat.detachHome()){
+                    stack.push();
+                    GlStateManager.enableBlend();
+                    GlStateManager.depthMask(false);
+                    stack.translate(-px, -py, -pz);
+                    stack.translate(rat.getHomePosition().getX() + 0.5F, rat.getHomePosition().getY() + bob, rat.getHomePosition().getZ() + 0.5F);
+                    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+                    Matrix4f matrix4f = stack.getLast().getMatrix();
+                    Minecraft.getInstance().getTextureManager().bindTexture(HOME_TEXTURE);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
+                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    tessellator.draw();
+                    GlStateManager.disableBlend();
+                    GlStateManager.depthMask(true);
+                    stack.pop();
+                }
+                if(rat.getDepositPos() != null){
+                    stack.push();
+                    GlStateManager.enableBlend();
+                    GlStateManager.depthMask(false);
+                    stack.translate(-px, -py, -pz);
+                    stack.translate(rat.getDepositPos().getX() + 0.5F, rat.getDepositPos().getY() + bob, rat.getDepositPos().getZ() + 0.5F);
+                    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+                    Matrix4f matrix4f = stack.getLast().getMatrix();
+                    Minecraft.getInstance().getTextureManager().bindTexture(RAT_DEPOSIT_TEXTURE);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
+                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    tessellator.draw();
+                    GlStateManager.disableBlend();
+                    GlStateManager.depthMask(true);
+                    stack.pop();
+                }
+                if(rat.getPickupPos() != null){
+                    stack.push();
+                    GlStateManager.enableBlend();
+                    GlStateManager.depthMask(false);
+                    stack.translate(-px, -py, -pz);
+                    stack.translate(rat.getPickupPos().getX() + 0.5F, rat.getPickupPos().getY() + bob, rat.getPickupPos().getZ() + 0.5F);
+                    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+                    Matrix4f matrix4f = stack.getLast().getMatrix();
+                    Minecraft.getInstance().getTextureManager().bindTexture(RAT_PICKUP_TEXTURE);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
+                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    tessellator.draw();
+                    GlStateManager.disableBlend();
+                    GlStateManager.depthMask(true);
+                    stack.pop();
+                }
+            }
+        }
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
                 BlockPos blockPos = RatsMod.PROXY.getRefrencedRat().getSearchCenter();
@@ -283,9 +362,7 @@ public class ClientEvents {
                 Minecraft.getInstance().getTextureManager().bindTexture(RADIUS_TEXTURE);
                 GlStateManager.disableCull();
                 GlStateManager.depthMask(false);
-                Entity viewEntity = Minecraft.getInstance().player;
-                ActiveRenderInfo activerenderinfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
-                Vector3d viewPosition = activerenderinfo.getProjectedView();
+                final Vector3d viewPosition = Minecraft.getInstance().getRenderManager().info.getProjectedView();
                 double px = viewPosition.x;
                 double py = viewPosition.y;
                 double pz = viewPosition.z;

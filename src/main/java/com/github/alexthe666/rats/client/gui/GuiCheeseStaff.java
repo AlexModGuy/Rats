@@ -69,14 +69,22 @@ public class GuiCheeseStaff extends Screen {
         }));
         this.func_230480_a_(new Button(i - maxLength / 2, j + 135, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
-            rat.detachHome();
+            rat.setHomePosAndDistance(BlockPos.ZERO, -1);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 3));
+            func_231160_c_();
+        }));
+        this.func_230480_a_(new Button(i - maxLength / 2, j + 160, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_transport_pos"), (p_214132_1_) -> {
+            BlockPos pos = ClientProxy.refrencedPos;
+            rat.setPickupPos(null);
+            rat.setDepositPos(null);
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 7));
             func_231160_c_();
         }));
         this.field_230710_m_.get(0).field_230693_o_ = !isNoInventoryAtPos();
         this.field_230710_m_.get(1).field_230693_o_ = !isNoInventoryAtPos();
         this.field_230710_m_.get(2).field_230693_o_ = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.detachHome();
         this.field_230710_m_.get(3).field_230693_o_ = rat.detachHome();
+        this.field_230710_m_.get(4).field_230693_o_ = rat.getDepositPos() != null || rat.getPickupPos() != null;
     }
 
     private String getPosName() {

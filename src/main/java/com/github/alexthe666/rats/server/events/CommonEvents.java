@@ -403,7 +403,7 @@ public class CommonEvents {
             event.getPlayer().swingArm(event.getHand());
             if (!event.getWorld().isRemote) {
                 if (rat != null && rat instanceof EntityRat) {
-                    RatsMod.sendNonLocal(new MessageCheeseStaffRat(rat.getEntityId(), false), (ServerPlayerEntity)event.getPlayer());
+                    RatsMod.sendNonLocal(new MessageCheeseStaffRat(rat.getEntityId(), false, true), (ServerPlayerEntity)event.getPlayer());
                     EntityRat boundRat = (EntityRat) rat;
                     RatsMod.PROXY.setRefrencedRat(boundRat);
                     event.getPlayer().swingArm(event.getHand());

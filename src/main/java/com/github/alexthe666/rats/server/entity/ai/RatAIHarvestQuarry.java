@@ -5,10 +5,7 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatQuarry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -21,11 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.tags.ITag;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -41,18 +37,21 @@ import java.util.stream.Stream;
 public class RatAIHarvestQuarry extends Goal {
     private final EntityRat entity;
     private final RatAIHarvestQuarry.BlockSorter targetSorter;
+    private static final ResourceLocation QUARRY_IGNORABLES = new ResourceLocation("rats", "quarry_ignorables");
     private BlockPos targetBlock = null;
     private int breakingTime;
     private int previousBreakProgress;
     private BlockState prevMiningState = null;
     private boolean buildStairs = false;
     private Direction stairDirection = Direction.NORTH;
+    private ITag<Block> tag;
 
     public RatAIHarvestQuarry(EntityRat entity) {
         super();
         this.entity = entity;
         this.targetSorter = new RatAIHarvestQuarry.BlockSorter(entity);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        tag = BlockTags.getCollection().get(QUARRY_IGNORABLES);
     }
 
     @Override
@@ -76,7 +75,7 @@ public class RatAIHarvestQuarry extends Goal {
             for (BlockPos pos : BlockPos.getAllInBox(quarryPos.add(-RADIUS, -1, -RADIUS), quarryPos.add(RADIUS, -quarryPos.getY() - 1, RADIUS)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
                 if ((!entity.world.isAirBlock(pos) && doesListContainBlock(entity.world, pos)) || entity.world.getFluidState(pos).isSource()) {
                     BlockState state = entity.world.getBlockState(pos);
-                    if (state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM  && state.getBlockHardness(entity.world, pos) > 0F) {
+                    if (state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && !tag.func_230235_a_(state.getBlock()) && state.getBlockHardness(entity.world, pos) > 0F) {
                         allBlocks.add(pos);
                     }
                 }
@@ -205,7 +204,7 @@ public class RatAIHarvestQuarry extends Goal {
 
     private boolean canMineBlock(BlockPos rayPos) {
         BlockState state = entity.world.getBlockState(rayPos);
-        return state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
+        return !tag.func_230235_a_(state.getBlock()) && state.getBlock() != RatsBlockRegistry.RAT_QUARRY && state.getBlock() != RatsBlockRegistry.RAT_QUARRY_PLATFORM && doesListContainBlock(entity.world, rayPos);
     }
 
     private void destroyBlock(BlockPos pos, BlockState state) {

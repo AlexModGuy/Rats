@@ -17,6 +17,7 @@ import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.inventory.ContainerRat;
 import com.github.alexthe666.rats.server.items.*;
+import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageDancingRat;
 import com.github.alexthe666.rats.server.message.MessageSyncThrownBlock;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
@@ -2364,6 +2365,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK || itemstack.getItem() == RatsItemRegistry.RADIUS_STICK) {
                     itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
+                    if(!world.isRemote && player instanceof ServerPlayerEntity){
+                        RatsMod.sendNonLocal(new MessageCheeseStaffRat(this.getEntityId(), false, false), (ServerPlayerEntity)player);
+                    }
                     player.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.bind", this.getName()), true);
                     return ActionResultType.SUCCESS;
                 } else if (itemstack.getItem() == Items.ARROW) {

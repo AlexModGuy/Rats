@@ -75,7 +75,7 @@ public class MessageCheeseStaffSync {
                             rat.setHomePosAndDistance(BlockPos.fromLong(message.posLg), 32);
                             break;
                         case 3://detach homepoint
-                            rat.detachHome();
+                            rat.setHomePosAndDistance(BlockPos.ZERO, -1);
                             break;
                         case 4://set radius home point
                             rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
@@ -86,6 +86,10 @@ public class MessageCheeseStaffSync {
                         case 6://reset radius
                             rat.setSearchRadiusCenter(null);
                             rat.setSearchRadius(RatConfig.defaultRatRadius);
+                            break;
+                        case 7: //reset deposit and pickup
+                            rat.setPickupPos(null);
+                            rat.setDepositPos(null);
                             break;
                     }
                 }

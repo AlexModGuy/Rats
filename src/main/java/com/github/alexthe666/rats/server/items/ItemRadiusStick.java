@@ -52,17 +52,14 @@ public class ItemRadiusStick extends Item {
         }
         if (!context.getWorld().isRemote) {
             if (rat == null || !(rat instanceof EntityRat)) {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true, false, false));
                 context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.no_rat"), true);
             } else {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false, true, false));
                 context.getPlayer().swingArm(context.getHand());
             }
         }
         RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
-        if(context.getWorld().isRemote){
-            RatsMod.PROXY.openRadiusStaffGui();
-        }
         return ActionResultType.SUCCESS;
     }
 
