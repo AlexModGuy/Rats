@@ -212,7 +212,6 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
                 for (Entity entity : player.getPassengers()) {
                     if (entity instanceof EntityRat) {
                         flag = true;
-                        System.out.println(world.isRemote);
                         entity.startRiding(this, false);
                         break;
                     }

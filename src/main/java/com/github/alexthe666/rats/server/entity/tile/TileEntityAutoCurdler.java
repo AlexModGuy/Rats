@@ -174,7 +174,6 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         boolean flag1 = false;
 
         if (this.isBurning()) {
-            //System.out.println(cookTime);
             if (this.canSmelt()) {
                 ++this.cookTime;
 

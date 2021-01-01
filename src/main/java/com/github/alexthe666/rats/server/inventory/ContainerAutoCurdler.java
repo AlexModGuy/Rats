@@ -46,7 +46,6 @@ public class ContainerAutoCurdler extends Container {
     public int getCookProgressionScaled() {
         int i = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).cookTime;
         int j = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).totalCookTime;
-        //System.out.println(i);
         return j != 0 && i != 0 ? i * 50 / j : 0;
     }
 
