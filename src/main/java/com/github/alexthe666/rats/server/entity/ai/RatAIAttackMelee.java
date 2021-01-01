@@ -1,20 +1,26 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.pathfinding.RatAdvancedPathNavigate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 
 public class RatAIAttackMelee extends MeleeAttackGoal {
     private EntityRat rat;
+    private double speed;
 
     public RatAIAttackMelee(EntityRat rat, double speed, boolean memory) {
         super(rat, speed, memory);
         this.rat = rat;
+        this.speed = speed;
     }
 
     public void tick() {
         super.tick();
+        if(rat.getNavigator() instanceof RatAdvancedPathNavigate && rat.getAttackTarget() != null){
+            ((RatAdvancedPathNavigate)rat.getNavigator()).moveToLivingEntity(rat.getAttackTarget(), speed);
+        }
         //this.attackTick = 0;
     }
 

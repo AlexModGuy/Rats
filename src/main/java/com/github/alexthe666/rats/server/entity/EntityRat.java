@@ -1323,7 +1323,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 this.setAttackTarget(null);
             }
         }
-        if (this.getAttackTarget() != null && this.isRidingSpecialMount() && !RatUtils.isRidingOrBeingRiddenBy(this.getAttackTarget(), this)) {
+        if (this.getAttackTarget() != null && this.isRidingSpecialMount() && RatUtils.isRidingOrBeingRiddenBy(this.getAttackTarget(), this)) {
             this.setAttackTarget(null);
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().getEntityId() == this.getEntityId()) {
