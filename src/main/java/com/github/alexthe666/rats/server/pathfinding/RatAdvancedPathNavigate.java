@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
     public static final double MIN_Y_DISTANCE = 0.001;
-    public static final int MAX_SPEED_ALLOWED = 2;
+    public static final int MAX_SPEED_ALLOWED = 5;
     public static final double MIN_SPEED_ALLOWED = 0.1;
     private static final double ON_PATH_SPEED_MULTIPLIER = 1.3D;
     private static final double PIRATE_SWIM_BONUS = 1.5;
