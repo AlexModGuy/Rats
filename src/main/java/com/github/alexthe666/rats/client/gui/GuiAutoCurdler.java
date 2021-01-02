@@ -99,8 +99,6 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
 
     protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
         String s = this.func_231171_q_().getString();
-        Minecraft.getInstance().fontRenderer.func_238405_a_(stackIn, s, this.xSize / 2 - Minecraft.getInstance().fontRenderer.getStringWidth(s) / 2, 5, 4210752);
-        Minecraft.getInstance().fontRenderer.func_238405_a_(stackIn, this.func_231171_q_().getString(), 8, this.ySize - 94 + 2, 4210752);
         int screenW = (this.field_230708_k_ - this.xSize) / 2;
         int screenH = (this.field_230709_l_ - this.ySize) / 2;
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
@@ -108,7 +106,6 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
                 List list = Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize));
-
                 func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW, mouseY - screenH + 10);
             }
         }
