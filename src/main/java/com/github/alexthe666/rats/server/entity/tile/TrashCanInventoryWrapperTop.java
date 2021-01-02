@@ -38,13 +38,15 @@ public class TrashCanInventoryWrapperTop implements IItemHandlerModifiable {
     @Nonnull
     @Override
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        if (this.tile.trashStored >= 7 ) {
+        if (this.tile.trashStored >= 7) {
             return stack;
         }
         int extractionAmount = 1;
         ItemStack copy = stack.copy();
         copy.setCount(stack.getCount() - extractionAmount);
-        this.tile.trashStored++;
+        if(!simulate){
+            this.tile.trashStored++;
+        }
         BlockState blockstate = tile.getWorld().getBlockState(tile.getPos());
         tile.getWorld().notifyBlockUpdate(tile.getPos(), blockstate, blockstate, 3);
         return copy;

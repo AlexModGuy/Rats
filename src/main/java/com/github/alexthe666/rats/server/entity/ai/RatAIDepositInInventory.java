@@ -111,9 +111,13 @@ public class RatAIDepositInInventory extends Goal {
                     LazyOptional<IItemHandler> handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.entity.depositFacing);
                     if(handler.orElse(null) != null) {
                         ItemStack duplicate = this.entity.getHeldItem(Hand.MAIN_HAND).copy();
-                        if (ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, true).isEmpty()) {
-                            ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, false);
-                            this.entity.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+                        if (!ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, true).equals(duplicate)) {
+                            ItemStack shrunkenStack = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, false);
+                            if(shrunkenStack.isEmpty()){
+                                this.entity.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+                            }else{
+                                this.entity.setHeldItem(Hand.MAIN_HAND, shrunkenStack);
+                            }
                             this.targetBlock = null;
                             this.resetTask();
                         }

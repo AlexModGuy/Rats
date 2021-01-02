@@ -106,7 +106,7 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
                 List list = Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize));
-                func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW, mouseY - screenH + 10);
+                func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX, mouseY);
             }
         }
     }
