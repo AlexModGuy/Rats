@@ -27,7 +27,7 @@ public class Node implements Comparable<Node>
     /**
      * The hash of the node.
      */
-    private final int hash;
+    private int hash;
 
     /**
      * The parent of the node (Node preceding this node).
@@ -115,7 +115,7 @@ public class Node implements Comparable<Node>
      * @param heuristic heuristic estimate.
      * @param score     node total score.
      */
-    public Node(@Nullable final Node parent, final BlockPos pos, final double cost, final double heuristic, final double score)
+    public Node(@Nullable final Node parent, BlockPos pos, final double cost, final double heuristic, final double score)
     {
         this.parent = parent;
         this.pos = pos;
@@ -123,7 +123,7 @@ public class Node implements Comparable<Node>
         this.cost = cost;
         this.heuristic = heuristic;
         this.score = score;
-        this.hash = pos.getX() ^ ((pos.getZ() << HASH_A) | (pos.getZ() >> HASH_B)) ^ (pos.getY() << HASH_C);
+        this.hash = pos == null ? -1 : pos.hashCode();
     }
 
     @Override
