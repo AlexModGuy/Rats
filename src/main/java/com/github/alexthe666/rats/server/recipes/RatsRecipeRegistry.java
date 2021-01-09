@@ -50,7 +50,6 @@ public class RatsRecipeRegistry {
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.CONDUIT), new ItemStack(RatlantisItemRegistry.DUTCHRAT_WHEEL)));
             RAT_ARCHEOLOGIST_RECIPES.add(new SharedRecipe(new ItemStack(Items.ELYTRA), new ItemStack(RatlantisItemRegistry.BIPLANE_WING)));
         }
-        RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(Items.DIAMOND), new ItemStack(RatsItemRegistry.RAT_DIAMOND, 4)));
         RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(Items.COAL), new ItemStack(RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS)));
         RAT_GEMCUTTER_RECIPES.add(new SharedRecipe(new ItemStack(RatsItemRegistry.LITTLE_BLACK_WORM), new ItemStack(RatsItemRegistry.CENTIPEDE)));
     }

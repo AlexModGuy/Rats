@@ -148,8 +148,6 @@ public class RatsItemRegistry {
 
     public static final Item POTATO_KNISHES = new ItemGenericFood(100, 10F, false, false, true, "potato_kinishes");
 
-    public static final Item RAT_DIAMOND = new ItemGeneric("rat_diamond");
-
     public static final Item TINY_COIN = new ItemGeneric("tiny_coin");
 
     public static final Item TOKEN_FRAGMENT = new ItemGeneric("token_fragment");
@@ -185,8 +183,6 @@ public class RatsItemRegistry {
     public static final Item PLAGUE_DOCTOR_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "plague_doctor_mask", 5);
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
-
-    public static final Item RAT_UPGRADE_FRAGMENT = new ItemGeneric("rat_upgrade_fragment", 1);
 
     public static final Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 

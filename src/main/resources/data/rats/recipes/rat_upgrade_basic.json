@@ -1,16 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DRD",
+    "RRR",
     "R R",
-    "DRD"
+    "RRR"
   ],
   "key": {
     "R": {
       "tag": "forge:cheese"
-    },
-    "D": {
-      "tag": "forge:gems/diamond"
     }
   },
   "result": {

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DRD",
+    "RRR",
     "RSR",
-    "DRD"
+    "RRR"
   ],
   "key": {
     "R": {
