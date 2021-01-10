@@ -80,10 +80,15 @@ public class BlockAutoCurdler extends ContainerBlock implements IUsesTEISR {
                         FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
                         if (drain.getAmount() > 0 || stack.getItem() == Items.MILK_BUCKET) {
                             if (te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
-                                te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
+                                int amount = te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
                                 if (!player.isCreative()) {
-                                    fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-                                    if (stack.getItem() == Items.MILK_BUCKET) {
+                                    fluidHandler.drain(amount, IFluidHandler.FluidAction.EXECUTE);
+                                    ItemStack container = fluidHandler.getContainer();
+                                    //support container changing tanks
+                                    if (stack != container) {
+                                        stack.shrink(1);
+                                        player.addItemStackToInventory(container);
+                                    } else if (stack.getItem() == Items.MILK_BUCKET) {
                                         stack.shrink(1);
                                         player.addItemStackToInventory(new ItemStack(Items.BUCKET));
                                     }
