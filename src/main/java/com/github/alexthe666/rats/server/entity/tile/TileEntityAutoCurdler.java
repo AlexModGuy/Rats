@@ -201,17 +201,23 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             }
 
         } else if (isMilk(curdlerStacks.get(0))) {
-            FluidStack def = null;
-            Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(curdlerStacks.get(0));
-            if (fluidStack != null) {
-                IFluidHandlerItem fluidHandler = (IFluidHandlerItem) FluidUtil.getFluidHandler(curdlerStacks.get(0));
-                if (fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE) != null && fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE).getAmount() > 0) {
-                    if (tank.fill(fluidStack.orElse(def).copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
-                        tank.fill(fluidStack.orElse(def).copy(), IFluidHandler.FluidAction.EXECUTE);
-                        fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+            Optional<FluidStack> fluidStackOptional = FluidUtil.getFluidContained(curdlerStacks.get(0));
+            fluidStackOptional.ifPresent(fluidStack -> {
+                LazyOptional<IFluidHandlerItem> fluidHandlerOptional = FluidUtil.getFluidHandler(curdlerStacks.get(0));
+                fluidHandlerOptional.ifPresent(fluidHandler -> {
+                    if (fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE).getAmount() > 0) {
+                        if (tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+                            int amount = tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
+                            fluidHandler.drain(amount, IFluidHandler.FluidAction.EXECUTE);
+                            //support container changing tanks
+                            ItemStack container = fluidHandler.getContainer();
+                            if (curdlerStacks.get(0) != container) {
+                                curdlerStacks.set(0, container);
+                            }
+                        }
                     }
-                }
-            }
+                });
+            });
         }
     }
 
