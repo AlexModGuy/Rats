@@ -11,10 +11,14 @@ import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageRatDismount;
 import com.github.alexthe666.rats.server.message.MessageSwingArm;
+import com.google.common.collect.Multimap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -43,6 +47,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -242,16 +247,37 @@ public class CommonEvents {
         ItemStack itemstack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
         /*if (TinkersCompatBridge.onPlayerSwing(event.getPlayer(), itemstack)) {
         }*/
-        RatsCustomEvents.onPlayerSwing(event.getPlayer(), itemstack);
-        RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
-        if (event.getPlayer().isSneaking() && !event.getPlayer().getPassengers().isEmpty()) {
-            for (Entity passenger : event.getPlayer().getPassengers()) {
-                if (passenger instanceof EntityRat) {
-                    passenger.stopRiding();
-                    passenger.setPosition(event.getPlayer().getPosX(), event.getPlayer().getPosY(), event.getPlayer().getPosZ());
-                    RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatDismount(passenger.getEntityId()));
+        onPlayerSwing(event.getPlayer(), itemstack);
+        if(event.getWorld().isRemote) {
+            RatsMod.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
+            if (event.getPlayer().isSneaking() && !event.getPlayer().getPassengers().isEmpty()) {
+                for (Entity passenger : event.getPlayer().getPassengers()) {
+                    if (passenger instanceof EntityRat) {
+                        passenger.stopRiding();
+                        passenger.setPosition(event.getPlayer().getPosX(), event.getPlayer().getPosY(), event.getPlayer().getPosZ());
+                        RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatDismount(passenger.getEntityId()));
+                    }
                 }
             }
+        }
+    }
+
+
+    public static void onPlayerSwing(PlayerEntity player, ItemStack heldItem) {
+        if (player.swingProgress == 0 && heldItem.getItem() == RatsItemRegistry.PLAGUE_SCYTHE) {
+            Multimap<Attribute, AttributeModifier> dmg = heldItem.getAttributeModifiers(EquipmentSlotType.MAINHAND);
+            double totalDmg = 0;
+            for (AttributeModifier modifier : dmg.get(Attributes.field_233823_f_)) {
+                totalDmg += modifier.getAmount();
+            }
+            player.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
+            EntityPlagueShot shot = new EntityPlagueShot(RatsEntityRegistry.PLAGUE_SHOT, player.world, player, totalDmg * 0.5F);
+            Vector3d vector3d1 = player.getUpVector(1.0F);
+            Vector3d vector3d = player.getLook(1.0F);
+            Vector3f vector3f = new Vector3f(vector3d);
+
+            shot.shoot((double)vector3f.getX(), (double)vector3f.getY(), (double)vector3f.getZ(), 1.0F, 0.5F);
+            player.world.addEntity(shot);
         }
     }
 
