@@ -14,7 +14,7 @@
       "tag": "forge:string"
     },
     "F": {
-      "tag": "forge:fish"
+      "tag": "minecraft:fishes"
     }
   },
   "result": {
