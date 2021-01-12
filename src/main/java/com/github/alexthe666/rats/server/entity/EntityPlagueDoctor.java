@@ -352,9 +352,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
             if (hand == Hand.MAIN_HAND) {
                 player.addStat(Stats.TALKED_TO_VILLAGER);
             }
-
             if (this.getOffers().isEmpty()) {
-                return super.processInitialInteract(player, hand);
+                return super.func_230254_b_(player, hand);
             } else {
                 if (!this.world.isRemote) {
                     this.setCustomer(player);
