@@ -7,7 +7,6 @@ import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelSantaHat extends BipedModel {
     public ModelRenderer santaHat;
     public ModelRenderer red1;
