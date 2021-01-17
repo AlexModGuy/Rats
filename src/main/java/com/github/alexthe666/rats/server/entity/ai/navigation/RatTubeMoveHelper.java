@@ -20,7 +20,7 @@ public class RatTubeMoveHelper extends MovementController {
 
     public void tick() {
         if (this.action == MovementController.Action.STRAFE) {
-            float f = (float) rat.getAttribute(Attributes.field_233821_d_).getValue();
+            float f = (float) rat.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
             float f1 = (float) this.speed * f;
             float f2 = this.moveForward;
             float f3 = this.moveStrafe;
@@ -66,7 +66,7 @@ public class RatTubeMoveHelper extends MovementController {
 
             float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
             this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
             BlockPos blockpos = new BlockPos(this.mob.getPositionVec());
             if (d2 > 0) {
                 this.rat.climbingTube = true;
@@ -74,9 +74,9 @@ public class RatTubeMoveHelper extends MovementController {
                 this.rat.climbingTube = false;
             }
         } else if (this.action == MovementController.Action.JUMPING) {
-            this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(Attributes.field_233821_d_).getValue()));
+            this.rat.setAIMoveSpeed((float) (this.speed * this.rat.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
             this.rat.climbingTube = true;
-            if (this.rat.func_233570_aj_()) {
+            if (this.rat.isOnGround()) {
                 this.action = MovementController.Action.WAIT;
             }
         } else {

@@ -43,9 +43,9 @@ public class ItemRatUpgradeJuryRigged extends ItemRatUpgrade {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged0.desc").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged1.desc").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged0.desc").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_jury_rigged1.desc").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").mergeStyle(TextFormatting.GRAY));
         CompoundNBT tag = stack.getTag();
 
         if (tag != null && tag.contains("Items", 9)) {

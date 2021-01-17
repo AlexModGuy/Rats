@@ -86,7 +86,7 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
             return true;
         }
         Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().func_230531_f_().toString().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
+        return fluidStack.orElse(null) != null && (fluidStack.orElse(null).getDisplayName().getString().toString().contains("milk") || fluidStack.orElse(null).getTranslationKey().contains("Milk"));
     }
 
     public int getSizeInventory() {
@@ -129,8 +129,8 @@ public class TileEntityAutoCurdler extends LockableTileEntity implements ITickab
         }
     }
 
-    public void func_230337_a_(BlockState state,  CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state,  CompoundNBT compound) {
+        super.read(state, compound);
         tank.readFromNBT(compound);
         this.curdlerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.curdlerStacks);

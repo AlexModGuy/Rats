@@ -98,8 +98,8 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.5D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D);
     }
 
     public void livingTick() {

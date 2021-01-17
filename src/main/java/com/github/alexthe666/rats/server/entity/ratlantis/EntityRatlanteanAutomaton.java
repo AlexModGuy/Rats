@@ -71,11 +71,11 @@ public class EntityRatlanteanAutomaton extends MonsterEntity implements IAnimate
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, RatlantisConfig.ratlanteanAutomatonHealth)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.8D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, RatlantisConfig.ratlanteanAutomatonAttack)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 128.0D)               //FOLLOW RANGE
-                .func_233815_a_(Attributes.field_233826_i_, 10.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, RatlantisConfig.ratlanteanAutomatonHealth)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.8D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, RatlantisConfig.ratlanteanAutomatonAttack)       //ATTACK
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 10.0D);
     }
 
 
@@ -195,8 +195,8 @@ public class EntityRatlanteanAutomaton extends MonsterEntity implements IAnimate
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
-                this.getAttackTarget().func_233627_a_(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getAttackTarget().applyKnockback(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }

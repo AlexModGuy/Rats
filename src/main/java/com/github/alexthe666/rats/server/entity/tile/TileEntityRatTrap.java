@@ -67,7 +67,7 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
+        read(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {
@@ -82,8 +82,8 @@ public class TileEntityRatTrap extends TileEntity implements ITickableTileEntity
     }
 
 
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, baitStack);
         isShut = compound.getBoolean("IsShut");

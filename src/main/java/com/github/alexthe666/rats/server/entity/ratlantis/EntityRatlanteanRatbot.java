@@ -61,11 +61,11 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 40.0D)            //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.15D)           //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 5.0D)            //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
-                .func_233815_a_(Attributes.field_233826_i_, 7.0D);         //ARMOR
+                .createMutableAttribute(Attributes.field_233818_a_, 40.0D)            //HEALTH
+                .createMutableAttribute(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)            //ATTACK
+                .createMutableAttribute(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.field_233826_i_, 7.0D);         //ARMOR
     }
 
 

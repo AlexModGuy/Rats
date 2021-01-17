@@ -46,8 +46,8 @@ public class BlockAirRaidSiren extends Block {
         this.playSound(player, worldIn, pos);
         if(!worldIn.isRemote){
             LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(worldIn);
-            lightningboltentity.func_233576_c_(Vector3d.func_237492_c_(pos));
-            lightningboltentity.func_233623_a_(true);
+            lightningboltentity.setPosition(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+            lightningboltentity.setEffectOnly(true);
             worldIn.addEntity(lightningboltentity);
             worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
             EntityRatBaron baron = new EntityRatBaron(RatlantisEntityRegistry.RAT_BARON, worldIn);
@@ -69,8 +69,8 @@ public class BlockAirRaidSiren extends Block {
                 worldIn.playSound(null, pos, RatsSoundRegistry.AIR_RAID_SIREN, SoundCategory.BLOCKS, 1, 1);
                 if(!worldIn.isRemote){
                     LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(worldIn);
-                    lightningboltentity.func_233576_c_(Vector3d.func_237492_c_(pos));
-                    lightningboltentity.func_233623_a_(true);
+                    lightningboltentity.setPosition(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+                    lightningboltentity.setEffectOnly(true);
                     worldIn.addEntity(lightningboltentity);
                     worldIn.setBlockState(pos, Blocks.OAK_FENCE.getDefaultState());
                     EntityRatBaron baron = new EntityRatBaron(RatlantisEntityRegistry.RAT_BARON, worldIn);

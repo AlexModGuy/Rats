@@ -35,8 +35,8 @@ public class EntityRatChickenMount extends EntityRatMountBase {
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 4.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.3D);                //SPEED
+                .createMutableAttribute(Attributes.field_233818_a_, 4.0D)        //HEALTH
+                .createMutableAttribute(Attributes.field_233821_d_, 0.3D);                //SPEED
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {

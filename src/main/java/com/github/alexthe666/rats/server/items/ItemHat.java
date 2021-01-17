@@ -45,18 +45,18 @@ public class ItemHat extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.ARCHEOLOGIST_HAT) {
-            tooltip.add(new TranslationTextComponent("item.rats.archeologist_hat.desc").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.archeologist_hat.desc").mergeStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.PLAGUE_DOCTOR_MASK) {
-            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").mergeStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.BLACK_DEATH_MASK) {
-            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").func_240699_a_(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.rats.black_death_mask.desc").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.plague_doctor_mask.desc").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.black_death_mask.desc").mergeStyle(TextFormatting.GRAY));
         }
         if (stack.getItem() == RatsItemRegistry.RAT_FEZ) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc0").func_240699_a_(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc1").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc0").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_fez.desc1").mergeStyle(TextFormatting.GRAY));
         }
     }
 

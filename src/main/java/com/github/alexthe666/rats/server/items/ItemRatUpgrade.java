@@ -57,11 +57,11 @@ public class ItemRatUpgrade extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + i + ".desc").func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + i + ".desc").mergeStyle(TextFormatting.GRAY));
 
             }
         } else {
-            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY));
         }
     }
 

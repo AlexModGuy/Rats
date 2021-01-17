@@ -251,7 +251,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));
-        ItemModelsProperties.func_239418_a_(RatsItemRegistry.RAT_SACK, new ResourceLocation("rat_count"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+        ItemModelsProperties.registerProperty(RatsItemRegistry.RAT_SACK, new ResourceLocation("rat_count"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
             return Math.min(3, ItemRatSack.getRatsInStack(p_239428_0_));
         });
         if (RatsMod.RATLANTIS_LOADED) {
@@ -260,7 +260,7 @@ public class ClientProxy extends CommonProxy {
             ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.AUTOMATON_HEAD, manager -> new RenderRatlanteanAutomatonHead(manager));
             ClientRegistry.bindTileEntityRenderer(RatlantisTileEntityRegistry.TOKEN, manager -> new RenderRatlantisToken(manager));
 
-            ItemModelsProperties.func_239418_a_(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pull"), (p_239429_0_, p_239429_1_, p_239429_2_) -> {
+            ItemModelsProperties.registerProperty(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pull"), (p_239429_0_, p_239429_1_, p_239429_2_) -> {
                 if (p_239429_2_ == null) {
                     return 0.0F;
                 } else {
@@ -268,7 +268,7 @@ public class ClientProxy extends CommonProxy {
                 }
             });
         }
-        ItemModelsProperties.func_239418_a_(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+        ItemModelsProperties.registerProperty(RatlantisItemRegistry.RATLANTIS_BOW, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
             return p_239428_2_ != null && p_239428_2_.isHandActive() && p_239428_2_.getActiveItemStack() == p_239428_0_ ? 1.0F : 0.0F;
         });
         if (RatsMod.RATLANTIS_LOADED) {
@@ -492,7 +492,7 @@ public class ClientProxy extends CommonProxy {
         World world = Minecraft.getInstance().world;
         if (world.getTileEntity(pos) != null) {
             TileEntity te = world.getTileEntity(pos);
-            te.func_230337_a_(world.getBlockState(pos), tag);
+            te.read(world.getBlockState(pos), tag);
         }
     }
 

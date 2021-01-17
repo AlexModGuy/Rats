@@ -267,7 +267,7 @@ public class CommonEvents {
         if (player.swingProgress == 0 && heldItem.getItem() == RatsItemRegistry.PLAGUE_SCYTHE) {
             Multimap<Attribute, AttributeModifier> dmg = heldItem.getAttributeModifiers(EquipmentSlotType.MAINHAND);
             double totalDmg = 0;
-            for (AttributeModifier modifier : dmg.get(Attributes.field_233823_f_)) {
+            for (AttributeModifier modifier : dmg.get(Attributes.ATTACK_DAMAGE)) {
                 totalDmg += modifier.getAmount();
             }
             player.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);

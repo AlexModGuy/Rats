@@ -42,9 +42,9 @@ public class ItemRatTube extends Item implements ICustomRendered {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc0").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc1").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc2").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc0").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc1").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_tube.desc2").mergeStyle(TextFormatting.GRAY));
     }
 
     public ActionResultType onItemUse(ItemUseContext context) {

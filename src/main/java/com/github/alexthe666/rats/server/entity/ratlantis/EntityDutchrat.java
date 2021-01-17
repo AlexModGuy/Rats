@@ -61,11 +61,11 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, RatlantisConfig.dutchratHealth)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.5D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, RatlantisConfig.dutchratAttack)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 128D)               //FOLLOW RANGE
-                  .func_233815_a_(Attributes.field_233826_i_, 10D);             //ARMOR
+                .createMutableAttribute(Attributes.MAX_HEALTH, RatlantisConfig.dutchratHealth)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, RatlantisConfig.dutchratAttack)       //ATTACK
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128D)               //FOLLOW RANGE
+                  .createMutableAttribute(Attributes.ARMOR, 10D);             //ARMOR
     }
 
     protected void updateAITasks() {
@@ -137,13 +137,13 @@ public class EntityDutchrat extends MonsterEntity implements IAnimatedEntity, IR
             }
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
-                this.getAttackTarget().func_233627_a_(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getAttackTarget().applyKnockback(1.5F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
             if (this.getAnimation() == ANIMATION_STAB && (this.getAnimationTick() == 10)) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
-                this.getAttackTarget().func_233627_a_( 1.5F, this.getAttackTarget().getPosX() - this.getPosX(), this.getAttackTarget().getPosZ() - this.getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getAttackTarget().applyKnockback( 1.5F, this.getAttackTarget().getPosX() - this.getPosX(), this.getAttackTarget().getPosZ() - this.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }

@@ -47,7 +47,7 @@ public class BlockUpgradeSeparator extends ContainerBlock implements IUsesTEISR 
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.upgrade_separator.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.upgrade_separator.desc").mergeStyle(TextFormatting.GRAY));
     }
 
     @Nullable

@@ -41,7 +41,7 @@ public class ItemPlagueLeech extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.plague_heal_chance.desc", 50).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.plague_heal_chance.desc", 50).mergeStyle(TextFormatting.GRAY));
     }
 
 }

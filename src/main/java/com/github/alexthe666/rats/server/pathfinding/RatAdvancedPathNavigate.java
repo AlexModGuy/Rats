@@ -202,7 +202,7 @@ public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
                 new PathJobMoveToLocation(ourEntity.world,
                         start,
                         desiredPos,
-                        (int) ourEntity.getAttribute(Attributes.field_233819_b_).getValue(),
+                        (int) ourEntity.getAttribute(Attributes.FOLLOW_SPEED).getValue(),
                         ourEntity),
                 desiredPos, speedFactor);
     }

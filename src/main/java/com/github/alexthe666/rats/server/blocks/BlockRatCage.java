@@ -88,8 +88,8 @@ public class BlockRatCage extends Block {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc0").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_cage.desc1").mergeStyle(TextFormatting.GRAY));
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {

@@ -29,6 +29,6 @@ public class ItemStringCheese extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.string_cheese.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.string_cheese.desc").mergeStyle(TextFormatting.GRAY));
     }
 }

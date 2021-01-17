@@ -180,7 +180,7 @@ public class EntityRatMountBase extends MobEntity {
 
         public void tick() {
             if (this.action == MovementController.Action.STRAFE) {
-                float f = (float) this.mob.getAttribute(Attributes.field_233821_d_).getValue();
+                float f = (float) this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
                 float f1 = (float) this.speed * f;
                 float f2 = this.moveForward;
                 float f3 = this.moveStrafe;
@@ -223,7 +223,7 @@ public class EntityRatMountBase extends MobEntity {
 
                 float f9 = (float) (MathHelper.atan2(d1, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                 this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-                this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+                this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
                 BlockPos blockpos = new BlockPos(this.mob.getPositionVec());
                 BlockState blockstate = this.mob.world.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
@@ -233,7 +233,7 @@ public class EntityRatMountBase extends MobEntity {
                     this.action = MovementController.Action.JUMPING;
                 }
             } else if (this.action == MovementController.Action.JUMPING) {
-                this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(Attributes.field_233821_d_).getValue()));
+                this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
                 if (this.mob.func_233570_aj_()) {
                     this.action = MovementController.Action.WAIT;
                 }

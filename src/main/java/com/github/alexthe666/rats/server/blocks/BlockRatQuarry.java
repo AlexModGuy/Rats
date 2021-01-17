@@ -67,7 +67,7 @@ public class BlockRatQuarry extends ContainerBlock {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.rat_quarry.desc0").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("block.rats.rat_quarry.desc1").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_quarry.desc0").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.rat_quarry.desc1").mergeStyle(TextFormatting.GRAY));
     }
 }

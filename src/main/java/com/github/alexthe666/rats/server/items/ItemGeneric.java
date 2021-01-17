@@ -45,7 +45,7 @@ public class ItemGeneric extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (textLength > 0) {
             for (int i = 0; i < textLength; i++) {
-                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc" + i).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc" + i).mergeStyle(TextFormatting.GRAY));
             }
         }
     }

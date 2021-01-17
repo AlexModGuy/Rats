@@ -76,17 +76,17 @@ public class ItemRatSack extends Item {
                 }
             }
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contains", ratCount).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contains", ratCount).mergeStyle(TextFormatting.GRAY));
         if (!ratNames.isEmpty()) {
             for (int i = 0; i < ratNames.size(); i++) {
                 if (i < 3) {
-                    tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contain_rat", ratNames.get(i)).func_240699_a_(TextFormatting.GRAY));
+                    tooltip.add(new TranslationTextComponent("item.rats.rat_sack.contain_rat", ratNames.get(i)).mergeStyle(TextFormatting.GRAY));
                 } else {
                     break;
                 }
             }
             if (ratNames.size() > 3) {
-                tooltip.add(new TranslationTextComponent("item.rats.rat_sack.and_more").func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("item.rats.rat_sack.and_more").mergeStyle(TextFormatting.GRAY));
             }
         }
     }

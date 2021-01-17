@@ -39,7 +39,7 @@ public class BlockCompressedRat extends HorizontalBlock {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.rats.compressed_rat.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.rats.compressed_rat.desc").mergeStyle(TextFormatting.GRAY));
     }
 
 }

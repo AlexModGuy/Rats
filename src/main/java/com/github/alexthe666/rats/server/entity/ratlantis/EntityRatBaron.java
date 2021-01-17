@@ -49,10 +49,10 @@ public class EntityRatBaron extends EntityRat {
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 300.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.25D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 7.0D)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 128.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 300.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)       //ATTACK
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D);
     }
 
 

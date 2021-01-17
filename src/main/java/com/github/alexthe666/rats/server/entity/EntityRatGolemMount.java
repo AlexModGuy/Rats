@@ -39,10 +39,10 @@ public class EntityRatGolemMount extends EntityRatMountBase {
 
     public static AttributeModifierMap.MutableAttribute buildAttributes() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 100.0D)            //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.2D)           //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 1.0D)            //ATTACK
-                .func_233815_a_(Attributes.field_233820_c_, 1.0D);            //KNOCKBACK RESIST
+                .createMutableAttribute(Attributes.MAX_HEALTH, 100.0D)            //HEALTH
+                .createMutableAttribute(Attributes.field_233821_d_, 0.2D)           //SPEED
+                .createMutableAttribute(Attributes.field_233823_f_, 1.0D)            //ATTACK
+                .createMutableAttribute(Attributes.field_233820_c_, 1.0D);            //KNOCKBACK RESIST
     }
 
     public void livingTick() {

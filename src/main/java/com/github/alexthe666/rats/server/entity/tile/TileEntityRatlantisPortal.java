@@ -23,8 +23,8 @@ public class TileEntityRatlantisPortal extends EndPortalTileEntity implements IT
     }
 
 
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.age = compound.getLong("Age");
     }
 

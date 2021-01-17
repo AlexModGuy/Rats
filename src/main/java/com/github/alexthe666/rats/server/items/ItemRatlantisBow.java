@@ -39,8 +39,8 @@ public class ItemRatlantisBow extends BowItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_bow0.desc").func_240699_a_(TextFormatting.YELLOW));
-        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_bow1.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_bow0.desc").mergeStyle(TextFormatting.YELLOW));
+        tooltip.add(new TranslationTextComponent("item.rats.ratlantis_bow1.desc").mergeStyle(TextFormatting.GRAY));
     }
 
 }

@@ -66,7 +66,7 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
     private static ItemStack generateBanner() {
         ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
         CompoundNBT compoundnbt = itemstack.getOrCreateChildTag("BlockEntityTag");
-        ListNBT listnbt = (new BannerPattern.Builder()).setPatternWithColor(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE).func_222476_a();
+        ListNBT listnbt = (new BannerPattern.Builder()).setPatternWithColor(RatsRecipeRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE).buildNBT();
         compoundnbt.put("Patterns", listnbt);
         return itemstack;
     }
@@ -240,10 +240,10 @@ public class EntityPiratBoat extends MobEntity implements IRatlantean, IPirat {
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 60.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.1D)                //SPEED
-                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
-                .func_233815_a_(Attributes.field_233826_i_, 10.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 60.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.1D)                //SPEED
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 10.0D);
     }
 
     public void applyEntityCollision(Entity entityIn) {

@@ -83,7 +83,7 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onFogColors(EntityViewRenderEvent.FogColors event) {
         ClientWorld world = Minecraft.getInstance().world;
-        if(world.func_234923_W_().func_240901_a_().getPath().equals("ratlantis")){
+        if(world.getDimensionKey().getRegistryName().getPath().equals("ratlantis")){
             float f12 = MathHelper.clamp(MathHelper.cos(world.func_242415_f((float)event.getRenderPartialTicks()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
             float red = (f12 * 1F);
             float green = (f12 * 1F);
@@ -105,8 +105,8 @@ public class ClientEvents {
             if (event.getGui() instanceof ConfirmBackupScreen) {
                 ConfirmBackupScreen confirmBackupScreen = (ConfirmBackupScreen) event.getGui();
                 String name = "";
-                if (confirmBackupScreen.func_231171_q_() instanceof TranslationTextComponent) {
-                    name = ((TranslationTextComponent) confirmBackupScreen.func_231171_q_()).getKey();
+                if (confirmBackupScreen.getTitle() instanceof TranslationTextComponent) {
+                    name = ((TranslationTextComponent) confirmBackupScreen.getTitle()).getKey();
                 }
                 if (name.equals("selectWorld.backupQuestion.experimental")) {
                     confirmBackupScreen.callback.proceed(false, true);
@@ -116,8 +116,8 @@ public class ClientEvents {
                 ConfirmScreen confirmScreen = (ConfirmScreen) event.getGui();
                 String testAgainst = "selectWorld.backupQuestion.experimental";
                 String name = "";
-                if (confirmScreen.func_231171_q_() instanceof TranslationTextComponent) {
-                    name = ((TranslationTextComponent) confirmScreen.func_231171_q_()).getKey();
+                if (confirmScreen.getTitle() instanceof TranslationTextComponent) {
+                    name = ((TranslationTextComponent) confirmScreen.getTitle()).getKey();
                 }
                 if (name.equals(testAgainst)) {
                     confirmScreen.callbackFunction.accept(true);
@@ -158,7 +158,7 @@ public class ClientEvents {
         this.playerHealth = health;
         int healthLast = this.lastPlayerHealth;
 
-        ModifiableAttributeInstance attrMaxHealth = player.getAttribute(Attributes.field_233818_a_);
+        ModifiableAttributeInstance attrMaxHealth = player.getAttribute(Attributes.MAX_HEALTH);
         float healthMax = (float) attrMaxHealth.getValue();
         float absorb = MathHelper.ceil(player.getAbsorptionAmount());
 
@@ -220,7 +220,7 @@ public class ClientEvents {
 
     private void drawTexturedModalRect(MatrixStack stackin, int x, int y, int textureX, int textureY, int width, int height) {
         Minecraft.getInstance().getTextureManager().bindTexture(PLAGUE_HEART_TEXTURE);
-        Minecraft.getInstance().ingameGUI.func_238474_b_(stackin, x, y, textureX, textureY, width, height);
+        Minecraft.getInstance().ingameGUI.blit(stackin, x, y, textureX, textureY, width, height);
     }
 
     @SubscribeEvent

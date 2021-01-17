@@ -73,7 +73,7 @@ public class ItemRatNuggetOre extends Item implements ICustomRendered {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.rat_nugget_ore.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_nugget_ore.desc").mergeStyle(TextFormatting.GRAY));
     }
 
     public ITextComponent getDisplayName(ItemStack stack) {

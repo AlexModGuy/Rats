@@ -25,7 +25,7 @@ public class RatMoveHelper extends MovementController {
     public void tick() {
         float lvt_9_2_;
         if (this.action == MovementController.Action.STRAFE) {
-            float lvt_1_1_ = (float)this.mob.func_233637_b_(Attributes.field_233821_d_);
+            float lvt_1_1_ = (float)this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
             float lvt_2_1_ = (float)this.speed * lvt_1_1_;
             float lvt_3_1_ = this.moveForward;
             float lvt_4_1_ = this.moveStrafe;
@@ -63,8 +63,8 @@ public class RatMoveHelper extends MovementController {
 
             lvt_9_2_ = (float)(MathHelper.atan2(lvt_3_2_, lvt_1_2_) * 57.2957763671875D) - 90.0F;
             this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, lvt_9_2_, 90.0F);
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.func_233637_b_(Attributes.field_233821_d_)));
-            BlockPos lvt_10_1_ = this.mob.func_233580_cy_();
+            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            BlockPos lvt_10_1_ = this.mob.getPosition();
             BlockState lvt_11_1_ = this.mob.world.getBlockState(lvt_10_1_);
             Block lvt_12_1_ = lvt_11_1_.getBlock();
             VoxelShape lvt_13_1_ = lvt_11_1_.getCollisionShape(this.mob.world, lvt_10_1_);
@@ -73,8 +73,8 @@ public class RatMoveHelper extends MovementController {
                 this.action = MovementController.Action.JUMPING;
             }
         } else if (this.action == MovementController.Action.JUMPING) {
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.func_233637_b_(Attributes.field_233821_d_)));
-            if (this.mob.func_233570_aj_()) {
+            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            if (this.mob.isOnGround()) {
                 this.action = MovementController.Action.WAIT;
             }
         } else {

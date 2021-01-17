@@ -63,11 +63,11 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 80.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.5D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 5.0D)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
-                .func_233815_a_(Attributes.field_233826_i_, 4.0D);             //ARMOR
+                .createMutableAttribute(Attributes.MAX_HEALTH, 80.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)       //ATTACK
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 4.0D);             //ARMOR
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -94,13 +94,13 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
-                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getAttackTarget().applyKnockback(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 doExtraEffect(this.getAttackTarget());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.func_233637_b_(Attributes.field_233823_f_));
-                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getAttackTarget().applyKnockback(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
@@ -195,6 +195,6 @@ public class EntityFeralRatlantean extends MonsterEntity implements IAnimatedEnt
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return !BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
+        return !BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
     }
 }

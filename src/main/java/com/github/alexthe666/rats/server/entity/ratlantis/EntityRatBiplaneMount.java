@@ -116,10 +116,10 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 300.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.35D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 128.0D);
+                .createMutableAttribute(Attributes.field_233818_a_, 300.0D)        //HEALTH
+                .createMutableAttribute(Attributes.field_233821_d_, 0.35D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
+                .createMutableAttribute(Attributes.field_233819_b_, 128.0D);
     }
 
     public void tick() {

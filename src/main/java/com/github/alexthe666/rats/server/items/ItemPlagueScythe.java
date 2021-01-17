@@ -35,13 +35,13 @@ public class ItemPlagueScythe extends SwordItem {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY));
     }
 
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-            multimap.put(Attributes.field_233823_f_, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)12, AttributeModifier.Operation.ADDITION));
+            multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)12, AttributeModifier.Operation.ADDITION));
             multimap.put(Attributes.field_233825_h_, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)-0.5, AttributeModifier.Operation.ADDITION));
         }
         return multimap;
@@ -51,7 +51,7 @@ public class ItemPlagueScythe extends SwordItem {
         if (LivingEntity.swingProgress == 0) {
             Multimap<Attribute, AttributeModifier> dmg = stack.getAttributeModifiers(EquipmentSlotType.MAINHAND);
             double totalDmg = 0;
-            for (AttributeModifier modifier : dmg.get(Attributes.field_233823_f_)) {
+            for (AttributeModifier modifier : dmg.get(Attributes.ATTACK_DAMAGE)) {
                 totalDmg += modifier.getAmount();
             }
             LivingEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);

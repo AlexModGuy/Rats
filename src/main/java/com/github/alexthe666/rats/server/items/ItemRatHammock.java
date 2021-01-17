@@ -30,7 +30,7 @@ public class ItemRatHammock extends Item implements ICustomRendered, IRatCageDec
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.cage_decoration.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.cage_decoration.desc").mergeStyle(TextFormatting.GRAY));
     }
 
     @Override

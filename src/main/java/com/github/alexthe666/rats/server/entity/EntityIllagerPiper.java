@@ -51,10 +51,10 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 20.0D)        //HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.3D)                //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 1.0D)       //ATTACK
-                .func_233815_a_(Attributes.field_233819_b_, 32D);               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D);               //FOLLOW RANGE
     }
 
     protected void registerData() {
@@ -224,7 +224,7 @@ public class EntityIllagerPiper extends MonsterEntity implements IRangedAttackMo
 
     public static boolean canSpawnOn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        if(RatConfig.piperOverworldOnly && ((ServerWorld) worldIn).func_234923_W_() != World.field_234918_g_){
+        if(RatConfig.piperOverworldOnly && ((ServerWorld) worldIn).getDimensionKey() != World.THE_NETHER){
             return false;
         }
         boolean b = canPiperSpawnInLight(typeIn, worldIn, reason, pos, randomIn);

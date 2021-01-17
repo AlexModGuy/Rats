@@ -58,9 +58,9 @@ public class ItemRatUpgradeCombined extends ItemRatUpgrade {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getItem() == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE) {
-            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined_creative.desc").mergeStyle(TextFormatting.GRAY));
         }
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_combined.desc").mergeStyle(TextFormatting.GRAY));
         CompoundNBT tag = stack.getTag();
 
         if (tag != null && tag.contains("Items", 9)) {

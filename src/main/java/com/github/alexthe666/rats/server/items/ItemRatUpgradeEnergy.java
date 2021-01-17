@@ -39,8 +39,8 @@ public class ItemRatUpgradeEnergy extends ItemRatUpgrade {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         int transferRate = getRFTransferRate(stack.getItem());
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc0").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc1").func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.transfer_rate", transferRate).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc0").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.desc1").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.rat_upgrade_energy.transfer_rate", transferRate).mergeStyle(TextFormatting.GRAY));
     }
 }
