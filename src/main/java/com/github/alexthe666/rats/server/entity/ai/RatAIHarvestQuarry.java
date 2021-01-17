@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 public class RatAIHarvestQuarry extends Goal {
     private final EntityRat entity;
-    private final RatAIHarvestQuarry.BlockSorter targetSorter;
+    private final BlockSorter targetSorter;
     private static final ResourceLocation QUARRY_IGNORABLES = new ResourceLocation("rats", "quarry_ignorables");
     private BlockPos targetBlock = null;
     private int breakingTime;
@@ -49,7 +49,7 @@ public class RatAIHarvestQuarry extends Goal {
     public RatAIHarvestQuarry(EntityRat entity) {
         super();
         this.entity = entity;
-        this.targetSorter = new RatAIHarvestQuarry.BlockSorter(entity);
+        this.targetSorter = new BlockSorter(entity);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         tag = BlockTags.getCollection().get(QUARRY_IGNORABLES);
     }
