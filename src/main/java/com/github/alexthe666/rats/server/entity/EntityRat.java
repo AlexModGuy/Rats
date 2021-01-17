@@ -16,6 +16,7 @@ import com.github.alexthe666.rats.server.entity.ratlantis.*;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCraftingTable;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatHole;
 import com.github.alexthe666.rats.server.inventory.ContainerRat;
+import com.github.alexthe666.rats.server.inventory.RatInvListener;
 import com.github.alexthe666.rats.server.items.*;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
 import com.github.alexthe666.rats.server.message.MessageDancingRat;
@@ -195,7 +196,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private BlockPos diggingPos = null;
     private int digCooldown = 0;
     private int eatingTicks = 0;
-    private ItemStack prevUpgrade = ItemStack.EMPTY;
+    public boolean refreshUpgrades = true;
     private int eatenItems = 0;
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
@@ -990,10 +991,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.getRespawnCountdown() > 0) {
             this.setRespawnCountdown(this.getRespawnCountdown() - 1);
         }
-        if (this.getUpgradeSlot() != prevUpgrade) {
-            this.onUpgradeChanged();
-        }
         super.livingTick();
+        if(refreshUpgrades){
+            this.onUpgradeChanged();
+            refreshUpgrades = false;
+        }
         this.prevFlyingPitch = flyingPitch;
         if (this.inTube()) {
             if (navigatorType != 3) {
@@ -1539,7 +1541,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (visualCooldown > 0) {
             visualCooldown--;
         }
-        prevUpgrade = this.getUpgradeSlot();
         if (!world.isRemote) {
             inCage = inCageLogic();
         }
@@ -2435,6 +2436,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             return ratInventory.getStackInSlot(1);
         } else if (slotIn == EquipmentSlotType.OFFHAND) {
             return ratInventory.getStackInSlot(2);
+        }else if (slotIn == EquipmentSlotType.CHEST) {
+            return ratInventory.getStackInSlot(3);
+        }else if (slotIn == EquipmentSlotType.LEGS) {
+            return ratInventory.getStackInSlot(4);
+        }else if (slotIn == EquipmentSlotType.FEET) {
+            return ratInventory.getStackInSlot(5);
         }
         return super.getItemStackFromSlot(slotIn);
     }
@@ -2446,15 +2453,23 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             ratInventory.setInventorySlotContents(1, stack);
         } else if (slotIn == EquipmentSlotType.OFFHAND) {
             ratInventory.setInventorySlotContents(2, stack);
+        } else if (slotIn == EquipmentSlotType.CHEST) {
+            ratInventory.setInventorySlotContents(3, stack);
+        } else if (slotIn == EquipmentSlotType.LEGS) {
+            ratInventory.setInventorySlotContents(4, stack);
+        } else if (slotIn == EquipmentSlotType.FEET) {
+            ratInventory.setInventorySlotContents(5, stack);
         } else {
             super.getItemStackFromSlot(slotIn);
         }
     }
 
     private void initInventory() {
-        ratInventory = new Inventory(4);
+        ratInventory = new Inventory(6);
+        ratInventory.addListener(new RatInvListener(this));
         //ratInventory.setCustomName(this.getName());
         if (ratInventory != null) {
+            refreshUpgrades = true;
             for (int j = 0; j < ratInventory.getSizeInventory(); ++j) {
                 ItemStack itemstack = ratInventory.getStackInSlot(j);
                 if (!itemstack.isEmpty()) {
@@ -2787,99 +2802,101 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return super.isAIDisabled() || this.getRespawnCountdown() > 0;
     }
 
-    public ItemStack getUpgradeSlot() {
-        return getHeldItem(Hand.OFF_HAND);
-    }
-
     public void forEachUpgrade(Consumer<ItemRatUpgrade> function) {
-        ItemStack stack = getUpgradeSlot();
-        if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof ItemRatUpgradeCombined) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() instanceof ItemRatUpgrade) {
-                            function.accept((ItemRatUpgrade) stack1.getItem());
+        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS){
+            ItemStack stack = getItemStackFromSlot(slot);
+            if (!stack.isEmpty()) {
+                if (stack.getItem() instanceof ItemRatUpgradeCombined) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() instanceof ItemRatUpgrade) {
+                                function.accept((ItemRatUpgrade) stack1.getItem());
+                            }
                         }
                     }
-                }
-            } else if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() instanceof ItemRatUpgrade) {
-                            function.accept((ItemRatUpgrade) stack1.getItem());
+                } else if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() instanceof ItemRatUpgrade) {
+                                function.accept((ItemRatUpgrade) stack1.getItem());
+                            }
                         }
                     }
+                } else if (stack.getItem() instanceof ItemRatUpgrade) {
+                    function.accept((ItemRatUpgrade) stack.getItem());
                 }
-            } else if (stack.getItem() instanceof ItemRatUpgrade) {
-                function.accept((ItemRatUpgrade) stack.getItem());
             }
         }
     }
 
     public boolean forEachUpgradeBool(Function<ItemRatUpgrade, Boolean> function, boolean _default) {
-        ItemStack stack = getUpgradeSlot();
-        if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof ItemRatUpgradeCombined) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() instanceof ItemRatUpgrade) {
-                            return function.apply((ItemRatUpgrade) stack1.getItem());
+        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
+            ItemStack stack = getItemStackFromSlot(slot);
+            if (!stack.isEmpty()) {
+                if (stack.getItem() instanceof ItemRatUpgradeCombined) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() instanceof ItemRatUpgrade) {
+                                return function.apply((ItemRatUpgrade) stack1.getItem());
+                            }
                         }
                     }
-                }
-            } else if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() instanceof ItemRatUpgrade) {
-                            return function.apply((ItemRatUpgrade) stack1.getItem());
+                } else if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() instanceof ItemRatUpgrade) {
+                                return function.apply((ItemRatUpgrade) stack1.getItem());
+                            }
                         }
                     }
+                } else if (stack.getItem() instanceof ItemRatUpgrade) {
+                    return function.apply((ItemRatUpgrade) stack.getItem());
                 }
-            } else if (stack.getItem() instanceof ItemRatUpgrade) {
-                return function.apply((ItemRatUpgrade) stack.getItem());
             }
         }
         return _default;
     }
 
     public ItemStack getUpgrade(Item item) {
-        ItemStack stack = getUpgradeSlot();
-        if (!stack.isEmpty()) {
-            if (stack.getItem() == item) {
-                return stack;
-            }
-            if (stack.getItem() instanceof ItemRatUpgradeCombined) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() == item) {
-                            return stack1;
+        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
+            ItemStack stack = getItemStackFromSlot(slot);
+            if (!stack.isEmpty()) {
+                if (stack.getItem() == item) {
+                    return stack;
+                }
+                if (stack.getItem() instanceof ItemRatUpgradeCombined) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() == item) {
+                                return stack1;
+                            }
                         }
                     }
                 }
-            }
-            if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
-                CompoundNBT CompoundNBT1 = stack.getTag();
-                if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-                    ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
-                    for (ItemStack stack1 : nonnulllist) {
-                        if (stack1.getItem() == item) {
-                            return stack1;
+                if (stack.getItem() instanceof ItemRatUpgradeJuryRigged) {
+                    CompoundNBT CompoundNBT1 = stack.getTag();
+                    if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+                        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
+                        ItemStackHelper.loadAllItems(CompoundNBT1, nonnulllist);
+                        for (ItemStack stack1 : nonnulllist) {
+                            if (stack1.getItem() == item) {
+                                return stack1;
+                            }
                         }
                     }
                 }
@@ -2889,11 +2906,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean hasUpgrade(Item item) {
-        if (!this.getUpgradeSlot().isEmpty()) {
-            return getUpgrade(item) != ItemStack.EMPTY;
-        } else {
+        if(!isTamed() || !hasAnyUpgrades()){
             return false;
         }
+        return getUpgrade(item) != ItemStack.EMPTY;
     }
 
     public boolean holdsItemInHandUpgrade() {
@@ -2910,6 +2926,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY)
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS)
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
+    }
+
+    private boolean hasAnyUpgrades(){
+        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS){
+            return !this.getItemStackFromSlot(slot).isEmpty();
+        }
+        return false;
     }
 
     private void onUpgradeChanged() {

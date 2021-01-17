@@ -41,10 +41,12 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
 
     public GuiRat(ContainerRat container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
+
         this.rat = RatsMod.PROXY.getRefrencedRat();
     }
 
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
@@ -97,15 +99,15 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.buttons.clear();
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
-        addButton(new ChangeCommandButton(1, i + 115, j + 54, false, (p_214132_1_) -> {
+        addButton(new ChangeCommandButton(1, i + 124, j + 54, false, (p_214132_1_) -> {
             currentDisplayCommand--;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        addButton(new ChangeCommandButton(2, i + 198, j + 54, true, (p_214132_1_) -> {
+        addButton(new ChangeCommandButton(2, i + 207, j + 54, true, (p_214132_1_) -> {
             currentDisplayCommand++;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        addButton(new CommandPressButton(3, i + 122, j + 52, (p_214132_1_) -> {
+        addButton(new CommandPressButton(3, i + 131, j + 52, (p_214132_1_) -> {
             rat.setCommand(RatCommand.values()[currentDisplayCommand]);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentDisplayCommand));
         }));
@@ -117,31 +119,31 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mousePosx = p_230450_3_;
         this.mousePosY = p_230450_4_;
-        int k = (this.width - this.xSize) / 2;
+        int k = (this.width - 192) / 2;
         int l = (this.height - this.ySize) / 2;
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE_BACKDROP);
-        this.blit(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
-        drawEntityOnScreen(k + 35, l + 60, 70, k + 51 - this.mousePosx, l + 75 - 50 - this.mousePosY, this.rat);
+        this.blit(p_230450_1_, k, l, 0, 0, 192, this.ySize);
+        drawEntityOnScreen(k + 50, l + 60, 70, k + 51 - this.mousePosx, l + 75 - 50 - this.mousePosY, this.rat);
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        this.blit(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
-        this.blit(p_230450_1_, k + 9, l + 20, rat.isMale() ? 176 : 192, 0, 16, height);
+        this.blit(p_230450_1_, k, l, 0, 0, 192, this.ySize);
+        this.blit(p_230450_1_, k + 60, l + 20, rat.isMale() ? 0 : 16, 209, 16, 16);
     }
 
     protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
         String name = getTitle().getString().length() == 0 ? I18n.format("entity.rats.rat") : getTitle().getString();
-        this.font.drawString(stackIn,  name, this.xSize / 2 - this.font.getStringWidth(name) / 2, 6, 4210752);
+        this.font.drawString(stackIn,  name, 192 / 2 - this.font.getStringWidth(name) / 2, 6, 4210752);
 
         String commandDesc = I18n.format("entity.rats.rat.command.current");
-        this.font.drawString(stackIn,  commandDesc, this.xSize / 2 - this.font.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
+        this.font.drawString(stackIn,  commandDesc, 192 / 2 - this.font.getStringWidth(commandDesc) / 2 + 38, 19, 4210752);
 
         String command = I18n.format(rat.getCommand().getTranslateName());
-        this.font.drawStringWithShadow(stackIn,  command, this.xSize / 2 - this.font.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
+        this.font.drawStringWithShadow(stackIn,  command, 192 / 2 - this.font.getStringWidth(command) / 2 + 38, 31, 0XFFFFFF);
 
         String statusDesc = I18n.format("entity.rats.rat.command.set");
-        this.font.drawString(stackIn,  statusDesc, this.xSize / 2 - this.font.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
+        this.font.drawString(stackIn,  statusDesc, 192 / 2 - this.font.getStringWidth(statusDesc) / 2 + 38, 44, 4210752);
         RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
         String command2 = I18n.format(command1.getTranslateName());
-        this.font.drawStringWithShadow(stackIn, command2, this.xSize / 2 - this.font.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
+        this.font.drawStringWithShadow(stackIn, command2, 192 / 2 - this.font.getStringWidth(command2) / 2 + 38, 56, 0XFFFFFF);
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {

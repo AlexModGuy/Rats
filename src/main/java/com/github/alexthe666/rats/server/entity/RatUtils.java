@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,7 +58,7 @@ public class RatUtils {
     public static final ResourceLocation PIRAT_ONLY_BLOCKS = new ResourceLocation("rats", "pirat_blocks");
     public static final ResourceLocation SEED_ITEMS = new ResourceLocation("forge", "seeds");
     public static final ResourceLocation CHEESE_ITEMS = new ResourceLocation("forge", "all_cheese");
-
+    public static EquipmentSlotType[] UPGRADE_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     public static boolean isRidingOrBeingRiddenBy(Entity us, Entity entityIn) {
         for(Entity entity : us.getPassengers()) {
             if (entity.equals(entityIn)) {

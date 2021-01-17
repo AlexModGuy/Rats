@@ -22,7 +22,7 @@ public class ChangeCommandButton extends Button {
             }
         }
         if (this.visible) {
-            boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.x + this.height;
+            boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             Minecraft.getInstance().textureManager.bindTexture(GuiRat.TEXTURE);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             int i = 0;

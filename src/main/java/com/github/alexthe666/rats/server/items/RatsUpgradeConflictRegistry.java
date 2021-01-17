@@ -79,6 +79,9 @@ public class RatsUpgradeConflictRegistry {
     }
 
     public static boolean doesConflict(Item first, Item second) {
+        if(!(first instanceof ItemRatUpgrade) || !(second instanceof ItemRatUpgrade)){
+            return false;
+        }
         Item[] arr = REGISTERED_CONFLICTS.get(first);
         if (arr != null && arr.length > 0) {
             for (Item item : arr) {

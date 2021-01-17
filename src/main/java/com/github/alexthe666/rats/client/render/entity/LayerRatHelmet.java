@@ -42,16 +42,40 @@ import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {
+    private static final BipedModel backup = new BipedModel(1);
+    private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
+    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderer;
+    private final BipedModel defaultBipedModel = new BipedModel(1.0F);
     private float alpha = 1.0F;
     private float colorR = 1.0F;
     private float colorG = 1.0F;
     private float colorB = 1.0F;
-    private final IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> renderer;
-    private final BipedModel defaultBipedModel = new BipedModel(1.0F);
-    private static final BipedModel backup = new BipedModel(1);
+
     public LayerRatHelmet(IEntityRenderer<EntityRat, SegmentedModel<EntityRat>> rendererIn) {
         super(rendererIn);
         this.renderer = rendererIn;
+    }
+
+    public static ResourceLocation getArmorResource(net.minecraft.entity.Entity entity, ItemStack stack, EquipmentSlotType slot, @javax.annotation.Nullable String type) {
+        ArmorItem item = (ArmorItem) stack.getItem();
+        String texture = item.getArmorMaterial().getName();
+        String domain = "minecraft";
+        int idx = texture.indexOf(':');
+        if (idx != -1) {
+            domain = texture.substring(0, idx);
+            texture = texture.substring(idx + 1);
+        }
+        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
+
+        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
+        ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
+
+        if (resourcelocation == null) {
+            resourcelocation = new ResourceLocation(s1);
+            ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
+        }
+
+        return resourcelocation;
     }
 
     @Override
@@ -73,8 +97,9 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
         MinecraftForge.EVENT_BUS.post(sheenEvent);
 
         ItemStack itemstack = rat.getItemStackFromSlot(EquipmentSlotType.HEAD);
+        ItemStack bannerStack = rat.getItemStackFromSlot(EquipmentSlotType.OFFHAND);
         if (itemstack.getItem() instanceof ArmorItem) {
-            ArmorItem armoritem = (ArmorItem)itemstack.getItem();
+            ArmorItem armoritem = (ArmorItem) itemstack.getItem();
             if (armoritem.getEquipmentSlot() == EquipmentSlotType.HEAD) {
                 BipedModel a = defaultBipedModel;
                 a = getArmorModelHook(rat, itemstack, EquipmentSlotType.HEAD, a);
@@ -99,7 +124,7 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                     matrixStackIn.translate(0, -0.125F, 0);
                     matrixStackIn.scale(1.425F, 1.425F, 1.425F);
                 }
-                if(itemstack.getItem() == RatlantisItemRegistry.GHOST_PIRAT_HAT){
+                if (itemstack.getItem() == RatlantisItemRegistry.GHOST_PIRAT_HAT) {
                     float piratScale = rat instanceof EntityGhostPirat ? 1.1F : 1.425F;
                     float piratTranslate = rat instanceof EntityGhostPirat ? 0.05F : -0.125F;
                     GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.3F);
@@ -159,27 +184,17 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                 MinecraftForge.EVENT_BUS.post(translationEvent);
                 boolean flag1 = itemstack.hasEffect();
                 if (armoritem instanceof net.minecraft.item.IDyeableArmorItem) { // Allow this for anything, not only cloth
-                    int i = ((net.minecraft.item.IDyeableArmorItem)armoritem).getColor(itemstack);
-                    float f = (float)(i >> 16 & 255) / 255.0F;
-                    float f1 = (float)(i >> 8 & 255) / 255.0F;
-                    float f2 = (float)(i & 255) / 255.0F;
-                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, f, f1, f2, this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
-                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, 1.0F, 1.0F, 1.0F, this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, "overlay"));
+                    int i = ((net.minecraft.item.IDyeableArmorItem) armoritem).getColor(itemstack);
+                    float f = (float) (i >> 16 & 255) / 255.0F;
+                    float f1 = (float) (i >> 8 & 255) / 255.0F;
+                    float f2 = (float) (i & 255) / 255.0F;
+                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, f, f1, f2, getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
+                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, "overlay"));
                 } else {
-                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, 1.0F, 1.0F, 1.0F, this.getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
+                    renderArmor(matrixStackIn, bufferIn, packedLightIn, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(rat, itemstack, EquipmentSlotType.HEAD, null));
                 }
 
             }
-        }else if (itemstack.getItem() instanceof BannerItem) {
-            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
-            ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
-            matrixStackIn.translate(0, -0.5F, -0.2F);
-            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
-            float sitProgress = rat.sitProgress / 20F;
-            matrixStackIn.rotate(new Quaternion(Vector3f.XP, sitProgress * -40, true));
-            matrixStackIn.translate(0, 0, -sitProgress * 0.04F);
-            matrixStackIn.scale(1.7F, 1.7F, 1.7F);
-            Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         } else {
             ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
             ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
@@ -197,37 +212,24 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
             Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
         }
         matrixStackIn.pop();
+        matrixStackIn.push();
+        if (bannerStack.getItem() instanceof BannerItem) {
+            ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
+            ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
+            matrixStackIn.translate(0, -0.5F, -0.2F);
+            matrixStackIn.rotate(new Quaternion(Vector3f.ZP, 180, true));
+            float sitProgress = rat.sitProgress / 20F;
+            matrixStackIn.rotate(new Quaternion(Vector3f.XP, sitProgress * -40, true));
+            matrixStackIn.translate(0, 0, -sitProgress * 0.04F);
+            matrixStackIn.scale(1.7F, 1.7F, 1.7F);
+            Minecraft.getInstance().getItemRenderer().renderItem(bannerStack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        }
+        matrixStackIn.pop();
     }
-
-    private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
 
     private void renderArmor(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, BipedModel modelIn, float red, float green, float blue, ResourceLocation armorResource) {
         IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(armorResource), false, glintIn);
         modelIn.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-    }
-
-    public static ResourceLocation getArmorResource(net.minecraft.entity.Entity entity, ItemStack stack, EquipmentSlotType slot, @javax.annotation.Nullable String type) {
-        ArmorItem item = (ArmorItem)stack.getItem();
-        String texture = item.getArmorMaterial().getName();
-        String domain = "minecraft";
-        int idx = texture.indexOf(':');
-        if (idx != -1)
-        {
-            domain = texture.substring(0, idx);
-            texture = texture.substring(idx + 1);
-        }
-        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
-
-        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
-        ResourceLocation resourcelocation = (ResourceLocation)ARMOR_TEXTURE_RES_MAP.get(s1);
-
-        if (resourcelocation == null)
-        {
-            resourcelocation = new ResourceLocation(s1);
-            ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
-        }
-
-        return resourcelocation;
     }
 
     protected void setModelSlotVisible(BipedModel p_188359_1_, EquipmentSlotType slotIn) {
