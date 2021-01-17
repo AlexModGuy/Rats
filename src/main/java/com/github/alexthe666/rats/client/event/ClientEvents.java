@@ -66,6 +66,7 @@ public class ClientEvents {
     private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_deposit.png");
     private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_pickup.png");
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
+    public static final ResourceLocation RAT_PROTECTOR_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/rat_protector.png");
     public static int left_height = 39;
     public static int right_height = 39;
     private int updateCounter = 0;
@@ -468,7 +469,7 @@ public class ClientEvents {
     public void onLivingRender(RenderLivingEvent.Post event) {
         MatrixStack matrixStackIn = event.getMatrixStack();
         int protectorCount = CommonEvents.getProtectorCount(event.getEntity());
-        IVertexBuilder textureBuilder = event.getBuffers().getBuffer(RatsRenderType.getGlowingTranslucent(RenderRatProtector.BASE_TEXTURE));
+        IVertexBuilder textureBuilder = event.getBuffers().getBuffer(RatsRenderType.getGlowingTranslucent(RAT_PROTECTOR_TEXTURE));
         for(int i = 0; i < protectorCount; i++){
            float tick = (float)(event.getEntity().ticksExisted - 1) + event.getPartialRenderTick();
             float offsetRot = 30 + 360 * (i / (float)protectorCount);
