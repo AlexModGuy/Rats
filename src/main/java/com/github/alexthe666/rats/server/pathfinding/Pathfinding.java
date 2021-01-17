@@ -50,7 +50,7 @@ public final class Pathfinding {
      */
     public static ThreadPoolExecutor getExecutor() {
         if (executor == null) {
-            executor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 10, TimeUnit.SECONDS, jobQueue, new IafThreadFactory());
+            executor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 10, TimeUnit.SECONDS, jobQueue, new RatsThreadFactory());
         }
         return executor;
     }
@@ -267,7 +267,7 @@ public final class Pathfinding {
     /**
      * Rats specific thread factory.
      */
-    public static class IafThreadFactory implements ThreadFactory {
+    public static class RatsThreadFactory implements ThreadFactory {
         /**
          * Ongoing thread IDs.
          */

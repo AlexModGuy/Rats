@@ -135,13 +135,13 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.font.drawString(stackIn,  commandDesc, this.xSize / 2 - this.font.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
 
         String command = I18n.format(rat.getCommand().getTranslateName());
-        this.font.drawString(stackIn,  command, this.xSize / 2 - this.font.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
+        this.font.drawStringWithShadow(stackIn,  command, this.xSize / 2 - this.font.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
 
         String statusDesc = I18n.format("entity.rats.rat.command.set");
-        this.font.drawStringWithShadow(stackIn,  statusDesc, this.xSize / 2 - this.font.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
+        this.font.drawString(stackIn,  statusDesc, this.xSize / 2 - this.font.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
         RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
         String command2 = I18n.format(command1.getTranslateName());
-        this.font.drawString(stackIn, command2, this.xSize / 2 - this.font.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
+        this.font.drawStringWithShadow(stackIn, command2, this.xSize / 2 - this.font.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
