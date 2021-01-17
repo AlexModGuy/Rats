@@ -46,11 +46,11 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 40.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.5D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 4.0D);
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 4.0D);
     }
 
     public boolean isPotionApplicable(EffectInstance potioneffectIn) {
@@ -157,7 +157,7 @@ public class EntityPlagueBeast extends EntityFeralRatlantean implements IPlagueL
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getServer().getWorld(this.world.func_234923_W_()).getEntityByUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.world.getDimensionKey()).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }

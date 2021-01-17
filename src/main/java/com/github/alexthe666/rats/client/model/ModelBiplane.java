@@ -182,14 +182,14 @@ public class ModelBiplane<T extends MobEntity> extends AdvancedEntityModel<T> {
     @Override
     public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
         this.resetToDefaultPose();
-        if(!t.func_233570_aj_() && t instanceof EntityRatBaronPlane){
+        if(!t.isOnGround() && t instanceof EntityRatBaronPlane){
             EntityRatBaronPlane plane = (EntityRatBaronPlane)t;
             plane.roll_buffer.applyChainFlapBuffer(body1);
             plane.pitch_buffer.applyChainWaveBuffer(body1);
             float f7 = plane.prevPlanePitch + (plane.getPlanePitch() - plane.prevPlanePitch) * v3;
             this.body1.rotateAngleX = (float)Math.toRadians(f7);
         }
-        if(!t.func_233570_aj_() && t instanceof EntityRatBiplaneMount){
+        if(!t.isOnGround() && t instanceof EntityRatBiplaneMount){
             EntityRatBiplaneMount plane = (EntityRatBiplaneMount)t;
             plane.roll_buffer.applyChainFlapBuffer(body1);
             plane.pitch_buffer.applyChainWaveBuffer(body1);

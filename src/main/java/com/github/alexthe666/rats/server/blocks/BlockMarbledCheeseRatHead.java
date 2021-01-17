@@ -50,7 +50,7 @@ public class BlockMarbledCheeseRatHead extends ContainerBlock implements IUsesTE
     private BlockPattern golemPattern;
 
     public BlockMarbledCheeseRatHead() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).func_235838_a_((p) -> 5).notSolid().variableOpacity().hardnessAndResistance(2.5F, 0));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).setLightLevel((p) -> 5).notSolid().variableOpacity().hardnessAndResistance(2.5F, 0));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
         this.setRegistryName(RatsMod.MODID, "marbled_cheese_rat_head");
 

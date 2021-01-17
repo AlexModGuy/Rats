@@ -101,9 +101,9 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 10)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.25D)                //SPEED
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 32D);
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D);
     }
 
     public void remove() {
@@ -195,7 +195,7 @@ public class EntityPlagueCloud extends MonsterEntity implements IPlagueLegion {
                 return player;
             } else {
                 if (!world.isRemote) {
-                    Entity entity = world.getServer().getWorld(this.world.func_234923_W_()).getEntityByUuid(uuid);
+                    Entity entity = world.getServer().getWorld(this.world.getDimensionKey()).getEntityByUuid(uuid);
                     if (entity instanceof LivingEntity) {
                         return (LivingEntity) entity;
                     }

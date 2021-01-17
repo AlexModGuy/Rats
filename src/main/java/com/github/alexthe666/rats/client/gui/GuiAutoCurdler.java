@@ -40,30 +40,30 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
         this.name = name;
     }
 
-    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        this.func_230446_a_(p_230430_1_);
-        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack p_230430_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
-        this.func_230446_a_(p_230430_1_);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack p_230430_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        this.renderBackground(p_230430_1_);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-        int i = (this.field_230708_k_ - this.xSize) / 2;
-        int j = (this.field_230709_l_ - this.ySize) / 2;
+        this.minecraft.getTextureManager().bindTexture(TEXTURE);
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
 
-        this.func_238474_b_(p_230430_1_, i, j, 0, 0, this.xSize, this.ySize);
+        this.blit(p_230430_1_, i, j, 0, 0, this.xSize, this.ySize);
         int l = ((ContainerAutoCurdler)container).getCookProgressionScaled();
-        this.func_238474_b_(p_230430_1_,i + 63, j + 35, 176, 0, l + 1, 16);
+        this.blit(p_230430_1_,i + 63, j + 35, 176, 0, l + 1, 16);
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
             FluidTank tank = ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank;
             int textureYPos = (int) (57 * (tank.getFluidAmount() / (float) tank.getCapacity()));
             renderFluidStack(i + 29, j + 15 - textureYPos + 57, 24, textureYPos, 0, tank.getFluid());
             this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
         }
-        this.func_238474_b_(p_230430_1_, i + 29, j + 15, 0, 166, 24, 58);
+        this.blit(p_230430_1_, i + 29, j + 15, 0, 166, 24, 58);
         drawGuiContainerForegroundLayer(p_230430_1_, p_230450_3_, p_230450_4_);
    }
 
@@ -98,15 +98,15 @@ public class GuiAutoCurdler extends ContainerScreen<ContainerAutoCurdler> {
     }
 
     protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
-        String s = this.func_231171_q_().getString();
-        int screenW = (this.field_230708_k_ - this.xSize) / 2;
-        int screenH = (this.field_230709_l_ - this.ySize) / 2;
+        String s = this.getTitle().getString();
+        int screenW = (this.width - this.xSize) / 2;
+        int screenH = (this.height - this.ySize) / 2;
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityAutoCurdler && ((TileEntityAutoCurdler) RatsMod.PROXY.getRefrencedTE()).tank.getFluid() != null) {
             if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
                 String fluidName = TextFormatting.BLUE.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluid().getDisplayName().getString();
                 String fluidSize = TextFormatting.GRAY.toString() + ((TileEntityAutoCurdler)  RatsMod.PROXY.getRefrencedTE()).tank.getFluidAmount() + " " + I18n.format("container.auto_curdler.mb");
                 List list = Arrays.asList(new StringTextComponent(fluidName), new StringTextComponent(fluidSize));
-                func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX, mouseY);
+                renderTooltip(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX, mouseY);
             }
         }
     }

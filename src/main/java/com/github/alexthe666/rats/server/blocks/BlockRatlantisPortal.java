@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     protected BlockRatlantisPortal() {
-        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).func_235838_a_((p) -> 15).doesNotBlockMovement());
+        super(Block.Properties.create(Material.PORTAL).sound(SoundType.GROUND).hardnessAndResistance(-1.0F).setLightLevel((p) -> 15).doesNotBlockMovement());
         this.setRegistryName(RatsMod.MODID, "ratlantis_portal");
         //GameRegistry.registerTileEntity(TileEntityRatlantisPortal.class, "rats.ratlantis_portal");
     }
@@ -43,7 +43,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     public RegistryKey<World> getRatlantisDimension(){
         ResourceLocation resourcelocation = new ResourceLocation("rats:ratlantis");
-        RegistryKey<World> registrykey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, resourcelocation);
+        RegistryKey<World> registrykey = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, resourcelocation);
         return registrykey;
     }
 
@@ -52,7 +52,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
         if (RatsMod.RATLANTIS_LOADED && !worldIn.isRemote) {
             MinecraftServer server = worldIn.getServer();
             if ((!entity.isBeingRidden()) && (entity.getPassengers().isEmpty())) {
-                boolean inOverworld = entity.world.func_234923_W_() != getRatlantisDimension();
+                boolean inOverworld = entity.world.getDimensionKey() != getRatlantisDimension();
                 if ((entity instanceof ServerPlayerEntity)) {
                     ServerPlayerEntity thePlayer = (ServerPlayerEntity) entity;
                      if (inOverworld) {
@@ -61,7 +61,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                             teleportEntity(thePlayer, dimWorld, pos, true);
                         }
                     } else {
-                        ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
+                        ServerWorld dimWorld = server.getWorld(World.OVERWORLD);
                         if(dimWorld != null){
                             teleportEntity(thePlayer, dimWorld, pos, false);
                         }
@@ -74,7 +74,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
                             teleportEntity(entity, dimWorld, pos, true);
                         }
                     } else {
-                        ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
+                        ServerWorld dimWorld = server.getWorld(World.OVERWORLD);
                         if(dimWorld != null){
                             teleportEntity(entity, dimWorld, pos, false);
                         }
@@ -98,7 +98,7 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
         }
 
         entity.detach();
-        entity.func_241206_a_(endpointWorld);
+        entity.setWorld(endpointWorld);
         Entity teleportedEntity = entity.getType().create(endpointWorld);
         if (teleportedEntity == null) {
             return entity;

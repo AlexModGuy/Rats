@@ -22,7 +22,7 @@ public class RatAIOwnerHurtTarget extends TargetGoal {
         if(!tameable.isAttackCommand()){
             return false;
         }
-        if ((this.tameable.isTamed() || this.tameable.wasTamedByMonster()) && !this.tameable.func_233684_eK_()) {
+        if ((this.tameable.isTamed() || this.tameable.wasTamedByMonster()) && !this.tameable.isSitting()) {
             LivingEntity lvt_1_1_ = this.tameable.getOwner();
             if(lvt_1_1_ == null){
                 lvt_1_1_ = this.tameable.getMonsterOwner();

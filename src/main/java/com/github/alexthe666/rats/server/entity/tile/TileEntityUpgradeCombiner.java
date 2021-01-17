@@ -155,8 +155,8 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
         return 300;
     }
 
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.combinerStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.combinerStacks);
         this.furnaceBurnTime = compound.getInt("BurnTime");
@@ -451,7 +451,7 @@ public class TileEntityUpgradeCombiner extends LockableTileEntity implements ITi
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-        func_230337_a_(this.getBlockState(), packet.getNbtCompound());
+        read(this.getBlockState(), packet.getNbtCompound());
     }
 
     public CompoundNBT getUpdateTag() {

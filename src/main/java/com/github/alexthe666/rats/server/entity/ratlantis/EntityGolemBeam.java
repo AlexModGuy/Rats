@@ -221,9 +221,9 @@ public class EntityGolemBeam extends AbstractArrowEntity {
                 if (!this.world.isRemote && entity1 instanceof ServerPlayerEntity) {
                     ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)entity1;
                     if (this.hitEntities != null && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.func_234941_a_(serverplayerentity, this.hitEntities);
+                        CriteriaTriggers.KILLED_BY_CROSSBOW.test(serverplayerentity, this.hitEntities);
                     } else if (!entity.isAlive() && this.getShotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.func_234941_a_(serverplayerentity, Arrays.asList(entity));
+                        CriteriaTriggers.KILLED_BY_CROSSBOW.test(serverplayerentity, Arrays.asList(entity));
                     }
                 }
             }
@@ -233,7 +233,6 @@ public class EntityGolemBeam extends AbstractArrowEntity {
                 this.remove();
             }
         } else {
-            entity.func_241209_g_(j);
             this.setMotion(this.getMotion().scale(-0.1D));
             this.rotationYaw += 180.0F;
             this.prevRotationYaw += 180.0F;

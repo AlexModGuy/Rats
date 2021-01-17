@@ -46,7 +46,7 @@ public class PlagueDoctorSpawner {
     }
 
     public void tick() {
-        if (this.world.getGameRules().getBoolean(GameRules.field_230128_E_) && --this.field_221248_c <= 0) {
+        if (this.world.getGameRules().getBoolean(GameRules.DO_TRADER_SPAWNING) && --this.field_221248_c <= 0) {
             this.field_221248_c = 1200;
             PlagueDoctorWorldData worldinfo = PlagueDoctorWorldData.get(world);
             this.field_221249_d -= 1200;

@@ -31,9 +31,9 @@ import javax.annotation.Nullable;
 
 public class EntityRatBiplaneMount extends EntityRatMountBase {
 
-    public float prevPlanePitch;
     private static final DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityRatBiplaneMount.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> PLANE_PITCH = EntityDataManager.createKey(EntityRatBiplaneMount.class, DataSerializers.FLOAT);
+    public float prevPlanePitch;
     @OnlyIn(Dist.CLIENT)
     public PlaneBuffer roll_buffer;
     @OnlyIn(Dist.CLIENT)
@@ -60,9 +60,17 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         }
     }
 
+    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
+        return MobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 300.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)                //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
+                .createMutableAttribute(Attributes.ARMOR, 128.0D);
+    }
+
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
-        float radius = (float)0.35F;
+        float radius = 0.35F;
         float angle = (0.01745329251F * this.renderYawOffset);
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
@@ -114,21 +122,13 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         dataManager.set(PLANE_PITCH, getPlanePitch() - pitch);
     }
 
-    public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 300.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.35D)                //SPEED
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128.0D);
-    }
-
     public void tick() {
         super.tick();
-        if(soundLoopCounter == 0){
+        if (soundLoopCounter == 0) {
             this.playSound(RatsSoundRegistry.BIPLANE_LOOP, 10, 1);
         }
         soundLoopCounter++;
-        if(soundLoopCounter > 90){
+        if (soundLoopCounter > 90) {
             soundLoopCounter = 0;
         }
 
@@ -136,13 +136,13 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
-        if (!this.func_233570_aj_()&& this.getMotion().y < 0.0D) {
+        if (!this.isOnGround() && this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
         boolean flag = false;
         EntityRat rat = this.getRat();
         double up = 0.08D;
-        if(rat != null && !rat.canMove()){
+        if (rat != null && !rat.canMove()) {
             up = 0;
         }
         this.setMotion(this.getMotion().x, this.getMotion().y + up, this.getMotion().z);
@@ -157,16 +157,16 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
                 flightTarget = new Vector3d(this.getAttackTarget().getPosX() - distX, this.getAttackTarget().getPosY() + distY, this.getAttackTarget().getPosZ() - distZ);
             }
         }
-        if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())){
+        if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget())) {
             Entity target = this.getAttackTarget();
-            if(this.ticksExisted % 2 == 0){
-                for(int i = 0; i < 2; i++) {
+            if (this.ticksExisted % 2 == 0) {
+                for (int i = 0; i < 2; i++) {
                     boolean left = i == 0;
-                    float radius = (float) 1.15F;
+                    float radius = 1.15F;
                     float angle = (0.01745329251F * this.renderYawOffset + (left ? 75 : -75));
                     double extraX = this.getPosX() + radius * MathHelper.sin((float) (Math.PI + angle));
                     double extraZ = this.getPosZ() + radius * MathHelper.cos(angle);
-                    double extraY = this.getPosY() +  1.35F;
+                    double extraY = this.getPosY() + 1.35F;
                     double d0 = target.getPosY() + (double) target.getEyeHeight() / 2;
                     double d1 = target.getPosX() - extraX;
                     double d3 = target.getPosZ() - extraZ;
@@ -185,7 +185,7 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
             this.setFiring(true);
         }
 
-        if(this.flightTarget == null || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 20 || rat != null && !rat.canMove()){
+        if (this.flightTarget == null || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 20 || rat != null && !rat.canMove()) {
             escortPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(this.getPositionVec())).up(20 + rand.nextInt(10));
             flightTarget = null;
         }
@@ -195,7 +195,7 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
                 pitch_buffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
             }
         }
-        if(!onGround){
+        if (!onGround) {
             double ydist = this.prevPosY - this.getPosY();//down 0.4 up -0.38
             float planeDist = (float) ((Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getZ())) * 6F);
             this.incrementPlanePitch((float) (ydist) * 10);
@@ -261,7 +261,6 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
     }
 
 
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_IRON_GOLEM_HURT;
     }
@@ -300,27 +299,27 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
                 plane.flightTarget = null;
                 return;
             }
-            if(plane.getRat() != null){
-                if(!plane.getRat().canMove()){
+            if (plane.getRat() != null) {
+                if (!plane.getRat().canMove()) {
                     return;
                 }
             }
-            if(plane.flightTarget == null && this.isUpdating()){
+            if (plane.flightTarget == null && this.isUpdating()) {
                 plane.flightTarget = new Vector3d(this.getX(), this.getY(), this.getZ());
             }
-            if(plane.flightTarget != null) {
+            if (plane.flightTarget != null) {
                 float distX = (float) (plane.flightTarget.x - plane.getPosX());
                 float distY = (float) (plane.flightTarget.y - plane.getPosY());
                 float distZ = (float) (plane.flightTarget.z - plane.getPosZ());
-                double planeDist = (double) MathHelper.sqrt(distX * distX + distZ * distZ);
+                double planeDist = MathHelper.sqrt(distX * distX + distZ * distZ);
                 double yDistMod = 1.0D - (double) MathHelper.abs(distY * 0.7F) / planeDist;
                 distX = (float) ((double) distX * yDistMod);
                 distZ = (float) ((double) distZ * yDistMod);
-                planeDist = (double) MathHelper.sqrt(distX * distX + distZ * distZ);
-                double dist = (double) MathHelper.sqrt(distX * distX + distZ * distZ + distY * distY);
+                planeDist = MathHelper.sqrt(distX * distX + distZ * distZ);
+                double dist = MathHelper.sqrt(distX * distX + distZ * distZ + distY * distY);
                 if (dist > 1.0F) {
                     float yawCopy = plane.rotationYaw;
-                    float atan = (float) MathHelper.atan2((double) distZ, (double) distX);
+                    float atan = (float) MathHelper.atan2(distZ, distX);
                     float yawTurn = MathHelper.wrapDegrees(plane.rotationYaw + 90);
                     float yawTurnAtan = MathHelper.wrapDegrees(atan * 57.295776F);
                     plane.rotationYaw = approachDegrees(yawTurn, yawTurnAtan, 4.0F) - 90.0F;
@@ -333,7 +332,7 @@ public class EntityRatBiplaneMount extends EntityRatMountBase {
                             speed = speed * (dist / 100D);
                         }
                     }
-                    float finPitch = (float) (-(MathHelper.atan2((double) (-distY), planeDist) * 57.2957763671875D));
+                    float finPitch = (float) (-(MathHelper.atan2(-distY, planeDist) * 57.2957763671875D));
                     plane.rotationPitch = finPitch;
                     float yawTurnHead = plane.rotationYaw + 90.0F;
                     double lvt_16_1_ = speed * MathHelper.cos(yawTurnHead * 0.017453292F) * Math.abs((double) distX / dist);

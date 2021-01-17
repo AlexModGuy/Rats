@@ -40,9 +40,9 @@ public class EntityRatGolemMount extends EntityRatMountBase {
     public static AttributeModifierMap.MutableAttribute buildAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 100.0D)            //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.2D)           //SPEED
-                .createMutableAttribute(Attributes.field_233823_f_, 1.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233820_c_, 1.0D);            //KNOCKBACK RESIST
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)           //SPEED
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)            //ATTACK
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D);            //KNOCKBACK RESIST
     }
 
     public void livingTick() {
@@ -66,7 +66,7 @@ public class EntityRatGolemMount extends EntityRatMountBase {
         Cracks irongolementity$cracks = this.getCracks();
         boolean flag = super.attackEntityFrom(source, amount);
         if (flag && this.getCracks() != irongolementity$cracks) {
-            this.playSound(SoundEvents.field_226142_fM_, 1.0F, 1.0F);
+            this.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 1.0F, 1.0F);
         }
         return flag;
     }
@@ -83,7 +83,7 @@ public class EntityRatGolemMount extends EntityRatMountBase {
                 return super.func_230254_b_(player, hand);
             } else {
                 float f1 = 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
-                this.playSound(SoundEvents.field_226143_fP_, 1.0F, f1);
+                this.playSound(SoundEvents.ENTITY_IRON_GOLEM_REPAIR, 1.0F, f1);
                 if (!player.abilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }

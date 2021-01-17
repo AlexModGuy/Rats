@@ -45,7 +45,7 @@ public class EntityRatStriderMount extends StriderEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute buildAttributes() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.field_233821_d_, (double)0.175F).createMutableAttribute(Attributes.field_233819_b_, 16.0D);
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.175F).createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {

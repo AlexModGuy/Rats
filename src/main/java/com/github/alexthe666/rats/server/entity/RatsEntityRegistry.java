@@ -30,8 +30,8 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatBeastMount> RAT_MOUNT_BEAST = registerEntity(EntityType.Builder.create(EntityRatBeastMount::new, EntityClassification.MISC).size(1.85F, 1.2F), "rat_mount_beast");
     public static final EntityType<EntityRatKing> RAT_KING = registerEntity(EntityType.Builder.create(EntityRatKing::new, EntityClassification.MONSTER).size(2F, 0.5F), "rat_king");
     public static final EntityType<EntityRatShot> RAT_SHOT = registerEntity(EntityType.Builder.create(EntityRatShot::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatShot::new), "rat_shot");
-    public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MONSTER).size(1.0F, 0.75F).immuneToFire().func_225435_d().func_233606_a_(8), "demon_rat");
-    public static final EntityType<EntityRatStriderMount> RAT_STRIDER_MOUNT = registerEntity(EntityType.Builder.create(EntityRatStriderMount::new, EntityClassification.MISC).immuneToFire().size(0.9F, 1.7F).func_233606_a_(10), "rat_mount_strider");
+    public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MONSTER).size(1.0F, 0.75F).immuneToFire().func_225435_d().setUpdateInterval(8), "demon_rat");
+    public static final EntityType<EntityRatStriderMount> RAT_STRIDER_MOUNT = registerEntity(EntityType.Builder.create(EntityRatStriderMount::new, EntityClassification.MISC).immuneToFire().size(0.9F, 1.7F).setUpdateInterval(10), "rat_mount_strider");
 
     static {
 
@@ -50,18 +50,18 @@ public class RatsEntityRegistry {
 
     public static void initializeAttributes() {
 
-        GlobalEntityTypeAttributes.put(RAT, EntityRat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_SPAWNER, EntityRat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PIED_PIPER, EntityIllagerPiper.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PLAGUE_DOCTOR, EntityPlagueDoctor.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(BLACK_DEATH, EntityBlackDeath.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PLAGUE_CLOUD, EntityPlagueCloud.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PLAGUE_BEAST, EntityPlagueBeast.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_MOUNT_CHICKEN, EntityRatChickenMount.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_MOUNT_BEAST, EntityRatBeastMount.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_KING, EntityRatKing.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(DEMON_RAT, EntityDemonRat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_STRIDER_MOUNT, EntityRatStriderMount.buildAttributes().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_MOUNT_GOLEM, EntityRatGolemMount.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RAT, EntityRat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_SPAWNER, EntityRat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PIED_PIPER, EntityIllagerPiper.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PLAGUE_DOCTOR, EntityPlagueDoctor.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(BLACK_DEATH, EntityBlackDeath.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PLAGUE_CLOUD, EntityPlagueCloud.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PLAGUE_BEAST, EntityPlagueBeast.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_CHICKEN, EntityRatChickenMount.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_BEAST, EntityRatBeastMount.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_KING, EntityRatKing.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(DEMON_RAT, EntityDemonRat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_STRIDER_MOUNT, EntityRatStriderMount.buildAttributes().create());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_GOLEM, EntityRatGolemMount.buildAttributes().create());
     }
 }

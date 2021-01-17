@@ -28,16 +28,16 @@ public class BlockDutchratBell extends BellBlock {
     public BlockDutchratBell() {
         super(Block.Properties.create(Material.IRON, MaterialColor.GOLD).hardnessAndResistance(5.0F).sound(SoundType.ANVIL));
         this.setRegistryName("rats:dutchrat_bell");
-        this.setDefaultState(this.stateContainer.getBaseState().with(field_220133_a, Direction.NORTH).with(BlockStateProperties.BELL_ATTACHMENT, BellAttachment.FLOOR).with(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(BlockStateProperties.BELL_ATTACHMENT, BellAttachment.FLOOR).with(POWERED, Boolean.valueOf(false)));
     }
 
     @Override
-    public boolean func_226884_a_(World p_226884_1_, BlockState p_226884_2_, BlockRayTraceResult p_226884_3_, @Nullable PlayerEntity p_226884_4_, boolean p_226884_5_) {
+    public boolean attemptRing(World p_226884_1_, BlockState p_226884_2_, BlockRayTraceResult p_226884_3_, @Nullable PlayerEntity p_226884_4_, boolean p_226884_5_) {
         Direction direction = p_226884_3_.getFace();
         BlockPos blockpos = p_226884_3_.getPos();
         boolean flag = !p_226884_5_ || this.canRingFrom(p_226884_2_, direction, p_226884_3_.getHitVec().y - (double)blockpos.getY());
         if (flag) {
-            boolean flag1 = this.func_226885_a_(p_226884_1_, blockpos, direction);
+            boolean flag1 = this.ring(p_226884_1_, blockpos, direction);
             if (flag1 && p_226884_4_ != null) {
                 p_226884_4_.addStat(Stats.BELL_RING);
             }
@@ -49,11 +49,11 @@ public class BlockDutchratBell extends BellBlock {
     }
 
     @Override
-    public boolean func_226885_a_(World p_226885_1_, BlockPos p_226885_2_, @Nullable Direction p_226885_3_) {
+    public boolean ring(World p_226885_1_, BlockPos p_226885_2_, @Nullable Direction p_226885_3_) {
         TileEntity tileentity = p_226885_1_.getTileEntity(p_226885_2_);
         if (!p_226885_1_.isRemote && tileentity instanceof TileEntityDutchratBell) {
             if (p_226885_3_ == null) {
-                p_226885_3_ = p_226885_1_.getBlockState(p_226885_2_).get(field_220133_a);
+                p_226885_3_ = p_226885_1_.getBlockState(p_226885_2_).get(HORIZONTAL_FACING);
             }
             playRingSound(p_226885_1_, p_226885_2_);
             ((TileEntityDutchratBell)tileentity).func_213939_a(p_226885_3_);
@@ -65,7 +65,7 @@ public class BlockDutchratBell extends BellBlock {
 
     private boolean canRingFrom(BlockState p_220129_1_, Direction p_220129_2_, double p_220129_3_) {
         if (p_220129_2_.getAxis() != Direction.Axis.Y && !(p_220129_3_ > (double)0.8124F)) {
-            Direction direction = p_220129_1_.get(field_220133_a);
+            Direction direction = p_220129_1_.get(HORIZONTAL_FACING);
             BellAttachment bellattachment = p_220129_1_.get(BlockStateProperties.BELL_ATTACHMENT);
             switch(bellattachment) {
                 case FLOOR:

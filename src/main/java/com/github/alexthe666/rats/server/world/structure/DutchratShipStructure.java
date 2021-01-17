@@ -22,7 +22,7 @@ public class DutchratShipStructure extends Structure<NoFeatureConfig> {
         this.setRegistryName("rats:dutchrat_ship");
     }
 
-    public GenerationStage.Decoration func_236396_f_() {
+    public GenerationStage.Decoration getDecorationStage() {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 

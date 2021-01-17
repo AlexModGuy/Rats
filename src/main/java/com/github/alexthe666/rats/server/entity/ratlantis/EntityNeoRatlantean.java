@@ -169,13 +169,11 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
                 int bounds = 20;
                 if(!world.isRemote){
                     LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(world);
-                    lightningboltentity.func_233576_c_(entity.getPositionVec());
-                    lightningboltentity.func_233623_a_(true);
+                    lightningboltentity.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                     world.addEntity(lightningboltentity);
                     for (int i = 0; i < rand.nextInt(3) + 2; i++) {
                         LightningBoltEntity lightningboltentity2 = EntityType.LIGHTNING_BOLT.create(world);
-                        lightningboltentity2.func_233576_c_(new Vector3d(entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, entity.getPosY(), entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds));
-                        lightningboltentity2.func_233623_a_(true);
+                        lightningboltentity2.setPosition(entity.getPosX() + this.rand.nextInt(bounds * 2) - bounds, entity.getPosY(), entity.getPosZ() + this.rand.nextInt(bounds * 2) - bounds);
                         world.addEntity(lightningboltentity2);
                     }
                 }
@@ -237,11 +235,11 @@ public class EntityNeoRatlantean extends MonsterEntity implements IAnimatedEntit
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, RatlantisConfig.neoRatlanteanHealth)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 1.0D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, RatlantisConfig.neoRatlanteanHealth)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.0D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, RatlantisConfig.neoRatlanteanAttack)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128.0D)               //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 0.0D);
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 0.0D);
     }
 
 

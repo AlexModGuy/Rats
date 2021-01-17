@@ -37,7 +37,7 @@ public class ItemRatlantisTool {
         public static final ResourceLocation STONE_FORGE_TAG = new ResourceLocation("rats", "pirat_blocks");
 
         public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-            if(Tags.Blocks.STONE.func_230235_a_(state.getBlock())){
+            if(Tags.Blocks.STONE.contains(state.getBlock())){
                 if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
                     stack.damageItem(0, entityLiving, (p_220038_0_) -> {
                         p_220038_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
@@ -59,7 +59,7 @@ public class ItemRatlantisTool {
         }
 
         public float getDestroySpeed(ItemStack stack, BlockState state) {
-            if(BlockTags.LEAVES.func_230235_a_(state.getBlock())){
+            if(BlockTags.LEAVES.contains(state.getBlock())){
                 return efficiency * 1.5F;
             }
             return super.getDestroySpeed(stack, state);
@@ -72,7 +72,7 @@ public class ItemRatlantisTool {
         }
 
         public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-            if(BlockTags.LEAVES.func_230235_a_(state.getBlock())){
+            if(BlockTags.LEAVES.contains(state.getBlock())){
                 if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
                     stack.damageItem(0, entityLiving, (p_220038_0_) -> {
                         p_220038_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
@@ -92,7 +92,7 @@ public class ItemRatlantisTool {
         }
 
         public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-            if(BlockTags.SAND.func_230235_a_(state.getBlock())){
+            if(BlockTags.SAND.contains(state.getBlock())){
                 if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
                     stack.damageItem(0, entityLiving, (p_220038_0_) -> {
                         p_220038_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);

@@ -76,10 +76,10 @@ public class EntityRatKing extends MonsterEntity implements IAnimatedEntity, IRa
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 200.0D)            //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 200.0D)            //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)           //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 64.0D);         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D);         //FOLLOW RANGE
     }
 
     public void livingTick() {

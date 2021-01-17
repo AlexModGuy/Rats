@@ -44,10 +44,10 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
         this.rat = RatsMod.PROXY.getRefrencedRat();
     }
 
-    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        this.func_230446_a_(p_230430_1_);
-        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity p_228187_5_) {
@@ -92,58 +92,58 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
     }
 
 
-    protected void func_231160_c_() {
-        super.func_231160_c_();
-        this.field_230710_m_.clear();
-        int i = (this.field_230708_k_ - 248) / 2;
-        int j = (this.field_230709_l_ - 166) / 2;
-        func_230480_a_(new ChangeCommandButton(1, i + 115, j + 54, false, (p_214132_1_) -> {
+    protected void init() {
+        super.init();
+        this.buttons.clear();
+        int i = (this.width - 248) / 2;
+        int j = (this.height - 166) / 2;
+        addButton(new ChangeCommandButton(1, i + 115, j + 54, false, (p_214132_1_) -> {
             currentDisplayCommand--;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        func_230480_a_(new ChangeCommandButton(2, i + 198, j + 54, true, (p_214132_1_) -> {
+        addButton(new ChangeCommandButton(2, i + 198, j + 54, true, (p_214132_1_) -> {
             currentDisplayCommand++;
             currentDisplayCommand = RatUtils.wrapCommand(currentDisplayCommand).ordinal();
         }));
-        func_230480_a_(new CommandPressButton(3, i + 122, j + 52, (p_214132_1_) -> {
+        addButton(new CommandPressButton(3, i + 122, j + 52, (p_214132_1_) -> {
             rat.setCommand(RatCommand.values()[currentDisplayCommand]);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageRatCommand(rat.getEntityId(), currentDisplayCommand));
         }));
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
-        this.func_230446_a_(p_230450_1_);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        this.renderBackground(p_230450_1_);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mousePosx = p_230450_3_;
         this.mousePosY = p_230450_4_;
-        int k = (this.field_230708_k_ - this.xSize) / 2;
-        int l = (this.field_230709_l_ - this.ySize) / 2;
+        int k = (this.width - this.xSize) / 2;
+        int l = (this.height - this.ySize) / 2;
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE_BACKDROP);
-        this.func_238474_b_(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
+        this.blit(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
         drawEntityOnScreen(k + 35, l + 60, 70, k + 51 - this.mousePosx, l + 75 - 50 - this.mousePosY, this.rat);
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        this.func_238474_b_(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
-        this.func_238474_b_(p_230450_1_, k + 9, l + 20, rat.isMale() ? 176 : 192, 0, 16, field_230709_l_);
+        this.blit(p_230450_1_, k, l, 0, 0, this.xSize, this.ySize);
+        this.blit(p_230450_1_, k + 9, l + 20, rat.isMale() ? 176 : 192, 0, 16, height);
     }
 
-    protected void func_230451_b_(MatrixStack stackIn, int mouseX, int mouseY) {
-        String name = func_231171_q_().getString().length() == 0 ? I18n.format("entity.rats.rat") : func_231171_q_().getString();
-        this.field_230712_o_.func_238421_b_(stackIn,  name, this.xSize / 2 - this.field_230712_o_.getStringWidth(name) / 2, 6, 4210752);
+    protected void drawGuiContainerForegroundLayer(MatrixStack stackIn, int mouseX, int mouseY) {
+        String name = getTitle().getString().length() == 0 ? I18n.format("entity.rats.rat") : getTitle().getString();
+        this.font.drawString(stackIn,  name, this.xSize / 2 - this.font.getStringWidth(name) / 2, 6, 4210752);
 
         String commandDesc = I18n.format("entity.rats.rat.command.current");
-        this.field_230712_o_.func_238421_b_(stackIn,  commandDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
+        this.font.drawString(stackIn,  commandDesc, this.xSize / 2 - this.font.getStringWidth(commandDesc) / 2 + 36, 19, 4210752);
 
         String command = I18n.format(rat.getCommand().getTranslateName());
-        this.field_230712_o_.func_238405_a_(stackIn,  command, this.xSize / 2 - this.field_230712_o_.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
+        this.font.drawString(stackIn,  command, this.xSize / 2 - this.font.getStringWidth(command) / 2 + 36, 31, 0XFFFFFF);
 
         String statusDesc = I18n.format("entity.rats.rat.command.set");
-        this.field_230712_o_.func_238421_b_(stackIn,  statusDesc, this.xSize / 2 - this.field_230712_o_.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
+        this.font.drawStringWithShadow(stackIn,  statusDesc, this.xSize / 2 - this.font.getStringWidth(statusDesc) / 2 + 36, 44, 4210752);
         RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
         String command2 = I18n.format(command1.getTranslateName());
-        this.field_230712_o_.func_238405_a_(stackIn, command2, this.xSize / 2 - this.field_230712_o_.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
-        int i = (this.field_230708_k_ - 248) / 2;
-        int j = (this.field_230709_l_ - 166) / 2;
+        this.font.drawString(stackIn, command2, this.xSize / 2 - this.font.getStringWidth(command2) / 2 + 36, 56, 0XFFFFFF);
+        int i = (this.width - 248) / 2;
+        int j = (this.height - 166) / 2;
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
             IFormattableTextComponent commandText = new TranslationTextComponent(rat.getCommand().getTranslateDescription());
             String[] everySpace = commandText.getString().split(" ");
@@ -152,7 +152,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             ArrayList<String> list = new ArrayList<String>();
             for(int index = 0; index < everySpace.length; index++){
                 builtString = builtString + everySpace[index] + " ";
-                currentStrLength += field_230712_o_.getStringWidth(everySpace[index] + " ");
+                currentStrLength += font.getStringWidth(everySpace[index] + " ");
                 if(currentStrLength >= 95){
                     list.add(builtString);
                     builtString = "";
@@ -163,7 +163,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, Lists.transform(convertedList, ITextComponent::func_241878_f), mouseX - i - 40, mouseY - j + 10);
+            renderWrappedToolTip(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, font);
         }
         if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
             IFormattableTextComponent commandText = new TranslationTextComponent(command1.getTranslateDescription());
@@ -173,7 +173,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             ArrayList<String> list = new ArrayList<String>();
             for(int index = 0; index < everySpace.length; index++){
                 builtString = builtString + everySpace[index] + " ";
-                currentStrLength += field_230712_o_.getStringWidth(everySpace[index] + " ");
+                currentStrLength += font.getStringWidth(everySpace[index] + " ");
                 if(currentStrLength >= 95){
                     list.add(builtString);
                     builtString = "";
@@ -184,7 +184,7 @@ public class GuiRat extends ContainerScreen<ContainerRat> {
             for(String str : list){
                 convertedList.add(new StringTextComponent(str));
             }
-            func_238654_b_(stackIn, Lists.transform(convertedList, ITextComponent::func_241878_f), mouseX - i - 40, mouseY - j + 10);
+            renderWrappedToolTip(stackIn, convertedList, mouseX - i - 40, mouseY - j + 10, font);
         }
     }
 }

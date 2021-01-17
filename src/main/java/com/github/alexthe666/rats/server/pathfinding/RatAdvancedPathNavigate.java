@@ -202,7 +202,7 @@ public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
                 new PathJobMoveToLocation(ourEntity.world,
                         start,
                         desiredPos,
-                        (int) ourEntity.getAttribute(Attributes.FOLLOW_SPEED).getValue(),
+                        (int) ourEntity.getAttribute(Attributes.MOVEMENT_SPEED).getValue(),
                         ourEntity),
                 desiredPos, speedFactor);
     }
@@ -271,7 +271,7 @@ public class RatAdvancedPathNavigate extends AbstractAdvancedPathNavigate {
 
     @Override
     public boolean tryMoveToEntityLiving(final Entity entityIn, final double speedFactor) {
-        return tryMoveToBlockPos(entityIn.func_233580_cy_(), speedFactor);
+        return tryMoveToBlockPos(entityIn.getPosition(), speedFactor);
     }
 
     // Removes stupid vanilla stuff, causing our pathpoints to occasionally be replaced by vanilla ones.

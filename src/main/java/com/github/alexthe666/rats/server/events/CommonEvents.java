@@ -190,7 +190,7 @@ public class CommonEvents {
                     Vector3d vec3d = trueSource.getMotion();
                     double strength = 0.3D * protectors;
                     Vector3d vec3d1 = (new Vector3d(event.getEntityLiving().getPosX() - trueSource.getPosX(), 0.0D, event.getEntityLiving().getPosZ() - trueSource.getPosZ())).normalize().scale((double)strength);
-                    trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.func_233570_aj_() ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
+                    trueSource.setMotion(vec3d.x / 2.0D - vec3d1.x, trueSource.isOnGround() ? Math.min(0.4D, vec3d.y / 2.0D + (double)strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
 
                 }
 
@@ -230,7 +230,7 @@ public class CommonEvents {
         }
 
         if(RatConfig.spawnDemonRats){
-           if (event.getEntity() != null && event.getEntity() instanceof StriderEntity && event.getEntity().getType() == EntityType.field_233589_aE_) {
+           if (event.getEntity() != null && event.getEntity() instanceof StriderEntity && event.getEntity().getType() == EntityType.STRIDER) {
                StriderEntity strider = (StriderEntity)event.getEntity();
                if (!strider.isHorseSaddled() && strider.getPassengers().isEmpty() && strider.getRNG().nextFloat() < 0.1F && !strider.world.isRemote) {
                    EntityDemonRat demonRat = RatsEntityRegistry.DEMON_RAT.create((World) event.getWorld());

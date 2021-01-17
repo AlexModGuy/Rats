@@ -75,7 +75,7 @@ public class ItemRatPapers extends Item {
                 if(nbt.hasUniqueId("RatUUID")){
                     UUID ratUUID = nbt.getUniqueId("RatUUID");
                     if (!target.world.isRemote) {
-                        Entity entity = target.world.getServer().getWorld(target.world.func_234923_W_()).getEntityByUuid(ratUUID);
+                        Entity entity = target.world.getServer().getWorld(target.world.getDimensionKey()).getEntityByUuid(ratUUID);
                         if (entity instanceof EntityRat) {
                             EntityRat rat = (EntityRat)entity;
                             if(rat.isTamed() && rat.isOwner(playerIn)){

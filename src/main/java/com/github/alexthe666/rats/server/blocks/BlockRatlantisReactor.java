@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 public class BlockRatlantisReactor extends ContainerBlock {
 
     protected BlockRatlantisReactor() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(100.0F).func_235838_a_((p) -> 15));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(100.0F).setLightLevel((p) -> 15));
         this.setRegistryName(RatsMod.MODID, "ratlantis_reactor");
     }
 

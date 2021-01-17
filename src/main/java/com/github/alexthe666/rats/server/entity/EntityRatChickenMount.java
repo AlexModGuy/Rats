@@ -29,14 +29,14 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         this.upgrade = RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT;
     }
 
-    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
-        return this.isChild() ? sizeIn.height * 0.85F : sizeIn.height * 0.92F;
-    }
-
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 4.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.3D);                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 4.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D);                //SPEED
+    }
+
+    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+        return this.isChild() ? sizeIn.height * 0.85F : sizeIn.height * 0.92F;
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -48,15 +48,15 @@ public class EntityRatChickenMount extends EntityRatMountBase {
         super.livingTick();
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
-        this.destPos = (float) ((double) this.destPos + (double) (this.func_233570_aj_()? -1 : 4) * 0.3D);
+        this.destPos = (float) ((double) this.destPos + (double) (this.isOnGround() ? -1 : 4) * 0.3D);
         this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
-        if (!this.func_233570_aj_()&& this.wingRotDelta < 1.0F) {
+        if (!this.isOnGround() && this.wingRotDelta < 1.0F) {
             this.wingRotDelta = 1.0F;
         }
 
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
         Vector3d vec3d = this.getMotion();
-        if (!this.func_233570_aj_()&& vec3d.y < 0.0D) {
+        if (!this.isOnGround() && vec3d.y < 0.0D) {
             this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         }
 

@@ -45,22 +45,22 @@ public class RatlantisEntityRegistry {
     }
 
     public static void initializeAttributes() {
-        GlobalEntityTypeAttributes.put(RATLANTEAN_SPIRIT, EntityRatlanteanSpirit.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RATLANTEAN_AUTOMATON, EntityRatlanteanAutomaton.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(FERAL_RATLANTEAN, EntityFeralRatlantean.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(NEO_RATLANTEAN, EntityNeoRatlantean.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PIRAT_BOAT, EntityPiratBoat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(PIRAT, EntityPirat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(GHOST_PIRAT, EntityGhostPirat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(DUTCHRAT, EntityDutchrat.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RATFISH, EntityRatfish.func_234176_m_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RATTLING_GUN, EntityRattlingGun.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RATLANTEAN_RATBOT, EntityRatlanteanRatbot.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_MOUNT_AUTOMATON, EntityRatAutomatonMount.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_BARON, EntityRatBaron.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_BARON_PLANE, EntityRatBaronPlane.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_MOUNT_BIPLANE, EntityRatBiplaneMount.func_234290_eH_().func_233813_a_());
-        GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().func_233813_a_());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_SPIRIT, EntityRatlanteanSpirit.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_AUTOMATON, EntityRatlanteanAutomaton.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(FERAL_RATLANTEAN, EntityFeralRatlantean.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(NEO_RATLANTEAN, EntityNeoRatlantean.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PIRAT_BOAT, EntityPiratBoat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(PIRAT, EntityPirat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(GHOST_PIRAT, EntityGhostPirat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(DUTCHRAT, EntityDutchrat.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RATFISH, EntityRatfish.func_234176_m_().create());
+        GlobalEntityTypeAttributes.put(RATTLING_GUN, EntityRattlingGun.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RATLANTEAN_RATBOT, EntityRatlanteanRatbot.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_AUTOMATON, EntityRatAutomatonMount.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_BARON, EntityRatBaron.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_BARON_PLANE, EntityRatBaronPlane.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_MOUNT_BIPLANE, EntityRatBiplaneMount.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(RAT_PROTECTOR, EntityRatProtector.func_234290_eH_().create());
         EntitySpawnPlacementRegistry.register(FERAL_RATLANTEAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityFeralRatlantean::canSpawn);
         EntitySpawnPlacementRegistry.register(RATLANTEAN_SPIRIT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatlanteanSpirit::func_223315_a);
         EntitySpawnPlacementRegistry.register(PIRAT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityPirat::canSpawn);

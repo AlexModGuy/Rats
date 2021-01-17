@@ -65,11 +65,11 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 250.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.2D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 250.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128.0D)               //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 10.0D);
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 10.0D);
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -99,7 +99,7 @@ public class EntityRatAutomatonMount extends EntityRatMountBase implements IAnim
             this.faceEntity(target, 360, 80);
             if (this.getAnimation() == ANIMATION_MELEE && this.getAnimationTick() == 10) {
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) RatlantisConfig.ratlanteanAutomatonAttack);
-                target.func_233627_a_(1.5F, this.getPosX() - target.getPosX(), this.getPosZ() - target.getPosZ());
+                target.applyKnockback(1.5F, this.getPosX() - target.getPosX(), this.getPosZ() - target.getPosZ());
                 this.useRangedAttack = rand.nextBoolean();
             }
         }

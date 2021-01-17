@@ -346,7 +346,7 @@ public class EntityPlagueDoctor extends AbstractVillagerEntity implements IRange
         boolean flag = itemstack.getItem() == Items.NAME_TAG;
         if (flag) {
             this.setWillDespawn(false);
-            itemstack.func_111282_a_(player, this, hand);
+            itemstack.interactWithEntity(player, this, hand);
             return ActionResultType.SUCCESS;
         } else if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.hasCustomer() && !this.isChild()) {
             if (hand == Hand.MAIN_HAND) {

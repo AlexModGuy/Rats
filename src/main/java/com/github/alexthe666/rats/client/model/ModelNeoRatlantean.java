@@ -239,7 +239,7 @@ public class ModelNeoRatlantean<T extends EntityNeoRatlantean> extends AdvancedE
         this.walk(this.tail1_1, speedRun, degreeRun * 0.5F, false, -2, 0.1F, f, f1);
         this.faceTarget(f3, f4, 2, neck, head);
         this.faceTarget(f3, f4, 2, floatyPivot);
-        if (rat.func_233570_aj_()) {
+        if (rat.isOnGround()) {
             this.walk(this.rightThigh, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
             this.walk(this.rightFoot, speedWalk, degreeWalk * 2F, false, 3.5F, -0.1F, f, f1);
             this.walk(this.leftThigh, speedWalk, degreeWalk * 4F, true, 1, 0, f, f1);

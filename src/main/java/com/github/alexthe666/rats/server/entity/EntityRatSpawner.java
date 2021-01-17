@@ -39,7 +39,7 @@ public class EntityRatSpawner extends CreatureEntity {
         if(peaceful){
             return false;
         }
-        if(RatConfig.ratOverworldOnly && ((ServerWorld)p_223325_1_).func_234923_W_() != World.field_234918_g_){
+        if(RatConfig.ratOverworldOnly && ((ServerWorld)p_223325_1_).getDimensionKey() != World.OVERWORLD){
             return false;
         }
         return func_223323_a(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_) && p_223325_4_.nextInt(peaceful ? 32 : 3) == 0;

@@ -32,7 +32,7 @@ public class BlockRatQuarryPlatform extends Block implements INoTab{
             case WATER:
                 return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
             case AIR:
-                return !state.func_235785_r_(worldIn, pos);
+                return !state.hasOpaqueCollisionShape(worldIn, pos);
             default:
                 return false;
         }

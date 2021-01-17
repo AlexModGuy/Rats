@@ -14,7 +14,7 @@ public class PotionConfitByaldi extends Effect {
     public PotionConfitByaldi() {
         super(EffectType.BENEFICIAL, 0XFFDD59);
         this.setRegistryName(RatsMod.MODID, "synesthesia");
-        this.addAttributesModifier(Attributes.field_233825_h_, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 10.0D, AttributeModifier.Operation.ADDITION);
+        this.addAttributesModifier(Attributes.MAX_HEALTH, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 10.0D, AttributeModifier.Operation.ADDITION);
     }
 
     public void performEffect(LivingEntity LivingEntityIn, int amplifier) {

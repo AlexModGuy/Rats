@@ -23,7 +23,7 @@ public class PlagueDoctorWorldData extends WorldSavedData {
 
     public static PlagueDoctorWorldData get(World world) {
         if (world instanceof ServerWorld) {
-            ServerWorld overworld = world.getServer().getWorld(world.func_234923_W_());
+            ServerWorld overworld = world.getServer().getWorld(world.getDimensionKey());
 
             DimensionSavedDataManager storage = overworld.getSavedData();
             PlagueDoctorWorldData data = storage.getOrCreate(PlagueDoctorWorldData::new, IDENTIFIER);

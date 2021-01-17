@@ -30,8 +30,8 @@ public class TileEntityMilkCauldron extends TileEntity implements ITickableTileE
         return super.write(compound);
     }
 
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         ticksExisted = compound.getInt("TicksExisted");
     }
 

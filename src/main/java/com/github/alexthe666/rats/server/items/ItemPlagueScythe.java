@@ -42,7 +42,7 @@ public class ItemPlagueScythe extends SwordItem {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
             multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)12, AttributeModifier.Operation.ADDITION));
-            multimap.put(Attributes.field_233825_h_, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)-0.5, AttributeModifier.Operation.ADDITION));
+            multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)-0.5, AttributeModifier.Operation.ADDITION));
         }
         return multimap;
     }

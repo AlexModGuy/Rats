@@ -69,7 +69,7 @@ public class ItemRatFlute extends Item {
                 itemStackIn.getTag().putInt("Command", commandInt);
                 ratCommand = RatCommand.values()[MathHelper.clamp(commandInt, 0, RatCommand.values().length - 1)];
                 worldIn.playSound(player, new BlockPos(player.getPositionVec()), SoundEvents.UI_BUTTON_CLICK, SoundCategory.NEUTRAL, 1, 1.25F);
-                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.comand_changed").func_240702_b_(" ").func_230529_a_(new TranslationTextComponent(ratCommand.getTranslateName())), true);
+                player.sendStatusMessage(new TranslationTextComponent("item.rats.rat_flute.comand_changed").appendString(" ").append(new TranslationTextComponent(ratCommand.getTranslateName())), true);
             } else {
                 player.getCooldownTracker().setCooldown(this, 60);
                 float chunksize = 16 * RatConfig.ratFluteDistance;
@@ -98,7 +98,7 @@ public class ItemRatFlute extends Item {
         tooltip.add(new TranslationTextComponent("item.rats.rat_flute.desc1").mergeStyle(TextFormatting.GRAY));
         if (stack.getTag() != null) {
             RatCommand ratCommand = RatCommand.values()[MathHelper.clamp(stack.getTag().getInt("Command"), 0, RatCommand.values().length - 1)];
-            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").func_240702_b_(" ").func_230529_a_(new TranslationTextComponent(ratCommand.getTranslateName())).mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("entity.rats.rat.command.current").appendString(" ").append(new TranslationTextComponent(ratCommand.getTranslateName())).mergeStyle(TextFormatting.GRAY));
 
         }
     }

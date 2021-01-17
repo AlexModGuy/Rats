@@ -56,8 +56,8 @@ public class EntityRatlanteanSpirit extends MonsterEntity implements IAnimatedEn
                 .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)            //HEALTH
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)           //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 0);         //ARMOR
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 0);         //ARMOR
     }
 
 

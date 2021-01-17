@@ -177,11 +177,11 @@ public class EntityRattlingGun extends MobEntity implements IRatlantean, IPirat 
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 60.0D)            //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0D)           //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 60.0D)            //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0D)           //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128.0D)         //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 10);         //ARMOR
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D)         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 10);         //ARMOR
     }
 
 

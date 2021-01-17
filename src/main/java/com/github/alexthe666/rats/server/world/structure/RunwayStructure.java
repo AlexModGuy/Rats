@@ -22,7 +22,7 @@ public class RunwayStructure extends Structure<NoFeatureConfig> {
         this.setRegistryName("rats:runway");
     }
 
-    public GenerationStage.Decoration func_236396_f_() {
+    public GenerationStage.Decoration getDecorationStage() {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 

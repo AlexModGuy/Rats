@@ -142,7 +142,7 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
         if (!this.isBeingRidden() && !world.isRemote) {
             this.attackEntityFrom(DamageSource.DROWN, 1000);
         }
-        if (!this.func_233570_aj_()&& this.getMotion().y < 0.0D) {
+        if (!this.isOnGround()&& this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
         this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
@@ -255,9 +255,9 @@ public class EntityRatBaronPlane extends MobEntity implements IRatlantean {
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)            //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.35D)           //SPEED
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)           //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128.0D);         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D);         //FOLLOW RANGE
     }
 
 

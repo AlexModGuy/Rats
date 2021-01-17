@@ -172,7 +172,7 @@ public class ItemRatTube extends Item implements ICustomRendered {
                     compoundnbt1.putInt("y", pos.getY());
                     compoundnbt1.putInt("z", pos.getZ());
                     if (!compoundnbt1.equals(compoundnbt2)) {
-                        tileentity.func_230337_a_(worldIn.getBlockState(pos), compoundnbt1);
+                        tileentity.read(worldIn.getBlockState(pos), compoundnbt1);
                         tileentity.markDirty();
                         return true;
                     }

@@ -95,7 +95,7 @@ public class RatAIHarvestMine extends Goal {
             }
         }
         if(entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE)){
-            List<Item> itemList = Tags.Items.ORES.func_230236_b_();
+            List<Item> itemList = Tags.Items.ORES.getAllElements();
             for (Item stack : itemList) {
                 if (getStack.getItem() == stack) {
                     return true;
@@ -127,7 +127,7 @@ public class RatAIHarvestMine extends Goal {
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
             }
-            if (!entity.getMoveHelper().isUpdating() &&(entity.func_233570_aj_() || entity.isRidingSpecialMount())) {
+            if (!entity.getMoveHelper().isUpdating() &&(entity.isOnGround() || entity.isRidingSpecialMount())) {
                 BlockState block = this.entity.world.getBlockState(rayPos);
                 SoundType soundType = block.getBlock().getSoundType(block, entity.world, rayPos, null);
                 if (block.getMaterial().blocksMovement() && block.getMaterial() != Material.AIR) {

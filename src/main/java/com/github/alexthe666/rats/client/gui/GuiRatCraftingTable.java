@@ -36,26 +36,26 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         this.tileFurnace = container.tileRatCraftingTable;
         this.ySize = 211;
     }
-
-    public void func_230430_a_(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        this.func_230446_a_(p_230430_1_);
-        super.func_230430_a_(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-        this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
-    protected void func_231160_c_() {
-        super.func_231160_c_();
-        this.field_230710_m_.clear();
-        int i = (this.field_230708_k_ - 248) / 2;
-        int j = (this.field_230709_l_ - 166) / 2;
-        this.func_230480_a_(new ChangeCommandButton(1, i + 43, j + 56, false, (p_214132_1_) -> {
+
+    protected void init() {
+        super.init();
+        this.buttons.clear();
+        int i = (this.width - 248) / 2;
+        int j = (this.height - 166) / 2;
+        this.addButton(new ChangeCommandButton(1, i + 43, j + 56, false, (p_214132_1_) -> {
             if(RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
                 TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE();
                 ratTable.decreaseRecipe();
                 RatsMod.NETWORK_WRAPPER.sendToServer(new MessageIncreaseRatRecipe(((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).getPos().toLong(), false));
             }
         }));
-        this.func_230480_a_(new ChangeCommandButton(2, i + 198, j + 56, true, (p_214132_1_) -> {
+        this.addButton(new ChangeCommandButton(2, i + 198, j + 56, true, (p_214132_1_) -> {
             if(RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
                 TileEntityRatCraftingTable ratTable = (TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE();
                 ratTable.increaseRecipe();
@@ -65,31 +65,31 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack p_230450_1_, float p_230450_2_, int mouseX, int mouseY) {
-        this.func_230446_a_(p_230450_1_);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack p_230450_1_, float p_230450_2_, int mouseX, int mouseY) {
+        this.renderBackground(p_230450_1_);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        int i = (this.field_230708_k_ - this.xSize) / 2;
-        int j = (this.field_230709_l_ - this.ySize) / 2;
-        this.func_238474_b_(p_230450_1_, i, j, 0, 0, this.xSize, this.ySize);
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        this.blit(p_230450_1_, i, j, 0, 0, this.xSize, this.ySize);
         int l = container.getCookProgressScaled(64);
-        this.func_238474_b_(p_230450_1_, i + 54, j + 21, 0, 211, l, 16);
+        this.blit(p_230450_1_, i + 54, j + 21, 0, 211, l, 16);
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable && ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).hasRat) {
-            this.func_238474_b_(p_230450_1_, i + 9, j, 176, 0, 21, 21);
+            this.blit(p_230450_1_, i + 9, j, 176, 0, 21, 21);
         } else {
-            this.func_238474_b_(p_230450_1_, i + 8, j + 15, 198, 0, 21, 21);
+            this.blit(p_230450_1_, i + 8, j + 15, 198, 0, 21, 21);
         }
     }
 
     protected void func_230451_b_(MatrixStack stackIn, int mouseX, int mouseY) {
-        FontRenderer font = this.field_230712_o_;
-        String s = this.func_231171_q_().getString();
-        font.func_238421_b_(stackIn, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
-        font.func_238421_b_(stackIn, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
-        font.func_238421_b_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
-        font.func_238421_b_(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
-        int screenW = (this.field_230708_k_ - 248) / 2;
-        int screenH = (this.field_230709_l_ - 166) / 2;
+        FontRenderer font = this.font;
+        String s = this.getTitle().getString();
+        font.drawString(stackIn, s, this.xSize / 2 - font.getStringWidth(s) / 2, 5, 4210752);
+        font.drawString(stackIn, this.playerInventory.getDisplayName().getString(), 8, this.ySize - 94 + 2, 4210752);
+        font.drawString(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.required"), 8, this.ySize - 163 + 2, 4210752);
+        font.drawString(stackIn, net.minecraft.client.resources.I18n.format("container.rat_crafting_table.input"), 8, this.ySize - 123 + 2, 4210752);
+        int screenW = (this.width - 248) / 2;
+        int screenH = (this.height - 166) / 2;
         List<ItemStack> drawnIngredients = new ArrayList<>();
         if (RatsMod.PROXY.getRefrencedTE() instanceof TileEntityRatCraftingTable) {
             IRecipe recipe = ((TileEntityRatCraftingTable) RatsMod.PROXY.getRefrencedTE()).getSelectedRecipe();
@@ -127,13 +127,13 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
         }
         if (mouseX > screenW + 32 && mouseX < screenW + 70 && mouseY > screenH - 15 && mouseY < screenH + 24) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.rat_desc");
-            List list = Arrays.asList(ratDesc);
-            func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW - 40, mouseY - screenH + 10);
+            List<TranslationTextComponent> list = Arrays.asList(ratDesc);
+            renderWrappedToolTip(stackIn, list, mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
         if (mouseX > screenW + 69 && mouseX < screenW + 87 && mouseY > screenH - 7 && mouseY < screenH + 15 && tileFurnace.getStackInSlot(0).isEmpty()) {
             TranslationTextComponent ratDesc = new TranslationTextComponent("container.rat_crafting_table.input_desc");
-            List list = Arrays.asList(ratDesc);
-            func_238654_b_(stackIn, Lists.transform(list, ITextComponent::func_241878_f), mouseX - screenW - 40, mouseY - screenH + 10);
+            List<TranslationTextComponent> list = Arrays.asList(ratDesc);
+            renderWrappedToolTip(stackIn, list, mouseX - screenW - 40, mouseY - screenH + 10, font);
         }
     }
 
@@ -156,16 +156,13 @@ public class GuiRatCraftingTable extends ContainerScreen<ContainerRatCraftingTab
     }
 
     private void drawRecipeItemStack(ItemStack stack, int x, int y) {
-        //OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
         RenderSystem.translatef(0.0F, 0.0F, 32.0F);
-        this.func_230926_e_(200);
-        this.field_230707_j_.zLevel = 200.0F;
+        this.itemRenderer.zLevel = 200.0F;
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = this.field_230712_o_;
-        this.field_230707_j_.renderItemAndEffectIntoGUI(stack, x, y);
-        this.field_230707_j_.renderItemOverlays(font, stack, x, y);
-        this.func_230926_e_(0);
-        this.field_230707_j_.zLevel = 0.0F;
+        if (font == null) font = this.font;
+        this.itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);
+        this.itemRenderer.renderItemOverlays(font, stack, x, y);
+        this.itemRenderer.zLevel = 0.0F;
 
     }
 

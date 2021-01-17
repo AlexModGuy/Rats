@@ -61,11 +61,11 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 40.0D)            //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)            //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)           //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)            //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 64.0D)         //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 7.0D);         //ARMOR
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)         //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 7.0D);         //ARMOR
     }
 
 
@@ -170,6 +170,6 @@ public class EntityRatlanteanRatbot extends MonsterEntity implements IAnimatedEn
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return !BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
+        return !BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
     }
 }

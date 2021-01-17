@@ -90,7 +90,7 @@ public class RatUtils {
 
     public static boolean isSeeds(ItemStack stack) {
         Item item = stack.getItem();
-        return ItemTags.getCollection().get(RatUtils.SEED_ITEMS).func_230235_a_(item);
+        return ItemTags.getCollection().get(RatUtils.SEED_ITEMS).contains(item);
     }
 
     public static boolean doesContainFood(IInventory inventory) {
@@ -347,7 +347,7 @@ public class RatUtils {
     }
 
     public static boolean isCheese(ItemStack cheese) {
-        return ItemTags.getCollection().get(RatUtils.CHEESE_ITEMS).func_230235_a_(cheese.getItem());
+        return ItemTags.getCollection().get(RatUtils.CHEESE_ITEMS).contains(cheese.getItem());
     }
 
     @Nullable

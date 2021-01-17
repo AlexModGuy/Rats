@@ -117,11 +117,11 @@ public class EntityBlackDeath extends MonsterEntity implements IPlagueLegion, IR
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, RatConfig.blackDeathHealth)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.25D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, RatConfig.blackDeathHealth)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, RatConfig.blackDeathAttack)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 128D)               //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 12D);             //ARMOR
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 128D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 12D);             //ARMOR
     }
 
 

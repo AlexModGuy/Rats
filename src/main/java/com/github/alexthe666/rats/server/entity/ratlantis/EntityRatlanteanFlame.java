@@ -53,7 +53,7 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
         float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
         float f2 = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
         this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
-        this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.func_233570_aj_() ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
+        this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.isOnGround() ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
     }
 
 
@@ -80,7 +80,7 @@ public class EntityRatlanteanFlame extends AbstractFireballEntity {
         if (!this.world.isRemote) {
             if (result.getType() == RayTraceResult.Type.ENTITY) {
                 Entity entity = ((EntityRayTraceResult)result).getEntity();
-                if (!entity.func_230279_az_()) {
+                if (!entity.isImmuneToFire()) {
                     int i = entity.getFireTimer();
                     entity.setFire(10);
                     boolean flag = entity.attackEntityFrom(DamageSource.func_233547_a_(this, shootingEntity), 5.0F);

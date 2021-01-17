@@ -89,8 +89,8 @@ public class TileEntityRatTube extends TileEntity implements ITickableTileEntity
         return super.write(compound);
     }
 
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         isNode = compound.getBoolean("Node");
         int i = compound.getInt("OpenSide");
         if (i == -1) {

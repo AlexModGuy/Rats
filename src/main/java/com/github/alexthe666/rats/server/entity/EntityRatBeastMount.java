@@ -40,11 +40,11 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 80.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.4D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 80.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.4D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 64.0D)               //FOLLOW RANGE
-                .createMutableAttribute(Attributes.field_233826_i_, 5.0D);
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D)               //FOLLOW RANGE
+                .createMutableAttribute(Attributes.ARMOR, 5.0D);
     }
 
 
@@ -88,11 +88,11 @@ public class EntityRatBeastMount extends EntityRatMountBase implements IAnimated
             this.faceEntity(this.getAttackTarget(), 360, 80);
             if (this.getAnimation() == ANIMATION_BITE && (this.getAnimationTick() > 8 && this.getAnimationTick() < 12)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().applyKnockback(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
             if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() == 8 || this.getAnimationTick() == 16)) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5);
-                this.getAttackTarget().func_233627_a_(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().applyKnockback(0.25F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
             }
         }
         if (!world.isRemote && this.getAttackTarget() == null && this.rand.nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {

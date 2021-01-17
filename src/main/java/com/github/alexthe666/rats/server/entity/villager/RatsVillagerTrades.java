@@ -114,7 +114,7 @@ public class RatsVillagerTrades {
         }
 
         public MerchantOffer getOffer(Entity trader, Random rand) {
-            List<Enchantment> list = Registry.ENCHANTMENT.stream().filter(Enchantment::func_230309_h_).collect(Collectors.toList());
+            List<Enchantment> list = Registry.ENCHANTMENT.stream().filter(Enchantment::canVillagerTrade).collect(Collectors.toList());
             Enchantment enchantment = list.get(rand.nextInt(list.size()));
             int i = MathHelper.nextInt(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
             ItemStack itemstack = EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, i));
@@ -155,7 +155,7 @@ public class RatsVillagerTrades {
         public MerchantOffer getOffer(Entity p_221182_1_, Random p_221182_2_) {
             ItemStack lvt_3_1_ = new ItemStack(Items.EMERALD, this.field_221221_c);
             List<Potion> lvt_4_1_ = (List)Registry.POTION.stream().filter((p_221218_0_) -> {
-                return !p_221218_0_.getEffects().isEmpty() && PotionBrewing.func_222124_a(p_221218_0_);
+                return !p_221218_0_.getEffects().isEmpty() && PotionBrewing.isBrewablePotion(p_221218_0_);
             }).collect(Collectors.toList());
             Potion lvt_5_1_ = (Potion)lvt_4_1_.get(p_221182_2_.nextInt(lvt_4_1_.size()));
             ItemStack lvt_6_1_ = PotionUtils.addPotionToItemStack(new ItemStack(this.field_221219_a.getItem(), this.field_221220_b), lvt_5_1_);

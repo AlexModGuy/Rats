@@ -31,10 +31,10 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
 
     public static AttributeModifierMap.MutableAttribute func_234290_eH_() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.field_233818_a_, 20.0D)        //HEALTH
-                .createMutableAttribute(Attributes.field_233821_d_, 0.35D)                //SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)        //HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)                //SPEED
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)       //ATTACK
-                .createMutableAttribute(Attributes.field_233819_b_, 32.0D);
+                .createMutableAttribute(Attributes.ARMOR, 32.0D);
     }
 
     public static boolean canSpawn(EntityType<? extends MobEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
@@ -43,7 +43,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
 
     private static boolean canSpawnAtPos(IWorld world, BlockPos pos) {
         BlockState down = world.getBlockState(pos.down());
-        return BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).func_230235_a_(down.getBlock());
+        return BlockTags.getCollection().get(RatUtils.PIRAT_ONLY_BLOCKS).contains(down.getBlock());
     }
 
     protected void registerGoals() {

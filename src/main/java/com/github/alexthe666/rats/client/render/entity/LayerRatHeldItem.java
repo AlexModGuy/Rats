@@ -43,7 +43,7 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
     private static ItemStack SHEARS_STACK = new ItemStack(Items.SHEARS);
     private static ItemStack TNT_STACK = new ItemStack(Blocks.TNT);
     private static ItemStack FISHING_ROD_STACK = new ItemStack(Items.FISHING_ROD);
-    private static ItemStack FISHING_ROD_FUNGUS_STACK = new ItemStack(Items.field_234774_pk_);
+    private static ItemStack FISHING_ROD_FUNGUS_STACK = new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK);
     private static ItemStack WING_STACK = new ItemStack(RatsItemRegistry.FEATHERY_WING);
     private static ItemStack BEE_WING_STACK = new ItemStack(RatsItemRegistry.BEE_WING);
     private static ItemStack DRAGON_WING_STACK = new ItemStack(RatsItemRegistry.DRAGON_WING);
@@ -258,8 +258,8 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FLIGHT)) {
             matrixStackIn.push();
             Minecraft minecraft = Minecraft.getInstance();
-            float wingAngle = entity.func_233570_aj_()? 0 : MathHelper.sin(ageInTicks) * 30;
-            float wingFold = entity.func_233570_aj_()? -45 : 0;
+            float wingAngle = entity.isOnGround()? 0 : MathHelper.sin(ageInTicks) * 30;
+            float wingFold = entity.isOnGround()? -45 : 0;
             ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
             ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
             matrixStackIn.push();
@@ -286,8 +286,8 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BEE)) {
             matrixStackIn.push();
             Minecraft minecraft = Minecraft.getInstance();
-            float wingAngle = entity.func_233570_aj_()? 0 : MathHelper.sin(ageInTicks) * 60;
-            float wingFold = entity.func_233570_aj_()? -45 : 0;
+            float wingAngle = entity.isOnGround()? 0 : MathHelper.sin(ageInTicks) * 60;
+            float wingFold = entity.isOnGround()? -45 : 0;
             ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
             ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
             matrixStackIn.push();
@@ -314,8 +314,8 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DRAGON)) {
             matrixStackIn.push();
             Minecraft minecraft = Minecraft.getInstance();
-            float wingAngle = entity.func_233570_aj_()? 0 : MathHelper.sin(ageInTicks) * 30;
-            float wingFold = entity.func_233570_aj_()? -45 : 0;
+            float wingAngle = entity.isOnGround()? 0 : MathHelper.sin(ageInTicks) * 30;
+            float wingFold = entity.isOnGround()? -45 : 0;
             ((ModelRat) this.renderer.getEntityModel()).body1.translateRotate(matrixStackIn);
             ((ModelRat) this.renderer.getEntityModel()).body2.translateRotate(matrixStackIn);
             matrixStackIn.push();

@@ -39,7 +39,7 @@ public class GuiRadiusStaff extends Screen {
         this.rat = rat;
         sliderValue = rat.getSearchRadius();
         prevSliderValue = sliderValue;
-        func_231160_c_();
+        init();
         sliderResponder = new Slider.ISlider() {
             @Override
             public void onChangeSliderValue(Slider slider){
@@ -103,25 +103,25 @@ public class GuiRadiusStaff extends Screen {
         prevSliderValue = sliderValue;
     }
 
-    protected void func_231160_c_() {
-        super.func_231160_c_();
-        this.field_230710_m_.clear();
-        int i = (this.field_230708_k_) / 2;
-        int j = (this.field_230709_l_ - 166) / 2;
+    protected void init() {
+        super.init();
+        this.buttons.clear();
+        int i = (this.width) / 2;
+        int j = (this.height - 166) / 2;
         IFormattableTextComponent topText = new TranslationTextComponent("entity.rat.staff.set_radius_loc", getPosName());
         IFormattableTextComponent secondText = new TranslationTextComponent("entity.rat.staff.reset_radius");
         int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText.getString()) + 20);
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 4, 0));
             rat.setSearchRadiusCenter(pos);
         }));
-        this.func_230480_a_(new Slider(i - 150 / 2, j + 85, 150, 20, new TranslationTextComponent("entity.rat.staff.radius").func_230529_a_(new StringTextComponent( ": ")), new StringTextComponent( ""), 1, RatConfig.maxRatRadius, sliderValue, false, true, (p_214132_1_) -> {
+        this.addButton(new Slider(i - 150 / 2, j + 85, 150, 20, new TranslationTextComponent("entity.rat.staff.radius").append(new StringTextComponent( ": ")), new StringTextComponent( ""), 1, RatConfig.maxRatRadius, sliderValue, false, true, (p_214132_1_) -> {
 
         }, sliderResponder){
 
         });
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 110, maxLength, 20, secondText, (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 110, maxLength, 20, secondText, (p_214132_1_) -> {
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), BlockPos.ZERO, Direction.UP, 6, 0));
             rat.setSearchRadiusCenter(null);
             rat.setSearchRadius(RatConfig.defaultRatRadius);
@@ -133,17 +133,17 @@ public class GuiRadiusStaff extends Screen {
     }
 
     @Override
-    public void func_230430_a_(MatrixStack stack, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+    public void render(MatrixStack stack, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         if (getMinecraft() != null) {
             try {
-                this.func_230446_a_(stack);
+                this.renderBackground(stack);
             } catch (Exception e) {
 
             }
         }
-        super.func_230430_a_(stack, p_230430_2_, p_230430_3_, p_230430_4_);
-        int i = (this.field_230708_k_ - 248) / 2 + 10;
-        int j = (this.field_230709_l_ - 166) / 2 + 8;
+        super.render(stack, p_230430_2_, p_230430_3_, p_230430_4_);
+        int i = (this.width - 248) / 2 + 10;
+        int j = (this.height - 166) / 2 + 8;
         if(this.rat != null){
             drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         }

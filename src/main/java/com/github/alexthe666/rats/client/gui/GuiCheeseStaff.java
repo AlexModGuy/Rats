@@ -39,52 +39,52 @@ public class GuiCheeseStaff extends Screen {
     public GuiCheeseStaff(EntityRat rat) {
         super(new TranslationTextComponent("cheese_staff"));
         this.rat = rat;
-        func_231160_c_();
+        init();
     }
 
-    protected void func_231160_c_() {
-        super.func_231160_c_();
-        this.field_230710_m_.clear();
-        int i = (this.field_230708_k_) / 2;
-        int j = (this.field_230709_l_ - 166) / 2;
-        IFormattableTextComponent topText = new TranslationTextComponent("entity.rats.rat.staff.mark_block_deposit", getPosName()).func_230529_a_(new StringTextComponent(" ").func_230529_a_(new TranslationTextComponent("rats.direction." + ClientProxy.refrencedFacing.getName2())));
+    protected void init() {
+        super.init();
+        this.buttons.clear();
+        int i = (this.width) / 2;
+        int j = (this.height - 166) / 2;
+        IFormattableTextComponent topText = new TranslationTextComponent("entity.rats.rat.staff.mark_block_deposit", getPosName()).append(new StringTextComponent(" ").append(new TranslationTextComponent("rats.direction." + ClientProxy.refrencedFacing.getName2())));
         int maxLength = Math.max(150, Minecraft.getInstance().fontRenderer.getStringWidth(topText.getString()) + 20);
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 60, maxLength, 20, topText, (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, ClientProxy.refrencedFacing, 0));
             Minecraft.getInstance().displayGuiScreen(null);
-            func_231160_c_();
+            init();
         }));
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 85, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 85, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.mark_block_pickup", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 1));
             Minecraft.getInstance().displayGuiScreen(null);
-            func_231160_c_();
+            init();
         }));
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 110, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 110, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.set_home_point", getPosName()), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setHomePosAndDistance(pos, 32);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 2));
-            func_231160_c_();
+            init();
         }));
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 135, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 135, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_home_point"), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setHomePosAndDistance(BlockPos.ZERO, -1);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 3));
-            func_231160_c_();
+            init();
         }));
-        this.func_230480_a_(new Button(i - maxLength / 2, j + 160, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_transport_pos"), (p_214132_1_) -> {
+        this.addButton(new Button(i - maxLength / 2, j + 160, maxLength, 20, new TranslationTextComponent("entity.rats.rat.staff.un_set_transport_pos"), (p_214132_1_) -> {
             BlockPos pos = ClientProxy.refrencedPos;
             rat.setPickupPos(null);
             rat.setDepositPos(null);
             RatsMod.NETWORK_WRAPPER.sendToServer(new MessageCheeseStaffSync(rat.getEntityId(), pos, Direction.UP, 7));
-            func_231160_c_();
+            init();
         }));
-        this.field_230710_m_.get(0).field_230693_o_ = !isNoInventoryAtPos();
-        this.field_230710_m_.get(1).field_230693_o_ = !isNoInventoryAtPos();
-        this.field_230710_m_.get(2).field_230693_o_ = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.detachHome();
-        this.field_230710_m_.get(3).field_230693_o_ = rat.detachHome();
-        this.field_230710_m_.get(4).field_230693_o_ = rat.getDepositPos() != null || rat.getPickupPos() != null;
+        this.buttons.get(0).visible = !isNoInventoryAtPos();
+        this.buttons.get(1).visible = !isNoInventoryAtPos();
+        this.buttons.get(2).visible = !ClientProxy.refrencedPos.equals(rat.getHomePosition()) || !rat.detachHome();
+        this.buttons.get(3).visible = rat.detachHome();
+        this.buttons.get(4).visible = rat.getDepositPos() != null || rat.getPickupPos() != null;
     }
 
     private String getPosName() {
@@ -113,17 +113,17 @@ public class GuiCheeseStaff extends Screen {
     }
 
     @Override
-    public void func_230430_a_(MatrixStack stack, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+    public void render(MatrixStack stack, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         if (getMinecraft() != null) {
             try {
-                this.func_230446_a_(stack);
+                this.renderBackground(stack);
             } catch (Exception e) {
 
             }
         }
-        super.func_230430_a_(stack, p_230430_2_, p_230430_3_, p_230430_4_);
-        int i = (this.field_230708_k_ - 248) / 2 + 10;
-        int j = (this.field_230709_l_ - 166) / 2 + 8;
+        super.render(stack, p_230430_2_, p_230430_3_, p_230430_4_);
+        int i = (this.width - 248) / 2 + 10;
+        int j = (this.width - 166) / 2 + 8;
         if(this.rat != null){
             drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         }

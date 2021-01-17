@@ -89,7 +89,7 @@ public class RatAIDepositFluid extends Goal {
         if (this.targetBlock != null && this.entity.world.getTileEntity(this.targetBlock) != null) {
             TileEntity te = this.entity.world.getTileEntity(this.targetBlock);
             //break block if has miner upgrade
-            if ((this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) && !entity.getMoveHelper().isUpdating() && entity.func_233570_aj_()&& !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
+            if ((this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER)) && !entity.getMoveHelper().isUpdating() && entity.isOnGround()&& !this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY(), getMovePos().getZ() + 0.5D, 1.25D)) {
                 RatUtils.doRatMinerLogic(entity, targetBlock, this);
             } else {
                 this.entity.getNavigator().tryMoveToXYZ(getMovePos().getX() + 0.5D, getMovePos().getY() + 0.5D, getMovePos().getZ() + 0.5D, 1.25D);

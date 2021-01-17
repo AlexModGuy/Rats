@@ -234,7 +234,7 @@ public class EntityRatMountBase extends MobEntity {
                 }
             } else if (this.action == MovementController.Action.JUMPING) {
                 this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
-                if (this.mob.func_233570_aj_()) {
+                if (this.mob.isOnGround()) {
                     this.action = MovementController.Action.WAIT;
                 }
             } else {

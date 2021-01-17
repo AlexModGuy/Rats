@@ -67,7 +67,7 @@ public class ItemRatSack extends Item {
                     ratCount++;
                     String ratName = I18n.format("entity.rats.rat");
                     if (!ratTag.getString("CustomName").isEmpty() && !ratTag.getString("CustomName").startsWith("TextComponent")) {
-                        ITextComponent ratNameTag = ITextComponent.Serializer.func_240643_a_(ratTag.getString("CustomName"));
+                        ITextComponent ratNameTag = ITextComponent.Serializer.getComponentFromJson(ratTag.getString("CustomName"));
                         if (ratNameTag != null) {
                             ratName = ratNameTag.getString();
                         }
