@@ -204,6 +204,24 @@ public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<En
             minecraft.getItemRenderer().renderItem(new ItemStack(Items.DIAMOND_PICKAXE), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BOW)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.translate(0.01F, 0.1F, -0.02F);
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            minecraft.getItemRenderer().renderItem(new ItemStack(Items.BOW), ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+        }
+        if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CROSSBOW)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            matrixStackIn.push();
+            translateToHand(false, matrixStackIn);
+            matrixStackIn.translate(0.01F, 0.05F, -0.1F);
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            minecraft.getItemRenderer().renderItem(new ItemStack(Items.CROSSBOW), ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+            matrixStackIn.pop();
+        }
         if (entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY)) {
             Minecraft minecraft = Minecraft.getInstance();
             matrixStackIn.push();

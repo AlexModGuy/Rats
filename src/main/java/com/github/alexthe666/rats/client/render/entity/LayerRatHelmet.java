@@ -180,6 +180,10 @@ public class LayerRatHelmet extends LayerRenderer<EntityRat, SegmentedModel<Enti
                     matrixStackIn.translate(0, -0.1F, 0.01F);
                     matrixStackIn.rotate(new Quaternion(Vector3f.XP, -5, true));
                 }
+                if (itemstack.getItem() == RatsItemRegistry.EXTERMINATOR_HAT) {
+                    matrixStackIn.scale(1.45F, 1.45F, 1.45F);
+                    matrixStackIn.translate(0, -0.2F, 0.01F);
+                }
                 RatClientEvent.RatHelmetTranslation translationEvent = new RatClientEvent.RatHelmetTranslation(rat, (RenderRat) renderer, matrixStackIn);
                 MinecraftForge.EVENT_BUS.post(translationEvent);
                 boolean flag1 = itemstack.hasEffect();

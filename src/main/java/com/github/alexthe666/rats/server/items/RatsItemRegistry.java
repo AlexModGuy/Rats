@@ -184,6 +184,8 @@ public class RatsItemRegistry {
 
     public static final Item BLACK_DEATH_MASK = new ItemHat(PLAGUE_MASK_MATERIAL, "black_death_mask", 5);
 
+    public static final Item EXTERMINATOR_HAT = new ItemHat("exterminator_hat", 16);
+
     public static final Item MUSIC_DISC_MICE_ON_VENUS = new ItemRatDisc("music_disc_mice_on_venus", RatsSoundRegistry.MICE_ON_VENUS);
 
     public static final Item MUSIC_DISC_LIVING_MICE = new ItemRatDisc("music_disc_living_mice", RatsSoundRegistry.LIVING_MICE);
@@ -201,6 +203,10 @@ public class RatsItemRegistry {
     public static final Item RAT_UPGRADE_HEALTH = new ItemRatUpgrade("rat_upgrade_health");
 
     public static final Item RAT_UPGRADE_ARMOR = new ItemRatUpgrade("rat_upgrade_armor");
+
+    public static final Item RAT_UPGRADE_BOW = new ItemRatUpgrade("rat_upgrade_bow", 0, 1);
+
+    public static final Item RAT_UPGRADE_CROSSBOW = new ItemRatUpgrade("rat_upgrade_crossbow", 0, 2);
 
     public static final Item RAT_UPGRADE_DEMON = new ItemRatUpgrade("rat_upgrade_demon", 1, 4);
 

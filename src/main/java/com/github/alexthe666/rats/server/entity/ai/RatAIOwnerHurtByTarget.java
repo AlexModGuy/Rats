@@ -32,11 +32,10 @@ public class RatAIOwnerHurtByTarget  extends TargetGoal {
             } else {
                 this.attacker = lvt_1_1_.getRevengeTarget();
                 int lvt_2_1_ = lvt_1_1_.getRevengeTimer();
-                return lvt_2_1_ != this.timestamp && this.isSuitableTarget(this.attacker, EntityPredicate.DEFAULT) && this.tameable.shouldAttackEntity(this.attacker, lvt_1_1_);
+                return attacker != null &&  lvt_2_1_ != this.timestamp && this.isSuitableTarget(this.attacker, EntityPredicate.DEFAULT) && this.tameable.shouldAttackEntity(this.attacker, lvt_1_1_);
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     public void startExecuting() {

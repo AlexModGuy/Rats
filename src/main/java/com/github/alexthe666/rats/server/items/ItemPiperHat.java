@@ -29,7 +29,7 @@ public class ItemPiperHat extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     @Nullable
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) RatsMod.PROXY.getArmorModel(1);
+        return (A) RatsMod.PROXY.getArmorModel(1, entityLiving);
     }
 
     @Override

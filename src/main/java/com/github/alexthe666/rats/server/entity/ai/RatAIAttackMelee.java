@@ -25,7 +25,7 @@ public class RatAIAttackMelee extends MeleeAttackGoal {
     }
 
     public boolean shouldExecute() {
-        return !rat.isInCage() && super.shouldExecute();
+        return !rat.isInCage() && rat.getAttackTarget() != null;
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {

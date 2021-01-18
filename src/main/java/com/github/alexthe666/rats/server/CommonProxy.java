@@ -16,6 +16,7 @@ import com.github.alexthe666.rats.server.world.gen.FeatureMarblePile;
 import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegistry;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
@@ -217,7 +218,7 @@ public class CommonProxy {
     public void postInit() {
     }
 
-    public Object getArmorModel(int index) {
+    public Object getArmorModel(int index, LivingEntity entity) {
         return null;
     }
 

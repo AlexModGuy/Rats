@@ -175,6 +175,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public Goal aiHarvest;
     public Goal aiPickup;
     public Goal aiDeposit;
+    public Goal aiAttack;
     protected Inventory ratInventory;
     /*
        0 = tamed navigator
@@ -298,7 +299,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
-        this.goalSelector.addGoal(0, new RatAIAttackMelee(this, 1.45D, true));
+        aiAttack =  new RatAIAttackMelee(this, 1.45D, true);
+        this.goalSelector.addGoal(0, aiAttack);
         this.goalSelector.addGoal(1, new RatAISwimming(this));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity entity) {
@@ -318,7 +320,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.goalSelector.addGoal(9, new LookAtGoal(this, LivingEntity.class, 6.0F));
         this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(0, new RatAITargetItems(this, true));
-        this.targetSelector.addGoal(1, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
+        this.targetSelector.addGoal(1, new RatAIOwnerHurtByTarget(this));
+        this.targetSelector.addGoal(2, new RatAIOwnerHurtTarget(this));
+        this.targetSelector.addGoal(3, new RatAIHuntPrey(this, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
                 if (EntityRat.this.hasPlague()) {
                     return entity instanceof PlayerEntity && !entity.isOnSameTeam(EntityRat.this) && entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != RatsItemRegistry.BLACK_DEATH_MASK && entity.world.getDifficulty() != Difficulty.PEACEFUL;
@@ -334,8 +338,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 }
             }
         }));
-        this.targetSelector.addGoal(2, new RatAIOwnerHurtByTarget(this));
-        this.targetSelector.addGoal(3, new RatAIOwnerHurtTarget(this));
         this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, CatEntity.class, OcelotEntity.class));
     }
 
@@ -343,6 +345,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.goalSelector.removeGoal(this.aiHarvest);
         this.goalSelector.removeGoal(this.aiDeposit);
         this.goalSelector.removeGoal(this.aiPickup);
+        this.goalSelector.removeGoal(this.aiAttack);
         boolean flag = false;
         aiHarvest = new RatAIHarvestCrops(this);
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) && !(aiHarvest instanceof RatAIHarvestTrees)) {
@@ -386,6 +389,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         aiDeposit = new RatAIDepositInInventory(this);
         aiPickup = new RatAIPickupFromInventory(this);
+        aiAttack = new RatAIAttackMelee(this, 1.45, true);
         if (this.getMBTransferRate() > 0) {
             aiDeposit = new RatAIPickupFluid(this);
             aiPickup = new RatAIDepositFluid(this);
@@ -396,6 +400,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         forEachUpgrade((stack) -> {
             stack.onInitalizeAI(this);
         });
+        if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BOW) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CROSSBOW)) {
+            aiAttack = new RatAIAttackBow(this, 1.0D, 20, 15.0F);
+        }
+        this.goalSelector.addGoal(0, this.aiAttack);
         this.goalSelector.addGoal(4, this.aiHarvest);
         this.goalSelector.addGoal(5, this.aiDeposit);
         this.goalSelector.addGoal(5, this.aiPickup);
@@ -2915,7 +2923,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public boolean holdsItemInHandUpgrade() {
         boolean bool = forEachUpgradeBool((stack) -> stack.shouldHoldItemInHands(this), false);
 
-        return bool || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
+        return bool || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)
+                || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BOW) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CROSSBOW);
     }
 
     public boolean shouldNotIdleAnimation() {
@@ -2930,7 +2939,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     private boolean hasAnyUpgrades(){
         for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS){
-            return !this.getItemStackFromSlot(slot).isEmpty();
+            if(!this.getItemStackFromSlot(slot).isEmpty()){
+                return true;
+            }
         }
         return false;
     }
@@ -3150,20 +3161,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     public boolean isOnSameTeam(Entity entityIn) {
         if (entityIn != null) {
-            if (entityIn instanceof TameableEntity) {
-                TameableEntity tameable = (TameableEntity) entityIn;
-                if (tameable.isTamed() && this.isTamed() && this.getOwnerId() != null && tameable.getOwnerId() != null && this.getOwnerId().equals(tameable.getOwnerId())) {
-                    return true;
-                }
-                if (tameable instanceof EntityRat) {
-                    EntityRat rat = (EntityRat) tameable;
-                    if (this.getMonsterOwnerID() != null && rat.getMonsterOwnerID() != null && this.getMonsterOwnerID().equals(rat.getMonsterOwnerID())) {
-                        return true;
-                    }
-                }
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
             }
             if (entityIn instanceof EntityRatMountBase && ((EntityRatMountBase) entityIn).getRat() != null) {
                 return this.isOnSameTeam(((EntityRatMountBase) entityIn).getRat());
+            }
+            if (entityIn instanceof TameableEntity) {
+                return ((TameableEntity) entityIn).isOwner(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isOnSameTeam(entityIn);
             }
             return super.isOnSameTeam(entityIn);
         }

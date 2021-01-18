@@ -23,7 +23,7 @@ public class ItemChefToque extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     @Nullable
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) RatsMod.PROXY.getArmorModel(0);
+        return (A) RatsMod.PROXY.getArmorModel(0,entityLiving);
     }
 
     @Override

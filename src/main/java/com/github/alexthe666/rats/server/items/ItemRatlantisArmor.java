@@ -36,7 +36,7 @@ public class ItemRatlantisArmor extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     @Nullable
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) RatsMod.PROXY.getArmorModel(armorSlot == EquipmentSlotType.LEGS ? 15 : 14);
+        return (A) RatsMod.PROXY.getArmorModel(armorSlot == EquipmentSlotType.LEGS ? 15 : 14, entityLiving);
     }
 
 

@@ -7,12 +7,15 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 
+import java.util.EnumSet;
+
 public class RatAIHuntPrey<T extends LivingEntity> extends NearestAttackableTargetGoal<LivingEntity> {
     private final EntityRat rat;
 
     public RatAIHuntPrey(EntityRat entityIn, Predicate<LivingEntity> targetSelector) {
         super(entityIn, LivingEntity.class, 10, true, false, targetSelector);
         this.rat = entityIn;
+        this.setMutexFlags(EnumSet.of(Flag.TARGET));
     }
 
     public boolean shouldExecute() {

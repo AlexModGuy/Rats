@@ -32,7 +32,6 @@ public class RatAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     public RatAITargetItems(EntityRat creature, boolean checkSight) {
         this(creature, checkSight, false);
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     public RatAITargetItems(EntityRat creature, boolean checkSight, boolean onlyNearby) {

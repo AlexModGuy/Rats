@@ -243,6 +243,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_SHOT, manager -> new RenderRatShot());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.DEMON_RAT, manager -> new RenderDemonRat());
         RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.RAT_STRIDER_MOUNT, manager -> new StriderRenderer(Minecraft.getInstance().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(RatsEntityRegistry.SMALL_ARROW, manager -> new RenderSmallArrow());
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_HOLE, manager -> new RenderRatHole(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_TRAP, manager -> new RenderRatTrap(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
@@ -356,7 +357,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Object getArmorModel(int index) {
+    public Object getArmorModel(int index, LivingEntity entity) {
         if (index == 0) {
             return new ModelChefToque(1.0F);
         } else if (index == 1) {
@@ -389,7 +390,9 @@ public class ClientProxy extends CommonProxy {
             return new ModelRatlantisArmor(1.0F);
         } else if (index == 15) {
             return new ModelRatlantisArmor(0.5F);
-        } else {
+        } else if (index == 16) {
+            return new ModelExterminatorHat(0.5F).withEntity(entity);
+        }else {
             return null;
         }
     }

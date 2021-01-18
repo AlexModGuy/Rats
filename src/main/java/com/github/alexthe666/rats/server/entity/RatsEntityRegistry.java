@@ -32,6 +32,7 @@ public class RatsEntityRegistry {
     public static final EntityType<EntityRatShot> RAT_SHOT = registerEntity(EntityType.Builder.create(EntityRatShot::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityRatShot::new), "rat_shot");
     public static final EntityType<EntityDemonRat> DEMON_RAT = registerEntity(EntityType.Builder.create(EntityDemonRat::new, EntityClassification.MONSTER).size(1.0F, 0.75F).immuneToFire().func_225435_d().setUpdateInterval(8), "demon_rat");
     public static final EntityType<EntityRatStriderMount> RAT_STRIDER_MOUNT = registerEntity(EntityType.Builder.create(EntityRatStriderMount::new, EntityClassification.MISC).immuneToFire().size(0.9F, 1.7F).setUpdateInterval(10), "rat_mount_strider");
+    public static final EntityType<EntitySmallArrow> SMALL_ARROW = registerEntity(EntityType.Builder.create(EntitySmallArrow::new, EntityClassification.MISC).size(0.39F, 0.39F).setCustomClientFactory(EntitySmallArrow::new), "small_arrow");
 
     static {
 
