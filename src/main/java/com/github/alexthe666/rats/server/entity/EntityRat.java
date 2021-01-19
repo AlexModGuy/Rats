@@ -2134,6 +2134,18 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return canDropLoot();
     }
 
+    protected void dropInventory() {
+        super.dropInventory();
+        if (!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL)) {
+            for(EquipmentSlotType slot : EquipmentSlotType.values()){
+                if(!this.getItemStackFromSlot(slot).isEmpty()){
+                    this.entityDropItem(this.getItemStackFromSlot(slot));
+                }
+            }
+        }
+
+    }
+
     protected void onDeathUpdate() {
         ++this.deathTime;
         int maxDeathTime = isDeadInTrap ? 60 : 20;
