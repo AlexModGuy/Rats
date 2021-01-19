@@ -29,6 +29,9 @@ public class ItemRatDecoration extends Item implements IRatCageDecoration {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.rats.cage_decoration.desc").mergeStyle(TextFormatting.GRAY));
+        if(this == RatsItemRegistry.RAT_WHEEL){
+            tooltip.add(new TranslationTextComponent("item.rats.rat_wheel.desc").mergeStyle(TextFormatting.GRAY));
+        }
     }
 
     @Override
@@ -42,6 +45,9 @@ public class ItemRatDecoration extends Item implements IRatCageDecoration {
         }
         if (this == RatsItemRegistry.RAT_SEED_BOWL) {
             return cageBlock.canFenceConnectTo(world.getBlockState(pos.down()), false, Direction.DOWN) != 1;
+        }
+        if (this == RatsItemRegistry.RAT_WHEEL) {
+            return cageBlock.canFenceConnectTo(world.getBlockState(pos.down()), false, Direction.DOWN) == 0;
         }
         if (this == RatsItemRegistry.RAT_BREEDING_LANTERN) {
             return cageBlock.canFenceConnectTo(world.getBlockState(pos.up()), false, Direction.UP) == 0;

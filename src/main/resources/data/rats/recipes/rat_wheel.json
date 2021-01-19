@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "BIB",
+    "CBC"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:cheese"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "item": "rats:rat_wheel"
+  }
+}

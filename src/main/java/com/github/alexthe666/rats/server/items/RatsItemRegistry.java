@@ -136,6 +136,8 @@ public class RatsItemRegistry {
 
     public static final Item RAT_BREEDING_LANTERN = new ItemRatDecoration("rat_breeding_lantern");
 
+    public static final Item RAT_WHEEL = new ItemRatDecoration("rat_wheel");
+
     public static final Item CONFIT_BYALDI = new ItemGenericFood(100, 10F, false, false, true, "confit_byaldi");
 
     public static final Item POTATO_PANCAKE = new ItemGenericFood(4, 0.5F, false, false, true, "potato_pancake");

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "IUI",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "B": {
+      "item": "minecraft:crossbow"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "result": {
+    "item": "rats:rat_upgrade_crossbow",
+    "count": 1
+  }
+}

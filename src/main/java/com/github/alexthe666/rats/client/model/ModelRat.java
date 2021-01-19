@@ -363,7 +363,17 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
         progressRotation(rightThigh, rat.sleepProgress, -1.5707963267948966F, 0.0F, 0.0F, 20F);
         progressRotation(leftEye, rat.sleepProgress, 0.0F, 0.0F, 0.0F, 20F);
         progressRotation(leftHand, rat.sleepProgress, 1.6470628053380598F, 0.0F, 0.0F, 20F);
-
+        if(rat.isInWheel()){
+            f = f2;
+            f1 = 1;
+            progressRotationPrev(body1, 5F, (float)Math.toRadians(20F), 0.0F, 0.0F, 5F);
+            progressRotationPrev(body2, 5F, (float)Math.toRadians(-50F), 0.0F, 0.0F, 5F);
+            progressRotationPrev(head, 5F, (float)Math.toRadians(-30F), 0.0F, 0.0F, 5F);
+            progressRotationPrev(tail1, 5F, (float)Math.toRadians(70F), 0.0F, 0.0F, 5F);
+            progressRotationPrev(tail2, 5F, (float)Math.toRadians(60F), 0.0F, 0.0F, 5F);
+            progressRotationPrev(rightEar, 5F,0.0F,  (float)Math.toRadians(-20F), 0.0F, 5F);
+            progressRotationPrev(leftEar, 5F,0.0F,  (float)Math.toRadians(20F), 0.0F, 5F);
+        }
 
         if (rat.getAnimation() == EntityRat.ANIMATION_EAT) {
             this.walk(this.neck, speedIdle * 1.5F, degreeIdle * 1.5F, true, 2, -0.4F, f2, 1);
@@ -381,7 +391,7 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
         }
         float ulatingScale = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
         if (!rat.isDeadInTrap) {
-            if (RatsMod.PROXY.shouldRenderNameplates() && rat.getAnimation() != EntityRat.ANIMATION_IDLE_SCRATCH) {
+            if (RatsMod.PROXY.shouldRenderNameplates() && rat.getAnimation() != EntityRat.ANIMATION_IDLE_SCRATCH && !rat.isInWheel()) {
                 this.faceTarget(f3, f4, 2, neck, head);
             }
             this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, f2, 1);
@@ -493,6 +503,12 @@ public class ModelRat<T extends EntityRat> extends AdvancedEntityModel<T>{
         model.rotateAngleY += progress * (rotY - model.defaultRotationY) / divisor;
         model.rotateAngleZ += progress * (rotZ - model.defaultRotationZ) / divisor;
     }
+    public void progressRotationPrev(AdvancedModelBox model, float progress, float rotX, float rotY, float rotZ, float divisor) {
+        model.rotateAngleX += progress * (rotX) / divisor;
+        model.rotateAngleY += progress * (rotY) / divisor;
+        model.rotateAngleZ += progress * (rotZ) / divisor;
+    }
+
 
     public void progressPosition(AdvancedModelBox model, float progress, float x, float y, float z, float divisor) {
         model.rotationPointX += progress * (x - model.defaultPositionX) / divisor;

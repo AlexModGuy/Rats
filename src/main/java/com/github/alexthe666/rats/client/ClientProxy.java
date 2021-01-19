@@ -200,6 +200,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_DECORATED, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_CAGE_WHEEL, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_TUBE_COLOR, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.AUTO_CURDLER, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RatsBlockRegistry.RAT_HOLE, RenderType.getCutout());
@@ -249,6 +250,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.AUTO_CURDLER, manager -> new RenderAutoCurdler(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_DECORATED, manager -> new RenderRatCageDecorated(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_BREEDING_LANTERN, manager -> new RenderRatCageDecorated(manager));
+        ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.RAT_CAGE_WHEEL, manager -> new RenderRatCageDecorated(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_COMBINER, manager -> new RenderUpgradeCombiner(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.UPGRADE_SEPERATOR, manager -> new RenderUpgradeSeparator(manager));
         ClientRegistry.bindTileEntityRenderer(RatsTileEntityRegistry.TRASH_CAN, manager -> new RenderTrashCan(manager));

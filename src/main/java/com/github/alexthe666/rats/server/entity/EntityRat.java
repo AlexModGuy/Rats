@@ -129,6 +129,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private static final DataParameter<BlockPos> RADIUS_CENTER = EntityDataManager.createKey(EntityRat.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Integer> SEARCH_RADIUS = EntityDataManager.createKey(EntityRat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> DYED = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_IN_WHEEL = EntityDataManager.createKey(EntityRat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(EntityRat.class, DataSerializers.BYTE);
     private static final DataParameter<Optional<BlockPos>> PICKUP_POS = EntityDataManager.createKey(EntityRat.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Optional<BlockPos>> DEPOSIT_POS = EntityDataManager.createKey(EntityRat.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -552,6 +553,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.dataManager.register(MONSTER_OWNER_UNIQUE_ID, Optional.empty());
         this.dataManager.register(DEPOSIT_POS, Optional.empty());
         this.dataManager.register(PICKUP_POS, Optional.empty());
+        this.dataManager.register(IS_IN_WHEEL, Boolean.valueOf(false));
 
     }
 
@@ -871,6 +873,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         this.dataManager.set(RESPAWN_COUNTDOWN, Integer.valueOf(respawn));
     }
 
+    public boolean isInWheel() {
+        return this.dataManager.get(IS_IN_WHEEL).booleanValue();
+    }
+
+    public void setInWheel(boolean wheel) {
+        this.dataManager.set(IS_IN_WHEEL, Boolean.valueOf(wheel));
+    }
+
     @Nullable
     public UUID getMonsterOwnerID() {
         return (UUID) ((Optional) this.dataManager.get(MONSTER_OWNER_UNIQUE_ID)).orElse(null);
@@ -1154,6 +1164,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.isSitting() && this.getCommand() != RatCommand.SIT) {
             this.setSitting(false);
         }
+        if(this.isInWheel()){
+            if(world.getBlockState(this.getPosition()).getBlock() != RatsBlockRegistry.RAT_CAGE_WHEEL){
+                this.setInWheel(false);
+            }
+        }
         if (this.getAnimation() == ANIMATION_EAT && isHoldingFood()) {
             eatingTicks++;
             eatItem(this.getHeldItem(Hand.MAIN_HAND), 3);
@@ -1381,7 +1396,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 }
             }
         }
-        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
+        if (!world.isRemote && this.getRatStatus() == RatStatus.IDLE && !isInWheel() && this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRNG().nextInt(350) == 0 && this.shouldNotIdleAnimation()) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
         }
         if (!world.isRemote && this.getMonsterOwnerID() != null && this.getMonsterOwner() instanceof ISummonsRats && this.getMonsterOwner() instanceof MobEntity) {
@@ -2060,7 +2075,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean canMove() {
-        return this.diggingPos == null && !this.isSitting() && this.getCommand().freeMove && !this.isChild();
+        return this.diggingPos == null && !this.isSitting() && !this.isInWheel() && this.getCommand().freeMove && !this.isChild();
     }
 
     public boolean isInCage() {
@@ -2923,8 +2938,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public boolean holdsItemInHandUpgrade() {
         boolean bool = forEachUpgradeBool((stack) -> stack.shouldHoldItemInHands(this), false);
 
-        return bool || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)
-                || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BOW) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CROSSBOW);
+        return !isInWheel() && (bool || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_PLATTER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_MINER_ORE) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FARMER) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_FISHERMAN) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_SHEARS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT)
+                || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_BOW) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CROSSBOW));
     }
 
     public boolean shouldNotIdleAnimation() {
@@ -3404,4 +3419,5 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public int getYNavSize() {
         return 1;
     }
+
 }

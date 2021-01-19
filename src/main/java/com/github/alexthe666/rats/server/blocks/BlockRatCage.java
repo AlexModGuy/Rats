@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageWheel;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.block.Block;
@@ -112,6 +113,9 @@ public class BlockRatCage extends Block {
         return super.getStateForPlacement(context).with(NORTH, Integer.valueOf(this.canFenceConnectTo(blockstate, false, Direction.SOUTH))).with(EAST, Integer.valueOf(this.canFenceConnectTo(blockstate1, false, Direction.WEST))).with(SOUTH, Integer.valueOf(this.canFenceConnectTo(blockstate2, false, Direction.NORTH))).with(WEST, Integer.valueOf(this.canFenceConnectTo(blockstate3, false, Direction.EAST)));
     }
 
+    // 0 = not a rat cage
+    //1 = rat cage
+    //2 = rat tube
     public int canFenceConnectTo(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
         if (p_220111_1_.getBlock() instanceof BlockRatTube) {
             return 2;
@@ -165,6 +169,18 @@ public class BlockRatCage extends Block {
                     decorated = decorated.with(NORTH, pre.get(NORTH)).with(EAST, pre.get(EAST)).with(SOUTH, pre.get(SOUTH)).with(WEST, pre.get(WEST)).with(UP, pre.get(UP)).with(DOWN, pre.get(DOWN));
                     worldIn.setBlockState(pos, decorated, 3);
                     TileEntityRatCageBreedingLantern te = new TileEntityRatCageBreedingLantern();
+                    ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1);
+                    te.setContainedItem(added);
+                    worldIn.setTileEntity(pos, te);
+                    if (!playerIn.isCreative()) {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                } else    if (playerIn.getHeldItem(hand).getItem() == RatsItemRegistry.RAT_WHEEL) {
+                    BlockState pre = worldIn.getBlockState(pos);
+                    BlockState decorated = RatsBlockRegistry.RAT_CAGE_WHEEL.getDefaultState().with(BlockRatCageDecorated.FACING, limitedFacing);
+                    decorated = decorated.with(NORTH, pre.get(NORTH)).with(EAST, pre.get(EAST)).with(SOUTH, pre.get(SOUTH)).with(WEST, pre.get(WEST)).with(UP, pre.get(UP)).with(DOWN, pre.get(DOWN));
+                    worldIn.setBlockState(pos, decorated, 3);
+                    TileEntityRatCageWheel te = new TileEntityRatCageWheel();
                     ItemStack added = new ItemStack(playerIn.getHeldItem(hand).getItem(), 1);
                     te.setContainedItem(added);
                     worldIn.setTileEntity(pos, te);

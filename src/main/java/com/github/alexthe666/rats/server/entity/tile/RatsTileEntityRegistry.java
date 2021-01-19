@@ -22,6 +22,7 @@ public class RatsTileEntityRegistry {
     public static TileEntityType<TileEntityTrashCan> TRASH_CAN = registerTileEntity(TileEntityType.Builder.create(TileEntityTrashCan::new, RatsBlockRegistry.TRASH_CAN), "trash_can");
     public static TileEntityType<TileEntityRatAttractor> RAT_ATTRACTOR = registerTileEntity(TileEntityType.Builder.create(TileEntityRatAttractor::new, RatsBlockRegistry.RAT_ATTRACTOR), "rat_attractor");
     public static TileEntityType<TileEntityRatQuarry> RAT_QUARRY = registerTileEntity(TileEntityType.Builder.create(TileEntityRatQuarry::new, RatsBlockRegistry.RAT_QUARRY), "rat_quarry");
+    public static TileEntityType<TileEntityRatCageWheel> RAT_CAGE_WHEEL = registerTileEntity(TileEntityType.Builder.create(TileEntityRatCageWheel::new, RatsBlockRegistry.RAT_CAGE_WHEEL), "rat_cage_wheel");
 
     public static TileEntityType registerTileEntity(TileEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(RatsMod.MODID, entityName);

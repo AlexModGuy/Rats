@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.render.tile;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.server.blocks.BlockAutoCurdler;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageDecorated;
+import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageWheel;
 import com.github.alexthe666.rats.server.items.ItemRatHammock;
 import com.github.alexthe666.rats.server.items.ItemRatIgloo;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
@@ -25,11 +26,13 @@ public class RenderRatCageDecorated extends TileEntityRenderer<TileEntityRatCage
     private static final ModelRatWaterBottle MODEL_RAT_WATER_BOTTLE = new ModelRatWaterBottle();
     private static final ModelRatSeedBowl MODEL_RAT_SEED_BOWL = new ModelRatSeedBowl();
     private static final ModelRatBreedingLantern MODEL_RAT_BREEDING_LANTERN = new ModelRatBreedingLantern();
+    private static final ModelRatWheel MODEL_RAT_WHEEL = new ModelRatWheel();
     private static final RenderType TEXTURE_RAT_IGLOO = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_igloo.png"));
     private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_hammock_0.png"));
     private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_water_bottle.png"));
     private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_seed_bowl.png"));
     private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_breeding_lantern.png"));
+    private static final RenderType TEXTURE_RAT_WHEEL = RenderType.getEntityTranslucent(new ResourceLocation("rats:textures/model/rat_wheel.png"));
 
     public RenderRatCageDecorated(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
@@ -78,6 +81,14 @@ public class RenderRatCageDecorated extends TileEntityRenderer<TileEntityRatCage
         if (containedItem.getItem() == RatsItemRegistry.RAT_SEED_BOWL) {
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RAT_SEED_BOWL);
             MODEL_RAT_SEED_BOWL.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+
+        }
+        if (containedItem.getItem() == RatsItemRegistry.RAT_WHEEL) {
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(TEXTURE_RAT_WHEEL);
+            if(entity instanceof TileEntityRatCageWheel){
+                MODEL_RAT_WHEEL.animate((TileEntityRatCageWheel)entity, partialTicks);
+            }
+            MODEL_RAT_WHEEL.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
 
         }
         if (containedItem.getItem() == RatsItemRegistry.RAT_BREEDING_LANTERN) {
