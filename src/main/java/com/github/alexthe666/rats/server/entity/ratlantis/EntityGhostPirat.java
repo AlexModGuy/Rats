@@ -16,6 +16,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
@@ -58,7 +59,7 @@ public class EntityGhostPirat extends EntityRat implements IPirat, IRatlantean {
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false, new Predicate<LivingEntity>() {
             public boolean apply(@Nullable LivingEntity entity) {
-                return !(entity instanceof IRatlantean) && entity instanceof LivingEntity && !entity.isOnSameTeam(EntityGhostPirat.this);
+                return !(entity instanceof IRatlantean) && entity instanceof LivingEntity && !entity.isOnSameTeam(EntityGhostPirat.this) && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(entity);
             }
         }));
         this.targetSelector.addGoal(2, new RatAIHurtByTarget(this));

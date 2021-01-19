@@ -112,9 +112,14 @@ public class BlockRatlantisPortal extends ContainerBlock implements IUsesTEISR {
 
     public void placeInPortal(Entity entity, ServerWorld serverWorld) {
         entity.setMotion(0, 0, 0);
-        serverWorld.setBlockState(new BlockPos(entity.getPositionVec()), Blocks.AIR.getDefaultState());
-        serverWorld.setBlockState(new BlockPos(entity.getPositionVec()).up(), Blocks.AIR.getDefaultState());
         BlockPos portalBottom = new BlockPos(entity.getPositionVec()).add(1, -1, 1);
+        for(int i = -1; i <= 1; i++){
+            for(int j = 0; j <= 3; j++){
+                for(int k = -1; k <= 1; k++){
+                    serverWorld.setBlockState(portalBottom.add(i, j, k), Blocks.AIR.getDefaultState());
+                }
+            }
+        }
         for (BlockPos pos : BlockPos.getAllInBox(portalBottom.add(-2, 0, -2), portalBottom.add(2, 0, 2)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
             serverWorld.setBlockState(pos, RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
             serverWorld.setBlockState(pos.up(4), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.getDefaultState());
