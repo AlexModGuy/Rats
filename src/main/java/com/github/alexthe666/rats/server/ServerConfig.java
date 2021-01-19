@@ -56,10 +56,6 @@ public class ServerConfig {
     public final ForgeConfigSpec.IntValue defaultRatRadius;
     public final ForgeConfigSpec.IntValue maxRatRadius;
     public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
-    public ForgeConfigSpec.ConfigValue<List<? extends String>> ratSpawnBiomes;
-    public ForgeConfigSpec.ConfigValue<List<? extends String>> piperSpawnBiomes;
-    public ForgeConfigSpec.ConfigValue<List<? extends String>> demonRatSpawnBiomes;
-
 
     public final ForgeConfigSpec.DoubleValue archeologistHatSpawnRate;
     public final ForgeConfigSpec.DoubleValue ratlanteanAutomatonHealth;
@@ -120,104 +116,6 @@ public class ServerConfig {
         this.defaultRatRadius = buildInt(builder, "Default Rat Radius", "all", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
         this.maxRatRadius = buildInt(builder, "Max Rat Radius", "all", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
         this.garbageSpawnRate = buildDouble(builder, "Garbage Pile Spawn Chance", "all", 0.15F, 0F, 1.0F, "Percentage for every random tick to spawn a rat for a garbage pile.");
-        ratSpawnBiomes = builder
-                .comment("Whitelisted rat spawn biomes. Use the format like \"minecraft:plains\" or \"rats:ratlantis\" ")
-                .defineList("ratSpawnBiomes", Lists.newArrayList("minecraft:giant_tree_taiga_hills",
-                        "minecraft:snowy_taiga_mountains",
-                        "minecraft:frozen_river",
-                        "minecraft:snowy_taiga",
-                        "minecraft:forest",
-                        "minecraft:gravelly_mountains",
-                        "minecraft:dark_forest_hills",
-                        "minecraft:savanna_plateau",
-                        "minecraft:wooded_badlands_plateau",
-                        "minecraft:ice_spikes",
-                        "minecraft:snowy_beach",
-                        "minecraft:giant_tree_taiga",
-                        "minecraft:river",
-                        "minecraft:beach",
-                        "minecraft:desert_lakes",
-                        "minecraft:taiga",
-                        "minecraft:bamboo_jungle_hills",
-                        "minecraft:jungle",
-                        "minecraft:wooded_hills",
-                        "minecraft:modified_badlands_plateau",
-                        "minecraft:modified_jungle",
-                        "minecraft:modified_gravelly_mountains",
-                        "minecraft:jungle_hills",
-                        "minecraft:tall_birch_forest",
-                        "minecraft:sunflower_plains",
-                        "minecraft:wooded_mountains",
-                        "minecraft:desert_hills",
-                        "minecraft:shattered_savanna",
-                        "minecraft:taiga_mountains",
-                        "minecraft:stone_shore",
-                        "minecraft:mountains",
-                        "minecraft:swamp",
-                        "minecraft:birch_forest",
-                        "minecraft:mountain_edge",
-                        "minecraft:badlands_plateau",
-                        "minecraft:flower_forest",
-                        "minecraft:birch_forest_hills",
-                        "minecraft:modified_wooded_badlands_plateau",
-                        "minecraft:desert",
-                        "minecraft:eroded_badlands",
-                        "minecraft:modified_jungle_edge",
-                        "minecraft:snowy_taiga_hills",
-                        "minecraft:dark_forest",
-                        "minecraft:snowy_tundra",
-                        "minecraft:snowy_mountains",
-                        "minecraft:jungle_edge",
-                        "minecraft:bamboo_jungle",
-                        "minecraft:taiga_hills",
-                        "minecraft:savanna",
-                        "minecraft:giant_spruce_taiga_hills",
-                        "minecraft:giant_spruce_taiga",
-                        "minecraft:swamp_hills",
-                        "minecraft:badlands",
-                        "minecraft:shattered_savanna_plateau",
-                        "minecraft:plains"), o -> o instanceof String);
-        piperSpawnBiomes = builder
-                .comment("Whitelisted piper spawn biomes. Use the format like \"minecraft:plains\" or \"rats:ratlantis\" ")
-                .defineList("piperSpawnBiomes", Lists.newArrayList("minecraft:giant_tree_taiga_hills",
-                        "minecraft:giant_tree_taiga_hills",
-                        "minecraft:snowy_taiga_mountains",
-                        "minecraft:frozen_river",
-                        "minecraft:snowy_taiga",
-                        "minecraft:forest",
-                        "minecraft:gravelly_mountains",
-                        "minecraft:dark_forest_hills",
-                        "minecraft:wooded_badlands_plateau",
-                        "minecraft:ice_spikes",
-                        "minecraft:snowy_beach",
-                        "minecraft:giant_tree_taiga",
-                        "minecraft:taiga",
-                        "minecraft:wooded_hills",
-                        "minecraft:modified_gravelly_mountains",
-                        "minecraft:tall_birch_forest",
-                        "minecraft:wooded_mountains",
-                        "minecraft:taiga_mountains",
-                        "minecraft:mountains",
-                        "minecraft:swamp",
-                        "minecraft:birch_forest",
-                        "minecraft:flower_forest",
-                        "minecraft:birch_forest_hills",
-                        "minecraft:snowy_taiga_hills",
-                        "minecraft:dark_forest",
-                        "minecraft:snowy_tundra",
-                        "minecraft:snowy_mountains",
-                        "minecraft:taiga_hills",
-                        "minecraft:giant_spruce_taiga_hills",
-                        "minecraft:giant_spruce_taiga",
-                        "minecraft:swamp_hills",
-                        "minecraft:shattered_savanna_plateau"), o -> o instanceof String);
-        demonRatSpawnBiomes = builder
-                .comment("Whitelisted demon rat spawn biomes. Use the format like \"minecraft:plains\" or \"rats:ratlantis\" ")
-                .defineList("demonRatSpawnBiomes", Lists.newArrayList(
-                        "minecraft:basalt_deltas",
-                        "minecraft:nether_wastes",
-                        "minecraft:crimson_forest",
-                        "minecraft:warped_forest"), o -> o instanceof String);
         this.archeologistHatSpawnRate = buildDouble(builder, "Archeologist Hat Spawn Rate", "all", 0.12F, 0F, 1F, "percent chance for a husk or jungle skeleton to spawn with an archeologist hat");
         this.ratlanteanAutomatonHealth = buildDouble(builder, "Ratlantean Automaton Max Health", "all", 600F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Max Health");
         this.ratlanteanAutomatonAttack = buildDouble(builder, "Ratlantean Automaton Attack Damage", "all", 6F, 0F, Float.MAX_VALUE, "Ratlantean Automaton Attack Damage");

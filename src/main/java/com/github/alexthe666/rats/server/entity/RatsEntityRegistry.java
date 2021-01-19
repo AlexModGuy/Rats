@@ -37,8 +37,8 @@ public class RatsEntityRegistry {
     static {
 
 
-        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatSpawner::func_223325_c);
-        EntitySpawnPlacementRegistry.register(RAT_SPAWNER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::canEntityTypeSpawn);
+        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRat::canEntityTypeSpawn);
+        EntitySpawnPlacementRegistry.register(RAT_SPAWNER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityRatSpawner::func_223325_c);
         EntitySpawnPlacementRegistry.register(PIED_PIPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityIllagerPiper::canSpawnOn);
         EntitySpawnPlacementRegistry.register(DEMON_RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityDemonRat::canDemonRatSpawnOn);
 

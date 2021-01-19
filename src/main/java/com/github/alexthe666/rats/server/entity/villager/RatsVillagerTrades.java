@@ -52,6 +52,7 @@ public class RatsVillagerTrades {
                         new ItemsForEmeraldsTrade(RatsBlockRegistry.GARBAGE_PILE, 5, 4, 5, 3),
                         new ItemsForEmeraldsTrade(RatsBlockRegistry.RAT_CAGE, 2, 4, 4, 5),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.PLAGUE_DOCTOR_MASK, 15, 1, 2, 10),
+                        new ItemsForEmeraldsTrade(RatsItemRegistry.EXTERMINATOR_HAT, 5, 1, 2, 10),
                         new ItemsForEmeraldsTrade(RatsItemRegistry.RAT_SKULL, 3, 1, 15, 10),
                 },
                 //Only 3 of these appears per plague doctor

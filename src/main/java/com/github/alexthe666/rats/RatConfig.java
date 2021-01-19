@@ -56,102 +56,7 @@ public class RatConfig {
     public static int defaultRatRadius = 16;
     public static int maxRatRadius = 32;
     public static double garbageSpawnRate = 0.15F;
-    public static List<? extends String> ratSpawnBiomes = Lists.newArrayList(
-            "minecraft:giant_tree_taiga_hills",
-            "minecraft:snowy_taiga_mountains",
-            "minecraft:frozen_river",
-            "minecraft:snowy_taiga",
-            "minecraft:forest",
-            "minecraft:gravelly_mountains",
-            "minecraft:dark_forest_hills",
-            "minecraft:savanna_plateau",
-            "minecraft:wooded_badlands_plateau",
-            "minecraft:ice_spikes",
-            "minecraft:snowy_beach",
-            "minecraft:giant_tree_taiga",
-            "minecraft:river",
-            "minecraft:beach",
-            "minecraft:desert_lakes",
-            "minecraft:taiga",
-            "minecraft:bamboo_jungle_hills",
-            "minecraft:jungle",
-            "minecraft:wooded_hills",
-            "minecraft:modified_badlands_plateau",
-            "minecraft:modified_jungle",
-            "minecraft:modified_gravelly_mountains",
-            "minecraft:jungle_hills",
-            "minecraft:tall_birch_forest",
-            "minecraft:sunflower_plains",
-            "minecraft:wooded_mountains",
-            "minecraft:desert_hills",
-            "minecraft:shattered_savanna",
-            "minecraft:taiga_mountains",
-            "minecraft:stone_shore",
-            "minecraft:mountains",
-            "minecraft:swamp",
-            "minecraft:birch_forest",
-            "minecraft:mountain_edge",
-            "minecraft:badlands_plateau",
-            "minecraft:flower_forest",
-            "minecraft:birch_forest_hills",
-            "minecraft:modified_wooded_badlands_plateau",
-            "minecraft:desert",
-            "minecraft:eroded_badlands",
-            "minecraft:modified_jungle_edge",
-            "minecraft:snowy_taiga_hills",
-            "minecraft:dark_forest",
-            "minecraft:snowy_tundra",
-            "minecraft:snowy_mountains",
-            "minecraft:jungle_edge",
-            "minecraft:bamboo_jungle",
-            "minecraft:taiga_hills",
-            "minecraft:savanna",
-            "minecraft:giant_spruce_taiga_hills",
-            "minecraft:giant_spruce_taiga",
-            "minecraft:swamp_hills",
-            "minecraft:badlands",
-            "minecraft:shattered_savanna_plateau",
-            "minecraft:plains"
-    );
-    public static List<? extends String> piperSpawnBiomes = Lists.newArrayList(
-            "minecraft:giant_tree_taiga_hills",
-            "minecraft:snowy_taiga_mountains",
-            "minecraft:frozen_river",
-            "minecraft:snowy_taiga",
-            "minecraft:forest",
-            "minecraft:gravelly_mountains",
-            "minecraft:dark_forest_hills",
-            "minecraft:wooded_badlands_plateau",
-            "minecraft:ice_spikes",
-            "minecraft:snowy_beach",
-            "minecraft:giant_tree_taiga",
-            "minecraft:taiga",
-            "minecraft:wooded_hills",
-            "minecraft:modified_gravelly_mountains",
-            "minecraft:tall_birch_forest",
-            "minecraft:wooded_mountains",
-            "minecraft:taiga_mountains",
-            "minecraft:mountains",
-            "minecraft:swamp",
-            "minecraft:birch_forest",
-            "minecraft:flower_forest",
-            "minecraft:birch_forest_hills",
-            "minecraft:snowy_taiga_hills",
-            "minecraft:dark_forest",
-            "minecraft:snowy_tundra",
-            "minecraft:snowy_mountains",
-            "minecraft:taiga_hills",
-            "minecraft:giant_spruce_taiga_hills",
-            "minecraft:giant_spruce_taiga",
-            "minecraft:swamp_hills",
-            "minecraft:shattered_savanna_plateau"
-    );
-    public static List<? extends String> demonRatSpawnBiomes = Lists.newArrayList(
-            "minecraft:basalt_deltas",
-            "minecraft:nether_wastes",
-            "minecraft:crimson_forest",
-            "minecraft:warped_forest"
-    );
+
     public static int maxRatPathingNodes = 5000;
     public static int ratsPathfindingThreads = 3;
 
@@ -215,9 +120,6 @@ public class RatConfig {
             garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
             ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
             piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
-            ratSpawnBiomes = ConfigHolder.SERVER.ratSpawnBiomes.get();
-            piperSpawnBiomes = ConfigHolder.SERVER.piperSpawnBiomes.get();
-            demonRatSpawnBiomes = ConfigHolder.SERVER.demonRatSpawnBiomes.get();
         }catch (Exception e){
             RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
             e.printStackTrace();

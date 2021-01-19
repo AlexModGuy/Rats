@@ -14,9 +14,13 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,29 +90,6 @@ public class RatsMod {
         RatsWorldRegistry.init();
     }
 
-    @SubscribeEvent
-    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
-        if (RatConfig.spawnRats) {
-           if(RatConfig.ratSpawnBiomes.contains(event.getName().toString())){
-               if (RatConfig.ratsSpawnLikeMonsters) {
-                   event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
-               }else{
-                   event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
-               }
-           }
-        }
-        if (RatConfig.spawnPiper) {
-            if(RatConfig.piperSpawnBiomes.contains(event.getName().toString())) {
-                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
-            }
-        }
-        if (RatConfig.spawnDemonRats) {
-            if(RatConfig.demonRatSpawnBiomes.contains(event.getName().toString())) {
-                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
-            }
-        }
-    }
-
     public static <MSG> void sendMSGToServer(MSG message) {
         NETWORK_WRAPPER.sendToServer(message);
     }
@@ -122,6 +103,36 @@ public class RatsMod {
     public static <MSG> void sendNonLocal(MSG msg, ServerPlayerEntity player) {
         if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getServerOwner())) {
             NETWORK_WRAPPER.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+        }
+    }
+
+    public static ItemGroup getRatlantisTab() {
+        return RATLANTIS_LOADED ? ratlantisTab == null ? ratlantisTab = new TabRatlantis() : ratlantisTab : TAB;
+    }
+
+    @SubscribeEvent
+    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
+        if (event.getName() != null) {
+            RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, event.getName());
+            if (RatConfig.spawnRats) {
+                if (BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.OVERWORLD) && !BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.WATER) && !BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.MUSHROOM)) {
+                    if (RatConfig.ratsSpawnLikeMonsters) {
+                        event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
+                    } else {
+                        event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
+                    }
+                }
+            }
+            if (RatConfig.spawnPiper) {
+                if (BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.OVERWORLD) && !BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.WATER) && !BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.MUSHROOM)) {
+                    event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
+                }
+            }
+            if (RatConfig.spawnDemonRats) {
+                if (BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER)) {
+                    event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
+                }
+            }
         }
     }
 
@@ -141,9 +152,5 @@ public class RatsMod {
 
     private void setupClient(FMLClientSetupEvent event) {
         PROXY.preInit();
-    }
-
-    public static ItemGroup getRatlantisTab(){
-        return RATLANTIS_LOADED ? ratlantisTab == null ? ratlantisTab = new TabRatlantis() : ratlantisTab : TAB;
     }
 }
