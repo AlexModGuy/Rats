@@ -76,6 +76,8 @@ public class RatsUpgradeConflictRegistry {
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT, MOUNT_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatlantisItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT, MOUNT_CONFLICTS);
         REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT, MOUNT_CONFLICTS);
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_BOW, new Item[]{RatsItemRegistry.RAT_UPGRADE_CROSSBOW});
+        REGISTERED_CONFLICTS.put(RatsItemRegistry.RAT_UPGRADE_CROSSBOW, new Item[]{RatsItemRegistry.RAT_UPGRADE_BOW});
     }
 
     public static boolean doesConflict(Item first, Item second) {

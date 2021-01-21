@@ -6,7 +6,6 @@ package com.github.alexthe666.rats.server.pathfinding.pathjobs;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
-import com.github.alexthe666.rats.server.blocks.BlockRatQuarry;
 import com.github.alexthe666.rats.server.blocks.BlockRatQuarryPlatform;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
 import com.github.alexthe666.rats.server.pathfinding.*;
@@ -15,7 +14,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.state.properties.Half;
@@ -31,6 +29,8 @@ import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.github.alexthe666.rats.server.pathfinding.PathfindingConstants.*;
 
 /**
@@ -87,6 +87,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
     private boolean circumventSizeCheck = false;
     private IPassabilityNavigator passabilityNavigator;
     private float jumpHeight = 1.3f;
+    public AtomicBoolean isNotInterrupted = new AtomicBoolean(true);
 
     /**
      * AbstractPathJob constructor.
@@ -410,7 +411,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
         double bestNodeResultScore = Double.MAX_VALUE;
 
         while (!nodesOpen.isEmpty()) {
-            if (Thread.currentThread().isInterrupted()) {
+            if (!isNotInterrupted.get()) {
                 return null;
             }
 

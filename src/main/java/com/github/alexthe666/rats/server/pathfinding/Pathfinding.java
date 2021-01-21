@@ -277,7 +277,7 @@ public final class Pathfinding {
         public Thread newThread(final Runnable runnable) {
             final Thread thread = new Thread(runnable, "Rats Pathfinding Worker #" + (id++));
             thread.setDaemon(true);
-
+            thread.setPriority(Thread.NORM_PRIORITY);
             thread.setUncaughtExceptionHandler((thread1, throwable) -> RatsMod.LOGGER.error("Rats Pathfinding Thread errored! ", throwable));
             return thread;
         }
