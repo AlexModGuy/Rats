@@ -48,6 +48,10 @@ public class GuiRadiusStaff extends Screen {
         };
     }
 
+    public boolean isPauseScreen() {
+        return false;
+    }
+
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity p_228187_5_) {
         float rotate = (Minecraft.getInstance().getRenderPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 2F;
         float f = (float)Math.atan((double)(mouseX / 40.0F));
@@ -89,7 +93,6 @@ public class GuiRadiusStaff extends Screen {
         p_228187_5_.rotationPitch = f4;
         p_228187_5_.prevRotationYawHead = f5;
         p_228187_5_.rotationYawHead = f6;
-        RenderSystem.popMatrix();
         RenderSystem.popMatrix();
     }
 

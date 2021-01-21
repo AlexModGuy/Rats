@@ -87,6 +87,10 @@ public class GuiCheeseStaff extends Screen {
         this.buttons.get(4).visible = rat.getDepositPos() != null || rat.getPickupPos() != null;
     }
 
+    public boolean isPauseScreen() {
+        return false;
+    }
+
     private String getPosName() {
         if (ClientProxy.refrencedPos != null) {
             BlockState state = rat.world.getBlockState(ClientProxy.refrencedPos);
