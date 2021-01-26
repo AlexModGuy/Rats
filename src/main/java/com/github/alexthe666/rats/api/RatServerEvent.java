@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.api;
 
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event;
 
 /*

@@ -14,7 +14,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
 
 public class ParticleBlackDeath extends SpriteTexturedParticle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("rats:textures/particle/black_death.png");

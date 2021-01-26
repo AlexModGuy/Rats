@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class FlyingRatPathNavigate extends FlyingPathNavigator {

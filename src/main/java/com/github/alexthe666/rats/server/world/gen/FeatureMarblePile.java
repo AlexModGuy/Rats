@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
@@ -16,7 +15,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
 

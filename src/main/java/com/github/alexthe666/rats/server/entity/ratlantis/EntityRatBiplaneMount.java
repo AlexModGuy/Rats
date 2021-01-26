@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
-import com.github.alexthe666.rats.server.entity.*;
+import com.github.alexthe666.rats.server.entity.EntityRat;
+import com.github.alexthe666.rats.server.entity.EntityRatMountBase;
+import com.github.alexthe666.rats.server.entity.RatCommand;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.block.BlockState;

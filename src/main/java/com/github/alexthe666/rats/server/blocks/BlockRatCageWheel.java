@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.blocks;
 
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageBreedingLantern;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatCageWheel;
 import com.github.alexthe666.rats.server.items.IRatCageDecoration;
 import net.minecraft.block.Block;

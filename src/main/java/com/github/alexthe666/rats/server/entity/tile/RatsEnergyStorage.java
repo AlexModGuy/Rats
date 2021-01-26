@@ -1,11 +1,9 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.IItemHandler;
 
 public class RatsEnergyStorage implements IEnergyStorage, INBTSerializable<CompoundNBT> {
 

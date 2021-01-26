@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.villager;
 
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
-import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -13,7 +12,6 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.entity.villager.IVillagerDataHolder;
 import net.minecraft.item.*;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
@@ -27,7 +25,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 

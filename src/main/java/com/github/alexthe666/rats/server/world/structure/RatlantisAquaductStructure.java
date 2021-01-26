@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world.structure;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;

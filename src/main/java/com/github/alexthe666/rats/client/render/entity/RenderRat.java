@@ -1,10 +1,10 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelBiplane;
 import com.github.alexthe666.rats.client.model.ModelPinkie;
 import com.github.alexthe666.rats.client.model.ModelRat;
-import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatBaronPlane;
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatBiplaneMount;

@@ -1,23 +1,12 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
-import com.github.alexthe666.citadel.server.item.CustomToolMaterial;
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
-import com.github.alexthe666.rats.server.misc.RatsSoundRegistry;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.SoundEvents;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RatlantisItemRegistry {

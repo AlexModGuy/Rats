@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ai.PiratBoatPathNavigate;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeRegistry;

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;

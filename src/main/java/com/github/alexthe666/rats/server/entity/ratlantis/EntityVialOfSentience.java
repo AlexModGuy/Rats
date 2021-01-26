@@ -1,8 +1,5 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.entity.ratlantis.EntityFeralRatlantean;
-import com.github.alexthe666.rats.server.entity.ratlantis.EntityNeoRatlantean;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
