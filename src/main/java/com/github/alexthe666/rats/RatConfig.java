@@ -1,9 +1,6 @@
 package com.github.alexthe666.rats;
 
-import com.google.common.collect.Lists;
 import net.minecraftforge.fml.config.ModConfig;
-
-import java.util.List;
 
 public class RatConfig {
     public static boolean spawnRats = true;

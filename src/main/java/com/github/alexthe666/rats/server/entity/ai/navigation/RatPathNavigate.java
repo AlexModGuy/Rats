@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.navigation;
 
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
-import com.github.alexthe666.rats.server.entity.EntityRat;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;

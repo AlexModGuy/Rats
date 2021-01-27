@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.recipes;
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;

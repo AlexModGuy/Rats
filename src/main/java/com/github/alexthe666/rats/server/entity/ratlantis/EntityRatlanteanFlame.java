@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

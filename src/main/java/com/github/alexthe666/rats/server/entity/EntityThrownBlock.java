@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatlantisConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

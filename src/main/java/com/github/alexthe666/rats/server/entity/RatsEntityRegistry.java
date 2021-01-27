@@ -1,12 +1,10 @@
 package com.github.alexthe666.rats.server.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.ratlantis.*;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 

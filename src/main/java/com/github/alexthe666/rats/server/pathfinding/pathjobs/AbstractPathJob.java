@@ -390,7 +390,9 @@ public abstract class AbstractPathJob implements Callable<Path> {
     @Override
     public final Path call() {
         try {
-            return search();
+            if (!Thread.interrupted()) {
+                return search();
+            }
         } catch (final Exception e) {
             // Log everything, so exceptions of the pathfinding-thread show in Log
             RatsMod.LOGGER.warn("Pathfinding Exception", e);
@@ -406,12 +408,15 @@ public abstract class AbstractPathJob implements Callable<Path> {
      */
     @Nullable
     protected Path search() {
+        if (Thread.interrupted()) {
+            return null;
+        }
         Node bestNode = getAndSetupStartNode();
 
         double bestNodeResultScore = Double.MAX_VALUE;
 
         while (!nodesOpen.isEmpty()) {
-            if (!isNotInterrupted.get()) {
+            if (Thread.interrupted()) {
                 return null;
             }
 

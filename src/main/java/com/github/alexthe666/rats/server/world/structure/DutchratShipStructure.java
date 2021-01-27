@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world.structure;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -11,7 +10,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.ShipwreckPieces;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityRattlingGun;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;

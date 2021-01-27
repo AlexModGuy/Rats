@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity.ai.navigation;
 import com.github.alexthe666.rats.server.blocks.BlockRatCage;
 import com.github.alexthe666.rats.server.blocks.BlockRatHole;
 import com.github.alexthe666.rats.server.blocks.BlockRatTube;
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;

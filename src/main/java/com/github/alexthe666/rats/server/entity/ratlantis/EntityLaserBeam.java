@@ -1,8 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatlantisConfig;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.enchantment.EnchantmentHelper;

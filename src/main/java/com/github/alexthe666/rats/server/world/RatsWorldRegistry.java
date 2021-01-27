@@ -1,32 +1,22 @@
 package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.world.structure.*;
-import net.minecraft.block.Blocks;
-import net.minecraft.tags.BlockTags;
+import com.github.alexthe666.rats.server.world.structure.DutchratShipStructure;
+import com.github.alexthe666.rats.server.world.structure.RatlantisRuinsStructure;
+import com.github.alexthe666.rats.server.world.structure.RunwayStructure;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.FuzzedBiomeMagnifier;
 import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
-import net.minecraft.world.gen.feature.structure.OceanRuinConfig;
-import net.minecraft.world.gen.feature.structure.OceanRuinStructure;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.NoiseSettings;
-import net.minecraft.world.gen.settings.ScalingSettings;
-import net.minecraft.world.gen.settings.SlideSettings;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import java.util.Locale;
-import java.util.OptionalLong;
 
 
 public class RatsWorldRegistry {

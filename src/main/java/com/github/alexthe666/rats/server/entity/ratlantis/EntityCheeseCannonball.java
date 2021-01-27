@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
 import com.github.alexthe666.rats.server.entity.RatExplosion;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.items.RatsItemRegistry;
 import net.minecraft.entity.EntityType;

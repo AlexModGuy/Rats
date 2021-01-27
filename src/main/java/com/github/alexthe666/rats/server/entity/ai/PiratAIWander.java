@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai;
 
-import com.github.alexthe666.rats.server.entity.ratlantis.EntityPirat;
 import com.github.alexthe666.rats.server.entity.RatUtils;
+import com.github.alexthe666.rats.server.entity.ratlantis.EntityPirat;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;

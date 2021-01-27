@@ -5,7 +5,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 
 public class RatlantisStructureRegistry {
 

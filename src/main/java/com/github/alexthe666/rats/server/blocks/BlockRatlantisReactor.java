@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisPortal;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlantisReactor;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

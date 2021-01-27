@@ -4,10 +4,10 @@ import com.github.alexthe666.rats.client.model.ModelRatFish;
 import com.github.alexthe666.rats.server.entity.EntityRatfish;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nullable;
 

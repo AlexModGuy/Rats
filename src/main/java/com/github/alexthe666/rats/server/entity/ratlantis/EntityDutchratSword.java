@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ratlantis;
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.MonsterEntity;

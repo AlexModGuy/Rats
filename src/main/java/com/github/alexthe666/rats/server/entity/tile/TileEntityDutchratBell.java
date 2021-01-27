@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityDutchrat;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;

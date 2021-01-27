@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.world.gen;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;

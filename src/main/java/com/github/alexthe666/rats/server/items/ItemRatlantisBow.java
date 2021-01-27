@@ -1,9 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlantisArrow;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.projectile.AbstractArrowEntity;

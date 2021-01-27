@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.tile;
 
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;

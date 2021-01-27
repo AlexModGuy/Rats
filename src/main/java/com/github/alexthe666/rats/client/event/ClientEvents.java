@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatlantisConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.ModelStaticRat;
-import com.github.alexthe666.rats.client.render.entity.RenderRatProtector;
+import com.github.alexthe666.rats.client.render.PathRenderer;
 import com.github.alexthe666.rats.client.render.type.RatsRenderType;
 import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
@@ -20,9 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.ConfirmBackupScreen;
 import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,16 +36,13 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -275,7 +269,7 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorld(RenderWorldLastEvent event) {
         if(Pathfinding.isDebug()){
-            Pathfinding.debugDraw(event.getPartialTicks(), event.getMatrixStack());
+            PathRenderer.debugDraw(event.getPartialTicks(), event.getMatrixStack());
         }
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {

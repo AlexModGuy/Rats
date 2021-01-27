@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.api.RatClientEvent;
 import com.github.alexthe666.rats.client.model.ModelChristmasChest;
 import com.github.alexthe666.rats.client.model.ModelRat;
 import com.github.alexthe666.rats.server.blocks.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.blocks.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.items.ItemRatUpgradeBucket;
 import com.github.alexthe666.rats.server.items.RatlantisItemRegistry;
@@ -15,9 +14,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
@@ -29,6 +26,8 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.common.MinecraftForge;
 
 public class LayerRatHeldItem extends LayerRenderer<EntityRat, SegmentedModel<EntityRat>> {

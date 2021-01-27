@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.blocks;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.ratlantis.EntityRatlanteanAutomaton;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.server.entity.tile.TileEntityRatlanteanAutomatonHead;
 import com.google.common.base.Predicate;
