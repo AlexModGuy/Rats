@@ -62,7 +62,7 @@ public class ItemGenericFood extends Item {
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
-        if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES) {
+        if (this == RatsItemRegistry.CONFIT_BYALDI || this == RatsItemRegistry.POTATO_KNISHES || (this instanceof ItemPlagueHealer)) {
             if (LivingEntity instanceof PlayerEntity) {
                 PlayerEntity PlayerEntity = (PlayerEntity) LivingEntity;
                 PlayerEntity.getFoodStats().addStats(healAmount, saturation);

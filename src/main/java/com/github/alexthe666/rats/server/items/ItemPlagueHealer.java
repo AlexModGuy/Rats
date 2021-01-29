@@ -37,7 +37,7 @@ public class ItemPlagueHealer extends ItemGenericFood {
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
-        if (stack.getItem() == RatsItemRegistry.PLAGUE_STEW) {
+        if (stack.getItem() == RatsItemRegistry.PLAGUE_STEW && stack.getCount() == 1) {
             super.onItemUseFinish(stack, worldIn, LivingEntity);
             return new ItemStack(Items.BOWL);
         } else {

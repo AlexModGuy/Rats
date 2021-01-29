@@ -700,7 +700,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             for (int i = 0; i < nbttaglist.size(); ++i) {
                 CompoundNBT CompoundNBT = nbttaglist.getCompound(i);
                 int j = CompoundNBT.getByte("Slot") & 255;
-                if (j <= 4) {
+                if (j <= ratInventory.getSizeInventory()) {
                     ItemStack itemstack = ItemStack.read(CompoundNBT);
                     ratInventory.setInventorySlotContents(j, itemstack);
                 }
