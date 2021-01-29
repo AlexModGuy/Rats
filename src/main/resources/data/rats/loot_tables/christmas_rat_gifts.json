@@ -31,12 +31,17 @@
                 },
                 {
                     "type": "item",
-                    "name": "rats:rat_diamond",
-                    "weight": 35
+                    "name": "minecraft:diamond",
+                    "weight": 2
                 },
                 {
                     "type": "item",
-                    "name": "minecraft:diamond",
+                    "name": "minecraft:netherite_ingot",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:ancient_debris",
                     "weight": 1
                 },
                 {

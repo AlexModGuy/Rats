@@ -29,15 +29,26 @@ public class ItemPlagueHealer extends ItemGenericFood {
     }
 
     protected void onFoodEaten(ItemStack stack, World worldIn, PlayerEntity player) {
+
         if (player.isPotionActive(RatsMod.PLAGUE_POTION)) {
-            if (random.nextDouble() <= healChance) {
-                player.removePotionEffect(RatsMod.PLAGUE_POTION);
+
+            double chance = random.nextDouble();
+            boolean removeEffect = (chance <= healChance);
+            System.out.println("PLAGUE HEALER EATEN, chance: " + this.healChance + " compared to RNG: " + chance + " REMOVE:" + removeEffect);
+
+            if (removeEffect) {
+                boolean wasRemoved = player.removePotionEffect(RatsMod.PLAGUE_POTION);
+                System.out.println("PLAGUE HEALER EATEN and Effect REMOVED NOW success: " + wasRemoved);
             }
+        } else {
+            System.out.println("PLAGUE HEALER EATEN without Plage Effect active");
         }
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity LivingEntity) {
-        if (stack.getItem() == RatsItemRegistry.PLAGUE_STEW) {
+
+        if (stack.getItem() == RatsItemRegistry.PLAGUE_STEW && stack.getCount() == 1) {
+            System.out.println("PLAGUE HEALER STEW onItemFinish with Stack count 1 ");
             super.onItemUseFinish(stack, worldIn, LivingEntity);
             return new ItemStack(Items.BOWL);
         } else {

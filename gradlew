@@ -6,6 +6,9 @@
 ##
 ##############################################################################
 
+JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk180271.jdk/Contents/Home"
+
+
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
 PRG="$0"

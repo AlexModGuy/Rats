@@ -178,6 +178,7 @@ public class GuiCheeseStaff extends Screen {
         RenderSystem.popMatrix();
     }
 
+
     public boolean func_231177_au__() {
         return false;
     }

@@ -57,7 +57,7 @@ public class RatsMod {
             return new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC);
         }
     };
-    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static Effect CONFIT_BYALDI_POTION = new PotionConfitByaldi();
     public static Effect PLAGUE_POTION = new PotionPlague();
     public static boolean ICEANDFIRE_LOADED;

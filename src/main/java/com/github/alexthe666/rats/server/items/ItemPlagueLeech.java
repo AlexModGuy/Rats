@@ -30,6 +30,7 @@ public class ItemPlagueLeech extends Item {
         if (!playerIn.isCreative()) {
             playerIn.getHeldItem(handIn).shrink(1);
             playerIn.attackEntityFrom(DamageSource.CACTUS, 2);
+            System.out.println("PLAGUE LEECH onItemRightClick() damage from cactus dealt");
             if (playerIn.isPotionActive(RatsMod.PLAGUE_POTION) && worldIn.rand.nextBoolean()) {
                 playerIn.removePotionEffect(RatsMod.PLAGUE_POTION);
             }

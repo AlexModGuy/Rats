@@ -153,6 +153,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     };
     private static final SoundEvent[] CRAFTING_SOUNDS = new SoundEvent[]{SoundEvents.BLOCK_ANVIL_USE, SoundEvents.BLOCK_WOOD_BREAK, SoundEvents.ENTITY_LLAMA_EAT, SoundEvents.BLOCK_LADDER_HIT, SoundEvents.ENTITY_HORSE_SADDLE,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR};
+    public static final int NUMBER_OF_INVENTORY_SLOTS = 6;
     public float sitProgress;
     public float holdProgress;
     public float deadInTrapProgress;
@@ -624,15 +625,17 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (ratInventory != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < ratInventory.getSizeInventory(); ++i) {
+
                 ItemStack itemstack = ratInventory.getStackInSlot(i);
                 if (!itemstack.isEmpty()) {
-                    CompoundNBT CompoundNBT = new CompoundNBT();
-                    CompoundNBT.putByte("Slot", (byte) i);
-                    itemstack.write(CompoundNBT);
-                    nbttaglist.add(CompoundNBT);
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putByte("Slot", (byte) i);
+                    itemstack.write(compoundNBT);
+                    nbttaglist.add(compoundNBT);
                 }
             }
             compound.put("Items", nbttaglist);
+            System.out.println("SAVING RAT INVENTORY ALL ITEMS as NBT List: " + nbttaglist.toString());
         }
         compound.putInt("EatenItems", eatenItems);
         if (this.getPickupPos() != null) {
@@ -700,7 +703,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             for (int i = 0; i < nbttaglist.size(); ++i) {
                 CompoundNBT CompoundNBT = nbttaglist.getCompound(i);
                 int j = CompoundNBT.getByte("Slot") & 255;
-                if (j <= 4) {
+                if (j < ratInventory.getSizeInventory()) {
                     ItemStack itemstack = ItemStack.read(CompoundNBT);
                     ratInventory.setInventorySlotContents(j, itemstack);
                 }
@@ -712,6 +715,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 CompoundNBT CompoundNBT = nbttaglist.getCompound(i);
                 int j = CompoundNBT.getByte("Slot") & 255;
                 ItemStack itemstack = ItemStack.read(CompoundNBT);
+
                 ratInventory.setInventorySlotContents(j, itemstack);
             }
         }
@@ -2502,7 +2506,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     private void initInventory() {
-        ratInventory = new Inventory(6);
+        ratInventory = new Inventory(NUMBER_OF_INVENTORY_SLOTS);
         ratInventory.addListener(new RatInvListener(this));
         //ratInventory.setCustomName(this.getName());
         if (ratInventory != null) {
