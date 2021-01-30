@@ -31,7 +31,7 @@ public final class Pathfinding {
      */
     public static ThreadPoolExecutor getExecutor() {
         if (executor == null) {
-            executor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 10, TimeUnit.SECONDS, jobQueue, new RatsThreadFactory());
+            executor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 0, TimeUnit.SECONDS, jobQueue, new RatsThreadFactory());
         }
         return executor;
     }
