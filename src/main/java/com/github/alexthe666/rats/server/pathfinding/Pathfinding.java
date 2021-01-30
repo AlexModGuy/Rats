@@ -13,8 +13,8 @@ import java.util.concurrent.*;
  * Static class the handles all the Pathfinding.
  */
 public final class Pathfinding {
-    private static final BlockingQueue<Runnable> jobQueue = new LinkedBlockingDeque<>();
-    private static ThreadPoolExecutor executor;
+    private static final BlockingQueue<Runnable> ratsJobQueue = new LinkedBlockingDeque<>();
+    private static ThreadPoolExecutor pathExecutor;
 
     private Pathfinding() {
         //Hides default constructor.
@@ -29,20 +29,20 @@ public final class Pathfinding {
      *
      * @return the threadpool executor.
      */
-    public static ThreadPoolExecutor getExecutor() {
-        if (executor == null) {
-            executor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 0, TimeUnit.SECONDS, jobQueue, new RatsThreadFactory());
+    public static ThreadPoolExecutor getPathExecutor() {
+        if (pathExecutor == null) {
+            pathExecutor = new ThreadPoolExecutor(1, RatConfig.ratsPathfindingThreads, 0, TimeUnit.SECONDS, ratsJobQueue, new RatsThreadFactory());
         }
-        return executor;
+        return pathExecutor;
     }
 
     /**
      * Stops all running threads in this thread pool
      */
     public static void shutdown() {
-        getExecutor().shutdownNow();
-        jobQueue.clear();
-        executor = null;
+        getPathExecutor().shutdownNow();
+        ratsJobQueue.clear();
+        pathExecutor = null;
     }
 
     /**
@@ -52,10 +52,10 @@ public final class Pathfinding {
      * @return a Future containing the Path
      */
     public static Future<Path> enqueue(final AbstractPathJob job) {
-        if(getExecutor().isShutdown() || getExecutor().isTerminating() || getExecutor().isTerminated()){
+        if(getPathExecutor().isShutdown() || getPathExecutor().isTerminating() || getPathExecutor().isTerminated()){
             return null;
         }
-        return getExecutor().submit(job);
+        return getPathExecutor().submit(job);
     }
 
 
@@ -70,10 +70,9 @@ public final class Pathfinding {
 
         @Override
         public Thread newThread(final Runnable runnable) {
-            final Thread thread = new Thread(runnable, "Rats Pathfinding Worker #" + (id++));
+            final Thread thread = new Thread(runnable, "Rats Mod Pathfinding Worker #" + (id++));
             thread.setDaemon(true);
-
-            thread.setPriority(Thread.NORM_PRIORITY);
+            thread.setPriority(Thread.MAX_PRIORITY);
             thread.setUncaughtExceptionHandler((thread1, throwable) -> RatsMod.LOGGER.error("Rats Pathfinding Thread errored! ", throwable));
             return thread;
         }
