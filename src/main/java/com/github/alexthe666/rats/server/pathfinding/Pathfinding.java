@@ -7,12 +7,17 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.pathfinding.pathjobs.AbstractPathJob;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.util.concurrent.ThreadTaskExecutor;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 
+import java.util.Set;
 import java.util.concurrent.*;
 /**
  * Static class the handles all the Pathfinding.
  */
 public final class Pathfinding {
+    private static final Set<Class<?>> loadedJobs = new CopyOnWriteArraySet<>();
     private static final BlockingQueue<Runnable> ratsJobQueue = new LinkedBlockingDeque<>();
     private static ThreadPoolExecutor pathExecutor;
 
@@ -52,6 +57,14 @@ public final class Pathfinding {
      * @return a Future containing the Path
      */
     public static Future<Path> enqueue(final AbstractPathJob job) {
+        if (!loadedJobs.contains(job.getClass())) {
+            ThreadTaskExecutor<?> workqueue = LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER);
+            CompletableFuture<Path> result = workqueue.isOnExecutionThread() ? CompletableFuture.completedFuture(job.call()) : CompletableFuture.supplyAsync(job::call, workqueue);
+            return result.thenApply(path -> {
+                loadedJobs.add(job.getClass());
+                return path;
+            });
+        }
         if(getPathExecutor().isShutdown() || getPathExecutor().isTerminating() || getPathExecutor().isTerminated()){
             return null;
         }
