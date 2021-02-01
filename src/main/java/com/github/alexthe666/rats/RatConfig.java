@@ -56,6 +56,8 @@ public class RatConfig {
 
     public static int maxRatPathingNodes = 5000;
     public static int ratsPathfindingThreads = 3;
+    public static int plagueDoctorSpawnChance = 24000;
+    public static int plagueDoctorSpawnDelay = 10;
 
     public static void bakeClient(final ModConfig config) {
         try {
@@ -117,6 +119,8 @@ public class RatConfig {
             garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
             ratOverworldOnly = ConfigHolder.SERVER.ratOverworldOnly.get();
             piperOverworldOnly = ConfigHolder.SERVER.piperOverworldOnly.get();
+            plagueDoctorSpawnChance = ConfigHolder.SERVER.plagueDoctorSpawnChance.get();
+            plagueDoctorSpawnDelay = ConfigHolder.SERVER.plagueDoctorSpawnDelay.get();
         }catch (Exception e){
             RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
             e.printStackTrace();

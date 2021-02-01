@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.server.world.PlagueDoctorWorldData;
 import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
 import net.minecraft.entity.EntityType;
@@ -37,7 +38,7 @@ public class PlagueDoctorSpawner {
         this.field_221249_d = worldinfo.getDoctorSpawnDelay();
         this.field_221250_e = worldinfo.getDoctorSpawnChance();
         if (this.field_221249_d == 0 && this.field_221250_e == 0) {
-            this.field_221249_d = 24000;
+            this.field_221249_d = RatConfig.plagueDoctorSpawnDelay;
             worldinfo.setDoctorSpawnDelay(this.field_221249_d);
             this.field_221250_e = 25;
             worldinfo.setDoctorSpawnChance(this.field_221250_e);
@@ -52,7 +53,7 @@ public class PlagueDoctorSpawner {
             this.field_221249_d -= 1200;
             worldinfo.setDoctorSpawnDelay(this.field_221249_d);
             if (this.field_221249_d <= 0) {
-                this.field_221249_d = 24000;
+                this.field_221249_d = RatConfig.plagueDoctorSpawnDelay;
                 if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING)) {
                     int i = this.field_221250_e;
                     this.field_221250_e = MathHelper.clamp(this.field_221250_e + 25, 25, 75);
@@ -70,7 +71,7 @@ public class PlagueDoctorSpawner {
         PlayerEntity playerentity = this.world.getRandomPlayer();
         if (playerentity == null) {
             return true;
-        } else if (this.random.nextInt(10) != 0) {
+        } else if (this.random.nextInt(Math.max(1, RatConfig.plagueDoctorSpawnChance)) != 0) {
             return false;
         } else {
             BlockPos blockpos = new BlockPos(playerentity.getPositionVec());

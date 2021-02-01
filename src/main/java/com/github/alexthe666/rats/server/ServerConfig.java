@@ -62,6 +62,9 @@ public class ServerConfig {
     public final ForgeConfigSpec.DoubleValue dutchratHealth;
     public final ForgeConfigSpec.DoubleValue dutchratAttack;
 
+    public final ForgeConfigSpec.IntValue plagueDoctorSpawnDelay;
+    public final ForgeConfigSpec.IntValue plagueDoctorSpawnChance;
+
     public ServerConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
         this.spawnRats = buildBoolean(builder, "Spawn Rats", "all", true, "True if rats are to spawn naturally");
@@ -120,6 +123,8 @@ public class ServerConfig {
         this.neoRatlanteanAttack = buildDouble(builder, "Neo-Ratlantean Automaton Attack Damage", "all", 8F, 0F, Float.MAX_VALUE, "Neo-Ratlantean Attack Damage");
         this.dutchratHealth = buildDouble(builder, "Flying Dutchrat Max Health", "all", 400F, 0F, Float.MAX_VALUE, "Flying Dutchrat Max Health");
         this.dutchratAttack = buildDouble(builder, "Flying Dutchrat Automaton Attack Damage", "all", 10F, 0F, Float.MAX_VALUE, "Flying Dutchrat Attack Damage");
+        this.plagueDoctorSpawnDelay = buildInt(builder, "Plague Doctor Spawn Delay", "all", 24000, 1, Integer.MAX_VALUE, "Every time this number of ticks passes, a plague doctor may spawn.");
+        this.plagueDoctorSpawnChance = buildInt(builder, "Plague Doctor Spawn Chance", "all", 10, 1, Integer.MAX_VALUE, "Random number roll for plague doctor spawning, increase to make them rarer.");
 
     }
 
