@@ -87,7 +87,6 @@ public abstract class AbstractPathJob implements Callable<Path> {
     private boolean circumventSizeCheck = false;
     private IPassabilityNavigator passabilityNavigator;
     private float jumpHeight = 1.3f;
-    public AtomicBoolean isNotInterrupted = new AtomicBoolean(true);
 
     /**
      * AbstractPathJob constructor.
@@ -390,7 +389,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
     @Override
     public final Path call() {
         try {
-            if (!Thread.interrupted()) {
+            if (!Thread.currentThread().isInterrupted()) {
                 return search();
             }
         } catch (final Exception e) {
@@ -408,7 +407,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
      */
     @Nullable
     protected Path search() {
-        if (Thread.interrupted()) {
+        if (Thread.currentThread().isInterrupted()) {
             return null;
         }
         Node bestNode = getAndSetupStartNode();
@@ -416,7 +415,7 @@ public abstract class AbstractPathJob implements Callable<Path> {
         double bestNodeResultScore = Double.MAX_VALUE;
 
         while (!nodesOpen.isEmpty()) {
-            if (Thread.interrupted()) {
+            if (Thread.currentThread().isInterrupted()) {
                 return null;
             }
 
