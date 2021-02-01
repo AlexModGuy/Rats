@@ -3007,7 +3007,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             flagAttack = true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_WARRIOR)) {
-            tryIncreaseStat(Attributes.ATTACK_DAMAGE, 40D);
+            tryIncreaseStat(Attributes.MAX_HEALTH, 40D);
             tryIncreaseStat(Attributes.ATTACK_DAMAGE, 12D);
             tryIncreaseStat(Attributes.ARMOR, 10D);
             flagHealth = true;
