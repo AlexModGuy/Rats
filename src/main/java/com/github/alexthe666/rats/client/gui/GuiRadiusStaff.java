@@ -151,10 +151,5 @@ public class GuiRadiusStaff extends Screen {
             drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat);
         }
     }
-
-    public boolean func_231177_au__() {
-        return false;
-    }
-
 }
 

@@ -177,8 +177,4 @@ public class GuiCheeseStaff extends Screen {
         p_228187_5_.rotationYawHead = f6;
         RenderSystem.popMatrix();
     }
-
-    public boolean func_231177_au__() {
-        return false;
-    }
 }

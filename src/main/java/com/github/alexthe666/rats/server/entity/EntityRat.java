@@ -342,6 +342,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
         }));
         this.targetSelector.addGoal(4, new RatAIHurtByTarget(this, CatEntity.class, OcelotEntity.class));
+        initInventory();
     }
 
     protected void setupDynamicAI() {
