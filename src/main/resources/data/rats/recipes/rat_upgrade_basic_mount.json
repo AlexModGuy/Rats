@@ -9,9 +9,6 @@
     "R": {
       "tag": "forge:cheese"
     },
-    "D": {
-      "tag": "forge:gems/diamond"
-    },
     "S": {
       "item": "minecraft:saddle",
       "data": 0
