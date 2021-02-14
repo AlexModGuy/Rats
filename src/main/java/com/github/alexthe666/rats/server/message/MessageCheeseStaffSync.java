@@ -58,42 +58,44 @@ public class MessageCheeseStaffSync {
 
         public static void handle(MessageCheeseStaffSync message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                Entity e = player.world.getEntityByID(message.entityId);
-                if (e instanceof EntityRat) {
-                    EntityRat rat = (EntityRat) e;
-                    switch (message.control) {
-                        case 0://deposit
-                            rat.setDepositPos(BlockPos.fromLong(message.posLg));
-                            rat.depositFacing = Direction.values()[message.facingID];
-                            break;
-                        case 1://pickup
-                            rat.setPickupPos(BlockPos.fromLong(message.posLg));
-                            break;
-                        case 2://set homepoint
-                            rat.setHomePosAndDistance(BlockPos.fromLong(message.posLg), 32);
-                            break;
-                        case 3://detach homepoint
-                            rat.setHomePosAndDistance(BlockPos.ZERO, -1);
-                            break;
-                        case 4://set radius home point
-                            rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
-                            break;
-                        case 5://set radius scale
-                            rat.setSearchRadius(message.extraData);
-                            break;
-                        case 6://reset radius
-                            rat.setSearchRadiusCenter(null);
-                            rat.setSearchRadius(RatConfig.defaultRatRadius);
-                            break;
-                        case 7: //reset deposit and pickup
-                            rat.setPickupPos(null);
-                            rat.setDepositPos(null);
-                            break;
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    Entity e = player.world.getEntityByID(message.entityId);
+                    if (e instanceof EntityRat) {
+                        EntityRat rat = (EntityRat) e;
+                        switch (message.control) {
+                            case 0://deposit
+                                rat.setDepositPos(BlockPos.fromLong(message.posLg));
+                                rat.depositFacing = Direction.values()[message.facingID];
+                                break;
+                            case 1://pickup
+                                rat.setPickupPos(BlockPos.fromLong(message.posLg));
+                                break;
+                            case 2://set homepoint
+                                rat.setHomePosAndDistance(BlockPos.fromLong(message.posLg), 32);
+                                break;
+                            case 3://detach homepoint
+                                rat.setHomePosAndDistance(BlockPos.ZERO, -1);
+                                break;
+                            case 4://set radius home point
+                                rat.setSearchRadiusCenter(BlockPos.fromLong(message.posLg));
+                                break;
+                            case 5://set radius scale
+                                rat.setSearchRadius(message.extraData);
+                                break;
+                            case 6://reset radius
+                                rat.setSearchRadiusCenter(null);
+                                rat.setSearchRadius(RatConfig.defaultRatRadius);
+                                break;
+                            case 7: //reset deposit and pickup
+                                rat.setPickupPos(null);
+                                rat.setDepositPos(null);
+                                break;
+                        }
                     }
                 }
-            }
+            });
         }
     }
 

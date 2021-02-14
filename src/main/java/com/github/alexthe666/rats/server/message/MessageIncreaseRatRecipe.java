@@ -24,18 +24,20 @@ public class MessageIncreaseRatRecipe {
 
         public static void handle(MessageIncreaseRatRecipe message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                BlockPos pos = BlockPos.fromLong(message.blockPos);
-                if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
-                    TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);
-                    if (message.increase) {
-                        table.increaseRecipe();
-                    } else {
-                        table.decreaseRecipe();
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    BlockPos pos = BlockPos.fromLong(message.blockPos);
+                    if (player.world.getTileEntity(pos) instanceof TileEntityRatCraftingTable) {
+                        TileEntityRatCraftingTable table = (TileEntityRatCraftingTable) player.world.getTileEntity(pos);
+                        if (message.increase) {
+                            table.increaseRecipe();
+                        } else {
+                            table.decreaseRecipe();
+                        }
                     }
                 }
-            }
+            });
         }
     }
 

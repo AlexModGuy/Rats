@@ -20,11 +20,13 @@ public class MessageSwingArm {
 
         public static void handle(MessageSwingArm message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                //TODO: Wait for tinkers construct update
-                CommonEvents.onPlayerSwing(player, player.getHeldItem(Hand.MAIN_HAND));
-            }
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    //TODO: Wait for tinkers construct update
+                    CommonEvents.onPlayerSwing(player, player.getHeldItem(Hand.MAIN_HAND));
+                }
+            });
         }
     }
 

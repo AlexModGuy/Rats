@@ -29,18 +29,20 @@ public class MessageDancingRat {
 
         public static void handle(MessageDancingRat message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                Entity entity = player.world.getEntityByID(message.ratId);
-                if (entity instanceof EntityRat) {
-                    EntityRat rat = (EntityRat) entity;
-                    if (!rat.isDancing() && message.setDancing) {
-                        rat.setDanceMoves(message.moves);
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    Entity entity = player.world.getEntityByID(message.ratId);
+                    if (entity instanceof EntityRat) {
+                        EntityRat rat = (EntityRat) entity;
+                        if (!rat.isDancing() && message.setDancing) {
+                            rat.setDanceMoves(message.moves);
+                        }
+                        rat.setDancing(message.setDancing);
+                        rat.jukeboxPos = BlockPos.fromLong(message.blockPos);
                     }
-                    rat.setDancing(message.setDancing);
-                    rat.jukeboxPos = BlockPos.fromLong(message.blockPos);
                 }
-            }
+            });
         }
     }
 

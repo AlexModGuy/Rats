@@ -81,11 +81,25 @@ public final class Pathfinding {
          */
         public static int id;
 
+        private static final ClassLoader classLoader;
+
+        static {
+            ThreadTaskExecutor<?> workqueue = LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER);
+            if (workqueue.isOnExecutionThread())
+                classLoader = Thread.currentThread().getContextClassLoader();
+            else
+                classLoader = CompletableFuture.supplyAsync(() -> Thread.currentThread().getContextClassLoader(), workqueue).join();
+        }
+
         @Override
         public Thread newThread(final Runnable runnable) {
             final Thread thread = new Thread(runnable, "Rats Mod Pathfinding Worker #" + (id++));
             thread.setDaemon(true);
             thread.setPriority(Thread.MAX_PRIORITY);
+            if (thread.getContextClassLoader() != classLoader) {
+                RatsMod.LOGGER.info("Corrected CCL of new Rats Pathfinding Thread, was: " + thread.getContextClassLoader().toString());
+                thread.setContextClassLoader(classLoader);
+            }
             thread.setUncaughtExceptionHandler((thread1, throwable) -> RatsMod.LOGGER.error("Rats Pathfinding Thread errored! ", throwable));
             return thread;
         }

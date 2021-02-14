@@ -34,18 +34,20 @@ public class MessageCheeseStaffRat {
 
         public static void handle(MessageCheeseStaffRat message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            if (message.clear) {
-                RatsMod.PROXY.setRefrencedRat(null);
-            } else {
-                RatsMod.PROXY.handlePacketCheeseStaffRat(message.entityId, message.clear);
-                if(message.openGUI){
-                    if(message.cheeseStaff){
-                        RatsMod.PROXY.openCheeseStaffGui();
-                    }else{
-                        RatsMod.PROXY.openRadiusStaffGui();
+            context.get().enqueueWork(() -> {
+                if (message.clear) {
+                    RatsMod.PROXY.setRefrencedRat(null);
+                } else {
+                    RatsMod.PROXY.handlePacketCheeseStaffRat(message.entityId, message.clear);
+                    if(message.openGUI){
+                        if(message.cheeseStaff){
+                            RatsMod.PROXY.openCheeseStaffGui();
+                        }else{
+                            RatsMod.PROXY.openRadiusStaffGui();
+                        }
                     }
                 }
-            }
+            });
         }
     }
 

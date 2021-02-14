@@ -29,14 +29,16 @@ public class MessageSyncThrownBlock {
 
         public static void handle(MessageSyncThrownBlock message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                Entity entity = player.world.getEntityByID(message.blockEntityId);
-                if (entity instanceof EntityThrownBlock) {
-                    BlockPos pos = BlockPos.fromLong(message.blockPos);
-                    ((EntityThrownBlock) entity).setHeldBlockState(player.world.getBlockState(pos));
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    Entity entity = player.world.getEntityByID(message.blockEntityId);
+                    if (entity instanceof EntityThrownBlock) {
+                        BlockPos pos = BlockPos.fromLong(message.blockPos);
+                        ((EntityThrownBlock) entity).setHeldBlockState(player.world.getBlockState(pos));
+                    }
                 }
-            }
+            });
         }
     }
 
