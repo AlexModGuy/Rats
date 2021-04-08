@@ -34,7 +34,9 @@ public class MessageUpdateTileSlots {
 
         public static void handle(MessageUpdateTileSlots message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            RatsMod.PROXY.handlePacketUpdateTileSlots(message.blockPos, message.tag);
+            context.get().enqueueWork(() -> {
+                RatsMod.PROXY.handlePacketUpdateTileSlots(message.blockPos, message.tag);
+            });
         }
     }
 

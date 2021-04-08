@@ -29,14 +29,16 @@ public class MessageRatCommand {
 
         public static void handle(MessageRatCommand message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                Entity entity = player.world.getEntityByID(message.ratId);
-                if (entity instanceof EntityRat) {
-                    EntityRat rat = (EntityRat) entity;
-                    rat.setCommand(RatUtils.wrapCommand(message.newCommand));
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    Entity entity = player.world.getEntityByID(message.ratId);
+                    if (entity instanceof EntityRat) {
+                        EntityRat rat = (EntityRat) entity;
+                        rat.setCommand(RatUtils.wrapCommand(message.newCommand));
+                    }
                 }
-            }
+            });
         }
     }
 

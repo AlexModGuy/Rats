@@ -23,7 +23,9 @@ public class MessageAutoCurdlerFluid {
 
         public static void handle(MessageAutoCurdlerFluid message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            RatsMod.PROXY.handlePacketAutoCurdlerFluid(message.blockPos, message.fluid);
+            context.get().enqueueWork(() -> {
+                RatsMod.PROXY.handlePacketAutoCurdlerFluid(message.blockPos, message.fluid);
+            });
         }
     }
 

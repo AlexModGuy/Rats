@@ -31,15 +31,17 @@ public class MessageUpdateRatFluid {
 
         public static void handle(MessageUpdateRatFluid message, Supplier<NetworkEvent.Context> context) {
             ((NetworkEvent.Context)context.get()).setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
-            if(player != null) {
-                Entity entity = player.world.getEntityByID(message.ratId);
-                if (entity instanceof EntityRat) {
-                    EntityRat rat = (EntityRat) entity;
-                    rat.transportingFluid = message.fluid;
+            context.get().enqueueWork(() -> {
+                PlayerEntity player = context.get().getSender();
+                if(player != null) {
+                    Entity entity = player.world.getEntityByID(message.ratId);
+                    if (entity instanceof EntityRat) {
+                        EntityRat rat = (EntityRat) entity;
+                        rat.transportingFluid = message.fluid;
 
+                    }
                 }
-            }
+            });
         }
     }
 
