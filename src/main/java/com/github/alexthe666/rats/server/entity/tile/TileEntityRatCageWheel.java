@@ -14,6 +14,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -44,6 +45,9 @@ public class TileEntityRatCageWheel extends TileEntityRatCageDecorated implement
 
     public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("UseTicks", useTicks);
+        if(energyStorage.isPresent()){
+            compound.putInt("StoredEnergy", energyStorage.orElse(null).energy);
+        }
         compound.putInt("DismountCooldown", dismountCooldown);
         return super.write(compound);
     }
@@ -52,6 +56,9 @@ public class TileEntityRatCageWheel extends TileEntityRatCageDecorated implement
         super.read(state, compound);
         useTicks = compound.getInt("UseTicks");
         dismountCooldown = compound.getInt("DismountCooldown");
+        if (energyStorage.isPresent()) {
+            energyStorage.orElse(null).energy = compound.getInt("StoredEnergy");
+        }
     }
 
 
@@ -132,7 +139,7 @@ public class TileEntityRatCageWheel extends TileEntityRatCageDecorated implement
 
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-        if (capability == CapabilityEnergy.ENERGY && isEnergyFacing(facing))
+        if (capability == CapabilityEnergy.ENERGY)
             return energyStorage.cast();
         return super.getCapability(capability, facing);
     }
