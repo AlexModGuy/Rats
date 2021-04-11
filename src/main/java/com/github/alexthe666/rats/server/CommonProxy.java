@@ -265,4 +265,7 @@ public class CommonProxy {
     public float getPartialTicks() {
         return 0;
     }
+
+    public void openBookGUI(ItemStack itemStackIn) {
+    }
 }

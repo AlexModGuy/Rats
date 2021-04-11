@@ -529,4 +529,7 @@ public class ClientProxy extends CommonProxy {
     public float getPartialTicks() {
         return Minecraft.getInstance().getRenderPartialTicks();
     }
+
+    public void openBookGUI(ItemStack itemStackIn) {
+    }
 }
