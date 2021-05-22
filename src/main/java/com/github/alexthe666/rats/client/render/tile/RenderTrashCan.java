@@ -16,7 +16,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderTrashCan extends TileEntityRenderer<TileEntityTrashCan> {
     private static final ModelTrashCan MODEL_TRASH_CAN = new ModelTrashCan();
-    private static final RenderType TEXTURE = RenderType.getEntityCutout(new ResourceLocation("rats:textures/model/trash_can.png"));
+    private static final RenderType TEXTURE = RenderType.getEntityCutoutNoCull(new ResourceLocation("rats:textures/model/trash_can.png"));
 
     public RenderTrashCan(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
