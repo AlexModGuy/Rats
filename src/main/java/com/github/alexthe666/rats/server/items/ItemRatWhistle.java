@@ -78,6 +78,7 @@ public class ItemRatWhistle extends Item {
                         }
                     }
                 }
+                rat.resetAI();
             }
         }
         player.swingArm(hand);

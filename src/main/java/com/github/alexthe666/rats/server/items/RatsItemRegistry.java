@@ -30,8 +30,6 @@ public class RatsItemRegistry {
 
     public static final Item CHEESE = new ItemGenericFood(3, 0.5F, true, false, false, "cheese");
 
-    public static final Item RATS_BOOK = new ItemRatsBook();
-
     public static final Item RAW_RAT = new ItemGenericFood(3, 0.3F, true, false, false, "raw_rat");
 
     public static final Item COOKED_RAT = new ItemGenericFood(5, 0.6F, true, false, false, "cooked_rat");

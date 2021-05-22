@@ -3435,4 +3435,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         return 1;
     }
 
+    public void resetAI() {
+        if(!world.isRemote){
+            this.goalSelector.getRunningGoals().forEach(Goal::resetTask);
+            this.targetSelector.getRunningGoals().forEach(Goal::resetTask);
+            this.setAttackTarget(null);
+            this.setLastAttackedEntity(null);
+            this.setRevengeTarget(null);
+        }
+    }
 }
