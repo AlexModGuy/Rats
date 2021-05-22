@@ -1,15 +1,31 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "VVV",
-    "VVV",
-    "VVV"
-  ],
-  "key": {
-    "V": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    {
       "tag": "forge:vegetables"
     }
-  },
+  ],
   "result": {
     "item": "rats:assorted_vegetables"
   }
