@@ -27,6 +27,10 @@ public class RatAIHuntPrey<T extends LivingEntity> extends NearestAttackableTarg
     }
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.goalOwner.getBoundingBox().grow(targetDistance, 9.0D, targetDistance);
+        if(rat.isPatrolCommand()){
+            return this.goalOwner.getBoundingBox().grow(3.5D, 3.5D, 3.5D);
+        }else{
+            return this.goalOwner.getBoundingBox().grow(targetDistance, 9.0D, targetDistance);
+        }
     }
 }

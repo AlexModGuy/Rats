@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R",
+    "S "
+  ],
+  "key": {
+    "R": {
+      "item": "rats:nether_cheese",
+      "data": 0
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "rats:patrol_stick"
+  }
+}

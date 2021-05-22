@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.EntityRat;
 import com.github.alexthe666.rats.server.message.MessageCheeseStaffRat;
+import com.github.alexthe666.rats.server.message.MessageSyncRatTag;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,11 +23,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemRadiusStick extends Item {
+public class ItemPatrolStick extends Item {
 
-    public ItemRadiusStick() {
+    public ItemPatrolStick() {
         super(new Item.Properties().group(RatsMod.TAB));
-        this.setRegistryName(RatsMod.MODID, "radius_stick");
+        this.setRegistryName(RatsMod.MODID, "patrol_stick");
     }
 
     @Override
@@ -52,12 +53,15 @@ public class ItemRadiusStick extends Item {
         }
         if (!context.getWorld().isRemote) {
             if (rat == null || !(rat instanceof EntityRat)) {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true, false, 1));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(0, true, false, 2));
                 context.getPlayer().sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.no_rat"), true);
             } else {
-                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false, true, 1));
+                RatsMod.sendMSGToAll(new MessageCheeseStaffRat(rat.getEntityId(), false, true, 2));
                 context.getPlayer().swingArm(context.getHand());
             }
+            CompoundNBT tag = new CompoundNBT();
+            ((EntityRat) rat).writeAdditional(tag);
+            RatsMod.sendMSGToAll(new MessageSyncRatTag(rat.getEntityId(), tag));
         }
         RatsMod.PROXY.setCheeseStaffContext(context.getPos(), context.getFace());
         return ActionResultType.SUCCESS;
@@ -65,7 +69,7 @@ public class ItemRadiusStick extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.rats.radius_stick.desc0").mergeStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("item.rats.radius_stick.desc1").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.patrol_stick.desc0").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("item.rats.patrol_stick.desc1").mergeStyle(TextFormatting.GRAY));
     }
 }

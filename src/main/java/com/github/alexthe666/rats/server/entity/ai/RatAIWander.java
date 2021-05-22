@@ -17,9 +17,9 @@ public class RatAIWander extends RandomWalkingGoal {
 
     public RatAIWander(EntityRat creatureIn, double speedIn) {
         super(creatureIn, speedIn, 200, false);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         this.rat = creatureIn;
         this.executionChance = 200;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Nullable

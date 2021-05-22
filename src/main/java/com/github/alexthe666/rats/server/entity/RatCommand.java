@@ -8,7 +8,8 @@ public enum RatCommand {
     GATHER(true),
     HARVEST(true),
     TRANSPORT(true),
-    HUNT_MONSTERS(true);
+    HUNT_MONSTERS(true),
+    PATROL(true);
 
     public boolean freeMove;
 

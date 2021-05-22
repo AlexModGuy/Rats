@@ -42,6 +42,8 @@ public class RatsItemRegistry {
 
     public static final Item RADIUS_STICK = new ItemRadiusStick();
 
+    public static final Item PATROL_STICK = new ItemPatrolStick();
+
     public static final Item RAT_WHISTLE = new ItemRatWhistle();
 
     public static final Item RAT_FLUTE = new ItemRatFlute();

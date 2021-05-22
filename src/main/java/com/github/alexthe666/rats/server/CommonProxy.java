@@ -15,6 +15,7 @@ import com.github.alexthe666.rats.server.world.structure.RatlantisStructureRegis
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BannerPatternItem;
 import net.minecraft.item.Item;
@@ -267,5 +268,12 @@ public class CommonProxy {
     }
 
     public void openBookGUI(ItemStack itemStackIn) {
+    }
+
+    public void openPatrolStaffGui() {
+    }
+
+    public PlayerEntity getPlayer() {
+        return null;
     }
 }

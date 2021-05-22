@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.client;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.gui.GuiCheeseStaff;
-import com.github.alexthe666.rats.client.gui.GuiRadiusStaff;
-import com.github.alexthe666.rats.client.gui.GuiRat;
-import com.github.alexthe666.rats.client.gui.RatsGuiRegistry;
+import com.github.alexthe666.rats.client.gui.*;
 import com.github.alexthe666.rats.client.model.*;
 import com.github.alexthe666.rats.client.particle.*;
 import com.github.alexthe666.rats.client.render.NuggetColorRegister;
@@ -33,6 +30,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -69,8 +67,6 @@ import java.util.concurrent.Callable;
 public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     private static final RatsTEISR TEISR = new RatsTEISR();
-    @OnlyIn(Dist.CLIENT)
-    private static final ModelChefToque MODEL_CHEF_TOQUE = new ModelChefToque(1.0F);
     public static BlockPos refrencedPos;
     public static Direction refrencedFacing;
     public static EntityRat refrencedRat;
@@ -80,48 +76,6 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
-      /*  for (int i = 0; i < 16; i++) {
-            ModelLoader.setCustomStateMapper(RatsBlockRegistry.RAT_TUBE_COLOR[i], (new StateMapperGeneric("rat_tube")));
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RatsBlockRegistry.RAT_TUBE_COLOR[i]), 0, new ModelResourceLocation("rats:rat_tube", "inventory"));
-            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_IGLOOS[i], 0, new ModelResourceLocation("rats:rat_igloo", "inventory"));
-            ModelLoader.setCustomModelResourceLocation(RatsItemRegistry.RAT_HAMMOCKS[i], 0, new ModelResourceLocation("rats:rat_hammock", "inventory"));
-        }
-
-        ModelLoader.setCustomMeshDefinition(RatsItemRegistry.RAT_NUGGET_ORE, stack -> RAT_NUGGET_MODEL);
-        ModelBakery.registerItemVariants(RatsItemRegistry.RAT_NUGGET_ORE, RAT_NUGGET_MODEL);
-        try {
-            for (Field f : RatsBlockRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Block && !(obj instanceof ICustomRendered)) {
-                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock((Block) obj), 0, new ModelResourceLocation("rats:" + ((Block) obj).getRegistryName().getPath(), "inventory"));
-                } else if (obj instanceof Block[]) {
-                    for (Block block : (Block[]) obj) {
-                        if (!(block instanceof ICustomRendered)) {
-                            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation("rats:" + block.getRegistryName().getPath(), "inventory"));
-                        }
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            for (Field f : RatsItemRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Item && !(obj instanceof ICustomRendered)) {
-                    ModelLoader.setCustomModelResourceLocation((Item) obj, 0, new ModelResourceLocation("rats:" + ((Item) obj).getRegistryName().getPath(), "inventory"));
-                } else if (obj instanceof Item[]) {
-                    for (Item item : (Item[]) obj) {
-                        if (!(item instanceof ICustomRendered)) {
-                            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation("rats:" + item.getRegistryName().getPath(), "inventory"));
-                        }
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     @SubscribeEvent
@@ -524,6 +478,15 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void openPatrolStaffGui() {
+        if (refrencedRat != null) {
+            Minecraft.getInstance().displayGuiScreen(new GuiPatrolStaff(refrencedRat));
+        }
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public float getPartialTicks() {
@@ -531,5 +494,9 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void openBookGUI(ItemStack itemStackIn) {
+    }
+
+    public PlayerEntity getPlayer() {
+        return Minecraft.getInstance().player;
     }
 }

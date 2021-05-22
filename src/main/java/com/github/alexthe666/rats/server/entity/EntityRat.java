@@ -65,6 +65,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSet;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -179,6 +180,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     public Goal aiPickup;
     public Goal aiDeposit;
     public Goal aiAttack;
+    public boolean refreshUpgrades = true;
     protected Inventory ratInventory;
     /*
        0 = tamed navigator
@@ -200,7 +202,6 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private BlockPos diggingPos = null;
     private int digCooldown = 0;
     private int eatingTicks = 0;
-    public boolean refreshUpgrades = true;
     private int eatenItems = 0;
     private int rangedAttackCooldownCannon = 0;
     private int rangedAttackCooldownLaser = 0;
@@ -209,6 +210,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     private int visualCooldown = 0;
     private int poopCooldown = 0;
     private int randomEffectCooldown = 0;
+    public List<BlockPos> patrolNodes = new ArrayList<>();
 
     public EntityRat(EntityType<? extends EntityRat> rat, World worldIn) {
         super(rat, worldIn);
@@ -302,7 +304,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         aiHarvest = new RatAIHarvestCrops(this);
         aiPickup = new RatAIPickupFromInventory(this);
         aiDeposit = new RatAIDepositInInventory(this);
-        aiAttack =  new RatAIAttackMelee(this, 1.45D, true);
+        aiAttack = new RatAIAttackMelee(this, 1.45D, true);
         this.goalSelector.addGoal(0, aiAttack);
         this.goalSelector.addGoal(1, new RatAISwimming(this));
         this.goalSelector.addGoal(2, new RatAIFleeMobs(this, new Predicate<Entity>() {
@@ -311,6 +313,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             }
         }, 10.0F, 0.8D, 1.225D));
         this.goalSelector.addGoal(3, new RatAIFollowOwner(this, 1.225D, 3.0F, 1.0F));
+        this.goalSelector.addGoal(5, new RatAIPatrol(this));
         this.goalSelector.addGoal(6, new RatAIFleeSun(this, 1.225D));
         this.goalSelector.addGoal(6, new RatAISit(this));
         this.goalSelector.addGoal(7, new RatAIWander(this, 1.0D));
@@ -661,6 +664,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         } else {
             compound.putString("MonsterOwnerUUID", this.getMonsterOwnerID().toString());
         }
+        if (!patrolNodes.isEmpty()) {
+            ListNBT listnbt = new ListNBT();
+            for (BlockPos lng : patrolNodes) {
+                listnbt.add(new IntArrayNBT(new int[]{lng.getX(), lng.getY(), lng.getZ()}));
+            }
+            compound.put("PatrolNodesTag", listnbt);
+        }
 
     }
 
@@ -747,7 +757,14 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 this.setTamedByMonster(false);
             }
         }
-
+        patrolNodes.clear();
+        if (compound.contains("PatrolNodesTag")) {
+            ListNBT listnbt = compound.getList("PatrolNodesTag", 11);
+            for (int i = 0; i < listnbt.size(); ++i) {
+                int[] pos = listnbt.getIntArray(i);
+                this.patrolNodes.add(new BlockPos(pos[0], pos[1], pos[2]));
+            }
+        }
     }
 
     @Override
@@ -786,12 +803,12 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
-    }
-
     public boolean isSitting() {
         return this.dataManager.get(SITTING).booleanValue();
+    }
+
+    public void setSitting(boolean sit) {
+        this.dataManager.set(SITTING, Boolean.valueOf(sit));
     }
 
     public int getColorVariant() {
@@ -914,7 +931,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public void setCommand(RatCommand command) {
-        if(!world.isRemote && command.ordinal() != this.getCommandInteger()){
+        if (!world.isRemote && command.ordinal() != this.getCommandInteger()) {
             this.getNavigator().clearPath();
         }
         setCommandInteger(command.ordinal());
@@ -943,6 +960,10 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
 
     public boolean isTargetCommand() {
         return getCommandInteger() == 4 || getCommandInteger() == 5;
+    }
+
+    public boolean isPatrolCommand() {
+        return getCommandInteger() == 8;
     }
 
     public EntitySenses getSenses() {
@@ -1013,7 +1034,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             this.setRespawnCountdown(this.getRespawnCountdown() - 1);
         }
         super.livingTick();
-        if(refreshUpgrades){
+        if (refreshUpgrades) {
             this.onUpgradeChanged();
             refreshUpgrades = false;
         }
@@ -1167,8 +1188,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (this.isSitting() && this.getCommand() != RatCommand.SIT) {
             this.setSitting(false);
         }
-        if(this.isInWheel()){
-            if(world.getBlockState(this.getPosition()).getBlock() != RatsBlockRegistry.RAT_CAGE_WHEEL){
+        if (this.isInWheel()) {
+            if (world.getBlockState(this.getPosition()).getBlock() != RatsBlockRegistry.RAT_CAGE_WHEEL) {
                 this.setInWheel(false);
             }
         }
@@ -1626,7 +1647,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (randomEffectCooldown > 0) {
             randomEffectCooldown--;
         }
-        if(isJumping && !world.isRemote && world.getBlockState(this.getPosition().up()).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM && world.isAirBlock(this.getPosition().up(2))){
+        if (isJumping && !world.isRemote && world.getBlockState(this.getPosition().up()).getBlock() == RatsBlockRegistry.RAT_QUARRY_PLATFORM && world.isAirBlock(this.getPosition().up(2))) {
             this.setPosition(this.getPosX(), this.getPosY() + 1, this.getPosZ());
             this.getNavigator().clearPath();
         }
@@ -2140,8 +2161,8 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     protected void dropInventory() {
         super.dropInventory();
         if (!this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_ANGEL)) {
-            for(EquipmentSlotType slot : EquipmentSlotType.values()){
-                if(!this.getItemStackFromSlot(slot).isEmpty()){
+            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                if (!this.getItemStackFromSlot(slot).isEmpty()) {
                     this.entityDropItem(this.getItemStackFromSlot(slot));
                 }
             }
@@ -2407,11 +2428,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                     this.remove();
                     player.swingArm(hand);
                     return ActionResultType.SUCCESS;
-                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK || itemstack.getItem() == RatsItemRegistry.RADIUS_STICK) {
+                } else if (itemstack.getItem() == RatsItemRegistry.CHEESE_STICK || itemstack.getItem() == RatsItemRegistry.PATROL_STICK || itemstack.getItem() == RatsItemRegistry.RADIUS_STICK) {
                     itemstack.getTag().putUniqueId("RatUUID", this.getUniqueID());
                     player.swingArm(hand);
-                    if(!world.isRemote && player instanceof ServerPlayerEntity){
-                        RatsMod.sendNonLocal(new MessageCheeseStaffRat(this.getEntityId(), false, false), (ServerPlayerEntity)player);
+                    if (!world.isRemote && player instanceof ServerPlayerEntity) {
+                        RatsMod.sendNonLocal(new MessageCheeseStaffRat(this.getEntityId(), false, false), (ServerPlayerEntity) player);
                     }
                     player.sendStatusMessage(new TranslationTextComponent("entity.rats.rat.staff.bind", this.getName()), true);
                     return ActionResultType.SUCCESS;
@@ -2474,11 +2495,11 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
             return ratInventory.getStackInSlot(1);
         } else if (slotIn == EquipmentSlotType.OFFHAND) {
             return ratInventory.getStackInSlot(2);
-        }else if (slotIn == EquipmentSlotType.CHEST) {
+        } else if (slotIn == EquipmentSlotType.CHEST) {
             return ratInventory.getStackInSlot(3);
-        }else if (slotIn == EquipmentSlotType.LEGS) {
+        } else if (slotIn == EquipmentSlotType.LEGS) {
             return ratInventory.getStackInSlot(4);
-        }else if (slotIn == EquipmentSlotType.FEET) {
+        } else if (slotIn == EquipmentSlotType.FEET) {
             return ratInventory.getStackInSlot(5);
         }
         return super.getItemStackFromSlot(slotIn);
@@ -2651,7 +2672,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean shouldHuntMonster() {
-        return this.getCommandInteger() == 7;
+        return this.getCommandInteger() == 7 || isPatrolCommand();
     }
 
     public boolean shouldWander() {
@@ -2836,12 +2857,13 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         }
         return false;
     }
+
     public boolean isAIDisabled() {
         return super.isAIDisabled() || this.getRespawnCountdown() > 0;
     }
 
     public void forEachUpgrade(Consumer<ItemRatUpgrade> function) {
-        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS){
+        for (EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
             ItemStack stack = getItemStackFromSlot(slot);
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof ItemRatUpgradeCombined) {
@@ -2874,7 +2896,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean forEachUpgradeBool(Function<ItemRatUpgrade, Boolean> function, boolean _default) {
-        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
+        for (EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
             ItemStack stack = getItemStackFromSlot(slot);
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof ItemRatUpgradeCombined) {
@@ -2908,7 +2930,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public ItemStack getUpgrade(Item item) {
-        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
+        for (EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
             ItemStack stack = getItemStackFromSlot(slot);
             if (!stack.isEmpty()) {
                 if (stack.getItem() == item) {
@@ -2944,7 +2966,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public boolean hasUpgrade(Item item) {
-        if(!isTamed() || !hasAnyUpgrades()){
+        if (!isTamed() || !hasAnyUpgrades()) {
             return false;
         }
         return getUpgrade(item) != ItemStack.EMPTY;
@@ -2967,9 +2989,9 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
                 && !this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
     }
 
-    private boolean hasAnyUpgrades(){
-        for(EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS){
-            if(!this.getItemStackFromSlot(slot).isEmpty()){
+    private boolean hasAnyUpgrades() {
+        for (EquipmentSlotType slot : RatUtils.UPGRADE_SLOTS) {
+            if (!this.getItemStackFromSlot(slot).isEmpty()) {
                 return true;
             }
         }
@@ -3101,7 +3123,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if ((source == DamageSource.IN_WALL || source == DamageSource.DROWN) && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_QUARRY) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_POISON) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_UNDERWATER))) {
             return true;
         }
-        if(source == DamageSource.IN_WALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK))){
+        if (source == DamageSource.IN_WALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK))) {
             return true;
         }
         if (source == DamageSource.FALL && (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION) || this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR) || this.hasFlightUpgrade())) {
@@ -3110,7 +3132,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
         if (source.isExplosion() && this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR)) {
             return true;
         }
-        if(forEachUpgradeBool((stack) -> stack.isRatInvulnerableTo(this, source), false)){
+        if (forEachUpgradeBool((stack) -> stack.isRatInvulnerableTo(this, source), false)) {
             return true;
         }
         if (this.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_CREATIVE)) {
@@ -3436,7 +3458,7 @@ public class EntityRat extends TameableEntity implements IAnimatedEntity, IRatla
     }
 
     public void resetAI() {
-        if(!world.isRemote){
+        if (!world.isRemote) {
             this.goalSelector.getRunningGoals().forEach(Goal::resetTask);
             this.targetSelector.getRunningGoals().forEach(Goal::resetTask);
             this.setAttackTarget(null);

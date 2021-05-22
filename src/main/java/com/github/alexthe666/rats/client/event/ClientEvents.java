@@ -48,19 +48,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
     public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation("rats:textures/gui/plague_hearts.png");
+    public static final ResourceLocation RAT_PROTECTOR_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/rat_protector.png");
     private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_radius.png");
     private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation("rats:textures/model/quarry_radius.png");
     private static final ResourceLocation HOME_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_home.png");
     private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_deposit.png");
     private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_pickup.png");
+    private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_patrol.png");
     private static final ResourceLocation SYNESTHESIA = new ResourceLocation("rats:shaders/post/synesthesia.json");
-    public static final ResourceLocation RAT_PROTECTOR_TEXTURE = new ResourceLocation("rats:textures/entity/ratlantis/rat_protector.png");
+    private static final ModelStaticRat RAT_MODEL = new ModelStaticRat(0);
     public static int left_height = 39;
     public static int right_height = 39;
     private int updateCounter = 0;
@@ -73,12 +76,58 @@ public class ClientEvents {
     private float prevSynesthesiaProgress = 0;
     private float maxSynesthesiaProgress = 40;
 
+    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks, MatrixStack stack) {
+        Tessellator tessellator = Tessellator.getInstance();
+        IVertexBuilder vertexbuffer = tessellator.getBuffer().getVertexBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        float f3 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F;
+        Matrix4f matrix4f = stack.getLast().getMatrix();
+        float maxX = (float) boundingBox.maxX * 0.125F;
+        float minX = (float) boundingBox.minX * 0.125F;
+        float maxY = (float) boundingBox.maxY * 0.125F;
+        float minY = (float) boundingBox.minY * 0.125F;
+        float maxZ = (float) boundingBox.maxZ * 0.125F;
+        float minZ = (float) boundingBox.minZ * 0.125F;
+        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+        tessellator.draw();
+    }
+
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onFogColors(EntityViewRenderEvent.FogColors event) {
         ClientWorld world = Minecraft.getInstance().world;
-        if(world.getDimensionKey().getRegistryName().getPath().equals("ratlantis")){
-            float f12 = MathHelper.clamp(MathHelper.cos(world.func_242415_f((float)event.getRenderPartialTicks()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
+        if (world.getDimensionKey().getRegistryName().getPath().equals("ratlantis")) {
+            float f12 = MathHelper.clamp(MathHelper.cos(world.func_242415_f((float) event.getRenderPartialTicks()) * ((float) Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
             float red = (f12 * 1F);
             float green = (f12 * 1F);
             float blue = (f12 * 0.7F);
@@ -137,10 +186,10 @@ public class ClientEvents {
 
         if (health < this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Util.milliTime();
-            this.healthUpdateCounter = (long) (this.updateCounter + 20);
+            this.healthUpdateCounter = this.updateCounter + 20;
         } else if (health > this.playerHealth && player.hurtResistantTime > 0) {
             this.lastSystemTime = Util.milliTime();
-            this.healthUpdateCounter = (long) (this.updateCounter + 10);
+            this.healthUpdateCounter = this.updateCounter + 10;
         }
 
         if (Util.milliTime() - this.lastSystemTime > 1000L) {
@@ -159,7 +208,7 @@ public class ClientEvents {
         int healthRows = MathHelper.ceil((healthMax + absorb) / 2.0F / 10.0F);
         int rowHeight = Math.max(10 - (healthRows - 2), 3);
 
-        this.rand.setSeed((long) (updateCounter * 312871));
+        this.rand.setSeed(updateCounter * 312871);
 
         int left = width / 2 - 91;
         int top = height - left_height;
@@ -224,14 +273,14 @@ public class ClientEvents {
             GameRenderer renderer = Minecraft.getInstance().gameRenderer;
             EffectInstance active = event.getEntityLiving().getActivePotionEffect(RatsMod.CONFIT_BYALDI_POTION);
             boolean synesthesia = active != null;
-            try{
+            try {
                 if (synesthesia && renderer.getShaderGroup() == null) {
                     renderer.loadShader(SYNESTHESIA);
                 }
                 if (!synesthesia && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SYNESTHESIA.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
                     renderer.stopUseShader();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 RatsMod.LOGGER.warn("Game tried to crash when applying shader");
             }
 
@@ -268,7 +317,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if(Pathfinding.isDebug()){
+        if (Pathfinding.isDebug()) {
             PathRenderer.debugDraw(event.getPartialTicks(), event.getMatrixStack());
         }
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
@@ -287,7 +336,7 @@ public class ClientEvents {
                 double pz = viewPosition.z;
                 MatrixStack stack = event.getMatrixStack();
                 float bob = 1.5F + 0.3F * (MathHelper.sin((event.getPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 0.1F) + 1F);
-                if(rat.detachHome()){
+                if (rat.detachHome()) {
                     stack.push();
                     GlStateManager.enableBlend();
                     GlStateManager.depthMask(false);
@@ -300,13 +349,13 @@ public class ClientEvents {
                     vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
                     vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
                     vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
-                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, -0.5F, 0).tex(f7, f6).endVertex();
                     tessellator.draw();
                     GlStateManager.disableBlend();
                     GlStateManager.depthMask(true);
                     stack.pop();
                 }
-                if(rat.getDepositPos() != null){
+                if (rat.getDepositPos() != null) {
                     stack.push();
                     GlStateManager.enableBlend();
                     GlStateManager.depthMask(false);
@@ -319,13 +368,13 @@ public class ClientEvents {
                     vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
                     vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
                     vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
-                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, -0.5F, 0).tex(f7, f6).endVertex();
                     tessellator.draw();
                     GlStateManager.disableBlend();
                     GlStateManager.depthMask(true);
                     stack.pop();
                 }
-                if(rat.getPickupPos() != null){
+                if (rat.getPickupPos() != null) {
                     stack.push();
                     GlStateManager.enableBlend();
                     GlStateManager.depthMask(false);
@@ -338,7 +387,7 @@ public class ClientEvents {
                     vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
                     vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
                     vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
-                    vertexbuffer.pos(matrix4f,0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, -0.5F, 0).tex(f7, f6).endVertex();
                     tessellator.draw();
                     GlStateManager.disableBlend();
                     GlStateManager.depthMask(true);
@@ -346,6 +395,74 @@ public class ClientEvents {
                 }
             }
         }
+
+        if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.PATROL_STICK) {
+            if (RatsMod.PROXY.getRefrencedRat() != null) {
+                EntityRat rat = RatsMod.PROXY.getRefrencedRat();
+                Tessellator tessellator = Tessellator.getInstance();
+                IVertexBuilder vertexbuffer = tessellator.getBuffer().getVertexBuilder();
+                BufferBuilder buffer = tessellator.getBuffer();
+                float f7 = 0;
+                float f8 = 1;
+                float f5 = 0;
+                float f6 = 1;
+                final Vector3d viewPosition = Minecraft.getInstance().getRenderManager().info.getProjectedView();
+                double px = viewPosition.x;
+                double py = viewPosition.y;
+                double pz = viewPosition.z;
+                MatrixStack stack = event.getMatrixStack();
+                float bob = 1.5F + 0.05F * (MathHelper.sin((event.getPartialTicks() + Minecraft.getInstance().player.ticksExisted) * 0.1F) + 1F);
+
+                for (int i = 0; i < rat.patrolNodes.size(); i++) {
+                    BlockPos node = rat.patrolNodes.get(i);
+                    BlockPos prev;
+                    float r = 0.6F;
+                    float g = 0.1F;
+                    float b = 0.1F;
+                    if (i > 0) {
+                        prev = rat.patrolNodes.get(i - 1);
+                    }else{
+                        prev = rat.patrolNodes.get(rat.patrolNodes.size() - 1);
+                        r = 0.5F;
+                        g = 0.3F;
+                        b = 0.1F;
+                    }
+
+                    stack.push();
+                    stack.translate(-px, -py, -pz);
+                    stack.translate(prev.getX() + 0.5F, prev.getY() + bob - 0.25F, prev.getZ() + 0.5F);
+                    float pdx = node.getX() - prev.getX();
+                    float pdy = node.getY() - prev.getY();
+                    float pdz = node.getZ() - prev.getZ();
+                    float dist = (float) Math.sqrt(pdx * pdx + pdy * pdy + pdz * pdz);
+                    buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+                    Matrix4f matrix4f = stack.getLast().getMatrix();
+                    vertexbuffer.pos(matrix4f, pdx, pdy, pdz).color(r, g, b, 1.0F).endVertex();
+                    vertexbuffer.pos(matrix4f, 0, 0, 0).color(r, g, b, 1.0F).endVertex();
+                    tessellator.draw();
+                    stack.pop();
+
+                    stack.push();
+                    GlStateManager.enableBlend();
+                    GlStateManager.depthMask(false);
+                    stack.translate(-px, -py, -pz);
+                    stack.translate(node.getX() + 0.5F, node.getY() + bob, node.getZ() + 0.5F);
+                    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+                    matrix4f = stack.getLast().getMatrix();
+                    Minecraft.getInstance().getTextureManager().bindTexture(RAT_PATROL_NODE_TEXTURE);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    vertexbuffer.pos(matrix4f, -0.5F, -0.5F, 0).tex(f8, f6).endVertex();
+                    vertexbuffer.pos(matrix4f, -0.5F, 0.5F, 0).tex(f8, f5).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, 0.5F, 0).tex(f7, f5).endVertex();
+                    vertexbuffer.pos(matrix4f, 0.5F, -0.5F, 0).tex(f7, f6).endVertex();
+                    tessellator.draw();
+                    stack.pop();
+                    GlStateManager.disableBlend();
+                    GlStateManager.depthMask(true);
+                }
+            }
+        }
+
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.RADIUS_STICK) {
             if (RatsMod.PROXY.getRefrencedRat() != null) {
                 BlockPos blockPos = RatsMod.PROXY.getRefrencedRat().getSearchCenter();
@@ -376,8 +493,8 @@ public class ClientEvents {
         }
 
         if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() == RatsItemRegistry.CHEESE_STICK) {
-            if(Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.BLOCK){
-                BlockRayTraceResult over = (BlockRayTraceResult)Minecraft.getInstance().objectMouseOver;
+            if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.BLOCK) {
+                BlockRayTraceResult over = (BlockRayTraceResult) Minecraft.getInstance().objectMouseOver;
                 if (Minecraft.getInstance().world.getBlockState(over.getPos()).getBlock() == RatsBlockRegistry.RAT_QUARRY) {
                     if (Minecraft.getInstance().world.getTileEntity(over.getPos()) instanceof TileEntityRatQuarry) {
                         TileEntityRatQuarry quarry = (TileEntityRatQuarry) Minecraft.getInstance().world.getTileEntity(over.getPos());
@@ -411,68 +528,21 @@ public class ClientEvents {
         }
     }
 
-    public static void renderMovingAABB(AxisAlignedBB boundingBox, float partialTicks, MatrixStack stack) {
-        Tessellator tessellator = Tessellator.getInstance();
-        IVertexBuilder vertexbuffer = tessellator.getBuffer().getVertexBuilder();
-        BufferBuilder buffer = tessellator.getBuffer();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        float f3 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F;
-        Matrix4f matrix4f = stack.getLast().getMatrix();
-        float maxX = (float)boundingBox.maxX * 0.125F;
-        float minX = (float)boundingBox.minX * 0.125F;
-        float maxY = (float)boundingBox.maxY * 0.125F;
-        float minY = (float)boundingBox.minY * 0.125F;
-        float maxZ = (float)boundingBox.maxZ * 0.125F;
-        float minZ = (float)boundingBox.minZ * 0.125F;
-        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(matrix4f,  (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(matrix4f,  (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-        vertexbuffer.pos(matrix4f,  (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-
-        vertexbuffer.pos(matrix4f,  (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float) boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.minX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.minZ).tex(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.maxY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-        vertexbuffer.pos(matrix4f, (float)boundingBox.maxX,  (float)boundingBox.minY,  (float)boundingBox.maxZ).tex(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-        tessellator.draw();
-    }
-
-    private static final ModelStaticRat RAT_MODEL = new ModelStaticRat(0);
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onLivingRender(RenderLivingEvent.Post event) {
         MatrixStack matrixStackIn = event.getMatrixStack();
         int protectorCount = CommonEvents.getProtectorCount(event.getEntity());
         IVertexBuilder textureBuilder = event.getBuffers().getBuffer(RatsRenderType.getGlowingTranslucent(RAT_PROTECTOR_TEXTURE));
-        for(int i = 0; i < protectorCount; i++){
-           float tick = (float)(event.getEntity().ticksExisted - 1) + event.getPartialRenderTick();
-            float offsetRot = 30 + 360 * (i / (float)protectorCount);
-            float bob = (float)((Math.sin((double)(tick * 0.1F)) * 0.2F + Math.cos(tick * 0.4F + i)) * 0.2);
+        for (int i = 0; i < protectorCount; i++) {
+            float tick = (float) (event.getEntity().ticksExisted - 1) + event.getPartialRenderTick();
+            float offsetRot = 30 + 360 * (i / (float) protectorCount);
+            float bob = (float) ((Math.sin(tick * 0.1F) * 0.2F + Math.cos(tick * 0.4F + i)) * 0.2);
             float scale = 0.4F;
             float rotation = MathHelper.wrapDegrees((tick * 8) % 360.0F + offsetRot);
             matrixStackIn.push();
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(rotation));
-            matrixStackIn.translate(0.0D, (double)(event.getEntity().getHeight() + 0.5D + bob), (double)(event.getEntity().getWidth() + 0.5F));
+            matrixStackIn.translate(0.0D, event.getEntity().getHeight() + 0.5D + bob, event.getEntity().getWidth() + 0.5F);
             matrixStackIn.push();
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90));
             matrixStackIn.rotate(Vector3f.XP.rotationDegrees(75.0F));
@@ -487,7 +557,6 @@ public class ClientEvents {
 
         }
     }
-
 
 
 }
