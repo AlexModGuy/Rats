@@ -64,6 +64,10 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
     private static final ResourceLocation FRIAR = new ResourceLocation("rats:textures/entity/rat/patreon/rat_friar.png");
     private static final ResourceLocation RIDDLER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_riddler.png");
     private static final ResourceLocation JOKER = new ResourceLocation("rats:textures/entity/rat/patreon/rat_joker.png");
+    private static final ResourceLocation BUGRAAK = new ResourceLocation("rats:textures/entity/rat/patreon/rat_bugraak.png");
+    private static final ResourceLocation LIL_CHEESE = new ResourceLocation("rats:textures/entity/rat/patreon/rat_lil_cheese.png");
+    private static final ResourceLocation ZURA = new ResourceLocation("rats:textures/entity/rat/patreon/rat_zura.png");
+    private static final ResourceLocation SKRAT = new ResourceLocation("rats:textures/entity/rat/patreon/rat_skrat.png");
 
     public RenderRat() {
         super(Minecraft.getInstance().getRenderManager(), RAT_MODEL, 0.15F);
@@ -211,30 +215,42 @@ public class RenderRat extends MobRenderer<EntityRat, SegmentedModel<EntityRat>>
                 return AQUATIC_UPGRADE_TEXTURE;
             }
             if (entity.hasCustomName()) {
-                String str = entity.getCustomName().getString();
-                if (str.contains("julian") || str.contains("Julian")) {
+                String str = entity.getCustomName().getString().toLowerCase().replace(" ", "_");
+                if (str.contains("julian")) {
                     return JULIAN;
                 }
-                if (str.contains("shizuka") || str.contains("Shizuka")) {
+                if (str.contains("shizuka")) {
                     return SHIZUKA;
                 }
-                if (str.contains("sharva") || str.contains("Sharva")) {
+                if (str.contains("sharva")) {
                     return SHARVA;
                 }
-                if (str.contains("dino") || str.contains("Dino")) {
+                if (str.contains("dino")) {
                     return DINO;
                 }
-                if (str.contains("ratatla") || str.contains("Ratatla")) {
+                if (str.contains("ratatla")) {
                     return RATATLA;
                 }
-                if (str.contains("friar") || str.contains("Friar")) {
+                if (str.contains("friar")) {
                     return FRIAR;
                 }
-                if (str.contains("riddler") || str.contains("Riddler")) {
+                if (str.contains("riddler")) {
                     return RIDDLER;
                 }
-                if (str.contains("joker") || str.contains("Joker")) {
+                if (str.contains("joker")) {
                     return JOKER;
+                }
+                if (str.contains("bugraak")) {
+                    return BUGRAAK;
+                }
+                if (str.contains("lil_cheese")) {
+                    return LIL_CHEESE;
+                }
+                if (str.contains("zura")) {
+                    return ZURA;
+                }
+                if (str.contains("skrat")) {
+                    return SKRAT;
                 }
             }
             ResourceLocation resourcelocation = LAYERED_LOCATION_CACHE.get(s);
