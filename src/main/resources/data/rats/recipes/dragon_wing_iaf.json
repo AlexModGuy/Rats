@@ -16,7 +16,7 @@
       "tag": "forge:bones/dragon"
     },
     "L": {
-      "tag": "iceandfire:fire_dragon_scales"
+      "tag": "#forge:scales/dragon"
     }
   },
   "result": {
