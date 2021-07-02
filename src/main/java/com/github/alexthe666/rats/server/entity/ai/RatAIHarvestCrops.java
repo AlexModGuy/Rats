@@ -112,7 +112,7 @@ public class RatAIHarvestCrops extends Goal {
                     this.entity.fleePos = this.targetBlock;
 
                     if ((!RatConfig.ratsBreakBlockOnHarvest || entity.hasUpgrade(RatsItemRegistry.RAT_UPGRADE_REPLANTER))) {
-                        if(block.getMaterial() == Material.GOURD){
+                        if(block.getMaterial() == Material.GOURD || block.getBlock() instanceof FlowerBlock || block.getBlock() instanceof LilyPadBlock){
                             this.entity.world.destroyBlock(targetBlock, false);
                         }else{
                             this.entity.world.setBlockState(targetBlock, block.getBlock().getDefaultState());
