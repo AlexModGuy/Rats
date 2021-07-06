@@ -31,11 +31,6 @@
                 },
                 {
                     "type": "item",
-                    "name": "rats:rat_diamond",
-                    "weight": 35
-                },
-                {
-                    "type": "item",
                     "name": "minecraft:diamond",
                     "weight": 1
                 },
