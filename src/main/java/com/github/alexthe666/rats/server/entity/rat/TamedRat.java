@@ -825,6 +825,20 @@ public class TamedRat extends InventoryRat {
 				return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
 			}
 
+			if (itemstack.is(RatlantisItemRegistry.RAT_TOGA.get())) {
+				if (!this.hasToga()) {
+					if (!player.isCreative()) {
+						itemstack.shrink(1);
+					}
+				} else {
+					if (!this.getLevel().isClientSide()) {
+						this.spawnAtLocation(new ItemStack(RatlantisItemRegistry.RAT_TOGA.get()), 0.0F);
+					}
+				}
+				this.setToga(!this.hasToga());
+				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
+			}
+
 			if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
 				this.setDyeColor(0);

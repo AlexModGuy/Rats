@@ -236,19 +236,6 @@ public class Rat extends DiggingRat implements Ratlanteans {
 				}
 				return InteractionResult.SUCCESS;
 			}
-			if (itemstack.is(RatlantisItemRegistry.RAT_TOGA.get())) {
-				if (!this.hasToga()) {
-					if (!player.isCreative()) {
-						itemstack.shrink(1);
-					}
-				} else {
-					if (!this.getLevel().isClientSide()) {
-						this.spawnAtLocation(new ItemStack(RatlantisItemRegistry.RAT_TOGA.get()), 0.0F);
-					}
-				}
-				this.setToga(!this.hasToga());
-				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
-			}
 			if (!this.getLevel().isClientSide() && itemstack.is(RatsItemRegistry.CREATIVE_CHEESE.get())) {
 				TamedRat rat = RatUtils.tameRat(this, this.getLevel());
 				this.getLevel().broadcastEntityEvent(rat, (byte) 83);
