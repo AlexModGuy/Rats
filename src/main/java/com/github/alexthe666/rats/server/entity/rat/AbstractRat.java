@@ -461,7 +461,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		if (tag.contains("ColorVariant", Tag.TAG_INT)) {
 			this.setColorVariant(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant")));
 			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariants.RAT_VARIANT_REGISTRY.get().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
-		} else {
+		} else if (tag.contains("ColorVariant", Tag.TAG_STRING)) {
 			this.setColorVariant(RatVariants.getVariant(tag.getString("ColorVariant")));
 		}
 		this.raidCooldown = tag.getInt("RaidCooldown");

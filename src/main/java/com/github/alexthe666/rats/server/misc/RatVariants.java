@@ -13,6 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class RatVariants {
@@ -60,10 +61,10 @@ public class RatVariants {
 	}
 
 	public static RatVariant getVariant(String id) {
-		return Objects.requireNonNull(RAT_VARIANT_REGISTRY.get().getValue(new ResourceLocation(id)));
+		return Optional.ofNullable(RAT_VARIANT_REGISTRY.get().getValue(new ResourceLocation(id))).orElse(RatVariants.BLUE.get());
 	}
 
 	public static String getVariantId(RatVariant variant) {
-		return Objects.requireNonNull(RAT_VARIANT_REGISTRY.get().getKey(variant)).toString();
+		return Optional.ofNullable(RAT_VARIANT_REGISTRY.get().getKey(variant)).orElse(RAT_VARIANT_REGISTRY.get().getKey(RatVariants.BLUE.get())).toString();
 	}
 }
