@@ -49,7 +49,7 @@ public class RatSackItem extends Item {
 					CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
 					ratCount++;
 					String ratName = I18n.get("entity.rats.rat");
-					if (!ratTag.getString("CustomName").isEmpty() && !ratTag.getString("CustomName").startsWith("TextComponent")) {
+					if (!ratTag.getString("CustomName").isEmpty()) {
 						Component ratNameTag = Component.Serializer.fromJson(ratTag.getString("CustomName"));
 						if (ratNameTag != null) {
 							ratName = ratNameTag.getString();
