@@ -1,0 +1,37 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "trash_can": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:trash_can"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.trash_can.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:trash_can"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.trash_can.title"
+    }
+  },
+  "requirements": [
+    [
+      "trash_can"
+    ]
+  ]
+}

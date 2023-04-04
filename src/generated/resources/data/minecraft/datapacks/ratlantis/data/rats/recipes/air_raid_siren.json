@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "rats:ratbot_barrel"
+    },
+    "I": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " S ",
+    "BIB",
+    " S "
+  ],
+  "result": {
+    "item": "rats:air_raid_siren"
+  },
+  "show_notification": true
+}

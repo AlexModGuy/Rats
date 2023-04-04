@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cannonball": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:cheese_cannonball"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_eye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:pirat_cutlass"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:pirat_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:rat_upgrade_buccaneer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_basic_ratlantean"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_cannonball",
+      "has_hat",
+      "has_eye",
+      "has_upgrade",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:rat_upgrade_buccaneer"
+    ]
+  }
+}

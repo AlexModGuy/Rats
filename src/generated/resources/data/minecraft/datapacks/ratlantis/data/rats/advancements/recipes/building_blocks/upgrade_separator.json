@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brick": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:marbled_cheese_brick_chiseled"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_chiseled": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:marbled_cheese_brick_chiseled"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_pillar": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:marbled_cheese_pillar"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_saw": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:ancient_sawblade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:upgrade_separator"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_saw",
+      "has_pillar",
+      "has_brick",
+      "has_chiseled",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:upgrade_separator"
+    ]
+  }
+}

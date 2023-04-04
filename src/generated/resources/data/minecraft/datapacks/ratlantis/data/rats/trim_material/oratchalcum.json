@@ -1,0 +1,9 @@
+{
+  "asset_name": "oratchalcum",
+  "description": {
+    "color": "#AB9058",
+    "translate": "trim_material.rats.oratchalcum"
+  },
+  "ingredient": "rats:oratchalcum_ingot",
+  "item_model_index": 0.66
+}

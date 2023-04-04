@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "T": {
+      "item": "minecraft:iron_trapdoor"
+    }
+  },
+  "pattern": [
+    "IT ",
+    "SSS"
+  ],
+  "result": {
+    "item": "rats:rat_trap"
+  },
+  "show_notification": true
+}

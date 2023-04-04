@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:item/generated",
+  "forge_data": {
+    "layers": {
+      "0": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
+  "loader": "forge:item_layers",
+  "overrides": [
+    {
+      "model": "rats:item/ratbow_essence_aro",
+      "predicate": {
+        "rats:special": 1.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_ace",
+      "predicate": {
+        "rats:special": 2.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_bi",
+      "predicate": {
+        "rats:special": 3.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_gay",
+      "predicate": {
+        "rats:special": 4.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_genderfluid",
+      "predicate": {
+        "rats:special": 5.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_enby",
+      "predicate": {
+        "rats:special": 6.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_lesbian",
+      "predicate": {
+        "rats:special": 7.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_pan",
+      "predicate": {
+        "rats:special": 8.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_trans",
+      "predicate": {
+        "rats:special": 9.0
+      }
+    }
+  ],
+  "render_types": {
+    "rats:forge_entity_unsorted_translucent": [
+      0
+    ]
+  },
+  "textures": {
+    "layer0": "rats:item/ratbow_essence"
+  }
+}

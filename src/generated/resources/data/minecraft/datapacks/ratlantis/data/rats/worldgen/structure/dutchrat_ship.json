@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#rats:has_structure/dutchrat_ship",
+  "max_distance_from_center": 80,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "size": 1,
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "full",
+      "spawns": [
+        {
+          "type": "rats:ghost_pirat",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "start_height": {
+    "absolute": 50
+  },
+  "start_pool": "rats:dutchrat_ship",
+  "step": "surface_structures",
+  "use_expansion_hack": false
+}

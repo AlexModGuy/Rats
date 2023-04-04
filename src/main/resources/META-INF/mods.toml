@@ -1,34 +1,32 @@
-modLoader="javafml" #mandatory
-loaderVersion="[32,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
-license="GNU LESSER GENERAL PUBLIC LICENSE"
-issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
-[[mods]] #mandatory
-modId="rats" #mandatory
-version="7.0.4" #mandatory
-displayName="Rats" #mandatory
-displayURL="https://www.curseforge.com/minecraft/mc-mods/rats" #optional
-logoFile="rats_logo.png" #optional
-authors="Alexthe666" #optional
-description='''What are we going to do today Pinky?'''
-[[dependencies.rats]] #optional
-                   # the modid of the dependency
-                   modId="citadel" #mandatory
-                   # Does this dependency have to exist - if not, ordering below must be specified
-                   mandatory=true #mandatory
-                   # The version range of the dependency
-                   versionRange="[1.4.0,)" #mandatory
-                   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-                   ordering="AFTER"
-                   # Side this dependency is applied on - BOTH, CLIENT or SERVER
-                   side="BOTH"
-[[dependencies.rats]] #optional
- # the modid of the dependency
-modId="ratlantis" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-mandatory=false #mandatory
-# The version range of the dependency
-versionRange="[1.0.0-1.16.3,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-ordering="BEFORE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
-side="BOTH"
+modLoader = "javafml"
+loaderVersion = "[45,)"
+license = "GNU LESSER GENERAL PUBLIC LICENSE"
+issueTrackerURL = "https://github.com/Alex-the-666/Rats/issues"
+
+[[mods]]
+modId = "rats"
+version = "${file.jarVersion}"
+displayName = "Rats"
+itemIcon = "rats:cheese"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/rats"
+logoFile = "rats_logo.png"
+authors = "Alexthe666, GizmoTheMoonPig"
+description = '''What are we going to do today Pinky?'''
+
+# order forge to load before us so we can properly replace the milk texture
+[[dependencies.rats]]
+modId = "forge"
+mandatory = true
+versionRange = "[45.0.25,)"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.rats]]
+modId = "citadel"
+mandatory = true
+versionRange = "[2.2,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[modproperties.twilightforest]
+configuredBackground="rats:textures/block/marbled_cheese.png"

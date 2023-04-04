@@ -1,0 +1,31 @@
+{
+  "parent": "ratlantis:token",
+  "criteria": {
+    "visit_ratlantis": {
+      "conditions": {
+        "to": "rats:ratlantis"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.ratlantis.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:ratlantis_portal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.ratlantis.title"
+    }
+  },
+  "requirements": [
+    [
+      "visit_ratlantis"
+    ]
+  ]
+}

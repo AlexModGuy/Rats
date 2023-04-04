@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "rats:ghost_pirat_ectoplasm"
+    },
+    "F": {
+      "item": "rats:pirat_fence"
+    },
+    "G": {
+      "tag": "forge:ingots/ratlantis_gem"
+    },
+    "L": {
+      "tag": "rats:pirat_logs"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "FEF",
+    "FGF"
+  ],
+  "result": {
+    "item": "rats:dutchrat_bell"
+  },
+  "show_notification": true
+}

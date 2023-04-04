@@ -1,0 +1,47 @@
+{
+  "parent": "rats:rat_upgrade_chef",
+  "criteria": {
+    "eat_byaldi": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:confit_byaldi"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "eat_knishes": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:potato_knishes"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.rats.rat_cooking.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "rats:chef_toque",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_cooking.title"
+    }
+  },
+  "requirements": [
+    [
+      "eat_byaldi",
+      "eat_knishes"
+    ]
+  ]
+}

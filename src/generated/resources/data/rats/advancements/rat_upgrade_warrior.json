@@ -1,0 +1,37 @@
+{
+  "parent": "rats:rat_upgrade_strength",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_warrior"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.rat_upgrade_warrior.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_upgrade_warrior"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_upgrade_warrior.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ]
+}

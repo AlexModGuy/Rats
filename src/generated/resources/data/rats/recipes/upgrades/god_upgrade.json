@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "S": {
+      "item": "rats:golden_rat_skull"
+    },
+    "W": {
+      "item": "rats:rat_upgrade_warrior"
+    }
+  },
+  "pattern": [
+    "SWS",
+    "WNW",
+    "SWS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_god"
+  },
+  "show_notification": true
+}

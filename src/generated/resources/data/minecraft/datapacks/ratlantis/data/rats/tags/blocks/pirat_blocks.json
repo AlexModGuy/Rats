@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#rats:pirat_logs",
+    "rats:pirat_planks",
+    "rats:pirat_slab",
+    "rats:pirat_stairs",
+    "rats:pirat_button",
+    "rats:pirat_pressure_plate",
+    "rats:pirat_fence",
+    "rats:pirat_fence_gate",
+    "rats:pirat_door",
+    "rats:pirat_trapdoor"
+  ]
+}

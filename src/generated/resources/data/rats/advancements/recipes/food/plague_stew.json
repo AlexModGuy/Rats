@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bowl": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:bowl"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_bundle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:herb_bundle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_leech": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:plague_leech"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:plague_stew"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_treacle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:treacle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_bundle",
+      "has_leech",
+      "has_treacle",
+      "has_bowl",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:plague_stew"
+    ]
+  }
+}

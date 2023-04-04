@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:bones"
+    },
+    "H": {
+      "item": "rats:archeologist_hat"
+    },
+    "M": {
+      "tag": "rats:marbled_cheese"
+    },
+    "P": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "S": {
+      "item": "minecraft:iron_shovel"
+    },
+    "T": {
+      "item": "rats:chunky_cheese_token"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "MHM",
+    "BUB",
+    "PTS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_archeologist"
+  },
+  "show_notification": true
+}

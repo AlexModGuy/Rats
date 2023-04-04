@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:rods/blaze"
+    },
+    "Q": {
+      "tag": "forge:gems/quartz"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_advanced_energy"
+    }
+  },
+  "pattern": [
+    "QBQ",
+    "BUB",
+    "QBQ"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_elite_energy"
+  },
+  "show_notification": true
+}

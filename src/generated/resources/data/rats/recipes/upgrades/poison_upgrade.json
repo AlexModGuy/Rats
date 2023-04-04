@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:spider_eye"
+    },
+    "G": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "P": {
+      "item": "minecraft:poisonous_potato"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "EEE",
+    "GUG",
+    "PPP"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_poison"
+  },
+  "show_notification": true
+}

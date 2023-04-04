@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": {
+      "item": "rats:string_cheese"
+    },
+    "W": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  "pattern": [
+    " S ",
+    "WWW",
+    "W W"
+  ],
+  "result": {
+    "item": "rats:rat_fez"
+  },
+  "show_notification": true
+}

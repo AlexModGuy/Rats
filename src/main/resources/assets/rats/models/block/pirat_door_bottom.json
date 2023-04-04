@@ -1,7 +1,0 @@
-{
-    "parent": "block/door_bottom",
-    "textures": {
-        "bottom": "rats:block/pirat_door_bottom",
-        "top": "rats:block/pirat_door_top"
-    }
-}

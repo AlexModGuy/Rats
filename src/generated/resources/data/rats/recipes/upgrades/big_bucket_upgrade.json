@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "S": {
+      "tag": "forge:slimeballs"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_bucket"
+    }
+  },
+  "pattern": [
+    "BDB",
+    "DUD",
+    "BSB"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_big_bucket"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,9 @@
+{
+  "asset_name": "gem_of_ratlantis",
+  "description": {
+    "color": "#9DFB6A",
+    "translate": "trim_material.rats.gem_of_ratlantis"
+  },
+  "ingredient": "rats:gem_of_ratlantis",
+  "item_model_index": 0.77
+}

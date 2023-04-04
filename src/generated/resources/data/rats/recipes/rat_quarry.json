@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/blue_cheese"
+    },
+    "C": {
+      "tag": "forge:crafting_tables"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "pattern": [
+    "BDB",
+    "BCB",
+    "BBB"
+  ],
+  "result": {
+    "item": "rats:rat_quarry"
+  },
+  "show_notification": true
+}

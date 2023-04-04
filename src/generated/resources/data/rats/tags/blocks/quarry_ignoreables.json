@@ -1,0 +1,7 @@
+{
+  "values": [
+    "rats:rat_quarry",
+    "rats:rat_quarry_platform",
+    "#minecraft:wither_immune"
+  ]
+}

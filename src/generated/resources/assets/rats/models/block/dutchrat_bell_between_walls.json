@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/bell_between_walls",
+  "textures": {
+    "bar": "rats:block/pirat_log",
+    "particle": "rats:block/pirat_log"
+  }
+}

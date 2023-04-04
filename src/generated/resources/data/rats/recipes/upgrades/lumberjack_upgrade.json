@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_axe"
+    },
+    "B": {
+      "item": "minecraft:black_wool"
+    },
+    "R": {
+      "item": "minecraft:red_wool"
+    },
+    "S": {
+      "tag": "minecraft:saplings"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "RAR",
+    "BUB",
+    "RSR"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_lumberjack"
+  },
+  "show_notification": true
+}

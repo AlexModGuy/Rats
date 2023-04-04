@@ -1,149 +1,240 @@
 package com.github.alexthe666.rats;
 
-import com.github.alexthe666.rats.client.ClientProxy;
-import com.github.alexthe666.rats.server.CommonProxy;
-import com.github.alexthe666.rats.server.entity.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.items.RatsItemRegistry;
-import com.github.alexthe666.rats.server.message.*;
-import com.github.alexthe666.rats.server.misc.TabRatlantis;
-import com.github.alexthe666.rats.server.potion.PotionConfitByaldi;
-import com.github.alexthe666.rats.server.potion.PotionPlague;
-import com.github.alexthe666.rats.server.world.RatsWorldRegistry;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import com.github.alexthe666.rats.registry.*;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
+import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
+import com.github.alexthe666.rats.server.misc.RatVariants;
+import com.github.alexthe666.rats.server.misc.RatsDataSerializers;
+import com.github.alexthe666.rats.server.recipes.RatlantisLoadedCondition;
+import com.google.common.collect.Maps;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.ProcessorLists;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.behavior.GiveGiftToHero;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Mod(RatsMod.MODID)
-@Mod.EventBusSubscriber(modid = RatsMod.MODID)
 public class RatsMod {
-    public static final Logger LOGGER = LogManager.getLogger();
-    public static final String MODID = "rats";
-    public static final SimpleChannel NETWORK_WRAPPER;
-    private static final String PROTOCOL_VERSION = Integer.toString(1);
-    public static ItemGroup TAB = new ItemGroup(MODID) {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(RatsItemRegistry.CHEESE);
-        }
-    };
-    public static ItemGroup TAB_UPGRADES = new ItemGroup("rats.upgrades") {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC);
-        }
-    };
-    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-    public static Effect CONFIT_BYALDI_POTION = new PotionConfitByaldi();
-    public static Effect PLAGUE_POTION = new PotionPlague();
-    public static boolean ICEANDFIRE_LOADED;
-    public static boolean RATLANTIS_LOADED = false;
-    private static int packetsRegistered = 0;
-    private static ItemGroup ratlantisTab = null;
+	public static final Logger LOGGER = LogManager.getLogger();
+	public static final String MODID = "rats";
+	public static final Rarity RATLANTIS_SPECIAL = Rarity.create("RATS_RATLANTIS_SPECIAL", ChatFormatting.GREEN);
+	public static final MobCategory RATS = MobCategory.create("RATS_RATS", "rats", 25, true, false, 128);
+	public static final MobCategory DEMON_RATS = MobCategory.create("RATS_DEMON_RATS", "demon_rats", 5, false, false, 64);
 
-    static {
-        NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("rats", "main_channel"));
-        String version = PROTOCOL_VERSION;
-        version.getClass();
-        channel = channel.clientAcceptedVersions(version::equals);
-        version = PROTOCOL_VERSION;
-        version.getClass();
-        NETWORK_WRAPPER = channel.serverAcceptedVersions(version::equals).networkProtocolVersion(() -> {
-            return PROTOCOL_VERSION;
-        }).simpleChannel();
-    }
+	public static final BlockSetType PIRAT_WOOD_SET = BlockSetType.register(new BlockSetType(new ResourceLocation(MODID, "pirat").toString(), SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN, SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
+	public static final WoodType PIRAT_WOOD_TYPE = WoodType.register(new WoodType(new ResourceLocation(MODID, "pirat").toString(), PIRAT_WOOD_SET, SoundType.NETHER_WOOD, SoundType.NETHER_WOOD_HANGING_SIGN, SoundEvents.NETHER_WOOD_FENCE_GATE_CLOSE, SoundEvents.NETHER_WOOD_FENCE_GATE_OPEN));
 
-    public RatsMod() {
-        RATLANTIS_LOADED = ModList.get().isLoaded("ratlantis");
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-        final ModLoadingContext modLoadingContext = ModLoadingContext.get();
-        modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
-        modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
-        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
-        PROXY.init();
-        RatsWorldRegistry.init();
-    }
+	public static final GameRules.Key<GameRules.BooleanValue> SPAWN_RATS = GameRules.register("doRatSpawning", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+	public static final GameRules.Key<GameRules.BooleanValue> SPAWN_PIPERS = GameRules.register("doPiperSpawning", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+	public static final GameRules.Key<GameRules.BooleanValue> SPAWN_PLAGUE_DOCTORS = GameRules.register("doPlagueDoctorSpawning", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
-    @SubscribeEvent
-    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
-        if (RatConfig.spawnRats) {
-           if(RatConfig.ratSpawnBiomes.contains(event.getName().toString())){
-               if (RatConfig.ratsSpawnLikeMonsters) {
-                   event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT_SPAWNER, RatConfig.ratSpawnRate, 1, 3));
-               }else{
-                   event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.RAT, RatConfig.ratSpawnRate, 1, 3));
-               }
-           }
-        }
-        if (RatConfig.spawnPiper) {
-            if(RatConfig.piperSpawnBiomes.contains(event.getName().toString())) {
-                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.PIED_PIPER, RatConfig.piperSpawnRate, 1, 1));
-            }
-        }
-        if (RatConfig.spawnDemonRats) {
-            if(RatConfig.demonRatSpawnBiomes.contains(event.getName().toString())) {
-                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(RatsEntityRegistry.DEMON_RAT, 15, 1, 2));
-            }
-        }
-    }
+	public static boolean ICEANDFIRE_LOADED;
+	public static boolean RATLANTIS_DATAPACK_ENABLED = false;
+	public static final List<Item> RATLANTIS_ITEMS = new ArrayList<>();
 
-    public static <MSG> void sendMSGToServer(MSG message) {
-        NETWORK_WRAPPER.sendToServer(message);
-    }
+	public RatsMod() {
+		ICEANDFIRE_LOADED = ModList.get().isLoaded("iceandfire");
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+		//melk
+		ForgeMod.enableMilkFluid();
 
-    public static <MSG> void sendMSGToAll(MSG message) {
-        for (ServerPlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
-            sendNonLocal(message, player);
-        }
-    }
+		RatVariants.RAT_VARIANTS.register(bus);
 
-    public static <MSG> void sendNonLocal(MSG msg, ServerPlayerEntity player) {
-        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getServerOwner())) {
-            NETWORK_WRAPPER.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
-        }
-    }
+		RatsBannerPatternRegistry.PATTERNS.register(bus);
+		RatsBlockRegistry.BLOCKS.register(bus);
+		RatsBlockEntityRegistry.BLOCK_ENTITIES.register(bus);
+		RatsEntityRegistry.ENTITIES.register(bus);
+		RatsItemRegistry.ITEMS.register(bus);
+		RatsDataSerializers.DATA_SERIALIZERS.register(bus);
+		RatsEffectRegistry.MOB_EFFECTS.register(bus);
+		RatsLootRegistry.CONDITIONS.register(bus);
+		RatsLootRegistry.LOOT_MODIFIERS.register(bus);
+		RatsMenuRegistry.MENUS.register(bus);
+		RatsParticleRegistry.PARTICLES.register(bus);
+		RatsVillagerRegistry.POIS.register(bus);
+		RatsVillagerRegistry.PROFESSIONS.register(bus);
+		RatsRecipeRegistry.RECIPES.register(bus);
+		RatsRecipeRegistry.SERIALIZERS.register(bus);
+		RatsSoundRegistry.SOUNDS.register(bus);
 
-    private void setup(final FMLCommonSetupEvent event) {
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageAutoCurdlerFluid.class, MessageAutoCurdlerFluid::write, MessageAutoCurdlerFluid::read, MessageAutoCurdlerFluid.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffRat.class, MessageCheeseStaffRat::write, MessageCheeseStaffRat::read, MessageCheeseStaffRat.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCheeseStaffSync.class, MessageCheeseStaffSync::write, MessageCheeseStaffSync::read, MessageCheeseStaffSync.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageDancingRat.class, MessageDancingRat::write, MessageDancingRat::read, MessageDancingRat.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageIncreaseRatRecipe.class, MessageIncreaseRatRecipe::write, MessageIncreaseRatRecipe::read, MessageIncreaseRatRecipe.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageRatCommand.class, MessageRatCommand::write, MessageRatCommand::read, MessageRatCommand.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageRatDismount.class, MessageRatDismount::write, MessageRatDismount::read, MessageRatDismount.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncThrownBlock.class, MessageSyncThrownBlock::write, MessageSyncThrownBlock::read, MessageSyncThrownBlock.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateRatFluid.class, MessageUpdateRatFluid::write, MessageUpdateRatFluid::read, MessageUpdateRatFluid.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTileSlots.class, MessageUpdateTileSlots::write, MessageUpdateTileSlots::read, MessageUpdateTileSlots.Handler::handle);
-    }
+		RatlantisBlockRegistry.BLOCKS.register(bus);
+		RatlantisBlockEntityRegistry.BLOCK_ENTITIES.register(bus);
+		RatlantisFeatureRegistry.CARVERS.register(bus);
+		RatlantisEntityRegistry.ENTITIES.register(bus);
+		RatlantisFeatureRegistry.FEATURES.register(bus);
+		RatlantisItemRegistry.ITEMS.register(bus);
+		RatlantisFeatureRegistry.PROCESSORS.register(bus);
 
-    private void setupClient(FMLClientSetupEvent event) {
-        PROXY.preInit();
-    }
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, RatsCapabilityRegistry::attachCap);
+		bus.addListener(RatsCapabilityRegistry::registerCapabilities);
+		bus.addListener(this::reloadConfigs);
+		bus.addListener(this::setup);
+		MinecraftForge.EVENT_BUS.addListener(this::addPetShops);
+		bus.addListener(this::addRatlantisDatapack);
+		bus.addListener(this::genericRegistryEvent);
+	}
 
-    public static ItemGroup getRatlantisTab(){
-        return RATLANTIS_LOADED ? ratlantisTab == null ? ratlantisTab = new TabRatlantis() : ratlantisTab : TAB;
-    }
+	//despite being a builtin datapack, this is still necessary because without it the Ratlantis pack doesn't show up. Whatever.
+	public void addRatlantisDatapack(AddPackFindersEvent event) {
+		if (event.getPackType() == PackType.SERVER_DATA) {
+			var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("data", "minecraft", "datapacks", "ratlantis");
+			var pack = Pack.readMetaAndCreate("ratlantis", Component.literal("Ratlantis"), false,
+					name -> new PathPackResources(name, resourcePath, false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.FEATURE);
+			event.addRepositorySource(packConsumer -> packConsumer.accept(pack));
+		}
+	}
+
+	public void reloadConfigs(ModConfigEvent event) {
+		if (event.getConfig().getSpec() == ConfigHolder.SERVER_SPEC) {
+			RatConfig.bakeServer();
+			LOGGER.debug("Reloading Rats Server Config!");
+		}
+		if (event.getConfig().getSpec() == ConfigHolder.CLIENT_SPEC) {
+			RatConfig.bakeClient();
+			LOGGER.debug("Reloading Rats Client Config!");
+		}
+	}
+
+	public void genericRegistryEvent(RegisterEvent event) {
+		if (Objects.equals(event.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(new RatlantisLoadedCondition.Serializer());
+		}
+	}
+
+	private void setup(FMLCommonSetupEvent event) {
+		RatsAdvancementsRegistry.init();
+		RatsNetworkHandler.init();
+		RatsDispenserRegistry.init();
+		RatsUpgradeConflictRegistry.init();
+		event.enqueueWork(() -> {
+			RatsCauldronRegistry.init();
+			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
+
+			CauldronInteraction.WATER.put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);
+
+			FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
+			pot.addPlant(RatlantisBlockRegistry.RATGLOVE_FLOWER.getId(), RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER);
+
+			ComposterBlock.add(0.3F, RatsItemRegistry.RAT_NUGGET.get());
+			ComposterBlock.add(0.5F, RatsItemRegistry.CONTAMINATED_FOOD.get());
+			ComposterBlock.add(0.65F, RatlantisBlockRegistry.RATGLOVE_FLOWER.get());
+			ComposterBlock.add(0.65F, RatsItemRegistry.POTATO_PANCAKE.get());
+			ComposterBlock.add(0.85F, RatsItemRegistry.HERB_BUNDLE.get());
+			ComposterBlock.add(0.85F, RatlantisItemRegistry.RATGLOVE_PETALS.get());
+			ComposterBlock.add(1.0F, RatsItemRegistry.CONFIT_BYALDI.get());
+			ComposterBlock.add(1.0F, RatsItemRegistry.POTATO_KNISHES.get());
+
+			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
+			AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_LOG.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
+			AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_WOOD.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());
+		});
+		//wooooo caches ftw
+		if (RATLANTIS_ITEMS.isEmpty()) {
+			RatlantisItemRegistry.ITEMS.getEntries().forEach(item -> RATLANTIS_ITEMS.add(item.get()));
+		}
+	}
+
+	//code take from TelepathicGrunt's gist: https://gist.github.com/TelepathicGrunt/4fdbc445ebcbcbeb43ac748f4b18f342
+	//1.18.2 version used and modified so it works in 1.19.4
+	public void addPetShops(ServerAboutToStartEvent event) {
+		Registry<StructureTemplatePool> templatePoolRegistry = event.getServer().registryAccess().registry(Registries.TEMPLATE_POOL).orElseThrow();
+		Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess().registry(Registries.PROCESSOR_LIST).orElseThrow();
+
+		if (RatConfig.villagePetShops) {
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:pet_shops/plains", 25, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:pet_shops/snowy", 25, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:pet_shops/savanna", 15, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:pet_shops/taiga", 15, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:pet_shops/desert", 25, ProcessorLists.EMPTY);
+
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:pet_shops/zombie_plains", 10, ProcessorLists.ZOMBIE_PLAINS);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:pet_shops/zombie_snowy", 10, ProcessorLists.ZOMBIE_SNOWY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:pet_shops/zombie_savanna", 10, ProcessorLists.ZOMBIE_SAVANNA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:pet_shops/zombie_taiga", 10, ProcessorLists.ZOMBIE_TAIGA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:pet_shops/zombie_desert", 10, ProcessorLists.ZOMBIE_DESERT);
+		}
+
+		if (RatConfig.villageGarbageHeaps) {
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:garbage_heaps/plains", 1, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:garbage_heaps/snowy", 1, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:garbage_heaps/savanna", 1, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:garbage_heaps/taiga", 1, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:garbage_heaps/desert", 1, ProcessorLists.EMPTY);
+
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:garbage_heaps/plains", 5, ProcessorLists.ZOMBIE_PLAINS);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:garbage_heaps/snowy", 5, ProcessorLists.ZOMBIE_SNOWY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:garbage_heaps/savanna", 5, ProcessorLists.ZOMBIE_SAVANNA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:garbage_heaps/taiga", 5, ProcessorLists.ZOMBIE_TAIGA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:garbage_heaps/desert", 5, ProcessorLists.ZOMBIE_DESERT);
+		}
+	}
+
+	//code take from TelepathicGrunt's gist: https://gist.github.com/TelepathicGrunt/4fdbc445ebcbcbeb43ac748f4b18f342
+	//1.18.2 version used, and modified, so it works in 1.19.4
+	//additions: a StructureProcessorList parameter to allow us to add a processor. (original code always used an empty processor, but some houses actually use processors)
+	private void addBuildingToPool(Registry<StructureTemplatePool> templatePoolRegistry, Registry<StructureProcessorList> processorListRegistry, ResourceLocation poolRL, String nbtPieceRL, int weight, ResourceKey<StructureProcessorList> processor) {
+		Holder<StructureProcessorList> emptyProcessorList = processorListRegistry.getHolderOrThrow(processor);
+
+		StructureTemplatePool pool = templatePoolRegistry.get(poolRL);
+		if (pool == null) return;
+
+		SinglePoolElement piece = SinglePoolElement.legacy(nbtPieceRL, emptyProcessorList).apply(StructureTemplatePool.Projection.RIGID);
+
+		for (int i = 0; i < weight; i++) {
+			pool.templates.add(piece);
+		}
+
+		List<Pair<StructurePoolElement, Integer>> listOfPieceEntries = new ArrayList<>(pool.rawTemplates);
+		listOfPieceEntries.add(new Pair<>(piece, weight));
+		pool.rawTemplates = listOfPieceEntries;
+		LOGGER.debug("Rats: Successfully added {} to village pool {}", nbtPieceRL, poolRL.toString());
+	}
 }

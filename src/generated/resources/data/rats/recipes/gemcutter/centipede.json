@@ -1,0 +1,8 @@
+{
+  "type": "rats:gemcutter",
+  "count": 1,
+  "ingredient": {
+    "item": "rats:little_black_worm"
+  },
+  "result": "rats:centipede"
+}

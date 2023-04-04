@@ -1,0 +1,86 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brain": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:psionic_rat_brain"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_skull": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:golden_rat_skull"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_tech": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:ancient_sawblade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:ratlantis_rat_skull"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wheel": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:dutchrat_wheel"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_wing": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:biplane_wing"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_skull",
+      "has_tech",
+      "has_brain",
+      "has_wheel",
+      "has_wing",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:ratlantis_rat_skull"
+    ]
+  }
+}

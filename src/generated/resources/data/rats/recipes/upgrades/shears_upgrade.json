@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "minecraft:mutton"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "WMW",
+    "MUM",
+    "WSW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_shears"
+  },
+  "show_notification": true
+}

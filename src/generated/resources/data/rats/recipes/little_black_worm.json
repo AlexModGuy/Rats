@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "rats:little_black_squash_balls"
+    },
+    "P": {
+      "item": "rats:potato_pancake"
+    }
+  },
+  "pattern": [
+    "BPB",
+    "BPB",
+    "BPB"
+  ],
+  "result": {
+    "item": "rats:little_black_worm"
+  },
+  "show_notification": true
+}

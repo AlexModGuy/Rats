@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:storage_blocks/blue_cheese"
+    },
+    "F": {
+      "item": "rats:filth"
+    },
+    "P": {
+      "item": "rats:rat_paw"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_miner"
+    }
+  },
+  "pattern": [
+    "PFP",
+    "FUF",
+    "CCC"
+  ],
+  "result": {
+    "count": 3,
+    "item": "rats:rat_upgrade_quarry"
+  },
+  "show_notification": true
+}

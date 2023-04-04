@@ -1,0 +1,6 @@
+{
+  "parent": "rats:item/cutlass",
+  "textures": {
+    "layer0": "rats:item/pirat_cutlass"
+  }
+}

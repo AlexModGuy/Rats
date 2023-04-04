@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "rats:item/rat_hammock_0",
-    "layer1": "rats:item/rat_hammock_1"
-  }
-}

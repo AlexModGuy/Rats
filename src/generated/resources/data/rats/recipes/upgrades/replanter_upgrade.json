@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "forge:seeds"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SUS",
+    "SSS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_replanter"
+  },
+  "show_notification": true
+}

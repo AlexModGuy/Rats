@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "rats:textures/block/marbled_cheese.png",
+    "description": {
+      "translate": "advancements.ratlantis.root.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:marbled_cheese_raw"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ratlantis.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ]
+}

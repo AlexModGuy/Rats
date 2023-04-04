@@ -1,0 +1,8 @@
+{
+  "type": "rats:archeologist",
+  "count": 1,
+  "ingredient": {
+    "item": "minecraft:dragon_breath"
+  },
+  "result": "rats:psionic_rat_brain"
+}

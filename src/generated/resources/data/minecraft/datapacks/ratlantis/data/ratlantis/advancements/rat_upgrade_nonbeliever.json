@@ -1,0 +1,37 @@
+{
+  "parent": "rats:rat_upgrade_god",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_nonbeliever"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ratlantis.rat_upgrade_nonbeliever.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "rats:rat_upgrade_nonbeliever"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.rat_upgrade_nonbeliever.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ]
+}

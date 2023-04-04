@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:lava_bucket"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "WBW",
+    "GUG",
+    "WBW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_asbestos"
+  },
+  "show_notification": true
+}

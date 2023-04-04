@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "rats:block/pirat_slab"
+    },
+    "type=double": {
+      "model": "rats:block/pirat_planks"
+    },
+    "type=top": {
+      "model": "rats:block/pirat_slab_top"
+    }
+  }
+}

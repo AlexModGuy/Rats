@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "rats:block/marbled_cheese_brick_slab"
+    },
+    "type=double": {
+      "model": "rats:block/marbled_cheese_brick"
+    },
+    "type=top": {
+      "model": "rats:block/marbled_cheese_brick_slab_top"
+    }
+  }
+}

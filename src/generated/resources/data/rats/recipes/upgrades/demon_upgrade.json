@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses/nether"
+    },
+    "O": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "OCO",
+    "CUC",
+    "SCS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_demon"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "rats:fish_barrel"
+    },
+    "F": {
+      "tag": "minecraft:fishes"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_underwater"
+    }
+  },
+  "pattern": [
+    "BFB",
+    "FUF",
+    "BFB"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_aquatic"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:cake"
+    },
+    "G": {
+      "item": "minecraft:golden_apple"
+    },
+    "T": {
+      "item": "rats:chef_toque"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "CTC",
+    "CUC",
+    "CGC"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_chef"
+  },
+  "show_notification": true
+}

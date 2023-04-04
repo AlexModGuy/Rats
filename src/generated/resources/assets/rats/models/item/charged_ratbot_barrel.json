@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rats:item/charged_ratbot_barrel"
+  }
+}

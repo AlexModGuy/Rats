@@ -1,0 +1,37 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "find_contaminated_food": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:contaminated_food"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.contaminated_food.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:contaminated_food"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.contaminated_food.title"
+    }
+  },
+  "requirements": [
+    [
+      "find_contaminated_food"
+    ]
+  ]
+}

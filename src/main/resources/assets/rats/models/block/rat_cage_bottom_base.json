@@ -1,22 +1,79 @@
 {
-	"parent": "block/block",
-	"textures": {
-		"1": "rats:block/rat_cage_bottom",
-		"particle": "rats:block/rat_cage_all"
-	},
-	"elements": [
-		{
-			"name": "base",
-			"from": [0, 0, 0],
-			"to": [16, 1, 16],
-			"faces": {
-				"north": {"uv": [0, 15, 16, 16], "texture": "#1"},
-				"east": {"uv": [0, 15, 16, 16], "texture": "#1"},
-				"south": {"uv": [0, 15, 16, 16], "texture": "#1"},
-				"west": {"uv": [0, 15, 16, 16], "texture": "#1"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#ground"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#1"}
-			}
-		}
-	]
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "1": "rats:block/rat_cage_bottom",
+    "particle": "rats:block/rat_cage_all"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            15,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            0,
+            15,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            0,
+            15,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            0,
+            15,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#ground"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#1"
+        }
+      }
+    }
+  ]
 }

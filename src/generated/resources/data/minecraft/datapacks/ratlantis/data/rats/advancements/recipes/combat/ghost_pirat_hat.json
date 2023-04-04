@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ectoplasm": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:ghost_pirat_ectoplasm"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:pirat_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:ghost_pirat_hat"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_ectoplasm",
+      "has_hat",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:ghost_pirat_hat"
+    ]
+  }
+}

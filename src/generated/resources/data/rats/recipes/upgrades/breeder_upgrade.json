@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:carrot"
+    },
+    "E": {
+      "tag": "forge:eggs"
+    },
+    "F": {
+      "item": "rats:farmer_hat"
+    },
+    "S": {
+      "tag": "forge:seeds"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "tag": "forge:crops/wheat"
+    }
+  },
+  "pattern": [
+    "SFS",
+    "CUC",
+    "WEW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_breeder"
+  },
+  "show_notification": true
+}

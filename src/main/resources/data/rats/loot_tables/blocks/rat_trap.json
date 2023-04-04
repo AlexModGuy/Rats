@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "rat_trap",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:rat_trap"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

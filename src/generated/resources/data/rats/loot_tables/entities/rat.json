@@ -1,0 +1,142 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.25,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.25
+            }
+          ],
+          "name": "rats:rat_pelt"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rats:raw_rat"
+        }
+      ],
+      "functions": [
+        {
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "flags": {
+                  "is_on_fire": true
+                }
+              }
+            }
+          ],
+          "function": "minecraft:furnace_smelt"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.05
+            }
+          ],
+          "name": "rats:rat_skull"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.1,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.02
+            }
+          ],
+          "name": "rats:rat_paw"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 1.0E-4,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 1.0E-4
+            },
+            {
+              "condition": "rats:ratlantis_loaded"
+            }
+          ],
+          "name": "rats:chunky_cheese_token"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "rats:rat_has_plague"
+            },
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.1
+            }
+          ],
+          "name": "rats:plague_essence"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "rats:rat_has_plague"
+            },
+            {
+              "chance": 0.0035,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.01
+            }
+          ],
+          "name": "rats:plague_tome"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "rats:rat_upgrade_asbestos"
+    },
+    "F": {
+      "item": "minecraft:fire_charge"
+    },
+    "S": {
+      "item": "rats:rat_upgrade_warrior"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_flight"
+    },
+    "W": {
+      "item": "rats:dragon_wing"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "WUW",
+    "FSF"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_dragon"
+  },
+  "show_notification": true
+}

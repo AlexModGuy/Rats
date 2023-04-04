@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/bell_floor",
+  "textures": {
+    "bar": "rats:block/pirat_log",
+    "particle": "rats:block/pirat_log",
+    "post": "rats:block/pirat_log"
+  }
+}

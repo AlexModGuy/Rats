@@ -1,0 +1,42 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "curdle_milk": {
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:milk_bucket"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:cauldron_milk"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.milk_cauldron.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:cauldron_milk"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.milk_cauldron.title"
+    }
+  },
+  "requirements": [
+    [
+      "curdle_milk"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 8008135,
+    "separation": 70,
+    "spacing": 100
+  },
+  "structures": [
+    {
+      "structure": "rats:baron_runway",
+      "weight": 1
+    }
+  ]
+}

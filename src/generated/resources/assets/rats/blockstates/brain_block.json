@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rats:block/brain_block"
+    }
+  }
+}

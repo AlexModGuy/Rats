@@ -1,0 +1,37 @@
+{
+  "parent": "ratlantis:ratlantean_ratbot",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_ratinator"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.rat_upgrade_ratinator.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_upgrade_ratinator"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.rat_upgrade_ratinator.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ]
+}

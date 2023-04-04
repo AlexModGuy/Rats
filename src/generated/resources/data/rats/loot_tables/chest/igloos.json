@@ -1,0 +1,79 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_white"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_orange"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_magenta"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_light_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_yellow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_lime"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_pink"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_gray"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_light_gray"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_cyan"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_purple"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_brown"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_green"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_red"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_igloo_black"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

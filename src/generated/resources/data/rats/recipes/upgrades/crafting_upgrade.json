@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:stone_axe"
+    },
+    "C": {
+      "tag": "forge:cheeses/normal"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:stone_pickaxe"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "STA",
+    "PUP"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_crafting"
+  },
+  "show_notification": true
+}

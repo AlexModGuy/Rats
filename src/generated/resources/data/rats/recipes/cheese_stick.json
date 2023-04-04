@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses/normal"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " C",
+    "S "
+  ],
+  "result": {
+    "item": "rats:cheese_stick"
+  },
+  "show_notification": true
+}

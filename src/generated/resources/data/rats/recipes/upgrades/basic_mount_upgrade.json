@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses/normal"
+    },
+    "S": {
+      "item": "minecraft:saddle"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CSC",
+    "CCC"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_basic_mount"
+  },
+  "show_notification": true
+}

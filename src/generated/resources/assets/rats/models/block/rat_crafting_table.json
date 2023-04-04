@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "rats:block/block_of_cheese",
+    "east": "rats:block/rat_crafting_table",
+    "north": "rats:block/rat_crafting_table_side",
+    "particle": "rats:block/rat_crafting_table",
+    "south": "rats:block/rat_crafting_table_side",
+    "up": "rats:block/rat_crafting_table_top",
+    "west": "rats:block/rat_crafting_table"
+  }
+}

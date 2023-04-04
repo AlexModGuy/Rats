@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "rats:textures/block/block_of_cheese.png",
+    "description": {
+      "translate": "advancements.rats.root.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:block_of_cheese"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.rats.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ]
+}

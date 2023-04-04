@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "T": {
+      "item": "minecraft:diamond_sword"
+    }
+  },
+  "pattern": [
+    " I ",
+    "ITI",
+    " I "
+  ],
+  "result": {
+    "item": "rats:ratlantis_sword"
+  },
+  "show_notification": true
+}

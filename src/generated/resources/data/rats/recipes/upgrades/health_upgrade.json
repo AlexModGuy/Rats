@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bread"
+    },
+    "G": {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "BGB",
+    "GUG",
+    "BGB"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_health"
+  },
+  "show_notification": true
+}

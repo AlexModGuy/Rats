@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "block/pumpkin_top",
-        "front": "rats:block/jack_o_ratern",
-        "side": "block/pumpkin_side"
-    }
-}

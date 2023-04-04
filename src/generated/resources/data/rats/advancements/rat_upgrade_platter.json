@@ -1,0 +1,37 @@
+{
+  "parent": "rats:cheese_stick",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_platter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.rat_upgrade_platter.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_upgrade_platter"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_upgrade_platter.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ]
+}

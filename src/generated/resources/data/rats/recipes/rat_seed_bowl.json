@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "tag": "forge:plastics"
+    },
+    "S": {
+      "tag": "forge:seeds"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "P P",
+    "PPP"
+  ],
+  "result": {
+    "item": "rats:rat_seed_bowl"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses/normal"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "ICI",
+    " II"
+  ],
+  "result": {
+    "item": "rats:rat_whistle"
+  },
+  "show_notification": true
+}

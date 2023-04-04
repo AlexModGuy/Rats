@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:diamond_chestplate"
+    },
+    "I": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "T": {
+      "item": "rats:arcane_technology"
+    }
+  },
+  "pattern": [
+    "ITI",
+    "IAI",
+    "III"
+  ],
+  "result": {
+    "item": "rats:ratlantis_chestplate"
+  },
+  "show_notification": true
+}

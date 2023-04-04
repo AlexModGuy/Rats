@@ -1,0 +1,18 @@
+{
+  "type": "rats:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:gameplay/cat_morning_gift"
+    },
+    {
+      "chance": 0.3,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "items": {
+    "rats:raw_rat": 1,
+    "rats:tiny_coin": 1
+  },
+  "replacePool": true
+}

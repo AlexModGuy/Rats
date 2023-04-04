@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "rats:plague_essence"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "pattern": [
+    " E ",
+    "EPE",
+    " E "
+  ],
+  "result": {
+    "item": "rats:plague_doctorate"
+  },
+  "show_notification": true
+}

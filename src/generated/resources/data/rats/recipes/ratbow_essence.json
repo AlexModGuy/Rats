@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes"
+    },
+    "E": {
+      "item": "rats:plague_essence"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "DED",
+    "DDD"
+  ],
+  "result": {
+    "item": "rats:ratbow_essence"
+  },
+  "show_notification": true
+}

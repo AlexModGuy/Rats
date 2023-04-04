@@ -1,0 +1,37 @@
+{
+  "parent": "ratlantis:marbled_cheese_golem",
+  "criteria": {
+    "get_combiner": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:upgrade_combiner"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ratlantis.upgrade_combiner.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "rats:upgrade_combiner"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.upgrade_combiner.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_combiner"
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rats:cheese"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:tiny_coin"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:raw_plastic"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_cage"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

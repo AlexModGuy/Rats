@@ -1,0 +1,39 @@
+{
+  "parent": "ratlantis:vial_of_sentience",
+  "criteria": {
+    "killed_neoratlantean": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:neo_ratlantean"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ratlantis.neoratlantean.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "rats:psionic_rat_brain"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.neoratlantean.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_neoratlantean"
+    ]
+  ]
+}

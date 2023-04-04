@@ -1,0 +1,150 @@
+{
+  "carvers": {
+    "air": "rats:ratlantis_caves"
+  },
+  "creature_spawn_probability": 0.4,
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 16767615,
+    "foliage_color": 2546944,
+    "grass_color": 8177920,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "sky_color": 16762410,
+    "water_color": 4445678,
+    "water_fog_color": 270131
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [
+      "minecraft:monster_room"
+    ],
+    [
+      "rats:small_ruins",
+      "rats:large_ruins"
+    ],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_lapis",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "rats:cheese_ore",
+      "rats:ratlantean_gem_ore",
+      "rats:oratchalcum_ore"
+    ],
+    [],
+    [
+      "minecraft:spring_water",
+      "minecraft:spring_lava"
+    ],
+    [
+      "rats:ratglove_flowers",
+      "rats:marble_pile",
+      "minecraft:trees_jungle",
+      "minecraft:bamboo_light",
+      "minecraft:flower_warm",
+      "minecraft:patch_large_fern",
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_melon",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_normal",
+      "minecraft:red_mushroom_normal",
+      "minecraft:warm_ocean_vegetation",
+      "minecraft:seagrass_warm",
+      "minecraft:sea_pickle"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 40
+      },
+      {
+        "type": "minecraft:panda",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 14
+      }
+    ],
+    "demon_rats": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "rats:feral_ratlantean",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 20
+      },
+      {
+        "type": "rats:pirat",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 50
+      },
+      {
+        "type": "rats:ratlantean_spirit",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "rats:ratlantean_ratbot",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "rats": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": [
+      {
+        "type": "minecraft:pufferfish",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "rats:ratfish",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 45
+      },
+      {
+        "type": "minecraft:dolphin",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 2
+      }
+    ]
+  },
+  "temperature": 0.55
+}

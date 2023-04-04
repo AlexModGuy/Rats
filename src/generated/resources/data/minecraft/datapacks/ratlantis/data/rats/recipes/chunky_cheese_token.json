@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    },
+    {
+      "item": "rats:token_piece"
+    }
+  ],
+  "result": {
+    "item": "rats:chunky_cheese_token"
+  }
+}

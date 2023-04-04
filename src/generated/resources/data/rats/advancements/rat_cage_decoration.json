@@ -1,0 +1,128 @@
+{
+  "parent": "rats:rat_cage",
+  "criteria": {
+    "decorate_with_bottle": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:rat_water_bottle"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_decorated"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "decorate_with_bowl": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:rat_seed_bowl"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_decorated"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "decorate_with_hammock": {
+      "conditions": {
+        "item": {
+          "tag": "rats:hammocks"
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_decorated"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "decorate_with_igloo": {
+      "conditions": {
+        "item": {
+          "tag": "rats:igloos"
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_decorated"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "decorate_with_lantern": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:rat_breeding_lantern"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_breeding_lantern"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "decorate_with_wheel": {
+      "conditions": {
+        "item": {
+          "items": [
+            "rats:rat_wheel"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "rats:rat_cage_wheel"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.rat_cage_decoration.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_water_bottle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_cage_decoration.title"
+    }
+  },
+  "requirements": [
+    [
+      "decorate_with_bottle",
+      "decorate_with_bowl",
+      "decorate_with_igloo",
+      "decorate_with_hammock",
+      "decorate_with_lantern",
+      "decorate_with_wheel"
+    ]
+  ]
+}

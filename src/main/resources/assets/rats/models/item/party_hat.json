@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rats:item/party_hat",
+    "layer1": "rats:item/party_hat_overlay"
+  },
+  "display": {
+    "head": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.1, 0.1, 0.1 ]
+    }
+  }
+}

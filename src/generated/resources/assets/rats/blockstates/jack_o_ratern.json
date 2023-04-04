@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "rats:block/jack_o_ratern",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "rats:block/jack_o_ratern"
+    },
+    "facing=south": {
+      "model": "rats:block/jack_o_ratern",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "rats:block/jack_o_ratern",
+      "y": 270
+    }
+  }
+}

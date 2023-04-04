@@ -1,0 +1,66 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_toga",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_pelt",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:raw_rat",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:plastic_waste",
+          "weight": 18
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:feral_rat_claw",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:filth",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:treacle",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bowl",
+          "weight": 7
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bucket",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:seagrass",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flint",
+          "weight": 9
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

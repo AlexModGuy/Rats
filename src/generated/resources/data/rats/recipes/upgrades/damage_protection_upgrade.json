@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "rats:rat_upgrade_asbestos"
+    },
+    "C": {
+      "tag": "forge:storage_blocks/cheese"
+    },
+    "G": {
+      "item": "minecraft:golden_apple"
+    },
+    "P": {
+      "item": "rats:rat_upgrade_poison"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_underwater"
+    },
+    "W": {
+      "item": "rats:feathery_wing"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "AUP",
+    "GWG"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_damage_protection"
+  },
+  "show_notification": true
+}

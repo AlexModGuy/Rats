@@ -1,0 +1,26 @@
+{
+  "values": [
+    "rats:ratlantis_reactor",
+    "rats:chunky_cheese_token",
+    "rats:cheese_ore",
+    "rats:ratlantean_gem_ore",
+    "rats:oratchalcum_ore",
+    "rats:oratchalcum_block",
+    "rats:dutchrat_bell",
+    "rats:marbled_cheese",
+    "rats:marbled_cheese_brick",
+    "rats:marbled_cheese_brick_slab",
+    "rats:marbled_cheese_brick_stairs",
+    "rats:marbled_cheese_brick_chiseled",
+    "rats:marbled_cheese_brick_cracked",
+    "rats:marbled_cheese_brick_mossy",
+    "rats:marbled_cheese_slab",
+    "rats:marbled_cheese_stairs",
+    "rats:marbled_cheese_pillar",
+    "rats:marbled_cheese_tile",
+    "rats:marbled_cheese_chiseled",
+    "rats:black_marbled_cheese",
+    "rats:marbled_cheese_golem_core",
+    "rats:marbled_cheese_rat_head"
+  ]
+}

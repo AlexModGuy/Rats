@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "rats:charged_creeper_chunk"
+    },
+    "T": {
+      "item": "rats:rat_upgrade_tnt"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_damage_protection"
+    }
+  },
+  "pattern": [
+    "CTC",
+    "TUT",
+    "CTC"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_tnt_survivor"
+  },
+  "show_notification": true
+}

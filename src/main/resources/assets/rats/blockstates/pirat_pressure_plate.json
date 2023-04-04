@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "powered=false": { "model": "rats:block/pirat_pressure_plate" },
-        "powered=true": { "model": "rats:block/pirat_pressure_plate_down" }
-    }
-}

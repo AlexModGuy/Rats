@@ -1,0 +1,37 @@
+{
+  "parent": "ratlantis:gem_of_ratlantis",
+  "criteria": {
+    "get_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:marbled_cheese_golem_core"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.marbled_cheese_golem_core.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:marbled_cheese_golem_core"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.marbled_cheese_golem_core.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_core"
+    ]
+  ]
+}

@@ -1,8 +1,0 @@
-{
-    "parent": "block/slab",
-    "textures": {
-        "bottom": "rats:block/marbled_cheese",
-        "top": "rats:block/marbled_cheese",
-        "side": "rats:block/marbled_cheese"
-    }
-}

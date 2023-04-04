@@ -1,0 +1,81 @@
+{
+  "parent": "ratlantis:ratlantis",
+  "criteria": {
+    "hurt_by_pirat": {
+      "conditions": {
+        "damage": {
+          "source_entity": {
+            "type": "rats:pirat"
+          }
+        }
+      },
+      "trigger": "minecraft:entity_hurt_player"
+    },
+    "hurt_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    },
+    "killed_by_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:entity_killed_player"
+    },
+    "killed_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.pirat.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:pirat_hat",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.pirat.title"
+    }
+  },
+  "requirements": [
+    [
+      "hurt_pirat",
+      "killed_pirat",
+      "hurt_by_pirat",
+      "killed_by_pirat"
+    ]
+  ]
+}

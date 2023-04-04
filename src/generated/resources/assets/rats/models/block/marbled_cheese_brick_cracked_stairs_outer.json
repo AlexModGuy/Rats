@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "rats:block/marbled_cheese_brick_cracked",
+    "side": "rats:block/marbled_cheese_brick_cracked",
+    "top": "rats:block/marbled_cheese_brick_cracked"
+  }
+}

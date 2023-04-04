@@ -1,0 +1,14 @@
+{
+  "type": "rats:ratlantis_ruin",
+  "config": {
+    "fallback_ruin": "rats:marble_large_aquaduct",
+    "processor": "rats:ruin_ruins",
+    "ruins": {
+      "rats:marble_forum": 0.2,
+      "rats:marble_palace": 0.15,
+      "rats:marble_rat_colossus": 0.05,
+      "rats:marble_rat_sphinx": 0.1,
+      "rats:marble_temple": 0.2
+    }
+  }
+}

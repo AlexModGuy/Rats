@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "rats:feral_rat_claw"
+    },
+    "F": {
+      "item": "rats:ratlantean_flame"
+    },
+    "G": {
+      "tag": "forge:ingots/ratlantis_gem"
+    },
+    "H": {
+      "item": "rats:pirat_hat"
+    },
+    "O": {
+      "item": "rats:oratchalcum_block"
+    },
+    "P": {
+      "item": "rats:ratglove_petals"
+    },
+    "R": {
+      "item": "rats:ratfish"
+    },
+    "S": {
+      "item": "rats:ratlantis_rat_skull"
+    },
+    "T": {
+      "item": "rats:rat_toga"
+    }
+  },
+  "pattern": [
+    "CHF",
+    "TSR",
+    "OGP"
+  ],
+  "result": {
+    "item": "rats:idol_of_ratlantis"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 7177135,
+    "separation": 50,
+    "spacing": 75
+  },
+  "structures": [
+    {
+      "structure": "rats:dutchrat_ship",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "PEP",
+    "EUE",
+    "PEP"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_ender"
+  },
+  "show_notification": true
+}

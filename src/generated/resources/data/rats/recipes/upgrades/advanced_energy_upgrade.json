@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_energy"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "GUG",
+    "RRR"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_advanced_energy"
+  },
+  "show_notification": true
+}

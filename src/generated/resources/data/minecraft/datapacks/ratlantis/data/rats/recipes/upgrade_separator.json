@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "rats:marbled_cheese_brick_chiseled"
+    },
+    "C": {
+      "item": "rats:marbled_cheese_chiseled"
+    },
+    "P": {
+      "item": "rats:marbled_cheese_pillar"
+    },
+    "S": {
+      "item": "rats:ancient_sawblade"
+    }
+  },
+  "pattern": [
+    " S ",
+    "PBP",
+    "PCP"
+  ],
+  "result": {
+    "item": "rats:upgrade_separator"
+  },
+  "show_notification": true
+}

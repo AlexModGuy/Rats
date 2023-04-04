@@ -1,0 +1,17 @@
+// 1.19.4	2023-04-03T22:55:21.4485365	Tags for minecraft:block mod id rats
+441ba640a55a82f8d5ba068d7b83f6b52107a1c9 data/forge/tags/blocks/crafting_tables.json
+925f44d85bf032861c23113b9d3f3dd5d9eabf86 data/forge/tags/blocks/storage_blocks.json
+7c4d9a1829286b02c42cec7f32ea92e74649874b data/forge/tags/blocks/storage_blocks/blue_cheese.json
+1911d06556592d02db0bcfe9a8cd19fa433d7f9e data/forge/tags/blocks/storage_blocks/cheese.json
+539e13a6e9b9b66f95f29155ef8f47a79ca08c31 data/forge/tags/blocks/storage_blocks/nether_cheese.json
+cdc5a40133bd6d3417a2c0489e73707e38f4d883 data/minecraft/tags/blocks/cauldrons.json
+68165897e66555281c35412aa51faf158289d99b data/minecraft/tags/blocks/mineable/axe.json
+fd46a5efdb513b94debe267e002104c4e6f93f15 data/minecraft/tags/blocks/mineable/hoe.json
+5aca24f127c1d50364a6b57b930b0708640f72eb data/minecraft/tags/blocks/mineable/pickaxe.json
+bcf5161d4660bc16e6f078d2bece4f65d06c14c6 data/minecraft/tags/blocks/mineable/shovel.json
+00a2feb404391b4e3c8142274bb6642b7649a268 data/minecraft/tags/blocks/wool.json
+3769d120498d170f23f4566876df13419d4b0c36 data/rats/tags/blocks/diggable_blocks.json
+0faaf07753124e7bdd17c7bb1eb18cf9998f096e data/rats/tags/blocks/marbled_cheese.json
+646fad87f2b19124398a67e058613e3dfccbc565 data/rats/tags/blocks/quarry_ignoreables.json
+6476d6890580b419cb4a208a4ff3cf34327249c3 data/rats/tags/blocks/trash_can_blacklist.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/rats/tags/blocks/unraidable_containers.json

@@ -1,0 +1,6 @@
+{
+  "parent": "rats:item/bagh_nakhs",
+  "textures": {
+    "layer0": "rats:item/feral_bagh_nakhs"
+  }
+}

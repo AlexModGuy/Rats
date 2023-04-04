@@ -1,0 +1,12 @@
+{
+  "values": [
+    "rats:dye_sponge",
+    "rats:block_of_cheese",
+    "rats:block_of_blue_cheese",
+    "rats:block_of_nether_cheese",
+    "rats:pied_wool",
+    "rats:rat_crafting_table",
+    "rats:rat_upgrade_block",
+    "rats:rat_quarry_platform"
+  ]
+}

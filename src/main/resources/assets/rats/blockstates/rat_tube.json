@@ -1,108 +1,410 @@
 {
   "multipart": [
-    {   "when": {
-      "AND": [
-        {"OR": [{"up": "false", "open_up": "false", "north": "true"}, {"up": "false", "open_up": "false", "south": "true"}]},
-        {"west": "false", "east": "false"}
-      ]},
-      "apply": { "model": "rats:block/rat_tube", "x" : 270, "y" : 90, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "OR": [
+              {
+                "up": "false",
+                "open_up": "false",
+                "north": "true"
+              },
+              {
+                "up": "false",
+                "open_up": "false",
+                "south": "true"
+              }
+            ]
+          },
+          {
+            "west": "false",
+            "east": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "x": 270,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    {   "when": {
-      "AND": [
-        {"OR": [{"up": "false", "open_up": "false", "north": "false"}, {"up": "false", "open_up": "false", "south": "false"}]},
-        {"north": "false", "south": "false"}
-      ]},
-      "apply": { "model": "rats:block/rat_tube", "x" : 270, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "OR": [
+              {
+                "up": "false",
+                "open_up": "false",
+                "north": "false"
+              },
+              {
+                "up": "false",
+                "open_up": "false",
+                "south": "false"
+              }
+            ]
+          },
+          {
+            "north": "false",
+            "south": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "x": 270,
+        "uvlock": false
+      }
     },
-    {   "when": {
-      "AND": [
-        {"up": "false", "open_up": "false"},
-        {"OR": [{"east": "true"}, {"west": "true"}]},
-        {"OR": [{"north": "true"}, {"south": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_center", "x" : 270, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "up": "false",
+            "open_up": "false"
+          },
+          {
+            "OR": [
+              {
+                "east": "true"
+              },
+              {
+                "west": "true"
+              }
+            ]
+          },
+          {
+            "OR": [
+              {
+                "north": "true"
+              },
+              {
+                "south": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_center",
+        "x": 270,
+        "uvlock": false
+      }
     },
-
-    {   "when": {
-      "AND": [
-        {"OR": [{"down": "false", "open_down": "false", "north": "true"}, {"down": "false", "open_down": "false", "south": "true"}]},
-        {"west": "false", "east": "false"}
-      ]},
-      "apply": { "model": "rats:block/rat_tube", "x" : 90, "y" : 90, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "OR": [
+              {
+                "down": "false",
+                "open_down": "false",
+                "north": "true"
+              },
+              {
+                "down": "false",
+                "open_down": "false",
+                "south": "true"
+              }
+            ]
+          },
+          {
+            "west": "false",
+            "east": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "x": 90,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    {   "when": {
-      "AND": [
-        {"OR": [{"down": "false", "open_down": "false", "north": "false"}, {"down": "false", "open_down": "false", "south": "false"}]},
-        {"north": "false", "south": "false"}
-      ]},
-      "apply": { "model": "rats:block/rat_tube", "x" : 90, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "OR": [
+              {
+                "down": "false",
+                "open_down": "false",
+                "north": "false"
+              },
+              {
+                "down": "false",
+                "open_down": "false",
+                "south": "false"
+              }
+            ]
+          },
+          {
+            "north": "false",
+            "south": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "x": 90,
+        "uvlock": false
+      }
     },
-    {   "when": {
-      "AND": [
-        {"down": "false", "open_down": "false"},
-        {"OR": [{"east": "true"}, {"west": "true"}]},
-        {"OR": [{"north": "true"}, {"south": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_center", "x" : 90, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "down": "false",
+            "open_down": "false"
+          },
+          {
+            "OR": [
+              {
+                "east": "true"
+              },
+              {
+                "west": "true"
+              }
+            ]
+          },
+          {
+            "OR": [
+              {
+                "north": "true"
+              },
+              {
+                "south": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_center",
+        "x": 90,
+        "uvlock": false
+      }
     },
-    { "when": {
-      "AND": [
-        {"east": "false", "open_east": "false"},
-        {"OR": [{"down": "true"}, {"up": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_up", "y" : 90, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "east": "false",
+            "open_east": "false"
+          },
+          {
+            "OR": [
+              {
+                "down": "true"
+              },
+              {
+                "up": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_up",
+        "y": 90,
+        "uvlock": false
+      }
     },
-    { "when": { "east": "false", "open_east": "false", "down":  "false", "up": "false"},
-      "apply": { "model": "rats:block/rat_tube", "y" : 90, "uvlock": false }
+    {
+      "when": {
+        "east": "false",
+        "open_east": "false",
+        "down": "false",
+        "up": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "y": 90,
+        "uvlock": false
+      }
     },
-    { "when": {
-      "AND": [
-        {"west": "false", "open_west": "false"},
-        {"OR": [{"down": "true"}, {"up": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_up", "y" : 270, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "west": "false",
+            "open_west": "false"
+          },
+          {
+            "OR": [
+              {
+                "down": "true"
+              },
+              {
+                "up": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_up",
+        "y": 270,
+        "uvlock": false
+      }
     },
-    { "when": { "west": "false", "open_west": "false", "down":  "false", "up": "false"},
-      "apply": { "model": "rats:block/rat_tube", "y" : 270, "uvlock": false }
+    {
+      "when": {
+        "west": "false",
+        "open_west": "false",
+        "down": "false",
+        "up": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "y": 270,
+        "uvlock": false
+      }
     },
-    { "when": {
-      "AND": [
-        {"north": "false", "open_north": "false"},
-        {"OR": [{"down": "true"}, {"up": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_up", "y" : 0, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "north": "false",
+            "open_north": "false"
+          },
+          {
+            "OR": [
+              {
+                "down": "true"
+              },
+              {
+                "up": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_up",
+        "y": 0,
+        "uvlock": false
+      }
     },
-    { "when": { "north": "false", "open_north": "false", "down":  "false", "up": "false"},
-      "apply": { "model": "rats:block/rat_tube", "y" : 0, "uvlock": false }
+    {
+      "when": {
+        "north": "false",
+        "open_north": "false",
+        "down": "false",
+        "up": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "y": 0,
+        "uvlock": false
+      }
     },
-    { "when": {
-      "AND": [
-        {"south": "false", "open_south": "false"},
-        {"OR": [{"down": "true"}, {"up": "true"}]}
-      ]},
-      "apply": { "model": "rats:block/rat_tube_up", "y" : 180, "uvlock": false }
+    {
+      "when": {
+        "AND": [
+          {
+            "south": "false",
+            "open_south": "false"
+          },
+          {
+            "OR": [
+              {
+                "down": "true"
+              },
+              {
+                "up": "true"
+              }
+            ]
+          }
+        ]
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_up",
+        "y": 180,
+        "uvlock": false
+      }
     },
-    { "when": { "south": "false", "open_south": "false", "down":  "false", "up": "false"},
-      "apply": { "model": "rats:block/rat_tube", "y" : 180, "uvlock": false }
+    {
+      "when": {
+        "south": "false",
+        "open_south": "false",
+        "down": "false",
+        "up": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube",
+        "y": 180,
+        "uvlock": false
+      }
     },
-
-    {   "when": { "up": "true", "open_up": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "x" : 270, "uvlock": false }
+    {
+      "when": {
+        "up": "true",
+        "open_up": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "x": 270,
+        "uvlock": false
+      }
     },
-    {   "when": { "down": "true", "open_down": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "x" : 90, "uvlock": false }
+    {
+      "when": {
+        "down": "true",
+        "open_down": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "x": 90,
+        "uvlock": false
+      }
     },
-    {   "when": { "east": "true", "open_east": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "y" : 90, "uvlock": false }
+    {
+      "when": {
+        "east": "true",
+        "open_east": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "y": 90,
+        "uvlock": false
+      }
     },
-    {   "when": { "west": "true", "open_west": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "y" : 270, "uvlock": false }
+    {
+      "when": {
+        "west": "true",
+        "open_west": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "y": 270,
+        "uvlock": false
+      }
     },
-    {   "when": { "north": "true", "open_north": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "y" : 0, "uvlock": false }
+    {
+      "when": {
+        "north": "true",
+        "open_north": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "y": 0,
+        "uvlock": false
+      }
     },
-    {   "when": { "south": "true", "open_south": "false" },
-      "apply": { "model": "rats:block/rat_tube_connector", "y" : 180, "uvlock": false }
+    {
+      "when": {
+        "south": "true",
+        "open_south": "false"
+      },
+      "apply": {
+        "model": "rats:block/rat_tube_connector",
+        "y": 180,
+        "uvlock": false
+      }
     }
   ]
 }

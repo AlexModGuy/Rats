@@ -1,0 +1,13 @@
+{
+  "type": "rats:add_item",
+  "conditions": [
+    {
+      "condition": "rats:killer_has_upgrade",
+      "upgrade": "rats:rat_upgrade_aristocrat"
+    }
+  ],
+  "items": {
+    "rats:tiny_coin": 1
+  },
+  "replacePool": false
+}

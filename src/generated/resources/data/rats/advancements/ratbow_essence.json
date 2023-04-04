@@ -1,0 +1,44 @@
+{
+  "parent": "rats:tame_rat",
+  "criteria": {
+    "use_essence": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:rat"
+            }
+          }
+        ],
+        "item": {
+          "items": [
+            "rats:ratbow_essence"
+          ]
+        }
+      },
+      "trigger": "minecraft:player_interacted_with_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.ratbow_essence.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:ratbow_essence"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.ratbow_essence.title"
+    }
+  },
+  "requirements": [
+    [
+      "use_essence"
+    ]
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "rats:block_of_blue_cheese"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "rats:blue_cheese"
+  }
+}

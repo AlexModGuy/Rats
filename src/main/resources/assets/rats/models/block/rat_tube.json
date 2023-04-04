@@ -1,22 +1,85 @@
 {
-	"textures": {
-		"0": "rats:block/rat_tube",
-		"1": "rats:block/rat_tube_open",
-		"particle": "rats:block/rat_tube"
-	},
-	"elements": [
-		{
-			"name": "main",
-			"from": [4, 4, 4],
-			"to": [12, 12, 4],
-			"faces": {
-				"north": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0},
-				"east": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0},
-				"south": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0},
-				"west": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0},
-				"up": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0},
-				"down": {"uv": [4, 4, 12, 12], "texture": "#0", "tintindex": 0}
-			}
-		}
-	]
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "0": "rats:block/rat_tube",
+    "1": "rats:block/rat_tube_open",
+    "particle": "rats:block/rat_tube"
+  },
+  "elements": [
+    {
+      "name": "main",
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
 }

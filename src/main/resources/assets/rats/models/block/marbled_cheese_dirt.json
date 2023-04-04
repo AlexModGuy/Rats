@@ -1,8 +1,0 @@
-{
-    "parent": "rats:block/overlay_block",
-    "textures": {
-        "particle": "block/dirt",
-        "tex": "block/dirt",
-        "overlay": "rats:block/marbled_cheese_overlay"
-    }
-}

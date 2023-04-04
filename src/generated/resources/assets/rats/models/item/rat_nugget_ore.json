@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rats:item/rat_nugget_ore",
+    "layer1": "rats:item/rat_nugget_overlay"
+  }
+}

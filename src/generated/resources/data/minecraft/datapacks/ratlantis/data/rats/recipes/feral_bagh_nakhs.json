@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "rats:feral_rat_claw"
+    },
+    "F": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "S": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    " FC",
+    "SFC",
+    " FC"
+  ],
+  "result": {
+    "item": "rats:feral_bagh_nakhs"
+  },
+  "show_notification": true
+}

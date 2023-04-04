@@ -1,0 +1,8 @@
+{
+  "entries": [
+    "rats:add_cat_gifts",
+    "rats:add_creeper_chunks",
+    "rats:add_tiny_coins"
+  ],
+  "replace": false
+}

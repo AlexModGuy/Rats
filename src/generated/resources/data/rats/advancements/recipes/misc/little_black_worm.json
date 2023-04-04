@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_balls": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:little_black_squash_balls"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_pancake": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:potato_pancake"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:little_black_worm"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_pancake",
+      "has_balls",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:little_black_worm"
+    ]
+  }
+}

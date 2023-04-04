@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "rat_cage_breeding_lantern",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:rat_cage"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

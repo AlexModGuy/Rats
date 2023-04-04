@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:slimeballs"
+    },
+    "D": {
+      "tag": "forge:storage_blocks/diamond"
+    },
+    "G": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "I": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "S": {
+      "tag": "forge:string"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "DBG",
+    "USU",
+    "IBR"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_jury_rigged"
+  },
+  "show_notification": true
+}

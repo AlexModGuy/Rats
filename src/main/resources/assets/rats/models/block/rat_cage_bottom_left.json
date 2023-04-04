@@ -1,6 +1,7 @@
 {
-	"parent": "rats:block/rat_cage_bottom_base",
-	"textures": {
-		"ground": "rats:block/rat_cage_left"
-	}
+  "parent": "rats:block/rat_cage_bottom_base",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "ground": "rats:block/rat_cage_left"
+  }
 }

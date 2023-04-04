@@ -1,0 +1,68 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "hurt_piper": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:pied_piper"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    },
+    "killed_piper": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:pied_piper"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "piper_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:piper_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.piper.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:piper_hat",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.piper.title"
+    }
+  },
+  "requirements": [
+    [
+      "piper_hat",
+      "hurt_piper",
+      "killed_piper"
+    ]
+  ]
+}

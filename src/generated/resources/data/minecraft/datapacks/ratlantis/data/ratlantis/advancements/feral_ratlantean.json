@@ -1,0 +1,80 @@
+{
+  "parent": "ratlantis:ratlantis",
+  "criteria": {
+    "hurt_by_feral_ratlantean": {
+      "conditions": {
+        "damage": {
+          "source_entity": {
+            "type": "rats:feral_ratlantean"
+          }
+        }
+      },
+      "trigger": "minecraft:entity_hurt_player"
+    },
+    "hurt_feral_ratlantean": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:feral_ratlantean"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    },
+    "killed_by_feral_ratlantean": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:feral_ratlantean"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:entity_killed_player"
+    },
+    "killed_feral_ratlantean": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:feral_ratlantean"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.feral_ratlantean.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:ratlantean_flame"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.feral_ratlantean.title"
+    }
+  },
+  "requirements": [
+    [
+      "hurt_feral_ratlantean",
+      "killed_feral_ratlantean",
+      "hurt_by_feral_ratlantean",
+      "killed_by_feral_ratlantean"
+    ]
+  ]
+}

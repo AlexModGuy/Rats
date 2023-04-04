@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "W": {
+      "item": "rats:pied_wool"
+    }
+  },
+  "pattern": [
+    "  F",
+    "WWW",
+    "W W"
+  ],
+  "result": {
+    "item": "rats:piper_hat"
+  },
+  "show_notification": true
+}

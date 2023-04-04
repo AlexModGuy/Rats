@@ -1,0 +1,60 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flute": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_flute"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_skull": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:golden_rat_skull"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_tails": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:tangled_rat_tails"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:gilded_rat_flute"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_skull",
+      "has_flute",
+      "has_tails",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:gilded_rat_flute"
+    ]
+  }
+}

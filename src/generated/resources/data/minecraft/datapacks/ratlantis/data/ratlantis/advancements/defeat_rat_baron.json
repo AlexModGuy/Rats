@@ -1,0 +1,54 @@
+{
+  "parent": "ratlantis:ratlantis",
+  "criteria": {
+    "killed_baron": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:rat_baron"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "killed_plane": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:rat_baron_plane"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ratlantis.defeat_rat_baron.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "rats:biplane_wing"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.defeat_rat_baron.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_baron",
+      "killed_plane"
+    ]
+  ]
+}

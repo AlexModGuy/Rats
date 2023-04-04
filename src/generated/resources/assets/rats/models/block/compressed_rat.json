@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "rats:block/compressed_rat_top",
+    "east": "rats:block/compressed_rat_other_side",
+    "north": "rats:block/compressed_rat_front",
+    "particle": "rats:block/compressed_rat_side",
+    "south": "rats:block/compressed_rat_back",
+    "up": "rats:block/compressed_rat_top",
+    "west": "rats:block/compressed_rat_side"
+  }
+}

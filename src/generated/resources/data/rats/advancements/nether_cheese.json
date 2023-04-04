@@ -1,0 +1,37 @@
+{
+  "parent": "rats:cheese",
+  "criteria": {
+    "get_nether_cheese": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:nether_cheese"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.nether_cheese.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:nether_cheese"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.nether_cheese.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_nether_cheese"
+    ]
+  ]
+}

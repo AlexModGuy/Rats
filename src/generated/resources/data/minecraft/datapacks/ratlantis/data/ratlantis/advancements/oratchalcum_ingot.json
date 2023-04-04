@@ -1,0 +1,37 @@
+{
+  "parent": "ratlantis:gem_of_ratlantis",
+  "criteria": {
+    "get_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:oratchalcum_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.oratchalcum_ingot.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.oratchalcum_ingot.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_ingot"
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "C": {
+      "item": "rats:feral_rat_claw"
+    },
+    "P": {
+      "item": "rats:ratglove_petals"
+    },
+    "S": {
+      "item": "rats:ratlantean_flame"
+    }
+  },
+  "pattern": [
+    "SCS",
+    "SPS",
+    "SBS"
+  ],
+  "result": {
+    "item": "rats:vial_of_sentience"
+  },
+  "show_notification": true
+}

@@ -1,7 +1,0 @@
-{
-    "parent": "block/cube_column",
-    "textures": {
-        "end": "rats:block/pirat_log_top",
-        "side": "rats:block/pirat_log"
-    }
-}

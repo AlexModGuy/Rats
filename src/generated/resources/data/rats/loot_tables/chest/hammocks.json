@@ -1,0 +1,79 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_white"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_orange"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_magenta"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_light_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_yellow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_lime"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_pink"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_gray"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_light_gray"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_cyan"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_purple"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_brown"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_green"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_red"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_hammock_black"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

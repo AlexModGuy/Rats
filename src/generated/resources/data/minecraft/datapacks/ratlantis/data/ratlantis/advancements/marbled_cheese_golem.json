@@ -1,0 +1,39 @@
+{
+  "parent": "ratlantis:marbled_cheese_golem_core",
+  "criteria": {
+    "killed_automaton": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:ratlantean_automaton"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ratlantis.marbled_cheese_golem.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "rats:arcane_technology"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.marbled_cheese_golem.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_automaton"
+    ]
+  ]
+}

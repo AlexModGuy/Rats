@@ -1,0 +1,37 @@
+{
+  "parent": "rats:tame_rat",
+  "criteria": {
+    "get_cage": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_cage"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.rat_cage.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_cage"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_cage.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_cage"
+    ]
+  ]
+}

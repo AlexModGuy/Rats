@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#rats:piper_spawn_biomes",
+  "spawners": {
+    "type": "rats:rat",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 6
+  }
+}

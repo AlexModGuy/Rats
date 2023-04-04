@@ -1,0 +1,37 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "make_trap": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_trap"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.rat_trap.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_trap"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.rat_trap.title"
+    }
+  },
+  "requirements": [
+    [
+      "make_trap"
+    ]
+  ]
+}

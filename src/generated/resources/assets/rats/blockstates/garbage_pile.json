@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "rats:block/garbage_0",
+        "weight": 10
+      },
+      {
+        "model": "rats:block/garbage_1"
+      },
+      {
+        "model": "rats:block/garbage_2"
+      },
+      {
+        "model": "rats:block/garbage_3"
+      },
+      {
+        "model": "rats:block/garbage_4"
+      },
+      {
+        "model": "rats:block/garbage_5"
+      },
+      {
+        "model": "rats:block/garbage_6"
+      },
+      {
+        "model": "rats:block/garbage_7"
+      }
+    ]
+  }
+}

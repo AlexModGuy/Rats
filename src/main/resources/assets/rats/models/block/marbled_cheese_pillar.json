@@ -1,8 +1,0 @@
-{
-    "parent": "block/cube_column",
-    "textures": {
-        "end": "rats:block/marbled_cheese_pillar_top",
-        "side": "rats:block/marbled_cheese_pillar"
-    }
-}
-

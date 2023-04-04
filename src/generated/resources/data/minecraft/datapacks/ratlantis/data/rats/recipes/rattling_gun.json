@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "C": {
+      "item": "rats:charged_ratbot_barrel"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "I  ",
+    "IBC",
+    "SSS"
+  ],
+  "result": {
+    "item": "rats:rattling_gun"
+  },
+  "show_notification": true
+}

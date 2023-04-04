@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "auto_curdler",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:auto_curdler"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

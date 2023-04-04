@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:bones"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "BSB",
+    "IUI",
+    "BSB"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_strength"
+  },
+  "show_notification": true
+}

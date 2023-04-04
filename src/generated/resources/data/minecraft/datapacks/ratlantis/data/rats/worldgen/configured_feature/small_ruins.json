@@ -1,0 +1,19 @@
+{
+  "type": "rats:ratlantis_ruin",
+  "config": {
+    "fallback_ruin": "rats:marble_pillar",
+    "processor": "rats:ruin_ruins",
+    "ruins": {
+      "rats:cheese_statuette": 0.35,
+      "rats:marble_giant_cheese": 0.1,
+      "rats:marble_hut": 0.35,
+      "rats:marble_pillar_collection": 0.2,
+      "rats:marble_pillar_leaning": 0.25,
+      "rats:marble_rat_head": 0.15,
+      "rats:marble_rat_lincoln": 0.12,
+      "rats:marble_small_aquaduct": 0.3,
+      "rats:marble_thin_tower": 0.4,
+      "rats:marble_tower": 0.25
+    }
+  }
+}

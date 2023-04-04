@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "axis=y": { "model": "rats:block/stripped_pirat_wood" },
-        "axis=z": { "model": "rats:block/stripped_pirat_wood", "x": 90 },
-        "axis=x": { "model": "rats:block/stripped_pirat_wood", "x": 90, "y": 90 }
-    }
-}

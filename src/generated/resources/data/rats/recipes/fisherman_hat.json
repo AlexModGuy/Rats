@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "minecraft:fishes"
+    },
+    "H": {
+      "item": "rats:farmer_hat"
+    },
+    "S": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    " F ",
+    "SHS",
+    "FFF"
+  ],
+  "result": {
+    "item": "rats:fisherman_hat"
+  },
+  "show_notification": true
+}

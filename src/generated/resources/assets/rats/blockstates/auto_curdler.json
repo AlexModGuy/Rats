@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rats:block/auto_curdler"
+    }
+  }
+}

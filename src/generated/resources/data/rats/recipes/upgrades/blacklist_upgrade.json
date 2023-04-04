@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/black"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "DUD",
+    "DDD"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_blacklist"
+  },
+  "show_notification": true
+}

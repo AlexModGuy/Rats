@@ -1,0 +1,8 @@
+{
+  "type": "rats:archeologist",
+  "count": 1,
+  "ingredient": {
+    "item": "minecraft:diamond_block"
+  },
+  "result": "rats:oratchalcum_ingot"
+}

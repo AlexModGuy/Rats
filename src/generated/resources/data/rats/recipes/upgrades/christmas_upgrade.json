@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "minecraft:coals"
+    },
+    "H": {
+      "item": "rats:santa_hat"
+    },
+    "S": {
+      "item": "minecraft:spruce_sapling"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "HHH",
+    "CUC",
+    "SSS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_christmas"
+  },
+  "show_notification": true
+}

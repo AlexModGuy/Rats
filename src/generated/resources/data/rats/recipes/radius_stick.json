@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "rats:plague_essence"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " C",
+    "S "
+  ],
+  "result": {
+    "item": "rats:radius_stick"
+  },
+  "show_notification": true
+}

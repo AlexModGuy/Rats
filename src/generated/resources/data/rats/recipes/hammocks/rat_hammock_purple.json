@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses"
+    },
+    "S": {
+      "tag": "forge:string"
+    },
+    "W": {
+      "item": "minecraft:purple_wool"
+    }
+  },
+  "pattern": [
+    "SCS",
+    "WWW"
+  ],
+  "result": {
+    "item": "rats:rat_hammock_purple"
+  },
+  "show_notification": true
+}

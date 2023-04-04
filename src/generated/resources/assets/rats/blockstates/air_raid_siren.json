@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rats:block/air_raid_siren"
+    }
+  }
+}

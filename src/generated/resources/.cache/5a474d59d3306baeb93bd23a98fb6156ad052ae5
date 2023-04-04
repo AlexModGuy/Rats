@@ -1,0 +1,5 @@
+// 1.19.4	2023-03-20T18:28:51.2476559	Global Loot Modifiers : rats
+697f64caca357939a2c54b1fdbb8ecace837ecb8 data/forge/loot_modifiers/global_loot_modifiers.json
+b776c2741dd77cacab0ad976ec538add276a2bee data/rats/loot_modifiers/add_cat_gifts.json
+b9836b4a85b210b2ff94a3943206adcb092028ab data/rats/loot_modifiers/add_creeper_chunks.json
+27b6e9cd564ebf325a90e7690d65dc8dc8085ecd data/rats/loot_modifiers/add_tiny_coins.json

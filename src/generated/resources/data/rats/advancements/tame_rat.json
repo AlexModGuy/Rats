@@ -1,0 +1,39 @@
+{
+  "parent": "rats:cheese",
+  "criteria": {
+    "tame_rat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:rat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.rats.tame_rat.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_upgrade_health"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.tame_rat.title"
+    }
+  },
+  "requirements": [
+    [
+      "tame_rat"
+    ]
+  ]
+}

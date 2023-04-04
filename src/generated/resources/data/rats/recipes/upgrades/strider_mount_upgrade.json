@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:cheeses/nether"
+    },
+    "T": {
+      "item": "minecraft:ghast_tear"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    },
+    "W": {
+      "item": "minecraft:warped_fungus"
+    }
+  },
+  "pattern": [
+    "WCW",
+    "TUT",
+    "WCW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_strider_mount"
+  },
+  "show_notification": true
+}

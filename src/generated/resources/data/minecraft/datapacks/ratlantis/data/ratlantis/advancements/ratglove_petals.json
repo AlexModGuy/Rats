@@ -1,0 +1,37 @@
+{
+  "parent": "ratlantis:ratlantis",
+  "criteria": {
+    "get_petals": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:ratglove_petals"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.ratglove_petals.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:ratglove_petals"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.ratglove_petals.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_petals"
+    ]
+  ]
+}

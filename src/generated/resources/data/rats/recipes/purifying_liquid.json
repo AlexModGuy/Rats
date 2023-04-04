@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "rats:golden_rat_skull"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "rats:plague_essence"
+    }
+  ],
+  "result": {
+    "item": "rats:purifying_liquid"
+  }
+}

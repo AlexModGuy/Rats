@@ -1,0 +1,60 @@
+{
+  "parent": "rats:plague_doctor",
+  "criteria": {
+    "hurt_death": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:black_death"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    },
+    "killed_death": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:black_death"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "summoned": {
+      "conditions": {},
+      "trigger": "rats:black_death_summoned"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.rats.black_death.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:black_death_mask",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.black_death.title"
+    }
+  },
+  "requirements": [
+    [
+      "summoned",
+      "hurt_death",
+      "killed_death"
+    ]
+  ]
+}

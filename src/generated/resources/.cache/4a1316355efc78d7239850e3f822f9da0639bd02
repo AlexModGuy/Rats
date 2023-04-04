@@ -1,0 +1,19 @@
+// 1.19.4	2023-04-03T21:47:33.4154553	Tags for minecraft:item mod id rats
+e219bec1b519c84c23f34b8a5fafa1e550d97a2e data/forge/tags/items/armors/helmets.json
+7127c83d822a7ae1b6a7fab613b9d09df70dca01 data/forge/tags/items/cheeses.json
+ef009e37bee6b5e71102a5503bc932bcd3984ec7 data/forge/tags/items/cheeses/blue.json
+fe6f96049bac78610039ce4aad407442f9af744c data/forge/tags/items/cheeses/nether.json
+c14c95f23ca3689a6a71fc43aefed8df18ee67f0 data/forge/tags/items/cheeses/normal.json
+441ba640a55a82f8d5ba068d7b83f6b52107a1c9 data/forge/tags/items/crafting_tables.json
+48b140e23bc057ed22451ba2a39ef0bafc3184e0 data/forge/tags/items/plastics.json
+7c4d9a1829286b02c42cec7f32ea92e74649874b data/forge/tags/items/storage_blocks/blue_cheese.json
+1911d06556592d02db0bcfe9a8cd19fa433d7f9e data/forge/tags/items/storage_blocks/cheese.json
+539e13a6e9b9b66f95f29155ef8f47a79ca08c31 data/forge/tags/items/storage_blocks/nether_cheese.json
+f651379db3bd93084b50c5759f13066cb9859ee2 data/forge/tags/items/vegetables.json
+2e0ec090b1352b8090db2dbf62881790b6d477d6 data/minecraft/tags/items/music_discs.json
+0f2b5f8d3265ca2562d22f15f1b7f98cfd49ad07 data/minecraft/tags/items/piglin_loved.json
+00a2feb404391b4e3c8142274bb6642b7649a268 data/minecraft/tags/items/wool.json
+20476f057164f3730c9ef2e8730a671a376a06aa data/rats/tags/items/hammocks.json
+42581877ef1a4bb763744ecdac46889a87f516d2 data/rats/tags/items/igloos.json
+0faaf07753124e7bdd17c7bb1eb18cf9998f096e data/rats/tags/items/marbled_cheese.json
+5f5d576b6a8ee2d2b8f4859f537ad97548e8a6b4 data/rats/tags/items/tubes.json

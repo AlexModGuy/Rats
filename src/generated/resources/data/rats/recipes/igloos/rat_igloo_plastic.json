@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "item": "rats:raw_plastic"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "P P"
+  ],
+  "result": {
+    "item": "rats:rat_igloo_white"
+  },
+  "show_notification": true
+}

@@ -1,8 +1,0 @@
-{
-    "parent": "block/stairs",
-    "textures": {
-        "bottom": "rats:block/pirat_planks",
-        "top": "rats:block/pirat_planks",
-        "side": "rats:block/pirat_planks"
-    }
-}

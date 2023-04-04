@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "tag": "forge:storage_blocks/cheese"
+    },
+    "G": {
+      "tag": "forge:glass/colorless"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "U": {
+      "item": "minecraft:cauldron"
+    }
+  },
+  "pattern": [
+    "CGC",
+    "CHC",
+    "CUC"
+  ],
+  "result": {
+    "item": "rats:auto_curdler"
+  },
+  "show_notification": true
+}

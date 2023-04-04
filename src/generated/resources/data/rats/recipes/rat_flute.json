@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/iron"
+    },
+    "S": {
+      "item": "minecraft:sugar_cane"
+    },
+    "T": {
+      "tag": "minecraft:terracotta"
+    }
+  },
+  "pattern": [
+    " NS",
+    "NST",
+    "ST "
+  ],
+  "result": {
+    "item": "rats:rat_flute"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "rats:item/rat_flute",
+  "textures": {
+    "layer0": "rats:item/gilded_rat_flute"
+  }
+}

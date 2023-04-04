@@ -1,0 +1,9 @@
+{
+  "values": [
+    "rats:garbage_pile",
+    "rats:compressed_garbage",
+    "rats:pied_garbage",
+    "rats:purified_garbage",
+    "rats:cursed_garbage"
+  ]
+}

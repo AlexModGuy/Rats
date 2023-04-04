@@ -1,0 +1,160 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_top_tube"
+      },
+      "when": {
+        "up": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom_tube"
+      },
+      "when": {
+        "down": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars_tube",
+        "y": 180
+      },
+      "when": {
+        "south": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars_tube",
+        "y": 90
+      },
+      "when": {
+        "east": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars_tube",
+        "y": 270
+      },
+      "when": {
+        "west": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars_tube"
+      },
+      "when": {
+        "north": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_top"
+      },
+      "when": {
+        "up": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom"
+      },
+      "when": {
+        "down": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars",
+        "y": 180
+      },
+      "when": {
+        "south": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars",
+        "y": 90
+      },
+      "when": {
+        "east": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars",
+        "y": 270
+      },
+      "when": {
+        "west": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bars"
+      },
+      "when": {
+        "north": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom_right"
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "0|2",
+            "east": "0|2"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom_left"
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "0|2",
+            "west": "0|2"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom_left",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "0|2",
+            "north": "0|2"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "rats:block/rat_cage_bottom_right",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "0|2",
+            "south": "0|2"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/bell_ceiling",
+  "textures": {
+    "bar": "rats:block/pirat_log",
+    "particle": "rats:block/pirat_log"
+  }
+}

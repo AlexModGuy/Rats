@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "UU",
+    "UU"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_block"
+  },
+  "show_notification": true
+}

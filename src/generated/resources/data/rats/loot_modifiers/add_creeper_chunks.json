@@ -1,0 +1,20 @@
+{
+  "type": "rats:add_item",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "nbt": "{powered:1b}"
+      }
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:entities/creeper"
+    }
+  ],
+  "items": {
+    "rats:charged_creeper_chunk": 1
+  },
+  "replacePool": false
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:bones"
+    },
+    "F": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "S": {
+      "item": "rats:rat_skull"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "FBF",
+    "SUS",
+    "FBF"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_undead"
+  },
+  "show_notification": true
+}

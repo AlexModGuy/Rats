@@ -1,0 +1,8 @@
+{
+  "type": "rats:archeologist",
+  "count": 1,
+  "ingredient": {
+    "item": "minecraft:rabbit_foot"
+  },
+  "result": "rats:feral_rat_claw"
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "M": {
+      "item": "rats:marbled_cheese"
+    }
+  },
+  "pattern": [
+    "M",
+    "M"
+  ],
+  "result": {
+    "count": 2,
+    "item": "rats:marbled_cheese_pillar"
+  },
+  "show_notification": true
+}

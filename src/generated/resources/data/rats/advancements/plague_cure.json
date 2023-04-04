@@ -1,0 +1,89 @@
+{
+  "parent": "rats:plague_doctor",
+  "criteria": {
+    "discover_herbs": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:herb_bundle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "discover_leech": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:plague_leech"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "discover_liquid": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:purifying_liquid"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "discover_stew": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:plague_stew"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "discover_treacle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:treacle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.plague_cure.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:plague_leech"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.plague_cure.title"
+    }
+  },
+  "requirements": [
+    [
+      "discover_herbs",
+      "discover_treacle",
+      "discover_leech",
+      "discover_stew",
+      "discover_liquid"
+    ]
+  ]
+}

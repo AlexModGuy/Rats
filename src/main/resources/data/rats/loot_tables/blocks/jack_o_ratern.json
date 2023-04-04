@@ -1,1 +1,0 @@
-{  "type": "minecraft:block",  "pools": [    {      "name": "jack_o_ratern",      "rolls": 1,      "entries": [        {          "type": "minecraft:item",          "name": "rats:jack_o_ratern"        }      ],      "conditions": [        {          "condition": "minecraft:survives_explosion"        }      ]    }  ]}

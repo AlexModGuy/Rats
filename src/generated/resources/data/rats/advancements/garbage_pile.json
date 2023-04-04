@@ -1,0 +1,37 @@
+{
+  "parent": "rats:trash_can",
+  "criteria": {
+    "garbage_pile": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:garbage_pile"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.rats.garbage_pile.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "rats:garbage_pile"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.rats.garbage_pile.title"
+    }
+  },
+  "requirements": [
+    [
+      "garbage_pile"
+    ]
+  ]
+}

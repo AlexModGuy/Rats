@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/magenta"
+    },
+    "T": {
+      "tag": "rats:tubes"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "TDT",
+    "TTT"
+  ],
+  "result": {
+    "count": 8,
+    "item": "rats:rat_tube_magenta"
+  },
+  "show_notification": true
+}

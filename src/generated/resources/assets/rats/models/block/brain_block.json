@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "rats:block/brain_bottom",
+    "east": "rats:block/brain_side",
+    "north": "rats:block/brain_front",
+    "particle": "rats:block/brain_side",
+    "south": "rats:block/brain_back",
+    "up": "rats:block/brain_top",
+    "west": "rats:block/brain_side"
+  }
+}

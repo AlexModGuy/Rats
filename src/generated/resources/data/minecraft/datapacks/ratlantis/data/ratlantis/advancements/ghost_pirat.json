@@ -1,0 +1,81 @@
+{
+  "parent": "ratlantis:pirat",
+  "criteria": {
+    "hurt_by_ghost_pirat": {
+      "conditions": {
+        "damage": {
+          "source_entity": {
+            "type": "rats:ghost_pirat"
+          }
+        }
+      },
+      "trigger": "minecraft:entity_hurt_player"
+    },
+    "hurt_ghost_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:ghost_pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    },
+    "killed_by_ghost_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:ghost_pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:entity_killed_player"
+    },
+    "killed_ghost_pirat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:ghost_pirat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ratlantis.ghost_pirat.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:ghost_pirat_hat",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ratlantis.ghost_pirat.title"
+    }
+  },
+  "requirements": [
+    [
+      "hurt_ghost_pirat",
+      "killed_ghost_pirat",
+      "hurt_by_ghost_pirat",
+      "killed_by_ghost_pirat"
+    ]
+  ]
+}
