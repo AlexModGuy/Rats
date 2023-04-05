@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +16,7 @@ public class PlagueLeechItem extends PlagueHealerItem {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		if (!player.isCreative()) {
+		if (!player.isCreative() && player.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
 			player.getItemInHand(hand).shrink(1);
 			player.hurt(level.damageSources().cactus(), 2);
 		}
