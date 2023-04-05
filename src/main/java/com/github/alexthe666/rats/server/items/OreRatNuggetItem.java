@@ -31,13 +31,13 @@ public class OreRatNuggetItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (!player.isCreative()) {
-			itemstack.shrink(1);
-		}
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), RatsSoundRegistry.RAT_NUGGET_ORE.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 		ItemStack poopStack = getStoredItem(itemstack, new ItemStack(Items.IRON_INGOT));
 		if (!player.getInventory().add(poopStack)) {
 			player.drop(poopStack, false);
+		}
+		if (!player.isCreative()) {
+			itemstack.shrink(1);
 		}
 		return InteractionResultHolder.success(itemstack);
 	}
