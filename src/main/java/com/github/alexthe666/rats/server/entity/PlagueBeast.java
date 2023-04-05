@@ -133,18 +133,17 @@ public class PlagueBeast extends FeralRatlantean implements PlagueLegion {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		String s;
-
-		if (compound.contains("OwnerUUID", 8)) {
-			s = compound.getString("OwnerUUID");
+		UUID uuid;
+		if (compound.hasUUID("Owner")) {
+			uuid = compound.getUUID("Owner");
 		} else {
-			String s1 = compound.getString("Owner");
-			s = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s1).toString();
+			String s = compound.getString("Owner");
+			uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
 		}
 
-		if (!s.isEmpty()) {
+		if (uuid != null) {
 			try {
-				this.setOwnerId(UUID.fromString(s));
+				this.setOwnerId(uuid);
 			} catch (Throwable ignored) {
 			}
 		}
