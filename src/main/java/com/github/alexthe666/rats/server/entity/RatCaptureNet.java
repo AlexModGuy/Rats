@@ -33,7 +33,7 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 		ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK.get());
 		CompoundTag tag = new CompoundTag();
 		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
-			AABB axisalignedbb = this.getBoundingBox().inflate(30, 16, 30);
+			AABB axisalignedbb = this.getBoundingBox().inflate(16);
 			List<TamedRat> list = this.getLevel().getEntitiesOfClass(TamedRat.class, axisalignedbb);
 			int capturedRat = 0;
 			if (!list.isEmpty()) {
@@ -53,10 +53,10 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 			this.discard();
 		}
 		sack.setTag(tag);
-		ItemEntity itemEntity = new ItemEntity(getLevel(), this.getX(), this.getY(), this.getZ(), sack);
+		ItemEntity itemEntity = new ItemEntity(this.getLevel(), this.getX(), this.getY(), this.getZ(), sack);
 		itemEntity.setInvulnerable(true);
-		if (!getLevel().isClientSide()) {
-			getLevel().addFreshEntity(itemEntity);
+		if (!this.getLevel().isClientSide()) {
+			this.getLevel().addFreshEntity(itemEntity);
 		}
 	}
 
