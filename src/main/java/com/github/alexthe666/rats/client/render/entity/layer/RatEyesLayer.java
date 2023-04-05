@@ -25,7 +25,7 @@ public class RatEyesLayer<T extends AbstractRat, M extends RatModel<T>> extends 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		long roundedTime = rat.getLevel().getDayTime() % 24000;
-		boolean night = roundedTime >= 13000 && roundedTime <= 22000;
+		boolean night = roundedTime >= 13000 && roundedTime <= 23000;
 		BlockPos ratPos = rat.getLightPosition();
 		int i = rat.getLevel().getBrightness(LightLayer.SKY, ratPos);
 		int j = rat.getLevel().getBrightness(LightLayer.BLOCK, ratPos);

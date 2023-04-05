@@ -38,10 +38,4 @@ public class PlagueScytheItem extends SwordItem {
 		}
 		return multimap;
 	}
-
-	@Override
-	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-
-		return super.onEntitySwing(stack, entity);
-	}
 }

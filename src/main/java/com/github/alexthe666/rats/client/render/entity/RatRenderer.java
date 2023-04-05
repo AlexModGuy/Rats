@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 public class RatRenderer extends AbstractRatRenderer<Rat> {
 	public RatRenderer(EntityRendererProvider.Context context) {
 		super(context);
-		this.addLayer(new RatEyesLayer<>(this));
 		this.addLayer(new RatOverlayLayer(this));
+		this.addLayer(new RatEyesLayer<>(this));
 	}
 }
