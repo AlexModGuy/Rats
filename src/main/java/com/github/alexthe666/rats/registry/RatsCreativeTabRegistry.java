@@ -20,7 +20,7 @@ public class RatsCreativeTabRegistry {
 
 	@SubscribeEvent
 	public static void registerToExistingTabs(CreativeModeTabEvent.BuildContents event) {
-		if (event.getTab() == CreativeModeTabs.OP_BLOCKS) {
+		if (event.getTab() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
 			event.accept(RatsItemRegistry.RAT_UPGRADE_CREATIVE.get());
 			event.accept(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get());
 		}
