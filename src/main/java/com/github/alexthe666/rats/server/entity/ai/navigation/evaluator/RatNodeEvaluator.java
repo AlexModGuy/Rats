@@ -20,8 +20,11 @@ public class RatNodeEvaluator extends WalkNodeEvaluator {
 	protected BlockPathTypes evaluateBlockPathType(BlockGetter getter, BlockPos pos, BlockPathTypes types) {
 		Block block = getter.getBlockState(pos).getBlock();
 		if (this.mob instanceof TamedRat rat) {
-			if (block instanceof RatHoleBlock || block instanceof RatQuarryPlatformBlock || block instanceof RatTrapBlock || block instanceof RatCageBlock || RatUtils.isOpenRatTube(getter, pos)) {
+			if (block instanceof RatHoleBlock || block instanceof RatTrapBlock || block instanceof RatCageBlock || RatUtils.isOpenRatTube(getter, pos)) {
 				types = BlockPathTypes.WALKABLE;
+			}
+			if (block instanceof RatQuarryPlatformBlock) {
+				types = BlockPathTypes.OPEN;
 			}
 			if (block instanceof SlabBlock) {
 				types = BlockPathTypes.WALKABLE;
