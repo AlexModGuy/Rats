@@ -87,6 +87,9 @@ public class RatSackItem extends Item {
 						TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), context.getLevel());
 						BlockPos offset = context.getClickedPos().relative(context.getClickedFace());
 						rat.readAdditionalSaveData(ratTag);
+						if (!ratTag.getString("CustomName").isEmpty()) {
+							rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+						}
 						rat.moveTo(offset.getX() - 1 + (context.getLevel().getRandom().nextFloat() * 2), offset.getY(), offset.getZ() - 1 + (context.getLevel().getRandom().nextFloat() * 2), 0, 0);
 						if (!context.getLevel().isClientSide()) {
 							context.getLevel().addFreshEntity(rat);

@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,6 +43,9 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
 						CompoundTag ratTag = new CompoundTag();
 						rat.addAdditionalSaveData(ratTag);
+						if (rat.hasCustomName()) {
+							ratTag.putString("CustomName", Component.Serializer.toJson(rat.getCustomName()));
+						}
 						capturedRat++;
 						this.getLevel().broadcastEntityEvent(rat, (byte) 86);
 						tag.put("Rat_" + capturedRat, ratTag);

@@ -477,7 +477,7 @@
   "item.rats.rat_sack.and_more": "... and more",
   "item.rats.rat_sack.capacity": "Can store up to %s rats",
   "item.rats.rat_capture_net": "Rat Capture Net",
-  "item.rats.rat_capture_net.desc": "Rounds up all tamed rats within 30 blocks into one neat sack!",
+  "item.rats.rat_capture_net.desc": "Rounds up all tamed rats within 16 blocks into one neat sack!",
   "item.rats.archeologist_hat": "Archeologist Hat",
   "item.rats.archeologist_hat.desc": "Rare drop from Husks or skeletons in jungles",
   "item.rats.ratglove_petals": "Ratglove Petals",
