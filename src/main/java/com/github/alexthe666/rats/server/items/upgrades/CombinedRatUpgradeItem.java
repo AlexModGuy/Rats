@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsUpgradeConflictRegistry;
 import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
+import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CombinedRatUpgradeItem extends BaseRatUpgradeItem {
+public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements CombinedUpgrade {
 
 	public CombinedRatUpgradeItem(Item.Properties properties) {
 		super(properties, 1, 1);
@@ -45,28 +46,16 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem {
 		return combiner.is(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get()) || combiner.is(RatsItemRegistry.RAT_UPGRADE_COMBINED.get()) || combiner.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get());
 	}
 
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		if (stack.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get())) {
 			tooltip.add(Component.translatable("item.rats.rat_upgrade_combined.desc").withStyle(ChatFormatting.GRAY));
 		}
-		CompoundTag tag = stack.getTag();
-
-		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
-			int i = 0;
-			for (ItemStack itemstack : nonnulllist) {
-				if (!itemstack.isEmpty()) {
-					if (i <= 4) {
-						++i;
-						tooltip.add(Component.literal(String.format("%s", itemstack.getDisplayName().getString())));
-					}
-				}
-			}
-		}
+		this.addTooltip(stack, tooltip);
 	}
 
+	@Override
 	public boolean isFoil(ItemStack stack) {
 		if (stack.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get())) {
 			return true;
@@ -74,13 +63,14 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem {
 		CompoundTag tag = stack.getTag();
 		boolean flag = false;
 		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist);
 			flag = !nonnulllist.isEmpty();
 		}
 		return flag;
 	}
 
+	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (this == RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get()) {
 			//FIXME move this behavior to a right click on stack option.
@@ -107,5 +97,10 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem {
 		} else {
 			return super.use(level, player, hand);
 		}
+	}
+
+	@Override
+	public int getUpgradeSlots() {
+		return 27;
 	}
 }

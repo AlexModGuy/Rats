@@ -2,8 +2,7 @@ package com.github.alexthe666.rats.server.misc;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.JuryRiggedRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
@@ -27,26 +26,14 @@ public class RatUpgradeUtils {
 				if (stack.getItem() == item) {
 					return stack;
 				}
-				if (stack.getItem() instanceof CombinedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (stack1.getItem() == item) {
-								return stack1;
-							}
-						}
-					}
-				}
-				if (stack.getItem() instanceof JuryRiggedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (stack1.getItem() == item) {
-								return stack1;
+				if (stack.getItem() instanceof CombinedUpgrade combined) {
+					CompoundTag tag = stack.getTag();
+					if (tag != null && tag.contains("Items", 9)) {
+						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
+						ContainerHelper.loadAllItems(tag, upgradeList);
+						for (ItemStack selectedUpgrade : upgradeList) {
+							if (selectedUpgrade.getItem() == item) {
+								return selectedUpgrade;
 							}
 						}
 					}
@@ -71,26 +58,14 @@ public class RatUpgradeUtils {
 				if (upgrade.test(stack.getItem())) {
 					function.accept(stack);
 				}
-				if (stack.getItem() instanceof CombinedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (upgrade.test(stack.getItem())) {
-								function.accept(stack1);
-							}
-						}
-					}
-				}
-				if (stack.getItem() instanceof JuryRiggedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (upgrade.test(stack.getItem())) {
-								function.accept(stack1);
+				if (stack.getItem() instanceof CombinedUpgrade combined) {
+					CompoundTag tag = stack.getTag();
+					if (tag != null && tag.contains("Items", 9)) {
+						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
+						ContainerHelper.loadAllItems(tag, upgradeList);
+						for (ItemStack selectedUpgrade : upgradeList) {
+							if (upgrade.test(selectedUpgrade.getItem())) {
+								function.accept(selectedUpgrade);
 							}
 						}
 					}
@@ -103,24 +78,13 @@ public class RatUpgradeUtils {
 		for (EquipmentSlot slot : UPGRADE_SLOTS) {
 			ItemStack stack = rat.getItemBySlot(slot);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof CombinedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (stack1.getItem() instanceof BaseRatUpgradeItem upgrade && function.apply(upgrade) != def) {
-								return function.apply(upgrade);
-							}
-						}
-					}
-				} else if (stack.getItem() instanceof JuryRiggedRatUpgradeItem) {
-					CompoundTag CompoundNBT1 = stack.getTag();
-					if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
-						NonNullList<ItemStack> nonnulllist = NonNullList.withSize(2, ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
-						for (ItemStack stack1 : nonnulllist) {
-							if (stack1.getItem() instanceof BaseRatUpgradeItem upgrade && function.apply(upgrade) != def) {
+				if (stack.getItem() instanceof CombinedUpgrade combined) {
+					CompoundTag tag = stack.getTag();
+					if (tag != null && tag.contains("Items", 9)) {
+						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
+						ContainerHelper.loadAllItems(tag, upgradeList);
+						for (ItemStack selectedUpgrade : upgradeList) {
+							if (selectedUpgrade.getItem() instanceof BaseRatUpgradeItem upgrade && function.apply(upgrade) != def) {
 								return function.apply(upgrade);
 							}
 						}
