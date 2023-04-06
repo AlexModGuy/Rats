@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -91,7 +92,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 		BlockState state = reader.getBlockState(pos);
 		BlockState cropState = reader.getBlockState(pos.above());
 		if (RatUtils.canRatBreakBlock(this.rat.getLevel(), pos.above(), this.rat)) {
-			if (state.is(Blocks.FARMLAND)) {
+			if (state.getBlock() instanceof FarmBlock) {
 				if (!RatPathingHelper.canSeeOrDigToBlock(this.rat, pos.above())) return false;
 				if (cropState.getBlock() instanceof CropBlock crop) return crop.isMaxAge(cropState);
 				return cropState.is(BlockTags.CROPS) && !(cropState.getBlock() instanceof StemBlock);
