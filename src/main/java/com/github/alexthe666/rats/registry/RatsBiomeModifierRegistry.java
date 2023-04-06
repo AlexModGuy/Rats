@@ -25,7 +25,7 @@ public class RatsBiomeModifierRegistry {
 		context.register(ADD_PIPER_SPAWNS,
 				ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
 						context.lookup(Registries.BIOME).getOrThrow(RatsBiomeTags.PIPER_SPAWN_BIOMES),
-						new MobSpawnSettings.SpawnerData(RatsEntityRegistry.RAT.get(), 6, 1, 1)));
+						new MobSpawnSettings.SpawnerData(RatsEntityRegistry.PIED_PIPER.get(), 25, 1, 1)));
 
 		context.register(ADD_DEMON_RAT_SPAWNS,
 				ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(

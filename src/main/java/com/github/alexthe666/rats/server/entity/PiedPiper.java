@@ -39,6 +39,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 public class PiedPiper extends Monster implements RatSummoner {
@@ -60,12 +61,13 @@ public class PiedPiper extends Monster implements RatSummoner {
 				.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.getEntityData().define(RAT_COUNT, 0);
 	}
 
-
+	@Override
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -82,7 +84,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 	@Override
 	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType type) {
 		if (!accessor.getLevelData().getGameRules().getBoolean(RatsMod.SPAWN_PIPERS)) return false;
-		if (type == MobSpawnType.EVENT) return super.checkSpawnRules(accessor, type);
+		if (type == MobSpawnType.EVENT || type == MobSpawnType.SPAWNER) return super.checkSpawnRules(accessor, type);
 		int spawnRoll = RatConfig.piperSpawnDecrease;
 		if (spawnRoll == 0 || this.getRandom().nextInt(spawnRoll) == 0) {
 			return super.checkSpawnRules(accessor, type);
@@ -90,6 +92,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 		return false;
 	}
 
+	@Override
 	public void remove(RemovalReason reason) {
 		double dist = 20F;
 		if (reason.shouldDestroy()) {
@@ -106,11 +109,13 @@ public class PiedPiper extends Monster implements RatSummoner {
 		super.remove(reason);
 	}
 
+	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("RatsSummoned", this.getRatsSummoned());
 	}
 
+	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.setRatsSummoned(compound.getInt("RatsSummoned"));
@@ -140,6 +145,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 	}
 
 	@Nullable
+	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
 		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
 		this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);
@@ -157,12 +163,10 @@ public class PiedPiper extends Monster implements RatSummoner {
 			if (this.getRatsSummoned() < 6 && this.ratCooldown == 0) {
 				this.getLevel().broadcastEntityEvent(this, (byte) 82);
 				Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.getLevel());
-				if (!this.getLevel().isClientSide()) {
-					ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.getLevel(), this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-				}
+				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.getLevel(), this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 				rat.copyPosition(this);
 				this.getLevel().addFreshEntity(rat);
-
+				rat.setPlagued(false);
 				rat.setTame(false);
 				rat.setOwnerUUID(this.getUUID());
 				if (this.getTarget() != null) {
@@ -175,6 +179,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 		}
 	}
 
+	@Override
 	public void aiStep() {
 		super.aiStep();
 		if (!this.isNoAi() && this.isHolding(RatsItemRegistry.RAT_FLUTE.get())) {
@@ -205,6 +210,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 		return reason == MobSpawnType.SPAWNER || light && level.getBlockState(blockpos).isValidSpawn(level, blockpos, type) && random.nextFloat() < 0.25F;
 	}
 
+	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 82) {
 			this.playEffect(0);
@@ -226,7 +232,6 @@ public class PiedPiper extends Monster implements RatSummoner {
 				this.getLevel().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, 0, 0);
 			}
 		}
-
 	}
 
 	@Override
@@ -241,10 +246,12 @@ public class PiedPiper extends Monster implements RatSummoner {
 		}
 	}
 
+	@Override
 	protected SoundEvent getDeathSound() {
 		return RatsSoundRegistry.PIED_PIPER_DEATH.get();
 	}
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return RatsSoundRegistry.PIED_PIPER_HURT.get();
 	}

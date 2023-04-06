@@ -281,7 +281,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 	}
 
 	public static boolean checkRatSpawnRules(EntityType<? extends Mob> entityType, LevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
-		if (random.nextInt(32) == 0) {
+		if (random.nextInt(16) == 0) {
 			return type == MobSpawnType.SPAWNER || spawnCheck(accessor, pos, random);
 		}
 		return false;

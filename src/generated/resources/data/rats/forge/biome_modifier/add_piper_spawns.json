@@ -2,9 +2,9 @@
   "type": "forge:add_spawns",
   "biomes": "#rats:piper_spawn_biomes",
   "spawners": {
-    "type": "rats:rat",
+    "type": "rats:pied_piper",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 6
+    "weight": 25
   }
 }
