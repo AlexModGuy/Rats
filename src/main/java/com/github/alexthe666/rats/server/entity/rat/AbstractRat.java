@@ -90,6 +90,11 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
 	}
 
+	@Override
+	public float getStepHeight() {
+		return 1.75F;
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 8.0D)
