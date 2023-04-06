@@ -7,7 +7,10 @@ import com.github.alexthe666.rats.server.block.entity.RatCageBreedingLanternBloc
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.RatCageDecoration;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -22,7 +25,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,7 +42,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.function.Function;
 
 @SuppressWarnings("deprecation")
 public class RatCageBlock extends Block {
@@ -56,16 +62,40 @@ public class RatCageBlock extends Block {
 	private static final VoxelShape EAST_AABB = Block.box(15F, 0F, 0F, 16F, 16F, 16F);
 	private static final VoxelShape WEST_AABB = Block.box(0F, 0F, 0F, 1F, 16F, 16F);
 
+	private static final Map<Direction, IntegerProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), map -> {
+		map.put(Direction.NORTH, NORTH);
+		map.put(Direction.EAST, EAST);
+		map.put(Direction.SOUTH, SOUTH);
+		map.put(Direction.WEST, WEST);
+		map.put(Direction.UP, UP);
+		map.put(Direction.DOWN, DOWN);
+	}));
+
+	private static final Map<Direction, VoxelShape> SHAPE_BY_DIRECTION = Util.make(Maps.newEnumMap(Direction.class), map -> {
+		map.put(Direction.NORTH, NORTH_AABB);
+		map.put(Direction.EAST, EAST_AABB);
+		map.put(Direction.SOUTH, SOUTH_AABB);
+		map.put(Direction.WEST, WEST_AABB);
+		map.put(Direction.UP, TOP_AABB);
+		map.put(Direction.DOWN, BOTTOM_AABB);
+	});
+
 	public RatCageBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any()
-				.setValue(NORTH, 0)
-				.setValue(EAST, 0)
-				.setValue(SOUTH, 0)
-				.setValue(WEST, 0)
-				.setValue(UP, 0)
-				.setValue(DOWN, 0)
-		);
+		this.registerDefaultState(getDefaultCage(this.getStateDefinition()));
+
+	}
+
+	private static BlockState getDefaultCage(StateDefinition<Block, BlockState> definition) {
+		BlockState blockstate = definition.any();
+
+		for (IntegerProperty property : PROPERTY_BY_DIRECTION.values()) {
+			if (blockstate.hasProperty(property)) {
+				blockstate = blockstate.setValue(property, 0);
+			}
+		}
+
+		return blockstate;
 	}
 
 	@Override
@@ -76,20 +106,26 @@ public class RatCageBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(NORTH, EAST, WEST, SOUTH, DOWN, UP);
+		for (Direction direction : Direction.values()) {
+			builder.add(PROPERTY_BY_DIRECTION.get(direction));
+		}
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return Objects.requireNonNull(super.getStateForPlacement(context))
-				.setValue(NORTH, this.canFenceConnectTo(context.getLevel().getBlockState(context.getClickedPos().north())))
-				.setValue(EAST, this.canFenceConnectTo(context.getLevel().getBlockState(context.getClickedPos().east())))
-				.setValue(SOUTH, this.canFenceConnectTo(context.getLevel().getBlockState(context.getClickedPos().south())))
-				.setValue(WEST, this.canFenceConnectTo(context.getLevel().getBlockState(context.getClickedPos().west())));
+		BlockState blockstate = this.defaultBlockState();
+
+		for (Map.Entry<Direction, IntegerProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
+			if (blockstate.hasProperty(entry.getValue())) {
+				blockstate = blockstate.setValue(entry.getValue(), this.runConnectionLogic(context.getLevel().getBlockState(context.getClickedPos().relative(entry.getKey()))));
+			}
+		}
+
+		return blockstate;
 	}
 
-	public int canFenceConnectTo(BlockState state) {
+	public int runConnectionLogic(BlockState state) {
 		if (state.getBlock() instanceof RatTubeBlock) {
 			return 2;
 		}
@@ -100,23 +136,10 @@ public class RatCageBlock extends Block {
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape1 = Block.box(0, 0, 0, 0, 0, 0);
 		if (state.getBlock() instanceof RatCageBlock) {
-			if (state.getValue(UP) == 0) {
-				shape1 = Shapes.join(shape1, TOP_AABB, BooleanOp.OR);
-			}
-			if (state.getValue(DOWN) == 0) {
-				shape1 = Shapes.join(shape1, BOTTOM_AABB, BooleanOp.OR);
-			}
-			if (state.getValue(NORTH) == 0) {
-				shape1 = Shapes.join(shape1, NORTH_AABB, BooleanOp.OR);
-			}
-			if (state.getValue(SOUTH) == 0) {
-				shape1 = Shapes.join(shape1, SOUTH_AABB, BooleanOp.OR);
-			}
-			if (state.getValue(WEST) == 0) {
-				shape1 = Shapes.join(shape1, WEST_AABB, BooleanOp.OR);
-			}
-			if (state.getValue(EAST) == 0) {
-				shape1 = Shapes.join(shape1, EAST_AABB, BooleanOp.OR);
+			for (Map.Entry<Direction, IntegerProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
+				if (state.getValue(entry.getValue()) == 0) {
+					shape1 = Shapes.join(shape1, SHAPE_BY_DIRECTION.get(entry.getKey()), BooleanOp.OR);
+				}
 			}
 		}
 		return shape1;
@@ -125,8 +148,8 @@ public class RatCageBlock extends Block {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (player.getItemInHand(hand).getItem() instanceof RatCageDecoration decoration && level.getBlockEntity(pos) == null) {
-			if (decoration.canStay(level, pos, this)) {
-				Direction limitedFacing = player.getDirection().getOpposite();
+			Direction limitedFacing = player.getDirection().getOpposite();
+			if (state.getValue(PROPERTY_BY_DIRECTION.get(decoration.getSupportedFace(limitedFacing))) == 0) {
 				if (player.getItemInHand(hand).is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
 					BlockState pre = level.getBlockState(pos);
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get().withPropertiesOf(pre);
@@ -223,15 +246,35 @@ public class RatCageBlock extends Block {
 	}
 
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		IntegerProperty connect = switch (facing) {
-			case NORTH -> NORTH;
-			case SOUTH -> SOUTH;
-			case EAST -> EAST;
-			case WEST -> WEST;
-			case DOWN -> DOWN;
-			default -> UP;
-		};
-		return state.setValue(connect, this.canFenceConnectTo(facingState));
+		state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), this.runConnectionLogic(facingState));
+		if (accessor.getBlockEntity(currentPos) instanceof DecoratedRatCageBlockEntity decorated && !decorated.getContainedItem().isEmpty()) {
+			if (decorated.getContainedItem().getItem() instanceof RatCageDecoration decoration && state.getValue(PROPERTY_BY_DIRECTION.get(decoration.getSupportedFace(state.getValue(RatCageDecoratedBlock.FACING)))) != 0) {
+				BlockState pre = state;
+				BlockState emptyCage = RatsBlockRegistry.RAT_CAGE.get().defaultBlockState();
+				state = emptyCage.getBlock().withPropertiesOf(pre);
+				accessor.setBlock(currentPos, state, 3);
+			}
+		}
+		return state;
 	}
 
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return this.mapDirections(state, rotation::rotate);
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return this.mapDirections(state, mirror::mirror);
+	}
+
+	private BlockState mapDirections(BlockState state, Function<Direction, Direction> rotation) {
+		BlockState blockstate = state;
+
+		for (Direction direction : Direction.Plane.HORIZONTAL) {
+			blockstate = blockstate.setValue(PROPERTY_BY_DIRECTION.get(rotation.apply(direction)), state.getValue(PROPERTY_BY_DIRECTION.get(direction)));
+		}
+
+		return blockstate;
+	}
 }

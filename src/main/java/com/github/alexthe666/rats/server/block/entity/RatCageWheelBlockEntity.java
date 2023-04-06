@@ -118,7 +118,7 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 						if (te.useTicks > 200 && te.useTicks % 100 == 0 && te.random.nextFloat() > 0.25F) {
 
 							for (Direction direction : Direction.values()) {
-								if (cageBlock.canFenceConnectTo(level.getBlockState(pos.relative(direction))) == 1 && te.wheeler != null) {
+								if (cageBlock.runConnectionLogic(level.getBlockState(pos.relative(direction))) == 1 && te.wheeler != null) {
 									te.wheeler.setPos((float) pos.relative(direction).getX() + 0.5F, (float) pos.relative(direction).getY() + 0.5F, (float) pos.relative(direction).getZ() + 0.5F);
 									te.wheeler.setInWheel(false);
 									te.wheeler = null;
