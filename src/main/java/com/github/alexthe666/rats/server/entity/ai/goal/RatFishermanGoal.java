@@ -116,13 +116,22 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 		double luck = 0.1D;
 		LootContext.Builder builder = new LootContext.Builder((ServerLevel) this.rat.getLevel()).withLuck((float) luck);
 		LootContextParamSet.Builder paramBuilder = new LootContextParamSet.Builder();
-		List<ItemStack> result = rat.getLevel().getServer().getLootTables().get(BuiltInLootTables.FISHING).getRandomItems(builder.create(paramBuilder.build()));
+		List<ItemStack> result = this.rat.getLevel().getServer().getLootTables().get(BuiltInLootTables.FISHING).getRandomItems(builder.create(paramBuilder.build()));
 
-		for (ItemStack itemstack : result) {
-			ItemEntity item = new ItemEntity(this.rat.getLevel(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), itemstack);
-			item.setExtendedLifetime();
-			item.setNoPickUpDelay();
-			this.rat.getLevel().addFreshEntity(item);
+		FakePlayer player = FakePlayerFactory.getMinecraft((ServerLevel) this.rat.getLevel());
+		player.setPos(this.rat.position());
+
+		FishingHook hook = new FishingHook(player, this.rat.getLevel(), 3, 3);
+		hook.setPos(this.rat.position());
+		ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
+		MinecraftForge.EVENT_BUS.post(event);
+		if (!event.isCanceled()) {
+			for (ItemStack itemstack : result) {
+				ItemEntity item = new ItemEntity(this.rat.getLevel(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), itemstack);
+				item.setExtendedLifetime();
+				item.setNoPickUpDelay();
+				this.rat.getLevel().addFreshEntity(item);
+			}
 		}
 	}
 }

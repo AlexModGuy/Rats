@@ -486,24 +486,10 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected void tickDeath() {
 		++this.deathTime;
 		int maxDeathTime = this.isDeadInTrap() ? 60 : 20;
-		if (this.deathTime == maxDeathTime) {
-			if (!this.getLevel().isClientSide() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.getLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int i = this.getExperienceReward();
-				i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
-				while (i > 0) {
-					int j = ExperienceOrb.getExperienceValue(i);
-					i -= j;
-					this.getLevel().addFreshEntity(new ExperienceOrb(this.getLevel(), this.getX(), this.getY(), this.getZ(), j));
-				}
-			}
+		if (this.deathTime >= maxDeathTime) {
+			this.level.broadcastEntityEvent(this, (byte)60);
 			this.handleBeforeRemoval();
 			this.remove(RemovalReason.KILLED);
-			for (int k = 0; k < 20; ++k) {
-				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				double d0 = this.getRandom().nextGaussian() * 0.02D;
-				double d1 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(ParticleTypes.CLOUD, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
-			}
 		}
 	}
 

@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +44,7 @@ public class LaserPortal extends Entity {
 
 	public void tick() {
 		super.tick();
-		if (this.tickCount > 300) {
+		if (this.tickCount > 300 || this.getLevel().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
 			this.discard();
 		}
 		if (this.tickCount < 250 && this.scaleOfPortal < 1.0F) {

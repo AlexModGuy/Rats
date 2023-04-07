@@ -32,7 +32,7 @@ public class RatlantisBlockRegistry {
 			return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 13.0D, 11.0D).move(vec3.x(), vec3.y(), vec3.z());
 		}
 	});
-	public static final RegistryObject<Block> POTTED_RATGLOVE_FLOWER = register("potted_ratglove_flower", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, RATGLOVE_FLOWER, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
+	public static final RegistryObject<Block> POTTED_RATGLOVE_FLOWER = BLOCKS.register("potted_ratglove_flower", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, RATGLOVE_FLOWER, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 	public static final RegistryObject<Block> CHUNKY_CHEESE_TOKEN = register("chunky_cheese_token", () -> new ChunkyCheeseTokenBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 1000.0F)));
 	public static final RegistryObject<Block> CHEESE_ORE = register("cheese_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).requiresCorrectToolForDrops().strength(2.0F, 3.0F)));
 	public static final RegistryObject<Block> RATLANTEAN_GEM_ORE = register("ratlantean_gem_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(10.0F, 100.0F)));

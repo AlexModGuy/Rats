@@ -55,6 +55,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -211,9 +212,11 @@ public class ForgeEvents {
 				double d2 = player.getZ() - hook.getZ();
 				itementity.setDeltaMovement(d0 * 0.1D, d1 * 0.1D + Math.sqrt(Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2)) * 0.08D, d2 * 0.1D);
 				level.addFreshEntity(itementity);
-				level.addFreshEntity(new ExperienceOrb(level, player.getX(), player.getY() + 0.5D, player.getZ() + 0.5D, player.getRandom().nextInt(6) + 1));
-				if (itemstack.is(ItemTags.FISHES)) {
-					player.awardStat(Stats.FISH_CAUGHT, 1);
+				if (!(player instanceof FakePlayer)) {
+					level.addFreshEntity(new ExperienceOrb(level, player.getX(), player.getY() + 0.5D, player.getZ() + 0.5D, player.getRandom().nextInt(6) + 1));
+					if (itemstack.is(ItemTags.FISHES)) {
+						player.awardStat(Stats.FISH_CAUGHT, 1);
+					}
 				}
 			}
 		}

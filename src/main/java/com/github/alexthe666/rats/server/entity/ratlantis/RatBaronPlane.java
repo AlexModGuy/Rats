@@ -113,7 +113,7 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 			}
 		}
 		this.prevPlanePitch = this.getPlanePitch();
-		if (!this.isVehicle() && !this.getLevel().isClientSide()) {
+		if (!this.isNoAi() && !this.isVehicle() && !this.getLevel().isClientSide()) {
 			this.hurt(this.damageSources().magic(), Float.MAX_VALUE);
 		}
 		if (!this.isOnGround() && this.getDeltaMovement().y() < 0.0D) {

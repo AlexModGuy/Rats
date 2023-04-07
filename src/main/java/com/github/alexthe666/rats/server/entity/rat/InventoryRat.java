@@ -243,6 +243,11 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	}
 
 	public void setCommandInteger(int command) {
+		if (!this.getLevel().isClientSide() && command != this.getCommandInteger()) {
+			this.getNavigation().stop();
+			this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
+			if (this instanceof TamedRat rat) rat.crafting = false;
+		}
 		this.getEntityData().set(COMMAND, command);
 		this.setOrderedToSit(command == RatCommand.SIT.ordinal());
 	}
@@ -252,11 +257,6 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	}
 
 	public void setCommand(RatCommand command) {
-		if (!this.getLevel().isClientSide() && command.ordinal() != this.getCommandInteger()) {
-			this.getNavigation().stop();
-			this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
-			if (this instanceof TamedRat rat) rat.crafting = false;
-		}
 		this.setCommandInteger(command.ordinal());
 	}
 
