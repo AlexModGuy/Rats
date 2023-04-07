@@ -209,17 +209,17 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity, Ratlan
 				RatlanteanSpirit.this.getMoveControl().setWantedPosition(living.getX(), living.getY(), living.getZ(), 0.5D);
 			}
 			if (living.distanceToSqr(this.parentEntity) < 4096.0D) {
-				Level world = this.parentEntity.getLevel();
+				Level level = this.parentEntity.getLevel();
 				++this.attackTimer;
 
 				if (this.attackTimer == 20) {
-					double d2 = living.getX() - (this.parentEntity.getX());
-					double d3 = living.getY() + (double) (living.getBbHeight()) - (this.parentEntity.getY() + (double) (this.parentEntity.getBbHeight() / 2.0F));
-					double d4 = living.getZ() - (this.parentEntity.getZ());
-					world.levelEvent(null, 1016, this.parentEntity.blockPosition(), 0);
-					RatlanteanFlame entitylargefireball = new RatlanteanFlame(world, this.parentEntity, d2, d3, d4);
-					entitylargefireball.setPos(this.parentEntity.getX(), this.parentEntity.getY() + (double) (this.parentEntity.getBbHeight() / 2.0F), this.parentEntity.getZ());
-					world.addFreshEntity(entitylargefireball);
+					Vec3 vec3 = this.parentEntity.getViewVector(1.0F);
+					double d2 = living.getX() - (this.parentEntity.getX() + vec3.x * 4.0D);
+					double d3 = living.getY(0.5D) - (0.5D + this.parentEntity.getY(0.5D));
+					double d4 = living.getZ() - (this.parentEntity.getZ() + vec3.z * 4.0D);
+					RatlanteanFlame flame = new RatlanteanFlame(level, this.parentEntity, d2, d3, d4);
+					flame.setPos(this.parentEntity.getX() + vec3.x * 4.0D, this.parentEntity.getY(0.5D) + 0.5D, flame.getZ() + vec3.z * 4.0D);
+					level.addFreshEntity(flame);
 					this.attackTimer = -10;
 				}
 			} else if (this.attackTimer > 0) {

@@ -4,11 +4,9 @@ import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,6 +22,7 @@ public class RatlanteanFlame extends Fireball {
 
 	public RatlanteanFlame(Level level, LivingEntity shooter, double accelX, double accelY, double accelZ) {
 		super(RatlantisEntityRegistry.RATLANTEAN_FLAME.get(), shooter.getX(), shooter.getY() + shooter.getBbHeight() * 0.5D, shooter.getZ(), accelX, accelY, accelZ, level);
+		this.setOwner(shooter);
 	}
 
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
@@ -60,29 +59,25 @@ public class RatlanteanFlame extends Fireball {
 	}
 
 	protected void onHit(HitResult result) {
-		Entity shootingEntity = this.getOwner();
-		if (!(shootingEntity instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.getLevel(), shootingEntity)) {
-			return;
-		}
-		if (!this.getLevel().isClientSide()) {
-			if (result.getType() == HitResult.Type.ENTITY) {
-				Entity entity = ((EntityHitResult) result).getEntity();
-				if (!entity.fireImmune()) {
-					entity.setSecondsOnFire(10);
-					boolean flag = entity.hurt(this.damageSources().fireball(this, shootingEntity), 5.0F);
-					if (flag) {
-						this.doEnchantDamageEffects((LivingEntity) shootingEntity, entity);
-					}
-				}
+		super.onHit(result);
+		this.discard();
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		if (this.getOwner() != null) {
+			if (!result.getEntity().fireImmune()) {
+				result.getEntity().setSecondsOnFire(10);
+			}
+			boolean flag = result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 2.0F);
+			if (flag) {
+				this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
 			}
 		}
 	}
 
-	public boolean canBeCollidedWith() {
-		return false;
-	}
-
-	public boolean hurt(DamageSource source, float amount) {
+	@Override
+	public boolean isAttackable() {
 		return false;
 	}
 
