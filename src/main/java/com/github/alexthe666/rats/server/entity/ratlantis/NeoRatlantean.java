@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -79,6 +80,11 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public boolean isNoGravity() {
+		return true;
 	}
 
 	@Override
@@ -286,21 +292,20 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 
 		public void tick() {
 			if (this.operation == Operation.MOVE_TO) {
-				Vec3 vec3d = new Vec3(this.getWantedX() - NeoRatlantean.this.getX(), this.getWantedY(), this.getWantedZ() - NeoRatlantean.this.getZ());
-				double d0 = vec3d.length();
-				double edgeLength = NeoRatlantean.this.getBoundingBox().getSize();
-				if (d0 < edgeLength) {
+				Vec3 vec3 = new Vec3(this.getWantedX() - NeoRatlantean.this.getX(), this.getWantedY() - NeoRatlantean.this.getY(), this.getWantedZ() - NeoRatlantean.this.getZ());
+				double d0 = vec3.length();
+				if (d0 < NeoRatlantean.this.getBoundingBox().getSize()) {
 					this.operation = Operation.WAIT;
 					NeoRatlantean.this.setDeltaMovement(NeoRatlantean.this.getDeltaMovement().scale(0.5D));
 				} else {
-					NeoRatlantean.this.setDeltaMovement(NeoRatlantean.this.getDeltaMovement().add(vec3d.scale(this.speedModifier * 0.1D / d0)));
+					NeoRatlantean.this.setDeltaMovement(NeoRatlantean.this.getDeltaMovement().add(vec3.scale(this.speedModifier * 0.05D / d0)));
 					if (NeoRatlantean.this.getTarget() == null) {
-						Vec3 vec3d1 = NeoRatlantean.this.getDeltaMovement();
-						NeoRatlantean.this.setYRot(-((float) Mth.atan2(vec3d1.x, vec3d1.z)) * (180F / (float) Math.PI));
+						Vec3 vec31 = NeoRatlantean.this.getDeltaMovement();
+						NeoRatlantean.this.setYRot(-((float)Mth.atan2(vec31.x(), vec31.z())) * (180F / (float)Math.PI));
 					} else {
-						double d4 = NeoRatlantean.this.getTarget().getX() - NeoRatlantean.this.getX();
-						double d5 = NeoRatlantean.this.getTarget().getZ() - NeoRatlantean.this.getZ();
-						NeoRatlantean.this.setYRot(-((float) Mth.atan2(d4, d5)) * (180F / (float) Math.PI));
+						double d2 = NeoRatlantean.this.getTarget().getX() - NeoRatlantean.this.getX();
+						double d1 = NeoRatlantean.this.getTarget().getZ() - NeoRatlantean.this.getZ();
+						NeoRatlantean.this.setYRot(-((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI));
 					}
 					NeoRatlantean.this.yBodyRot = NeoRatlantean.this.getYRot();
 				}
@@ -328,8 +333,7 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 		public void tick() {
 			LivingEntity living = this.parentEntity.getTarget();
 			double maxFollow = followDist * 5;
-			if (living.distanceTo(this.parentEntity) >= maxFollow || !this.parentEntity.hasLineOfSight(living)) {
-
+			if (living != null && (living.distanceTo(this.parentEntity) >= maxFollow || !this.parentEntity.hasLineOfSight(living))) {
 				NeoRatlantean.this.getMoveControl().setWantedPosition(living.getX() + NeoRatlantean.this.getRandom().nextInt(3) - 6, living.getY() + 3, living.getZ() + NeoRatlantean.this.getRandom().nextInt(3) - 6, 1.0D);
 			}
 		}
@@ -343,7 +347,12 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 
 		@Override
 		public boolean canUse() {
-			return !NeoRatlantean.this.getMoveControl().hasWanted() && NeoRatlantean.this.getRandom().nextInt(5) == 0;
+			return !NeoRatlantean.this.getMoveControl().hasWanted() && NeoRatlantean.this.getRandom().nextInt(reducedTickDelay(5)) == 0;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return false;
 		}
 
 		@Override
@@ -351,7 +360,7 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 			BlockPos blockpos = NeoRatlantean.this.blockPosition();
 
 			for (int i = 0; i < 3; ++i) {
-				BlockPos blockpos1 = blockpos.offset(NeoRatlantean.this.getRandom().nextInt(4) - 8, NeoRatlantean.this.getRandom().nextInt(3) - 6, NeoRatlantean.this.getRandom().nextInt(4) - 8);
+				BlockPos blockpos1 = blockpos.offset(NeoRatlantean.this.getRandom().nextInt(5) - 8, NeoRatlantean.this.getRandom().nextInt(4) - 6, NeoRatlantean.this.getRandom().nextInt(5) - 8);
 
 				if (NeoRatlantean.this.getLevel().isEmptyBlock(blockpos1)) {
 					NeoRatlantean.this.getMoveControl().setWantedPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 1D);
