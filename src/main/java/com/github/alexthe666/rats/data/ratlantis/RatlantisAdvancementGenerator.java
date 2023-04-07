@@ -197,7 +197,7 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 				.save(consumer, "ratlantis:ratlantean_spirit");
 
 		Advancement ratlantean = Advancement.Builder.advancement().parent(portal).display(
-						RatlantisItemRegistry.RATLANTEAN_FLAME.get(),
+						RatlantisItemRegistry.FERAL_RAT_CLAW.get(),
 						Component.translatable("advancements.ratlantis.feral_ratlantean.title"),
 						Component.translatable("advancements.ratlantis.feral_ratlantean.desc"),
 						null, FrameType.TASK, true, false, false)
