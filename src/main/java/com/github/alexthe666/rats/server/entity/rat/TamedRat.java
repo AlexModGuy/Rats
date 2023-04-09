@@ -271,7 +271,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isHoldingFood() {
-		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), false) || super.isHoldingFood();
+		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), true) && super.isHoldingFood();
 	}
 
 	@Override
@@ -501,6 +501,7 @@ public class TamedRat extends InventoryRat {
 		} else {
 			if (this.getVehicle() != null && this.isRidingSpecialMount()) {
 				this.getVehicle().hurt(source, amount);
+				this.invulnerableTime = 20;
 				return false;
 			}
 
@@ -634,7 +635,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isEating() {
-		return super.isEating() && this.getCommand().allowsEating && this.getHealth() < this.getMaxHealth();
+		return super.isEating() && this.getCommand().allowsEating;
 	}
 
 	@Override
