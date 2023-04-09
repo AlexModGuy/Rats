@@ -60,6 +60,6 @@ public class GemcutterRecipeCategory implements IRecipeCategory<GemcutterRecipe>
 
 	@Override
 	public void draw(GemcutterRecipe recipe, IRecipeSlotsView view, PoseStack stack, double mouseX, double mouseY) {
-		this.arrow.draw(stack, 71, 50);
+		this.arrow.draw(stack, 71, 49);
 	}
 }

@@ -68,7 +68,7 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 	@Override
 	public void draw(CauldronInfoHolder recipe, IRecipeSlotsView view, PoseStack stack, double mouseX, double mouseY) {
 		if (recipe.additionStack().asItem() == Items.AIR) {
-			this.arrowIcon.draw(stack, 95, 32);
+			this.arrowIcon.draw(stack, 95, 31);
 			Component text = Component.literal(RatConfig.milkCauldronTime / 20 + "s");
 			Minecraft.getInstance().font.draw(stack, text, 105 - (text.getString().length() * 2), 50, 0xFF808080);
 		}

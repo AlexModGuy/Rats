@@ -60,6 +60,6 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 
 	@Override
 	public void draw(ChefRecipe recipe, IRecipeSlotsView view, PoseStack stack, double mouseX, double mouseY) {
-		this.arrow.draw(stack, 71, 50);
+		this.arrow.draw(stack, 71, 49);
 	}
 }
