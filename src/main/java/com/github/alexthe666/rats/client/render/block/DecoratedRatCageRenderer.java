@@ -55,20 +55,15 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 		if (entity.getLevel() != null) {
 			containedItem = entity.getContainedItem();
 		}
-		if (containedItem.getItem() instanceof RatIglooItem) {
-			RenderSystem.enableBlend();
-			RenderSystem.disableCull();
-			DyeColor color = ((RatIglooItem) containedItem.getItem()).color;
+		if (containedItem.getItem() instanceof RatIglooItem igloo) {
+			DyeColor color = igloo.color;
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_IGLOO);
-			RenderSystem.setShaderColor(color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
 			this.igloo.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
-			RenderSystem.enableCull();
-			RenderSystem.disableBlend();
 		}
-		if (containedItem.getItem() instanceof RatHammockItem) {
+		if (containedItem.getItem() instanceof RatHammockItem hammock) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_HAMMOCK);
 			stack.pushPose();
-			DyeColor color = ((RatHammockItem) containedItem.getItem()).color;
+			DyeColor color = hammock.color;
 			this.hammock.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
 			stack.popPose();
 		}
