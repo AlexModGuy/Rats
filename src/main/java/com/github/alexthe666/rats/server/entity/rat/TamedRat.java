@@ -55,6 +55,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
@@ -255,7 +256,7 @@ public class TamedRat extends InventoryRat {
 			this.navigation = new RatNavigation(this, this.getLevel());
 			this.navigatorType = 2;
 		} else if (type == 3) { //aquatic
-			this.moveControl = new AquaticRatMoveControl(this);
+			this.moveControl = new SmoothSwimmingMoveControl(this, 360, 360, 10.0F, 1.0F, true);
 			this.navigation = new AmphibiousPathNavigation(this, this.getLevel());
 			this.navigatorType = 3;
 		} else if (type == 4) { //ethereal
@@ -486,12 +487,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isPushedByFluid(FluidType type) {
-		return !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_QUARRY.get()) && super.isPushedByFluid(type);
-	}
-
-	@Override
-	protected float getWaterSlowDown() {
-		return RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_QUARRY.get()) ? 1F : 0.8F;
+		return !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_QUARRY.get()) && !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) && super.isPushedByFluid(type);
 	}
 
 	@Override
