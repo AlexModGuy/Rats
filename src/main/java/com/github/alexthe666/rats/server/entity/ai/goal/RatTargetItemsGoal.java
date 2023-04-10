@@ -72,7 +72,7 @@ public class RatTargetItemsGoal extends Goal {
 	}
 
 	protected AABB getTargetableArea() {
-		if (this.rat.isTame() && this.rat.getRadiusCenter().isPresent()) {
+		if (this.rat.getRadiusCenter().isPresent()) {
 			Vec3 center = new Vec3(this.rat.getSearchCenter().getX() + 0.5D, this.rat.getSearchCenter().getY() + 0.5D, this.rat.getSearchCenter().getZ() + 0.5D);
 			double radius = this.rat.getRadius();
 			AABB aabb = new AABB(-radius, -radius, -radius, radius, radius, radius);

@@ -51,7 +51,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 			if (RatTreeUtils.isTreeLog(level.getBlockState(pos)) && level.getBlockState(pos.below()).is(BlockTags.DIRT) && (this.treeSize = RatTreeUtils.calculateLogAmount(level, pos)) > 0) {
-				Path path = this.rat.getNavigation().createPath(pos, 1);
+				Path path = this.rat.getNavigation().createPath(this.getOffsetToAirPos(pos), 1);
 				if (path != null && path.canReach()) {
 					this.setTargetBlock(pos);
 					break;
@@ -79,21 +79,21 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 	}
 
 	@Nullable
-	public BlockPos getOffsetToAirPos() {
-		if (this.getTargetBlock() != null) {
+	public BlockPos getOffsetToAirPos(@Nullable BlockPos pos) {
+		if (pos != null) {
 			for (Direction direction : Direction.Plane.HORIZONTAL) {
-				BlockPos offsetPos = this.getTargetBlock().relative(direction);
+				BlockPos offsetPos = pos.relative(direction);
 				if (this.rat.getLevel().isEmptyBlock(offsetPos) || !this.rat.getLevel().getBlockState(offsetPos).canOcclude()) {
 					return offsetPos;
 				}
 			}
 		}
-		return this.getTargetBlock();
+		return pos;
 	}
 
 	@Override
 	public void tick() {
-		BlockPos offsetToAirPos = this.getOffsetToAirPos();
+		BlockPos offsetToAirPos = this.getOffsetToAirPos(this.getTargetBlock());
 		this.rat.getLookControl().setLookAt(this.getTargetBlock().getCenter());
 		this.rat.getNavigation().moveTo(offsetToAirPos.getX() + 0.5D, offsetToAirPos.getY(), offsetToAirPos.getZ() + 0.5D, 1.25D);
 		if (RatTreeUtils.isTreeLog(this.rat.getLevel().getBlockState(this.getTargetBlock()))) {
