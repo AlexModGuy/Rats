@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.data.ratlantis.tags;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
