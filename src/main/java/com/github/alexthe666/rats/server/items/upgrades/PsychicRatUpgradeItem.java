@@ -28,7 +28,6 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements TickRatUpgrade, HoldsItemUpgrade {
 	public PsychicRatUpgradeItem(Properties properties) {

@@ -9,7 +9,6 @@ import com.github.alexthe666.rats.server.block.entity.DecoratedRatCageBlockEntit
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
 import com.github.alexthe666.rats.server.items.RatHammockItem;
 import com.github.alexthe666.rats.server.items.RatIglooItem;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

@@ -36,7 +36,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 

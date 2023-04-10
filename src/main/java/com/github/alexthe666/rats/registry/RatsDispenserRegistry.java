@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.registry;
 
-import com.github.alexthe666.rats.server.advancements.BlackDeathSummonedTrigger;
 import com.github.alexthe666.rats.server.block.RatTrapBlock;
 import com.github.alexthe666.rats.server.block.RatlanteanAutomatonHeadBlock;
 import com.github.alexthe666.rats.server.block.entity.RatTrapBlockEntity;

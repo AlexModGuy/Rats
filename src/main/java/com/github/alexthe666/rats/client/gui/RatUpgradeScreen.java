@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

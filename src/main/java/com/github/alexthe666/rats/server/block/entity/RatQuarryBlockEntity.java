@@ -30,7 +30,6 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {

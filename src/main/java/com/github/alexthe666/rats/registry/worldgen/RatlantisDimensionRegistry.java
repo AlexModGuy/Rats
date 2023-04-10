@@ -2,16 +2,11 @@ package com.github.alexthe666.rats.registry.worldgen;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -27,10 +22,8 @@ import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.minecraftforge.common.data.JsonCodecProvider;
 
 import java.util.List;
-import java.util.Map;
 import java.util.OptionalLong;
 
 public class RatlantisDimensionRegistry {

@@ -7,12 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-
-import java.util.EnumSet;
 
 public class RatNodeEvaluator extends WalkNodeEvaluator {
 

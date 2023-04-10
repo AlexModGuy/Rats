@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.client.util;
 
-import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
