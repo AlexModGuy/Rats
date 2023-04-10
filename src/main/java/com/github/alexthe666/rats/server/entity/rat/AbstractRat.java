@@ -232,7 +232,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.getEntityData().define(IS_MALE, false);
 		this.getEntityData().define(SITTING, false);
 		this.getEntityData().define(SLEEPING, false);
-		this.getEntityData().define(COLOR_VARIANT, RatVariants.getVariantId(RatVariants.getRandomVariant(this.getRandom(), false)));
+		this.getEntityData().define(COLOR_VARIANT, RatVariants.RAT_VARIANT_REGISTRY.get().getKey(RatVariants.BLUE.get()).toString());
 		this.getEntityData().define(DEAD_IN_TRAP, false);
 		this.getEntityData().define(FLEE_POS, Optional.empty());
 	}
