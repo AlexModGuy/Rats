@@ -50,7 +50,7 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 	public void tick() {
 		if (this.getTargetEntity() != null && this.getTargetEntity().isAlive() && (this.rat.transportingFluid.isEmpty() || this.rat.transportingFluid.getAmount() < this.rat.getMBTransferRate())) {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
-			if (this.rat.distanceToSqr(this.getTargetEntity()) < 1.5D * this.rat.getRatDistanceModifier()) {
+			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
 				if (this.rat.transportingFluid.isEmpty()) {
 					FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
 					FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);

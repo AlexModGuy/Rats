@@ -25,7 +25,7 @@ public class RatPatrolGoal extends Goal {
 			this.nextNode = this.rat.getPatrolNodes().get(this.nodeIndex);
 		}
 
-		if (this.nextNode != null && this.rat.distanceToSqr(Vec3.atCenterOf(this.nextNode.pos())) <= 2.5D * this.rat.getRatDistanceModifier()) {
+		if (this.nextNode != null && this.rat.distanceToSqr(Vec3.atCenterOf(this.nextNode.pos())) <= this.rat.getRatHarvestDistance(-2.0D)) {
 			++this.nodeIndex;
 			this.nextNode = null;
 			if (this.nodeIndex > this.rat.getPatrolNodes().size() - 1) {

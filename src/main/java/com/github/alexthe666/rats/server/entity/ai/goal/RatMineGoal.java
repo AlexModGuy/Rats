@@ -113,7 +113,7 @@ public class RatMineGoal extends BaseRatHarvestGoal {
 				}
 				if (block.getMaterial().blocksMotion() && block.getMaterial() != Material.AIR) {
 					double distance = this.rat.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
-					if (distance < 5.5F * this.rat.getRatDistanceModifier()) {
+					if (distance < this.rat.getRatHarvestDistance(2.0D)) {
 						this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 85);
 						this.rat.crafting = true;
 						if (block == this.prevMiningState) {
@@ -123,7 +123,7 @@ public class RatMineGoal extends BaseRatHarvestGoal {
 							this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 86);
 							this.rat.crafting = false;
 						}
-						if (distance < 1.0F * this.rat.getRatDistanceModifier()) {
+						if (distance < this.rat.getRatHarvestDistance(-1.0D)) {
 							this.rat.setDeltaMovement(Vec3.ZERO);
 							this.rat.getNavigation().stop();
 						}

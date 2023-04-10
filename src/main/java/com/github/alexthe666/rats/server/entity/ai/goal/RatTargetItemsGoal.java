@@ -101,7 +101,7 @@ public class RatTargetItemsGoal extends Goal {
 	@Override
 	public void tick() {
 		if (this.targetItem != null && !this.targetItem.isRemoved()) {
-			if (this.rat.distanceToSqr(this.targetItem) < 3.5F * this.rat.getRatDistanceModifier()) {
+			if (this.rat.distanceToSqr(this.targetItem) < this.rat.getRatHarvestDistance(0.0D)) {
 				ItemStack duplicate = this.targetItem.getItem().copy();
 				if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get())) {
 					ItemStack alreadyHolding = this.rat.getItemInHand(InteractionHand.MAIN_HAND);

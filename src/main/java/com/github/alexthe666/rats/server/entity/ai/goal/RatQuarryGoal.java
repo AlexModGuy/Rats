@@ -128,7 +128,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 				BlockState block = this.rat.getLevel().getBlockState(rayPos);
 				SoundType soundType = block.getBlock().getSoundType(block, this.rat.getLevel(), rayPos, null);
 				if (this.buildStairs) {
-					if (distance < 6F * this.rat.getRatDistanceModifier()) {
+					if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 						this.rat.getLevel().setBlockAndUpdate(this.getTargetBlock(), RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
 						this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 86);
 						this.prevMiningState = block;
@@ -136,7 +136,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 					}
 				} else {
 					if (block.getMaterial() != Material.AIR) {
-						if (distance < 6F * this.rat.getRatDistanceModifier()) {
+						if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 							this.rat.getNavigation().stop();
 							if (block.getFluidState().isSource()) {
 								BlockState replace = Blocks.COBBLESTONE.defaultBlockState();
@@ -157,7 +157,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 								this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 86);
 								this.rat.crafting = false;
 							}
-							if (distance < 1.5F * this.rat.getRatDistanceModifier()) {
+							if (distance < this.rat.getRatHarvestDistance(-2.0D)) {
 								this.rat.setDeltaMovement(Vec3.ZERO);
 							}
 							this.breakingTime++;

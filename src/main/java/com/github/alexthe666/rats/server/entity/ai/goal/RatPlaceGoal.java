@@ -55,7 +55,7 @@ public class RatPlaceGoal extends BaseRatHarvestGoal {
 				this.rat.getNavigation().moveTo(moveToPos.getX() + 0.5D, moveToPos.getY(), moveToPos.getZ() + 0.5D, 1.25D);
 				if (block.getBlock().canSurvive(block, this.rat.getLevel(), this.getTargetBlock()) && this.rat.getLevel().isEmptyBlock(this.getTargetBlock().above()) && this.rat.getLevel().getBlockState(this.getTargetBlock()).getMaterial().isReplaceable()) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-					if (distance < 2.5F * this.rat.getRatDistanceModifier()) {
+					if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 						ItemStack seedStack = this.rat.getItemInHand(InteractionHand.MAIN_HAND).copy();
 						seedStack.setCount(1);
 						this.rat.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);

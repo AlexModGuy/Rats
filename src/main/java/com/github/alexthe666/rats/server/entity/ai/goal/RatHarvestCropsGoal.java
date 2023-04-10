@@ -73,7 +73,7 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 					return;
 				}
 				double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-				if (distance < 4.25F * this.rat.getRatDistanceModifier()) {
+				if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 					this.rat.getLevel().destroyBlock(this.getTargetBlock(), true);
 					if ((!RatConfig.ratsBreakBlockOnHarvest || RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_REPLANTER.get()))) {
 						if (block.getBlock() instanceof BonemealableBlock) {

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,8 +51,11 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 			if (RatTreeUtils.isTreeLog(level.getBlockState(pos)) && level.getBlockState(pos.below()).is(BlockTags.DIRT) && (this.treeSize = RatTreeUtils.calculateLogAmount(level, pos)) > 0) {
-				this.setTargetBlock(pos);
-				break;
+				Path path = this.rat.getNavigation().createPath(pos, 1);
+				if (path != null && path.canReach()) {
+					this.setTargetBlock(pos);
+					break;
+				}
 			}
 		}
 	}
@@ -94,10 +98,10 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		this.rat.getNavigation().moveTo(offsetToAirPos.getX() + 0.5D, offsetToAirPos.getY(), offsetToAirPos.getZ() + 0.5D, 1.25D);
 		if (RatTreeUtils.isTreeLog(this.rat.getLevel().getBlockState(this.getTargetBlock()))) {
 			double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-			if (distance < 6F * this.rat.getRatDistanceModifier()) {
+			if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 				this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 85);
 				this.rat.crafting = true;
-				if (distance < 4.0F * this.rat.getRatDistanceModifier()) {
+				if (distance < this.rat.getRatHarvestDistance(-1.0D)) {
 					this.rat.setDeltaMovement(Vec3.ZERO);
 					this.rat.getNavigation().stop();
 				}

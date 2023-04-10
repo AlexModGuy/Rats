@@ -1337,6 +1337,10 @@ public class TamedRat extends InventoryRat {
 		return !this.isRidingSpecialMount() || !RatUtils.isRidingOrBeingRiddenBy(this, target);
 	}
 
+	public double getRatHarvestDistance(double expansion) {
+		return (3.5F + expansion) * this.getRatDistanceModifier();
+	}
+
 	public double getRatDistanceModifier() {
 		if (this.isRidingSpecialMount()) {
 			Entity entity = this.getVehicle();

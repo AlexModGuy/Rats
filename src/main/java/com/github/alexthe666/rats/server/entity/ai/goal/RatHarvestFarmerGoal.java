@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.BlockItem;
@@ -13,7 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -69,7 +72,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 				this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
 				if (block.getBlock().isFertile(block, this.rat.getLevel(), this.getTargetBlock()) && this.rat.getLevel().isEmptyBlock(this.getTargetBlock().above())) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-					if (distance < 4.5F * this.rat.getRatDistanceModifier()) {
+					if (distance < this.rat.getRatHarvestDistance(0.0F)) {
 						if (this.holdingSeeds()) {
 							ItemStack seedStack = this.rat.getItemInHand(InteractionHand.MAIN_HAND).copy();
 							seedStack.setCount(1);
@@ -89,17 +92,17 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 			if (this.holdingBonemeal()) {
 				BlockState block = this.rat.getLevel().getBlockState(this.getTargetBlock());
 				this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
-				if (canPlantBeBonemealed(this.getTargetBlock(), block)) {
+				if (this.canPlantBeBonemealed(this.getTargetBlock(), block)) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 					if (distance < 4.5F) {
 						if (this.holdingBonemeal()) {
 							this.rat.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-							if (block.getBlock() instanceof BonemealableBlock igrowable) {
-								if (igrowable.isValidBonemealTarget(this.rat.getLevel(), this.getTargetBlock(), block, this.rat.getLevel().isClientSide())) {
+							if (block.getBlock() instanceof BonemealableBlock bonemealable) {
+								if (bonemealable.isValidBonemealTarget(this.rat.getLevel(), this.getTargetBlock(), block, this.rat.getLevel().isClientSide())) {
 									if (!this.rat.getLevel().isClientSide()) {
 										this.rat.getLevel().levelEvent(2005, this.getTargetBlock(), 0);
 										this.rat.getLevel().playSound(null, this.getTargetBlock(), SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS);
-										igrowable.performBonemeal((ServerLevel) this.rat.getLevel(), this.rat.getLevel().getRandom(), this.getTargetBlock(), block);
+										bonemealable.performBonemeal((ServerLevel) this.rat.getLevel(), this.rat.getLevel().getRandom(), this.getTargetBlock(), block);
 									}
 								}
 							}
@@ -122,7 +125,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 							this.rat.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
 							this.rat.getLevel().setBlockAndUpdate(this.getTargetBlock(), state);
 							if (this.rat.isInWall()) {
-								this.rat.setPos(this.rat.getX(), this.rat.getY() + 1, this.rat.getZ());
+								this.rat.setPos(this.rat.getX(), this.rat.getY() + 1.5D, this.rat.getZ());
 							}
 							SoundType placeSound = state.getBlock().getSoundType(state, this.rat.getLevel(), this.getTargetBlock(), this.rat);
 							this.rat.playSound(placeSound.getPlaceSound(), (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
@@ -163,11 +166,17 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 			}
 		} else if (this.holdingBlock()) {
 			List<BlockPos> allBlocks = new ArrayList<>();
-			Block block = Blocks.OAK_SAPLING;
-			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem) {
-				block = ((BlockItem) this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem()).getBlock();
+			Block block = null;
+			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem item) {
+				block = item.getBlock();
 			}
+			if (block == null) return;
 			for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
+				//dont allow placing on points of interest (on the tops of transport positions or the home point)
+				if (this.rat.getDepositPos().isPresent() && pos.equals(this.rat.getDepositPos().get().pos().above())) continue;
+				if (this.rat.getPickupPos().isPresent() && pos.equals(this.rat.getPickupPos().get().pos().above())) continue;
+				if (this.rat.getHomePoint().isPresent() && (pos.equals(this.rat.getHomePoint().get().pos()) || pos.equals(this.rat.getHomePoint().get().pos().above()))) continue;
+
 				if (block.canSurvive(block.defaultBlockState(), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above()) && this.rat.getLevel().isEmptyBlock(pos)) {
 					allBlocks.add(pos);
 				}
@@ -181,9 +190,9 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 	}
 
 	private boolean canPlantBeBonemealed(BlockPos pos, BlockState state) {
-		if (state.getBlock() instanceof BonemealableBlock igrowable && !(state.getBlock() instanceof TallGrassBlock) && !(state.getBlock() instanceof GrassBlock)) {
-			if (igrowable.isValidBonemealTarget(this.rat.getLevel(), pos, state, this.rat.getLevel().isClientSide())) {
-				return igrowable.isBonemealSuccess(this.rat.getLevel(), this.rat.getLevel().getRandom(), pos, state);
+		if (state.getBlock() instanceof BonemealableBlock bonemealable && state.is(BlockTags.BEE_GROWABLES)) {
+			if (bonemealable.isValidBonemealTarget(this.rat.getLevel(), pos, state, this.rat.getLevel().isClientSide())) {
+				return bonemealable.isBonemealSuccess(this.rat.getLevel(), this.rat.getLevel().getRandom(), pos, state);
 			}
 		}
 		return false;

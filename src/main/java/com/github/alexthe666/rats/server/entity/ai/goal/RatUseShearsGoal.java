@@ -36,7 +36,7 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	public void tick() {
 		if (this.getTargetEntity() != null && this.getTargetEntity().isAlive() && this.rat.getMainHandItem().isEmpty()) {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
-			if (this.rat.distanceToSqr(this.getTargetEntity()) < 1.5D * this.rat.getRatDistanceModifier()) {
+			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
 				if (this.getTargetEntity() instanceof IForgeShearable shearable) {
 					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.getLevel(), this.getTargetEntity().blockPosition(), 0);
 					for (ItemStack stack : drops) {

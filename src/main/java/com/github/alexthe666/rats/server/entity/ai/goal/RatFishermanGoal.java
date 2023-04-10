@@ -38,7 +38,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(this.rat.getDepositPos().isPresent(), this.rat.getDepositPos().isPresent())) {
+		if (!this.checkTheBasics(false, this.rat.getDepositPos().isPresent())) {
 			return false;
 		}
 		this.resetTarget();
@@ -46,11 +46,16 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	}
 
 	@Override
+	public boolean canContinueToUse() {
+		return this.checkTheBasics(false, false) && this.getTargetBlock() != null;
+	}
+
+	@Override
 	public void stop() {
 		super.stop();
 		this.rat.crafting = false;
 		this.hasReachedWater = false;
-		this.fishingCooldown = 250 + this.rat.getRandom().nextInt(750);
+		this.fishingCooldown = 750 + this.rat.getRandom().nextInt(250);
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 				}
 				if (this.isShore(this.getTargetBlock(), this.rat.getLevel())) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-					this.hasReachedWater = distance < 4.5F * this.rat.getRatDistanceModifier();
+					this.hasReachedWater = distance < this.rat.getRatHarvestDistance(-2.0D);
 				} else {
 					this.stop();
 				}
@@ -87,9 +92,6 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 				this.rat.playSound(SoundEvents.FISHING_BOBBER_SPLASH, 1.0F, 1.0F);
 				this.stop();
 			}
-		} else {
-			this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 86);
-			this.stop();
 		}
 	}
 
@@ -126,7 +128,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 		FakePlayer player = FakePlayerFactory.getMinecraft((ServerLevel) this.rat.getLevel());
 		player.setPos(this.rat.position());
 
-		FishingHook hook = new FishingHook(player, this.rat.getLevel(), 3, 3);
+		FishingHook hook = new FishingHook(player, this.rat.getLevel(), this.rat.getRandom().nextInt(4), 0);
 		hook.setPos(this.rat.position());
 		ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
 		MinecraftForge.EVENT_BUS.post(event);
