@@ -428,7 +428,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.setMale(this.getRandom().nextBoolean());
 		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
 			if (RatsDateFetcher.isHalloweenSeason() && this.getRandom().nextFloat() <= 0.25F) {
-				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.PUMPKIN));
+				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.CARVED_PUMPKIN));
 				this.setGuaranteedDrop(EquipmentSlot.HEAD);
 			}
 			if (RatsDateFetcher.isChristmasSeason() && this.getRandom().nextFloat() <= (RatsDateFetcher.isChristmasDay() ? 1.0F : 0.25F)) {

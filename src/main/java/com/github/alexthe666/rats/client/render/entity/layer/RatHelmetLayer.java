@@ -22,6 +22,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 
@@ -66,29 +68,22 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 					}
 
 				}
-			} else if (itemstack.getItem() instanceof BannerItem) {
-				this.getParentModel().body1.translateRotate(stack);
-				this.getParentModel().body2.translateRotate(stack);
-				stack.translate(0, -0.5F, -0.2F);
-				stack.mulPose(Axis.ZP.rotationDegrees(180));
-				float sitProgress = rat.sitProgress / 20F;
-				stack.mulPose(Axis.XP.rotationDegrees(sitProgress * -40));
-				stack.translate(0, 0, -sitProgress * 0.04F);
-				stack.scale(1.7F, 1.7F, 1.7F);
-				Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 			} else {
 				this.getParentModel().body1.translateRotate(stack);
 				this.getParentModel().body2.translateRotate(stack);
 				this.getParentModel().neck.translateRotate(stack);
 				this.getParentModel().head.translateRotate(stack);
-				stack.translate(0, 0.025F, -0.2F);
+				stack.translate(0, 0.025F, -0.15F);
 				stack.mulPose(Axis.XP.rotationDegrees(180));
 				stack.mulPose(Axis.YP.rotationDegrees(180));
-				stack.scale(0.8F, 0.8F, 0.8F);
+				stack.scale(0.5F, 0.5F, 0.5F);
 				if (itemstack.is(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem())) {
-					stack.translate(0, -0.2F, 0.65F);
-					stack.mulPose(Axis.XP.rotationDegrees(20));
-					stack.scale(1.425F, 1.425F, 1.425F);
+					stack.translate(0, -0.1F, 0.1F);
+					stack.mulPose(Axis.XP.rotationDegrees(15));
+				} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+					stack.mulPose(Axis.YP.rotationDegrees(180));
+					stack.translate(0.0D, 0.6D, -0.05D);
+					stack.scale(1.8F, 1.8F, 1.8F);
 				}
 				Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 			}
