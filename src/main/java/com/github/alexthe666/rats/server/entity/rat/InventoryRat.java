@@ -167,35 +167,42 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 
 	@Override
 	public ItemStack getItemBySlot(EquipmentSlot slot) {
-		if (slot == EquipmentSlot.MAINHAND) {
-			return this.getInventory().getItem(0);
-		} else if (slot == EquipmentSlot.HEAD) {
-			return this.getInventory().getItem(1);
-		} else if (slot == EquipmentSlot.OFFHAND) {
-			return this.getInventory().getItem(2);
-		} else if (slot == EquipmentSlot.CHEST) {
-			return this.getInventory().getItem(3);
-		} else if (slot == EquipmentSlot.LEGS) {
-			return this.getInventory().getItem(4);
-		} else {
-			return slot == EquipmentSlot.FEET ? this.getInventory().getItem(5) : super.getItemBySlot(slot);
+		if (this.getInventory() != null) {
+			if (slot == EquipmentSlot.MAINHAND) {
+				return this.getInventory().getItem(0);
+			} else if (slot == EquipmentSlot.HEAD) {
+				return this.getInventory().getItem(1);
+			} else if (slot == EquipmentSlot.OFFHAND) {
+				return this.getInventory().getItem(2);
+			} else if (slot == EquipmentSlot.CHEST) {
+				return this.getInventory().getItem(3);
+			} else if (slot == EquipmentSlot.LEGS) {
+				return this.getInventory().getItem(4);
+			} else {
+				return slot == EquipmentSlot.FEET ? this.getInventory().getItem(5) : super.getItemBySlot(slot);
+			}
 		}
+		return super.getItemBySlot(slot);
 	}
 
 	@Override
 	public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
-		if (slot == EquipmentSlot.MAINHAND) {
-			this.getInventory().setItem(0, stack);
-		} else if (slot == EquipmentSlot.HEAD) {
-			this.getInventory().setItem(1, stack);
-		} else if (slot == EquipmentSlot.OFFHAND) {
-			this.getInventory().setItem(2, stack);
-		} else if (slot == EquipmentSlot.CHEST) {
-			this.getInventory().setItem(3, stack);
-		} else if (slot == EquipmentSlot.LEGS) {
-			this.getInventory().setItem(4, stack);
-		} else if (slot == EquipmentSlot.FEET) {
-			this.getInventory().setItem(5, stack);
+		if (this.getInventory() != null) {
+			if (slot == EquipmentSlot.MAINHAND) {
+				this.getInventory().setItem(0, stack);
+			} else if (slot == EquipmentSlot.HEAD) {
+				this.getInventory().setItem(1, stack);
+			} else if (slot == EquipmentSlot.OFFHAND) {
+				this.getInventory().setItem(2, stack);
+			} else if (slot == EquipmentSlot.CHEST) {
+				this.getInventory().setItem(3, stack);
+			} else if (slot == EquipmentSlot.LEGS) {
+				this.getInventory().setItem(4, stack);
+			} else if (slot == EquipmentSlot.FEET) {
+				this.getInventory().setItem(5, stack);
+			} else {
+				super.setItemSlot(slot, stack);
+			}
 		} else {
 			super.setItemSlot(slot, stack);
 		}
@@ -228,6 +235,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 		return InteractionResult.PASS;
 	}
 
+	@Nullable
 	public SimpleContainer getInventory() {
 		return this.inventory;
 	}

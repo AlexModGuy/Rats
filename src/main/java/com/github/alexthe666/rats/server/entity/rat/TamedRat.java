@@ -1064,11 +1064,13 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public MobType getMobType() {
-		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get())) {
-			return MobType.UNDEAD;
-		}
-		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get())) {
-			return MobType.WATER;
+		if (this.getInventory() != null) {
+			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get())) {
+				return MobType.UNDEAD;
+			}
+			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get())) {
+				return MobType.WATER;
+			}
 		}
 		return super.getMobType();
 	}
