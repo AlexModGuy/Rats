@@ -30,67 +30,69 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		ItemStack itemstack = entity.getItemInHand(InteractionHand.MAIN_HAND);
-		if (!itemstack.isEmpty()) {
-			stack.pushPose();
-			if (this.getParentModel().young) {
-				stack.translate(0.0F, 0.625F, 0.0F);
-				stack.mulPose(Axis.XP.rotationDegrees(20));
-				stack.scale(0.5F, 0.5F, 0.5F);
-			}
-			if (!entity.isHoldingItemInHands()) {
-				this.translateToHead(stack);
-				stack.mulPose(Axis.ZP.rotationDegrees(180));
-				stack.mulPose(Axis.YP.rotationDegrees(180));
-				stack.mulPose(Axis.XP.rotationDegrees(90));
-				stack.translate(0F, 0.25F, 0.05F);
-				Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
-			} else {
-				boolean flag = false;
-				boolean model3D = Minecraft.getInstance().getItemRenderer().getModel(itemstack, Minecraft.getInstance().level, entity, 0).isGui3d();
-				if (entity instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get())) {
-					this.translateToHand(true, stack);
-					stack.translate(-0.125F, -0.15F, -0.2F);
-					if (model3D) {
-						stack.mulPose(Axis.XP.rotationDegrees(110));
-						stack.mulPose(Axis.YP.rotationDegrees(10));
-						stack.mulPose(Axis.ZN.rotationDegrees(3));
-					} else {
-						stack.mulPose(Axis.XP.rotationDegrees(20));
-						stack.mulPose(Axis.YP.rotationDegrees(3));
-						stack.mulPose(Axis.ZP.rotationDegrees(10));
-						stack.translate(0.0F, -0.1F, 0.09F);
-						stack.scale(0.75F, 0.75F, 0.75F);
-					}
-					flag = true;
-				} else {
-					this.translateToHand(true, stack);
-					stack.mulPose(Axis.ZP.rotationDegrees(180));
-					stack.mulPose(Axis.XP.rotationDegrees(20));
-					stack.scale(0.65F, 0.65F, 0.65F);
-					stack.translate(0.0F, -0.075F, -0.2F);
-				}
-				Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, flag ? ItemDisplayContext.GROUND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
-				if (flag && !model3D && itemstack.getCount() > 5) {
-					//this ensures our stacks dont constantly rotate around either when rendering on the plate or when the stack size changes
-					RandomSource random = RandomSource.create(itemstack.getItem().hashCode());
-					for (int i = 0; i < itemstack.getCount() / 5; i++) {
-						stack.translate(0.0D, 0.1D, 0.0D);
-						stack.mulPose(Axis.ZP.rotationDegrees(random.nextIntBetweenInclusive(-90, 90)));
-						stack.translate(0.0D, -0.1D, 0.025D);
-						Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
-					}
-				}
-			}
-			stack.popPose();
-		}
-
-		if (entity instanceof TamedRat rat) {
-			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
+		if (!entity.isBaby()) {
+			ItemStack itemstack = entity.getItemInHand(InteractionHand.MAIN_HAND);
+			if (!itemstack.isEmpty()) {
 				stack.pushPose();
-				((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, this.getParentModel(), stack, buffer, light, ageInTicks);
+				if (this.getParentModel().young) {
+					stack.translate(0.0F, 0.625F, 0.0F);
+					stack.mulPose(Axis.XP.rotationDegrees(20));
+					stack.scale(0.5F, 0.5F, 0.5F);
+				}
+				if (!entity.isHoldingItemInHands()) {
+					this.translateToHead(stack);
+					stack.mulPose(Axis.ZP.rotationDegrees(180));
+					stack.mulPose(Axis.YP.rotationDegrees(180));
+					stack.mulPose(Axis.XP.rotationDegrees(90));
+					stack.translate(0F, 0.25F, 0.05F);
+					Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
+				} else {
+					boolean flag = false;
+					boolean model3D = Minecraft.getInstance().getItemRenderer().getModel(itemstack, Minecraft.getInstance().level, entity, 0).isGui3d();
+					if (entity instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get())) {
+						this.translateToHand(true, stack);
+						stack.translate(-0.125F, -0.15F, -0.2F);
+						if (model3D) {
+							stack.mulPose(Axis.XP.rotationDegrees(110));
+							stack.mulPose(Axis.YP.rotationDegrees(10));
+							stack.mulPose(Axis.ZN.rotationDegrees(3));
+						} else {
+							stack.mulPose(Axis.XP.rotationDegrees(20));
+							stack.mulPose(Axis.YP.rotationDegrees(3));
+							stack.mulPose(Axis.ZP.rotationDegrees(10));
+							stack.translate(0.0F, -0.1F, 0.09F);
+							stack.scale(0.75F, 0.75F, 0.75F);
+						}
+						flag = true;
+					} else {
+						this.translateToHand(true, stack);
+						stack.mulPose(Axis.ZP.rotationDegrees(180));
+						stack.mulPose(Axis.XP.rotationDegrees(20));
+						stack.scale(0.65F, 0.65F, 0.65F);
+						stack.translate(0.0F, -0.075F, -0.2F);
+					}
+					Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, flag ? ItemDisplayContext.GROUND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
+					if (flag && !model3D && itemstack.getCount() > 5) {
+						//this ensures our stacks dont constantly rotate around either when rendering on the plate or when the stack size changes
+						RandomSource random = RandomSource.create(itemstack.getItem().hashCode());
+						for (int i = 0; i < itemstack.getCount() / 5; i++) {
+							stack.translate(0.0D, 0.1D, 0.0D);
+							stack.mulPose(Axis.ZP.rotationDegrees(random.nextIntBetweenInclusive(-90, 90)));
+							stack.translate(0.0D, -0.1D, 0.025D);
+							Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, entity.getId());
+						}
+					}
+				}
 				stack.popPose();
-			});
+			}
+
+			if (entity instanceof TamedRat rat) {
+				RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
+					stack.pushPose();
+					((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, this.getParentModel(), stack, buffer, light, ageInTicks);
+					stack.popPose();
+				});
+			}
 		}
 	}
 

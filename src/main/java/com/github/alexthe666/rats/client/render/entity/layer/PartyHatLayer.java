@@ -41,7 +41,7 @@ public class PartyHatLayer<T extends LivingEntity, M extends EntityModel<T>, A e
 			if (this.getParentModel() instanceof HumanoidModel<?> human){
 				human.head.translateAndRotate(stack);
 				stack.translate(0.0F, -0.875F, 0.0F);
-			} else if (this.getParentModel() instanceof StaticRatModel<?> rat) {
+			} else if (!entity.isBaby() && this.getParentModel() instanceof StaticRatModel<?> rat) {
 				rat.body1.translateRotate(stack);
 				rat.body2.translateRotate(stack);
 				rat.neck.translateRotate(stack);
