@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -52,6 +53,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -161,13 +163,15 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			}
 		}
 
-		if (this.getLevel().isNight() && this.restockedToday) this.restockedToday = false;
+		if (!this.willDespawn()) {
+			if (this.getLevel().isNight() && this.restockedToday) this.restockedToday = false;
 
-		if (!this.restockedToday && this.exhaustedAnyTrades() && this.getLevel().isDay()) {
-			for (MerchantOffer merchantoffer : this.getOffers()) {
-				merchantoffer.resetUses();
+			if (!this.restockedToday && this.exhaustedAnyTrades() && this.getLevel().isDay()) {
+				for (MerchantOffer merchantoffer : this.getOffers()) {
+					merchantoffer.resetUses();
+				}
+				this.restockedToday = true;
 			}
-			this.restockedToday = true;
 		}
 	}
 
@@ -463,7 +467,8 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			this.setWillDespawn(false);
 			itemstack.interactLivingEntity(player, this, hand);
 			return InteractionResult.SUCCESS;
-		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && this.isAlive() && !this.isTrading() && !this.isBaby()) {
+		} else if (!(itemstack.is(Items.VILLAGER_SPAWN_EGG) && itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg")))) &&
+				this.isAlive() && !this.isTrading() && !this.isBaby()) {
 			if (hand == InteractionHand.MAIN_HAND) {
 				player.awardStat(Stats.TALKED_TO_VILLAGER);
 			}
