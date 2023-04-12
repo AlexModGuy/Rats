@@ -252,6 +252,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 				TamedRat rat = RatUtils.tameRat(this, this.getLevel());
 				this.getLevel().broadcastEntityEvent(rat, (byte) 83);
 				rat.tame(player);
+				rat.setCommand(RatCommand.SIT);
 				return InteractionResult.SUCCESS;
 			}
 			if (itemstack.interactLivingEntity(player, this, hand) == InteractionResult.SUCCESS) {
