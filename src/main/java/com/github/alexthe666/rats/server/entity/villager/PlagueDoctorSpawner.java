@@ -71,6 +71,8 @@ public class PlagueDoctorSpawner implements CustomSpawner {
 		Player player = level.getRandomPlayer();
 		if (player == null) {
 			return true;
+		} else if (level.getRandom().nextInt(5) != 0) {
+			return false;
 		} else {
 			BlockPos blockpos = player.blockPosition();
 			PoiManager poimanager = level.getPoiManager();
