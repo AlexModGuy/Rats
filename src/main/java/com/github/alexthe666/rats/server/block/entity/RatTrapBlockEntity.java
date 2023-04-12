@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.block.entity;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.block.RatTrapBlock;
+import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.core.BlockPos;
@@ -43,16 +44,19 @@ public class RatTrapBlockEntity extends BlockEntity {
 
 	private void killRats(Level level, BlockPos pos, BlockState state) {
 		if (!state.getValue(RatTrapBlock.SHUT)) {
-			for (AbstractRat rat : level.getEntitiesOfClass(AbstractRat.class, new AABB(pos).inflate(0.25D))) {
+			for (Rat rat : level.getEntitiesOfClass(Rat.class, new AABB(pos).inflate(0.25D))) {
 				if (!rat.isDead() && !rat.isDeadInTrap()) {
 					level.setBlockAndUpdate(pos, state.setValue(RatTrapBlock.SHUT, true));
 					rat.setKilledInTrap();
-					level.playSound(null, this.getBlockPos(), RatsSoundRegistry.RAT_TRAP_CLOSE.get(), SoundSource.BLOCKS, 1F, 1F);
+					level.playSound(null, this.getBlockPos(), RatsSoundRegistry.RAT_TRAP_CLOSE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					this.decreaseBait();
 					level.sendBlockUpdated(pos, state, state, 3);
+					//cause rats to scatter when one is killed
+					level.getEntitiesOfClass(Rat.class, new AABB(pos).inflate(8.0D)).forEach(rat1 -> rat1.setFleePos(pos));
 					break;
 				}
 			}
+
 		}
 	}
 
