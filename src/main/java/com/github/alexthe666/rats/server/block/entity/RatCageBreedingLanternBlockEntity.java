@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEntity {
 
-	public int breedingCooldown = 0;
+	private int breedingCooldown = 0;
 
 	public RatCageBreedingLanternBlockEntity(BlockPos pos, BlockState state) {
 		super(RatsBlockEntityRegistry.RAT_CAGE_BREEDING_LANTERN.get(), pos, state);
@@ -30,6 +30,10 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 
 	@Override
 	public void setContainedItem(ItemStack stack) {
+	}
+
+	public int getBreedingCooldown() {
+		return this.breedingCooldown;
 	}
 
 	@Override
@@ -87,11 +91,11 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 					female.breedCooldown = RatConfig.ratBreedingCooldown;
 				}
 			}
+			if (level.isClientSide()) {
+				level.addParticle(DustParticleOptions.REDSTONE, i + level.getRandom().nextDouble() - 0.5D, j + level.getRandom().nextDouble() - 0.5D, k + level.getRandom().nextDouble() - 0.5D, f1, f2, f3);
+			}
 		} else {
 			te.breedingCooldown--;
-		}
-		if (level.isClientSide()) {
-			level.addParticle(DustParticleOptions.REDSTONE, i + level.getRandom().nextDouble() - 0.5D, j + level.getRandom().nextDouble() - 0.5D, k + level.getRandom().nextDouble() - 0.5D, f1, f2, f3);
 		}
 	}
 }

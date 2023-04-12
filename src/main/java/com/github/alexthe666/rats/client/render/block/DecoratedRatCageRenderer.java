@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.client.model.deco.*;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.block.RatCageDecoratedBlock;
 import com.github.alexthe666.rats.server.block.entity.DecoratedRatCageBlockEntity;
+import com.github.alexthe666.rats.server.block.entity.RatCageBreedingLanternBlockEntity;
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
 import com.github.alexthe666.rats.server.items.RatHammockItem;
 import com.github.alexthe666.rats.server.items.RatIglooItem;
@@ -86,9 +87,10 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 			MODEL_RAT_WHEEL.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 
-		if (containedItem.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
+		if (containedItem.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get()) && entity instanceof RatCageBreedingLanternBlockEntity lantern) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_BREEDING_LANTERN);
-			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			float brightness = lantern.getBreedingCooldown() > 0 ? 0.5F : 1.0F;
+			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, brightness, brightness, brightness, 1.0F);
 			MODEL_RAT_BREEDING_LANTERN.swingChain();
 		}
 		stack.popPose();
