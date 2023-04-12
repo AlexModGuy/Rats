@@ -4,9 +4,12 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.entity.RatKing;
+import com.github.alexthe666.rats.server.entity.ai.goal.RatEnterTrapGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.WildRatDefendPlagueDoctorGoal;
+import com.github.alexthe666.rats.server.entity.ratlantis.Ratlanteans;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;
-import com.github.alexthe666.rats.server.entity.ratlantis.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +28,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
@@ -39,6 +42,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class Rat extends DiggingRat implements Ratlanteans {
 
@@ -48,6 +52,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 	private int ratKingTransformTicks = 0;
 	public int wildTrust = 0;
 	public int cheeseFeedings = 0;
+	private static final Predicate<Player> AVOIDED_PLAYERS = entity -> !entity.isDiscrete() && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.PIPER_HAT.get()) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity);
 
 	public Rat(EntityType<? extends Rat> rat, Level level) {
 		super(rat, level);
@@ -56,7 +61,15 @@ public class Rat extends DiggingRat implements Ratlanteans {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 5.0F - (this.wildTrust * 0.075F), 1.0D, 1.5D, entity -> !this.hasPlague() && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.PIPER_HAT.get())));
+		this.goalSelector.addGoal(1, new WildRatAvoidPlayerGoal(this, entity -> AVOIDED_PLAYERS.test((Player) entity)));
+		this.goalSelector.addGoal(2, new RatEnterTrapGoal(this));
+		this.goalSelector.addGoal(6, new PanicGoal(this, 1.225D) {
+			@Override
+			protected boolean shouldPanic() {
+				return !Rat.this.hasPlague() && this.mob.getLastHurtByMob() instanceof Player;
+			}
+		});
+		this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> {
 			if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || !Rat.this.hasPlague()) return false;
 			return !entity.isAlliedTo(Rat.this) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) && entity.getLevel().getDifficulty() != Difficulty.PEACEFUL;
@@ -326,7 +339,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 
 	@Override
 	public Component getName() {
-		if (this.hasPlague()) {
+		if (!this.hasCustomName() && this.hasPlague()) {
 			return Component.translatable("entity.rats.plague_rat");
 		}
 		return super.getName();

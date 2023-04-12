@@ -108,20 +108,18 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new RatEnterTrapGoal(this));
-		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Ocelot.class, 10.0F, 0.8D, 1.5D, entity -> !entity.isSteppingCarefully()));
-		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Cat.class, 10.0F, 0.8D, 1.5D, entity -> !entity.isSteppingCarefully()));
-		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Fox.class, 10.0F, 0.8D, 1.3D));
-		this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.5D));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 10.0F, 0.8D, 1.225D, entity -> !entity.isSteppingCarefully()));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 10.0F, 0.8D, 1.225D, entity -> !entity.isSteppingCarefully()));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Fox.class, 10.0F, 0.8D, 1.225D));
+		this.goalSelector.addGoal(4, new RatFleePositionGoal(this));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.25D, true));
-		this.goalSelector.addGoal(6, new RatFleePositionGoal(this));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.225D));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(0, new WildRatTargetFoodGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Cat.class, Ocelot.class, Fox.class));
-		this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(2, new HurtByTargetGoal(this, Cat.class, Ocelot.class, Fox.class));
+		this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(4, new OwnerHurtTargetGoal(this));
 	}
 
 	@Override
@@ -332,7 +330,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public boolean canMove() {
-		return this.getAnimation() == NO_ANIMATION && !this.isBaby() && !this.isOrderedToSit();
+		return !this.isBaby() && !this.isOrderedToSit();
 	}
 
 	public boolean isEating() {

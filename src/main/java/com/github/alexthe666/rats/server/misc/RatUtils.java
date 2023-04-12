@@ -271,6 +271,7 @@ public class RatUtils {
 			newRat.setItemSlot(slot, rat.getItemBySlot(slot));
 		}
 		level.addFreshEntity(newRat);
+		newRat.getLevel().broadcastEntityEvent(rat, (byte) 83);
 		newRat.setYRot(rat.getYRot());
 		rat.discard();
 		return newRat;

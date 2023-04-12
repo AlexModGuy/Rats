@@ -63,7 +63,7 @@ public class WildRatTargetFoodGoal extends Goal {
 	}
 
 	protected AABB getTargetableArea() {
-		return this.rat.getBoundingBox().inflate(16.0F);
+		return this.rat.getBoundingBox().inflate(32.0F);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class WildRatTargetFoodGoal extends Goal {
 
 	@Override
 	public void tick() {
-		if (this.targetItem != null && !this.targetItem.isRemoved() && this.rat.distanceToSqr(this.targetItem) < 3.5F && this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+		if (this.targetItem != null && !this.targetItem.isRemoved() && this.rat.distanceToSqr(this.targetItem) < 4.5F && this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 			ItemStack duplicate = this.targetItem.getItem().copy();
 			duplicate.setCount(1);
 			this.targetItem.getItem().shrink(1);
