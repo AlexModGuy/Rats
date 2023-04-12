@@ -391,6 +391,9 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public void aiStep() {
 		super.aiStep();
+		if (this.breedCooldown > 0) {
+			this.breedCooldown--;
+		}
 		if (this.isOrderedToSit() && this.getTarget() != null) {
 			this.setTarget(null);
 		}
