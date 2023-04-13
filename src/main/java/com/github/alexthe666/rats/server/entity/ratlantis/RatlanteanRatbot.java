@@ -37,7 +37,6 @@ import java.util.function.Predicate;
 public class RatlanteanRatbot extends Monster implements IAnimatedEntity, Ratlanteans {
 
 	public static final Animation ANIMATION_SHOOT = Animation.create(15);
-	private static final Predicate<LivingEntity> NOT_RATLANTEAN = entity -> entity.isAlive() && !(entity instanceof Ratlanteans);
 	private int animationTick;
 	private Animation currentAnimation;
 	public int walkTick;
@@ -55,7 +54,7 @@ public class RatlanteanRatbot extends Monster implements IAnimatedEntity, Ratlan
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, RatlanteanRatbot.class));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, NOT_RATLANTEAN));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
 	}
 
 
