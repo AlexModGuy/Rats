@@ -319,7 +319,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 				.orElse(stack);
 
 		if (!newStack.isEmpty() && this.getLevel() != null) {
-			ItemEntity item = new ItemEntity(this.getLevel(), this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY(), this.getBlockPos().getZ() + 0.5F, newStack);
+			ItemEntity item = new ItemEntity(this.getLevel(), this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 1.0D, this.getBlockPos().getZ() + 0.5F, newStack);
 			item.setDeltaMovement(Vec3.ZERO);
 			item.setNoPickUpDelay();
 			item.setExtendedLifetime();
