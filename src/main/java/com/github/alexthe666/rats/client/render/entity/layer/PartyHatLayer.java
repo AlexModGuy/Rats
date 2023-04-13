@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
+import com.github.alexthe666.rats.client.model.entity.PinkieModel;
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.client.model.hats.PartyHatModel;
 import com.github.alexthe666.rats.server.items.PartyHatItem;
@@ -41,11 +42,17 @@ public class PartyHatLayer<T extends LivingEntity, M extends EntityModel<T>, A e
 			if (this.getParentModel() instanceof HumanoidModel<?> human){
 				human.head.translateAndRotate(stack);
 				stack.translate(0.0F, -0.875F, 0.0F);
-			} else if (!entity.isBaby() && this.getParentModel() instanceof StaticRatModel<?> rat) {
-				rat.body1.translateRotate(stack);
-				rat.body2.translateRotate(stack);
-				rat.neck.translateRotate(stack);
-				rat.head.translateRotate(stack);
+			} else if (this.getParentModel() instanceof StaticRatModel<?> rat) {
+				if (entity.isBaby()) {
+					((PinkieModel<?>)this.getParentModel()).body.translateRotate(stack);
+					stack.translate(0.0D, -0.01D, -0.05D);
+					stack.scale(0.65F, 0.65F, 0.65F);
+				} else {
+					rat.body1.translateRotate(stack);
+					rat.body2.translateRotate(stack);
+					rat.neck.translateRotate(stack);
+					rat.head.translateRotate(stack);
+				}
 				stack.translate(0.0F, -0.35F, 0.0F);
 				stack.scale(0.75F, 0.75F, 0.75F);
 			}

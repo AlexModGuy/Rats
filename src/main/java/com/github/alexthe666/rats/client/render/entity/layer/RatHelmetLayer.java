@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
+import com.github.alexthe666.rats.client.model.entity.PinkieModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.items.HatItem;
 import com.google.common.collect.Maps;
@@ -38,7 +40,7 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		ItemStack itemstack = rat.getItemBySlot(EquipmentSlot.HEAD);
-		if (!rat.isBaby() && !itemstack.isEmpty()) {
+		if (!itemstack.isEmpty()) {
 			stack.pushPose();
 			if (itemstack.getItem() instanceof ArmorItem armoritem) {
 				if (armoritem.getEquipmentSlot() == EquipmentSlot.HEAD) {
@@ -46,10 +48,16 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 					this.ratArmorModel.head.visible = true;
 					this.ratArmorModel.hat.visible = true;
 					Model model = ForgeHooksClient.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.ratArmorModel);
-					this.getParentModel().body1.translateRotate(stack);
-					this.getParentModel().body2.translateRotate(stack);
-					this.getParentModel().neck.translateRotate(stack);
-					this.getParentModel().head.translateRotate(stack);
+					if (rat.isBaby()) {
+						((PinkieModel<?>) this.getParentModel()).body.translateRotate(stack);
+						stack.translate(0.0D, 0.025D, -0.05D);
+						stack.scale(0.65F, 0.65F, 0.65F);
+					} else {
+						this.getParentModel().body1.translateRotate(stack);
+						this.getParentModel().body2.translateRotate(stack);
+						this.getParentModel().neck.translateRotate(stack);
+						this.getParentModel().head.translateRotate(stack);
+					}
 					stack.translate(0, -0.375F, -0.045F);
 					stack.scale(0.55F, 0.55F, 0.55F);
 					if (itemstack.getItem() instanceof HatItem hat) {
@@ -69,31 +77,49 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 
 				}
 			} else {
-				this.getParentModel().body1.translateRotate(stack);
-				this.getParentModel().body2.translateRotate(stack);
-				this.getParentModel().neck.translateRotate(stack);
-				this.getParentModel().head.translateRotate(stack);
-				stack.translate(0, 0.025F, -0.15F);
-				stack.mulPose(Axis.XP.rotationDegrees(180));
-				stack.mulPose(Axis.YP.rotationDegrees(180));
-				stack.scale(0.5F, 0.5F, 0.5F);
-				if (itemstack.is(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem())) {
-					stack.translate(0, -0.1F, 0.1F);
-					stack.mulPose(Axis.XP.rotationDegrees(15));
-				} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+				if (!itemstack.is(RatsItemRegistry.PARTY_HAT.get())) {
+					if (rat.isBaby()) {
+						((PinkieModel<?>) this.getParentModel()).body.translateRotate(stack);
+					} else {
+						this.getParentModel().body1.translateRotate(stack);
+						this.getParentModel().body2.translateRotate(stack);
+						this.getParentModel().neck.translateRotate(stack);
+						this.getParentModel().head.translateRotate(stack);
+					}
+					stack.translate(0, 0.025F, -0.15F);
+					stack.mulPose(Axis.XP.rotationDegrees(180));
 					stack.mulPose(Axis.YP.rotationDegrees(180));
-					stack.translate(0.0D, 0.6D, -0.05D);
-					stack.scale(1.8F, 1.8F, 1.8F);
+					stack.scale(0.5F, 0.5F, 0.5F);
+					if (itemstack.is(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem())) {
+						stack.translate(0, -0.1F, 0.1F);
+						stack.mulPose(Axis.XP.rotationDegrees(15));
+						if (rat.isBaby()) {
+							stack.scale(0.4F, 0.4F, 0.4F);
+							stack.translate(0.0D, 0.25D, 0.0D);
+						}
+					} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+						stack.mulPose(Axis.YP.rotationDegrees(180));
+						stack.translate(0.0D, 0.6D, -0.05D);
+						stack.scale(1.8F, 1.8F, 1.8F);
+						if (rat.isBaby()) {
+							stack.scale(0.3F, 0.3F, 0.3F);
+							stack.translate(0.0D, -0.75D, -0.25D);
+						}
+					}
+					Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 				}
-				Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 			}
 			stack.popPose();
 
 			stack.pushPose();
 			ItemStack banner = rat.getItemBySlot(EquipmentSlot.OFFHAND);
 			if (banner.getItem() instanceof BannerItem) {
-				this.getParentModel().body1.translateAndRotate(stack);
-				this.getParentModel().body2.translateAndRotate(stack);
+				if (rat.isBaby()) {
+					((PinkieModel<?>)this.getParentModel()).body.translateRotate(stack);
+				} else {
+					this.getParentModel().body1.translateRotate(stack);
+					this.getParentModel().body2.translateRotate(stack);
+				}
 				stack.translate(0.0D, -0.5D, -0.2D);
 				stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 				float sitProgress = rat.sitProgress / 20.0F;
