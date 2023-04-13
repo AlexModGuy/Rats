@@ -113,9 +113,8 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 		}
 		this.setRadius(tag.getInt("SearchRadius"));
 
-		this.getPatrolNodes().clear();
 		if (tag.contains("PatrolNodesTag")) {
-			ListTag listTag = tag.getList("PatrolNodesTag", 11);
+			ListTag listTag = tag.getList("PatrolNodesTag", Tag.TAG_COMPOUND);
 
 			for (Tag pos : listTag) {
 				GlobalPos.CODEC.parse(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error).ifPresent(globalPos -> this.getPatrolNodes().add(globalPos));
