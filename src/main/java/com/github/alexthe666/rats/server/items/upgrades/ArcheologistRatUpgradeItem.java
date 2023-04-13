@@ -34,7 +34,7 @@ public class ArcheologistRatUpgradeItem extends BaseRatUpgradeItem implements Ti
 
 	private void tryArcheology(TamedRat rat) {
 		ItemStack heldItem = rat.getMainHandItem();
-		ItemStack burntItem = rat.getResultForRecipe(RatsRecipeRegistry.ARCHEOLOGIST.get(), heldItem);
+		ItemStack burntItem = rat.getResultForRecipe(RatsRecipeRegistry.ARCHEOLOGIST.get(), heldItem.copyWithCount(1));
 		if (burntItem.isEmpty()) {
 			rat.cookingProgress = 0;
 		} else {

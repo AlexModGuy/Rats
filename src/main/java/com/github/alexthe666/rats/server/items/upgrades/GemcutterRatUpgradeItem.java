@@ -30,7 +30,7 @@ public class GemcutterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 
 	private void tryGemcutter(TamedRat rat) {
 		ItemStack heldItem = rat.getMainHandItem();
-		ItemStack burntItem = rat.getResultForRecipe(RatsRecipeRegistry.GEMCUTTER.get(), heldItem);
+		ItemStack burntItem = rat.getResultForRecipe(RatsRecipeRegistry.GEMCUTTER.get(), heldItem.copyWithCount(1));
 		if (burntItem.isEmpty()) {
 			rat.cookingProgress = 0;
 		} else {
