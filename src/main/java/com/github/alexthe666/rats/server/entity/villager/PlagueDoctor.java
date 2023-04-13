@@ -260,29 +260,6 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	}
 
 	@Override
-	public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
-		if (player.getItemInHand(hand).is(RatsItemRegistry.PLAGUE_TOME.get())) {
-			if (!this.isBaby() && !this.willDespawn() && !this.getLevel().isClientSide()) {
-				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.getLevel());
-				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				ForgeEventFactory.onFinalizeSpawn(death, (ServerLevelAccessor) this.getLevel(), this.getLevel().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
-				if (this.hasCustomName()) {
-					death.setCustomName(this.getCustomName());
-				}
-				if (!this.getMainHandItem().isEmpty()) {
-					this.spawnAtLocation(this.getMainHandItem());
-				}
-				this.getLevel().addFreshEntity(death);
-				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
-				this.getLevel().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
-				this.discard();
-				return InteractionResult.SUCCESS;
-			}
-		}
-		return super.interactAt(player, vec3, hand);
-	}
-
-	@Override
 	public int getAmbientSoundInterval() {
 		return 400;
 	}
@@ -463,7 +440,24 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (itemstack.is(Items.NAME_TAG)) {
+		if (itemstack.is(RatsItemRegistry.PLAGUE_TOME.get())) {
+			if (!this.isBaby() && !this.getLevel().isClientSide()) {
+				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.getLevel());
+				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+				ForgeEventFactory.onFinalizeSpawn(death, (ServerLevelAccessor) this.getLevel(), this.getLevel().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+				if (this.hasCustomName()) {
+					death.setCustomName(this.getCustomName());
+				}
+				if (!this.getMainHandItem().isEmpty()) {
+					this.spawnAtLocation(this.getMainHandItem());
+				}
+				this.getLevel().addFreshEntity(death);
+				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
+				this.getLevel().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
+				this.discard();
+				return InteractionResult.SUCCESS;
+			}
+		} else if (itemstack.is(Items.NAME_TAG)) {
 			this.setWillDespawn(false);
 			itemstack.interactLivingEntity(player, this, hand);
 			return InteractionResult.SUCCESS;
@@ -482,8 +476,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 
 				return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
 			}
-		} else {
-			return super.mobInteract(player, hand);
 		}
+		return super.mobInteract(player, hand);
 	}
 }
