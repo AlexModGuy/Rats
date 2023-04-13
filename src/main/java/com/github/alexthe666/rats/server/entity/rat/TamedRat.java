@@ -168,8 +168,8 @@ public class TamedRat extends InventoryRat {
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(0, new RatTargetItemsGoal(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Animal.class, true, entity -> EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && !entity.isBaby() && TamedRat.this.shouldHuntAnimal()));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, true, entity -> entity instanceof Enemy && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && TamedRat.this.shouldHuntMonster()));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Animal.class, true, entity -> EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && !entity.isBaby() && TamedRat.this.canMove() && TamedRat.this.shouldHuntAnimal()));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, true, entity -> entity instanceof Enemy && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && TamedRat.this.canMove() && TamedRat.this.shouldHuntMonster()));
 		this.targetSelector.addGoal(2, new RatOwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(3, new RatOwnerHurtTargetGoal(this));
 	}
@@ -391,6 +391,9 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public void aiStep() {
 		super.aiStep();
+		if (this.isBaby() && this.getCommand() != RatCommand.SIT) {
+			this.setCommand(RatCommand.SIT);
+		}
 		if (this.breedCooldown > 0) {
 			this.breedCooldown--;
 		}
@@ -676,6 +679,7 @@ public class TamedRat extends InventoryRat {
 		baby.setColorVariant(babyColor);
 		baby.setPos(mother.getX() - 0.5F + mother.getRandom().nextFloat(), mother.getY(), mother.getZ() - 0.5F + mother.getRandom().nextFloat());
 		baby.setAge(-24000);
+		baby.setCommand(RatCommand.SIT);
 		if (mother.isTame()) {
 			baby.setTame(true);
 			baby.setOwnerUUID(mother.getOwnerUUID());

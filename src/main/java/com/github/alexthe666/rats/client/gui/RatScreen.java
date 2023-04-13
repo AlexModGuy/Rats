@@ -101,18 +101,20 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 		this.renderables.clear();
 		int i = (this.width - 248) / 2;
 		int j = (this.height - 166) / 2;
-		this.addRenderableWidget(new ChangeCommandButton(i + 116, j + 54, false, button -> {
-			this.currentDisplayCommand--;
-			this.currentDisplayCommand = RatUtils.wrapCommand(this.currentDisplayCommand).ordinal();
-		}));
-		this.addRenderableWidget(new ChangeCommandButton(i + 199, j + 54, true, button -> {
-			this.currentDisplayCommand++;
-			this.currentDisplayCommand = RatUtils.wrapCommand(this.currentDisplayCommand).ordinal();
-		}));
-		this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
-			this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
-			RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
-		}));
+		if (!this.rat.isBaby()) {
+			this.addRenderableWidget(new ChangeCommandButton(i + 116, j + 54, false, button -> {
+				this.currentDisplayCommand--;
+				this.currentDisplayCommand = RatUtils.wrapCommand(this.currentDisplayCommand).ordinal();
+			}));
+			this.addRenderableWidget(new ChangeCommandButton(i + 199, j + 54, true, button -> {
+				this.currentDisplayCommand++;
+				this.currentDisplayCommand = RatUtils.wrapCommand(this.currentDisplayCommand).ordinal();
+			}));
+			this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
+				this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
+				RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
+			}));
+		}
 	}
 
 	@Override
