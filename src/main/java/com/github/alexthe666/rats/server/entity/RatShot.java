@@ -91,8 +91,6 @@ public class RatShot extends ThrowableProjectile {
 			if (thrower != null) {
 				AbstractRat rat = thrower instanceof Player ? new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.getLevel()) : new Rat(RatsEntityRegistry.RAT.get(), this.getLevel());
 				rat.copyPosition(this);
-				rat.setColorVariant(this.getColorVariant());
-
 				if (thrower instanceof Player player) {
 					rat.tame(player);
 					((TamedRat) rat).setCommand(RatCommand.WANDER);
@@ -109,6 +107,10 @@ public class RatShot extends ThrowableProjectile {
 				}
 				if (this.getLevel() instanceof ServerLevelAccessor accessor) {
 					ForgeEventFactory.onFinalizeSpawn(rat, accessor, this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
+				}
+				rat.setColorVariant(this.getColorVariant());
+				if (rat instanceof Rat plagueable) {
+					plagueable.setPlagued(false);
 				}
 				this.getLevel().addFreshEntity(rat);
 			}
