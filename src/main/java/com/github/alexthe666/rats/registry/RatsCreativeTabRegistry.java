@@ -21,6 +21,7 @@ public class RatsCreativeTabRegistry {
 	@SubscribeEvent
 	public static void registerToExistingTabs(CreativeModeTabEvent.BuildContents event) {
 		if (event.getTab() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
+			event.accept(RatsItemRegistry.CREATIVE_CHEESE.get());
 			event.accept(RatsItemRegistry.RAT_UPGRADE_CREATIVE.get());
 			event.accept(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get());
 		}
@@ -33,7 +34,6 @@ public class RatsCreativeTabRegistry {
 				.icon(() -> new ItemStack(RatsItemRegistry.CHEESE.get()))
 				.displayItems((parameters, output) -> {
 					output.accept(RatsItemRegistry.CHEESE.get());
-					output.accept(RatsItemRegistry.CREATIVE_CHEESE.get());
 					output.accept(RatsItemRegistry.BLUE_CHEESE.get());
 					output.accept(RatsItemRegistry.NETHER_CHEESE.get());
 					output.accept(RatsBlockRegistry.BLOCK_OF_CHEESE.get());
@@ -41,6 +41,7 @@ public class RatsCreativeTabRegistry {
 					output.accept(RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE.get());
 					output.accept(RatsBlockRegistry.RAT_TRAP.get());
 					output.accept(RatsBlockRegistry.AUTO_CURDLER.get());
+					output.accept(RatsBlockRegistry.RAT_CRAFTING_TABLE.get());
 
 					output.accept(RatsItemRegistry.RAW_RAT.get());
 					output.accept(RatsItemRegistry.COOKED_RAT.get());
@@ -123,6 +124,7 @@ public class RatsCreativeTabRegistry {
 					output.accept(RatsItemRegistry.RAT_SACK.get());
 					output.accept(RatsItemRegistry.FEATHERY_WING.get());
 					output.accept(RatsItemRegistry.DRAGON_WING.get());
+					output.accept(RatsItemRegistry.CHARGED_CREEPER_CHUNK.get());
 					output.accept(RatsItemRegistry.RATBOW_ESSENCE.get());
 					output.accept(RatsItemRegistry.RAT_PAPERS.get());
 					output.accept(RatsItemRegistry.TINY_COIN.get());
@@ -132,13 +134,13 @@ public class RatsCreativeTabRegistry {
 					output.accept(RatsBlockRegistry.MARBLED_CHEESE_RAW.get());
 					output.accept(RatsBlockRegistry.FISH_BARREL.get());
 					output.accept(RatsBlockRegistry.DYE_SPONGE.get());
+					output.accept(RatsBlockRegistry.PIED_WOOL.get());
 					output.accept(RatsBlockRegistry.JACK_O_RATERN.get());
-					output.accept(RatsBlockRegistry.RAT_ATTRACTOR.get());
 					output.accept(RatsBlockRegistry.UPGRADE_COMBINER.get());
 					output.accept(RatsBlockRegistry.UPGRADE_SEPARATOR.get());
 					output.accept(RatsBlockRegistry.MANHOLE.get());
 					output.accept(RatsBlockRegistry.RAT_QUARRY.get());
-					output.accept(RatsBlockRegistry.RAT_CRAFTING_TABLE.get());
+					output.accept(RatsBlockRegistry.RAT_ATTRACTOR.get());
 					output.accept(RatsBlockRegistry.RAT_UPGRADE_BLOCK.get());
 					output.accept(RatsItemRegistry.RAT_BANNER_PATTERN.get());
 					output.accept(RatsItemRegistry.CHEESE_BANNER_PATTERN.get());
