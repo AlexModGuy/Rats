@@ -325,7 +325,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 			if (accessor.getDifficulty() == Difficulty.PEACEFUL) {
 				spawnRoll *= 2;
 			}
-			if (spawnRoll == 0 || this.getRandom().nextInt(spawnRoll) == 0) {
+			if (spawnRoll == 0 || accessor.getRandom().nextInt(spawnRoll) == 0) {
 				BlockPos pos = this.blockPosition();
 				BlockState state = accessor.getBlockState(pos.below());
 				return this.isValidLightLevel() && state.isValidSpawn(accessor, pos.below(), RatsEntityRegistry.RAT.get());

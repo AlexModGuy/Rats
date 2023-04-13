@@ -3,7 +3,7 @@
   "biomes": "#rats:demon_rat_spawn_biomes",
   "spawners": {
     "type": "rats:demon_rat",
-    "maxCount": 2,
+    "maxCount": 1,
     "minCount": 1,
     "weight": 15
   }

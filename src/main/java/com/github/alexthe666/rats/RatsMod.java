@@ -64,7 +64,6 @@ public class RatsMod {
 	public static final String MODID = "rats";
 	public static final Rarity RATLANTIS_SPECIAL = Rarity.create("RATS_RATLANTIS_SPECIAL", ChatFormatting.GREEN);
 	public static final MobCategory RATS = MobCategory.create("RATS_RATS", "rats", 25, true, false, 128);
-	public static final MobCategory DEMON_RATS = MobCategory.create("RATS_DEMON_RATS", "demon_rats", 5, false, false, 64);
 
 	public static final BlockSetType PIRAT_WOOD_SET = BlockSetType.register(new BlockSetType(new ResourceLocation(MODID, "pirat").toString(), SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN, SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
 	public static final WoodType PIRAT_WOOD_TYPE = WoodType.register(new WoodType(new ResourceLocation(MODID, "pirat").toString(), PIRAT_WOOD_SET, SoundType.NETHER_WOOD, SoundType.NETHER_WOOD_HANGING_SIGN, SoundEvents.NETHER_WOOD_FENCE_GATE_CLOSE, SoundEvents.NETHER_WOOD_FENCE_GATE_OPEN));

@@ -1,9 +1,9 @@
-// 1.19.4	2023-03-30T22:16:57.9585846	ratlantis/Registries
+// 1.19.4	2023-04-13T08:35:20.0424762	ratlantis/Registries
 4da99d28fea92a1dd7f6aa73d09190e07e7f25f2 data/minecraft/datapacks/ratlantis/data/rats/dimension/ratlantis.json
 d3e82d2d75d73e6a4f18fc5df4c1629def4250f2 data/minecraft/datapacks/ratlantis/data/rats/dimension_type/ratlantis_type.json
 804afbad1b2894df7939cd5c2733fe6f3f770821 data/minecraft/datapacks/ratlantis/data/rats/trim_material/gem_of_ratlantis.json
 ea650c43124eb63b06b8e34cb16b880348e4c788 data/minecraft/datapacks/ratlantis/data/rats/trim_material/oratchalcum.json
-20cab836dfe1272bff14733c9fe3a7f22c184836 data/minecraft/datapacks/ratlantis/data/rats/worldgen/biome/ratlantis.json
+08d7701b1f6505a924e79d46a4321b8167b22f21 data/minecraft/datapacks/ratlantis/data/rats/worldgen/biome/ratlantis.json
 34e66eb4efe705cd12474e55dc8d9b15ab648679 data/minecraft/datapacks/ratlantis/data/rats/worldgen/configured_carver/ratlantis_caves.json
 ff32f0d85356acd0ff02fff866b40f86f82f06f7 data/minecraft/datapacks/ratlantis/data/rats/worldgen/configured_feature/cheese_ore.json
 17494668a96b445a4ab3c0c82f1acf80776427a1 data/minecraft/datapacks/ratlantis/data/rats/worldgen/configured_feature/large_ruins.json

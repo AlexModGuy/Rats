@@ -30,6 +30,6 @@ public class RatsBiomeModifierRegistry {
 		context.register(ADD_DEMON_RAT_SPAWNS,
 				ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
 						context.lookup(Registries.BIOME).getOrThrow(RatsBiomeTags.DEMON_RAT_SPAWN_BIOMES),
-						new MobSpawnSettings.SpawnerData(RatsEntityRegistry.DEMON_RAT.get(), 15, 1, 2)));
+						new MobSpawnSettings.SpawnerData(RatsEntityRegistry.DEMON_RAT.get(), 15, 1, 1)));
 	}
 }

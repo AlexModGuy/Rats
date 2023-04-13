@@ -54,7 +54,8 @@ public class DemonRat extends AbstractRat {
 
 	@Override
 	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType type) {
-		return true;
+		if (type == MobSpawnType.EVENT || type == MobSpawnType.SPAWNER) return super.checkSpawnRules(accessor, type);
+		return accessor.getRandom().nextInt(5) == 0;
 	}
 
 	@Override

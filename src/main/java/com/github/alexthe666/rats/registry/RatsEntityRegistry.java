@@ -39,7 +39,7 @@ public class RatsEntityRegistry {
 	public static final RegistryObject<EntityType<RatBeastMount>> RAT_MOUNT_BEAST = registerEntityNoEgg("rat_mount_beast", EntityType.Builder.of(RatBeastMount::new, MobCategory.MISC).sized(1.85F, 1.2F));
 	public static final RegistryObject<EntityType<RatKing>> RAT_KING = registerEntity("rat_king", EntityType.Builder.of(RatKing::new, MobCategory.MONSTER).sized(2F, 0.5F), 0X30333E, 0X39342F);
 	public static final RegistryObject<EntityType<RatShot>> RAT_SHOT = registerEntityNoEgg("rat_shot", EntityType.Builder.<RatShot>of(RatShot::new, MobCategory.MISC).sized(0.5F, 0.5F));
-	public static final RegistryObject<EntityType<DemonRat>> DEMON_RAT = registerEntity("demon_rat", EntityType.Builder.of(DemonRat::new, RatsMod.DEMON_RATS).sized(1.0F, 0.75F).fireImmune().canSpawnFarFromPlayer().clientTrackingRange(8), 0x6C191F, 0xFCD500);
+	public static final RegistryObject<EntityType<DemonRat>> DEMON_RAT = registerEntity("demon_rat", EntityType.Builder.of(DemonRat::new, MobCategory.MONSTER).sized(1.0F, 0.75F).fireImmune().canSpawnFarFromPlayer().clientTrackingRange(8), 0x6C191F, 0xFCD500);
 	public static final RegistryObject<EntityType<RatStriderMount>> RAT_STRIDER_MOUNT = registerEntityNoEgg("rat_mount_strider", EntityType.Builder.of(RatStriderMount::new, MobCategory.MISC).fireImmune().sized(0.9F, 1.7F).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<SmallArrow>> SMALL_ARROW = registerEntityNoEgg("small_arrow", EntityType.Builder.<SmallArrow>of(SmallArrow::new, MobCategory.MISC).sized(0.39F, 0.39F));
 

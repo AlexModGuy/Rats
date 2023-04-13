@@ -85,7 +85,7 @@ public class PiedPiper extends Monster implements RatSummoner {
 		if (!accessor.getLevelData().getGameRules().getBoolean(RatsMod.SPAWN_PIPERS)) return false;
 		if (type == MobSpawnType.EVENT || type == MobSpawnType.SPAWNER) return super.checkSpawnRules(accessor, type);
 		int spawnRoll = RatConfig.piperSpawnDecrease;
-		if (spawnRoll == 0 || this.getRandom().nextInt(spawnRoll) == 0) {
+		if (spawnRoll == 0 || accessor.getRandom().nextInt(spawnRoll) == 0) {
 			return super.checkSpawnRules(accessor, type);
 		}
 		return false;

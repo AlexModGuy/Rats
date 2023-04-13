@@ -484,7 +484,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected void tickDeath() {
 		++this.deathTime;
 		int maxDeathTime = this.isDeadInTrap() ? 60 : 20;
-		if (this.deathTime >= maxDeathTime) {
+		if (this.deathTime >= maxDeathTime && !this.getLevel().isClientSide() && !this.isRemoved()) {
 			this.level.broadcastEntityEvent(this, (byte)60);
 			this.handleBeforeRemoval();
 			this.remove(RemovalReason.KILLED);
