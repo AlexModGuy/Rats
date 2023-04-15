@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-20T18:28:51.2496554	Loot Tables
+// 1.19.4	2023-04-15T17:38:24.6116692	Loot Tables
 69b16e3b0dfe3e1f6a8602456f55131b813c6d66 data/rats/loot_tables/blocks/auto_curdler.json
 a2eb47ae6b68d667a69cc7f6756ff0e55220b0ab data/rats/loot_tables/blocks/block_of_blue_cheese.json
 8f9eeb68b77f29361f340847c6fc976b44981c3e data/rats/loot_tables/blocks/block_of_cheese.json
@@ -41,12 +41,12 @@ ffec1db9a3b4a93579e320e1105457b69d3306c7 data/rats/loot_tables/chest/plague_doct
 8a1b53c4da5011b6bc0779fbc649cf6a930a35ef data/rats/loot_tables/chest/tubes.json
 c404ad36d35ecfce784fa0b234ee4e3cc18a0d82 data/rats/loot_tables/christmas_rat_gifts.json
 95311d5b055f5f5128a15a730c073e82ab4fbc4c data/rats/loot_tables/entities/black_death.json
-d271b82729eaf834aaa5f0f293904fd57b1766d6 data/rats/loot_tables/entities/demon_rat.json
-ccaf32977cfe40f6dbab74a6711bd11161a28a90 data/rats/loot_tables/entities/pied_piper.json
-c8dd4494088bc5ce1f00a3433d923877ae0af092 data/rats/loot_tables/entities/plague_beast.json
+6edd758739b6f428d95b161b91218426558059a2 data/rats/loot_tables/entities/demon_rat.json
+ec038035f0c509a30dc4e97fed3f9a81f5c7387c data/rats/loot_tables/entities/pied_piper.json
+5ee4d41d1a7eb40af5a42e7219261ef86d725186 data/rats/loot_tables/entities/plague_beast.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/rats/loot_tables/entities/plague_cloud.json
-1e9a01e19e5bfd77562678778d0ccb4b9e1abe05 data/rats/loot_tables/entities/plague_doctor.json
-a2d3f1ad0b06a2ec7ddfa92cf58bb9933ba7f6f6 data/rats/loot_tables/entities/rat.json
-1262767fef553f6e64e92a5f02821459698a9eff data/rats/loot_tables/entities/rat_king.json
+a68ebe4911c48db5b614c3633d56fcaee884c229 data/rats/loot_tables/entities/plague_doctor.json
+f42fbb947cf84a3fe3c390e7adf0bd083f85502c data/rats/loot_tables/entities/rat.json
+dad514df9ef5d1fbc1c0ea11eccd5adba04ceeac data/rats/loot_tables/entities/rat_king.json
 434e394b1c7cba684ad9c5d939290952d16048f1 data/rats/loot_tables/entities/tamed_rat.json
 483aafbcf30854cd71cec835b135ac1c5dc34995 data/rats/loot_tables/gameplay/hero_of_the_village/pet_shop_owner.json

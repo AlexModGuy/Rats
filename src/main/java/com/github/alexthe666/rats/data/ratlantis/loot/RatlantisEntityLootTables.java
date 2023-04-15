@@ -116,7 +116,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get())
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.5F, 0.25F))))
 		);
 
 		this.add(RatlantisEntityRegistry.RATLANTEAN_RATBOT.get(),
@@ -133,7 +133,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
 								.add(LootItem.lootTableItem(Items.REDSTONE)
-										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))

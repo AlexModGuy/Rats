@@ -6,38 +6,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "conditions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:set_count"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:looting_enchant"
+              "chance": 0.5,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.2
             }
           ],
           "name": "rats:filth"
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "conditions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:set_count"
+              "chance": 0.5,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 0.2
             }
           ],
           "name": "rats:plague_leech"

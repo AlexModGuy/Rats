@@ -110,7 +110,7 @@
             {
               "chance": 0.05,
               "condition": "minecraft:random_chance_with_looting",
-              "looting_multiplier": 0.1
+              "looting_multiplier": 0.01
             }
           ],
           "name": "rats:plague_essence"
@@ -130,7 +130,7 @@
             {
               "chance": 0.0035,
               "condition": "minecraft:random_chance_with_looting",
-              "looting_multiplier": 0.01
+              "looting_multiplier": 0.001
             }
           ],
           "name": "rats:plague_tome"

@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T22:55:21.4525464	ratlantis/Loot Tables
+// 1.19.4	2023-04-15T17:38:24.6915371	ratlantis/Loot Tables
 862afc14c6d5ae91ffaf5271073447321a7ad7c0 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/air_raid_siren.json
 efaa2d2c0bf2a590023d6bf98c956d9f585f4282 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/black_marbled_cheese.json
 e932ceac3a13409e6d32fd561b366e5f79dfbf08 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/brain_block.json
@@ -53,8 +53,8 @@ a1c32ff693cab59721e42e0f7cedcd4e2cb57318 data/minecraft/datapacks/ratlantis/data
 bf05f6b8f46264592067ad1597fa1a2952d2ffcc data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/neo_ratlantean.json
 10dbfd66524e305fe198e016238a4366d862c88d data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/pirat.json
 f9841c932748f24029277d82d60d1cc770b67147 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratfish.json
-ec1800d0d68cf6d9995bc631d27d1c4585d41cea data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratlantean_automaton.json
-bf49a773e9bbc043d34d70d6826e601120bfa77d data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratlantean_ratbot.json
+90d34885e8a74476779916470db78b117576605c data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratlantean_automaton.json
+c9d1490b68a89a9e1399da8845c45472c67111a3 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratlantean_ratbot.json
 88b8e50e6b73da0c7dfc98d6180b22593b56b50b data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/ratlantean_spirit.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/rat_baron.json
 abcc7565fbea8d2b87febc6798e60917e20c77a8 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/entities/rat_baron_plane.json
