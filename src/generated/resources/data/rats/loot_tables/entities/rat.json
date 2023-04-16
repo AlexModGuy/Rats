@@ -137,6 +137,31 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "conditions": [
+            {
+              "condition": "rats:has_toga_and_in_ratlantis"
+            }
+          ],
+          "name": "rats:gameplay/ratlantis_exclusive_rat_loot"
+        }
+      ],
+      "functions": [
+        {
+          "count": {
+            "type": "minecraft:uniform",
+            "max": 1.0,
+            "min": 0.0
+          },
+          "function": "minecraft:looting_enchant"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

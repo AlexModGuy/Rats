@@ -1,0 +1,51 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "rats:cheese",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:prismarine_crystals",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 100
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

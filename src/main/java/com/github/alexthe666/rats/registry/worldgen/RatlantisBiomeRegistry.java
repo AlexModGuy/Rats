@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.registry.worldgen;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
+import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderGetter;
@@ -48,9 +49,10 @@ public class RatlantisBiomeRegistry {
 						.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(RatlantisEntityRegistry.RATLANTEAN_RATBOT.get(), 5, 1, 1))
 						.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 40, 1, 2))
 						.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PANDA, 14, 1, 2))
-						.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PUFFERFISH, 15, 1, 3))
-						.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(RatlantisEntityRegistry.RATFISH.get(), 45, 8, 8))
+						.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.PUFFERFISH, 15, 1, 3))
+						.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(RatlantisEntityRegistry.RATFISH.get(), 45, 8, 8))
 						.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DOLPHIN, 2, 1, 2))
+						.addSpawn(RatsMod.RATS, new MobSpawnSettings.SpawnerData(RatsEntityRegistry.RAT.get(), 10, 2, 4))
 						.build())
 				.generationSettings(new BiomeGenerationSettings.Builder(features, carvers)
 						.addCarver(GenerationStep.Carving.AIR, RatlantisDimensionRegistry.RATLANTIS_CAVES)

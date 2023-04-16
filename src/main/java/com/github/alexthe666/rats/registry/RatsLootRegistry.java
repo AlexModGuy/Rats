@@ -1,10 +1,7 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.loot.GenericAddItemLootModifier;
-import com.github.alexthe666.rats.server.loot.RatHasPlagueCondition;
-import com.github.alexthe666.rats.server.loot.RatKilledAndHasUpgradeCondition;
-import com.github.alexthe666.rats.server.loot.RatlantisLoadedLootCondition;
+import com.github.alexthe666.rats.server.loot.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +15,7 @@ public class RatsLootRegistry {
 
 	public static final ResourceLocation CHRISTMAS_GIFTS = new ResourceLocation(RatsMod.MODID, "christmas_rat_gifts");
 	public static final ResourceLocation PET_SHOP_HOTV = new ResourceLocation(RatsMod.MODID, "gameplay/hero_of_the_village/pet_shop_owner");
+	public static final ResourceLocation RATLANTIS_RAT_EXCLUSIVE_DROPS = new ResourceLocation(RatsMod.MODID, "gameplay/ratlantis_exclusive_rat_loot");
 
 	public static final ResourceLocation RATLANTIS_FISH = new ResourceLocation(RatsMod.MODID, "gameplay/fishing/ratlantis");
 	public static final ResourceLocation RATLANTIS_FISHING_JUNK = new ResourceLocation(RatsMod.MODID, "gameplay/fishing/ratlantis_junk");
@@ -31,5 +29,6 @@ public class RatsLootRegistry {
 	public static final RegistryObject<LootItemConditionType> RATLANTIS_LOADED = CONDITIONS.register("ratlantis_loaded", () -> new LootItemConditionType(new RatlantisLoadedLootCondition.ConditionSerializer()));
 	public static final RegistryObject<LootItemConditionType> KILLER_HAS_UPGRADE = CONDITIONS.register("killer_has_upgrade", () -> new LootItemConditionType(new RatKilledAndHasUpgradeCondition.RatSerializer()));
 	public static final RegistryObject<LootItemConditionType> RAT_HAS_PLAGUE = CONDITIONS.register("rat_has_plague", () -> new LootItemConditionType(new RatHasPlagueCondition.RatSerializer()));
+	public static final RegistryObject<LootItemConditionType> HAS_TOGA_AND_IN_RATLANTIS = CONDITIONS.register("has_toga_and_in_ratlantis", () -> new LootItemConditionType(new RatHasTogaInRatlantisCondition.ConditionSerializer()));
 	public static final RegistryObject<Codec<GenericAddItemLootModifier>> ADD_ITEM = LOOT_MODIFIERS.register("add_item", () -> GenericAddItemLootModifier.CODEC);
 }

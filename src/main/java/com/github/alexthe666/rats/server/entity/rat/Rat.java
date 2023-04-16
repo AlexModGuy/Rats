@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.rat;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.*;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.RatKing;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatEnterTrapGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
@@ -239,6 +240,9 @@ public class Rat extends DiggingRat implements Ratlanteans {
 		if (this.getRandom().nextInt(15) == 0 && this.getLevel().getDifficulty() != Difficulty.PEACEFUL && type != MobSpawnType.CONVERSION) {
 			this.setPlagued(true);
 		}
+		if (accessor.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+			this.setToga(true);
+		}
 		return data;
 	}
 
@@ -305,23 +309,27 @@ public class Rat extends DiggingRat implements Ratlanteans {
 
 	public static boolean checkRatSpawnRules(EntityType<? extends Mob> entityType, LevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
 		if (random.nextInt(16) == 0) {
-			return type == MobSpawnType.SPAWNER || spawnCheck(accessor, pos, random);
+			return type == MobSpawnType.SPAWNER || spawnCheck(accessor, pos, random, type);
 		}
 		return false;
 	}
 
-	private static boolean spawnCheck(LevelAccessor accessor, BlockPos pos, RandomSource random) {
+	private static boolean spawnCheck(LevelAccessor accessor, BlockPos pos, RandomSource random, MobSpawnType type) {
+		if (!accessor.getLevelData().getGameRules().getBoolean(RatsMod.SPAWN_RATS)) return false;
+		if (type != MobSpawnType.NATURAL) return true;
 		int spawnRoll = RatConfig.ratSpawnDecrease;
+		if (accessor instanceof ServerLevelAccessor server && server.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) return spawnRoll <= 0 || random.nextInt(spawnRoll) == 0;
 		if (RatConfig.ratsSpawnLikeMonsters) {
 			if (accessor.getDifficulty() == Difficulty.PEACEFUL) {
 				spawnRoll *= 2;
 			}
-			if (spawnRoll == 0 || random.nextInt(spawnRoll) == 0) {
-				return isValidLightLevel(accessor, random, pos);
+			if (spawnRoll == 0 || accessor.getRandom().nextInt(spawnRoll) == 0) {
+				BlockState state = accessor.getBlockState(pos.below());
+				return isValidLightLevel(accessor, random, pos) && state.isValidSpawn(accessor, pos.below(), RatsEntityRegistry.RAT.get());
 			}
 		} else {
 			spawnRoll /= 2;
-			return (spawnRoll == 0 || random.nextInt(spawnRoll) == 0);
+			return (spawnRoll <= 0 || random.nextInt(spawnRoll) == 0);
 		}
 
 		return false;
@@ -329,23 +337,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 
 	@Override
 	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType type) {
-		if (!accessor.getLevelData().getGameRules().getBoolean(RatsMod.SPAWN_RATS)) return false;
-		int spawnRoll = RatConfig.ratSpawnDecrease;
-		if (RatConfig.ratsSpawnLikeMonsters) {
-			if (accessor.getDifficulty() == Difficulty.PEACEFUL) {
-				spawnRoll *= 2;
-			}
-			if (spawnRoll == 0 || accessor.getRandom().nextInt(spawnRoll) == 0) {
-				BlockPos pos = this.blockPosition();
-				BlockState state = accessor.getBlockState(pos.below());
-				return this.isValidLightLevel() && state.isValidSpawn(accessor, pos.below(), RatsEntityRegistry.RAT.get());
-			}
-		} else {
-			spawnRoll /= 2;
-			return (spawnRoll == 0 || this.getRandom().nextInt(spawnRoll) == 0);
-		}
-
-		return false;
+		return spawnCheck(accessor, this.blockPosition(), accessor.getRandom(), type);
 	}
 
 	@Override

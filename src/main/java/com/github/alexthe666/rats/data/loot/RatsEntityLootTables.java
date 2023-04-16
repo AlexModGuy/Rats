@@ -1,10 +1,8 @@
 package com.github.alexthe666.rats.data.loot;
 
-import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.registry.RatsBlockRegistry;
-import com.github.alexthe666.rats.registry.RatsEntityRegistry;
-import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.loot.RatHasPlagueCondition;
+import com.github.alexthe666.rats.server.loot.RatHasTogaInRatlantisCondition;
 import com.github.alexthe666.rats.server.loot.RatlantisLoadedLootCondition;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.entity.EntityType;
@@ -161,6 +159,11 @@ public class RatsEntityLootTables extends EntityLootSubProvider {
 								.add(LootItem.lootTableItem(RatsItemRegistry.PLAGUE_TOME.get())
 										.when(RatHasPlagueCondition.hasPlague())
 										.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.0035F, 0.001F))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1.0F))
+								.add(LootTableReference.lootTableReference(RatsLootRegistry.RATLANTIS_RAT_EXCLUSIVE_DROPS)
+										.when(RatHasTogaInRatlantisCondition::new))
+								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
 		);
 
 		this.add(RatsEntityRegistry.RAT_KING.get(),

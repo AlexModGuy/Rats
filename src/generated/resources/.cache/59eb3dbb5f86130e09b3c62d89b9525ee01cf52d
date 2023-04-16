@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-15T17:38:24.6116692	Loot Tables
+// 1.19.4	2023-04-16T12:33:15.3321249	Loot Tables
 69b16e3b0dfe3e1f6a8602456f55131b813c6d66 data/rats/loot_tables/blocks/auto_curdler.json
 a2eb47ae6b68d667a69cc7f6756ff0e55220b0ab data/rats/loot_tables/blocks/block_of_blue_cheese.json
 8f9eeb68b77f29361f340847c6fc976b44981c3e data/rats/loot_tables/blocks/block_of_cheese.json
@@ -46,7 +46,8 @@ ec038035f0c509a30dc4e97fed3f9a81f5c7387c data/rats/loot_tables/entities/pied_pip
 5ee4d41d1a7eb40af5a42e7219261ef86d725186 data/rats/loot_tables/entities/plague_beast.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/rats/loot_tables/entities/plague_cloud.json
 a68ebe4911c48db5b614c3633d56fcaee884c229 data/rats/loot_tables/entities/plague_doctor.json
-f42fbb947cf84a3fe3c390e7adf0bd083f85502c data/rats/loot_tables/entities/rat.json
+db252bea0fb81df6a3b9dd36fd81796192bcce9c data/rats/loot_tables/entities/rat.json
 dad514df9ef5d1fbc1c0ea11eccd5adba04ceeac data/rats/loot_tables/entities/rat_king.json
 434e394b1c7cba684ad9c5d939290952d16048f1 data/rats/loot_tables/entities/tamed_rat.json
 483aafbcf30854cd71cec835b135ac1c5dc34995 data/rats/loot_tables/gameplay/hero_of_the_village/pet_shop_owner.json
+23bbf021df67d7f8b9efe429c113618c319c76cb data/rats/loot_tables/gameplay/ratlantis_exclusive_rat_loot.json

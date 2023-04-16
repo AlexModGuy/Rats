@@ -121,10 +121,16 @@
         "weight": 5
       }
     ],
-    "rats": [],
+    "rats": [
+      {
+        "type": "rats:rat",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      }
+    ],
     "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": [
+    "water_ambient": [
       {
         "type": "minecraft:pufferfish",
         "maxCount": 3,
@@ -136,7 +142,9 @@
         "maxCount": 8,
         "minCount": 8,
         "weight": 45
-      },
+      }
+    ],
+    "water_creature": [
       {
         "type": "minecraft:dolphin",
         "maxCount": 2,
