@@ -10,6 +10,7 @@ public class RatsModelLayers {
 	public static final ModelLayerLocation PIPER = register("pied_piper");
 	public static final ModelLayerLocation PIRAT_BOAT = register("pirat_boat");
 	public static final ModelLayerLocation PLAGUE_DOCTOR = register("plague_doctor");
+	public static final ModelLayerLocation RAT_STRIDER_MOUNT = register("rat_strider_mount");
 	public static final ModelLayerLocation THROWN_BLOCK = register("thrown_block");
 
 	public static final ModelLayerLocation HAMMOCK = register("hammock");

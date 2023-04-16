@@ -10,10 +10,7 @@ import com.github.alexthe666.rats.server.entity.RatMountBase;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -28,7 +25,7 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 	public static final Animation ANIMATION_RANGED = Animation.create(15);
 	private boolean useRangedAttack = false;
 
-	public RatAutomatonMount(EntityType<? extends Mob> type, Level level) {
+	public RatAutomatonMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
 		this.riderY = 2.85F;
 		this.moveControl = new FlyingMoveControl(this, 10, false);

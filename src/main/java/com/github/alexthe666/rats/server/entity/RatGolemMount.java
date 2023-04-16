@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ public class RatGolemMount extends RatMountBase {
 
 	private int attackTimer;
 
-	public RatGolemMount(EntityType<? extends Mob> type, Level level) {
+	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
 		this.riderY = 2.05F;
 		this.riderXZ = -0.1F;

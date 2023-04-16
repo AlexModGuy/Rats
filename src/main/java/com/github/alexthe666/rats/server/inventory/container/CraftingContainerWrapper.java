@@ -35,9 +35,9 @@ public class CraftingContainerWrapper extends CraftingContainer {
 
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
-		ItemStack s = getItem(index);
+		ItemStack s = this.getItem(index);
 		if (s.isEmpty()) return ItemStack.EMPTY;
-		setItem(index, ItemStack.EMPTY);
+		this.setItem(index, ItemStack.EMPTY);
 		return s;
 	}
 

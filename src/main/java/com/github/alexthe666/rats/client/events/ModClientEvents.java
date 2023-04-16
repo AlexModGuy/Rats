@@ -8,10 +8,7 @@ import com.github.alexthe666.rats.client.model.deco.RatHammockModel;
 import com.github.alexthe666.rats.client.model.deco.RatIglooModel;
 import com.github.alexthe666.rats.client.model.deco.RatSeedBowlModel;
 import com.github.alexthe666.rats.client.model.deco.RatWaterBottleModel;
-import com.github.alexthe666.rats.client.model.entity.BlackDeathModel;
-import com.github.alexthe666.rats.client.model.entity.PiedPiperModel;
-import com.github.alexthe666.rats.client.model.entity.PiratBoatModel;
-import com.github.alexthe666.rats.client.model.entity.PlagueDoctorModel;
+import com.github.alexthe666.rats.client.model.entity.*;
 import com.github.alexthe666.rats.client.model.hats.*;
 import com.github.alexthe666.rats.client.particle.*;
 import com.github.alexthe666.rats.client.render.NuggetColorRegister;
@@ -128,6 +125,7 @@ public class ModClientEvents {
 		event.registerLayerDefinition(RatsModelLayers.PIPER, PiedPiperModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PIRAT_BOAT, PiratBoatModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PLAGUE_DOCTOR, PlagueDoctorModel::create);
+		event.registerLayerDefinition(RatsModelLayers.RAT_STRIDER_MOUNT, RatStriderMountModel::create);
 		event.registerLayerDefinition(RatsModelLayers.THROWN_BLOCK, CubeModel::create);
 
 		event.registerLayerDefinition(RatsModelLayers.HAMMOCK, RatHammockModel::create);
@@ -176,7 +174,7 @@ public class ModClientEvents {
 		event.registerEntityRenderer(RatsEntityRegistry.RAT_KING.get(), RatKingRenderer::new);
 		event.registerEntityRenderer(RatsEntityRegistry.RAT_SHOT.get(), RatShotRenderer::new);
 		event.registerEntityRenderer(RatsEntityRegistry.DEMON_RAT.get(), DemonRatRenderer::new);
-		event.registerEntityRenderer(RatsEntityRegistry.RAT_STRIDER_MOUNT.get(), StriderRenderer::new);
+		event.registerEntityRenderer(RatsEntityRegistry.RAT_STRIDER_MOUNT.get(), RatStriderMountRenderer::new);
 		event.registerEntityRenderer(RatsEntityRegistry.SMALL_ARROW.get(), SmallArrowRenderer::new);
 
 		event.registerBlockEntityRenderer(RatsBlockEntityRegistry.RAT_HOLE.get(), RatHoleRenderer::new);

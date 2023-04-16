@@ -39,10 +39,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Ocelot;
@@ -630,7 +632,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT.get()) && rat.isRidingSpecialMount()) {
 				return 1;
 			}
-			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT.get()) && rat.isRidingSpecialMount()) {
+			if ((RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT.get()) || RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT.get())) && rat.isRidingSpecialMount()) {
 				return 2;
 			}
 			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT.get()) && rat.isRidingSpecialMount()) {

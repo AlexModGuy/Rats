@@ -29,7 +29,7 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 	private int animationTick;
 	private Animation currentAnimation;
 
-	public RatBeastMount(EntityType<? extends Mob> type, Level level) {
+	public RatBeastMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
 	}
 

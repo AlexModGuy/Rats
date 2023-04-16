@@ -418,20 +418,15 @@ public class TamedRat extends InventoryRat {
 			this.setRespawnCountdown(this.getRespawnCountdown() - 1);
 		}
 
-		if (this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {
+		if (!this.getLevel().isClientSide() && this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {
 			Entity entity = this.getMountEntityType().create(this.getLevel());
 			entity.copyPosition(this);
-			this.getLevel().addFreshEntity(entity);
-
-			for (int k = 0; k < 20; ++k) {
-				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				double d0 = this.getRandom().nextGaussian() * 0.02D;
-				double d1 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(ParticleTypes.POOF, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
-			}
-			if (entity instanceof Mob mob && !(entity instanceof Strider) && this.getLevel() instanceof ServerLevelAccessor accessor) {
+			if (entity instanceof Mob mob && this.getLevel() instanceof ServerLevelAccessor accessor) {
 				ForgeEventFactory.onFinalizeSpawn(mob, accessor, this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 			}
+			this.getLevel().addFreshEntity(entity);
+
+			this.getLevel().broadcastEntityEvent(this, (byte) 127);
 			this.startRiding(entity, true);
 		}
 
@@ -983,6 +978,13 @@ public class TamedRat extends InventoryRat {
 			this.crafting = true;
 		} else if (id == 86) {
 			this.crafting = false;
+		} else if (id == 127) {
+			for (int k = 0; k < 20; ++k) {
+				double d2 = this.getRandom().nextGaussian() * 0.02D;
+				double d0 = this.getRandom().nextGaussian() * 0.02D;
+				double d1 = this.getRandom().nextGaussian() * 0.02D;
+				this.getLevel().addParticle(ParticleTypes.POOF, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
+			}
 		} else {
 			super.handleEntityEvent(id);
 		}
@@ -1172,20 +1174,15 @@ public class TamedRat extends InventoryRat {
 		this.setupDynamicAI();
 
 		Entity vehicle = this.getVehicle();
-		if (vehicle instanceof RatMount mount) {
+		if (!this.getLevel().isClientSide() && vehicle instanceof RatMount mount) {
 			if (!RatUpgradeUtils.hasUpgrade(this, mount.getUpgradeItem())) {
-				for (int k = 0; k < 20; ++k) {
-					double d2 = this.getRandom().nextGaussian() * 0.02D;
-					double d0 = this.getRandom().nextGaussian() * 0.02D;
-					double d1 = this.getRandom().nextGaussian() * 0.02D;
-					this.getLevel().addParticle(ParticleTypes.POOF, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
-				}
+				this.getLevel().broadcastEntityEvent(this, (byte) 127);
 				this.stopRiding();
 				vehicle.discard();
 			}
 		}
 
-		AttributeSupplier defaultAttributes = AbstractRat.createAttributes().build();
+		AttributeSupplier defaultAttributes = TamedRat.createAttributes().build();
 		List<Attribute> attributeList = new ArrayList<>();
 
 		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, stack ->
@@ -1306,7 +1303,7 @@ public class TamedRat extends InventoryRat {
 		double d0 = this.getX() - x;
 		double d1 = this.getY() - y;
 		double d2 = this.getZ() - z;
-		if (this.getVehicle() != null && getMountEntityType() != null && this.getVehicle().getType() == getMountEntityType()) {
+		if (this.getVehicle() != null && this.getMountEntityType() != null && this.getVehicle().getType() == this.getMountEntityType()) {
 			d0 = this.getVehicle().getX() - x;
 			d1 = this.getVehicle().getY() - y;
 			d2 = this.getVehicle().getZ() - z;
@@ -1319,7 +1316,7 @@ public class TamedRat extends InventoryRat {
 		double d0 = this.getX() - vec.x();
 		double d1 = this.getY() - vec.y();
 		double d2 = this.getZ() - vec.z();
-		if (this.getVehicle() != null && getMountEntityType() != null && this.getVehicle().getType() == getMountEntityType()) {
+		if (this.getVehicle() != null && this.getMountEntityType() != null && this.getVehicle().getType() == this.getMountEntityType()) {
 			d0 = this.getVehicle().getX() - vec.x();
 			d1 = this.getVehicle().getY() - vec.y();
 			d2 = this.getVehicle().getZ() - vec.z();

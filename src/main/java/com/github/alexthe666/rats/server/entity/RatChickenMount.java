@@ -22,7 +22,7 @@ public class RatChickenMount extends RatMountBase {
 	public float oFlap;
 	public float wingRotDelta = 1.0F;
 
-	public RatChickenMount(EntityType<? extends Mob> type, Level level) {
+	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
 		this.riderY = 0.7F;
 		this.riderXZ = 0.1F;
