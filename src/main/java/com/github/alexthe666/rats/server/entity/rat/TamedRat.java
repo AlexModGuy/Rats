@@ -149,6 +149,15 @@ public class TamedRat extends InventoryRat {
 		this.setupDynamicAI();
 	}
 
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 8.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.35D)
+				.add(Attributes.FLYING_SPEED, 0.35D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
+				.add(Attributes.FOLLOW_RANGE, 12.0D);
+	}
+
 	@Override
 	protected void registerGoals() {
 		this.harvestGoal = new RatHarvestCropsGoal(this);

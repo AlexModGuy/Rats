@@ -27,6 +27,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -56,6 +57,15 @@ public class Rat extends DiggingRat implements Ratlanteans {
 
 	public Rat(EntityType<? extends Rat> rat, Level level) {
 		super(rat, level);
+	}
+
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 8.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.25D)
+				.add(Attributes.FLYING_SPEED, 0.25D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
+				.add(Attributes.FOLLOW_RANGE, 12.0D);
 	}
 
 	@Override
