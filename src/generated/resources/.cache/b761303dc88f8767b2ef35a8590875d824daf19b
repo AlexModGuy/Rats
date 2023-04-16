@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-31T23:27:21.5200953	Item Models: rats
+// 1.19.4	2023-04-15T18:36:54.1022756	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 ffe740528a7b86d65bb6a795cf2a6fde357f8ff8 assets/rats/models/item/arcane_technology.json
@@ -229,7 +229,7 @@ a298b6f0c699d9213e62e5d4e84bf95468e9ebf2 assets/rats/models/item/rat_quarry.json
 b08bcd06acd39473eefe6f36849e17bbd5da8b47 assets/rats/models/item/rat_quarry_platform.json
 2cf6864177e30f9df190a45ffd059dbd95ce4ca4 assets/rats/models/item/rat_sack.json
 0d16a95a8a1037a0008f69e2da797de36ec8888d assets/rats/models/item/rat_sack_1.json
-ab5de81b020730b0b332ab646a5f04ef5dc65690 assets/rats/models/item/rat_sack_2.json
+4a95153e05538254ae63ea8180cf6b8194bdfb38 assets/rats/models/item/rat_sack_2.json
 ab5de81b020730b0b332ab646a5f04ef5dc65690 assets/rats/models/item/rat_sack_3.json
 1e7fa15a61a15a14963c1045a89af6b7ebc74d1c assets/rats/models/item/rat_seed_bowl.json
 b4a0d675af0a003105a914ade48f3e061d8d3cfc assets/rats/models/item/rat_skull.json

@@ -129,7 +129,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.toBlock(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get());
 
 		ModelFile sack1 = this.generated("rat_sack_1", false, this.itemPrefix("rat_sack_1"));
-		ModelFile sack2 = this.generated("rat_sack_2", false, this.itemPrefix("rat_sack_3"));
+		ModelFile sack2 = this.generated("rat_sack_2", false, this.itemPrefix("rat_sack_2"));
 		ModelFile sack3 = this.generated("rat_sack_3", false, this.itemPrefix("rat_sack_3"));
 		singleTex(RatsItemRegistry.RAT_SACK)
 				.override().predicate(ResourceLocation.tryParse("rat_count"), 1).model(sack1).end()
