@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.items.RatSackItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -32,7 +33,6 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 	@Override
 	protected void onHit(HitResult result) {
 		ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK.get());
-		CompoundTag tag = new CompoundTag();
 		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
 			AABB axisalignedbb = this.getBoundingBox().inflate(16);
 			List<TamedRat> list = this.getLevel().getEntitiesOfClass(TamedRat.class, axisalignedbb);
@@ -41,14 +41,9 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 				for (TamedRat rat : list) {
 					if (capturedRat >= 32) break;
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
-						CompoundTag ratTag = new CompoundTag();
-						rat.addAdditionalSaveData(ratTag);
-						if (rat.hasCustomName()) {
-							ratTag.putString("CustomName", Component.Serializer.toJson(rat.getCustomName()));
-						}
 						capturedRat++;
+						RatSackItem.packRatIntoSack(sack, rat, capturedRat);
 						this.getLevel().broadcastEntityEvent(rat, (byte) 86);
-						tag.put("Rat_" + capturedRat, ratTag);
 						rat.discard();
 					}
 				}
@@ -56,7 +51,6 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 			}
 			this.discard();
 		}
-		sack.setTag(tag);
 		ItemEntity itemEntity = new ItemEntity(this.getLevel(), this.getX(), this.getY(), this.getZ(), sack);
 		itemEntity.setInvulnerable(true);
 		if (!this.getLevel().isClientSide()) {

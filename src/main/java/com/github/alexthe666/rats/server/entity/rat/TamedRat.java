@@ -864,15 +864,7 @@ public class TamedRat extends InventoryRat {
 				return InteractionResult.SUCCESS;
 			}
 			if (itemstack.is(RatsItemRegistry.RAT_SACK.get())) {
-				CompoundTag tag = itemstack.getTag();
-				if (tag == null) {
-					tag = new CompoundTag();
-					itemstack.setTag(tag);
-				}
-				CompoundTag ratTag = new CompoundTag();
-				this.addAdditionalSaveData(ratTag);
-				int currentRat = RatSackItem.getRatsInStack(itemstack) + 1;
-				tag.put("Rat_" + currentRat, ratTag);
+				RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInStack(itemstack) + 1);
 				this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
 				this.discard();
 				player.swing(hand);

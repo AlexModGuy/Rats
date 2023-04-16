@@ -39,6 +39,20 @@ public class RatSackItem extends Item {
 		return ratCount;
 	}
 
+	public static void packRatIntoSack(ItemStack sack, TamedRat rat, int ratCount) {
+		CompoundTag tag = sack.getTag();
+		if (tag == null) {
+			tag = new CompoundTag();
+			sack.setTag(tag);
+		}
+		CompoundTag ratTag = new CompoundTag();
+		rat.addAdditionalSaveData(ratTag);
+		if (rat.hasCustomName()) {
+			ratTag.putString("CustomName", Component.Serializer.toJson(rat.getCustomName()));
+		}
+		tag.put("Rat_" + ratCount, ratTag);
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		int ratCount = 0;
