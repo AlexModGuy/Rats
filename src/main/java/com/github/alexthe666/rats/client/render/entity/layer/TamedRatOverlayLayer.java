@@ -23,6 +23,7 @@ import net.minecraft.world.item.DyeColor;
 public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRat>> {
 	private static final RenderType TEXTURE_DYED_NOT = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_dyed_not.png"));
 	private static final RenderType TEXTURE_DYED = RenderType.entityNoOutline(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_dyed.png"));
+	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/toga.png"));
 
 	public TamedRatOverlayLayer(RenderLayerParent<TamedRat, RatModel<TamedRat>> parent) {
 		super(parent);
@@ -30,6 +31,10 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRa
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, TamedRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		if (rat.hasToga()) {
+			VertexConsumer consumer = buffer.getBuffer(TOGA_TEX);
+			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		}
 		if (rat.isDyed()) {
 			VertexConsumer consumer;
 			if (rat.getDyeColor() == 100) {
