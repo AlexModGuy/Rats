@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.behavior.GiveGiftToHero;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -155,6 +156,8 @@ public class RatsMod {
 		RatsUpgradeConflictRegistry.init();
 		event.enqueueWork(() -> {
 			RatsCauldronRegistry.init();
+
+			Raid.RaiderType.create("RATS_PIPER", RatsEntityRegistry.PIED_PIPER.get(), new int[]{0, 0, 1, 0, 0, 1, 1, 2});
 			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
 
 			CauldronInteraction.WATER.put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);

@@ -9,7 +9,7 @@ public class RatConfig {
 
 	// SERVER
 	public static int ratSpawnDecrease = 5;
-	public static int piperSpawnDecrease = 1;
+	public static int piperSpawnDecrease = 2;
 	public static boolean ratsSpawnLikeMonsters = true;
 	public static boolean cheesemaking = true;
 	public static int milkCauldronTime = 150;

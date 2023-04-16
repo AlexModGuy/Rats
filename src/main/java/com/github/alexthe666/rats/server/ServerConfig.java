@@ -90,7 +90,7 @@ public class ServerConfig {
 		this.garbageSpawnRate = buildDouble(builder, "Garbage Pile Spawn Chance", 0.15F, 0F, 1.0F, "Percentage for every random tick to spawn a rat for a garbage pile.");
 		this.ratsSpawnLikeMonsters = buildBoolean(builder, "Rats Spawn Like Monsters", true, "True if rats should spawn like monsters, meaning they will also despawn when get far away (this only applies to wild rats of course). False if they should only spawn once per world, like pigs and sheep.");
 		this.ratSpawnDecrease = buildInt(builder, "Rat Spawn Decrease", 5, 0, Integer.MAX_VALUE, "A separate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
-		this.piperSpawnDecrease = buildInt(builder, "Piper Spawn Decrease", 5, 0, Integer.MAX_VALUE, "A separate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
+		this.piperSpawnDecrease = buildInt(builder, "Piper Spawn Decrease", 2, 0, Integer.MAX_VALUE, "A separate random roll that only spawns pipers if a one-out-of-X chance, x being this number. raise this number to make them more rare.");
 
 		builder.pop().push("Villages");
 		this.golemsTargetRats = buildBoolean(builder, "Golems Target Rats", true, "True if iron golems will attack wild rats");

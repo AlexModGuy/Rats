@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -33,6 +34,8 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -41,13 +44,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 
-public class PiedPiper extends Monster implements RatSummoner {
+public class PiedPiper extends Raider implements RatSummoner {
 
 	private static final EntityDataAccessor<Integer> RAT_COUNT = SynchedEntityData.defineId(PiedPiper.class, EntityDataSerializers.INT);
 	private int ratCooldown = 0;
 	private int fluteTicks = 0;
 
-	public PiedPiper(EntityType<? extends Monster> type, Level world) {
+	public PiedPiper(EntityType<? extends Raider> type, Level world) {
 		super(type, world);
 		this.xpReward = 10;
 	}
@@ -67,14 +70,24 @@ public class PiedPiper extends Monster implements RatSummoner {
 	}
 
 	@Override
+	public void applyRaidBuffs(int wave, boolean alwaysFalseIdk) {
+
+	}
+
+	@Override
+	public boolean canBeLeader() {
+		return false;
+	}
+
+	@Override
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(4, new PiperStrifeGoal(this, 1.0D, 15.0F));
-		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.6D));
-		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
-		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Rat.class));
+		this.goalSelector.addGoal(3, new PiperStrifeGoal(this, 1.0D, 15.0F));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.6D));
+		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Rat.class, Raider.class));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -150,6 +163,11 @@ public class PiedPiper extends Monster implements RatSummoner {
 		this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(level.getRandom(), difficulty);
 		return spawnData;
+	}
+
+	@Override
+	public SoundEvent getCelebrateSound() {
+		return SoundEvents.VINDICATOR_CELEBRATE;
 	}
 
 	@Override
