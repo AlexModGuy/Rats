@@ -28,8 +28,8 @@ public class RatsEntityRegistry {
 	public static final RegistryObject<EntityType<PlagueDoctor>> PLAGUE_DOCTOR = registerEntity("plague_doctor", EntityType.Builder.of(PlagueDoctor::new, MobCategory.CREATURE).sized(0.8F, 1.8F), 0x2A292A, 0x515359);
 	public static final RegistryObject<EntityType<PurifyingLiquid>> PURIFYING_LIQUID = registerEntityNoEgg("purifying_liquid", EntityType.Builder.<PurifyingLiquid>of(PurifyingLiquid::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<BlackDeath>> BLACK_DEATH = registerEntity("black_death", EntityType.Builder.of(BlackDeath::new, MobCategory.MONSTER).sized(0.6F, 2.1F).fireImmune(), 0x000000, 0x000000);
-	public static final RegistryObject<EntityType<PlagueCloud>> PLAGUE_CLOUD = registerEntity("plague_cloud", EntityType.Builder.of(PlagueCloud::new, RatsMod.RATS).fireImmune().sized(1.2F, 1.2F), 0x000000, 0x52574D);
-	public static final RegistryObject<EntityType<PlagueBeast>> PLAGUE_BEAST = registerEntity("plague_beast", EntityType.Builder.of(PlagueBeast::new, RatsMod.RATS).sized(1.85F, 1.2F), 0x000000, 0xECECEC);
+	public static final RegistryObject<EntityType<PlagueCloud>> PLAGUE_CLOUD = registerEntity("plague_cloud", EntityType.Builder.of(PlagueCloud::new, MobCategory.MONSTER).fireImmune().sized(1.2F, 1.2F), 0x000000, 0x52574D);
+	public static final RegistryObject<EntityType<PlagueBeast>> PLAGUE_BEAST = registerEntity("plague_beast", EntityType.Builder.of(PlagueBeast::new, MobCategory.MONSTER).sized(1.85F, 1.2F), 0x000000, 0xECECEC);
 	public static final RegistryObject<EntityType<PlagueShot>> PLAGUE_SHOT = registerEntityNoEgg("plague_shot", EntityType.Builder.<PlagueShot>of(PlagueShot::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<RatCaptureNet>> RAT_CAPTURE_NET = registerEntityNoEgg("rat_capture_net", EntityType.Builder.<RatCaptureNet>of(RatCaptureNet::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<RatDragonFire>> RAT_DRAGON_FIRE = registerEntityNoEgg("rat_dragon_fire", EntityType.Builder.<RatDragonFire>of(RatDragonFire::new, MobCategory.MISC).sized(0.5F, 0.5F));
