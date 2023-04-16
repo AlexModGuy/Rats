@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T22:55:21.4565353	ratlantis/Tags for minecraft:block mod id rats
+// 1.19.4	2023-04-16T10:34:54.3324689	ratlantis/Tags for minecraft:block mod id rats
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences/wooden.json
 8c84352fdf0bc0292279dbb4aa6056c15563c3ed data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fence_gates.json
@@ -20,15 +20,15 @@ b10d7de8a5bd4db899e008466d408a4ceef5f091 data/minecraft/datapacks/ratlantis/data
 d297359d91fbfe130fdf95b768f5c5c9730e6a5c data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/logs.json
 49f3cc03829978ccb7ec3c646b10d9b0e0ac57b7 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/axe.json
 a6fcab12a714249bc42a13f5741d479872da9a8d data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/hoe.json
-659ed5795f4c3eb3e25344315fd038743e701e1a data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/pickaxe.json
+3fa08c38992aa9874e68467472255e0606c8256a data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/pickaxe.json
 6b604275f5af914f7d47b6eca52c118c8ca796c0 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/shovel.json
 dd7a97d456d402067fa0b1eab9d8d83662cb4945 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/needs_diamond_tool.json
 f6796f0fe82015785823e029987ec89aba0de282 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/needs_iron_tool.json
 7a70317014ad74da6ac9f22aedf4126e9e250a92 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/planks.json
 b10d7de8a5bd4db899e008466d408a4ceef5f091 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/portals.json
-a0bbcecf709597682528b5d80336c8c0c87dee8b data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/slabs.json
+edbb1ec5d970aae77749e5c4adf9cc761fb8beaf data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/slabs.json
 3d4dce32d3328d15faf427c561b19d7c46a7a8de data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/small_flowers.json
-19b089b18d927060e4f228f4d5812e7d176cc319 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/stairs.json
+0f29dc03b296319d2224495b0454f7de820005ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/stairs.json
 6835fb6638b6a7bb8068914902ed80bef9f4c015 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_buttons.json
 0a000658119e8e191c770abda9f0f7c3aa747190 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_doors.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_fences.json

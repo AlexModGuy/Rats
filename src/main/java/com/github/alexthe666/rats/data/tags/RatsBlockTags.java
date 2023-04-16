@@ -62,16 +62,16 @@ public class RatsBlockTags extends BlockTagsProvider {
 		this.tag(BlockTags.CAULDRONS).add(RatsBlockRegistry.CHEESE_CAULDRON.get(), RatsBlockRegistry.MILK_CAULDRON.get(), RatsBlockRegistry.BLUE_CHEESE_CAULDRON.get(), RatsBlockRegistry.NETHER_CHEESE_CAULDRON.get());
 		this.tag(BlockTags.WOOL).add(RatsBlockRegistry.PIED_WOOL.get());
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(MARBLED_CHEESE).add(
 				RatsBlockRegistry.MILK_CAULDRON.get(), RatsBlockRegistry.CHEESE_CAULDRON.get(),
 				RatsBlockRegistry.BLUE_CHEESE_CAULDRON.get(), RatsBlockRegistry.NETHER_CHEESE_CAULDRON.get(),
 				RatsBlockRegistry.RAT_CAGE.get(), RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get(),
 				RatsBlockRegistry.RAT_CAGE_DECORATED.get(), RatsBlockRegistry.RAT_CAGE_WHEEL.get(),
 				RatsBlockRegistry.AUTO_CURDLER.get(), RatsBlockRegistry.RAT_TUBE_COLOR.get(),
-				RatsBlockRegistry.MARBLED_CHEESE_RAW.get(), RatsBlockRegistry.UPGRADE_COMBINER.get(),
+				RatsBlockRegistry.UPGRADE_COMBINER.get(), RatsBlockRegistry.RAT_QUARRY.get(),
 				RatsBlockRegistry.UPGRADE_SEPARATOR.get(), RatsBlockRegistry.MANHOLE.get(),
-				RatsBlockRegistry.TRASH_CAN.get(), RatsBlockRegistry.RAT_ATTRACTOR.get(),
-				RatsBlockRegistry.RAT_QUARRY.get());
+				RatsBlockRegistry.TRASH_CAN.get(), RatsBlockRegistry.RAT_ATTRACTOR.get()
+				);
 
 		this.tag(BlockTags.MINEABLE_WITH_AXE).add(
 				RatsBlockRegistry.FISH_BARREL.get(), RatsBlockRegistry.RAT_HOLE.get(),

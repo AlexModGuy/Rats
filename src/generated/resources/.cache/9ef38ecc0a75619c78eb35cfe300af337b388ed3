@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T22:55:21.4485365	Tags for minecraft:block mod id rats
+// 1.19.4	2023-04-16T10:34:54.3239782	Tags for minecraft:block mod id rats
 441ba640a55a82f8d5ba068d7b83f6b52107a1c9 data/forge/tags/blocks/crafting_tables.json
 925f44d85bf032861c23113b9d3f3dd5d9eabf86 data/forge/tags/blocks/storage_blocks.json
 7c4d9a1829286b02c42cec7f32ea92e74649874b data/forge/tags/blocks/storage_blocks/blue_cheese.json
@@ -7,7 +7,7 @@
 cdc5a40133bd6d3417a2c0489e73707e38f4d883 data/minecraft/tags/blocks/cauldrons.json
 68165897e66555281c35412aa51faf158289d99b data/minecraft/tags/blocks/mineable/axe.json
 fd46a5efdb513b94debe267e002104c4e6f93f15 data/minecraft/tags/blocks/mineable/hoe.json
-5aca24f127c1d50364a6b57b930b0708640f72eb data/minecraft/tags/blocks/mineable/pickaxe.json
+ac9ac484f62313ba20728117e9d8ab3dfef5d202 data/minecraft/tags/blocks/mineable/pickaxe.json
 bcf5161d4660bc16e6f078d2bece4f65d06c14c6 data/minecraft/tags/blocks/mineable/shovel.json
 00a2feb404391b4e3c8142274bb6642b7649a268 data/minecraft/tags/blocks/wool.json
 3769d120498d170f23f4566876df13419d4b0c36 data/rats/tags/blocks/diggable_blocks.json

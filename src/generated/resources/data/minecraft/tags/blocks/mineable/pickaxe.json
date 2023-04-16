@@ -1,5 +1,6 @@
 {
   "values": [
+    "#rats:marbled_cheese",
     "rats:cauldron_milk",
     "rats:cauldron_cheese",
     "rats:cauldron_blue_cheese",
@@ -10,12 +11,11 @@
     "rats:rat_cage_wheel",
     "rats:auto_curdler",
     "rats:rat_tube",
-    "rats:marbled_cheese_raw",
     "rats:upgrade_combiner",
+    "rats:rat_quarry",
     "rats:upgrade_separator",
     "rats:manhole",
     "rats:trash_can",
-    "rats:rat_attractor",
-    "rats:rat_quarry"
+    "rats:rat_attractor"
   ]
 }

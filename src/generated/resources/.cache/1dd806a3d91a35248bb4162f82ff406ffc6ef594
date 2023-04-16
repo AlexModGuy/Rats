@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T22:55:21.4515491	ratlantis/Tags for minecraft:item mod id rats
+// 1.19.4	2023-04-16T10:34:54.3284713	ratlantis/Tags for minecraft:item mod id rats
 4cd39fb1c14d483c2a8547587be15c04b6eadfa3 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/boots.json
 6d9091a550868d3941529ccb87df30673a46dfe3 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/chestplates.json
 664db897c79d0deba08419b337c157190d472b97 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/helmets.json
@@ -30,8 +30,8 @@ c3eed20f2b4585fe4fca970a618d06b81492c93b data/minecraft/datapacks/ratlantis/data
 14ba6fae9d23a2c599202e5ed60a20026101f04d data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/pickaxes.json
 7a70317014ad74da6ac9f22aedf4126e9e250a92 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/planks.json
 8ad385909c76eea54d07b6736ed11caa63bfc0ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/shovels.json
-a0bbcecf709597682528b5d80336c8c0c87dee8b data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/slabs.json
-19b089b18d927060e4f228f4d5812e7d176cc319 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/stairs.json
+edbb1ec5d970aae77749e5c4adf9cc761fb8beaf data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/slabs.json
+0f29dc03b296319d2224495b0454f7de820005ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/stairs.json
 7801e498568220ed1d47310f45080c85ef712233 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/swords.json
 5aeaee50f8195ae4587363248f152a122ee5d265 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/trimmable_armor.json
 5480f8f99b938b0cf7deaa2849a48d98d257d359 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/trim_materials.json

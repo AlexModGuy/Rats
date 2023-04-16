@@ -80,10 +80,12 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 		this.tag(Tags.Blocks.FENCE_GATES_WOODEN).add(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
 
 		this.tag(BlockTags.WOODEN_SLABS).add(RatlantisBlockRegistry.PIRAT_SLAB.get());
-		this.tag(BlockTags.SLABS).add(RatlantisBlockRegistry.MARBLED_CHEESE_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_SLAB.get());
+		this.tag(BlockTags.SLABS).add(RatlantisBlockRegistry.MARBLED_CHEESE_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_SLAB.get(),
+				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_SLAB.get());
 
 		this.tag(BlockTags.WOODEN_STAIRS).add(RatlantisBlockRegistry.PIRAT_STAIRS.get());
-		this.tag(BlockTags.STAIRS).add(RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get());
+		this.tag(BlockTags.STAIRS).add(RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get(),
+				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get());
 
 		this.tag(BlockTags.SMALL_FLOWERS).add(RatlantisBlockRegistry.RATGLOVE_FLOWER.get());
 		this.tag(BlockTags.INVALID_SPAWN_INSIDE).add(RatlantisBlockRegistry.RATLANTIS_PORTAL.get());
@@ -97,13 +99,11 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 				RatlantisBlockRegistry.RATLANTIS_REACTOR.get(), RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get(),
 				RatlantisBlockRegistry.CHEESE_ORE.get(), RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get(),
 				RatlantisBlockRegistry.ORATCHALCUM_ORE.get(), RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get(),
-				RatlantisBlockRegistry.DUTCHRAT_BELL.get(), RatlantisBlockRegistry.MARBLED_CHEESE.get(),
-				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_SLAB.get(),
-				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED.get(),
-				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get(),
+				RatlantisBlockRegistry.DUTCHRAT_BELL.get(),
+				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get(),
 				RatlantisBlockRegistry.MARBLED_CHEESE_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.get(),
-				RatlantisBlockRegistry.MARBLED_CHEESE_PILLAR.get(), RatlantisBlockRegistry.MARBLED_CHEESE_TILE.get(),
-				RatlantisBlockRegistry.MARBLED_CHEESE_CHISELED.get(), RatlantisBlockRegistry.BLACK_MARBLED_CHEESE.get(),
+				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(),
+				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_SLAB.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get(),
 				RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE.get(), RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get());
 
 		this.tag(BlockTags.MINEABLE_WITH_AXE).add(RatlantisBlockRegistry.AIR_RAID_SIREN.get());
