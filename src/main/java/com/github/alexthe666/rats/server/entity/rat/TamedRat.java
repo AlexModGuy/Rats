@@ -19,7 +19,10 @@ import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
 import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
-import com.github.alexthe666.rats.server.items.upgrades.*;
+import com.github.alexthe666.rats.server.items.upgrades.BucketRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.EnergyRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.MountRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.OreDoublingRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.*;
 import com.github.alexthe666.rats.server.message.ManageRatStaffPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
@@ -67,7 +70,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.ClipContext;
@@ -415,8 +417,19 @@ public class TamedRat extends InventoryRat {
 		}
 
 		if (this.getRespawnCountdown() > 0) {
+			if (this.getLevel().isClientSide() && this.tickCount % 5 == 0) {
+				double d0 = this.position().x();
+				double d1 = this.position().y() + 0.25D;
+				double d2 = this.position().z();
+				double d3 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
+				double d4 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
+				double d5 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
+				this.getLevel().addParticle(ParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
+			}
 			this.setRespawnCountdown(this.getRespawnCountdown() - 1);
 		}
+
+		this.setNoAi(this.getRespawnCountdown() > 0);
 
 		if (!this.getLevel().isClientSide() && this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {
 			Entity entity = this.getMountEntityType().create(this.getLevel());
@@ -493,6 +506,11 @@ public class TamedRat extends InventoryRat {
 			this.setPos(this.getX(), this.getY() + 1, this.getZ());
 			this.getNavigation().stop();
 		}
+	}
+
+	@Override
+	public boolean fireImmune() {
+		return this.getRespawnCountdown() > 0 || super.fireImmune();
 	}
 
 	@Override
@@ -765,26 +783,22 @@ public class TamedRat extends InventoryRat {
 		super.dropCustomDeathLoot(source, looting, playerKill);
 	}
 
-	@Override
-	protected void handleBeforeRemoval() {
-		this.spawnAngelCopy();
-	}
-
 	public void spawnAngelCopy() {
-		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ANGEL.get())) {
-			TamedRat copy = RatsEntityRegistry.TAMED_RAT.get().create(this.getLevel());
-			CompoundTag tag = new CompoundTag();
-			this.addAdditionalSaveData(tag);
-			tag.putBoolean("NoAI", false);
-			tag.putShort("HurtTime", (short) 0);
-			tag.putInt("HurtByTimestamp", 0);
-			tag.putShort("DeathTime", (short) 0);
-			copy.readAdditionalSaveData(tag);
-			copy.setHealth(copy.getMaxHealth());
-			copy.copyPosition(this);
-			copy.setRespawnCountdown(1200);
-			this.getLevel().addFreshEntity(copy);
+		TamedRat copy = RatsEntityRegistry.TAMED_RAT.get().create(this.getLevel());
+		CompoundTag tag = new CompoundTag();
+		this.addAdditionalSaveData(tag);
+		tag.putShort("HurtTime", (short) 0);
+		tag.putInt("HurtByTimestamp", 0);
+		tag.putShort("DeathTime", (short) 0);
+		copy.readAdditionalSaveData(tag);
+		copy.setHealth(copy.getMaxHealth());
+		copy.copyPosition(this);
+		copy.setRespawnCountdown(1200);
+		if (this.hasCustomName()) {
+			copy.setCustomName(this.getCustomName());
 		}
+		copy.clearFire();
+		this.getLevel().addFreshEntity(copy);
 	}
 
 	@Override
@@ -808,7 +822,7 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (this.getRespawnCountdown() > 0 || itemstack.getItem() instanceof SpawnEggItem) {
+		if (this.getRespawnCountdown() > 0 || itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_spawn_egg")))) {
 			return InteractionResult.PASS;
 		}
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_CARRAT.get())) {

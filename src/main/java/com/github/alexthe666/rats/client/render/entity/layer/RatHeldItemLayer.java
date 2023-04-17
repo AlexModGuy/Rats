@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -87,11 +88,37 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 			}
 
 			if (entity instanceof TamedRat rat) {
-				RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
+				if (rat.getRespawnCountdown() > 0) {
 					stack.pushPose();
-					((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, this.getParentModel(), stack, buffer, light, ageInTicks);
+					Minecraft minecraft = Minecraft.getInstance();
+					float wingAngle = 0;
+					float wingFold = -45.0F;
+					this.getParentModel().body1.translateRotate(stack);
+					this.getParentModel().body2.translateRotate(stack);
+					stack.pushPose();
+					stack.mulPose(Axis.ZN.rotationDegrees(wingAngle));
+					stack.mulPose(Axis.YP.rotationDegrees(wingFold));
+					stack.mulPose(Axis.XN.rotationDegrees(90));
+					stack.translate(0.2F, 0.0F, -0.15F);
+					minecraft.getItemRenderer().renderStatic(new ItemStack(RatsItemRegistry.FEATHERY_WING.get()), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 					stack.popPose();
-				});
+					stack.pushPose();
+
+					stack.mulPose(Axis.ZP.rotationDegrees(wingAngle));
+					stack.mulPose(Axis.YN.rotationDegrees(wingFold));
+					stack.mulPose(Axis.XN.rotationDegrees(90));
+					stack.mulPose(Axis.YP.rotationDegrees(180));
+					stack.translate(0.2F, -0.0F, 0.15F);
+					minecraft.getItemRenderer().renderStatic(new ItemStack(RatsItemRegistry.FEATHERY_WING.get()), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
+					stack.popPose();
+					stack.popPose();
+				} else {
+					RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
+						stack.pushPose();
+						((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, this.getParentModel(), stack, buffer, light, ageInTicks);
+						stack.popPose();
+					});
+				}
 			}
 		}
 	}

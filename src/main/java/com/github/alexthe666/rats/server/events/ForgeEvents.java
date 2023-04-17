@@ -63,6 +63,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -129,6 +130,19 @@ public class ForgeEvents {
 			protectors++;
 		}
 		return protectors;
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void spawnAngelRat(LivingDeathEvent event) {
+		if (event.getEntity() instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_ANGEL.get())) {
+			event.setCanceled(true);
+			rat.spawnAngelCopy();
+			rat.playSound(RatsSoundRegistry.RAT_DIE.get());
+			if (rat.getOwner() instanceof Player player) {
+				player.sendSystemMessage(Component.translatable("entity.rats.rat.respawned_angel", rat.getName().getString()));
+			}
+			rat.discard();
+		}
 	}
 
 	@SubscribeEvent

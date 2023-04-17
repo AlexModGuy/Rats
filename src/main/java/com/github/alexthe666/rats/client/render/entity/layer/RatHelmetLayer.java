@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
+import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.HatItem;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -40,6 +41,9 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		ItemStack itemstack = rat.getItemBySlot(EquipmentSlot.HEAD);
+		if (rat instanceof TamedRat tamed && tamed.getRespawnCountdown() > 0) {
+			itemstack = new ItemStack(RatsItemRegistry.HALO_HAT.get());
+		}
 		if (!itemstack.isEmpty()) {
 			stack.pushPose();
 			if (itemstack.getItem() instanceof ArmorItem armoritem) {

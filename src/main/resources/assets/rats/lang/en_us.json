@@ -621,6 +621,7 @@
   "entity.rats.rat.status.moving": "Moving",
   "entity.rats.rat.status.eating": "Eating",
   "entity.rats.rat.dismount_instructions": "Sneak and punch air to remove rats from shoulder",
+  "entity.rats.rat.respawned_angel": "%s respawned as an angel",
   "entity.rats.rat.staff.bind": "Staff is now bound to %s",
   "entity.rats.rat.staff.no_rat": "Staff is not bound to any rat",
   "entity.rats.rat.staff.mark_block_deposit": "Deposit items in %s from the",
