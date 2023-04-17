@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,13 @@ public class RatMeleeAttackGoal extends MeleeAttackGoal implements RatWorkGoal {
 				return entity.getBbWidth() * 2.0F * entity.getBbWidth() * 2.0F + attackTarget.getBbWidth();
 			}
 		}
-		return 1.5D;
+		return 3.0D;
+	}
+
+	@Override
+	public void tick() {
+		this.rat.setAnimation(IAnimatedEntity.NO_ANIMATION);
+		super.tick();
 	}
 
 	@Override
