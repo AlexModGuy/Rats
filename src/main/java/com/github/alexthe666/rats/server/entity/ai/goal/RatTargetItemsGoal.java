@@ -20,13 +20,11 @@ import java.util.List;
 
 public class RatTargetItemsGoal extends Goal {
 	private final TamedRat rat;
-	private final PathNavigation navigation;
 	@Nullable
 	private ItemEntity targetItem = null;
 
 	public RatTargetItemsGoal(TamedRat rat) {
 		this.rat = rat;
-		this.navigation = rat.getNavigation();
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 
@@ -49,7 +47,7 @@ public class RatTargetItemsGoal extends Goal {
 
 			for (ItemEntity item : items) {
 				//please, only go after items you can actually reach
-				Path toPath = this.navigation.createPath(item, 1);
+				Path toPath = this.rat.getNavigation().createPath(item, 1);
 				if (toPath != null && toPath.canReach()) {
 					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 						if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get()) && !ItemStack.isSameItemSameTags(item.getItem(), this.rat.getItemInHand(InteractionHand.MAIN_HAND)))
@@ -83,13 +81,13 @@ public class RatTargetItemsGoal extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return this.rat.isAlive() && !this.rat.isCurrentlyWorking && !this.navigation.isDone() && !this.navigation.isStuck() && this.targetItem != null && !this.targetItem.isRemoved() && this.checkIfRatCanHold();
+		return this.rat.isAlive() && !this.rat.isCurrentlyWorking && !this.rat.getNavigation().isDone() && !this.rat.getNavigation().isStuck() && this.targetItem != null && !this.targetItem.isRemoved() && this.checkIfRatCanHold();
 	}
 
 	@Override
 	public void start() {
 		if (this.targetItem != null) {
-			this.navigation.moveTo(this.targetItem, 1.25D);
+			this.rat.getNavigation().moveTo(this.targetItem, 1.25D);
 		}
 	}
 
@@ -101,7 +99,7 @@ public class RatTargetItemsGoal extends Goal {
 	@Override
 	public void tick() {
 		if (this.targetItem != null && !this.targetItem.isRemoved()) {
-			if (this.rat.distanceToSqr(this.targetItem) < this.rat.getRatHarvestDistance(0.0D)) {
+			if (this.rat.distanceToSqr(this.targetItem) < this.rat.getRatHarvestDistance(1.0D)) {
 				ItemStack duplicate = this.targetItem.getItem().copy();
 				if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get())) {
 					ItemStack alreadyHolding = this.rat.getItemInHand(InteractionHand.MAIN_HAND);

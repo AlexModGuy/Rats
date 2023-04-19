@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
 public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
@@ -32,6 +33,7 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 	protected BaseRatHarvestGoal(TamedRat rat) {
 		this.rat = rat;
 		this.targetSorter = new BlockSorter(rat);
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
 	}
 
 	public boolean checkTheBasics(boolean checkForItems, boolean checkForItemHolding) {
