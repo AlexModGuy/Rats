@@ -1096,6 +1096,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
+	public boolean isPushable() {
+		return !this.isBaby() && super.isPushable();
+	}
+
+	@Override
 	public boolean isCurrentlyGlowing() {
 		if (this.getLevel().isClientSide() && ForgeClientEvents.isRatSelectedOnStaff(this)) return true;
 		return super.isCurrentlyGlowing();
