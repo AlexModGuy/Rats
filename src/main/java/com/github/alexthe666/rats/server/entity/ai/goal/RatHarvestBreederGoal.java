@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 
 import java.util.Comparator;
@@ -40,6 +41,7 @@ public class RatHarvestBreederGoal extends BaseRatHarvestGoal {
 				if (this.getTargetEntity() instanceof Animal animal && !animal.isInLove()) {
 					animal.setInLove(null);
 					this.rat.getMainHandItem().shrink(1);
+					this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 				}
 				this.stop();
 			}

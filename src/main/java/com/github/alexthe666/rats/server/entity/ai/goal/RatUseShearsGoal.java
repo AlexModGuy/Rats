@@ -5,6 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.IForgeShearable;
 
@@ -39,6 +40,7 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
 				if (this.getTargetEntity() instanceof IForgeShearable shearable) {
 					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.getLevel(), this.getTargetEntity().blockPosition(), 0);
+					this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 					for (ItemStack stack : drops) {
 						this.getTargetEntity().spawnAtLocation(stack, 0.0F);
 					}

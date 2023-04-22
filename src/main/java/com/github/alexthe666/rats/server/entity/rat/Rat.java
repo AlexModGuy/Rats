@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.RatKing;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatEnterTrapGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
-import com.github.alexthe666.rats.server.entity.ai.goal.WildRatDefendPlagueDoctorGoal;
 import com.github.alexthe666.rats.server.entity.ratlantis.Ratlanteans;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;

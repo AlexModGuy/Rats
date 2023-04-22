@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidStack;
@@ -63,6 +64,7 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 							RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
 						}
 						this.rat.playSound(SoundEvents.COW_MILK, 1, 1);
+						this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 						this.stop();
 					}
 				}

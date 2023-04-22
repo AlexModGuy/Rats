@@ -35,9 +35,9 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
-		this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

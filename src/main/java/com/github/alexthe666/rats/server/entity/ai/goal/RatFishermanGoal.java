@@ -12,6 +12,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
@@ -66,6 +67,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 					this.rat.getNavigation().stop();
 					if (!this.playedThrownSound) {
 						this.rat.playSound(SoundEvents.FISHING_BOBBER_THROW, 1.0F, 0.5F);
+						this.rat.gameEvent(GameEvent.ITEM_INTERACT_START);
 						this.playedThrownSound = true;
 					}
 				}
@@ -90,6 +92,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 				this.spawnFishingLoot();
 				this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 101);
 				this.rat.playSound(SoundEvents.FISHING_BOBBER_SPLASH, 1.0F, 1.0F);
+				this.rat.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
 				this.stop();
 			}
 		}
