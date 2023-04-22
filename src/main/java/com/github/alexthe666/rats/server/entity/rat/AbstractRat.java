@@ -58,6 +58,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -99,7 +100,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	@Override
 	public float getStepHeight() {
-		return 1.75F;
+		return 1.55F;
 	}
 
 	@Override
@@ -574,6 +575,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected void eatItem(ItemStack stack) {
 		if (!stack.isEmpty()) {
 			if (stack.getUseAnimation() == UseAnim.DRINK) {
+				this.gameEvent(GameEvent.DRINK);
 				this.playSound(RatsSoundRegistry.RAT_DRINK.get(), 0.5F, this.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 			}
 			if (RatUtils.isRatFood(stack) || (this instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()))) {
@@ -588,6 +590,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 					vec3d1 = vec3d1.add(this.getX(), this.getY() + 0.25D, this.getZ());
 					this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec3d1.x(), vec3d1.y(), vec3d1.z(), vec3d.x(), vec3d.y() + 0.05D, vec3d.z());
 				}
+				this.gameEvent(GameEvent.EAT);
 				this.playSound(RatsSoundRegistry.RAT_EAT.get(), 0.25F + 0.25F * (float) this.getRandom().nextInt(2), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.3F);
 			}
 		}
