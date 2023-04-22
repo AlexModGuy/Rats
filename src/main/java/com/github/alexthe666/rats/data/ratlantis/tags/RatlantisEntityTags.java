@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.data.ratlantis.tags;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
+import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -19,6 +21,10 @@ public class RatlantisEntityTags extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		tag(RatsEntityTags.RATS).add(RatlantisEntityRegistry.GHOST_PIRAT.get(), RatlantisEntityRegistry.PIRAT.get());
+
+		tag(RatsEntityTags.RAT_MOUNTS).add(RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON.get(), RatlantisEntityRegistry.RAT_MOUNT_BIPLANE.get());
+
 		tag(Tags.EntityTypes.BOSSES).add(
 				RatlantisEntityRegistry.DUTCHRAT.get(), RatlantisEntityRegistry.NEO_RATLANTEAN.get(),
 				RatlantisEntityRegistry.RAT_BARON.get(), RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get());

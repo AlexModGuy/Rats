@@ -1,0 +1,12 @@
+{
+  "entity_type": "rats:feral_ratlantean",
+  "body": ["lower_body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["front_right_heel", "back_right_thigh"],
+  "left_leg": ["front_left_heel", "back_left_thigh"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.5,
+  "face_forwards": true
+}

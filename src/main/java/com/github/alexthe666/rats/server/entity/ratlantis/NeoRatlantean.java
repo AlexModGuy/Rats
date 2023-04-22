@@ -81,6 +81,11 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 	}
 
 	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
+	}
+
+	@Override
 	public boolean isNoGravity() {
 		return true;
 	}

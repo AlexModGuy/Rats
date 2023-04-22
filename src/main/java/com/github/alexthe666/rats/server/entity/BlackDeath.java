@@ -183,6 +183,11 @@ public class BlackDeath extends Monster implements PlagueLegion, RatSummoner {
 		return false;
 	}
 
+	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
+	}
+
 	public boolean isSummoning() {
 		return this.getEntityData().get(IS_SUMMONING);
 	}

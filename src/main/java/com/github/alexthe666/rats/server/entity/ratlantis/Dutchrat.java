@@ -127,6 +127,16 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity, 
 	}
 
 	@Override
+	public boolean canChangeDimensions() {
+		return false;
+	}
+
+	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
+	}
+
+	@Override
 	public boolean isNoGravity() {
 		return true;
 	}

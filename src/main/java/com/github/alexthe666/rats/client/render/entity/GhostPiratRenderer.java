@@ -45,9 +45,7 @@ public class GhostPiratRenderer extends AbstractRatRenderer<GhostPirat> {
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			float f = (float) rat.tickCount + partialTicks;
 			VertexConsumer consumer = buffer.getBuffer(RenderType.energySwirl(GHOST_OVERLAY, f * 0.01F, f * 0.01F));
-			this.getParentModel().setupAnim(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
-
 		}
 	}
 }

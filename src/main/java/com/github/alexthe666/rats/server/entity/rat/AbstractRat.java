@@ -9,8 +9,12 @@ import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.*;
-import com.github.alexthe666.rats.server.entity.ai.goal.*;
+import com.github.alexthe666.rats.server.entity.BlackDeath;
+import com.github.alexthe666.rats.server.entity.RatKing;
+import com.github.alexthe666.rats.server.entity.RatMountBase;
+import com.github.alexthe666.rats.server.entity.RatSummoner;
+import com.github.alexthe666.rats.server.entity.ai.goal.RatFleePositionGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.RatMoveControl;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatBaronPlane;
 import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
@@ -37,14 +41,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Ocelot;
@@ -53,7 +53,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -112,7 +115,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(0, new WildRatTargetFoodGoal(this));
-		this.targetSelector.addGoal(2, new HurtByTargetGoal(this, Cat.class, Ocelot.class, Fox.class));
+		this.targetSelector.addGoal(2, new HurtByTargetGoal(this, AbstractRat.class, Cat.class, Ocelot.class, Fox.class));
 		this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(4, new OwnerHurtTargetGoal(this));
 	}
@@ -345,7 +348,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public boolean shouldPlayIdleAnimations() {
-		return !this.isDeadInTrap() && this.isAlive() && this.getAnimation() != Rat.ANIMATION_EAT && !this.getEntityData().get(SLEEPING);
+		return !this.isPassenger() && !this.isDeadInTrap() && this.isAlive() && this.getAnimation() != Rat.ANIMATION_EAT && !this.getEntityData().get(SLEEPING);
 	}
 
 	@Override
@@ -402,7 +405,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	protected boolean isVisuallySitting() {
-		return this.isPassenger() || this.getEntityData().get(SITTING) || this.isEating() || this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF;
+		return this.getVehicle() instanceof Player || this.getVehicle() instanceof RatMountBase || this.getEntityData().get(SITTING) || this.isEating() || this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF;
 	}
 
 	public boolean isHoldingItemInHands() {
@@ -546,40 +549,25 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	@Override
 	public void rideTick() {
-		Entity entity = this.getVehicle();
-		if (entity != null) {
-			if (!entity.isAlive() || entity instanceof LivingEntity living && living.getHealth() <= 0.0F) {
-				this.stopRiding();
-			} else {
-				this.setDeltaMovement(0, 0, 0);
-				this.tick();
-				if (this.isPassenger()) {
-					if (this.getVehicle() instanceof RatMountBase || this.getVehicle() instanceof RatBaronPlane || this.getVehicle() instanceof RattlingGun) {
-						this.setYRot(this.yBodyRot);
-						super.rideTick();
-					} else {
-						this.updateRiding(entity);
-					}
-				}
-			}
+		super.rideTick();
+		if (this.getVehicle() instanceof Player player) {
+			this.updateRiding(player);
 		}
 	}
 
-	public void updateRiding(Entity riding) {
-		if (riding.isVehicle() && riding instanceof Player player) {
-			int i = riding.getPassengers().indexOf(this);
-			float radius = (i == 0 ? 0F : 0.4F) + (player.isFallFlying() ? 2 : 0);
-			float angle = (0.01745329251F * player.yBodyRot + (i == 2 ? -92.5F : i == 1 ? 92.5F : 0));
-			double extraX = radius * Mth.sin((float) (Math.PI + angle));
-			double extraZ = radius * Mth.cos(angle);
-			double extraY = (riding.isCrouching() ? 1.1D : 1.4D);
-			this.setYRot(player.yHeadRot);
-			this.yHeadRot = player.yHeadRot;
-			this.yRotO = player.yHeadRot;
-			this.setPos(riding.getX() + extraX, riding.getY() + extraY, riding.getZ() + extraZ);
-			if (player.isFallFlying()) {
-				this.stopRiding();
-			}
+	public void updateRiding(Player riding) {
+		int i = riding.getPassengers().indexOf(this);
+		float radius = (i == 0 ? 0F : 0.4F) + (riding.isFallFlying() ? 2 : 0);
+		float angle = (0.01745329251F * riding.yBodyRot + (i == 2 ? -92.5F : i == 1 ? 92.5F : 0));
+		double extraX = radius * Mth.sin((float) (Math.PI + angle));
+		double extraZ = radius * Mth.cos(angle);
+		double extraY = (riding.isCrouching() ? 1.1D : 1.4D);
+		this.setYRot(riding.yHeadRot);
+		this.yHeadRot = riding.yHeadRot;
+		this.yRotO = riding.yHeadRot;
+		this.setPos(riding.getX() + extraX, riding.getY() + extraY, riding.getZ() + extraZ);
+		if (riding.isFallFlying()) {
+			this.stopRiding();
 		}
 	}
 

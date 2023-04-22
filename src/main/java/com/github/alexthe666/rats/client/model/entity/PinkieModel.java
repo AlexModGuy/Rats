@@ -12,7 +12,8 @@ public class PinkieModel<T extends TamedRat> extends RatModel<T> {
 		super(0.0F, true);
 		this.texWidth = 16;
 		this.texHeight = 16;
-		this.body = new AdvancedModelBox(this, 0, 0);
+		this.body = new AdvancedModelBox(this, "body");
+		this.body.setTextureOffset(0, 0);
 		this.body.setRotationPoint(0.0F, 23.0F, 0.0F);
 		this.body.addBox(-1.0F, -1.0F, -2.0F, 2, 2, 4, 0.0F);
 		this.updateDefaultPose();

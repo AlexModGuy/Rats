@@ -253,6 +253,16 @@ public class RatKing extends Monster implements Ratlanteans, RatSummoner {
 	}
 
 	@Override
+	public boolean canChangeDimensions() {
+		return false;
+	}
+
+	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
+	}
+
+	@Override
 	public boolean encirclesSummoner() {
 		return true;
 	}

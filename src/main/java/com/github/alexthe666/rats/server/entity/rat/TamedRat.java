@@ -810,16 +810,6 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	public void updateRiding(Entity riding) {
-		super.updateRiding(riding);
-		if (riding.isVehicle() && riding instanceof Strider strider) {
-			riding.clearFire();
-			this.setPos(riding.getX(), riding.getY() + strider.getPassengersRidingOffset() + 0.15F, riding.getZ());
-			strider.boost();
-		}
-	}
-
-	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (this.getRespawnCountdown() > 0 || itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_spawn_egg")))) {

@@ -80,7 +80,7 @@ public class Rat extends DiggingRat implements Ratlanteans {
 				return !Rat.this.hasPlague() && this.mob.getLastHurtByMob() instanceof Player;
 			}
 		});
-		this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
+		//this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> {
 			if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || !Rat.this.hasPlague()) return false;
 			return !entity.isAlliedTo(Rat.this) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) && entity.getLevel().getDifficulty() != Difficulty.PEACEFUL;
@@ -154,6 +154,11 @@ public class Rat extends DiggingRat implements Ratlanteans {
 			this.ratKingTransformTicks++;
 			this.handleRatKingTransform();
 		}
+	}
+
+	@Override
+	public int getExperienceReward() {
+		return this.hasPlague() ? 10 : super.getExperienceReward();
 	}
 
 	@Nullable

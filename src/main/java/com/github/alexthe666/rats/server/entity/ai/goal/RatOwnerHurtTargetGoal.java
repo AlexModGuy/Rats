@@ -22,7 +22,7 @@ public class RatOwnerHurtTargetGoal extends TargetGoal {
 		if (!this.tameable.isAttackCommand()) {
 			return false;
 		}
-		if (this.tameable.canMove() && !this.tameable.isInSittingPose()) {
+		if (this.tameable.canMove() && !this.tameable.isOrderedToSit()) {
 			LivingEntity owner = this.tameable.getOwner();
 			if (owner == null) {
 				return false;

@@ -1,12 +1,15 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
 
 public class RatWanderGoal extends WaterAvoidingRandomStrollGoal {
 
@@ -15,6 +18,7 @@ public class RatWanderGoal extends WaterAvoidingRandomStrollGoal {
 	public RatWanderGoal(TamedRat rat, double speedModifier) {
 		super(rat, speedModifier);
 		this.rat = rat;
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
@@ -24,8 +25,8 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 	}
 
 	@Override
-	public boolean isInterruptable() {
-		return false;
+	public boolean unableToMove() {
+		return this.rat.isOrderedToSit() || this.rat.getVehicle() instanceof Player || this.rat.isLeashed();
 	}
 
 	@Override
@@ -35,6 +36,7 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 		this.timeToRecalcPath = 0;
 	}
 
+	@Override
 	public void tick() {
 		this.rat.getLookControl().setLookAt(this.owner, 10.0F, (float) this.rat.getMaxHeadXRot());
 		if (this.rat.isFollowing()) {
@@ -44,7 +46,7 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 					this.teleportToOwner();
 				} else {
 					if (this.rat.hasFlightUpgrade()) {
-						this.rat.getNavigation().moveTo(this.owner.getX(), this.owner.getY(), this.owner.getZ(), this.speedModifier);
+						this.rat.getNavigation().moveTo(this.owner.getX(), this.owner.getY() + 2.5D, this.owner.getZ(), this.speedModifier);
 						this.rat.setFlying(true);
 					} else {
 						this.rat.getNavigation().moveTo(this.owner, this.speedModifier);

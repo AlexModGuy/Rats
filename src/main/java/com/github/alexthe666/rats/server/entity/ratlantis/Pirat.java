@@ -160,12 +160,6 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Ratlanteans, 
 	}
 
 	@Override
-	public void updateRiding(Entity riding) {
-		super.updateRiding(riding);
-		this.setPos(riding.getX(), riding.getY() + 0.5D, riding.getZ());
-	}
-
-	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.attackCooldown == 0) {
 			this.lookAt(target, 180, 180);

@@ -362,4 +362,14 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 	protected SoundEvent getDeathSound() {
 		return RatsSoundRegistry.BIPLANE_DEATH.get();
 	}
+
+	@Override
+	public boolean canChangeDimensions() {
+		return false;
+	}
+
+	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
+	}
 }
