@@ -523,19 +523,21 @@ public class TamedRat extends InventoryRat {
 		if (this.isBaby() || this.isInvulnerableTo(source) || (source.is(DamageTypes.IN_WALL) && this.isPassenger())) {
 			return false;
 		} else {
-			if (this.getVehicle() != null && this.isRidingSpecialMount()) {
-				this.getVehicle().hurt(source, amount);
-				this.invulnerableTime = 20;
-				return false;
-			}
-
 			Entity entity = source.getEntity();
 
 			if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
 				amount = (amount + 1.0F) / 2.0F;
 			}
 
-			return super.hurt(source, amount);
+			boolean flag = super.hurt(source, amount);
+
+			if (flag && this.getVehicle() != null && this.isRidingSpecialMount()) {
+				this.getVehicle().hurt(source, amount);
+				this.invulnerableTime = 20;
+				return false;
+			}
+
+			return flag;
 		}
 	}
 
@@ -757,22 +759,6 @@ public class TamedRat extends InventoryRat {
 			return ANIMATION_DANCE;
 		}
 		return NO_ANIMATION;
-	}
-
-	public boolean shouldDropExperience() {
-		return super.shouldDropExperience() && !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ANGEL.get());
-	}
-
-	@Override
-	protected boolean shouldDropLoot() {
-		return this.shouldDropExperience();
-	}
-
-	@Override
-	protected void dropEquipment() {
-		if (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ANGEL.get())) {
-			super.dropEquipment();
-		}
 	}
 
 	@Override
