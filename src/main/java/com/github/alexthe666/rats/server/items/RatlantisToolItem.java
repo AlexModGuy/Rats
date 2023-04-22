@@ -16,6 +16,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
@@ -121,7 +123,7 @@ public class RatlantisToolItem {
 			Level level = context.getLevel();
 			for (int x = -1; x <= 1; x++) {
 				for (int z = -1; z <= 1; z++) {
-					BlockPos pos = context.getClickedPos();
+					BlockPos pos = context.getClickedPos().offset(x, 0, z);
 					BlockState toolModifiedState = level.getBlockState(pos).getToolModifiedState(context, ToolActions.HOE_TILL, false);
 					Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
 					if (pair != null) {
@@ -131,7 +133,8 @@ public class RatlantisToolItem {
 							Player player = context.getPlayer();
 							level.playSound(player, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 							if (!level.isClientSide()) {
-								consumer.accept(context);
+								BlockHitResult result = new BlockHitResult(Vec3.atCenterOf(pos), context.getClickedFace(), pos, false);
+								consumer.accept(new UseOnContext(context.getPlayer(), context.getHand(), result));
 								tilledAny = true;
 							}
 						}
