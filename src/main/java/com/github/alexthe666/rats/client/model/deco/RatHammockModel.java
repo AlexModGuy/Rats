@@ -25,7 +25,7 @@ public class RatHammockModel<T extends Entity> extends EntityModel<T> {
 						.addBox(-6.5F, -12.0F, -4.0F, 13.0F, 8.0F, 8.0F, new CubeDeformation(-0.25F))
 						.texOffs(24, 16)
 						.addBox(-2.5F, -4.0F, -4.0F, 5.0F, 1.0F, 8.0F, new CubeDeformation(0.01F)),
-				PartPose.offset(0.0F, 24.0F, 0.0F));
+				PartPose.offset(0.0F, 19.75F, 0.0F));
 
 		hammock.addOrReplaceChild("left", CubeListBuilder.create()
 						.texOffs(0, 16)
