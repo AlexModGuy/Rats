@@ -3,8 +3,8 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.RatShot;
-import com.github.alexthe666.rats.server.misc.RatVariants;
+import com.github.alexthe666.rats.server.entity.projectile.RatShot;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -36,7 +36,7 @@ public class GildedRatFluteItem extends LoreTagItem {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getTag() != null) {
 			RatShot ratShot = new RatShot(RatsEntityRegistry.RAT_SHOT.get(), level, player);
-			ratShot.setColorVariant(RatVariants.getRandomVariant(player.getRandom(), false));
+			ratShot.setColorVariant(RatVariantRegistry.getRandomVariant(player.getRandom(), false));
 			Vec3 vector3d = player.getViewVector(1.0F);
 			ratShot.shoot(vector3d.x(), vector3d.y(), vector3d.z(), 1.0F, 1.5F);
 			level.addFreshEntity(ratShot);

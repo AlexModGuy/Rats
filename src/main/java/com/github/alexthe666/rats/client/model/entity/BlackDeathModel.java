@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.client.model.entity;
 
-import com.github.alexthe666.rats.server.entity.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.model.AnimationUtils;

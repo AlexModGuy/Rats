@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.entity.ratlantis.RatlantisArrow;
+import com.github.alexthe666.rats.server.entity.projectile.RatlantisArrow;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;

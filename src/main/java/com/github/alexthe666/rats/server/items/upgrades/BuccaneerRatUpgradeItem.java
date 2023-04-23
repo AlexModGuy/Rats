@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.client.render.entity.layer.PiratBoatSailLayer;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.ratlantis.CheeseCannonball;
+import com.github.alexthe666.rats.server.entity.projectile.CheeseCannonball;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
 import com.mojang.blaze3d.vertex.PoseStack;

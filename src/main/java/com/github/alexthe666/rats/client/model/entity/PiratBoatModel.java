@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.client.model.entity;
 
-import com.github.alexthe666.rats.server.entity.ratlantis.PiratBoat;
+import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;

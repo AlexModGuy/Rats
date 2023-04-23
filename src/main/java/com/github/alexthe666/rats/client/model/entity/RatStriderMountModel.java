@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.client.model.entity;
 
-import com.github.alexthe666.rats.server.entity.RatStriderMount;
+import com.github.alexthe666.rats.server.entity.mount.RatStriderMount;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

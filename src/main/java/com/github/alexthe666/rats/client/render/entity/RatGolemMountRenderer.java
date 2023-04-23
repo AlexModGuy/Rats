@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatGolemMountModel;
 import com.github.alexthe666.rats.client.render.entity.layer.RatGolemMountCracksLayer;
-import com.github.alexthe666.rats.server.entity.RatGolemMount;
+import com.github.alexthe666.rats.server.entity.mount.RatGolemMount;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

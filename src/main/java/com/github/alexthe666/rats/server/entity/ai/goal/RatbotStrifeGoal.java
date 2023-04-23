@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
-import com.github.alexthe666.rats.server.entity.ratlantis.RatlanteanRatbot;
+import com.github.alexthe666.rats.server.entity.monster.RatlanteanRatbot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 

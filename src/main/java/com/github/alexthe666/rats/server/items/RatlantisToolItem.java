@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.misc.RatsToolMaterial;
+import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ public class RatlantisToolItem {
 	public static class Pickaxe extends PickaxeItem {
 
 		public Pickaxe(Item.Properties properties) {
-			super(RatsToolMaterial.RATLANTIS, 1, -2.8F, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, 1, -2.8F, properties);
 		}
 
 		@Override
@@ -58,7 +58,7 @@ public class RatlantisToolItem {
 
 	public static class Axe extends AxeItem {
 		public Axe(Item.Properties properties) {
-			super(RatsToolMaterial.RATLANTIS, 5.0F, -3.0F, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, 5.0F, -3.0F, properties);
 		}
 
 		@Override
@@ -90,7 +90,7 @@ public class RatlantisToolItem {
 
 	public static class Shovel extends ShovelItem {
 		public Shovel(Item.Properties properties) {
-			super(RatsToolMaterial.RATLANTIS, 1.5F, -3.0F, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, 1.5F, -3.0F, properties);
 		}
 
 		@Override
@@ -114,7 +114,7 @@ public class RatlantisToolItem {
 
 	public static class Hoe extends HoeItem {
 		public Hoe(Item.Properties properties) {
-			super(RatsToolMaterial.RATLANTIS, -3, 0, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, -3, 0, properties);
 		}
 
 		@Override

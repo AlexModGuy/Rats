@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.RatGolemMountModel;
-import com.github.alexthe666.rats.server.entity.RatGolemMount;
+import com.github.alexthe666.rats.server.entity.mount.RatGolemMount;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

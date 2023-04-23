@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
-import com.github.alexthe666.rats.server.entity.villager.PlagueDoctor;
+import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.IronGolem;

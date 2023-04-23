@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.message;
 
-import com.github.alexthe666.rats.server.entity.ThrownBlock;
+import com.github.alexthe666.rats.server.entity.projectile.ThrownBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;

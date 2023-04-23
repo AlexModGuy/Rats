@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.RatStriderMountModel;
-import com.github.alexthe666.rats.server.entity.RatStriderMount;
+import com.github.alexthe666.rats.server.entity.mount.RatStriderMount;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;

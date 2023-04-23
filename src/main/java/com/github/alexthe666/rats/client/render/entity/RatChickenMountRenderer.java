@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 
-import com.github.alexthe666.rats.server.entity.RatChickenMount;
+import com.github.alexthe666.rats.server.entity.mount.RatChickenMount;
 import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

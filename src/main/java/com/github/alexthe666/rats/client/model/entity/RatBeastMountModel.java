@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.model.entity;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.github.alexthe666.rats.server.entity.RatBeastMount;
+import com.github.alexthe666.rats.server.entity.mount.RatBeastMount;
 
 public class RatBeastMountModel<T extends RatBeastMount> extends FeralRatlanteanModel<T> {
 	@Override

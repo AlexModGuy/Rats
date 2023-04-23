@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.misc.RatsToolMaterial;
+import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,7 +15,7 @@ public class PiratCutlassItem extends SwordItem {
 	private final boolean ghost;
 
 	public PiratCutlassItem(Item.Properties properties, boolean ghost) {
-		super(ghost ? RatsToolMaterial.GHOST_CUTLASS : RatsToolMaterial.CUTLASS, ghost ? 7 : 5, 6.0F, properties);
+		super(ghost ? RatsToolMaterialRegistry.GHOST_CUTLASS : RatsToolMaterialRegistry.CUTLASS, ghost ? 7 : 5, 6.0F, properties);
 		this.ghost = ghost;
 	}
 

@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
-import com.github.alexthe666.rats.server.entity.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;

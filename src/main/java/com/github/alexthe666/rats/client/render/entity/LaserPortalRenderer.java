@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.LaserPortalModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.LaserPortal;
+import com.github.alexthe666.rats.server.entity.misc.LaserPortal;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

@@ -3,9 +3,9 @@ package com.github.alexthe666.rats;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
-import com.github.alexthe666.rats.server.misc.RatVariants;
-import com.github.alexthe666.rats.server.misc.RatsDataSerializers;
-import com.github.alexthe666.rats.server.recipes.RatlantisLoadedCondition;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
+import com.github.alexthe666.rats.registry.RatsDataSerializerRegistry;
+import com.github.alexthe666.rats.server.misc.RatlantisLoadedCondition;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -89,14 +89,14 @@ public class RatsMod {
 		//melk
 		ForgeMod.enableMilkFluid();
 
-		RatVariants.RAT_VARIANTS.register(bus);
+		RatVariantRegistry.RAT_VARIANTS.register(bus);
 
 		RatsBannerPatternRegistry.PATTERNS.register(bus);
 		RatsBlockRegistry.BLOCKS.register(bus);
 		RatsBlockEntityRegistry.BLOCK_ENTITIES.register(bus);
 		RatsEntityRegistry.ENTITIES.register(bus);
 		RatsItemRegistry.ITEMS.register(bus);
-		RatsDataSerializers.DATA_SERIALIZERS.register(bus);
+		RatsDataSerializerRegistry.DATA_SERIALIZERS.register(bus);
 		RatsEffectRegistry.MOB_EFFECTS.register(bus);
 		RatsLootRegistry.CONDITIONS.register(bus);
 		RatsLootRegistry.LOOT_MODIFIERS.register(bus);

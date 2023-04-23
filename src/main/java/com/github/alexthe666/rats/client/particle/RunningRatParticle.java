@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.particle;
 
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
-import com.github.alexthe666.rats.server.misc.RatVariants;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class RunningRatParticle extends Particle {
 
 	private final StaticRatModel<?> model = new StaticRatModel<>(0.0F, false);
-	private final RenderType renderType = RenderType.entityCutoutNoCull(RatVariants.getRandomVariant(RandomSource.create(), false).getTexture());
+	private final RenderType renderType = RenderType.entityCutoutNoCull(RatVariantRegistry.getRandomVariant(RandomSource.create(), false).getTexture());
 	private final Vec3 headingTo;
 	private int oldAge;
 

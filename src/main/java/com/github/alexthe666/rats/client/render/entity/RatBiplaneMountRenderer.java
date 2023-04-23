@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.BiplaneModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

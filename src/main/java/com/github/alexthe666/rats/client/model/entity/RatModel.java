@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.client.events.ModClientEvents;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.ratlantis.Pirat;
+import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;

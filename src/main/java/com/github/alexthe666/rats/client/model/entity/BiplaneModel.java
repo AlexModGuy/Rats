@@ -3,8 +3,8 @@ package com.github.alexthe666.rats.client.model.entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBaronPlane;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.Mob;
 

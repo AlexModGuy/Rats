@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.model.entity;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.entity.PiedPiper;
+import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;

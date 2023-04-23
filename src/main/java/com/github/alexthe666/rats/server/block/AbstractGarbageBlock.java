@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.PiedPiper;
+import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

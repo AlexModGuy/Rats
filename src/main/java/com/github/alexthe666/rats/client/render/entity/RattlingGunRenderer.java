@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunBaseModel;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.RattlingGun;
+import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

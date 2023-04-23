@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBaron;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatBaron;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;

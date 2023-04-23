@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.model.entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
-import com.github.alexthe666.rats.server.entity.ratlantis.Ratfish;
+import com.github.alexthe666.rats.server.entity.misc.Ratfish;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.util.Mth;
 

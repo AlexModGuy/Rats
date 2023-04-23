@@ -5,7 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
-import com.github.alexthe666.rats.server.entity.ratlantis.FeralRatlantean;
+import com.github.alexthe666.rats.server.entity.monster.FeralRatlantean;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.Mob;
 

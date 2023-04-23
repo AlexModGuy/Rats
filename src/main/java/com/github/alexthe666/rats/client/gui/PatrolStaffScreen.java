@@ -91,17 +91,6 @@ public class PatrolStaffScreen extends Screen {
 
 	}
 
-	private CompoundTag buildNewTag() {
-		CompoundTag tag = new CompoundTag();
-		this.rat.addAdditionalSaveData(tag);
-		ListTag listnbt = new ListTag();
-
-		this.nodes.forEach(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(s -> {}).ifPresent(listnbt::add));
-
-		tag.put("PatrolNodesTag", listnbt);
-		return tag;
-	}
-
 	@Override
 	public boolean isPauseScreen() {
 		return false;

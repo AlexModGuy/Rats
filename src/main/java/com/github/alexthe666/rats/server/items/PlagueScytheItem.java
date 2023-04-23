@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.misc.RatsToolMaterial;
+import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class PlagueScytheItem extends SwordItem {
 	public PlagueScytheItem(Item.Properties properties) {
-		super(RatsToolMaterial.PLAGUE_SCYTHE, 5, 1.0F, properties);
+		super(RatsToolMaterialRegistry.PLAGUE_SCYTHE, 5, 1.0F, properties);
 	}
 
 	@Override

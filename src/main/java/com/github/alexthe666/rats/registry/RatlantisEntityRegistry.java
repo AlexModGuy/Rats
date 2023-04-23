@@ -1,7 +1,12 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.ratlantis.*;
+import com.github.alexthe666.rats.server.entity.misc.*;
+import com.github.alexthe666.rats.server.entity.monster.*;
+import com.github.alexthe666.rats.server.entity.monster.boss.*;
+import com.github.alexthe666.rats.server.entity.mount.RatAutomatonMount;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.projectile.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanRatbotModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatlanteanRatbot;
+import com.github.alexthe666.rats.server.entity.monster.RatlanteanRatbot;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

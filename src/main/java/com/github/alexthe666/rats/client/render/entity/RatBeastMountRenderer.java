@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatBeastMountModel;
 import com.github.alexthe666.rats.client.render.entity.layer.GlowingOverlayLayer;
-import com.github.alexthe666.rats.server.entity.RatBeastMount;
+import com.github.alexthe666.rats.server.entity.mount.RatBeastMount;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

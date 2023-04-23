@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.FlyingDutchratModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.Dutchrat;
+import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

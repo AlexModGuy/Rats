@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.ratlantis.Dutchrat;
+import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanSpiritModel;
 import com.github.alexthe666.rats.client.render.entity.layer.GlowingOverlayLayer;
-import com.github.alexthe666.rats.server.entity.PlagueCloud;
+import com.github.alexthe666.rats.server.entity.monster.PlagueCloud;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

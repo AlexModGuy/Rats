@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanRatbotModel;
 import com.github.alexthe666.rats.client.render.entity.layer.RatbotEyesLayer;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatlanteanRatbot;
+import com.github.alexthe666.rats.server.entity.monster.RatlanteanRatbot;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

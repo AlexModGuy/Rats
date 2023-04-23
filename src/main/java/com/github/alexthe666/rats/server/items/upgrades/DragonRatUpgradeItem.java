@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.RatDragonFire;
+import com.github.alexthe666.rats.server.entity.projectile.RatDragonFire;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.GlowingEyesUpgrade;

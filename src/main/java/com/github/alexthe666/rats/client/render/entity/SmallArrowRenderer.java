@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity;
 
-import com.github.alexthe666.rats.server.entity.SmallArrow;
+import com.github.alexthe666.rats.server.entity.projectile.SmallArrow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

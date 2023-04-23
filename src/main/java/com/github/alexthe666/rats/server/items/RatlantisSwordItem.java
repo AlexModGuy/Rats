@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatProtector;
-import com.github.alexthe666.rats.server.misc.RatsToolMaterial;
+import com.github.alexthe666.rats.server.entity.misc.RatProtector;
+import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +20,7 @@ import java.util.List;
 public class RatlantisSwordItem extends SwordItem {
 
 	public RatlantisSwordItem(Item.Properties properties) {
-		super(RatsToolMaterial.RATLANTIS, 3, -2.4F, properties);
+		super(RatsToolMaterialRegistry.RATLANTIS, 3, -2.4F, properties);
 	}
 
 	@Override

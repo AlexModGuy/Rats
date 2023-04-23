@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.RatCaptureNet;
+import com.github.alexthe666.rats.server.entity.projectile.RatCaptureNet;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

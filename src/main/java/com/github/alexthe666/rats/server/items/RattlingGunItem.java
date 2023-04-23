@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
-import com.github.alexthe666.rats.server.entity.ratlantis.RattlingGun;
+import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;

@@ -9,13 +9,13 @@ import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.RatCageBlock;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
 import com.github.alexthe666.rats.server.entity.RatMount;
-import com.github.alexthe666.rats.server.entity.RatMountBase;
+import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.ai.goal.*;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.*;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.EtherealRatNavigation;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.RatFlightNavigation;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.RatNavigation;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
@@ -30,7 +30,7 @@ import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
-import com.github.alexthe666.rats.server.misc.RatVariants;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -691,10 +691,10 @@ public class TamedRat extends InventoryRat {
 		baby.setMale(this.getRandom().nextBoolean());
 		RatVariant babyColor;
 		if ((father.getColorVariant().isBreedingExclusive() || mother.getColorVariant().isBreedingExclusive()) && this.getRandom().nextInt(6) == 0) {
-			babyColor = RatVariants.getRandomBreedingExclusiveVariant(this.getRandom());
+			babyColor = RatVariantRegistry.getRandomBreedingExclusiveVariant(this.getRandom());
 		} else {
 			if (this.getRandom().nextInt(10) == 0) {
-				babyColor = RatVariants.getRandomVariant(this.getRandom(), true);
+				babyColor = RatVariantRegistry.getRandomVariant(this.getRandom(), true);
 			} else {
 				babyColor = this.getRandom().nextBoolean() ? father.getColorVariant() : mother.getColorVariant();
 			}

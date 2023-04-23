@@ -7,7 +7,7 @@ import com.github.alexthe666.rats.server.inventory.container.RatContainer;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.OpenRatScreenPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
-import com.github.alexthe666.rats.server.misc.RatsDataSerializers;
+import com.github.alexthe666.rats.registry.RatsDataSerializerRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -48,7 +48,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	private static final EntityDataAccessor<Optional<GlobalPos>> RADIUS_CENTER = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 	private static final EntityDataAccessor<Integer> SEARCH_RADIUS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<List<GlobalPos>> PATROL_NODES = SynchedEntityData.defineId(InventoryRat.class, RatsDataSerializers.GLOBAL_POS_LIST.get());
+	private static final EntityDataAccessor<List<GlobalPos>> PATROL_NODES = SynchedEntityData.defineId(InventoryRat.class, RatsDataSerializerRegistry.GLOBAL_POS_LIST.get());
 
 	private RatContainer inventory;
 	private LazyOptional<?> itemHandler = null;
@@ -91,7 +91,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 
 		if (!this.getPatrolNodes().isEmpty()) {
 			ListTag listTag = new ListTag();
-			this.getPatrolNodes().forEach(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(s -> {}).ifPresent(listTag::add));
+			this.getPatrolNodes().forEach(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error).ifPresent(listTag::add));
 			tag.put("PatrolNodesTag", listTag);
 		}
 	}

@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.entity.ratlantis.VialOfSentience;
+import com.github.alexthe666.rats.server.entity.projectile.VialOfSentience;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;

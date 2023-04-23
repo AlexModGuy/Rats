@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.misc.RatsToolMaterial;
+import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.SwordItem;
 public class BaghNakhsItem extends SwordItem {
 
 	public BaghNakhsItem(Item.Properties properties) {
-		super(RatsToolMaterial.BAGHNAKHS, 3, -0.1F, properties);
+		super(RatsToolMaterialRegistry.BAGHNAKHS, 3, -0.1F, properties);
 	}
 
 	@Override

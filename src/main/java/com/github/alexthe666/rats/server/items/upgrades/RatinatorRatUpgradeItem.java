@@ -5,7 +5,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.ratlantis.LaserBeam;
+import com.github.alexthe666.rats.server.entity.projectile.LaserBeam;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesOverlayUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.GlowingEyesUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;

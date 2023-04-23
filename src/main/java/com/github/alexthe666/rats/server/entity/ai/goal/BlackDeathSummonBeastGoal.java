@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.entity.BlackDeath;
-import com.github.alexthe666.rats.server.entity.PlagueBeast;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.PlagueBeast;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.event.ForgeEventFactory;

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.client.model.entity.PiratBoatModel;
 import com.github.alexthe666.rats.client.render.entity.layer.PiratBoatSailLayer;
-import com.github.alexthe666.rats.server.entity.ratlantis.PiratBoat;
+import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

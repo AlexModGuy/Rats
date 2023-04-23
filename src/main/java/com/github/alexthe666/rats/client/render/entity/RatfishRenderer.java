@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatFishModel;
-import com.github.alexthe666.rats.server.entity.ratlantis.Ratfish;
+import com.github.alexthe666.rats.server.entity.misc.Ratfish;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

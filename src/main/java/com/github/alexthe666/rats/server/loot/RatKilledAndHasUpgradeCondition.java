@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.loot;
 
 import com.github.alexthe666.rats.registry.RatsLootRegistry;
-import com.github.alexthe666.rats.server.entity.RatMountBase;
+import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.google.gson.JsonDeserializationContext;

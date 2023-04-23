@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.misc;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
@@ -283,18 +284,18 @@ public class RatUtils {
 	//helper method to convert the old rat variant integer system to the new registry
 	public static RatVariant convertOldRatVariant(int variant) {
 		return switch (variant) {
-			case 1 -> RatVariants.BLACK.get();
-			case 2 -> RatVariants.BROWN.get();
-			case 3 -> RatVariants.GREEN.get();
-			case 4 -> RatVariants.ALBINO.get();
-			case 5 -> RatVariants.HOODED.get();
-			case 6 -> RatVariants.BROWN_HOODED.get();
-			case 7 -> RatVariants.GRAY_HOODED.get();
-			case 8 -> RatVariants.SIAMESE.get();
-			case 9 -> RatVariants.WHITE.get();
-			case 10 -> RatVariants.YELLOW_HOODED.get();
-			case 11, 12 -> RatVariants.BROWN_UNDERCOAT.get();
-			default -> RatVariants.BLUE.get();
+			case 1 -> RatVariantRegistry.BLACK.get();
+			case 2 -> RatVariantRegistry.BROWN.get();
+			case 3 -> RatVariantRegistry.GREEN.get();
+			case 4 -> RatVariantRegistry.ALBINO.get();
+			case 5 -> RatVariantRegistry.HOODED.get();
+			case 6 -> RatVariantRegistry.BROWN_HOODED.get();
+			case 7 -> RatVariantRegistry.GRAY_HOODED.get();
+			case 8 -> RatVariantRegistry.SIAMESE.get();
+			case 9 -> RatVariantRegistry.WHITE.get();
+			case 10 -> RatVariantRegistry.YELLOW_HOODED.get();
+			case 11, 12 -> RatVariantRegistry.BROWN_UNDERCOAT.get();
+			default -> RatVariantRegistry.BLUE.get();
 		};
 	}
 }

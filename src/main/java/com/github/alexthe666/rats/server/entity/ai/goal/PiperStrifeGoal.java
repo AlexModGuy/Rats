@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.entity.PiedPiper;
+import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 

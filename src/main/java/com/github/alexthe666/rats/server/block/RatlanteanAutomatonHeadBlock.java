@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatlanteanAutomatonHeadBlockEntity;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatlanteanAutomaton;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatlanteanAutomaton;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriteriaTriggers;

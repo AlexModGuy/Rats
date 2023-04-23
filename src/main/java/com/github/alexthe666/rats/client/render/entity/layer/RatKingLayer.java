@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.EmptyModel;
 import com.github.alexthe666.rats.client.model.entity.RatKingModel;
-import com.github.alexthe666.rats.server.entity.RatKing;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

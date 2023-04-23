@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.client.model.hats.*;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
-import com.github.alexthe666.rats.server.entity.ratlantis.GhostPirat;
+import com.github.alexthe666.rats.server.entity.monster.GhostPirat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

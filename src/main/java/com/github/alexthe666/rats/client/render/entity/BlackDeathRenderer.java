@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.BlackDeathModel;
 import com.github.alexthe666.rats.client.render.entity.layer.GlowingOverlayLayer;
-import com.github.alexthe666.rats.server.entity.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

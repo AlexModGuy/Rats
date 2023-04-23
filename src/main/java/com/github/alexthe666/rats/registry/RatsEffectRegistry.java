@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.potion.ConfitByaldiMobEffect;
-import com.github.alexthe666.rats.server.potion.PlagueMobEffect;
+import com.github.alexthe666.rats.server.effect.ConfitByaldiMobEffect;
+import com.github.alexthe666.rats.server.effect.PlagueMobEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

@@ -2,7 +2,7 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.entity.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;

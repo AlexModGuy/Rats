@@ -5,20 +5,17 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
-import com.github.alexthe666.rats.registry.RatsEffectRegistry;
-import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.BlackDeath;
-import com.github.alexthe666.rats.server.entity.RatKing;
-import com.github.alexthe666.rats.server.entity.RatMountBase;
+import com.github.alexthe666.rats.registry.*;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
+import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatFleePositionGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.RatMoveControl;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBaronPlane;
-import com.github.alexthe666.rats.server.entity.ratlantis.RatBiplaneMount;
-import com.github.alexthe666.rats.server.entity.ratlantis.RattlingGun;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import com.github.alexthe666.rats.server.misc.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -229,7 +226,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.getEntityData().define(IS_MALE, false);
 		this.getEntityData().define(SITTING, false);
 		this.getEntityData().define(SLEEPING, false);
-		this.getEntityData().define(COLOR_VARIANT, RatVariants.RAT_VARIANT_REGISTRY.get().getKey(RatVariants.BLUE.get()).toString());
+		this.getEntityData().define(COLOR_VARIANT, RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatVariantRegistry.BLUE.get()).toString());
 		this.getEntityData().define(DEAD_IN_TRAP, false);
 		this.getEntityData().define(FLEE_POS, Optional.empty());
 	}
@@ -321,11 +318,11 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public RatVariant getColorVariant() {
-		return RatVariants.getVariant(this.getEntityData().get(COLOR_VARIANT));
+		return RatVariantRegistry.getVariant(this.getEntityData().get(COLOR_VARIANT));
 	}
 
 	public void setColorVariant(RatVariant variant) {
-		this.getEntityData().set(COLOR_VARIANT, RatVariants.getVariantId(variant));
+		this.getEntityData().set(COLOR_VARIANT, RatVariantRegistry.getVariantId(variant));
 	}
 
 	public boolean canMove() {
@@ -421,7 +418,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
-		this.setColorVariant(RatVariants.getRandomVariant(this.getRandom(), false));
+		this.setColorVariant(RatVariantRegistry.getRandomVariant(this.getRandom(), false));
 		this.setMale(this.getRandom().nextBoolean());
 		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
 			if (RatsDateFetcher.isHalloweenSeason() && this.getRandom().nextFloat() <= 0.25F) {
@@ -451,7 +448,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("IsMale", this.isMale());
 		tag.putBoolean("Sitting", this.isOrderedToSit());
-		tag.putString("ColorVariant", RatVariants.getVariantId(this.getColorVariant()));
+		tag.putString("ColorVariant", RatVariantRegistry.getVariantId(this.getColorVariant()));
 		tag.putInt("RaidCooldown", this.raidCooldown);
 	}
 
@@ -462,9 +459,9 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.setOrderedToSit(tag.getBoolean("Sitting"));
 		if (tag.contains("ColorVariant", Tag.TAG_INT)) {
 			this.setColorVariant(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant")));
-			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariants.RAT_VARIANT_REGISTRY.get().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
+			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
 		} else if (tag.contains("ColorVariant", Tag.TAG_STRING)) {
-			this.setColorVariant(RatVariants.getVariant(tag.getString("ColorVariant")));
+			this.setColorVariant(RatVariantRegistry.getVariant(tag.getString("ColorVariant")));
 		}
 		this.raidCooldown = tag.getInt("RaidCooldown");
 	}

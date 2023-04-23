@@ -10,7 +10,7 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
-import com.github.alexthe666.rats.server.misc.RatVariants;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -60,7 +60,7 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat> {
 			}
 
 			if (entity.hasCustomName()) {
-				for (RatVariant variant : RatVariants.RAT_VARIANT_REGISTRY.get()) {
+				for (RatVariant variant : RatVariantRegistry.RAT_VARIANT_REGISTRY.get()) {
 					if (Objects.requireNonNull(entity.getCustomName()).getString().equalsIgnoreCase(variant.getName())) {
 						return variant.getTexture();
 					}
