@@ -20,6 +20,7 @@ public class TableItemHandlers {
 		@Override
 		protected void onContentsChanged(int slot) {
 			this.table.updateHelper();
+			this.table.updateRecipe();
 			this.table.setChanged();
 		}
 
@@ -70,7 +71,10 @@ public class TableItemHandlers {
 		@Override
 		public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
 			ItemStack stack = super.extractItem(slot, amount, simulate);
-			if (!stack.isEmpty()) this.table.updateRecipe();
+			if (!stack.isEmpty()) {
+				this.table.updateRecipe();
+				this.table.setChanged();
+			}
 			return stack;
 		}
 	}
