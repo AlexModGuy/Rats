@@ -18,6 +18,7 @@ import net.minecraft.world.level.LightLayer;
 public class RatEyesLayer<T extends AbstractRat, M extends RatModel<T>> extends RenderLayer<T, M> {
 	protected static final RenderType EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_eye_glow.png"));
 	protected static final RenderType PLAGUE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_eye_plague.png"));
+
 	public RatEyesLayer(RenderLayerParent<T, M> parent) {
 		super(parent);
 	}

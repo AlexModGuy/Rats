@@ -71,7 +71,7 @@ public class RatsBlockTags extends BlockTagsProvider {
 				RatsBlockRegistry.UPGRADE_COMBINER.get(), RatsBlockRegistry.RAT_QUARRY.get(),
 				RatsBlockRegistry.UPGRADE_SEPARATOR.get(), RatsBlockRegistry.MANHOLE.get(),
 				RatsBlockRegistry.TRASH_CAN.get(), RatsBlockRegistry.RAT_ATTRACTOR.get()
-				);
+		);
 
 		this.tag(BlockTags.MINEABLE_WITH_AXE).add(
 				RatsBlockRegistry.FISH_BARREL.get(), RatsBlockRegistry.RAT_HOLE.get(),

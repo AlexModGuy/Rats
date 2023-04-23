@@ -49,7 +49,7 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 				heldItem.shrink(1);
 				if (!disenchant) {
 					float power = 0;
-					for(BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
+					for (BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
 						if (EnchantmentTableBlock.isValidBookShelf(rat.getLevel(), rat.blockPosition(), blockpos)) {
 							power += rat.getLevel().getBlockState(rat.blockPosition().offset(blockpos)).getEnchantPowerBonus(rat.getLevel(), rat.blockPosition().offset(blockpos));
 						}

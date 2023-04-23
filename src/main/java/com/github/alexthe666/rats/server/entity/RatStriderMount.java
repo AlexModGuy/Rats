@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -32,7 +31,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
 import java.util.UUID;
@@ -86,12 +84,12 @@ public class RatStriderMount extends RatMountBase {
 	public double getPassengersRidingOffset() {
 		float f = Math.min(0.25F, this.walkAnimation.speed());
 		float f1 = this.walkAnimation.position();
-		return (double)this.getBbHeight() - 0.1D + (double)(0.12F * Mth.cos(f1 * 1.5F) * 2.0F * f);
+		return (double) this.getBbHeight() - 0.1D + (double) (0.12F * Mth.cos(f1 * 1.5F) * 2.0F * f);
 	}
 
 	@Override
 	protected float getRiddenSpeed(LivingEntity entity) {
-		return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isSuffocating() ? 0.35D : 0.55D));
+		return (float) (this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isSuffocating() ? 0.35D : 0.55D));
 	}
 
 	@Override

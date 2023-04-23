@@ -29,7 +29,7 @@ public class MilkBubbleParticle extends BubbleParticle {
 		}
 	}
 
-	public static record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+	public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

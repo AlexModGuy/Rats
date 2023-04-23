@@ -438,7 +438,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			}
 			if ((RatsDateFetcher.isNewYearsEve() && this.getRandom().nextFloat() <= 0.25F) || RatsDateFetcher.isAlexsBDay() || RatsDateFetcher.isGizmosBDay()) {
 				ItemStack stack = new ItemStack(RatsItemRegistry.PARTY_HAT.get());
-				((DyeableLeatherItem)stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
+				((DyeableLeatherItem) stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
 				this.setItemSlot(EquipmentSlot.HEAD, stack);
 				this.setGuaranteedDrop(EquipmentSlot.HEAD);
 			}
@@ -484,7 +484,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		++this.deathTime;
 		int maxDeathTime = this.isDeadInTrap() ? 60 : 20;
 		if (this.deathTime >= maxDeathTime && !this.getLevel().isClientSide() && !this.isRemoved()) {
-			this.level.broadcastEntityEvent(this, (byte)60);
+			this.level.broadcastEntityEvent(this, (byte) 60);
 			this.remove(RemovalReason.KILLED);
 		}
 	}

@@ -122,7 +122,8 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 		@Override
 		public void renderWidget(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-			if (Minecraft.getInstance().screen instanceof RatCraftingTableScreen table && !table.shouldRenderButtons()) return;
+			if (Minecraft.getInstance().screen instanceof RatCraftingTableScreen table && !table.shouldRenderButtons())
+				return;
 			if (this.visible) {
 				RenderSystem._setShaderTexture(0, RatCraftingTableScreen.TEXTURE);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

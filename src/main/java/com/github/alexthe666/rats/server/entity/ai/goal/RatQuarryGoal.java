@@ -105,7 +105,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 	public void tick() {
 		if (this.getTargetBlock() != null) {
 			BlockPos rayPos = this.rat.rayTraceBlockPos(this.getTargetBlock());
-			if (!this.buildStairs && this.rat.getLevel().getFluidState(this.getTargetBlock()).isEmpty() && this.rat.getLevel().isEmptyBlock(this.getTargetBlock())){
+			if (!this.buildStairs && this.rat.getLevel().getFluidState(this.getTargetBlock()).isEmpty() && this.rat.getLevel().isEmptyBlock(this.getTargetBlock())) {
 				this.stop();
 				return;
 			}

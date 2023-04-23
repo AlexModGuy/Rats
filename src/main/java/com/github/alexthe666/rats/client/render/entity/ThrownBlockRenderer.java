@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.CubeModel;
+import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.server.entity.ThrownBlock;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

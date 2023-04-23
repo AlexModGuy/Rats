@@ -173,9 +173,12 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 			if (block == null) return;
 			for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 				//dont allow placing on points of interest (on the tops of transport positions or the home point)
-				if (this.rat.getDepositPos().isPresent() && pos.equals(this.rat.getDepositPos().get().pos().above())) continue;
-				if (this.rat.getPickupPos().isPresent() && pos.equals(this.rat.getPickupPos().get().pos().above())) continue;
-				if (this.rat.getHomePoint().isPresent() && (pos.equals(this.rat.getHomePoint().get().pos()) || pos.equals(this.rat.getHomePoint().get().pos().above()))) continue;
+				if (this.rat.getDepositPos().isPresent() && pos.equals(this.rat.getDepositPos().get().pos().above()))
+					continue;
+				if (this.rat.getPickupPos().isPresent() && pos.equals(this.rat.getPickupPos().get().pos().above()))
+					continue;
+				if (this.rat.getHomePoint().isPresent() && (pos.equals(this.rat.getHomePoint().get().pos()) || pos.equals(this.rat.getHomePoint().get().pos().above())))
+					continue;
 
 				if (block.canSurvive(block.defaultBlockState(), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above()) && this.rat.getLevel().isEmptyBlock(pos)) {
 					allBlocks.add(pos);

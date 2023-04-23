@@ -86,7 +86,7 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 				itemstack1.getItem().onCraftedBy(itemstack1, player.level, player);
 
 				// Merge result slot to player inv
-				if (! this.moveItemStackTo(itemstack1, 19, 55, true)) {
+				if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
 					return ItemStack.EMPTY;
 				}
 
@@ -98,7 +98,7 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 				}
 			} else if (slotIndex >= 10 && slotIndex < 19) {
 				// Merge buffer to full player inv
-				if (! this.moveItemStackTo(itemstack1, 19, 55, true)) {
+				if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (slotIndex >= 19 && slotIndex < 46) {

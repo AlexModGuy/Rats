@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
+import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

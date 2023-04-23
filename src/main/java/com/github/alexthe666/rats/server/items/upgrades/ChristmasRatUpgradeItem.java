@@ -57,19 +57,19 @@ public class ChristmasRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 				}
 			}
 			if (!result.isEmpty()) {
-					for (ItemStack stack : result) {
-						if (heldItem.isEmpty()) {
-							rat.setItemInHand(InteractionHand.MAIN_HAND, stack.copy());
-						} else {
-							if (!rat.tryDepositItemInContainers(stack.copy())) {
-								if (!rat.getLevel().isClientSide()) {
-									rat.spawnAtLocation(stack.copy(), 0.25F);
-								}
+				for (ItemStack stack : result) {
+					if (heldItem.isEmpty()) {
+						rat.setItemInHand(InteractionHand.MAIN_HAND, stack.copy());
+					} else {
+						if (!rat.tryDepositItemInContainers(stack.copy())) {
+							if (!rat.getLevel().isClientSide()) {
+								rat.spawnAtLocation(stack.copy(), 0.25F);
 							}
 						}
 					}
 				}
 			}
+		}
 
 	}
 

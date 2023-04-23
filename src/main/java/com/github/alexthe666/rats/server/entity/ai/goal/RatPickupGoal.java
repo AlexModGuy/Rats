@@ -1,12 +1,12 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
-import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.RatCommand;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateRatFluidPacket;
+import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -45,7 +45,8 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 		if (!this.canPickUp())
 			return false;
 		if (this.rat.getTarget() != null) return false;
-		if (this.rat.getPickupPos().isEmpty() || !this.rat.getPickupPos().get().dimension().equals(this.rat.getLevel().dimension()) || RatUtils.isBlockProtected(this.rat.getLevel(), this.rat.getPickupPos().get().pos(), this.rat)) return false;
+		if (this.rat.getPickupPos().isEmpty() || !this.rat.getPickupPos().get().dimension().equals(this.rat.getLevel().dimension()) || RatUtils.isBlockProtected(this.rat.getLevel(), this.rat.getPickupPos().get().pos(), this.rat))
+			return false;
 
 		if (this.type == PickupType.INVENTORY) {
 			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
@@ -215,6 +216,6 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 	public enum PickupType {
 		INVENTORY,
 		FLUID,
-		ENERGY;
+		ENERGY
 	}
 }

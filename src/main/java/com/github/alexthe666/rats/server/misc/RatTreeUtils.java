@@ -49,7 +49,7 @@ public class RatTreeUtils {
 			prevleafcount = leafcount;
 			prevlogcount = logcount;
 
-			Iterator<BlockPos> it = BlockPos.betweenClosedStream(pos.getX()-2, pos.getY()+(y-1), pos.getZ()-2, pos.getX()+2, pos.getY()+(y-1), pos.getZ()+2).iterator();
+			Iterator<BlockPos> it = BlockPos.betweenClosedStream(pos.getX() - 2, pos.getY() + (y - 1), pos.getZ() - 2, pos.getX() + 2, pos.getY() + (y - 1), pos.getZ() + 2).iterator();
 			while (it.hasNext()) {
 				BlockPos currentPos = it.next();
 				BlockState currentState = level.getBlockState(currentPos);

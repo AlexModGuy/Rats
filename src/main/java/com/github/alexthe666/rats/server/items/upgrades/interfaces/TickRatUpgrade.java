@@ -7,17 +7,19 @@ import net.minecraft.core.particles.ParticleTypes;
 public interface TickRatUpgrade {
 	/**
 	 * Allows you to execute some code every tick while a rat has this upgrade.
+	 *
 	 * @param rat the rat currently holding this upgrade
 	 */
 	void tick(TamedRat rat);
 
 	/**
 	 * A helper method that will spawn some particles around the rat after it finishes crafting something. This is mostly used in the profession upgrades, such as chef and gemcutter.
-	 * @param rat the rat currently holding this upgrade
+	 *
+	 * @param rat              the rat currently holding this upgrade
 	 * @param finishedParticle the particle to spawn when crafting is complete
-	 * @param amount the amount of particles to spawn
-	 * @param rareParticle another particle definition, allows for some variety in particles
-	 * @param chance the chance for the above particle to appear
+	 * @param amount           the amount of particles to spawn
+	 * @param rareParticle     another particle definition, allows for some variety in particles
+	 * @param chance           the chance for the above particle to appear
 	 */
 	default void createFinishedParticles(TamedRat rat, ParticleOptions finishedParticle, int amount, ParticleOptions rareParticle, float chance) {
 		if (rat.cookingProgress > 0) {

@@ -119,7 +119,7 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 			ItemStack banner = rat.getItemBySlot(EquipmentSlot.OFFHAND);
 			if (banner.getItem() instanceof BannerItem) {
 				if (rat.isBaby()) {
-					((PinkieModel<?>)this.getParentModel()).body.translateRotate(stack);
+					((PinkieModel<?>) this.getParentModel()).body.translateRotate(stack);
 				} else {
 					this.getParentModel().body1.translateRotate(stack);
 					this.getParentModel().body2.translateRotate(stack);

@@ -355,12 +355,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void trimmedArmor(RegistryObject<ArmorItem> armor) {
 		ItemModelBuilder base = this.singleTex(armor);
 		for (TrimModelData trim : GENERATED_TRIM_MODELS) {
-				base.override()
-						.predicate(new ResourceLocation("trim_type"), trim.itemModelIndex())
-						.model(this.generated(armor.getId().getPath() + "_" + trim.name(armor.get().getMaterial()) + "_trim", false,
-								itemPrefix(armor.getId().getPath()),
-								new ResourceLocation("trims/items/" + armor.get().getType().getName() + "_trim_" + trim.name())
-								));
+			base.override()
+					.predicate(new ResourceLocation("trim_type"), trim.itemModelIndex())
+					.model(this.generated(armor.getId().getPath() + "_" + trim.name(armor.get().getMaterial()) + "_trim", false,
+							itemPrefix(armor.getId().getPath()),
+							new ResourceLocation("trims/items/" + armor.get().getType().getName() + "_trim_" + trim.name())
+					));
 		}
 	}
 

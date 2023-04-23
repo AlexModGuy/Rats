@@ -2,11 +2,11 @@ package com.github.alexthe666.rats.server.block.entity;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.inventory.container.CraftingContainerWrapper;
 import com.github.alexthe666.rats.server.inventory.container.TableItemHandlers;
+import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

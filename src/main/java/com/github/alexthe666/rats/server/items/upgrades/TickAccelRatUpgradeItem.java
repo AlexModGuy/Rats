@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
-import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 
 public class TickAccelRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpgrade {
 	public TickAccelRatUpgradeItem(Properties properties) {

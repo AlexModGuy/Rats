@@ -32,8 +32,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Predicate;
-
 public class RatlanteanRatbot extends Monster implements IAnimatedEntity, Ratlanteans {
 
 	public static final Animation ANIMATION_SHOOT = Animation.create(15);

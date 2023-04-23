@@ -88,7 +88,7 @@ public class RunningRatParticle extends Particle {
 				this.setLocationFromBoundingbox();
 			}
 
-			if ((Math.abs(p_107246_) < (double)1.0E-5F && Math.abs(d0) < (double)1.0E-5F) || (Math.abs(p_107248_) < (double)1.0E-5F && Math.abs(d2) < (double)1.0E-5F)) {
+			if ((Math.abs(p_107246_) < (double) 1.0E-5F && Math.abs(d0) < (double) 1.0E-5F) || (Math.abs(p_107248_) < (double) 1.0E-5F && Math.abs(d2) < (double) 1.0E-5F)) {
 				this.stoppedByCollision = true;
 			}
 

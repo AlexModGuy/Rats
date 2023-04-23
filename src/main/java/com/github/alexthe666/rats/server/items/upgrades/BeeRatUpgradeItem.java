@@ -1,11 +1,11 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.PostAttackUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

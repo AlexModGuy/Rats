@@ -2,11 +2,11 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.block.entity.AutoCurdlerBlockEntity;
-import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
-import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
+import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
 import com.github.alexthe666.rats.server.message.UpdateRatFluidPacket;
+import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -244,6 +244,6 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 	public enum DepositType {
 		INVENTORY,
 		FLUID,
-		ENERGY;
+		ENERGY
 	}
 }

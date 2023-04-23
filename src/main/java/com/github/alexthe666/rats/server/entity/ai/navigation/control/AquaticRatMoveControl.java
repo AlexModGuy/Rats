@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.navigation.control;
 
-import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.control.MoveControl;

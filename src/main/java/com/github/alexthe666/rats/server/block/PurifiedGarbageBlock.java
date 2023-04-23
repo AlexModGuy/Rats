@@ -43,7 +43,7 @@ public class PurifiedGarbageBlock extends AbstractGarbageBlock {
 
 	@Override
 	protected void postInitSpawn(PathfinderMob mob, RandomSource random) {
-		((Rat)mob).setPlagued(false);
+		((Rat) mob).setPlagued(false);
 	}
 
 	@Override

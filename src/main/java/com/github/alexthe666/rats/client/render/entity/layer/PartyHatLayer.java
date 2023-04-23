@@ -39,12 +39,12 @@ public class PartyHatLayer<T extends LivingEntity, M extends EntityModel<T>, A e
 			stack.pushPose();
 			this.getParentModel().copyPropertiesTo(this.outerModel);
 			this.outerModel.setAllVisible(false);
-			if (this.getParentModel() instanceof HumanoidModel<?> human){
+			if (this.getParentModel() instanceof HumanoidModel<?> human) {
 				human.head.translateAndRotate(stack);
 				stack.translate(0.0F, -0.875F, 0.0F);
 			} else if (this.getParentModel() instanceof StaticRatModel<?> rat) {
 				if (entity.isBaby()) {
-					((PinkieModel<?>)this.getParentModel()).body.translateRotate(stack);
+					((PinkieModel<?>) this.getParentModel()).body.translateRotate(stack);
 					stack.translate(0.0D, -0.01D, -0.05D);
 					stack.scale(0.65F, 0.65F, 0.65F);
 				} else {

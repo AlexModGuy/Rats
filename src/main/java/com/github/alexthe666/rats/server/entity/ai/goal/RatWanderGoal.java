@@ -46,8 +46,8 @@ public class RatWanderGoal extends WaterAvoidingRandomStrollGoal {
 			vec31 = LandRandomPos.getPos(this.mob, 15, 15);
 		}
 		if (this.rat.hasFlightUpgrade()) {
-			vec31 = HoverRandomPos.getPos(this.mob, 8, 3, viewVec.x, viewVec.z, ((float)Math.PI / 2F), 3, 1);
-			return vec31 != null ? vec31 : AirAndWaterRandomPos.getPos(this.mob, 8, 4, -2, viewVec.x, viewVec.z, (float)Math.PI / 2F);
+			vec31 = HoverRandomPos.getPos(this.mob, 8, 3, viewVec.x, viewVec.z, ((float) Math.PI / 2F), 3, 1);
+			return vec31 != null ? vec31 : AirAndWaterRandomPos.getPos(this.mob, 8, 4, -2, viewVec.x, viewVec.z, (float) Math.PI / 2F);
 		} else {
 			return vec31 != null ? vec31 : LandRandomPos.getPos(this.mob, 10, 7);
 		}

@@ -322,7 +322,8 @@ public class Rat extends DiggingRat implements Ratlanteans {
 		if (!accessor.getLevelData().getGameRules().getBoolean(RatsMod.SPAWN_RATS)) return false;
 		if (type != MobSpawnType.NATURAL) return true;
 		int spawnRoll = RatConfig.ratSpawnDecrease;
-		if (accessor instanceof ServerLevelAccessor server && server.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) return spawnRoll <= 0 || random.nextInt(spawnRoll) == 0;
+		if (accessor instanceof ServerLevelAccessor server && server.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY))
+			return spawnRoll <= 0 || random.nextInt(spawnRoll) == 0;
 		if (RatConfig.ratsSpawnLikeMonsters) {
 			if (accessor.getDifficulty() == Difficulty.PEACEFUL) {
 				spawnRoll *= 2;

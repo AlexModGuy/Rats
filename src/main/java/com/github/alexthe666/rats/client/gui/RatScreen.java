@@ -1,12 +1,12 @@
 package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.entity.rat.RatCommand;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.message.RatCommandPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;

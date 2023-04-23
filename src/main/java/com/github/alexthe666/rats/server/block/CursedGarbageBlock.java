@@ -25,7 +25,7 @@ public class CursedGarbageBlock extends AbstractGarbageBlock {
 
 	@Override
 	protected void postInitSpawn(PathfinderMob mob, RandomSource random) {
-		((Rat)mob).setPlagued(true);
+		((Rat) mob).setPlagued(true);
 	}
 
 	@Override

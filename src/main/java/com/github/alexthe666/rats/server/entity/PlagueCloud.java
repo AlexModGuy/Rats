@@ -255,7 +255,7 @@ public class PlagueCloud extends Monster implements PlagueLegion {
 		}
 
 		public void tick() {
-			BlockPos blockpos =PlagueCloud.this.blockPosition();
+			BlockPos blockpos = PlagueCloud.this.blockPosition();
 
 			for (int i = 0; i < 3; ++i) {
 				BlockPos blockpos1 = blockpos.offset(PlagueCloud.this.getRandom().nextInt(15) - 7, PlagueCloud.this.getRandom().nextInt(11) - 5, PlagueCloud.this.getRandom().nextInt(15) - 7);

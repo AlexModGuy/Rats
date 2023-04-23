@@ -43,8 +43,8 @@ public class RatlantisBowItem extends BowItem {
 				}
 
 				float f = getPowerForTime(i);
-				if (!((double)f < 0.1D)) {
-					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, player));
+				if (!((double) f < 0.1D)) {
+					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, player));
 					if (!level.isClientSide) {
 						RatlantisArrow arrow = new RatlantisArrow(level, player);
 						arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
@@ -54,7 +54,7 @@ public class RatlantisBowItem extends BowItem {
 
 						int j = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
 						if (j > 0) {
-							arrow.setBaseDamage(arrow.getBaseDamage() + (double)j * 0.5D + 0.5D);
+							arrow.setBaseDamage(arrow.getBaseDamage() + (double) j * 0.5D + 0.5D);
 						}
 
 						int k = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
@@ -89,7 +89,7 @@ public class RatlantisBowItem extends BowItem {
 	}
 
 	public static float getPowerForTime(int time) {
-		float f = (float)time / 10.0F;
+		float f = (float) time / 10.0F;
 		f = (f * f + f * 2.0F) / 3.0F;
 		if (f > 1.0F) {
 			f = 1.0F;

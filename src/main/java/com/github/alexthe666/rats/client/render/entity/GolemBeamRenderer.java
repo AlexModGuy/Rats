@@ -62,7 +62,7 @@ public class GolemBeamRenderer extends EntityRenderer<GolemBeam> {
 	}
 
 	public void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer consumer, int x, int y, int z, float u, float v, int xNorm, int zNorm, int yNorm, int light) {
-		consumer.vertex(matrix4f, (float)x, (float)y, (float)z).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, (float)xNorm, (float)yNorm, (float)zNorm).endVertex();
+		consumer.vertex(matrix4f, (float) x, (float) y, (float) z).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, (float) xNorm, (float) yNorm, (float) zNorm).endVertex();
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.client.events;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.gui.*;
 import com.github.alexthe666.rats.client.model.CubeModel;
+import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.deco.RatHammockModel;
 import com.github.alexthe666.rats.client.model.deco.RatIglooModel;
 import com.github.alexthe666.rats.client.model.deco.RatSeedBowlModel;
@@ -31,7 +31,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.StriderRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

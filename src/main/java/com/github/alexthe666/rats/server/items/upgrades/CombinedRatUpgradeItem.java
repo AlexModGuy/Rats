@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsUpgradeConflictRegistry;
-import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
+import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;

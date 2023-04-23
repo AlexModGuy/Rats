@@ -50,7 +50,7 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatCageBreedingLanternBlockEntity te) {
-		float f = ((float)RatConfig.ratBreedingCooldown - te.breedingCooldown) / (float)RatConfig.ratBreedingCooldown;
+		float f = ((float) RatConfig.ratBreedingCooldown - te.breedingCooldown) / (float) RatConfig.ratBreedingCooldown;
 		float f1 = f * 0.6F + 0.4F;
 		float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
 		float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);

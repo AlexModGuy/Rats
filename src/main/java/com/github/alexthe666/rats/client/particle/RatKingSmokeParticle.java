@@ -14,7 +14,7 @@ public class RatKingSmokeParticle extends SmokeParticle {
 	}
 
 	public float getQuadSize(float p_105642_) {
-		return this.quadSize * Mth.clamp(((float)this.age + p_105642_) / (float)this.lifetime * 32.0F, 0.0F, 1.5F);
+		return this.quadSize * Mth.clamp(((float) this.age + p_105642_) / (float) this.lifetime * 32.0F, 0.0F, 1.5F);
 	}
 
 	public static class Provider implements ParticleProvider<SimpleParticleType> {

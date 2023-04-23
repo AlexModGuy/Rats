@@ -304,11 +304,11 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 					NeoRatlantean.this.setDeltaMovement(NeoRatlantean.this.getDeltaMovement().add(vec3.scale(this.speedModifier * 0.05D / d0)));
 					if (NeoRatlantean.this.getTarget() == null) {
 						Vec3 vec31 = NeoRatlantean.this.getDeltaMovement();
-						NeoRatlantean.this.setYRot(-((float)Mth.atan2(vec31.x(), vec31.z())) * (180F / (float)Math.PI));
+						NeoRatlantean.this.setYRot(-((float) Mth.atan2(vec31.x(), vec31.z())) * (180F / (float) Math.PI));
 					} else {
 						double d2 = NeoRatlantean.this.getTarget().getX() - NeoRatlantean.this.getX();
 						double d1 = NeoRatlantean.this.getTarget().getZ() - NeoRatlantean.this.getZ();
-						NeoRatlantean.this.setYRot(-((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI));
+						NeoRatlantean.this.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
 					}
 					NeoRatlantean.this.yBodyRot = NeoRatlantean.this.getYRot();
 				}

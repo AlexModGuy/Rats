@@ -89,14 +89,14 @@ public class RatPathingHelper {
 				int l = Mth.sign(d6);
 				int i1 = Mth.sign(d7);
 				int j1 = Mth.sign(d8);
-				double d9 = l == 0 ? Double.MAX_VALUE : (double)l / d6;
-				double d10 = i1 == 0 ? Double.MAX_VALUE : (double)i1 / d7;
-				double d11 = j1 == 0 ? Double.MAX_VALUE : (double)j1 / d8;
+				double d9 = l == 0 ? Double.MAX_VALUE : (double) l / d6;
+				double d10 = i1 == 0 ? Double.MAX_VALUE : (double) i1 / d7;
+				double d11 = j1 == 0 ? Double.MAX_VALUE : (double) j1 / d8;
 				double d12 = d9 * (l > 0 ? 1.0D - Mth.frac(d3) : Mth.frac(d3));
 				double d13 = d10 * (i1 > 0 ? 1.0D - Mth.frac(d4) : Mth.frac(d4));
 				double d14 = d11 * (j1 > 0 ? 1.0D - Mth.frac(d5) : Mth.frac(d5));
 
-				while(d12 <= 1.0D || d13 <= 1.0D || d14 <= 1.0D) {
+				while (d12 <= 1.0D || d13 <= 1.0D || d14 <= 1.0D) {
 					if (d12 < d13) {
 						if (d12 < d14) {
 							i += l;
