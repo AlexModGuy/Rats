@@ -3,6 +3,10 @@ package com.github.alexthe666.rats.server.entity.rat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -19,17 +23,26 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 
 public class DemonRat extends AbstractRat implements Enemy {
 
+	public static final EntityDataAccessor<Boolean> SOUL_VARIANT = SynchedEntityData.defineId(DemonRat.class, EntityDataSerializers.BOOLEAN);
+
 	public DemonRat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
 		this.xpReward = 5;
 		this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
 		this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.getEntityData().define(SOUL_VARIANT, false);
 	}
 
 	@Override
@@ -78,12 +91,24 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (this.getLevel().isClientSide() && this.getRandom().nextFloat() < 0.5F) {
-			double d2 = this.getRandom().nextGaussian() * 0.02D;
-			double d0 = this.getRandom().nextGaussian() * 0.02D;
-			double d1 = this.getRandom().nextGaussian() * 0.02D;
-			this.getLevel().addParticle(ParticleTypes.FLAME, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+		if (this.getLevel().isClientSide() && this.getRandom().nextFloat() < 0.15F) {
+			double d2 = this.getRandom().nextGaussian() * 0.0075D;
+			double d0 = this.getRandom().nextGaussian() * 0.0075D;
+			double d1 = this.getRandom().nextGaussian() * 0.0075D;
+			this.getLevel().addParticle(this.isSoulVariant() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), d0, d1, d2);
 		}
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putBoolean("SoulVariant", this.isSoulVariant());
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		this.setSoulVariant(tag.getBoolean("SoulVariant"));
 	}
 
 	@Override
@@ -100,7 +125,16 @@ public class DemonRat extends AbstractRat implements Enemy {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setMale(this.getRandom().nextBoolean());
+		this.setSoulVariant(accessor.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY));
 		return data;
+	}
+
+	public boolean isSoulVariant() {
+		return this.getEntityData().get(SOUL_VARIANT);
+	}
+
+	public void setSoulVariant(boolean soul) {
+		this.getEntityData().set(SOUL_VARIANT, soul);
 	}
 
 	@Override
