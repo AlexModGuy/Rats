@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TrashCanRenderer implements BlockEntityRenderer<TrashCanBlockEntity> {
 	private static final TrashCanModel<?> MODEL_TRASH_CAN = new TrashCanModel<>();
-	private static final RenderType TEXTURE = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/model/trash_can.png"), true);
+	private static final RenderType TEXTURE = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/block/trash_can.png"), true);
 
 	public TrashCanRenderer(BlockEntityRendererProvider.Context context) {
 	}

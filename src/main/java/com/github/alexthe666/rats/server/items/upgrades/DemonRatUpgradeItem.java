@@ -24,7 +24,7 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 
 	@Override
 	public RenderType getEyeTexture() {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/demon_rat_eye.png"));
+		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png"));
 	}
 
 	@Override
@@ -39,6 +39,6 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 
 	@Override
 	public @Nullable RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
-		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/demon_rat.png"));
+		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat.png"));
 	}
 }

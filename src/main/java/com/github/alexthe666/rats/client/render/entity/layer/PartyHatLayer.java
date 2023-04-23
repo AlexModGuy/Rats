@@ -58,9 +58,9 @@ public class PartyHatLayer<T extends LivingEntity, M extends EntityModel<T>, A e
 			}
 			boolean flag1 = itemstack.hasFoil();
 			int i = hat.getColor(itemstack);
-			this.renderModel(stack, source, light, flag1, this.partyHat, (float) (i >> 16 & 255) / 255.0F, (float) (i >> 8 & 255) / 255.0F, (float) (i & 255) / 255.0F, new ResourceLocation(RatsMod.MODID, "textures/model/party_hat_layer_1.png"));
+			this.renderModel(stack, source, light, flag1, this.partyHat, (float) (i >> 16 & 255) / 255.0F, (float) (i >> 8 & 255) / 255.0F, (float) (i & 255) / 255.0F, new ResourceLocation(RatsMod.MODID, "textures/model/hat/party_hat_layer_1.png"));
 			i = this.invertColor(hat.getColor(itemstack));
-			this.renderModel(stack, source, light, flag1, this.partyHat, (float) (i >> 16 & 255) / 255.0F, (float) (i >> 8 & 255) / 255.0F, (float) (i & 255) / 255.0F, new ResourceLocation(RatsMod.MODID, "textures/model/party_hat_layer_2.png"));
+			this.renderModel(stack, source, light, flag1, this.partyHat, (float) (i >> 16 & 255) / 255.0F, (float) (i >> 8 & 255) / 255.0F, (float) (i & 255) / 255.0F, new ResourceLocation(RatsMod.MODID, "textures/model/hat/party_hat_layer_2.png"));
 			stack.popPose();
 		}
 	}

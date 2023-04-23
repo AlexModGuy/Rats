@@ -23,7 +23,7 @@ public class RatinatorRatUpgradeItem extends StatBoostingRatUpgradeItem implemen
 
 	@Override
 	public RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
-		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_ratinator_upgrade.png"));
+		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/ratinator.png"));
 	}
 
 	@Override
@@ -54,6 +54,6 @@ public class RatinatorRatUpgradeItem extends StatBoostingRatUpgradeItem implemen
 
 	@Override
 	public RenderType getEyeTexture() {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_eye_ratinator_upgrade.png"));
+		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/ratinator.png"));
 	}
 }

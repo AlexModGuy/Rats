@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NeoRatlanteanRenderer extends MobRenderer<NeoRatlantean, NeoRatlanteanModel<NeoRatlantean>> {
 
-	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_blue.png");
-	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_black.png");
-	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_brown.png");
-	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_green.png");
-	private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_glow.png");
+	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_blue.png");
+	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_black.png");
+	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_brown.png");
+	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_green.png");
+	private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_glow.png");
 
 	public NeoRatlanteanRenderer(EntityRendererProvider.Context context) {
 		super(context, new NeoRatlanteanModel<>(), 0.65F);

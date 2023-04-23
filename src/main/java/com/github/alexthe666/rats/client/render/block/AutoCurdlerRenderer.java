@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 
 public class AutoCurdlerRenderer implements BlockEntityRenderer<AutoCurdlerBlockEntity> {
 	private static final AutoCurdlerModel<?> MODEL_AUTO_CURDLER = new AutoCurdlerModel<>();
-	private static final RenderType TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/model/auto_curdler.png"));
+	private static final RenderType TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/block/auto_curdler.png"));
 	private static final RenderType TEXTURE_BLOCKS = RenderType.entitySmoothCutout(InventoryMenu.BLOCK_ATLAS);
 
 	public AutoCurdlerRenderer(BlockEntityRendererProvider.Context context) {

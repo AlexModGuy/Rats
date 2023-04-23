@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class RatTrapRenderer implements BlockEntityRenderer<RatTrapBlockEntity> {
 	private static final RatTrapModel<?> MODEL_RAT_TRAP = new RatTrapModel<>();
-	private static final RenderType TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/model/rat_trap.png"));
+	private static final RenderType TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/block/rat_trap.png"));
 
 	public RatTrapRenderer(BlockEntityRendererProvider.Context context) {
 	}

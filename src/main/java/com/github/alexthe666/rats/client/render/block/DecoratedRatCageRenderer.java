@@ -29,12 +29,12 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 	private final RatSeedBowlModel<?> seed_bowl;
 	private static final RatBreedingLanternModel<?> MODEL_RAT_BREEDING_LANTERN = new RatBreedingLanternModel<>();
 	private static final RatWheelModel<?> MODEL_RAT_WHEEL = new RatWheelModel<>();
-	private static final RenderType TEXTURE_RAT_IGLOO = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_igloo.png"));
-	private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_hammock_0.png"));
-	private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_water_bottle.png"));
-	private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_seed_bowl.png"));
-	private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_breeding_lantern.png"));
-	private static final RenderType TEXTURE_RAT_WHEEL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/rat_wheel.png"));
+	private static final RenderType TEXTURE_RAT_IGLOO = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_igloo.png"));
+	private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_hammock_0.png"));
+	private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_water_bottle.png"));
+	private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_seed_bowl.png"));
+	private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_breeding_lantern.png"));
+	private static final RenderType TEXTURE_RAT_WHEEL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_wheel.png"));
 
 	public DecoratedRatCageRenderer(BlockEntityRendererProvider.Context context) {
 		this.igloo = new RatIglooModel<>(context.bakeLayer(RatsModelLayers.IGLOO));

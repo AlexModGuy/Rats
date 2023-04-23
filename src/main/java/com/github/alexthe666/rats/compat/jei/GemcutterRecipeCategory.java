@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class GemcutterRecipeCategory implements IRecipeCategory<GemcutterRecipe> {
 
-	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/gemcutter_rat_jei.png");
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/jei/gemcutter_rat_jei.png");
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable arrow;

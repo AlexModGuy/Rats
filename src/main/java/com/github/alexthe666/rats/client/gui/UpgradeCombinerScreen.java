@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombinerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/upgrade_combiner.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/upgrade_combiner.png");
 	private final Inventory playerInventory;
 	private final UpgradeCombinerMenu combiner;
 

@@ -17,11 +17,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
 
 public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
-	private static final RenderType TEXTURE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_eye_glow.png"));
-	private static final RenderType TEXTURE_0 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_blue.png"));
-	private static final RenderType TEXTURE_1 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_black.png"));
-	private static final RenderType TEXTURE_2 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_brown.png"));
-	private static final RenderType TEXTURE_3 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_green.png"));
+	private static final RenderType TEXTURE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
+	private static final RenderType TEXTURE_0 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/blue.png"));
+	private static final RenderType TEXTURE_1 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/black.png"));
+	private static final RenderType TEXTURE_2 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/brown.png"));
+	private static final RenderType TEXTURE_3 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/green.png"));
 	private static final RatKingModel<RatKing> RAT_MODEL = new RatKingModel<>();
 
 	public RatKingLayer(RenderLayerParent<RatKing, EmptyModel<RatKing>> ratRendererIn) {

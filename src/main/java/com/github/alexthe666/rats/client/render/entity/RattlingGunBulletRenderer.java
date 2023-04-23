@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 
 public class RattlingGunBulletRenderer extends EntityRenderer<RattlingGunBullet> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun_bullet.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun_bullet.png");
 
 	public RattlingGunBulletRenderer(EntityRendererProvider.Context context) {
 		super(context);

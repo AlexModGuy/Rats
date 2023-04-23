@@ -19,7 +19,7 @@ public class BeeRatUpgradeItem extends BaseFlightRatUpgradeItem implements Chang
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_bee_upgrade.png");
+		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/bee.png");
 	}
 
 	@Override

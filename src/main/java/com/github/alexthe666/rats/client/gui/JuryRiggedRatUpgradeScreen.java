@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class JuryRiggedRatUpgradeScreen extends AbstractContainerScreen<JuryRiggedRatUpgradeMenu> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/rat_upgrade_jury_rigged.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_upgrade_jury_rigged.png");
 
 	public JuryRiggedRatUpgradeScreen(JuryRiggedRatUpgradeMenu container, Inventory playerInventory, Component name) {
 		super(container, playerInventory, name);

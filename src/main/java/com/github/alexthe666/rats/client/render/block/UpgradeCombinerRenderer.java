@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 
 public class UpgradeCombinerRenderer implements BlockEntityRenderer<UpgradeCombinerBlockEntity> {
 	private static final RatlanteanSpiritModel<?> MODEL_SPIRIT = new RatlanteanSpiritModel<>();
-	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/upgrade_combiner.png"));
+	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation(RatsMod.MODID, "textures/entity/upgrade_combiner.png"));
 
 	public UpgradeCombinerRenderer(BlockEntityRendererProvider.Context context) {
 	}

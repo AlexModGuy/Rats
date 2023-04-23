@@ -17,8 +17,8 @@ import org.joml.Matrix4f;
 
 public class LaserBeamRenderer extends EntityRenderer<LaserBeam> {
 
-	private static final ResourceLocation TEXTURE_RED = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/laser_beam.png");
-	private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/laser_beam_blue.png");
+	private static final ResourceLocation TEXTURE_RED = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/laser_beam.png");
+	private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/laser_beam_blue.png");
 	private static final RenderType RENDER_TYPE_RED = RenderType.eyes(TEXTURE_RED);
 	private static final RenderType RENDER_TYPE_BLUE = RenderType.eyes(TEXTURE_BLUE);
 

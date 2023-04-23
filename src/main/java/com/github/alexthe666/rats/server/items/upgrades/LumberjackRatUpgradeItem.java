@@ -31,7 +31,7 @@ public class LumberjackRatUpgradeItem extends BaseRatUpgradeItem implements Dama
 
 	@Override
 	public RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
-		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_lumberjack_upgrade.png"));
+		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/lumberjack.png"));
 	}
 
 	@Override

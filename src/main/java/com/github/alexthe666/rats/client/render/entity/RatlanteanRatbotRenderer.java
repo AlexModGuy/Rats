@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RatlanteanRatbotRenderer extends MobRenderer<RatlanteanRatbot, RatlanteanRatbotModel<RatlanteanRatbot>> {
-	private static final ResourceLocation RATBOT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/ratlantean_ratbot.png");
+	private static final ResourceLocation RATBOT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot.png");
 
 	public RatlanteanRatbotRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatlanteanRatbotModel<>(0.0F), 0.5F);

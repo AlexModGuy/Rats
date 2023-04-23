@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class PlagueLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-	private static final RenderType TEXTURE = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/model/plague_overlay.png"));
+	private static final RenderType TEXTURE = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/misc/plague_overlay.png"));
 
 	public PlagueLayer(RenderLayerParent<T, M> parent) {
 		super(parent);

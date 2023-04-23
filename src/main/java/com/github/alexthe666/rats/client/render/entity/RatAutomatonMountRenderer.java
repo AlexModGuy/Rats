@@ -11,8 +11,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class RatAutomatonMountRenderer extends MobRenderer<RatAutomatonMount, RatlanteanAutomatonModel<RatAutomatonMount>> {
 
-	private static final ResourceLocation MARBLED_CHEESE_GOLEM_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/marble_cheese_golem.png");
-	private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/marble_cheese_golem_glow.png");
+	private static final ResourceLocation MARBLED_CHEESE_GOLEM_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton.png");
+	private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton_glow.png");
 
 	public RatAutomatonMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatlanteanAutomatonModel<>(true), 0.95F);

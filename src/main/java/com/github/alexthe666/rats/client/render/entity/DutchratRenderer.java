@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<Dutchrat>> {
 
-	private static final ResourceLocation DUTCHRAT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/dutchrat.png");
+	private static final ResourceLocation DUTCHRAT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat.png");
 
 	public DutchratRenderer(EntityRendererProvider.Context context) {
 		super(context, new FlyingDutchratModel<>(), 0.5F);
@@ -40,8 +40,8 @@ public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<
 	}
 
 	public static class DutchratGlowLayer<T extends Dutchrat, M extends FlyingDutchratModel<T>> extends RenderLayer<T, M> {
-		private static final ResourceLocation GLOW_1 = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/dutchrat_glow_1.png");
-		private static final ResourceLocation GLOW_2 = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/dutchrat_glow_2.png");
+		private static final ResourceLocation GLOW_1 = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_1.png");
+		private static final ResourceLocation GLOW_2 = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_2.png");
 
 		public DutchratGlowLayer(RenderLayerParent<T, M> parent) {
 			super(parent);

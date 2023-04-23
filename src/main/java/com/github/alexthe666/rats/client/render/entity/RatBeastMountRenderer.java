@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatBeastMountRenderer extends MobRenderer<RatBeastMount, RatBeastMountModel<RatBeastMount>> {
 
-	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_blue.png");
-	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_black.png");
-	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_brown.png");
-	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_green.png");
-	private static final ResourceLocation EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_beast_eyes.png");
+	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_blue.png");
+	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_black.png");
+	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_brown.png");
+	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_green.png");
+	private static final ResourceLocation EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/plague_beast_eyes.png");
 
 	public RatBeastMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatBeastMountModel<>(), 0.5F);

@@ -67,12 +67,12 @@ import java.util.Objects;
 public class ForgeClientEvents {
 
 	public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/plague_hearts.png");
-	private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_radius.png");
-	private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/model/quarry_radius.png");
-	private static final ResourceLocation HOME_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_home.png");
-	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_deposit.png");
-	private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_pickup.png");
-	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = new ResourceLocation("rats:textures/entity/rat/rat_patrol.png");
+	private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_radius.png");
+	private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/quarry_radius.png");
+	private static final ResourceLocation HOME_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_home.png");
+	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_deposit.png");
+	private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_pickup.png");
+	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = new ResourceLocation("rats:textures/misc/rat_patrol.png");
 	private static final ResourceLocation SYNESTHESIA = new ResourceLocation(RatsMod.MODID, "shaders/post/synesthesia.json");
 	private static float synesthesiaProgress = 0;
 	private static float prevSynesthesiaProgress = 0;

@@ -16,7 +16,7 @@ import org.joml.Matrix4f;
 
 public class RatlantisArrowRenderer extends ArrowRenderer<RatlantisArrow> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/ratlantis_arrow.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis_arrow.png");
 
 	public RatlantisArrowRenderer(EntityRendererProvider.Context context) {
 		super(context);

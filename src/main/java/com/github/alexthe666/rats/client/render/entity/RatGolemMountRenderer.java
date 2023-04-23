@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RatGolemMountRenderer extends MobRenderer<RatGolemMount, RatGolemMountModel<RatGolemMount>> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/mount/golem_mount.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/mounts/golem_mount.png");
 
 	public RatGolemMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatGolemMountModel<>(), 0.75F);

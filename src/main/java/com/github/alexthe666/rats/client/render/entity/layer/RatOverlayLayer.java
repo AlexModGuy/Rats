@@ -14,8 +14,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatOverlayLayer extends RenderLayer<Rat, RatModel<Rat>> {
 
-	private static final RenderType PLAGUE_TEX = RenderType.entityNoOutline(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_plague_overlay.png"));
-	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/toga.png"));
+	private static final RenderType PLAGUE_TEX = RenderType.entityNoOutline(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/plague_overlay.png"));
+	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/toga.png"));
 
 	public RatOverlayLayer(RenderLayerParent<Rat, RatModel<Rat>> parent) {
 		super(parent);

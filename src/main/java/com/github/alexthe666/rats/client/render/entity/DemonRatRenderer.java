@@ -15,10 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DemonRatRenderer extends AbstractRatRenderer<DemonRat> {
 
-	public static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/demon_rat.png");
-	public static final ResourceLocation SOUL_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/soul_demon_rat.png");
-	public static final ResourceLocation BASE_EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/demon_rat_eye.png");
-	public static final ResourceLocation SOUL_EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/soul_demon_rat_eye.png");
+	public static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat.png");
+	public static final ResourceLocation SOUL_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat.png");
+	public static final ResourceLocation BASE_EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png");
+	public static final ResourceLocation SOUL_EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat_eye.png");
 
 	public DemonRatRenderer(EntityRendererProvider.Context context) {
 		super(context);

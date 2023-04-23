@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatBaronPlaneRenderer extends MobRenderer<RatBaronPlane, BiplaneModel<RatBaronPlane>> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/rat_baron_plane.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat_baron_plane.png");
 
 	public RatBaronPlaneRenderer(EntityRendererProvider.Context context) {
 		super(context, new BiplaneModel<>(), 1.65F);

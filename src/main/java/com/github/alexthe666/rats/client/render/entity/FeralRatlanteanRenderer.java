@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class FeralRatlanteanRenderer extends MobRenderer<FeralRatlantean, FeralRatlanteanModel<FeralRatlantean>> {
-	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_blue.png");
-	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_black.png");
-	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_brown.png");
-	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_green.png");
-	private static final ResourceLocation CLOTHES = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_clothes.png");
-	private static final ResourceLocation EYES = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_eyes.png");
+	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_blue.png");
+	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_black.png");
+	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_brown.png");
+	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_green.png");
+	private static final ResourceLocation CLOTHES = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_clothes.png");
+	private static final ResourceLocation EYES = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_eyes.png");
 
 	public FeralRatlanteanRenderer(EntityRendererProvider.Context context) {
 		super(context, new FeralRatlanteanModel<>(), 0.5F);

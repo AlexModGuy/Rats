@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LaserPortalRenderer extends EntityRenderer<LaserPortal> {
 
-	private static final ResourceLocation PORTAL = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/neo_ratlantean_glow.png");
+	private static final ResourceLocation PORTAL = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_glow.png");
 	private static final LaserPortalModel MODEL_NEO_RATLANTEAN = new LaserPortalModel();
 
 	public LaserPortalRenderer(EntityRendererProvider.Context context) {

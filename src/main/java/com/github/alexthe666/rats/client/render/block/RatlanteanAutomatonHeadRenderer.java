@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatlanteanAutomatonHeadRenderer implements BlockEntityRenderer<RatlanteanAutomatonHeadBlockEntity> {
 	private static final RatlanteanAutomatonModel<?> AUTOMATON_MODEL = new RatlanteanAutomatonModel<>(false);
-	private static final RenderType GOLEM_TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/marble_cheese_golem.png"));
-	private static final RenderType GLOW_TEXTURE = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/marble_cheese_golem_glow.png"));
+	private static final RenderType GOLEM_TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton.png"));
+	private static final RenderType GLOW_TEXTURE = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton_glow.png"));
 
 	public RatlanteanAutomatonHeadRenderer(BlockEntityRendererProvider.Context context) {
 	}

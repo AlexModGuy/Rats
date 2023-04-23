@@ -18,7 +18,7 @@ import net.minecraft.util.Mth;
 public class DutchratBellRenderer implements BlockEntityRenderer<DutchratBellBlockEntity> {
 
 	private final ModelPart bellBody;
-	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/dutchrat_bell.png"));
+	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/dutchrat_bell.png"));
 
 	public DutchratBellRenderer(BlockEntityRendererProvider.Context context) {
 		this.bellBody = context.bakeLayer(ModelLayers.BELL).getChild("bell_body");

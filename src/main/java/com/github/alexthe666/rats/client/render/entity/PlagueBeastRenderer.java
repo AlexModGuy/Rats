@@ -12,12 +12,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PlagueBeastRenderer extends MobRenderer<PlagueBeast, FeralRatlanteanModel<PlagueBeast>> {
 
-	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_blue.png");
-	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_black.png");
-	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_brown.png");
-	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/feral_ratlantean_green.png");
-	private static final ResourceLocation PLAGUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_beast_overlay.png");
-	private static final ResourceLocation EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_beast_eyes.png");
+	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_blue.png");
+	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_black.png");
+	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_brown.png");
+	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_green.png");
+	private static final ResourceLocation PLAGUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/plague_beast_overlay.png");
+	private static final ResourceLocation EYE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/plague_beast_eyes.png");
 
 	public PlagueBeastRenderer(EntityRendererProvider.Context context) {
 		super(context, new FeralRatlanteanModel<>(), 0.5F);

@@ -15,7 +15,7 @@ public class AquaticRatUpgradeItem extends BaseRatUpgradeItem implements Changes
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_aquatic_upgrade.png");
+		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/aquatic.png");
 	}
 
 	@Override

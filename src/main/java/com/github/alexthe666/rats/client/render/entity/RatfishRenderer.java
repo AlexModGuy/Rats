@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class RatfishRenderer extends MobRenderer<Ratfish, RatFishModel<Ratfish>> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/ratfish.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratfish.png");
 
 	public RatfishRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatFishModel<>(0), 0.3F);

@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import com.github.alexthe666.rats.registry.RatsDataSerializerRegistry;
-import com.github.alexthe666.rats.server.misc.RatlantisLoadedCondition;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -122,7 +121,6 @@ public class RatsMod {
 		bus.addListener(this::setup);
 		MinecraftForge.EVENT_BUS.addListener(this::addPetShops);
 		bus.addListener(this::addRatlantisDatapack);
-		bus.addListener(this::genericRegistryEvent);
 	}
 
 	//despite being a builtin datapack, this is still necessary because without it the Ratlantis pack doesn't show up. Whatever.
@@ -143,12 +141,6 @@ public class RatsMod {
 		if (event.getConfig().getSpec() == ConfigHolder.CLIENT_SPEC) {
 			RatConfig.bakeClient();
 			LOGGER.debug("Reloading Rats Client Config!");
-		}
-	}
-
-	public void genericRegistryEvent(RegisterEvent event) {
-		if (Objects.equals(event.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
-			CraftingHelper.register(new RatlantisLoadedCondition.Serializer());
 		}
 	}
 

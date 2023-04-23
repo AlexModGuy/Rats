@@ -19,7 +19,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
-	private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/psychic.png");
+	private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/psychic.png");
 	private final CubeModel<ThrownBlock> cube;
 
 	public ThrownBlockRenderer(EntityRendererProvider.Context context) {

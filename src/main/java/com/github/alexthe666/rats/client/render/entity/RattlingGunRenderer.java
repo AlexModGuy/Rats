@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun.png");
-	private static final ResourceLocation TEXTURE_FIRING = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun_firing.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun.png");
+	private static final ResourceLocation TEXTURE_FIRING = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun_firing.png");
 	public static final RattlingGunModel<RattlingGun> GUN_MODEL = new RattlingGunModel<>();
 	public static final RattlingGunBaseModel<RattlingGun> GUN_BASE_MODEL = new RattlingGunBaseModel<>();
 

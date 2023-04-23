@@ -19,7 +19,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import java.util.Optional;
 
 public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/rat_crafting_table.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
 	private final Inventory playerInventory;
 	private final RatCraftingTableMenu table;
 

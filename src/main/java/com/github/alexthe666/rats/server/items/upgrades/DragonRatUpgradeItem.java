@@ -46,7 +46,7 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_dragon_upgrade.png");
+		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/dragon.png");
 	}
 
 	@Override
@@ -86,6 +86,6 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 
 	@Override
 	public RenderType getEyeTexture() {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/rat_eye_dragon_upgrade.png"));
+		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/dragon.png"));
 	}
 }

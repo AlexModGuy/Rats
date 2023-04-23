@@ -43,7 +43,7 @@ public class EnergyRatUpgradeItem extends BaseRatUpgradeItem implements ChangesO
 	@Override
 	public @Nullable RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
 		float f = (float) rat.tickCount + partialTicks;
-		return rat.getHeldRF() > 0 ? RenderType.energySwirl(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/psychic.png"), f * 0.01F, f * 0.01F) : null;
+		return rat.getHeldRF() > 0 ? RenderType.energySwirl(new ResourceLocation(RatsMod.MODID, "textures/entity/psychic.png"), f * 0.01F, f * 0.01F) : null;
 	}
 
 	@Override

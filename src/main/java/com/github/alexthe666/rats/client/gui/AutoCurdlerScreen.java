@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/auto_curdler.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/auto_curdler.png");
 	private final AutoCurdlerMenu curdler;
 
 	public AutoCurdlerScreen(AutoCurdlerMenu container, Inventory inv, Component name) {

@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 
 public class GolemBeamRenderer extends EntityRenderer<GolemBeam> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis/golem_beam.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/automaton_beam.png");
 
 	public GolemBeamRenderer(EntityRendererProvider.Context context) {
 		super(context);
