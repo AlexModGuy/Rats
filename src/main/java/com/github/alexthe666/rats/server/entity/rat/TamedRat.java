@@ -9,13 +9,13 @@ import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.RatCageBlock;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
 import com.github.alexthe666.rats.server.entity.RatMount;
-import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.ai.goal.*;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.*;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.EtherealRatNavigation;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.RatFlightNavigation;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.RatNavigation;
 import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
@@ -30,7 +30,6 @@ import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
-import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -713,8 +712,9 @@ public class TamedRat extends InventoryRat {
 		this.getLevel().addFreshEntity(baby);
 	}
 
+	@Override
 	public boolean isPickable() {
-		return !this.isPassenger();
+		return !(this.getVehicle() instanceof Player);
 	}
 
 	public ItemStack getResultForRecipe(RecipeType<? extends SingleItemRecipe> recipe, ItemStack stack) {
@@ -893,7 +893,7 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean applyNormalDyeIfPossible(ItemStack stack) {
-		if (stack.getItem() instanceof DyeItem item && this.getDyeColor() != item.getDyeColor().getId()) {
+		if (stack.getItem() instanceof DyeItem item && (!this.isDyed() || this.getDyeColor() != item.getDyeColor().getId())) {
 			if (!this.isDyed()) {
 				this.setDyed(true);
 			}
@@ -912,11 +912,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean applySpecialDyeIfPossible(ItemStack stack) {
-		if (!this.isDyed()) {
-			this.setDyed(true);
-		}
 		String name = stack.getHoverName().getString();
 		if ((RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(name) == null && this.getDyeColor() != 100) || RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(name) != RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(this.getSpecialDye())) {
+			if (!this.isDyed()) {
+				this.setDyed(true);
+			}
 			this.setDyeColor(100);
 			this.setSpecialDye(name);
 			for (int i = 0; i < 8; i++) {
@@ -1134,7 +1134,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean canBeSeenAsEnemy() {
-		return !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get()) || super.canBeSeenAsEnemy();
+		return !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get()) && super.canBeSeenAsEnemy();
 	}
 
 	@Override
