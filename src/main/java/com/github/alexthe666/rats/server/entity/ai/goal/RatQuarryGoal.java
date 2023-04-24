@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -57,8 +58,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 			int RADIUS = quarry.getRadius();
 			for (BlockPos pos : BlockPos.betweenClosedStream(quarryPos.pos().offset(-RADIUS, -1, -RADIUS), quarryPos.pos().offset(RADIUS, -quarryPos.pos().getY() - 1, RADIUS)).map(BlockPos::immutable).toList()) {
 				if ((!this.rat.getLevel().isEmptyBlock(pos) && this.doesListContainBlock(this.rat.getLevel(), pos)) || this.rat.getLevel().getFluidState(pos).isSource()) {
-					BlockState state = this.rat.getLevel().getBlockState(pos);
-					if (!state.is(RatsBlockRegistry.RAT_QUARRY.get()) && !state.is(RatsBlockTags.QUARRY_IGNORABLES) && state.getDestroySpeed(this.rat.getLevel(), pos) > 0F) {
+					if (this.canMineBlock(pos)) {
 						allBlocks.add(pos);
 					}
 				}
@@ -104,7 +104,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 	@Override
 	public void tick() {
 		if (this.getTargetBlock() != null) {
-			BlockPos rayPos = this.rat.rayTraceBlockPos(this.getTargetBlock());
+			BlockPos rayPos = this.getOffsetFromTarget(this.rat.getLevel(), this.getTargetBlock());
 			if (!this.buildStairs && this.rat.getLevel().getFluidState(this.getTargetBlock()).isEmpty() && this.rat.getLevel().isEmptyBlock(this.getTargetBlock())) {
 				this.stop();
 				return;
@@ -114,19 +114,13 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 				this.rat.heal(15.0F);
 				this.rat.getJumpControl().jump();
 			}
-			if (rayPos == null || !this.canMineBlock(rayPos)) {
-				rayPos = this.getTargetBlock();
-			}
-			if (this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D)) {
-				rayPos = this.getTargetBlock();
-			} else {
-				this.rat.getNavigation().moveTo(rayPos.getX() + 0.5D, rayPos.getY(), rayPos.getZ() + 0.5D, 1.25D);
-			}
 
-			double distance = this.rat.getRatDistanceCenterSq(rayPos.getX() + 0.5D, rayPos.getY() + 0.5D, rayPos.getZ() + 0.5D);
+			this.rat.getNavigation().moveTo(rayPos.getX(), rayPos.getY(), rayPos.getZ(), 1.0F);
+
+			double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY() + 0.5D, this.getTargetBlock().getZ() + 0.5D);
 			if (!this.rat.getMoveControl().hasWanted() && (this.rat.isOnGround() || this.rat.isInWater() || this.rat.isInLava() || this.rat.isRidingSpecialMount())) {
-				BlockState block = this.rat.getLevel().getBlockState(rayPos);
-				SoundType soundType = block.getBlock().getSoundType(block, this.rat.getLevel(), rayPos, null);
+				BlockState block = this.rat.getLevel().getBlockState(this.getTargetBlock());
+				SoundType soundType = block.getBlock().getSoundType(block, this.rat.getLevel(), this.getTargetBlock(), null);
 				if (this.buildStairs) {
 					if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 						this.rat.getLevel().setBlockAndUpdate(this.getTargetBlock(), RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
@@ -143,7 +137,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 								if (block.getFluidState().is(FluidTags.LAVA)) {
 									replace = Blocks.OBSIDIAN.defaultBlockState();
 								}
-								this.rat.getLevel().setBlockAndUpdate(rayPos, replace);
+								this.rat.getLevel().setBlockAndUpdate(this.getTargetBlock(), replace);
 								this.rat.setPos(this.rat.getX(), this.rat.getY() + 1F, this.rat.getZ());
 								this.rat.heal(2.0F);
 								this.stop();
@@ -161,13 +155,13 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 								this.rat.setDeltaMovement(Vec3.ZERO);
 							}
 							this.breakingTime++;
-							int hardness = (int) (block.getDestroySpeed(this.rat.getLevel(), rayPos) * 10);
+							int hardness = (int) (block.getDestroySpeed(this.rat.getLevel(), this.getTargetBlock()) * 10);
 							int i = (int) ((float) this.breakingTime / hardness * 10.0F);
 							if (this.breakingTime % 5 == 0) {
 								this.rat.playSound(soundType.getHitSound(), soundType.getVolume() + 1, soundType.getPitch());
 							}
 							if (i != this.previousBreakProgress) {
-								this.rat.getLevel().destroyBlockProgress(this.rat.getId(), rayPos, i);
+								this.rat.getLevel().destroyBlockProgress(this.rat.getId(), this.getTargetBlock(), i);
 								this.previousBreakProgress = i;
 							}
 							if (this.breakingTime >= hardness) {
@@ -176,7 +170,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 								this.rat.playSound(SoundEvents.ITEM_PICKUP, 1, 1F);
 								this.breakingTime = 0;
 								this.previousBreakProgress = -1;
-								this.rat.getLevel().destroyBlock(rayPos, true);
+								this.rat.getLevel().destroyBlock(this.getTargetBlock(), true);
 								this.stop();
 							}
 							this.prevMiningState = block;
@@ -185,6 +179,15 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 				}
 			}
 		}
+	}
+
+	private BlockPos getOffsetFromTarget(Level level, BlockPos initialPos) {
+		for (Direction direction : Direction.values()) {
+			if (level.getBlockState(initialPos.relative(direction)).isAir()) {
+				return initialPos.relative(direction);
+			}
+		}
+		return initialPos;
 	}
 
 	private boolean canMineBlock(BlockPos rayPos) {

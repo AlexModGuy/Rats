@@ -215,16 +215,6 @@ public class Rat extends DiggingRat implements Ratlanteans {
 		return (this.isBecomingRatKing() || this.isEating()) && this.sleepProgress <= 0.0F;
 	}
 
-	public void travel(Vec3 vec3d) {
-		if (!this.canMove()) {
-			if (this.getNavigation().getPath() != null) {
-				this.getNavigation().stop();
-			}
-			vec3d = Vec3.ZERO;
-		}
-		super.travel(vec3d);
-	}
-
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return this.hasPlague();
