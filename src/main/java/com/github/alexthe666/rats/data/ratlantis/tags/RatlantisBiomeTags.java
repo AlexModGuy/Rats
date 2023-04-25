@@ -24,21 +24,20 @@ public class RatlantisBiomeTags extends BiomeTagsProvider {
 		super(output, provider, RatsMod.MODID, helper);
 	}
 
-	//why do these HAVE to be optional? It says the biome is missing if not optional, which makes no sense. AAAAAAAAAAAAAAA
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(DUTCHRAT_SHIP_SPAWNS).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BARON_RUNWAY_SPAWNS).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
+		this.tag(DUTCHRAT_SHIP_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BARON_RUNWAY_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
 
-		this.tag(BiomeTags.HAS_BURIED_TREASURE).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.HAS_MINESHAFT).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.HAS_SHIPWRECK).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.HAS_JUNGLE_TEMPLE).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
+		this.tag(BiomeTags.HAS_BURIED_TREASURE).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.HAS_MINESHAFT).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.HAS_SHIPWRECK).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.HAS_JUNGLE_TEMPLE).add(RatlantisBiomeRegistry.RATLANTIS);
 
-		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
-		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addOptional(RatlantisBiomeRegistry.RATLANTIS.location());
+		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).add(RatlantisBiomeRegistry.RATLANTIS);
 	}
 
 	private static TagKey<Biome> create(ResourceLocation name) {

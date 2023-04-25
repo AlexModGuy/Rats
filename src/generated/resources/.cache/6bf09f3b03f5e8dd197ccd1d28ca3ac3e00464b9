@@ -1,11 +1,11 @@
-// 1.19.4	2023-04-03T22:55:21.4505484	ratlantis/Tags for minecraft:worldgen/biome mod id rats
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/buried_treasure.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/jungle_temple.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/shipwreck.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/spawns_warm_variant_frogs.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_patrol_spawns.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_wandering_trader_spawns.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_zombie_sieges.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/rats/tags/worldgen/biome/has_structure/baron_runway.json
-203a31eaec9a5e869a618e1be159b7974edf643f data/minecraft/datapacks/ratlantis/data/rats/tags/worldgen/biome/has_structure/dutchrat_ship.json
+// 1.19.4	2023-04-25T17:38:59.7403477	ratlantis/Tags for minecraft:worldgen/biome mod id rats
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/buried_treasure.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/jungle_temple.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/has_structure/shipwreck.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/spawns_warm_variant_frogs.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_patrol_spawns.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_wandering_trader_spawns.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/minecraft/tags/worldgen/biome/without_zombie_sieges.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/rats/tags/worldgen/biome/has_structure/baron_runway.json
+843d32540208124c7261666f9e4f829eaf837c9b data/minecraft/datapacks/ratlantis/data/rats/tags/worldgen/biome/has_structure/dutchrat_ship.json

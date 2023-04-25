@@ -56,8 +56,7 @@ public class RatsDataRegistry {
 		DataGenerator.PackGenerator ratlantisPack = generator.getBuiltinDatapack(event.includeServer(), "ratlantis");
 
 		ratlantisPack.addProvider(ratOutput -> new RatlantisAdvancementProvider(ratOutput, provider, helper));
-		ratlantisPack.addProvider(ratOutput -> new RatlantisWorldGenerator(ratOutput, provider));
-		ratlantisPack.addProvider(ratOutput -> new RatlantisBiomeTags(ratOutput, provider, helper));
+		ratlantisPack.addProvider(ratOutput -> RatlantisWorldGenerator.addProviders(ratlantisPack, ratOutput, provider, helper));
 		TagsProvider<Block> ratlantisBlockTags = ratlantisPack.addProvider(ratOutput -> new RatlantisBlockTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisEntityTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisItemTags(ratOutput, provider, ratlantisBlockTags.contentsGetter(), helper));

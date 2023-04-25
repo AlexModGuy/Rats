@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "rats:ratlantis",
-      "required": false
-    }
+    "rats:ratlantis"
   ]
 }
