@@ -32,15 +32,13 @@ public class GlowingOverlayLayer<T extends LivingEntity, M extends EntityModel<T
 
 		if (this.getParentModel() instanceof RatlanteanAutomatonModel<?> automaton) {
 			stack.pushPose();
-			automaton.upperbody.translateAndRotate(stack);
 			automaton.armLeft1.translateAndRotate(stack);
 			automaton.armLeft2.translateAndRotate(stack);
-			automaton.drillArm1.translateAndRotate(stack);
 			automaton.drillArm2.translateAndRotate(stack);
 			automaton.drilArm3.translateAndRotate(stack);
-			stack.translate(-0.05D, -0.975D, 0.3D);
 			automaton.blade.translateAndRotate(stack);
 			stack.mulPose(Axis.YP.rotationDegrees(90));
+
 			Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(RatlantisItemRegistry.ANCIENT_SAWBLADE.get()), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, 0);
 			stack.popPose();
 		}
