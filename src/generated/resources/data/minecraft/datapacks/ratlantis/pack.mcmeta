@@ -3,6 +3,7 @@
     "description": {
       "translate": "pack.rats.ratlantis"
     },
-    "pack_format": 12
+    "forge:server_data_pack_format": 12,
+    "pack_format": 13
   }
 }

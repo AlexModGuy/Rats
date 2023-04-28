@@ -11,19 +11,25 @@ import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisEntityTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisItemTags;
 import com.github.alexthe666.rats.data.tags.*;
+import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = RatsMod.MODID)
 public class RatsDataRegistry {
@@ -51,7 +57,10 @@ public class RatsDataRegistry {
 		generator.addProvider(event.includeServer(), new RatsLootTables(output));
 		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output));
 		generator.addProvider(event.includeServer(), new RatsRecipes(output));
-		generator.addProvider(true, PackMetadataGenerator.forFeaturePack(output, Component.translatable("pack.rats.rats")));
+		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
+				Component.translatable("pack.rats.rats"),
+				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 
 		DataGenerator.PackGenerator ratlantisPack = generator.getBuiltinDatapack(event.includeServer(), "ratlantis");
 
@@ -62,6 +71,9 @@ public class RatsDataRegistry {
 		ratlantisPack.addProvider(ratOutput -> new RatlantisItemTags(ratOutput, provider, ratlantisBlockTags.contentsGetter(), helper));
 		ratlantisPack.addProvider(RatlantisLootTables::new);
 		ratlantisPack.addProvider(RatlantisRecipes::new);
-		ratlantisPack.addProvider(ratOutput -> PackMetadataGenerator.forFeaturePack(ratOutput, Component.translatable("pack.rats.ratlantis")));
+		ratlantisPack.addProvider(ratOutput -> new PackMetadataGenerator(ratOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
+				Component.translatable("pack.rats.ratlantis"),
+				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 	}
 }
