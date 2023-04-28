@@ -16,10 +16,10 @@ public class RatbotStrifeGoal extends Goal {
 	private boolean strafingBackwards;
 	private int strafingTime = -1;
 
-	public RatbotStrifeGoal(RatlanteanRatbot mob, double moveSpeedAmpIn, float maxAttackDistanceIn) {
+	public RatbotStrifeGoal(RatlanteanRatbot mob, double speedModifier, float attackDist) {
 		this.entity = mob;
-		this.moveSpeedAmp = moveSpeedAmpIn;
-		this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
+		this.moveSpeedAmp = speedModifier;
+		this.maxAttackDistance = attackDist * attackDist;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 

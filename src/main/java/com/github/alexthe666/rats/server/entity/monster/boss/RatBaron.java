@@ -91,8 +91,8 @@ public class RatBaron extends AbstractRat implements Enemy {
 	}
 
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		spawnDataIn = super.finalizeSpawn(level, difficultyIn, reason, spawnDataIn, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setMale(this.getRandom().nextBoolean());
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setDropChance(EquipmentSlot.HEAD, 0);
@@ -104,7 +104,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 			}
 			this.startRiding(boat, true);
 		}
-		return spawnDataIn;
+		return data;
 	}
 
 	@Override

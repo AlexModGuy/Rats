@@ -134,9 +134,9 @@ public class LaserPortal extends Entity {
 		return this.creator;
 	}
 
-	public void setCreator(@Nullable LivingEntity ownerIn) {
-		this.creator = ownerIn;
-		this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUUID();
+	public void setCreator(@Nullable LivingEntity entity) {
+		this.creator = entity;
+		this.ownerUniqueId = entity == null ? null : entity.getUUID();
 	}
 
 	protected void readAdditionalSaveData(CompoundTag compound) {

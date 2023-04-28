@@ -65,8 +65,8 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity, Ratlan
 	}
 
 
-	public void move(MoverType typeIn, Vec3 pos) {
-		super.move(typeIn, pos);
+	public void move(MoverType type, Vec3 pos) {
+		super.move(type, pos);
 		this.checkInsideBlocks();
 	}
 

@@ -110,7 +110,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 		int screenW = (this.width - this.imageWidth) / 2;
 		int screenH = (this.height - this.imageHeight) / 2;
 
-		if (mouseX > screenW + 29 && mouseX < screenW + 53 && mouseY > screenH + 15 && mouseY < screenH + 73) {
+		if (this.isHovering(29, 15, 24, 58, mouseX, mouseY)) {
 			String fluidName = new FluidStack(ForgeMod.MILK.get(), this.curdler.getTankCapacity()).getDisplayName().getString();
 			String fluidSize = this.curdler.getFluidAmount() + " " + Component.translatable("container.auto_curdler.mb").getString();
 			List<Component> list = Arrays.asList(Component.literal(fluidName).withStyle(ChatFormatting.BLUE), Component.literal(fluidSize).withStyle(ChatFormatting.GRAY));

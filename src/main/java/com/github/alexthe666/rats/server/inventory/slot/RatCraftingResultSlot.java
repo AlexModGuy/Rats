@@ -36,7 +36,7 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	}
 
 	@Override
-	public boolean mayPickup(Player playerIn) {
+	public boolean mayPickup(Player player) {
 		return true;
 	}
 

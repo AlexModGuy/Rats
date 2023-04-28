@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.data.ratlantis.RatlantisAdvancementProvider;
 import com.github.alexthe666.rats.data.ratlantis.RatlantisRecipes;
 import com.github.alexthe666.rats.data.ratlantis.RatlantisWorldGenerator;
 import com.github.alexthe666.rats.data.ratlantis.loot.RatlantisLootTables;
-import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBiomeTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisEntityTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisItemTags;

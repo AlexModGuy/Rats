@@ -29,11 +29,6 @@ public class DutchratSword extends Entity {
 		super(type, level);
 	}
 
-	public DutchratSword(EntityType<? extends Entity> type, Level level, double x, double y, double z) {
-		this(type, level);
-		this.setPos(x, y, z);
-	}
-
 	public DutchratSword(EntityType<? extends Entity> type, Level level, double x, double y, double z, LivingEntity creator) {
 		this(type, level);
 		this.setPos(x, y, z);
@@ -101,7 +96,7 @@ public class DutchratSword extends Entity {
 		this.move(MoverType.SELF, this.getDeltaMovement());
 	}
 
-	private void onHit(HitResult raytraceresult) {
+	private void onHit(HitResult result) {
 		DamageSource source = this.damageSources().magic();
 		if (this.getCreator() != null) {
 			source = this.damageSources().mobAttack(this.getCreator());
@@ -131,9 +126,9 @@ public class DutchratSword extends Entity {
 		return this.creator;
 	}
 
-	public void setCreator(@Nullable LivingEntity ownerIn) {
-		this.creator = ownerIn;
-		this.ownerUniqueId = ownerIn == null ? null : ownerIn.getUUID();
+	public void setCreator(@Nullable LivingEntity entity) {
+		this.creator = entity;
+		this.ownerUniqueId = entity == null ? null : entity.getUUID();
 	}
 
 	protected void readAdditionalSaveData(CompoundTag compound) {

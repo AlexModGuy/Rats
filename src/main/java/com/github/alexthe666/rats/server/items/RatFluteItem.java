@@ -36,16 +36,16 @@ public class RatFluteItem extends Item {
 	}
 
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		ItemStack itemStackIn = player.getItemInHand(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
-		int commandInt = itemStackIn.getOrCreateTag().getInt("Command");
+		int commandInt = stack.getOrCreateTag().getInt("Command");
 		RatCommand ratCommand = RatCommand.values()[Mth.clamp(commandInt, 0, RatCommand.values().length - 1)];
 		if (player.isShiftKeyDown()) {
 			commandInt++;
 			if (commandInt > RatCommand.values().length - 1) {
 				commandInt = 0;
 			}
-			itemStackIn.getOrCreateTag().putInt("Command", commandInt);
+			stack.getOrCreateTag().putInt("Command", commandInt);
 			ratCommand = RatCommand.values()[Mth.clamp(commandInt, 0, RatCommand.values().length - 1)];
 			level.playSound(player, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.NEUTRAL, 1.0F, 1.25F);
 			player.displayClientMessage(Component.translatable("item.rats.rat_flute.command_changed").append(" ").append(Component.translatable(ratCommand.getTranslateName())), true);
@@ -68,7 +68,7 @@ public class RatFluteItem extends Item {
 			level.playSound(player, player.blockPosition(), RatsSoundRegistry.getFluteSound(), SoundSource.NEUTRAL, 1, 1.25F);
 		}
 
-		return InteractionResultHolder.success(itemStackIn);
+		return InteractionResultHolder.success(stack);
 	}
 
 	@Override

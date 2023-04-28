@@ -139,9 +139,9 @@ public class RatHelmetLayer<T extends AbstractRat> extends RenderLayer<T, RatMod
 
 	private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
 
-	private void renderArmor(PoseStack stack, MultiBufferSource buffer, int light, boolean glint, Model modelIn, float red, float green, float blue, ResourceLocation armorResource) {
+	private void renderArmor(PoseStack stack, MultiBufferSource buffer, int light, boolean glint, Model model, float red, float green, float blue, ResourceLocation armorResource) {
 		VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(armorResource), false, glint);
-		modelIn.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+		model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 	}
 
 	public static ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @org.jetbrains.annotations.Nullable String type) {

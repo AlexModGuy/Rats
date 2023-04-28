@@ -107,12 +107,6 @@ public class RatlanteanRatbot extends Monster implements IAnimatedEntity, Ratlan
 		}
 	}
 
-	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		spawnDataIn = super.finalizeSpawn(level, difficultyIn, reason, spawnDataIn, dataTag);
-		return spawnDataIn;
-	}
-
 	@Override
 	public int getAnimationTick() {
 		return animationTick;

@@ -69,7 +69,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 			blit(stack, i + 7, j + 40, 198, 0, 21, 21);
 		}
 		if (this.table.getCraftingTable().getRecipeUsed() == null) {
-			blit(stack, i + 95, j + 38, 198, 0, 21, 21);
+			blit(stack, i + 95, j + 38, 220, 0, 21, 21);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		}
 
 		if (!this.table.getCraftingTable().hasRat()) {
-			if (mouseX > screenW + 40 && mouseX < screenW + 65 && mouseY > screenH + 14 && mouseY < screenH + 40) {
+			if (this.isHovering(6, 34, 25, 29, mouseX, mouseY)) {
 				Component ratDesc = Component.translatable("container.rat_crafting_table.rat_desc");
 				this.renderTooltip(stack, Minecraft.getInstance().font.split(ratDesc, 200), mouseX - screenW - 40, mouseY - screenH + 10);
 			}

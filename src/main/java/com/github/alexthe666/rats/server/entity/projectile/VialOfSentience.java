@@ -23,8 +23,8 @@ public class VialOfSentience extends ThrowableItemProjectile {
 		super(type, level);
 	}
 
-	public VialOfSentience(Level level, LivingEntity throwerIn) {
-		super(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), throwerIn, level);
+	public VialOfSentience(Level level, LivingEntity thrower) {
+		super(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), thrower, level);
 	}
 
 	protected void onHit(HitResult result) {

@@ -17,10 +17,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	public RatUpgradeContainer(ItemStack upgradeStack) {
 		this.upgradeStack = upgradeStack;
-		if (!upgradeStack.hasTag()) {
-			upgradeStack.setTag(new CompoundTag());
-		}
-		this.readFromNBT(upgradeStack.getTag());
+		this.readFromNBT(upgradeStack.getOrCreateTag());
 	}
 
 	private void readFromNBT(CompoundTag tagCompound) {
@@ -78,7 +75,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	@Override
 	public void setChanged() {
-		this.writeToNBT(this.upgradeStack.getTag());
+		this.writeToNBT(this.upgradeStack.getOrCreateTag());
 	}
 
 	@Override
@@ -92,10 +89,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	@Override
 	public void stopOpen(Player player) {
-		if (!this.upgradeStack.hasTag()) {
-			this.upgradeStack.setTag(new CompoundTag());
-		}
-		this.writeToNBT(this.upgradeStack.getTag());
+		this.writeToNBT(this.upgradeStack.getOrCreateTag());
 	}
 
 	@Override
@@ -117,8 +111,8 @@ public class RatUpgradeContainer implements WorldlyContainer {
 	}
 
 	@Override
-	public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-		return canPlaceItem(index, itemStackIn);
+	public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+		return canPlaceItem(index, stack);
 	}
 
 	@Override
