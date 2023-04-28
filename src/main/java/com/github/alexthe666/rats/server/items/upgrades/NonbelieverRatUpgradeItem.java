@@ -20,7 +20,7 @@ public class NonbelieverRatUpgradeItem extends StatBoostingRatUpgradeItem implem
 
 	@Override
 	public @Nullable RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
-		return RatsRenderType.getGreenGlint();
+		return RatConfig.ratNonbelieverGlint ? RatsRenderType.getGreenGlint() : null;
 	}
 
 	@Override

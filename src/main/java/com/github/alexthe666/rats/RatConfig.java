@@ -6,6 +6,9 @@ public class RatConfig {
 	public static boolean funnyFluteSound = true;
 	public static boolean synesthesiaShader = true;
 	public static boolean ratFartNoises = true;
+	public static boolean ratGodGlint = true;
+	public static boolean ratNonbelieverGlint = true;
+	public static boolean ratAngelGlint = true;
 
 	// SERVER
 	public static int ratSpawnDecrease = 5;
@@ -95,6 +98,9 @@ public class RatConfig {
 			synesthesiaShader = ConfigHolder.CLIENT.synesthesiaShader.get();
 			funnyFluteSound = ConfigHolder.CLIENT.funnyFluteSound.get();
 			ratFartNoises = ConfigHolder.CLIENT.ratFartNoises.get();
+			ratGodGlint = ConfigHolder.CLIENT.ratGodGlint.get();
+			ratNonbelieverGlint = ConfigHolder.CLIENT.ratNonbelieverGlint.get();
+			ratAngelGlint = ConfigHolder.CLIENT.ratAngelGlint.get();
 		} catch (Exception e) {
 			RatsMod.LOGGER.warn("An exception was caused trying to load the config for Rats.");
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
@@ -31,7 +32,7 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRa
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, TamedRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (rat.getRespawnCountdown() > 0) {
+		if (rat.getRespawnCountdown() > 0 && RatConfig.ratAngelGlint) {
 			VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getWhiteGlint());
 			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		} else {
@@ -54,7 +55,7 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRa
 				}
 			}
 
-			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOD.get())) {
+			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOD.get()) && RatConfig.ratGodGlint) {
 				VertexConsumer vertexBuilder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(this.getTextureLocation(rat)), false, true);
 				this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
