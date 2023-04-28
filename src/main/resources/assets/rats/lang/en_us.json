@@ -1003,5 +1003,7 @@
   "subtitles.rats.trash_can.empty": "Trash Can empties",
   "subtitles.rats.trash_can.fill": "Trash Can fills",
   "pack.rats.rats": "Rats Default Resources",
-  "pack.rats.ratlantis": "Enables Ratlantis and all Ratlantis related features"
+  "pack.rats.ratlantis": "Enables Ratlantis and all Ratlantis related features",
+  "trim_material.rats.gem_of_ratlantis": "Gem of Ratlantis Material",
+  "trim_material.rats.oratchalcum": "Oratchalcum Material"
 }
