@@ -1186,8 +1186,12 @@ public class TamedRat extends InventoryRat {
 				}));
 
 		for (Attribute attribute : ForgeRegistries.ATTRIBUTES.getValues()) {
-			if (!attributeList.contains(attribute) && this.getAttribute(attribute) != null) {
-				Objects.requireNonNull(this.getAttribute(attribute)).setBaseValue(defaultAttributes.getBaseValue(attribute));
+			if (!attributeList.contains(attribute) && this.getAttribute(attribute) != null && defaultAttributes.hasAttribute(attribute)) {
+				try {
+					Objects.requireNonNull(this.getAttribute(attribute)).setBaseValue(defaultAttributes.getBaseValue(attribute));
+				} catch (IllegalArgumentException e) {
+					RatsMod.LOGGER.error("Rats: exception loading attribute {} during rat upgrade refresh, it will be ignored.", attribute.getDescriptionId());
+				}
 			}
 		}
 
