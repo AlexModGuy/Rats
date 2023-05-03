@@ -22,6 +22,11 @@ public class RatProtector extends AbstractRat {
 	}
 
 	@Override
+	public int getExperienceReward() {
+		return 0;
+	}
+
+	@Override
 	public boolean doHurtTarget(Entity entity) {
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue()));
 		if (flag) {

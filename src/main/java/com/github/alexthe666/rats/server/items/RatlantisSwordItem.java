@@ -25,7 +25,7 @@ public class RatlantisSwordItem extends SwordItem {
 
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-		if (entity instanceof LivingEntity living && living.isAlive() && !(living instanceof RatProtector)) {
+		if (entity instanceof LivingEntity living && living.isAlive() && !(living instanceof RatProtector) && player.swingTime == 0) {
 			RatProtector protector = new RatProtector(RatlantisEntityRegistry.RAT_PROTECTOR.get(), entity.getLevel());
 			protector.moveTo(player.getX(), player.getY() + 1.0D, player.getZ(), player.getYRot(), player.getXRot());
 			protector.setTarget(living);
