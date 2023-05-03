@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -193,6 +194,22 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity, 
 		AnimationHandler.INSTANCE.updateAnimations(this);
 	}
 
+	@Override
+	public boolean removeWhenFarAway(double dist) {
+		return false;
+	}
+
+	@Override
+	public void checkDespawn() {
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL && this.getBellSummonTicks() <= 0) {
+			if (this.hasRestriction()) {
+				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), RatlantisBlockRegistry.DUTCHRAT_BELL.get().defaultBlockState());
+			}
+			this.discard();
+		} else {
+			super.checkDespawn();
+		}
+	}
 
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {

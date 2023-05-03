@@ -54,8 +54,7 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		this.spawnTheBaron(level, pos);
-		return InteractionResult.SUCCESS;
+		return this.spawnTheBaron(level, pos) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	@Override
@@ -66,8 +65,8 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 		}
 	}
 
-	private void spawnTheBaron(Level level, BlockPos pos) {
-		if (!level.isClientSide()) {
+	private boolean spawnTheBaron(Level level, BlockPos pos) {
+		if (!level.isClientSide() && level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
 			level.playSound(null, pos, RatsSoundRegistry.AIR_RAID_SIREN.get(), SoundSource.BLOCKS, 1, 1);
 
 			LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
@@ -76,19 +75,20 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 			bolt.setVisualOnly(true);
 			level.addFreshEntity(bolt);
 			level.setBlockAndUpdate(pos, Blocks.OAK_FENCE.defaultBlockState());
-			if (level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
-				RatBaron baron = new RatBaron(RatlantisEntityRegistry.RAT_BARON.get(), level);
-				baron.setPos(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
-				ForgeEventFactory.onFinalizeSpawn(baron, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
-				level.addFreshEntity(baron);
-			}
+			RatBaron baron = new RatBaron(RatlantisEntityRegistry.RAT_BARON.get(), level);
+			baron.setPos(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
+			baron.restrictTo(pos, 16);
+			ForgeEventFactory.onFinalizeSpawn(baron, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+
 			if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 				for (int i = 0; i < 2; i++) {
 					RandomSource rand = level.getRandom();
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D + (rand.nextFloat() - 0.5D) * 3, pos.getY() - 1, pos.getZ() + 0.5D + (rand.nextFloat() - 0.5D) * 3, new ItemStack(Items.IRON_INGOT)));
 				}
 			}
+			return level.addFreshEntity(baron);
 		}
+		return false;
 	}
 
 	@Override

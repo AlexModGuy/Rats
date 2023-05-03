@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.block.entity;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
@@ -46,6 +47,10 @@ public class DutchratBellBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, DutchratBellBlockEntity te) {
+		if (level.getCurrentDifficultyAt(pos).getDifficulty() == Difficulty.PEACEFUL) {
+			te.ticksToExplode = -1;
+		}
+
 		if (te.shaking) {
 			++te.ticks;
 		}
@@ -66,7 +71,7 @@ public class DutchratBellBlockEntity extends BlockEntity {
 					te.ticksToExplode = 0;
 					Dutchrat dutchrat = new Dutchrat(RatlantisEntityRegistry.DUTCHRAT.get(), level);
 					dutchrat.setPos(pos.getX() + 0.5D, pos.getY() + 10.0D, pos.getZ() + 0.5D);
-					dutchrat.restrictTo(pos, 20);
+					dutchrat.restrictTo(pos, RatConfig.dutchratRestrictionRadius);
 					dutchrat.setBellSummoned();
 					ForgeEventFactory.onFinalizeSpawn(dutchrat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
 					level.addFreshEntity(dutchrat);
