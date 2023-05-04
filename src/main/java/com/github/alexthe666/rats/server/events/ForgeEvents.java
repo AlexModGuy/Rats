@@ -4,16 +4,16 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
+import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import com.github.alexthe666.rats.server.entity.projectile.PlagueShot;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
-import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
-import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.*;
+import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
+import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -28,7 +28,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,6 +42,7 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -48,14 +52,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
@@ -91,22 +94,14 @@ public class ForgeEvents {
 		}
 		if (heldItem.is(RatsItemRegistry.PLAGUE_DOCTORATE.get())) {
 			if (event.getTarget() instanceof Villager villager && !villager.isBaby() && (villager.getVillagerData().getProfession() == VillagerProfession.NITWIT || villager.getVillagerData().getProfession() == VillagerProfession.NONE)) {
-				PlagueDoctor doctor = new PlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR.get(), event.getLevel());
-				doctor.copyPosition(villager);
-				villager.discard();
-				doctor.setWillDespawn(false);
-				if (!event.getLevel().isClientSide()) {
-					ForgeEventFactory.onFinalizeSpawn(doctor, (ServerLevelAccessor) event.getLevel(), event.getLevel().getCurrentDifficultyAt(event.getPos()), MobSpawnType.MOB_SUMMONED, null, null);
-					event.getLevel().addFreshEntity(doctor);
-				}
-				doctor.setNoAi(villager.isNoAi());
-				if (villager.hasCustomName()) {
-					doctor.setCustomName(villager.getCustomName());
-				}
-				event.getEntity().swing(event.getHand());
-				event.getLevel().playSound(null, doctor.blockPosition(), RatsSoundRegistry.PLAGUE_DOCTOR_SUMMON.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
-				if (!event.getEntity().isCreative()) {
-					heldItem.shrink(1);
+				PlagueDoctor doctor = villager.convertTo(RatsEntityRegistry.PLAGUE_DOCTOR.get(), true);
+				if (doctor != null) {
+					doctor.setWillDespawn(false);
+					event.getEntity().swing(event.getHand());
+					event.getLevel().playSound(null, doctor.blockPosition(), RatsSoundRegistry.PLAGUE_DOCTOR_SUMMON.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+					if (!event.getEntity().isCreative()) {
+						heldItem.shrink(1);
+					}
 				}
 			}
 		}

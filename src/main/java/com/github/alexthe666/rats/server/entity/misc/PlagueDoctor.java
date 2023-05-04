@@ -117,7 +117,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	}
 
 	public boolean willDespawn() {
-		return this.getEntityData().get(WILL_DESPAWN);
+		return this.getEntityData().get(WILL_DESPAWN) && !this.isPersistenceRequired();
 	}
 
 	public void setWillDespawn(boolean despawn) {
@@ -430,7 +430,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				merchantoffers.add(merchantoffer3);
 			}
 
-			if (!RatsMod.RATLANTIS_DATAPACK_ENABLED) {
+			if (!RatsMod.RATLANTIS_DATAPACK_ENABLED && this.willDespawn()) {
 				merchantoffers.add(PlagueDoctorTrades.COMBINER_TRADE.getOffer(this, this.getRandom()));
 				merchantoffers.add(PlagueDoctorTrades.SEPARATOR_TRADE.getOffer(this, this.getRandom()));
 				merchantoffers.add(PlagueDoctorTrades.UPGRADE_COMBINED_TRADE.getOffer(this, this.getRandom()));
@@ -458,11 +458,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				this.discard();
 				return InteractionResult.SUCCESS;
 			}
-		} else if (itemstack.is(Items.NAME_TAG)) {
-			this.setWillDespawn(false);
-			itemstack.interactLivingEntity(player, this, hand);
-			return InteractionResult.SUCCESS;
-		} else if (!(itemstack.is(Items.VILLAGER_SPAWN_EGG) && itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg")))) &&
+		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&
 				this.isAlive() && !this.isTrading() && !this.isBaby()) {
 			if (hand == InteractionHand.MAIN_HAND) {
 				player.awardStat(Stats.TALKED_TO_VILLAGER);
