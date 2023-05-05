@@ -19,8 +19,9 @@ public class PlagueLeechItem extends PlagueHealerItem {
 		if (!player.isCreative() && player.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
 			player.getItemInHand(hand).shrink(1);
 			player.hurt(level.damageSources().cactus(), 2);
+			return InteractionResultHolder.consume(player.getItemInHand(hand));
 		}
-		return super.use(level, player, hand);
+		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}
 
 }
