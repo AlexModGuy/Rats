@@ -120,7 +120,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 	}
 
 	private Vec3 getMovePos() {
-		return Vec3.atCenterOf(this.targetBlock);
+		return Vec3.atBottomCenterOf(this.targetBlock.relative(this.rat.depositFacing));
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 		BlockEntity te = this.rat.getLevel().getBlockEntity(this.targetBlock);
 		if (this.targetBlock != null && te != null) {
 			this.rat.getNavigation().moveTo(this.getMovePos().x(), this.getMovePos().y(), this.getMovePos().z(), 1.25D);
-			double distance = Math.sqrt(this.rat.distanceToSqr(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D));
+			double distance = Math.sqrt(this.rat.distanceToSqr(this.getMovePos().x(), this.getMovePos().y(), this.getMovePos().z()));
 			if (distance < 4.5D * this.rat.getRatDistanceModifier() && distance > 2.5D * this.rat.getRatDistanceModifier() && te instanceof Container container) {
 				this.toggleChest(container, true);
 			}
