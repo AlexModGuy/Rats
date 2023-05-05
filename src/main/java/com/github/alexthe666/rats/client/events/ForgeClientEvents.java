@@ -208,7 +208,7 @@ public class ForgeClientEvents {
 
 		gui.lastHealth = health;
 		int healthLast = gui.displayHealth;
-		gui.random.setSeed(gui.getGuiTicks() * 312871L);
+		gui.random.setSeed(gui.getGuiTicks() * 312871);
 
 		AttributeInstance attrMaxHealth = player.getAttribute(Attributes.MAX_HEALTH);
 		float healthMax = Math.max((float) attrMaxHealth.getValue(), Math.max(healthLast, health));
