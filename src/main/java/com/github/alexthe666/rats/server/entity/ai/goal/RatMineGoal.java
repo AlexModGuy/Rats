@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class RatMineGoal extends BaseRatHarvestGoal {
+public class RatMineGoal{}/* extends BaseRatHarvestGoal {
 	private final TamedRat rat;
 	private int breakingTime;
 	private int previousBreakProgress;
@@ -156,3 +156,4 @@ public class RatMineGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+*/

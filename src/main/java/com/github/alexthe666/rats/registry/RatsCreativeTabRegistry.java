@@ -193,8 +193,8 @@ public class RatsCreativeTabRegistry {
 					output.accept(RatsItemRegistry.RAT_UPGRADE_BREEDER.get());
 					output.accept(RatsItemRegistry.RAT_UPGRADE_FISHERMAN.get());
 					output.accept(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK.get());
-					output.accept(RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get());
-					output.accept(RatsItemRegistry.RAT_UPGRADE_MINER.get());
+					//output.accept(RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get());
+					//output.accept(RatsItemRegistry.RAT_UPGRADE_MINER.get());
 					output.accept(RatsItemRegistry.RAT_UPGRADE_FARMER.get());
 					output.accept(RatsItemRegistry.RAT_UPGRADE_QUARRY.get());
 					output.accept(RatsItemRegistry.RAT_UPGRADE_REPLANTER.get());

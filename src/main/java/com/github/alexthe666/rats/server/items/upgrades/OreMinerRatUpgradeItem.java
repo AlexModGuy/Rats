@@ -44,7 +44,7 @@ public class OreMinerRatUpgradeItem extends BaseRatUpgradeItem implements Change
 
 	@Override
 	public List<Goal> addNewWorkGoals(TamedRat rat) {
-		return List.of(new RatMineGoal(rat));
+		return List.of(/*new RatMineGoal(rat)*/);
 	}
 
 	@Override

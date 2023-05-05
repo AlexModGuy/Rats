@@ -320,7 +320,7 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 			this.leftHand.rotateAngleZ = -0.08726646F;
 		}
 
-		if (rat instanceof TamedRat realRat && (RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_CRAFTING.get()) || RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_LUMBERJACK.get()) || RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_QUARRY.get()) || RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_MINER.get()) || RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get()) || RatUpgradeUtils.hasUpgrade(realRat, RatsItemRegistry.RAT_UPGRADE_FISHERMAN.get())) && realRat.crafting) {
+		if (rat instanceof TamedRat realRat && realRat.holdsItemInHandUpgrade() && realRat.crafting) {
 			this.walk(this.leftArm, speedRun, degreeRun, true, 2.0F, 0.0F, f2, 1.0F);
 			this.walk(this.rightArm, speedRun, degreeRun, false, 2.0F, 0.0F, f2, 1.0F);
 			this.walk(this.rightHand, speedRun, degreeRun, true, 5.0F, -0.1F, f2, 1.0F);

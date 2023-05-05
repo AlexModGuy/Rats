@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-20T18:28:51.2596606	Recipes
+// 1.19.4	2023-05-05T16:06:15.6344616	Recipes
 831a80ddd5b41efbd7e96f2e4136a28ecb224748 data/rats/advancements/recipes/building_blocks/auto_curdler.json
 1ab395713d53384ff48f84bbfff940b75547cc81 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
 8d7586481b5252ed44f208c03f0dda3f80611d96 data/rats/advancements/recipes/building_blocks/block_of_cheese.json
@@ -166,7 +166,7 @@ aed3b761ef4cb884da9f8bdf4a8d3a7ac92320cb data/rats/advancements/recipes/misc/upg
 db999824dbad586ff99a9024dc9f8b3b4dc9995e data/rats/advancements/recipes/misc/upgrades/enchanter_upgrade.json
 48d4c31f9fb9d3834146d83af65de1ccd5f246c8 data/rats/advancements/recipes/misc/upgrades/ender_upgrade.json
 902992702dc355456f9ec884f20d75efbd5e5558 data/rats/advancements/recipes/misc/upgrades/extreme_energy_upgrade.json
-72c01ad7da4f0180950638e56def7b13c8676de0 data/rats/advancements/recipes/misc/upgrades/farmer_upgrade.json
+818061b35bbe5e68520c1689bc284d42c09392a2 data/rats/advancements/recipes/misc/upgrades/farmer_upgrade.json
 fc798bd47d2dd4147234eb78ac83b9d6f99a4e1f data/rats/advancements/recipes/misc/upgrades/fisherman_upgrade.json
 8a97bb883deb2846a1c2a2052f08f66922651108 data/rats/advancements/recipes/misc/upgrades/flight_upgrade.json
 486384ebb5dfa187eec1826187a81afba0dbc7bf data/rats/advancements/recipes/misc/upgrades/flute_upgrade.json
@@ -177,13 +177,11 @@ e0ff4c69f3525c7447524d0e3b0208bae71d0d66 data/rats/advancements/recipes/misc/upg
 33dd1e0062d0abcce1fe2ac844394f770dacc109 data/rats/advancements/recipes/misc/upgrades/jury_rigged_upgrade.json
 4a51bc7d35e1394f7491939458c05a39ac32e38a data/rats/advancements/recipes/misc/upgrades/lumberjack_upgrade.json
 28334993ca4b39cd756dff9758b005c8eff80319 data/rats/advancements/recipes/misc/upgrades/milker_upgrade.json
-4ec1a2166ffa380f6ed537a7997d299b9d3d00a5 data/rats/advancements/recipes/misc/upgrades/miner_ore_upgrade.json
-747f0258eb34f96d8a2c9c7445abfd1ddea00a91 data/rats/advancements/recipes/misc/upgrades/miner_upgrade.json
 3ea06a8a66558a1b2b4cf3b4e2ee51676dc3b442 data/rats/advancements/recipes/misc/upgrades/ore_doubling_upgrade.json
 09f00b5a98e6fd2e043943ff2cd12f75455d41a0 data/rats/advancements/recipes/misc/upgrades/placer_upgrade.json
 3de13c447870c56068b5b041fec4e9095dbbbcf5 data/rats/advancements/recipes/misc/upgrades/platter_upgrade.json
 50e5c80aa7ac664234c92e761086f56c24a26b18 data/rats/advancements/recipes/misc/upgrades/poison_upgrade.json
-75dddabbb29dfd7c33be6f8da0c4066a97548ec7 data/rats/advancements/recipes/misc/upgrades/quarry_upgrade.json
+b38c2eeb88adaa33608aaaef71662c076dae7e44 data/rats/advancements/recipes/misc/upgrades/quarry_upgrade.json
 9159e9423495f50306a5e87bf570c3e811e0b3a1 data/rats/advancements/recipes/misc/upgrades/replanter_upgrade.json
 5c706fdaf5dc194d2a577754612070fa07fec24a data/rats/advancements/recipes/misc/upgrades/shears_upgrade.json
 24371c8cd69195393edc8c17bb2c7b6f9308ab4e data/rats/advancements/recipes/misc/upgrades/speed_upgrade.json
@@ -380,7 +378,7 @@ a3e3a8498dcc457df3139aa60232ecdc9b98582d data/rats/recipes/upgrades/elite_energy
 f981c3892d8289599e1412edee714d079a46b16e data/rats/recipes/upgrades/enchanter_upgrade.json
 8a10af1ef1d9c0c5f478da5efe9c7413f9eeff8a data/rats/recipes/upgrades/ender_upgrade.json
 c158ff0afa4f348d98bfbcc6dc1d92286b2bfd1c data/rats/recipes/upgrades/extreme_energy_upgrade.json
-940bacb5a88fbfdae891cd04669a98d4344f9be6 data/rats/recipes/upgrades/farmer_upgrade.json
+f6461146cc426300f6a7e25bb2eccdaa93e3f733 data/rats/recipes/upgrades/farmer_upgrade.json
 3f9be31b4a6e4cafa11dfaf2d9d80b204d104b33 data/rats/recipes/upgrades/fisherman_upgrade.json
 8f01e4fa4aae8b55dffa668410efd16abbc1aa0c data/rats/recipes/upgrades/flight_upgrade.json
 7b8c99782d0e8c8cdb850b25ada8f2fa56629c19 data/rats/recipes/upgrades/flute_upgrade.json
@@ -391,13 +389,11 @@ c158ff0afa4f348d98bfbcc6dc1d92286b2bfd1c data/rats/recipes/upgrades/extreme_ener
 f7d6c3853d1a36908b9258f6c53ada777c63e21d data/rats/recipes/upgrades/jury_rigged_upgrade.json
 391dfe679282d640a085f2c445bdafa4c6c5381c data/rats/recipes/upgrades/lumberjack_upgrade.json
 15ea73e95a48563f6b095cf2cb5c6a74dc7ac584 data/rats/recipes/upgrades/milker_upgrade.json
-f6efbe907c6d72d06da45b2f2a478d1c6883206b data/rats/recipes/upgrades/miner_ore_upgrade.json
-29ee438fc6f47dbac035798f5f193779408d846c data/rats/recipes/upgrades/miner_upgrade.json
 8251e5a79324925550b68ae3a891715be6818a57 data/rats/recipes/upgrades/ore_doubling_upgrade.json
 fc89b610827780d5ea8291ad648c16e9da6b3807 data/rats/recipes/upgrades/placer_upgrade.json
 c7014e889c43ea39abf80b63ca5c2dce739d2377 data/rats/recipes/upgrades/platter_upgrade.json
 16512966dfab9942d92748ee202b3bb5a908a49c data/rats/recipes/upgrades/poison_upgrade.json
-a4fa15063e8c07f25118ed04d2cbe4cf4db9d5ce data/rats/recipes/upgrades/quarry_upgrade.json
+68d3d967e6fab79b1e2fcec28ba3958b5f13c6b2 data/rats/recipes/upgrades/quarry_upgrade.json
 0757ac78d79018299605c514fda5333d10468238 data/rats/recipes/upgrades/replanter_upgrade.json
 f37b53f2d8071cc2471684efa6deee21f798a55b data/rats/recipes/upgrades/shears_upgrade.json
 35ac1839e574214c015ec3e85433da1aad65db92 data/rats/recipes/upgrades/speed_upgrade.json

@@ -247,43 +247,45 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('B', Items.BLACK_WOOL).unlockedBy("has_black_wool", has(Items.BLACK_WOOL))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/lumberjack_upgrade"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get())
-				.pattern("IPI")
-				.pattern("CUC")
-				.pattern("ICI")
-				.define('P', Items.IRON_PICKAXE).unlockedBy("has_pickaxe", has(Items.IRON_PICKAXE))
-				.define('C', ItemTags.COALS).unlockedBy("has_coal", has(ItemTags.COALS))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()))
-				.define('I', ItemTags.IRON_ORES).unlockedBy("has_ore", has(ItemTags.IRON_ORES))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/miner_ore_upgrade"));
+//		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get())
+//				.pattern("IPI")
+//				.pattern("CUC")
+//				.pattern("ICI")
+//				.define('P', Items.IRON_PICKAXE).unlockedBy("has_pickaxe", has(Items.IRON_PICKAXE))
+//				.define('C', ItemTags.COALS).unlockedBy("has_coal", has(ItemTags.COALS))
+//				.define('U', RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()))
+//				.define('I', ItemTags.IRON_ORES).unlockedBy("has_ore", has(ItemTags.IRON_ORES))
+//				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/miner_ore_upgrade"));
+//
+//		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MINER.get())
+//				.pattern("GPG")
+//				.pattern("GUG")
+//				.pattern("GIG")
+//				.define('P', Items.DIAMOND_PICKAXE).unlockedBy("has_pickaxe", has(Items.DIAMOND_PICKAXE))
+//				.define('U', RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get()))
+//				.define('I', Tags.Items.STORAGE_BLOCKS_IRON).unlockedBy("has_iron", has(Tags.Items.STORAGE_BLOCKS_IRON))
+//				.define('G', Tags.Items.INGOTS_GOLD).unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
+//				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/miner_upgrade"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MINER.get())
-				.pattern("GPG")
-				.pattern("GUG")
-				.pattern("GIG")
-				.define('P', Items.DIAMOND_PICKAXE).unlockedBy("has_pickaxe", has(Items.DIAMOND_PICKAXE))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_MINER_ORE.get()))
-				.define('I', Tags.Items.STORAGE_BLOCKS_IRON).unlockedBy("has_iron", has(Tags.Items.STORAGE_BLOCKS_IRON))
-				.define('G', Tags.Items.INGOTS_GOLD).unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/miner_upgrade"));
-
+		//TODO replace base upgrade with miner once its reworked
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_QUARRY.get(), 3)
 				.pattern("PFP")
 				.pattern("FUF")
 				.pattern("CCC")
 				.define('P', RatsItemRegistry.RAT_PAW.get()).unlockedBy("has_paw", has(RatsItemRegistry.RAT_PAW.get()))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_MINER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_MINER.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.define('F', RatsItemRegistry.FILTH.get()).unlockedBy("has_filth", has(RatsItemRegistry.FILTH.get()))
 				.define('C', RatsItemTags.STORAGE_BLOCKS_BLUE_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.STORAGE_BLOCKS_BLUE_CHEESE))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/quarry_upgrade"));
 
+		//TODO replace base upgrade with gardener once 8.1 development begins
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_FARMER.get())
 				.pattern("BFB")
 				.pattern("HUH")
 				.pattern("SSS")
 				.define('B', Items.HAY_BLOCK).unlockedBy("has_bale", has(Items.HAY_BLOCK))
 				.define('H', Items.IRON_HOE).unlockedBy("has_hoe", has(Items.IRON_HOE))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_MINER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_MINER.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.define('F', RatsItemRegistry.FARMER_HAT.get()).unlockedBy("has_hat", has(RatsItemRegistry.FARMER_HAT.get()))
 				.define('S', Tags.Items.SEEDS).unlockedBy("has_seeds", has(Tags.Items.SEEDS))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/farmer_upgrade"));

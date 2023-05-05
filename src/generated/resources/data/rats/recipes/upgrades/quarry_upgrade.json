@@ -12,7 +12,7 @@
       "item": "rats:rat_paw"
     },
     "U": {
-      "item": "rats:rat_upgrade_miner"
+      "item": "rats:rat_upgrade_basic"
     }
   },
   "pattern": [

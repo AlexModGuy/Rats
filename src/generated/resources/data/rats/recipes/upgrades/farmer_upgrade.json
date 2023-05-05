@@ -15,7 +15,7 @@
       "tag": "forge:seeds"
     },
     "U": {
-      "item": "rats:rat_upgrade_miner"
+      "item": "rats:rat_upgrade_basic"
     }
   },
   "pattern": [

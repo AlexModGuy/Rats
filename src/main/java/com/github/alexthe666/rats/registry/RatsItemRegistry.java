@@ -172,8 +172,8 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_AQUATIC = ITEMS.register("rat_upgrade_aquatic", () -> new AquaticRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_ENDER = ITEMS.register("rat_upgrade_ender", () -> new EnderRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_LUMBERJACK = ITEMS.register("rat_upgrade_lumberjack", () -> new LumberjackRatUpgradeItem(new Item.Properties()));
-	public static final RegistryObject<Item> RAT_UPGRADE_MINER_ORE = ITEMS.register("rat_upgrade_miner_ore", () -> new OreMinerRatUpgradeItem(new Item.Properties()));
-	public static final RegistryObject<Item> RAT_UPGRADE_MINER = ITEMS.register("rat_upgrade_miner", () -> new MinerRatUpgradeItem(new Item.Properties(), 1, 3));
+	//public static final RegistryObject<Item> RAT_UPGRADE_MINER_ORE = ITEMS.register("rat_upgrade_miner_ore", () -> new OreMinerRatUpgradeItem(new Item.Properties()));
+	//public static final RegistryObject<Item> RAT_UPGRADE_MINER = ITEMS.register("rat_upgrade_miner", () -> new MinerRatUpgradeItem(new Item.Properties(), 1, 3));
 	public static final RegistryObject<Item> RAT_UPGRADE_QUARRY = ITEMS.register("rat_upgrade_quarry", () -> new QuarryRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_FARMER = ITEMS.register("rat_upgrade_farmer", () -> new FarmerRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BREEDER = ITEMS.register("rat_upgrade_breeder", () -> new BreederRatUpgradeItem(new Item.Properties()));
@@ -212,6 +212,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_BEAST_MOUNT = ITEMS.register("rat_upgrade_beast_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_BEAST));
 	public static final RegistryObject<Item> RAT_UPGRADE_COMBINED = ITEMS.register("rat_upgrade_combined", () -> new CombinedRatUpgradeItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> RAT_UPGRADE_COMBINED_CREATIVE = ITEMS.register("rat_upgrade_combined_creative", () -> new CombinedRatUpgradeItem(new Item.Properties().stacksTo(1).fireResistant()));
+
 	public static final RegistryObject<Item> RAT_NUGGET = ITEMS.register("rat_nugget", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_NUGGET_ORE = ITEMS.register("rat_nugget_ore", () -> new OreRatNuggetItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_BANNER_PATTERN = ITEMS.register("rat_banner_pattern", () -> new BannerPatternItem(RatsBannerPatternTags.RAT_BANNER_PATTERN, new Item.Properties().stacksTo(1)));

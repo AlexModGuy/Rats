@@ -58,7 +58,7 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_miner"
+              "rats:rat_upgrade_basic"
             ]
           }
         ]

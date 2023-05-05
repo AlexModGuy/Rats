@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-15T18:36:54.1022756	Item Models: rats
+// 1.19.4	2023-05-05T16:06:15.6056926	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 ffe740528a7b86d65bb6a795cf2a6fde357f8ff8 assets/rats/models/item/arcane_technology.json
@@ -303,8 +303,6 @@ e518c224e492c4240b7defb13de8315986103624 assets/rats/models/item/rat_upgrade_eli
 b3dcac42667741550442d9c7536b12d2b09640bc assets/rats/models/item/rat_upgrade_jury_rigged.json
 5f684630b2df3402041e9487f50aee39107c3c45 assets/rats/models/item/rat_upgrade_lumberjack.json
 fe678f3dec68396450b3c37ae72fed01dd7cc288 assets/rats/models/item/rat_upgrade_milker.json
-c7171c6d724850e0ff689a3482f5b162afffa15a assets/rats/models/item/rat_upgrade_miner.json
-96e69959b0796834ad1aa1fe3576449fb3ab2636 assets/rats/models/item/rat_upgrade_miner_ore.json
 1cfe8844626658be3a21e60a7ddd52f42681268c assets/rats/models/item/rat_upgrade_nonbeliever.json
 98f7f95a6816e0ab1ca55d4314a1b4aa13693394 assets/rats/models/item/rat_upgrade_no_flute.json
 7e8724b898918e04bd207c354cf6c3393e9d6a9b assets/rats/models/item/rat_upgrade_ore_doubling.json
