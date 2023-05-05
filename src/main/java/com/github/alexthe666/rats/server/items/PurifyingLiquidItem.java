@@ -29,6 +29,9 @@ public class PurifyingLiquidItem extends LoreTagItem {
 
 		entitypotion.shoot(vec3.x(), vec3.y(), vec3.z(), 1.0F, 0.5F);
 		level.addFreshEntity(entitypotion);
+		if (!player.isCreative()) {
+			itemstack.shrink(1);
+		}
 		return InteractionResultHolder.success(itemstack);
 	}
 }

@@ -28,6 +28,9 @@ public class VialOfSentienceItem extends LoreTagItem {
 		Vec3 vec3 = player.getViewVector(1.0F);
 		vial.shoot(vec3.x(), vec3.y(), vec3.z(), 1.0F, 0.5F);
 		level.addFreshEntity(vial);
+		if (!player.isCreative()) {
+			itemstack.shrink(1);
+		}
 		return InteractionResultHolder.success(itemstack);
 	}
 }
