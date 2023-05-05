@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -145,7 +146,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 		if (this.holdingBonemeal()) {
 			List<BlockPos> allBlocks = new ArrayList<>();
 			for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
-				if (this.canPlantBeBonemealed(pos, this.rat.getLevel().getBlockState(pos))) {
+				if (this.canPlantBeBonemealed(pos, this.rat.getLevel().getBlockState(pos)) && !RatUtils.isBlockProtected(this.rat.getLevel(), pos, this.rat)) {
 					allBlocks.add(pos);
 				}
 			}
@@ -156,7 +157,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 		} else if (this.holdingSeeds()) {
 			List<BlockPos> allBlocks = new ArrayList<>();
 			for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
-				if (this.rat.getLevel().getBlockState(pos).getBlock().isFertile(this.rat.getLevel().getBlockState(pos), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above())) {
+				if (this.rat.getLevel().getBlockState(pos).getBlock().isFertile(this.rat.getLevel().getBlockState(pos), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above()) && !RatUtils.isBlockProtected(this.rat.getLevel(), pos, this.rat)) {
 					allBlocks.add(pos);
 				}
 			}
@@ -180,7 +181,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 				if (this.rat.getHomePoint().isPresent() && (pos.equals(this.rat.getHomePoint().get().pos()) || pos.equals(this.rat.getHomePoint().get().pos().above())))
 					continue;
 
-				if (block.canSurvive(block.defaultBlockState(), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above()) && this.rat.getLevel().isEmptyBlock(pos)) {
+				if (block.canSurvive(block.defaultBlockState(), this.rat.getLevel(), pos) && this.rat.getLevel().isEmptyBlock(pos.above()) && this.rat.getLevel().isEmptyBlock(pos) && RatUtils.canRatPlaceBlock(this.rat.getLevel(), pos, this.rat)) {
 					allBlocks.add(pos);
 				}
 			}

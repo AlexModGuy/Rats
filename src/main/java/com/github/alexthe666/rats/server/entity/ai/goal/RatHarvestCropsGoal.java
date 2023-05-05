@@ -41,10 +41,10 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 			BlockState state = this.rat.getLevel().getBlockState(pos);
-			if (RatUtils.canRatBreakBlock(this.rat.getLevel(), pos, this.rat)) {
-				if (state.is(BlockTags.CROPS)) {
-					if (state.getBlock() instanceof CropBlock crop && !crop.isMaxAge(state)) continue;
-					if (!(state.getBlock() instanceof StemBlock) && !(state.getBlock() instanceof AttachedStemBlock)) {
+			if (state.is(BlockTags.CROPS)) {
+				if (state.getBlock() instanceof CropBlock crop && !crop.isMaxAge(state)) continue;
+				if (!(state.getBlock() instanceof StemBlock) && !(state.getBlock() instanceof AttachedStemBlock)) {
+					if (RatUtils.canRatBreakBlock(this.rat.getLevel(), pos, this.rat)) {
 						allBlocks.add(pos);
 					}
 				}

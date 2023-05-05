@@ -52,7 +52,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 			if (RatTreeUtils.isTreeLog(level.getBlockState(pos)) && level.getBlockState(pos.below()).is(BlockTags.DIRT) && (this.treeSize = RatTreeUtils.calculateLogAmount(level, pos)) > 0) {
 				Path path = this.rat.getNavigation().createPath(this.getOffsetToAirPos(pos), 1);
-				if (path != null && path.canReach()) {
+				if (path != null && path.canReach() && RatUtils.canRatBreakBlock(this.rat.getLevel(), pos, this.rat)) {
 					this.setTargetBlock(pos);
 					break;
 				}

@@ -95,8 +95,8 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 	protected boolean isValidTarget(LevelReader reader, BlockPos pos) {
 		if (!reader.getBlockState(pos).is(RatsBlockTags.UNRAIDABLE_CONTAINERS)) {
 			if (reader.getBlockState(pos).getBlock() instanceof EntityBlock) {
-				if (RatUtils.isBlockProtected(this.entity.getLevel(), pos, this.entity)) return false;
 				if (!RatPathingHelper.canSeeOrDigToBlock(this.entity, pos)) return false;
+				if (RatUtils.isBlockProtected(this.entity.getLevel(), pos, this.entity)) return false;
 				BlockEntity entity = reader.getBlockEntity(pos);
 				if (entity instanceof Container inventory) {
 					try {

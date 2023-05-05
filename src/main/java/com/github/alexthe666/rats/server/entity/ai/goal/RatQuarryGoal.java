@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -192,7 +193,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 
 	private boolean canMineBlock(BlockPos rayPos) {
 		BlockState state = this.rat.getLevel().getBlockState(rayPos);
-		return !state.is(RatsBlockTags.QUARRY_IGNORABLES) && this.doesListContainBlock(this.rat.getLevel(), rayPos);
+		return !state.is(RatsBlockTags.QUARRY_IGNORABLES) && this.doesListContainBlock(this.rat.getLevel(), rayPos) && RatUtils.canRatBreakBlock(this.rat.getLevel(), rayPos, this.rat);
 	}
 
 	public record QuarryBlockSorter(TamedRat rat) implements Comparator<BlockPos> {

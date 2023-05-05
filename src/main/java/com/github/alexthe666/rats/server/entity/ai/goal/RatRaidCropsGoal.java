@@ -90,12 +90,10 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 	protected boolean isValidTarget(LevelReader reader, BlockPos pos) {
 		BlockState state = reader.getBlockState(pos);
 		BlockState cropState = reader.getBlockState(pos.above());
-		if (RatUtils.canRatBreakBlock(this.rat.getLevel(), pos.above(), this.rat)) {
-			if (state.getBlock() instanceof FarmBlock) {
-				if (!RatPathingHelper.canSeeOrDigToBlock(this.rat, pos.above())) return false;
-				if (cropState.getBlock() instanceof CropBlock crop) return crop.isMaxAge(cropState);
-				return cropState.is(BlockTags.CROPS) && !(cropState.getBlock() instanceof StemBlock);
-			}
+		if (state.getBlock() instanceof FarmBlock) {
+			if (!RatPathingHelper.canSeeOrDigToBlock(this.rat, pos.above())) return false;
+			if (cropState.getBlock() instanceof CropBlock crop) return crop.isMaxAge(cropState);
+			return cropState.is(BlockTags.CROPS) && !(cropState.getBlock() instanceof StemBlock) && RatUtils.canRatBreakBlock(this.rat.getLevel(), pos.above(), this.rat);
 		}
 		return false;
 	}
