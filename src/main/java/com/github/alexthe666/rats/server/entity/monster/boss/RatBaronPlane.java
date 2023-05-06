@@ -203,6 +203,7 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 		return true;
 	}
 
+	@Override
 	public boolean removeWhenFarAway(double dist) {
 		return false;
 	}

@@ -271,6 +271,11 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 	}
 
 	@Override
+	public boolean removeWhenFarAway(double dist) {
+		return false;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return RatsSoundRegistry.NEORATLANTEAN_IDLE.get();
 	}

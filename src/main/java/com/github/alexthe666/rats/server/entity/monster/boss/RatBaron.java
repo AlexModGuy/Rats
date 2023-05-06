@@ -102,6 +102,11 @@ public class RatBaron extends AbstractRat implements Enemy {
 	}
 
 	@Override
+	public boolean removeWhenFarAway(double dist) {
+		return false;
+	}
+
+	@Override
 	public void checkDespawn() {
 		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.hasRestriction()) {
