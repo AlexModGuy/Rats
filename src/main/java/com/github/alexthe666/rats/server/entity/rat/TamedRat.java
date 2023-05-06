@@ -487,6 +487,10 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 
+		if (this.isInWheel() && !this.getLevel().getBlockState(this.blockPosition()).is(RatsBlockRegistry.RAT_CAGE_WHEEL.get())) {
+			this.setInWheel(false);
+		}
+
 		if (this.getMountCooldown() > 0) {
 			this.setMountCooldown(this.getMountCooldown() - 1);
 		}
