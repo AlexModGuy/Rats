@@ -1200,9 +1200,10 @@ public class TamedRat extends InventoryRat {
 				((StatBoostingUpgrade) stack.getItem()).getAttributeBoosts().forEach((attribute, aDouble) -> this.tryIncreaseStat(stack.getHoverName().getString(), attribute, aDouble)));
 
 		if (this.getHeldRF() > this.getRFTransferRate()) {
-			this.setHeldRF(0);
+			this.setHeldRF(this.getRFTransferRate());
 		}
 		this.heal(this.getMaxHealth());
+		this.setFlying(this.isFlying() && this.hasFlightUpgrade());
 	}
 
 	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
