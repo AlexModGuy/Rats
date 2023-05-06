@@ -237,7 +237,7 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 	}
 
 	public boolean canPickupBlock(Level level, BlockState state, BlockPos pos) {
-		return !state.is(BlockTags.WITHER_IMMUNE) && state.getDestroySpeed(level, pos) >= 0.0F && state.getDestroySpeed(level, pos) < 100.0F;
+		return !state.is(BlockTags.WITHER_IMMUNE) && state.isSolidRender(level, pos) && state.getDestroySpeed(level, pos) >= 0.0F && state.getDestroySpeed(level, pos) < 100.0F;
 	}
 
 	@Override
