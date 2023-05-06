@@ -238,7 +238,6 @@ public class TamedRat extends InventoryRat {
 			} else {
 				this.switchNavigator(this.isInCage() ? 5 : this.isInTube() ? 2 : 0);
 			}
-
 		}
 	}
 
@@ -312,6 +311,7 @@ public class TamedRat extends InventoryRat {
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag) {
 			this.doEnchantDamageEffects(this, entity);
+			this.getMainHandItem().hurtAndBreak(1, this, rat -> rat.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, stack -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
 		}
 		return flag;
