@@ -174,8 +174,18 @@ public class TamedRat extends InventoryRat {
 		this.goalSelector.addGoal(6, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(7, new RatWanderGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new RatPatrolGoal(this));
-		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
-		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F) {
+			@Override
+			public boolean canUse() {
+				return ((TamedRat)this.mob).sleepProgress <= 0.0F && super.canUse();
+			}
+		});
+		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this) {
+			@Override
+			public boolean canUse() {
+				return ((TamedRat)this.mob).sleepProgress <= 0.0F && super.canUse();
+			}
+		});
 		this.targetSelector.addGoal(0, new RatTargetItemsGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Animal.class, true, entity -> EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && !entity.isBaby() && TamedRat.this.canMove() && TamedRat.this.shouldHuntAnimal()));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, true, entity -> entity instanceof Enemy && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && TamedRat.this.canMove() && TamedRat.this.shouldHuntMonster()));
