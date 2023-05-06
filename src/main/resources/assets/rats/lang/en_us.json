@@ -239,7 +239,7 @@
   "item.rats.bee_wing": "Bee Wing",
   "item.rats.bee_feelers": "Bee Antennae",
   "item.rats.rat_upgrade_basic": "Rat Upgrade: Basic",
-  "item.rats.rat_upgrade.stat_boost": "%s Base Rat %s",
+  "item.rats.rat_upgrade.stat_boost": "+%s Rat %s",
   "item.rats.rat_upgrade.regenerates_health": "Extremely fast health regeneration",
   "item.rats.rat_upgrade_basic.desc": "Has no effects",
   "item.rats.rat_upgrade_creative": "Rat Upgrade: Creative",

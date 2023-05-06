@@ -1176,24 +1176,14 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 
-		AttributeSupplier defaultAttributes = TamedRat.createAttributes().build();
-		List<Attribute> attributeList = new ArrayList<>();
+		ForgeRegistries.ATTRIBUTES.forEach(attribute -> {
+			if (this.getAttribute(attribute) != null && this.getAttributes().hasAttribute(attribute) && !Objects.requireNonNull(this.getAttribute(attribute)).getModifiers().isEmpty()) {
+				Objects.requireNonNull(this.getAttribute(attribute)).removeModifiers();
+			}
+		});
 
 		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, stack ->
-				((StatBoostingUpgrade) stack.getItem()).getAttributeBoosts().forEach((attribute, aDouble) -> {
-					this.tryIncreaseStat(attribute, aDouble);
-					attributeList.add(attribute);
-				}));
-
-		for (Attribute attribute : ForgeRegistries.ATTRIBUTES.getValues()) {
-			if (!attributeList.contains(attribute) && this.getAttribute(attribute) != null && defaultAttributes.hasAttribute(attribute)) {
-				try {
-					Objects.requireNonNull(this.getAttribute(attribute)).setBaseValue(defaultAttributes.getBaseValue(attribute));
-				} catch (IllegalArgumentException e) {
-					RatsMod.LOGGER.error("Rats: exception loading attribute {} during rat upgrade refresh, it will be ignored.", attribute.getDescriptionId());
-				}
-			}
-		}
+				((StatBoostingUpgrade) stack.getItem()).getAttributeBoosts().forEach((attribute, aDouble) -> this.tryIncreaseStat(stack.getHoverName().getString(), attribute, aDouble)));
 
 		if (this.getHeldRF() > this.getRFTransferRate()) {
 			this.setHeldRF(0);
@@ -1201,11 +1191,8 @@ public class TamedRat extends InventoryRat {
 		this.heal(this.getMaxHealth());
 	}
 
-	public void tryIncreaseStat(Attribute stat, double value) {
-		double prev = Objects.requireNonNull(this.getAttribute(stat)).getValue();
-		if (prev < value) {
-			Objects.requireNonNull(this.getAttribute(stat)).setBaseValue(value);
-		}
+	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
+		Objects.requireNonNull(this.getAttribute(stat)).addPermanentModifier(new AttributeModifier(itemName + " " + Component.translatable(stat.getDescriptionId()).getString() + " Modifier", value, AttributeModifier.Operation.ADDITION));
 	}
 
 	@Override
