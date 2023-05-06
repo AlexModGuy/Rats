@@ -23,7 +23,7 @@ public enum RatsArmorMaterialRegistry implements ArmorMaterial {
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 2);
 	}), 30, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsBlockRegistry.PIED_WOOL.get()))),
-	CHEF_TOQUE("chef_toque", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	CHEF_TOQUE("chef_toque", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
@@ -42,49 +42,49 @@ public enum RatsArmorMaterialRegistry implements ArmorMaterial {
 		map.put(ArmorItem.Type.HELMET, 5);
 	}), 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 1.0F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))),
 
-	FARMER_HAT("farmer_hat", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	FARMER_HAT("farmer_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.HAY_BLOCK))),
-	TOP_HAT("top_hat", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	TOP_HAT("top_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.BLACK_WOOL))),
-	FEZ("fez", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	FEZ("fez", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.RED_WOOL))),
-	SANTA_HAT("santa_hat", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	SANTA_HAT("santa_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.RED_WOOL))),
-	HALO("halo", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	HALO("halo", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_NUGGET))),
-	CROWN("crown", 25, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	CROWN("crown", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_INGOT))),
-	GHOST_HAT("ghost_hat", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	GHOST_HAT("ghost_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
 	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))),
-	GENERIC_HAT("generic_hat", 15, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	GENERIC_HAT("generic_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
