@@ -1,7 +1,5 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
-import com.github.alexthe666.rats.RatConfig;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,13 +8,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class RatDragonFire extends Fireball {
 
@@ -44,6 +38,7 @@ public class RatDragonFire extends Fireball {
 		return false;
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 		if (this.getLevel().isClientSide()) {
@@ -56,35 +51,32 @@ public class RatDragonFire extends Fireball {
 		}
 	}
 
+	@Override
 	protected void onHit(HitResult result) {
-		Entity shootingEntity = this.getOwner();
-		if (result instanceof EntityHitResult eResult && shootingEntity != null && shootingEntity.isAlliedTo(eResult.getEntity())) {
-			return;
-		}
+		super.onHit(result);
 		if (!this.getLevel().isClientSide()) {
-			if (result instanceof EntityHitResult eResult) {
-				Entity entity = eResult.getEntity();
-				if (!entity.fireImmune()) {
-					entity.setSecondsOnFire(10);
-					boolean flag = entity.hurt(this.damageSources().fireball(this, shootingEntity), 5.0F);
-					if (flag && shootingEntity instanceof LivingEntity) {
-						this.doEnchantDamageEffects((LivingEntity) shootingEntity, entity);
-					}
-				}
-			} else if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), shootingEntity)) {
-				BlockHitResult blockResult = (BlockHitResult) result;
-				BlockPos blockpos = blockResult.getBlockPos().relative(blockResult.getDirection());
-				if (this.getLevel().isEmptyBlock(blockpos) && RatConfig.ratDragonFire) {
-					this.getLevel().setBlockAndUpdate(blockpos, Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, FireBlock.MAX_AGE));
-				}
+			this.discard();
+		}
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		Entity entity = result.getEntity();
+		if (!entity.fireImmune()) {
+			entity.setSecondsOnFire(10);
+			boolean flag = entity.hurt(this.damageSources().fireball(this, this.getOwner()), 5.0F);
+			if (flag && this.getOwner() instanceof LivingEntity living) {
+				this.doEnchantDamageEffects(living, entity);
 			}
 		}
 	}
 
+	@Override
 	public boolean canBeCollidedWith() {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}

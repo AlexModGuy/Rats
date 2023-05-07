@@ -33,7 +33,6 @@ public class RatConfig {
 	public static int defaultRatRadius = 16;
 	public static int maxRatRadius = 32;
 	public static double garbageSpawnRate = 0.15F;
-	public static boolean ratDragonFire = true;
 	public static int maxRatLitterSize = 1;
 
 	public static int ratRFTransferBasic = 1000;
@@ -131,7 +130,6 @@ public class RatConfig {
 			defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
 			maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
 			garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
-			ratDragonFire = ConfigHolder.SERVER.ratDragonFire.get();
 			maxRatLitterSize = ConfigHolder.SERVER.maxRatLitterSize.get();
 			ratBreedingCooldown = ConfigHolder.SERVER.ratBreedingCooldown.get();
 

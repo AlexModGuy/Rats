@@ -25,7 +25,6 @@ public class ServerConfig {
 	public final ForgeConfigSpec.IntValue defaultRatRadius;
 	public final ForgeConfigSpec.IntValue maxRatRadius;
 	public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
-	public final ForgeConfigSpec.BooleanValue ratDragonFire;
 	public final ForgeConfigSpec.IntValue maxRatLitterSize;
 	public final ForgeConfigSpec.IntValue ratBreedingCooldown;
 
@@ -149,7 +148,6 @@ public class ServerConfig {
 		this.plagueSpread = buildBoolean(builder, "Other Mobs can spread Plague", true, "True if infected mobs with plague can spread it by interacting or attacking.");
 		this.ratStrengthThreshold = buildDouble(builder, "Rat Dig Strength", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
 		this.ratsBreakBlockOnHarvest = buildBoolean(builder, "Rats Break Crops on Harvest", true, "True if tamed rats will destroy crops when they harvest them");
-		this.ratDragonFire = buildBoolean(builder, "Rats Dragons Create Fire", true, "True if Rats with the Dragon upgrade creates fire blocks when shooting fire");
 
 		builder.pop().push("Rat Upgrades");
 		this.ratRFTransferBasic = buildInt(builder, "Rat RF Transfer Rate Basic", 1000, 1, Integer.MAX_VALUE, "How much RF a rat with a basic energy transfer upgrade can transport at a time.");
