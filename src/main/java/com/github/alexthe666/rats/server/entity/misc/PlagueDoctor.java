@@ -456,6 +456,9 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
 				this.getLevel().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
 				this.discard();
+				if (!player.isCreative()) {
+					itemstack.shrink(1);
+				}
 				return InteractionResult.SUCCESS;
 			}
 		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&

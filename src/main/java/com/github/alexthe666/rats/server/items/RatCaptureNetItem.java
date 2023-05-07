@@ -21,11 +21,14 @@ public class RatCaptureNetItem extends LoreTagItem {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), RatsSoundRegistry.RAT_NET_THROW.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-		RatCaptureNet entitypotion = new RatCaptureNet(level, player);
+		RatCaptureNet net = new RatCaptureNet(level, player);
 		Vec3 vec3 = player.getViewVector(1.0F);
 
-		entitypotion.shoot(vec3.x(), vec3.y(), vec3.z(), 1.0F, 0.5F);
-		level.addFreshEntity(entitypotion);
+		net.shoot(vec3.x(), vec3.y(), vec3.z(), 1.0F, 0.5F);
+		level.addFreshEntity(net);
+		if (!player.isCreative()) {
+			itemstack.shrink(1);
+		}
 		return InteractionResultHolder.success(itemstack);
 	}
 }
