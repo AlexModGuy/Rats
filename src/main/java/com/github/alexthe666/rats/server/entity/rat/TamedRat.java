@@ -928,7 +928,7 @@ public class TamedRat extends InventoryRat {
 
 	public boolean applySpecialDyeIfPossible(ItemStack stack) {
 		String name = stack.getHoverName().getString();
-		if ((RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(name) == null && this.getDyeColor() != 100) || RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(name) != RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(this.getSpecialDye())) {
+		if (!this.getSpecialDye().equals(name)) {
 			if (!this.isDyed()) {
 				this.setDyed(true);
 			}
