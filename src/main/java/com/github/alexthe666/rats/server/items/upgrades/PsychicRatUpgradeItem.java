@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
@@ -70,7 +71,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 					0F, 0.0F, 0F);
 		}
 		if (rat.rangedAttackCooldown == 0 && rat.getTarget() != null) {
-			if (rat.getRandom().nextBoolean()) {
+			if (rat.getRandom().nextBoolean() && RatConfig.ratPsychicThrowsBlocks) {
 				rat.rangedAttackCooldown = 50;
 				BlockPos ourPos = rat.blockPosition();
 				int searchRange = 10;
@@ -91,7 +92,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 					}
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
 				} else {
-					rat.rangedAttackCooldown = 5;
+					rat.rangedAttackCooldown += 5;
 				}
 			} else {
 				rat.rangedAttackCooldown = 100;
