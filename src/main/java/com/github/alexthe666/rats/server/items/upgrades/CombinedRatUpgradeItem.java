@@ -33,12 +33,13 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 	}
 
 	public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
+		if (stack.getItem() instanceof CombinedUpgrade) return false;
 		CompoundTag tag = combiner.getTag();
 		if (tag != null && tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist);
 			for (ItemStack contained : nonnulllist) {
-				if (!(stack.getItem() instanceof BaseRatUpgradeItem) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained.getItem(), stack.getItem())) {
+				if (!(stack.getItem() instanceof BaseRatUpgradeItem) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained, stack)) {
 					return false;
 				}
 			}

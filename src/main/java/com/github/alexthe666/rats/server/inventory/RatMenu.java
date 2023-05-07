@@ -98,11 +98,11 @@ public class RatMenu extends AbstractContainerMenu {
 	public static boolean canCoexistUpgrade(Container inventory, ItemStack upgrade, int ourSlot) {
 		return switch (ourSlot) {
 			case 0 ->
-					!RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(4).getItem()) && !RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(5).getItem());
+					!RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(4)) && !RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(5));
 			case 1 ->
-					!RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(3).getItem()) && !RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(5).getItem());
+					!RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(3)) && !RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(5));
 			case 2 ->
-					!RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(3).getItem()) && !RatsUpgradeConflictRegistry.doesConflict(upgrade.getItem(), inventory.getItem(4).getItem());
+					!RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(3)) && !RatsUpgradeConflictRegistry.doesConflict(upgrade, inventory.getItem(4));
 			default -> false;
 		};
 	}
