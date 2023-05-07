@@ -104,7 +104,7 @@ public class RatSackItem extends Item {
 						if (!ratTag.getString("CustomName").isEmpty()) {
 							rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
 						}
-						rat.moveTo(offset.getX() - 1 + (context.getLevel().getRandom().nextFloat() * 2), offset.getY(), offset.getZ() - 1 + (context.getLevel().getRandom().nextFloat() * 2), 0, 0);
+						rat.moveTo(offset.getX() - 0.25F + (context.getLevel().getRandom().nextFloat() * 0.5F), offset.getY(), offset.getZ() - 0.25F + (context.getLevel().getRandom().nextFloat() * 0.5F), 0, 0);
 						if (!context.getLevel().isClientSide()) {
 							context.getLevel().addFreshEntity(rat);
 						}
