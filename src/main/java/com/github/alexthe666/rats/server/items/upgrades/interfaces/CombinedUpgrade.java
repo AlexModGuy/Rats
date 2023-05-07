@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades.interfaces;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,15 +20,18 @@ public interface CombinedUpgrade {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist);
 			int i = 0;
-			int j = 0;
 			for (ItemStack itemstack : nonnulllist) {
 				if (!itemstack.isEmpty()) {
-					++j;
 					if (i <= 4) {
 						++i;
 						tooltip.add(Component.literal(String.format("%s", itemstack.getDisplayName().getString())));
+					} else {
+						break;
 					}
 				}
+			}
+			if (nonnulllist.stream().filter(stack1 -> !stack1.isEmpty()).toList().size() > 5) {
+				tooltip.add(Component.translatable("item.rats.rat_upgrade_combined.and_more", nonnulllist.stream().filter(stack1 -> !stack1.isEmpty()).toList().size() - 5).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}
