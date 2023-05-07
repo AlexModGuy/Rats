@@ -55,6 +55,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
@@ -290,7 +291,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isHoldingFood() {
-		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), true) && super.isHoldingFood();
+		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), super.isHoldingFood());
 	}
 
 	@Override
@@ -300,7 +301,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isHoldingItemInHands() {
-		return (this.isEating() || (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.cookingProgress > 0) || this.holdsItemInHandUpgrade() || this.getMBTransferRate() > 0) && this.sleepProgress <= 0.0F;
+		return (this.isHoldingFood() || (!this.getMainHandItem().isEmpty() && this.cookingProgress > 0) || this.holdsItemInHandUpgrade() || this.getMBTransferRate() > 0) && this.sleepProgress <= 0.0F;
 	}
 
 	@Override
@@ -679,7 +680,7 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public void onItemEaten() {
 		ItemStack handCopy = this.getMainHandItem().copy();
-		this.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+		this.getMainHandItem().shrink(1);
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(handCopy)) {
 			ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(this.getLevel(), handCopy, true).copyWithCount(2);
 			if (RatConfig.ratFartNoises) {

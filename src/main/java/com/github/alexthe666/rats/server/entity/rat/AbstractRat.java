@@ -133,18 +133,20 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			this.setRatStatus(RatStatus.MOVING);
 		}
 		if (!this.isNoAi()) {
-			if (!this.getLevel().isClientSide() && this.getRatStatus() == RatStatus.IDLE && this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(350) == 0 && this.shouldPlayIdleAnimations()) {
+			if (!this.getLevel().isClientSide() && this.getRatStatus() == RatStatus.IDLE && this.getMainHandItem().isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(350) == 0 && this.shouldPlayIdleAnimations()) {
 				this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
 			}
 		}
 		if (this.getAnimation() == ANIMATION_EAT && this.isHoldingFood()) {
 			this.eatingTicks++;
-			this.eatItem(this.getItemInHand(InteractionHand.MAIN_HAND));
+			this.eatItem(this.getMainHandItem());
 			if (this.eatingTicks >= 40) {
-				this.onItemEaten();
+				if (!this.getMainHandItem().isEmpty() && !this.getLevel().isClientSide()) {
+					this.onItemEaten();
+				}
 				int healAmount = 1;
-				if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem().isEdible()) {
-					healAmount = Objects.requireNonNull(this.getItemInHand(InteractionHand.MAIN_HAND).getItem().getFoodProperties(this.getItemInHand(InteractionHand.MAIN_HAND), this)).getNutrition();
+				if (this.getMainHandItem().getItem().isEdible()) {
+					healAmount = Objects.requireNonNull(this.getMainHandItem().getItem().getFoodProperties(this.getMainHandItem(), this)).getNutrition();
 				}
 				this.heal(healAmount);
 				this.eatingTicks = 0;
@@ -333,7 +335,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public void onItemEaten() {
-		this.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+		this.getMainHandItem().shrink(1);
 	}
 
 	public boolean isMoving() {
@@ -341,7 +343,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public boolean isHoldingFood() {
-		return !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && RatUtils.isRatFood(this.getItemInHand(InteractionHand.MAIN_HAND));
+		return !this.getMainHandItem().isEmpty() && RatUtils.isRatFood(this.getMainHandItem());
 	}
 
 	public boolean shouldPlayIdleAnimations() {
