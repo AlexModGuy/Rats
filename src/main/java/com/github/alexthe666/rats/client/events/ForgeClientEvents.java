@@ -330,17 +330,17 @@ public class ForgeClientEvents {
 				if (heldItem.is(RatsItemRegistry.CHEESE_STICK.get())) {
 					float finalBob = bob;
 					rat.getDepositPos().ifPresent(pos -> {
-						if (pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
 					rat.getPickupPos().ifPresent(pos -> {
-						if (pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
 					rat.getHomePoint().ifPresent(pos -> {
-						if (pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
@@ -356,6 +356,7 @@ public class ForgeClientEvents {
 					}
 				} else if (heldItem.is(RatsItemRegistry.RADIUS_STICK.get())) {
 					BlockPos blockPos = rat.getSearchCenter();
+					if (!Minecraft.getInstance().player.getLevel().isLoaded(blockPos)) return;
 					Vec3 renderCenter = new Vec3(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D);
 					double renderRadius = rat.getRadius();
 					AABB aabb = new AABB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
@@ -365,6 +366,7 @@ public class ForgeClientEvents {
 
 					for (int i = 0; i < rat.getPatrolNodes().size(); ++i) {
 						GlobalPos node = rat.getPatrolNodes().get(i);
+						if (!Minecraft.getInstance().player.getLevel().isLoaded(node.pos())) return;
 						float r = 0.6F;
 						float g = 0.1F;
 						float b = 0.1F;
