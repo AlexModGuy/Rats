@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.LoreTagItem;
+import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -30,7 +31,7 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 	}
 
 	public boolean isRatHoldingFood(TamedRat rat) {
-		return true;
+		return RatUtils.isRatFood(rat.getMainHandItem());
 	}
 
 	public boolean playIdleAnimation(TamedRat rat) {

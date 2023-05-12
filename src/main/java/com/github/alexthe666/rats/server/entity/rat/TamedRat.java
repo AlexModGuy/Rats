@@ -291,7 +291,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isHoldingFood() {
-		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), super.isHoldingFood());
+		return !this.getMainHandItem().isEmpty() && RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), true);
 	}
 
 	@Override
@@ -1358,7 +1358,6 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean hasFlightUpgrade() {
-		boolean bool = RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.canFly(this), false);
-		return bool || (RatUpgradeUtils.hasUpgrade(this, RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get()) && this.isRidingSpecialMount());
+		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.canFly(this), false);
 	}
 }
