@@ -37,7 +37,7 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 			int capturedRat = 0;
 			if (!list.isEmpty()) {
 				for (TamedRat rat : list) {
-					if (capturedRat >= 32) break;
+					if (capturedRat >= RatSackItem.RAT_SACK_ROOM) break;
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
 						capturedRat++;
 						RatSackItem.packRatIntoSack(sack, rat, capturedRat);

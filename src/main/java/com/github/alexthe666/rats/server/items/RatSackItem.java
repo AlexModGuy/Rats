@@ -22,6 +22,8 @@ import java.util.List;
 
 public class RatSackItem extends Item {
 
+	public static int RAT_SACK_ROOM = 16;
+
 	public RatSackItem(Item.Properties properties) {
 		super(properties);
 
@@ -53,8 +55,21 @@ public class RatSackItem extends Item {
 		tag.put("Rat_" + ratCount, ratTag);
 	}
 
+	public static int getRatsInSack(ItemStack sack) {
+		int ratCount = 0;
+		if (sack.getTag() != null) {
+			for (String tagInfo : sack.getTag().getAllKeys()) {
+				if (tagInfo.contains("Rat")) {
+					ratCount++;
+				}
+			}
+		}
+		return ratCount;
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		tooltip.add(Component.translatable("item.rats.rat_sack.capacity", RAT_SACK_ROOM));
 		int ratCount = 0;
 		List<String> ratNames = new ArrayList<>();
 		if (stack.getTag() != null) {
