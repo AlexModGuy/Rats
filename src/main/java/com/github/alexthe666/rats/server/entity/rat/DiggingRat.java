@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.ai.goal.RatRaidChestsGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatRaidCropsGoal;
 import com.github.alexthe666.rats.server.misc.RatPathingHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
@@ -94,20 +95,18 @@ public abstract class DiggingRat extends AbstractRat {
 				this.breakingTime = 0;
 				this.previousBreakProgress = -1;
 				BlockState prevState = this.getLevel().getBlockState(this.diggingPos);
-				if (prevState.is(RatsBlockRegistry.RAT_HOLE.get())) {
-					this.getLevel().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().withPropertiesOf(prevState)
-							.setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(this.getDirection().getOpposite()), true));
-				} else {
-					this.getLevel().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().defaultBlockState()
-							.setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(this.getDirection()), true)
-							.setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(this.getDirection().getOpposite()), true));
-					if (this.getLevel().getBlockState(this.diggingPos).is(RatsBlockRegistry.RAT_HOLE.get())) {
-						BlockEntity be = this.getLevel().getBlockEntity(this.diggingPos);
-						if (be instanceof RatHoleBlockEntity hole) {
-							hole.setImitatedBlockState(prevState);
-						}
+				this.getLevel().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().defaultBlockState());
+				for (Direction direction : Direction.Plane.HORIZONTAL) {
+					boolean empty = this.getLevel().isEmptyBlock(this.diggingPos.relative(direction));
+					this.getLevel().getBlockState(this.diggingPos).setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(direction), empty);
+				}
+				if (this.getLevel().getBlockState(this.diggingPos).is(RatsBlockRegistry.RAT_HOLE.get())) {
+					BlockEntity be = this.getLevel().getBlockEntity(this.diggingPos);
+					if (be instanceof RatHoleBlockEntity hole) {
+						hole.setImitatedBlockState(prevState);
 					}
 				}
+
 				this.digCooldown = 3000;
 				this.diggingPos = null;
 			}
@@ -152,7 +151,7 @@ public abstract class DiggingRat extends AbstractRat {
 
 	private boolean canDigBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		return (state.is(RatsBlockTags.DIGGABLE_BLOCKS) && state.isSolidRender(level, pos)) || state.is(RatsBlockRegistry.RAT_HOLE.get());
+		return (state.is(RatsBlockTags.DIGGABLE_BLOCKS) && state.isSolidRender(level, pos));
 	}
 
 	@Override
