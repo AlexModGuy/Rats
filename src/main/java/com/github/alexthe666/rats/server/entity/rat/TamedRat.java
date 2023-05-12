@@ -874,7 +874,7 @@ public class TamedRat extends InventoryRat {
 					player.displayClientMessage(Component.translatable("item.rats.rat_sack.too_full").withStyle(ChatFormatting.RED), true);
 					return InteractionResult.PASS;
 				} else {
-					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInStack(itemstack) + 1);
+					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInSack(itemstack) + 1);
 					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
 					this.discard();
 					player.swing(hand);

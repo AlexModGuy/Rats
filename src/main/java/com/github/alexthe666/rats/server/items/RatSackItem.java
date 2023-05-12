@@ -9,7 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,19 +28,6 @@ public class RatSackItem extends Item {
 
 	public RatSackItem(Item.Properties properties) {
 		super(properties);
-
-	}
-
-	public static int getRatsInStack(ItemStack stack) {
-		int ratCount = 0;
-		if (stack.getTag() != null) {
-			for (String tagInfo : stack.getTag().getAllKeys()) {
-				if (tagInfo.contains("Rat")) {
-					ratCount++;
-				}
-			}
-		}
-		return ratCount;
 	}
 
 	public static void packRatIntoSack(ItemStack sack, TamedRat rat, int ratCount) {
@@ -105,7 +94,7 @@ public class RatSackItem extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
-		if (stack.is(RatsItemRegistry.RAT_SACK.get()) && getRatsInStack(stack) > 0) {
+		if (stack.is(RatsItemRegistry.RAT_SACK.get()) && getRatsInSack(stack) > 0) {
 			int ratCount = 0;
 			if (stack.getTag() != null) {
 				for (String tagInfo : stack.getTag().getAllKeys()) {
@@ -135,7 +124,26 @@ public class RatSackItem extends Item {
 	}
 
 	@Override
-	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity LivingEntity) {
-		return new ItemStack(RatsItemRegistry.RAT_SACK.get());
+	public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
+		ItemStack stack = entity.getItem();
+		if (getRatsInSack(stack) > 0) {
+			if (stack.getTag() != null) {
+				for (String tagInfo : stack.getTag().getAllKeys()) {
+					if (tagInfo.contains("Rat")) {
+						CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
+						TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), entity.getLevel());
+						BlockPos offset = entity.getOnPos();
+						rat.readAdditionalSaveData(ratTag);
+						if (!ratTag.getString("CustomName").isEmpty()) {
+							rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+						}
+						rat.moveTo(offset.getX() - 0.25F + (entity.getLevel().getRandom().nextFloat() * 0.5F), offset.getY(), offset.getZ() - 0.25F + (entity.getLevel().getRandom().nextFloat() * 0.5F), 0, 0);
+						if (!entity.getLevel().isClientSide()) {
+							entity.getLevel().addFreshEntity(rat);
+						}
+					}
+				}
+			}
+		}
 	}
 }
