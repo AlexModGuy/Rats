@@ -62,8 +62,7 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "rats:ghost_pirat_hat",
-      "nbt": "{Damage:0}"
+      "item": "rats:ghost_pirat_hat"
     },
     "show_toast": true,
     "title": {

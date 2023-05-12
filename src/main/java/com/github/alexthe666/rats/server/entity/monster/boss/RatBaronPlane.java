@@ -3,6 +3,8 @@ package com.github.alexthe666.rats.server.entity.monster.boss;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.entity.Plane;
+import com.github.alexthe666.rats.server.entity.ai.navigation.control.PlaneMoveControl;
 import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.misc.PlaneRotationUtil;
@@ -31,7 +33,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class RatBaronPlane extends Mob implements Ratlanteans {
+public class RatBaronPlane extends Mob implements Ratlanteans, Plane {
 
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(RatBaronPlane.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Float> PLANE_PITCH = SynchedEntityData.defineId(RatBaronPlane.class, EntityDataSerializers.FLOAT);
@@ -48,11 +50,11 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 
 	public RatBaronPlane(EntityType<? extends Mob> type, Level world) {
 		super(type, world);
-		this.moveControl = new FlightMoveHelper(this);
+		this.moveControl = new PlaneMoveControl<>(this);
 		this.xpReward = 55;
 		if (world.isClientSide()) {
-			roll_buffer = new PlaneRotationUtil();
-			pitch_buffer = new PlaneRotationUtil();
+			this.roll_buffer = new PlaneRotationUtil();
+			this.pitch_buffer = new PlaneRotationUtil();
 		}
 	}
 
@@ -74,15 +76,6 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 
 	public boolean isAlliedTo(Entity entity) {
 		return super.isAlliedTo(entity) || entity instanceof RatBaron;
-	}
-
-	@Override
-	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-	}
-
-	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
 	}
 
 	protected void registerGoals() {
@@ -127,9 +120,9 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 			float distX = (float) (this.startPreyVec.x() - this.startAttackVec.x());
 			float distY = 1.5F;
 			float distZ = (float) (this.startPreyVec.z() - this.startAttackVec.z());
-			this.flightTarget = new Vec3(this.getTarget().getX() + distX, this.getTarget().getY() + distY, this.getTarget().getZ() + distZ);
-			if (this.distanceToSqr(this.flightTarget.x(), this.flightTarget.y(), this.flightTarget.z()) < 100) {
-				this.flightTarget = new Vec3(this.getTarget().getX() - distX, this.getTarget().getY() + distY, this.getTarget().getZ() - distZ);
+			this.setFlightTarget(new Vec3(this.getTarget().getX() + distX, this.getTarget().getY() + distY, this.getTarget().getZ() + distZ));
+			if (this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 100) {
+				this.setFlightTarget(new Vec3(this.getTarget().getX() - distX, this.getTarget().getY() + distY, this.getTarget().getZ() - distZ));
 			}
 		}
 		if (this.getTarget() != null && this.hasLineOfSight(this.getTarget())) {
@@ -160,11 +153,11 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 			}
 			this.setFiring(true);
 		}
-		if (this.getTarget() == null || this.flightTarget == null || this.distanceToSqr(this.flightTarget.x(), this.flightTarget.y(), this.flightTarget.z()) < 9 || !this.getLevel().isEmptyBlock(BlockPos.containing(this.flightTarget))) {
+		if (this.getTarget() == null || this.getFlightTarget() == null || this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 9 || !this.getLevel().isEmptyBlock(BlockPos.containing(this.getFlightTarget()))) {
 			if (this.escortPosition == null) {
 				this.escortPosition = this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, this.blockPosition()).above(RatConfig.ratBaronYFlight + this.getRandom().nextInt(10));
 			}
-			this.flightTarget = getBlockInViewEscort();
+			this.setFlightTarget(this.getBlockInViewEscort());
 		}
 		if (this.getLevel().isClientSide()) {
 			if (!this.onGround) {
@@ -284,75 +277,14 @@ public class RatBaronPlane extends Mob implements Ratlanteans {
 		this.getEntityData().set(FIRING, male);
 	}
 
-	private double getFlightSpeedModifier() {
-		return 1.0F;
+	@Override
+	public @Nullable Vec3 getFlightTarget() {
+		return this.flightTarget;
 	}
 
-	protected static class FlightMoveHelper extends MoveControl {
-
-		private final RatBaronPlane plane;
-
-		protected FlightMoveHelper(RatBaronPlane planeBase) {
-			super(planeBase);
-			this.plane = planeBase;
-		}
-
-		public static float approach(float number, float max, float min) {
-			min = Math.abs(min);
-			return number < max ? Mth.clamp(number + min, number, max) : Mth.clamp(number - min, max, number);
-		}
-
-		public static float approachDegrees(float number, float max, float min) {
-			float add = Mth.wrapDegrees(max - number);
-			return approach(number, number + add, min);
-		}
-
-		public static float degreesDifferenceAbs(float f1, float f2) {
-			return Math.abs(Mth.wrapDegrees(f2 - f1));
-		}
-
-		public void tick() {
-			if (this.plane.horizontalCollision) {
-				this.plane.setYRot(this.plane.getYRot() + 180.0F);
-				this.speedModifier = 0.1F;
-				this.plane.flightTarget = null;
-				return;
-			}
-			if (this.plane.flightTarget != null) {
-				float distX = (float) (this.plane.flightTarget.x() - this.plane.getX());
-				float distY = (float) (this.plane.flightTarget.y() - this.plane.getY());
-				float distZ = (float) (this.plane.flightTarget.z() - this.plane.getZ());
-				double planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-				double yDistMod = 1.0D - (double) Mth.abs(distY * 0.7F) / planeDist;
-				distX = (float) ((double) distX * yDistMod);
-				distZ = (float) ((double) distZ * yDistMod);
-				planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-				double dist = Mth.sqrt(distX * distX + distZ * distZ + distY * distY);
-				if (dist > 1.0F) {
-					float yawCopy = this.plane.getYRot();
-					float atan = (float) Mth.atan2(distZ, distX);
-					float yawTurn = Mth.wrapDegrees(this.plane.getYRot() + 90);
-					float yawTurnAtan = Mth.wrapDegrees(atan * 57.295776F);
-					this.plane.setYRot(approachDegrees(yawTurn, yawTurnAtan, 4.0F) - 90.0F);
-					this.plane.yBodyRot = this.plane.getYRot();
-					if (degreesDifferenceAbs(yawCopy, this.plane.getYRot()) < 3.0F) {
-						this.speedModifier = approach((float) this.speedModifier, 1.2F, 0.005F * (1.2F / (float) this.speedModifier));
-					} else {
-						this.speedModifier = approach((float) this.speedModifier, 0.2F, 0.025F);
-						if (dist < 100D && this.plane.getTarget() != null) {
-							this.speedModifier = this.speedModifier * (dist / 100D);
-						}
-					}
-					float finPitch = (float) (-(Mth.atan2(-distY, planeDist) * 57.2957763671875D));
-					this.plane.setXRot(finPitch);
-					float yawTurnHead = this.plane.getYRot() + 90.0F;
-					double x = this.speedModifier * Mth.cos(yawTurnHead * 0.017453292F) * Math.abs((double) distX / dist);
-					double z = this.speedModifier * Mth.sin(yawTurnHead * 0.017453292F) * Math.abs((double) distZ / dist);
-					double y = this.speedModifier * Mth.sin(finPitch * 0.017453292F) * Math.abs((double) distY / dist);
-					this.plane.setDeltaMovement(this.plane.getDeltaMovement().add(x * 0.4D * this.plane.getFlightSpeedModifier(), y * 0.4D * this.plane.getFlightSpeedModifier(), z * 0.4D * this.plane.getFlightSpeedModifier()));
-				}
-			}
-		}
+	@Override
+	public void setFlightTarget(@Nullable Vec3 target) {
+		this.flightTarget = target;
 	}
 
 	@Nullable

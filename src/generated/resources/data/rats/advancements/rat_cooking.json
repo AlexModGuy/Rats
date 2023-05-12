@@ -30,8 +30,7 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "rats:chef_toque",
-      "nbt": "{Damage:0}"
+      "item": "rats:chef_toque"
     },
     "show_toast": true,
     "title": {

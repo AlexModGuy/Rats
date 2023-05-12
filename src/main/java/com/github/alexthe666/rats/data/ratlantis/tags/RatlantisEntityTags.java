@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.data.ratlantis.tags;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
+import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -38,5 +39,12 @@ public class RatlantisEntityTags extends EntityTypeTagsProvider {
 				RatlantisEntityRegistry.DUTCHRAT.get(), RatlantisEntityRegistry.GHOST_PIRAT.get(),
 				RatlantisEntityRegistry.RAT_PROTECTOR.get(), RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get(),
 				RatlantisEntityRegistry.RATLANTEAN_RATBOT.get(), RatlantisEntityRegistry.RATLANTEAN_SPIRIT.get());
+
+		tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+				RatlantisEntityRegistry.RATLANTEAN_SPIRIT.get(), RatlantisEntityRegistry.RAT_MOUNT_BIPLANE.get(),
+				RatlantisEntityRegistry.DUTCHRAT.get(), RatlantisEntityRegistry.NEO_RATLANTEAN.get(),
+				RatlantisEntityRegistry.RAT_BARON_PLANE.get(), RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON.get(),
+				RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get(), RatlantisEntityRegistry.RATLANTEAN_RATBOT.get());
+
 	}
 }

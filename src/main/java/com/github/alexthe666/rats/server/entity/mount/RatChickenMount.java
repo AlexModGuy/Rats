@@ -67,11 +67,6 @@ public class RatChickenMount extends RatMountBase {
 		this.wingRotation += this.wingRotDelta * 2.0F;
 	}
 
-	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
-	}
-
 	protected SoundEvent getAmbientSound() {
 		return SoundEvents.CHICKEN_AMBIENT;
 	}

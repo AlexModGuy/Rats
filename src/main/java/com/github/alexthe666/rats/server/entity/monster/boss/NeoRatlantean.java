@@ -261,16 +261,6 @@ public class NeoRatlantean extends Monster implements Ratlanteans {
 	}
 
 	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
-	}
-
-	@Override
-	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-
-	}
-
-	@Override
 	public boolean removeWhenFarAway(double dist) {
 		return false;
 	}

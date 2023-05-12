@@ -132,11 +132,6 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
-	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
-	}
-
 	public boolean canChangeDimensions() {
 		return false;
 	}

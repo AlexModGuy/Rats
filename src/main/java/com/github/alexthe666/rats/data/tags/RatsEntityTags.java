@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.data.tags;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -46,6 +47,10 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 		tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(RatsEntityRegistry.RAT.get(), RatsEntityRegistry.RAT_KING.get(), RatsEntityRegistry.RAT_MOUNT_CHICKEN.get());
 
 		tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(RatsEntityRegistry.DEMON_RAT.get());
+
+		tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+				RatsEntityRegistry.PLAGUE_CLOUD.get(), RatsEntityRegistry.RAT_MOUNT_CHICKEN.get(),
+				RatsEntityRegistry.RAT_MOUNT_GOLEM.get());
 	}
 
 	private static TagKey<EntityType<?>> create(String name) {

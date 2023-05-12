@@ -3,6 +3,8 @@ package com.github.alexthe666.rats.server.entity.mount;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.entity.Plane;
+import com.github.alexthe666.rats.server.entity.ai.navigation.control.PlaneMoveControl;
 import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.PlaneRotationUtil;
@@ -23,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class RatBiplaneMount extends RatMountBase {
+public class RatBiplaneMount extends RatMountBase implements Plane {
 
 	public float prevPlanePitch;
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(RatBiplaneMount.class, EntityDataSerializers.BOOLEAN);
@@ -38,10 +40,10 @@ public class RatBiplaneMount extends RatMountBase {
 		super(type, level);
 		this.riderY = 1.35F;
 		this.riderXZ = -0.35F;
-		this.moveControl = new FlightMoveHelper(this);
+		this.moveControl = new PlaneMoveControl<>(this);
 		if (this.getLevel().isClientSide()) {
-			roll_buffer = new PlaneRotationUtil();
-			pitch_buffer = new PlaneRotationUtil();
+			this.roll_buffer = new PlaneRotationUtil();
+			this.pitch_buffer = new PlaneRotationUtil();
 		}
 	}
 
@@ -72,16 +74,6 @@ public class RatBiplaneMount extends RatMountBase {
 		this.getEntityData().define(PLANE_PITCH, 0F);
 	}
 
-	@Override
-	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-
-	}
-
-	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
-	}
-
 	public boolean removeWhenFarAway(double dist) {
 		return false;
 	}
@@ -104,20 +96,20 @@ public class RatBiplaneMount extends RatMountBase {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 300.0D)        //HEALTH
-				.add(Attributes.MOVEMENT_SPEED, 0.35D)                //SPEED
-				.add(Attributes.ATTACK_DAMAGE, 1.0D)       //ATTACK
-				.add(Attributes.FOLLOW_RANGE, 128.0D);
+				.add(Attributes.MAX_HEALTH, 300.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.35D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
+				.add(Attributes.FOLLOW_RANGE, 32.0D);
 	}
 
 	public void tick() {
 		super.tick();
-		if (soundLoopCounter == 0) {
+		if (this.soundLoopCounter == 0) {
 			this.playSound(RatsSoundRegistry.BIPLANE_LOOP.get(), 10, 1);
 		}
-		soundLoopCounter++;
-		if (soundLoopCounter > 90) {
-			soundLoopCounter = 0;
+		this.soundLoopCounter++;
+		if (this.soundLoopCounter > 90) {
+			this.soundLoopCounter = 0;
 		}
 
 		this.prevPlanePitch = this.getPlanePitch();
@@ -132,7 +124,7 @@ public class RatBiplaneMount extends RatMountBase {
 		if (rat != null && !rat.canMove()) {
 			up = 0;
 		}
-		this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + up, this.getDeltaMovement().z);
+		this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() + up, this.getDeltaMovement().z());
 
 		if (this.getTarget() != null && this.hasLineOfSight(this.getTarget())) {
 			Entity target = this.getTarget();
@@ -162,16 +154,16 @@ public class RatBiplaneMount extends RatMountBase {
 			this.setFiring(true);
 		}
 
-		if (this.flightTarget == null || this.distanceToSqr(flightTarget.x, flightTarget.y, flightTarget.z) < 20 || rat != null && !rat.canMove()) {
-			flightTarget = null;
+		if (this.getFlightTarget() == null || this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 20 || rat != null && !rat.canMove()) {
+			this.setFlightTarget(null);
 		}
 		if (this.getLevel().isClientSide()) {
-			if (!onGround) {
-				roll_buffer.calculateChainFlapBuffer(40, 20, 0.5F, 0.5F, this);
-				pitch_buffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
+			if (!this.onGround) {
+				this.roll_buffer.calculateChainFlapBuffer(40, 20, 0.5F, 0.5F, this);
+				this.pitch_buffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
 			}
 		}
-		if (!onGround) {
+		if (!this.onGround) {
 			double ydist = this.yo - this.getY();//down 0.4 up -0.38
 			float planeDist = (float) ((Math.abs(this.getDeltaMovement().x()) + Math.abs(this.getDeltaMovement().z())) * 6F);
 			this.incrementPlanePitch((float) (ydist) * 10);
@@ -220,78 +212,13 @@ public class RatBiplaneMount extends RatMountBase {
 		return RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get();
 	}
 
-	protected static class FlightMoveHelper extends MoveControl {
+	@Override
+	public @Nullable Vec3 getFlightTarget() {
+		return this.flightTarget;
+	}
 
-		private final RatBiplaneMount plane;
-
-		protected FlightMoveHelper(RatBiplaneMount planeBase) {
-			super(planeBase);
-			this.plane = planeBase;
-		}
-
-		public static float approach(float number, float max, float min) {
-			min = Math.abs(min);
-			return number < max ? Mth.clamp(number + min, number, max) : Mth.clamp(number - min, max, number);
-		}
-
-		public static float approachDegrees(float number, float max, float min) {
-			float add = Mth.wrapDegrees(max - number);
-			return approach(number, number + add, min);
-		}
-
-		public static float degreesDifferenceAbs(float f1, float f2) {
-			return Math.abs(Mth.wrapDegrees(f2 - f1));
-		}
-
-		public void tick() {
-			if (plane.horizontalCollision) {
-				plane.setYRot(plane.getYRot() + 180.0F);
-				this.speedModifier = 0.1F;
-				plane.flightTarget = null;
-				return;
-			}
-			if (plane.getRat() != null) {
-				if (!plane.getRat().canMove()) {
-					return;
-				}
-			}
-			if (plane.flightTarget == null && this.hasWanted()) {
-				plane.flightTarget = new Vec3(this.getWantedX(), this.getWantedY(), this.getWantedZ());
-			}
-			if (plane.flightTarget != null) {
-				float distX = (float) (plane.flightTarget.x - plane.getX());
-				float distY = (float) (plane.flightTarget.y - plane.getY());
-				float distZ = (float) (plane.flightTarget.z - plane.getZ());
-				double planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-				double yDistMod = 1.0D - (double) Mth.abs(distY * 0.7F) / planeDist;
-				distX = (float) ((double) distX * yDistMod);
-				distZ = (float) ((double) distZ * yDistMod);
-				planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-				double dist = Mth.sqrt(distX * distX + distZ * distZ + distY * distY);
-				if (dist > 1.0F) {
-					float yawCopy = plane.getYRot();
-					float atan = (float) Mth.atan2(distZ, distX);
-					float yawTurn = Mth.wrapDegrees(plane.getYRot() + 90);
-					float yawTurnAtan = Mth.wrapDegrees(atan * 57.295776F);
-					plane.setYRot(approachDegrees(yawTurn, yawTurnAtan, 4.0F) - 90.0F);
-					plane.yBodyRot = plane.getYRot();
-					if (degreesDifferenceAbs(yawCopy, plane.getYRot()) < 3.0F) {
-						this.speedModifier = approach((float) this.speedModifier, 1.2F, 0.005F * (1.2F / (float) this.speedModifier));
-					} else {
-						this.speedModifier = approach((float) this.speedModifier, 0.2F, 0.025F);
-						if (dist < 100D && plane.getTarget() != null) {
-							this.speedModifier = this.speedModifier * (dist / 100D);
-						}
-					}
-					float finPitch = (float) (-(Mth.atan2(-distY, planeDist) * 57.2957763671875D));
-					plane.setXRot(finPitch);
-					float yawTurnHead = plane.getYRot() + 90.0F;
-					double lvt_16_1_ = this.speedModifier * Mth.cos(yawTurnHead * 0.017453292F) * Math.abs((double) distX / dist);
-					double lvt_18_1_ = this.speedModifier * Mth.sin(yawTurnHead * 0.017453292F) * Math.abs((double) distZ / dist);
-					double lvt_20_1_ = this.speedModifier * Mth.sin(finPitch * 0.017453292F) * Math.abs((double) distY / dist);
-					plane.setDeltaMovement(plane.getDeltaMovement().add(lvt_16_1_ * 0.4D, lvt_20_1_ * 0.4D, lvt_18_1_ * 0.4D));
-				}
-			}
-		}
+	@Override
+	public void setFlightTarget(@Nullable Vec3 target) {
+		this.flightTarget = target;
 	}
 }
