@@ -9,13 +9,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 public class SalivaParticle extends TextureSheetParticle {
-	private final Fluid fluid;
 
-	public SalivaParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Fluid fluid) {
+	public SalivaParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
 		this.setSize(0.01F, 0.01F);
 		this.gravity = 0.06F;
-		this.fluid = fluid;
 	}
 
 	@Override
@@ -25,16 +23,14 @@ public class SalivaParticle extends TextureSheetParticle {
 		this.zo = this.z;
 		if (!this.removed) {
 			this.yd -= this.gravity;
+			if (this.lifetime-- <= 0 || this.stoppedByCollision) {
+				this.remove();
+			}
 			this.move(this.xd, this.yd, this.zd);
 			if (!this.removed) {
 				this.xd *= 0.98F;
 				this.yd *= 0.98F;
 				this.zd *= 0.98F;
-				BlockPos blockpos = BlockPos.containing(this.x, this.y, this.z);
-				FluidState state = this.level.getFluidState(blockpos);
-				if (state.is(this.fluid) && this.y < (double) ((float) blockpos.getY() + state.getHeight(this.level, blockpos))) {
-					this.remove();
-				}
 			}
 		}
 	}
@@ -47,7 +43,7 @@ public class SalivaParticle extends TextureSheetParticle {
 	public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			SalivaParticle particle = new SalivaParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, Fluids.WATER);
+			SalivaParticle particle = new SalivaParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.pickSprite(this.sprite);
 			return particle;
 		}

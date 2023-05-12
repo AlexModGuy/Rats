@@ -24,7 +24,7 @@ public class FeralBiteRatUpgradeItem extends BaseRatUpgradeItem implements PostA
 
 	@Override
 	public void tick(TamedRat rat) {
-		if (rat.getLevel().isClientSide() && rat.getRandom().nextInt(5) == 0) {
+		if (rat.getLevel().isClientSide() && rat.getRandom().nextInt(10) == 0) {
 			float sitAddition = 0.125f * (rat.sitProgress / 20F);
 			float radius = 0.3F - sitAddition;
 			float angle = (0.01745329251F * (rat.yBodyRot));
