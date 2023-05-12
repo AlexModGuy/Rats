@@ -3,8 +3,10 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatArrow;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
+import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,9 +31,12 @@ public class RatArrowItem extends ArrowItem {
 		if (stack.getTag() != null) {
 			ratTag = stack.getTag().getCompound("Rat");
 		}
-		Rat rat = new Rat(RatsEntityRegistry.RAT.get(), context.getLevel());
+		TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), context.getLevel());
 		BlockPos offset = context.getClickedPos().relative(context.getClickedFace());
 		rat.readAdditionalSaveData(ratTag);
+		if (!ratTag.getString("CustomName").isEmpty()) {
+			rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+		}
 		rat.moveTo(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
 		if (!context.getLevel().isClientSide()) {
 			context.getLevel().addFreshEntity(rat);
