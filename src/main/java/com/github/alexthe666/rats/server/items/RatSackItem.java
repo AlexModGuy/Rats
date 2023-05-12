@@ -69,7 +69,6 @@ public class RatSackItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("item.rats.rat_sack.capacity", RAT_SACK_ROOM));
 		int ratCount = 0;
 		List<String> ratNames = new ArrayList<>();
 		if (stack.getTag() != null) {
@@ -88,7 +87,7 @@ public class RatSackItem extends Item {
 				}
 			}
 		}
-		tooltip.add(Component.translatable("item.rats.rat_sack.contains", ratCount).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.rats.rat_sack.contains", ratCount, RAT_SACK_ROOM).withStyle(ChatFormatting.GRAY));
 		if (!ratNames.isEmpty()) {
 			for (int i = 0; i < ratNames.size(); i++) {
 				if (i < 3) {

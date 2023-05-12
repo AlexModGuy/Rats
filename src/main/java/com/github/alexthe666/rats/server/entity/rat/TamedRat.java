@@ -830,12 +830,6 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 		if (!this.isBaby() && this.isOwnedBy(player)) {
-			if (itemstack.is(RatsItemRegistry.RAT_PAPERS.get())) {
-				InteractionResult result = itemstack.interactLivingEntity(player, this, hand);
-				if (result.consumesAction()) {
-					return result;
-				}
-			}
 			if (player.isSecondaryUseActive() && !this.isPassenger()) {
 				if (player.getPassengers().size() < 3) {
 					this.startRiding(player, true);
@@ -843,8 +837,12 @@ public class TamedRat extends InventoryRat {
 				}
 				return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
 			}
-
-			if (itemstack.is(RatlantisItemRegistry.RAT_TOGA.get())) {
+			if (itemstack.is(RatsItemRegistry.RAT_PAPERS.get())) {
+				InteractionResult result = itemstack.interactLivingEntity(player, this, hand);
+				if (result.consumesAction()) {
+					return result;
+				}
+			} else if (itemstack.is(RatlantisItemRegistry.RAT_TOGA.get())) {
 				if (!this.hasToga()) {
 					if (!player.isCreative()) {
 						itemstack.shrink(1);
@@ -856,9 +854,7 @@ public class TamedRat extends InventoryRat {
 				}
 				this.setToga(!this.hasToga());
 				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
-			}
-
-			if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
+			} else if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
 				this.setDyeColor(0);
 				for (int i = 0; i < 8; i++) {
@@ -869,25 +865,21 @@ public class TamedRat extends InventoryRat {
 				}
 				this.playSound(RatsSoundRegistry.DYE_SPONGE_USED.get(), this.getSoundVolume(), this.getVoicePitch());
 				return InteractionResult.SUCCESS;
-			}
-			if (itemstack.is(RatsItemRegistry.RATBOW_ESSENCE.get())) {
-				if (this.applySpecialDyeIfPossible(itemstack)) {
+			} else if (itemstack.is(RatsItemRegistry.RATBOW_ESSENCE.get()) && this.applySpecialDyeIfPossible(itemstack)) {
+				return InteractionResult.SUCCESS;
+			} else if (this.applyNormalDyeIfPossible(itemstack)) {
+				return InteractionResult.SUCCESS;
+			} else if (itemstack.is(RatsItemRegistry.RAT_SACK.get())) {
+				if (RatSackItem.getRatsInSack(itemstack) >= RatSackItem.RAT_SACK_ROOM) {
+					player.displayClientMessage(Component.translatable("item.rats.rat_sack.too_full").withStyle(ChatFormatting.RED), true);
+					return InteractionResult.PASS;
+				} else {
+					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInStack(itemstack) + 1);
+					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
+					this.discard();
+					player.swing(hand);
 					return InteractionResult.SUCCESS;
 				}
-			}
-			if (this.applyNormalDyeIfPossible(itemstack)) {
-				return InteractionResult.SUCCESS;
-			}
-			if (itemstack.is(RatsItemRegistry.RAT_SACK.get())) {
-				if (RatSackItem.getRatsInSack(itemstack) > RatSackItem.RAT_SACK_ROOM) {
-					player.displayClientMessage(Component.translatable("item.rats.rat_sack.too_full").withStyle(ChatFormatting.RED), true);
-					return InteractionResult.FAIL;
-				}
-				RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInStack(itemstack) + 1);
-				this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
-				this.discard();
-				player.swing(hand);
-				return InteractionResult.SUCCESS;
 			} else if (itemstack.getItem() instanceof RatStaffItem) {
 				player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat(this));
 				player.swing(hand);
@@ -916,9 +908,11 @@ public class TamedRat extends InventoryRat {
 				player.swing(hand);
 				this.discard();
 				return InteractionResult.SUCCESS;
+			}else {
+				return super.mobInteract(player, hand);
 			}
 		}
-		return super.mobInteract(player, hand);
+		return InteractionResult.PASS;
 	}
 
 	public boolean applyNormalDyeIfPossible(ItemStack stack) {
