@@ -30,6 +30,7 @@ import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -164,16 +165,16 @@ public class TamedRat extends InventoryRat {
 		this.harvestGoal = new RatHarvestCropsGoal(this);
 		this.pickupGoal = new RatPickupGoal(this, RatPickupGoal.PickupType.INVENTORY);
 		this.depositGoal = new RatDepositGoal(this, RatDepositGoal.DepositType.INVENTORY);
-		this.attackGoal = new RatMeleeAttackGoal(this, 1.45D, true);
+		this.attackGoal = new RatMeleeAttackGoal(this, 1.3D, true);
 		this.goalSelector.addGoal(0, new RatFloatGoal(this));
 		this.goalSelector.addGoal(1, this.attackGoal);
-		this.goalSelector.addGoal(2, new RatFollowOwnerGoal(this, 1.0D, 10.0F, 3.0F));
-		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.0D));
+		this.goalSelector.addGoal(2, new RatFollowOwnerGoal(this, 1.25D, 10.0F, 3.0F));
+		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.25D));
 		this.goalSelector.addGoal(3, this.harvestGoal);
 		this.goalSelector.addGoal(4, this.depositGoal);
 		this.goalSelector.addGoal(5, this.pickupGoal);
 		this.goalSelector.addGoal(6, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(7, new RatWanderGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new RatWanderGoal(this, 1.25D));
 		this.goalSelector.addGoal(7, new RatPatrolGoal(this));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F) {
 			@Override
@@ -895,18 +896,21 @@ public class TamedRat extends InventoryRat {
 				}
 				player.displayClientMessage(Component.translatable("entity.rats.rat.staff.bind", this.getName()), true);
 				return InteractionResult.SUCCESS;
-			} else if (itemstack.getItem() == Items.ARROW) {
+			} else if (itemstack.is(Items.ARROW)) {
 				itemstack.shrink(1);
-				ItemStack ratArrowStack = new ItemStack(RatsItemRegistry.RAT_ARROW.get());
+				ItemStack arrow = new ItemStack(RatsItemRegistry.RAT_ARROW.get());
 				CompoundTag tag = new CompoundTag();
 				CompoundTag ratTag = new CompoundTag();
 				this.addAdditionalSaveData(ratTag);
+				if (this.hasCustomName()) {
+					ratTag.putString("CustomName", Component.Serializer.toJson(this.getCustomName()));
+				}
 				tag.put("Rat", ratTag);
-				ratArrowStack.setTag(tag);
+				arrow.setTag(tag);
 				if (itemstack.isEmpty()) {
-					player.setItemInHand(hand, ratArrowStack);
-				} else if (!player.getInventory().add(ratArrowStack)) {
-					player.drop(ratArrowStack, false);
+					player.setItemInHand(hand, arrow);
+				} else if (!player.getInventory().add(arrow)) {
+					player.drop(arrow, false);
 				}
 				this.playSound(RatsSoundRegistry.RAT_HURT.get(), 1, 1);
 				player.swing(hand);
