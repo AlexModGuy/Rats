@@ -27,6 +27,8 @@ public class ServerConfig {
 	public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
 	public final ForgeConfigSpec.IntValue maxRatLitterSize;
 	public final ForgeConfigSpec.IntValue ratBreedingCooldown;
+	public final ForgeConfigSpec.BooleanValue ratsSpawnWithSantaHats;
+	public final ForgeConfigSpec.BooleanValue ratsSpawnWithPartyHats;
 
 	public final ForgeConfigSpec.IntValue ratRFTransferBasic;
 	public final ForgeConfigSpec.IntValue ratRFTransferAdvanced;
@@ -182,6 +184,8 @@ public class ServerConfig {
 		this.ratUpdateDelay = buildInt(builder, "Rat Update Delay", 100, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests, once every this number of ticks(with added standard deviation for servers)");
 		this.defaultRatRadius = buildInt(builder, "Default Rat Radius", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
 		this.maxRatRadius = buildInt(builder, "Max Rat Radius", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
+		this.ratsSpawnWithSantaHats = buildBoolean(builder, "Rats Spawn with Santa Hats", false, "If true, wild rats will rarely spawn wearing a santa hat. Rats will spawn with Santa hats during the Christmas season regardless, this will enable you to find them year round.");
+		this.ratsSpawnWithPartyHats = buildBoolean(builder, "Rats Spawn with Party Hats", false, "If true, wild rats will rarely spawn wearing a randomly colored party hat. Rats will spawn with Party hats during the New Year's Eve and special dates regardless, this will enable you to find them year round.");
 	}
 
 	private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {

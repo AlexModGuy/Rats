@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats;
 
+import net.minecraftforge.common.ForgeConfigSpec;
+
 public class RatConfig {
 	//CLIENT
 	public static boolean plagueHearts = true;
@@ -34,6 +36,8 @@ public class RatConfig {
 	public static int maxRatRadius = 32;
 	public static double garbageSpawnRate = 0.15F;
 	public static int maxRatLitterSize = 1;
+	public static boolean ratsSpawnWithSantaHats = false;
+	public static boolean ratsSpawnWithPartyHats = false;
 
 	public static int ratRFTransferBasic = 1000;
 	public static int ratRFTransferAdvanced = 5000;
@@ -133,6 +137,8 @@ public class RatConfig {
 			garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
 			maxRatLitterSize = ConfigHolder.SERVER.maxRatLitterSize.get();
 			ratBreedingCooldown = ConfigHolder.SERVER.ratBreedingCooldown.get();
+			ratsSpawnWithSantaHats = ConfigHolder.SERVER.ratsSpawnWithSantaHats.get();
+			ratsSpawnWithPartyHats = ConfigHolder.SERVER.ratsSpawnWithPartyHats.get();
 
 			upgradeRegenRate = ConfigHolder.SERVER.upgradeRegenRate.get();
 			ratRFTransferBasic = ConfigHolder.SERVER.ratRFTransferBasic.get();

@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
 import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;
+import com.github.alexthe666.rats.server.misc.RatsDateFetcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -33,10 +34,12 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -236,6 +239,26 @@ public class Rat extends DiggingRat implements Ratlanteans {
 		}
 		if (accessor.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
 			this.setToga(true);
+		}
+		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
+			if (RatsDateFetcher.isHalloweenSeason() && this.getRandom().nextFloat() <= 0.25F) {
+				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.CARVED_PUMPKIN));
+				this.setGuaranteedDrop(EquipmentSlot.HEAD);
+			} else if (RatsDateFetcher.isChristmasSeason() && this.getRandom().nextFloat() <= (RatsDateFetcher.isChristmasDay() ? 1.0F : 0.25F) || (RatConfig.ratsSpawnWithSantaHats && this.getRandom().nextInt(100) == 0)) {
+				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT.get()));
+				this.setGuaranteedDrop(EquipmentSlot.HEAD);
+			} else if ((RatsDateFetcher.isNewYearsEve() && this.getRandom().nextFloat() <= 0.25F) || RatsDateFetcher.isAlexsBDay() || RatsDateFetcher.isGizmosBDay() || (RatConfig.ratsSpawnWithPartyHats && this.getRandom().nextInt(100) == 0)) {
+				ItemStack stack = new ItemStack(RatsItemRegistry.PARTY_HAT.get());
+				((DyeableLeatherItem) stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
+				this.setItemSlot(EquipmentSlot.HEAD, stack);
+				this.setGuaranteedDrop(EquipmentSlot.HEAD);
+			}
+		}
+		if (this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+			if (RatsDateFetcher.isChristmasDay() && this.getRandom().nextFloat() <= 0.75F) {
+				this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(RatsItemRegistry.TINY_COIN.get()));
+				this.setGuaranteedDrop(EquipmentSlot.MAINHAND);
+			}
 		}
 		return data;
 	}

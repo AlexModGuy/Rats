@@ -421,26 +421,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setColorVariant(RatVariantRegistry.getRandomVariant(this.getRandom(), false));
 		this.setMale(this.getRandom().nextBoolean());
-		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
-			if (RatsDateFetcher.isHalloweenSeason() && this.getRandom().nextFloat() <= 0.25F) {
-				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.CARVED_PUMPKIN));
-				this.setGuaranteedDrop(EquipmentSlot.HEAD);
-			}
-			if (RatsDateFetcher.isChristmasSeason() && this.getRandom().nextFloat() <= (RatsDateFetcher.isChristmasDay() ? 1.0F : 0.25F)) {
-				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.SANTA_HAT.get()));
-				this.setGuaranteedDrop(EquipmentSlot.HEAD);
-			}
-			if (RatsDateFetcher.isChristmasDay() && this.getRandom().nextFloat() <= 0.75F) {
-				this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(RatsItemRegistry.TINY_COIN.get()));
-				this.setGuaranteedDrop(EquipmentSlot.MAINHAND);
-			}
-			if ((RatsDateFetcher.isNewYearsEve() && this.getRandom().nextFloat() <= 0.25F) || RatsDateFetcher.isAlexsBDay() || RatsDateFetcher.isGizmosBDay()) {
-				ItemStack stack = new ItemStack(RatsItemRegistry.PARTY_HAT.get());
-				((DyeableLeatherItem) stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
-				this.setItemSlot(EquipmentSlot.HEAD, stack);
-				this.setGuaranteedDrop(EquipmentSlot.HEAD);
-			}
-		}
 		return data;
 	}
 
