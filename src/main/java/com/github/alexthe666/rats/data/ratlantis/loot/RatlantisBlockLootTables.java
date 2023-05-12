@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.data.ratlantis.loot;
 
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
+import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -69,6 +70,7 @@ public class RatlantisBlockLootTables extends BlockLootSubProvider {
 		this.add(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get(), createOreDrop(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get(), RatlantisItemRegistry.GEM_OF_RATLANTIS.get()));
 		this.add(RatlantisBlockRegistry.RATLANTIS_PORTAL.get(), LootTable.lootTable());
 		this.dropSelf(RatlantisBlockRegistry.RATLANTIS_REACTOR.get());
+		this.dropSelf(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get());
 		this.dropSelf(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
 		this.dropSelf(RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());
 	}

@@ -101,6 +101,7 @@
   "block.rats.rat_quarry.desc1": "Set quarry rats to 'Harvest' then have them deposit",
   "block.rats.rat_quarry_platform": "Rat Quarry Platform",
   "block.rats.rat_upgrade_block": "Rat Upgrade Block",
+  "block.rats.ratlantis_upgrade_block": "Ratlantean Upgrade Block",
   "block.rats.rat_attractor": "Rat Attractor",
   "block.rats.rat_attractor.desc": "Attracts wild rats when powered with redstone",
   "block.rats.dye_sponge": "Dye Sponge",

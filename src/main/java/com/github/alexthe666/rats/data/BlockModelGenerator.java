@@ -106,7 +106,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 				.texture("particle", this.blockPrefix("rat_quarry_side")));
 		this.simpleBlock(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get(), this.models().getExistingFile(this.blockPrefix("rat_quarry_platform")));
 		this.simpleBlock(RatsBlockRegistry.RAT_TRAP.get(), this.models().getExistingFile(new ResourceLocation("block/oak_planks")));
-		this.simpleBlock(RatsBlockRegistry.RAT_UPGRADE_BLOCK.get());
+		this.directionalBlock(RatsBlockRegistry.RAT_UPGRADE_BLOCK.get(), this.models().cubeAll("rat_upgrade_block", new ResourceLocation(RatsMod.MODID, "block/rat_upgrade_block")));
 		this.simpleBlock(RatsBlockRegistry.TRASH_CAN.get(), this.models().cubeAll("trash_can", new ResourceLocation("block/cauldron_side")));
 		this.simpleBlock(RatsBlockRegistry.UPGRADE_COMBINER.get(), this.models().getExistingFile(this.blockPrefix("upgrade_combiner")));
 		this.simpleBlock(RatsBlockRegistry.UPGRADE_SEPARATOR.get(), this.models().getExistingFile(this.blockPrefix("upgrade_separator")));
@@ -191,6 +191,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 		this.simpleBlock(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get());
 		this.simpleBlock(RatlantisBlockRegistry.RATLANTIS_PORTAL.get(), this.models().cubeAll("ratlantis_portal", new ResourceLocation("block/yellow_stained_glass")));
 		this.simpleBlock(RatlantisBlockRegistry.RATLANTIS_REACTOR.get());
+		this.directionalBlock(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get(), this.models().cubeAll("ratlantis_upgrade_block", new ResourceLocation(RatsMod.MODID, "block/ratlantis_upgrade_block")));
 		this.logBlock((RotatedPillarBlock) RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
 		this.axisBlock((RotatedPillarBlock) RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get(), this.blockPrefix("stripped_pirat_log"), this.blockPrefix("stripped_pirat_log"));
 

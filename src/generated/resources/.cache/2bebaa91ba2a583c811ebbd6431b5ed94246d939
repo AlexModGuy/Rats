@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-20T18:28:51.2536442	ratlantis/Recipes
+// 1.19.4	2023-05-11T23:39:43.4028848	ratlantis/Recipes
 1eb1b03c5b747ab3fc3e0a8482815c2e97b75bdb data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/black_marbled_cheese.json
 19693694d1e4332bc8a05c14be310cbf717d5e4c data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/brain_block.json
 1e0534e740d30ca20f0211c0b6f423457edd7c99 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/compressed_rat.json
@@ -26,6 +26,7 @@ e30882378ec6a37ec70f32269757df83b8fb8681 data/minecraft/datapacks/ratlantis/data
 8e314e2186de4013a5e93475c551a0b920e41cdb data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/pirat_slab.json
 298d908c592e9772526c8a11de8bb9f4246e0aea data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/pirat_stairs.json
 79b0d800a1543b05387c2ff8055c575daaa05f4e data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/pirat_wood.json
+4773727844d49c52dbe4a393ce3caf82435d9178 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/ratlantis_upgrade_block.json
 5316d2d0cdf5cfc5aad1e5ff261b526f2f73e7fb data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/stonecutting/marbled_cheese_brick_to_chiseled.json
 4648bfba6b9ab7bc07cac82cd1574208bf83a9c3 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/stonecutting/marbled_cheese_brick_to_slab.json
 3bfacf56b451e83b022946d8909775ed5bbfefd0 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/stonecutting/marbled_cheese_brick_to_stairs.json
@@ -107,6 +108,7 @@ a2f0903929bd4eeb7bcbeb807bff0fe9a088f771 data/minecraft/datapacks/ratlantis/data
 64bda3f9b75f957a7db6a7d3e22b8afe2f4b46d7 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/misc/rat_upgrade_ratinator.json
 577f644ee46717752ac46775c24e461d312cbd86 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/misc/raw_oratchalcum_blasting.json
 2351e59de331d38fbafdb1030da89fc79ec4edc1 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/misc/raw_oratchalcum_smelting.json
+88043037670c352beea1393253c541aef40fe9cd data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/misc/upgrades/basic_upgrade_from_block.json
 1e74865032f96fca66bf77825a64be64908a19d9 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/misc/vial_of_sentience.json
 f4166d03025d7fa8874e058dfb8e559ab2e9ec58 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/redstone/pirat_button.json
 c90dea4749addf382f5aea28ba23dc412d78bc1f data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/redstone/pirat_door.json
@@ -203,6 +205,7 @@ c1108528abce6aa63355dae410d1dd026611251a data/minecraft/datapacks/ratlantis/data
 b13ec2e9dc98abc68b59616a86a960320b0431a7 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_rat_skull.json
 13c549a4035d9107fdfc81070dc2367029248a43 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_shovel.json
 342302b4c41f35c70500f85be47c558fcb6ee7ef data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_sword.json
+261eb1debb84a020291678cde26d10915a924c7c data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_upgrade_block.json
 2f907711a44c9d6f9e769b72b41b2e24b7f2b29c data/minecraft/datapacks/ratlantis/data/rats/recipes/rattling_gun.json
 7edef9d101d26a3e724f876008308810c4ca52a8 data/minecraft/datapacks/ratlantis/data/rats/recipes/rat_and_sickle_banner_pattern.json
 1030b88e8ebab1a9de5672d16b1d032e0586941d data/minecraft/datapacks/ratlantis/data/rats/recipes/rat_upgrade_archeologist.json
@@ -232,6 +235,7 @@ bc62f40e8dc94db1ba9fa32dae8b076c1a1791f5 data/minecraft/datapacks/ratlantis/data
 549ea86002bfd20789034135a88fb5eb6df5206f data/minecraft/datapacks/ratlantis/data/rats/recipes/stonecutting/marbled_cheese_to_stairs.json
 3e6f5c0c6e8b1a25b4ad3e307910c35736199941 data/minecraft/datapacks/ratlantis/data/rats/recipes/stonecutting/marbled_cheese_to_tile.json
 1de76f361ae178f463727980f755dce859ff9277 data/minecraft/datapacks/ratlantis/data/rats/recipes/stripped_pirat_wood.json
+a85b6345955c8d8f20f560ddba00882a96c595e1 data/minecraft/datapacks/ratlantis/data/rats/recipes/upgrades/basic_upgrade_from_block.json
 37a2791182b7bc53faba50ab2cb135905f3a2849 data/minecraft/datapacks/ratlantis/data/rats/recipes/upgrade_combiner.json
 b5dedc0b3e573812828136aa10153b10cadb0831 data/minecraft/datapacks/ratlantis/data/rats/recipes/upgrade_separator.json
 4fe61176bd890fdbe05414458adf559bb6170f4b data/minecraft/datapacks/ratlantis/data/rats/recipes/vial_of_sentience.json

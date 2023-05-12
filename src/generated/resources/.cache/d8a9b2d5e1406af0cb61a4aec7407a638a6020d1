@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-16T10:34:54.3324689	ratlantis/Tags for minecraft:block mod id rats
+// 1.19.4	2023-05-11T23:51:23.3631439	ratlantis/Tags for minecraft:block mod id rats
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences/wooden.json
 8c84352fdf0bc0292279dbb4aa6056c15563c3ed data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fence_gates.json
@@ -19,7 +19,7 @@ a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data
 b10d7de8a5bd4db899e008466d408a4ceef5f091 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/invalid_spawn_inside.json
 d297359d91fbfe130fdf95b768f5c5c9730e6a5c data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/logs.json
 49f3cc03829978ccb7ec3c646b10d9b0e0ac57b7 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/axe.json
-a6fcab12a714249bc42a13f5741d479872da9a8d data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/hoe.json
+568da2c2e75a84e06383e633c72f2242613f6e51 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/hoe.json
 3fa08c38992aa9874e68467472255e0606c8256a data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/pickaxe.json
 6b604275f5af914f7d47b6eca52c118c8ca796c0 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/mineable/shovel.json
 dd7a97d456d402067fa0b1eab9d8d83662cb4945 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/needs_diamond_tool.json

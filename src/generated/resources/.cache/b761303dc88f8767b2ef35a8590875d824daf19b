@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-05T16:06:15.6056926	Item Models: rats
+// 1.19.4	2023-05-11T23:51:23.3536383	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 ffe740528a7b86d65bb6a795cf2a6fde357f8ff8 assets/rats/models/item/arcane_technology.json
@@ -170,6 +170,7 @@ cbaaa57fc36aa0ddfe83d42e09d6505b3b30a8d8 assets/rats/models/item/ratlantis_leggi
 4047eb7bb3dc6d7f74799f1dfbb98147bced7074 assets/rats/models/item/ratlantis_reactor.json
 15d2b56e6f63ee7ae7efb6a754da55bd1103ae83 assets/rats/models/item/ratlantis_shovel.json
 f250909fd8799eb758aa71550aac54d9d6a72438 assets/rats/models/item/ratlantis_sword.json
+529258a047548bb40f902b8497e5c8c2d511d1ee assets/rats/models/item/ratlantis_upgrade_block.json
 101f2b9b157fc9b618a5ede31ca1bf33c1aedab0 assets/rats/models/item/rattling_gun.json
 635d2a086fa955a1635a40031984e4d4a1e1afad assets/rats/models/item/rat_and_crossbones_banner_pattern.json
 635d2a086fa955a1635a40031984e4d4a1e1afad assets/rats/models/item/rat_and_sickle_banner_pattern.json

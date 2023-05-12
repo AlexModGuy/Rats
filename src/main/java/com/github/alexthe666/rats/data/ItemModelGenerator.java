@@ -323,6 +323,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.toBlock(RatlantisBlockRegistry.RATLANTIS_REACTOR.get());
 		this.singleTexTool(RatlantisItemRegistry.RATLANTIS_SHOVEL);
 		this.singleTexTool(RatlantisItemRegistry.RATLANTIS_SWORD);
+		this.toBlock(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get());
 		this.singleTex(RatlantisItemRegistry.RATTLING_GUN);
 		this.toBlock(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
 		this.toBlock(RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());

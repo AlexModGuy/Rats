@@ -77,6 +77,7 @@ public class RatlantisBlockRegistry {
 	public static final RegistryObject<Block> PIRAT_DOOR = register("pirat_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET));
 	public static final RegistryObject<Block> DUTCHRAT_BELL = register("dutchrat_bell", () -> new DutchratBellBlock(Block.Properties.of(Material.METAL, MaterialColor.GOLD).strength(5.0F).requiresCorrectToolForDrops().sound(SoundType.ANVIL)));
 	public static final RegistryObject<Block> AIR_RAID_SIREN = register("air_raid_siren", () -> new AirRaidSirenBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(5.0F, 1000.0F).dynamicShape()));
+	public static final RegistryObject<Block> RATLANTIS_UPGRADE_BLOCK = register("ratlantis_upgrade_block", () -> new RatUpgradeBlock(BlockBehaviour.Properties.of(Material.WOOL).sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
 
 	public static RegistryObject<Block> register(String name, Supplier<Block> blockSupplier) {
 		RegistryObject<Block> ret = BLOCKS.register(name, blockSupplier);

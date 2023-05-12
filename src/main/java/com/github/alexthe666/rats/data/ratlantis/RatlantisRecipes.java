@@ -522,6 +522,16 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('B', RatlantisItemRegistry.RATBOT_BARREL.get()).unlockedBy("has_barrel", has(RatlantisItemRegistry.RATBOT_BARREL.get()))
 				.save(consumer);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get())
+				.pattern("UU")
+				.pattern("UU")
+				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
+				.save(consumer);
+
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get(), 4)
+				.requires(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get()).unlockedBy("has_block", has(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/basic_upgrade_from_block"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_COMBINED.get())
 				.pattern("CGC")

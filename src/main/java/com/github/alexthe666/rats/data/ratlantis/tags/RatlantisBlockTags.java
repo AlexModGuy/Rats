@@ -114,6 +114,7 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
 				RatlantisBlockRegistry.BRAIN_BLOCK.get(),
+				RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get(),
 				RatlantisBlockRegistry.COMPRESSED_RAT.get());
 
 		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get(), RatlantisBlockRegistry.ORATCHALCUM_ORE.get());

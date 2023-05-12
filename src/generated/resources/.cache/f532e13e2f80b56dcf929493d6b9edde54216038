@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T22:55:21.454541	Block States: rats
+// 1.19.4	2023-05-11T23:39:43.4074037	Block States: rats
 8778b8e9070cc919502850d50ce518497f752632 assets/rats/blockstates/air_raid_siren.json
 043d65f6604b20d6624507ab42c31ae8b78389ef assets/rats/blockstates/auto_curdler.json
 8c3a443a894b1ea283d9007f3999cb12063e4528 assets/rats/blockstates/black_marbled_cheese.json
@@ -63,6 +63,7 @@ c171ab759e7b6ca50237ab8d71217b0ee7d2b810 assets/rats/blockstates/pirat_wood.json
 7c1f76322145f3fe6573fb832ab7db685b931a5c assets/rats/blockstates/ratlantean_gem_ore.json
 916668d22f40683c47e1344f510e84ed72851310 assets/rats/blockstates/ratlantis_portal.json
 5aea37997fbc322b0176524459d430aeb202f004 assets/rats/blockstates/ratlantis_reactor.json
+153af131d95e6c46fa9ac26b0f6fce4a50b8265a assets/rats/blockstates/ratlantis_upgrade_block.json
 dd6c90c28fa5a4ef323f4fc922007b85d5c3cf6a assets/rats/blockstates/rat_attractor.json
 d30d674a381961e60c6012497df34602312356aa assets/rats/blockstates/rat_cage.json
 d30d674a381961e60c6012497df34602312356aa assets/rats/blockstates/rat_cage_breeding_lantern.json
@@ -73,7 +74,7 @@ d1ae758fff23a98162d7f68e9e8c93388dd88b2f assets/rats/blockstates/rat_hole.json
 024187ef298358d669a7947d906b1917a3a434f9 assets/rats/blockstates/rat_quarry.json
 347eca8b0e9f22846005be815e880ba7aa2cfedd assets/rats/blockstates/rat_quarry_platform.json
 f84fde5ab662463faf3ea040b3685d8de12bd7eb assets/rats/blockstates/rat_trap.json
-ad4cb07c680f1f5e360a060cbff528fa57460db3 assets/rats/blockstates/rat_upgrade_block.json
+769238ab4738ffe4faf986af213b42b2e08df2b4 assets/rats/blockstates/rat_upgrade_block.json
 8279048aebf09602058cb4de7ecbbb73068fe8a8 assets/rats/blockstates/stripped_pirat_log.json
 416a4875dc4a9ebde1a43f3f07277a843eacf3b1 assets/rats/blockstates/stripped_pirat_wood.json
 e5ea29262a86843b87c36248621b626f2301878f assets/rats/blockstates/trash_can.json
@@ -185,6 +186,7 @@ fcc185ca007851484e060f987c50f55587b3214c assets/rats/models/block/ratglove_flowe
 835ff3096ea8d335896cc9a0339f91960732d88e assets/rats/models/block/ratlantean_gem_ore.json
 db5ebf414bf359211271e26e7a2d92d6e8507442 assets/rats/models/block/ratlantis_portal.json
 d56ca220b612d2a585450318ddae7f118db837c0 assets/rats/models/block/ratlantis_reactor.json
+0ddb536135997441ebdf6e25f9344da31b551b2c assets/rats/models/block/ratlantis_upgrade_block.json
 84316533dd9993a8494d67aae73e2615948d68c1 assets/rats/models/block/rat_crafting_table.json
 f2786af36a34202c4bc1d9ac558a678d732a9264 assets/rats/models/block/rat_quarry.json
 a4e992002e9c9f97ad5b422982784fe9181d7377 assets/rats/models/block/rat_upgrade_block.json

@@ -304,6 +304,7 @@ public class RatsCreativeTabRegistry {
 					output.accept(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get());
 					output.accept(RatlantisBlockRegistry.BRAIN_BLOCK.get());
 					output.accept(RatlantisBlockRegistry.COMPRESSED_RAT.get());
+					output.accept(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get());
 					output.accept(RatlantisBlockRegistry.MARBLED_CHEESE.get());
 					output.accept(RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.get());
 					output.accept(RatlantisBlockRegistry.MARBLED_CHEESE_SLAB.get());

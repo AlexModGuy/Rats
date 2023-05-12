@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-15T17:38:24.6915371	ratlantis/Loot Tables
+// 1.19.4	2023-05-11T23:39:43.399893	ratlantis/Loot Tables
 862afc14c6d5ae91ffaf5271073447321a7ad7c0 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/air_raid_siren.json
 efaa2d2c0bf2a590023d6bf98c956d9f585f4282 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/black_marbled_cheese.json
 e932ceac3a13409e6d32fd561b366e5f79dfbf08 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/brain_block.json
@@ -44,6 +44,7 @@ d9ba3a62bcfccee5133497505502fa9eaea1ea0f data/minecraft/datapacks/ratlantis/data
 330e85ad9908c1a36d6764750892388afa6da8d3 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratlantean_gem_ore.json
 1d4929d7d6176f60e5ea991a577527ed251ef375 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratlantis_portal.json
 e9030275bf4441f7ba79a1228cbf32682641e483 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratlantis_reactor.json
+7b5af4f6c2505cad451136ba00b54a780f3d9544 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratlantis_upgrade_block.json
 a1c32ff693cab59721e42e0f7cedcd4e2cb57318 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/stripped_pirat_log.json
 5c5afd10ffb736e3b582b9f6c54dad46b4215547 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/stripped_pirat_wood.json
 18d2890ac09e1fc380f5ed2afbd57a3dc3742bad data/minecraft/datapacks/ratlantis/data/rats/loot_tables/chest/dutchrat_ship.json
