@@ -829,6 +829,12 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 		if (!this.isBaby() && this.isOwnedBy(player)) {
+			if (itemstack.is(RatsItemRegistry.RAT_PAPERS.get())) {
+				InteractionResult result = itemstack.interactLivingEntity(player, this, hand);
+				if (result.consumesAction()) {
+					return result;
+				}
+			}
 			if (player.isSecondaryUseActive() && !this.isPassenger()) {
 				if (player.getPassengers().size() < 3) {
 					this.startRiding(player, true);

@@ -46,7 +46,7 @@ public class RatPapersItem extends Item {
 			String entity = stack.getTag().getString("RatName");
 			if (stack.getTag().hasUUID("RatUUID")) {
 				if (entity.isEmpty()) {
-					tooltip.add(Component.translatable(ratName).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(ratName + " (" + stack.getTag().getUUID("RatUUID") + ")").withStyle(ChatFormatting.GRAY));
 				} else {
 					tooltip.add(Component.literal(entity).withStyle(ChatFormatting.GRAY));
 				}
@@ -75,7 +75,7 @@ public class RatPapersItem extends Item {
 							}
 						}
 					}
-					return InteractionResult.SUCCESS;
+					return InteractionResult.sidedSuccess(player.getLevel().isClientSide());
 				}
 			} catch (Exception e) {
 				player.displayClientMessage(Component.literal("Couldnt transfer ownership! Check the log and report this!").withStyle(ChatFormatting.RED), true);
@@ -89,19 +89,9 @@ public class RatPapersItem extends Item {
 				nbt.putString("RatName", rat.getCustomName().getString());
 			}
 			nbt.putUUID("RatUUID", rat.getUUID());
-			ItemStack stackReplacement = new ItemStack(this);
-			if (!player.isCreative()) {
-				stack.shrink(1);
-			}
-			stackReplacement.setTag(nbt);
-			player.swing(hand);
-			if (!player.addItem(stackReplacement)) {
-				ItemEntity itementity = player.drop(stackReplacement, false);
-				if (itementity != null) {
-					itementity.setNoPickUpDelay();
-				}
-			}
-			return InteractionResult.SUCCESS;
+			stack.setTag(nbt);
+
+			return InteractionResult.sidedSuccess(player.getLevel().isClientSide());
 		}
 		return InteractionResult.PASS;
 	}
