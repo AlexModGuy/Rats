@@ -56,6 +56,28 @@ public class RatSackItem extends Item {
 		return ratCount;
 	}
 
+	public static int ejectRatsFromSack(ItemStack stack, Level level, BlockPos pos) {
+		int ratCount = 0;
+		if (stack.getTag() != null) {
+			for (String tagInfo : stack.getTag().getAllKeys()) {
+				if (tagInfo.contains("Rat")) {
+					ratCount++;
+					CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
+					TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), level);
+					rat.readAdditionalSaveData(ratTag);
+					if (!ratTag.getString("CustomName").isEmpty()) {
+						rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+					}
+					rat.moveTo(pos.getX() - 0.25F + (level.getRandom().nextFloat() * 0.5F), pos.getY(), pos.getZ() - 0.25F + (level.getRandom().nextFloat() * 0.5F), 0, 0);
+					if (!level.isClientSide()) {
+						level.addFreshEntity(rat);
+					}
+				}
+			}
+		}
+		return ratCount;
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		int ratCount = 0;
@@ -95,25 +117,8 @@ public class RatSackItem extends Item {
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
 		if (stack.is(RatsItemRegistry.RAT_SACK.get()) && getRatsInSack(stack) > 0) {
-			int ratCount = 0;
-			if (stack.getTag() != null) {
-				for (String tagInfo : stack.getTag().getAllKeys()) {
-					if (tagInfo.contains("Rat")) {
-						ratCount++;
-						CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
-						TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), context.getLevel());
-						BlockPos offset = context.getClickedPos().relative(context.getClickedFace());
-						rat.readAdditionalSaveData(ratTag);
-						if (!ratTag.getString("CustomName").isEmpty()) {
-							rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
-						}
-						rat.moveTo(offset.getX() - 0.25F + (context.getLevel().getRandom().nextFloat() * 0.5F), offset.getY(), offset.getZ() - 0.25F + (context.getLevel().getRandom().nextFloat() * 0.5F), 0, 0);
-						if (!context.getLevel().isClientSide()) {
-							context.getLevel().addFreshEntity(rat);
-						}
-					}
-				}
-			}
+			int ratCount = ejectRatsFromSack(stack, context.getLevel(), context.getClickedPos().relative(context.getClickedFace()));
+
 			if (ratCount > 0) {
 				context.getPlayer().swing(context.getHand());
 				context.getPlayer().displayClientMessage(Component.translatable("entity.rats.rat.sack.release", ratCount), true);
@@ -127,23 +132,7 @@ public class RatSackItem extends Item {
 	public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
 		ItemStack stack = entity.getItem();
 		if (getRatsInSack(stack) > 0) {
-			if (stack.getTag() != null) {
-				for (String tagInfo : stack.getTag().getAllKeys()) {
-					if (tagInfo.contains("Rat")) {
-						CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
-						TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), entity.getLevel());
-						BlockPos offset = entity.getOnPos();
-						rat.readAdditionalSaveData(ratTag);
-						if (!ratTag.getString("CustomName").isEmpty()) {
-							rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
-						}
-						rat.moveTo(offset.getX() - 0.25F + (entity.getLevel().getRandom().nextFloat() * 0.5F), offset.getY(), offset.getZ() - 0.25F + (entity.getLevel().getRandom().nextFloat() * 0.5F), 0, 0);
-						if (!entity.getLevel().isClientSide()) {
-							entity.getLevel().addFreshEntity(rat);
-						}
-					}
-				}
-			}
+			ejectRatsFromSack(stack, entity.getLevel(), entity.blockPosition());
 		}
 	}
 }

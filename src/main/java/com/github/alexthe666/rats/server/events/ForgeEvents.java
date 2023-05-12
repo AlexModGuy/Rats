@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import com.github.alexthe666.rats.server.entity.projectile.PlagueShot;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
@@ -60,6 +61,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -137,6 +139,13 @@ public class ForgeEvents {
 				player.sendSystemMessage(Component.translatable("entity.rats.rat.respawned_angel", rat.getName().getString()));
 			}
 			rat.discard();
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void ejectRatsOutOfSack(ItemExpireEvent event) {
+		if (event.getEntity().getItem().is(RatsItemRegistry.RAT_SACK.get()) && RatSackItem.getRatsInSack(event.getEntity().getItem()) > 0) {
+			RatSackItem.ejectRatsFromSack(event.getEntity().getItem(), event.getEntity().getLevel(), event.getEntity().blockPosition());
 		}
 	}
 
