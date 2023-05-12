@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Fox;
@@ -270,6 +271,8 @@ public class RatUtils {
 		newRat.moveTo(rat.blockPosition(), rat.getYRot(), rat.getXRot());
 		ForgeEventFactory.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
 		newRat.readAdditionalSaveData(tag);
+		newRat.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+		newRat.getAttribute(Attributes.FLYING_SPEED).setBaseValue(0.35F);
 		newRat.setColorVariant(rat.getColorVariant());
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
 			newRat.setItemSlot(slot, rat.getItemBySlot(slot));
