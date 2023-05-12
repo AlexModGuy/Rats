@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.PinkieModel;
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.client.model.hats.PartyHatModel;
+import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.PartyHatItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -35,6 +36,7 @@ public class PartyHatLayer<T extends LivingEntity, M extends EntityModel<T>, A e
 	@Override
 	public void render(PoseStack stack, MultiBufferSource source, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		ItemStack itemstack = entity.getItemBySlot(EquipmentSlot.HEAD);
+		if (entity instanceof TamedRat rat && rat.getRespawnCountdown() > 0) return;
 		if (itemstack.getItem() instanceof PartyHatItem hat) {
 			stack.pushPose();
 			this.getParentModel().copyPropertiesTo(this.outerModel);
