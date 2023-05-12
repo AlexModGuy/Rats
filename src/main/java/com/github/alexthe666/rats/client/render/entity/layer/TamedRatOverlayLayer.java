@@ -36,10 +36,20 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRa
 			VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getWhiteGlint());
 			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		} else {
-			if (rat.hasToga()) {
-				VertexConsumer consumer = buffer.getBuffer(TOGA_TEX);
-				this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOD.get()) && RatConfig.ratGodGlint) {
+				VertexConsumer vertexBuilder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(this.getTextureLocation(rat)), false, true);
+				this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
+
+			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof ChangesOverlayUpgrade, upgrade -> {
+				RenderType overlay = ((ChangesOverlayUpgrade) upgrade.getItem()).getOverlayTexture(rat, partialTicks);
+				if (overlay != null) {
+					VertexConsumer consumer = buffer.getBuffer(overlay);
+					this.getParentModel().setupAnim(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+					this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				}
+			});
+
 			if (rat.isDyed()) {
 				VertexConsumer consumer;
 				if (rat.getDyeColor() == 100) {
@@ -55,19 +65,10 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRa
 				}
 			}
 
-			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOD.get()) && RatConfig.ratGodGlint) {
-				VertexConsumer vertexBuilder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(this.getTextureLocation(rat)), false, true);
-				this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			if (rat.hasToga()) {
+				VertexConsumer consumer = buffer.getBuffer(TOGA_TEX);
+				this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
-
-			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof ChangesOverlayUpgrade, upgrade -> {
-				RenderType overlay = ((ChangesOverlayUpgrade) upgrade.getItem()).getOverlayTexture(rat, partialTicks);
-				if (overlay != null) {
-					VertexConsumer consumer = buffer.getBuffer(overlay);
-					this.getParentModel().setupAnim(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-					this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-				}
-			});
 		}
 	}
 }
