@@ -1216,6 +1216,7 @@ public class TamedRat extends InventoryRat {
 		}
 		this.heal(this.getMaxHealth());
 		this.setFlying(this.isFlying() && this.hasFlightUpgrade());
+		this.setNoGravity(RatUpgradeUtils.hasUpgrade(this, RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL.get()) || this.isFlying());
 	}
 
 	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
