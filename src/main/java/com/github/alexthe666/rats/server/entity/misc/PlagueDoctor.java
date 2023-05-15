@@ -2,11 +2,11 @@ package com.github.alexthe666.rats.server.entity.misc;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.*;
-import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
-import com.github.alexthe666.rats.server.entity.PlagueLegion;
-import com.github.alexthe666.rats.server.entity.projectile.PurifyingLiquid;
 import com.github.alexthe666.rats.server.entity.ai.goal.PlagueDoctorFollowGolemGoal;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
+import com.github.alexthe666.rats.server.entity.projectile.PurifyingLiquid;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,7 +62,7 @@ import java.util.function.Predicate;
 public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 
 	private static final EntityDataAccessor<Boolean> WILL_DESPAWN = SynchedEntityData.defineId(PlagueDoctor.class, EntityDataSerializers.BOOLEAN);
-	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && entity.hasEffect(RatsEffectRegistry.PLAGUE.get()) || entity instanceof PlagueLegion || (entity instanceof Rat rat && rat.hasPlague());
+	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && entity.hasEffect(RatsEffectRegistry.PLAGUE.get()) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION) || (entity instanceof Rat rat && rat.hasPlague());
 
 	private BlockPos wanderTarget;
 	private int despawnDelay;
@@ -253,11 +252,6 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			this.playSound(RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get());
 			this.discard();
 		}
-	}
-
-	@Override
-	public boolean canBeAffected(MobEffectInstance effect) {
-		return effect.getEffect() != RatsEffectRegistry.PLAGUE.get() && super.canBeAffected(effect);
 	}
 
 	@Override

@@ -8,14 +8,11 @@ import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatbotStrifeGoal;
 import com.github.alexthe666.rats.server.entity.projectile.LaserBeam;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -30,11 +27,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
-public class RatlanteanRatbot extends Monster implements IAnimatedEntity, Ratlanteans {
+public class RatlanteanRatbot extends Monster implements IAnimatedEntity {
 
 	public static final Animation ANIMATION_SHOOT = Animation.create(15);
 	private int animationTick;

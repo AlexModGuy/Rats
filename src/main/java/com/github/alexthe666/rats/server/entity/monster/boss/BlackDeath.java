@@ -1,10 +1,10 @@
 package com.github.alexthe666.rats.server.entity.monster.boss;
 
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.PlagueLegion;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.server.entity.ai.goal.BlackDeathSummonBeastGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.BlackDeathSummonCloudGoal;
@@ -43,8 +43,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-public class BlackDeath extends Monster implements PlagueLegion, RatSummoner {
+import java.util.function.Predicate;
 
+public class BlackDeath extends Monster implements RatSummoner {
+
+	private static final Predicate<LivingEntity> NOT_PLAGUE = entity -> entity.isAlive() && !entity.getType().is(RatsEntityTags.PLAGUE_LEGION);
 	private static final EntityDataAccessor<Boolean> IS_SUMMONING = SynchedEntityData.defineId(BlackDeath.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> MELEE_ATTACKING = SynchedEntityData.defineId(BlackDeath.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> RAT_COUNT = SynchedEntityData.defineId(BlackDeath.class, EntityDataSerializers.INT);
@@ -93,7 +96,12 @@ public class BlackDeath extends Monster implements PlagueLegion, RatSummoner {
 		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.6D));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, PlagueLegion.class).setAlertOthers());
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this) {
+			@Override
+			public boolean canUse() {
+				return this.mob.getLastHurtByMob() != null && !this.mob.getLastHurtByMob().getType().is(RatsEntityTags.PLAGUE_LEGION) && super.canUse();
+			}
+		});
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> living.getMobType() != MobType.UNDEAD).test(entity)));
 	}
 
@@ -104,14 +112,6 @@ public class BlackDeath extends Monster implements PlagueLegion, RatSummoner {
 		this.getEntityData().define(RAT_COUNT, 0);
 		this.getEntityData().define(CLOUD_COUNT, 0);
 		this.getEntityData().define(BEAST_COUNT, 0);
-	}
-
-	@Override
-	public boolean canBeAffected(MobEffectInstance instance) {
-		if (instance.getEffect() == RatsEffectRegistry.PLAGUE.get()) {
-			return false;
-		}
-		return super.canBeAffected(instance);
 	}
 
 	@Override

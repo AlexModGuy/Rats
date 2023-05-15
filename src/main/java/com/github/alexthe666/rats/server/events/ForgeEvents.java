@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.events;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
@@ -146,6 +147,13 @@ public class ForgeEvents {
 	public static void ejectRatsOutOfSack(ItemExpireEvent event) {
 		if (event.getEntity().getItem().is(RatsItemRegistry.RAT_SACK.get()) && RatSackItem.getRatsInSack(event.getEntity().getItem()) > 0) {
 			RatSackItem.ejectRatsFromSack(event.getEntity().getItem(), event.getEntity().getLevel(), event.getEntity().blockPosition());
+		}
+	}
+
+	@SubscribeEvent
+	public static void checkIfPlagueCanApplyToMob(MobEffectEvent.Applicable event) {
+		if (event.getEffectInstance().getEffect() == RatsEffectRegistry.PLAGUE.get() && event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE)) {
+			event.setResult(Event.Result.DENY);
 		}
 	}
 

@@ -1,8 +1,9 @@
 package com.github.alexthe666.rats.server.entity.monster;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
-import com.github.alexthe666.rats.server.entity.PlagueLegion;
+import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.core.BlockPos;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PlagueBeast extends FeralRatlantean implements PlagueLegion {
+public class PlagueBeast extends FeralRatlantean {
 
 	protected static final EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID = SynchedEntityData.defineId(PlagueBeast.class, EntityDataSerializers.OPTIONAL_UUID);
 
@@ -57,14 +58,6 @@ public class PlagueBeast extends FeralRatlantean implements PlagueLegion {
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
 				.add(Attributes.FOLLOW_RANGE, 16.0D)
 				.add(Attributes.ARMOR, 4.0D);
-	}
-
-	@Override
-	public boolean canBeAffected(MobEffectInstance effect) {
-		if (effect.getEffect() == RatsEffectRegistry.PLAGUE.get()) {
-			return false;
-		}
-		return super.canBeAffected(effect);
 	}
 
 	@Override
@@ -182,6 +175,6 @@ public class PlagueBeast extends FeralRatlantean implements PlagueLegion {
 
 	@Override
 	public boolean isAlliedTo(Entity entity) {
-		return super.isAlliedTo(entity) || entity instanceof PlagueLegion;
+		return super.isAlliedTo(entity) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION);
 	}
 }

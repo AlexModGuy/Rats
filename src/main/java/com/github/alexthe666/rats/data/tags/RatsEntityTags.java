@@ -21,7 +21,8 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 
 	public static final TagKey<EntityType<?>> RATS = create("rats");
 	public static final TagKey<EntityType<?>> RAT_MOUNTS = create("rat_mounts");
-
+	public static final TagKey<EntityType<?>> PLAGUE_IMMUNE = create("plague_immune");
+	public static final TagKey<EntityType<?>> PLAGUE_LEGION = create("plague_legion");
 
 	public RatsEntityTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);
@@ -34,6 +35,10 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 		tag(RAT_MOUNTS).add(
 				RatsEntityRegistry.RAT_MOUNT_BEAST.get(), RatsEntityRegistry.RAT_STRIDER_MOUNT.get(),
 				RatsEntityRegistry.RAT_MOUNT_GOLEM.get(), RatsEntityRegistry.RAT_MOUNT_CHICKEN.get());
+
+		tag(PLAGUE_IMMUNE).addTag(RATS).addTag(RAT_MOUNTS).addTag(PLAGUE_LEGION).add(RatsEntityRegistry.PIED_PIPER.get(), RatsEntityRegistry.RAT_KING.get(), RatsEntityRegistry.PLAGUE_DOCTOR.get());
+
+		tag(PLAGUE_LEGION).add(RatsEntityRegistry.BLACK_DEATH.get(), RatsEntityRegistry.PLAGUE_CLOUD.get(), RatsEntityRegistry.PLAGUE_BEAST.get(), RatsEntityRegistry.RAT.get());
 
 		tag(Tags.EntityTypes.BOSSES).add(
 				RatsEntityRegistry.BLACK_DEATH.get(), RatsEntityRegistry.RAT_KING.get());
@@ -53,7 +58,7 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 				RatsEntityRegistry.RAT_MOUNT_GOLEM.get());
 	}
 
-	private static TagKey<EntityType<?>> create(String name) {
+	public static TagKey<EntityType<?>> create(String name) {
 		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(RatsMod.MODID, name));
 	}
 }

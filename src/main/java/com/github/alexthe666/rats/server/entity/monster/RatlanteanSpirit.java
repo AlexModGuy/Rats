@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatlanteanFlame;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -31,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class RatlanteanSpirit extends Monster implements IAnimatedEntity, Ratlanteans {
+public class RatlanteanSpirit extends Monster implements IAnimatedEntity {
 
 	public static final Animation ANIMATION_ATTACK = Animation.create(10);
 	private int animationTick;

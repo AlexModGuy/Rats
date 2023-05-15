@@ -313,11 +313,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		}
 	}
 
-	@Override
-	public boolean canBeAffected(MobEffectInstance instance) {
-		return instance.getEffect() != RatsEffectRegistry.PLAGUE.get() && super.canBeAffected(instance);
-	}
-
 	public RatVariant getColorVariant() {
 		return RatVariantRegistry.getVariant(this.getEntityData().get(COLOR_VARIANT));
 	}

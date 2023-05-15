@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
+import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.entity.PlagueLegion;
 import com.github.alexthe666.rats.server.entity.rat.DemonRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -76,7 +76,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 								if (living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
 									living.removeEffect(RatsEffectRegistry.PLAGUE.get());
 								}
-								if (living instanceof PlagueLegion) {
+								if (living.getType().is(RatsEntityTags.PLAGUE_LEGION)) {
 									living.hurt(this.damageSources().magic(), 10);
 								}
 								if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {

@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.server.entity.misc;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsBannerPatternRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.Pirats;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.entity.projectile.CheeseCannonball;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class PiratBoat extends Boat implements Ratlanteans, Pirats {
+public class PiratBoat extends Boat {
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(PiratBoat.class, EntityDataSerializers.BOOLEAN);
 	public final ItemStack banner = this.generateBanner();
 	private boolean prevFire;

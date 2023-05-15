@@ -795,6 +795,9 @@ public class TamedRat extends InventoryRat {
 		copy.setHealth(copy.getMaxHealth());
 		copy.copyPosition(this);
 		copy.setRespawnCountdown(1200);
+		if (copy.isVisuallySitting()) {
+			copy.sitProgress = 20.0F;
+		}
 		if (this.hasCustomName()) {
 			copy.setCustomName(this.getCustomName());
 		}

@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatShot;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class RatKing extends Monster implements Ratlanteans, RatSummoner {
+public class RatKing extends Monster implements RatSummoner {
 	public static final int RAT_COUNT = 15;
 	public static final float RAT_ANGLE = 360F / RAT_COUNT;
 	private static final EntityDataAccessor<String> RAT_COLORS = SynchedEntityData.defineId(RatKing.class, EntityDataSerializers.STRING);
@@ -197,14 +196,6 @@ public class RatKing extends Monster implements Ratlanteans, RatSummoner {
 			this.setRatColors(i, color);
 		}
 		return spawnData;
-	}
-
-	@Override
-	public boolean canBeAffected(MobEffectInstance effect) {
-		if (effect.getEffect() == RatsEffectRegistry.PLAGUE.get()) {
-			return false;
-		}
-		return super.canBeAffected(effect);
 	}
 
 	@Override

@@ -9,8 +9,6 @@ import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.DutchratSword;
-import com.github.alexthe666.rats.server.entity.Pirats;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
@@ -46,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity, Ratlanteans, Pirats {
+public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 
 	private int animationTick;
 	private boolean useRangedAttack = false;

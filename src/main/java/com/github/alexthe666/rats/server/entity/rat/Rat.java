@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatEnterTrapGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatsDateFetcher;
@@ -48,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Rat extends DiggingRat implements Ratlanteans {
+public class Rat extends DiggingRat {
 
 	private static final EntityDataAccessor<Boolean> PLAGUE = SynchedEntityData.defineId(Rat.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> TOGA = SynchedEntityData.defineId(Rat.class, EntityDataSerializers.BOOLEAN);

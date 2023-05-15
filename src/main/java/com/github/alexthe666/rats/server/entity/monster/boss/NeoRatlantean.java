@@ -1,13 +1,13 @@
 package com.github.alexthe666.rats.server.entity.monster.boss;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisEntityTags;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.ThrownBlock;
 import com.github.alexthe666.rats.server.entity.misc.LaserPortal;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncThrownBlockPacket;
 import net.minecraft.core.BlockPos;
@@ -51,9 +51,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class NeoRatlantean extends Monster implements Ratlanteans {
+public class NeoRatlantean extends Monster {
 
-	private static final Predicate<LivingEntity> NOT_RATLANTEAN = entity -> entity.isAlive() && !(entity instanceof Ratlanteans);
+	private static final Predicate<LivingEntity> NOT_RATLANTEAN = entity -> entity.isAlive() && !entity.getType().is(RatlantisEntityTags.RATLANTEAN);
 	private static final EntityDataAccessor<Integer> COLOR_VARIANT = SynchedEntityData.defineId(NeoRatlantean.class, EntityDataSerializers.INT);
 	private final ServerBossEvent bossInfo = (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS));
 	private int attackSelection = 0;

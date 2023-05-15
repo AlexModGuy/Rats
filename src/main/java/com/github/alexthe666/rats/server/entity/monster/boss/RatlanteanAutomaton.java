@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.GolemBeam;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +40,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
-public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, RangedAttackMob, Ratlanteans {
+public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, RangedAttackMob {
 
 	public static final Animation ANIMATION_MELEE = Animation.create(15);
 	public static final Animation ANIMATION_RANGED = Animation.create(15);

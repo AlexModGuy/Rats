@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.server.entity.monster;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
-import com.github.alexthe666.rats.server.entity.Pirats;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
@@ -22,7 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-public class GhostPirat extends AbstractRat implements Enemy, Pirats, Ratlanteans {
+public class GhostPirat extends AbstractRat implements Enemy {
 
 	public GhostPirat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);

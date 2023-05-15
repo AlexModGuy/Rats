@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
-import com.github.alexthe666.rats.server.entity.Pirats;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -103,10 +102,8 @@ public class DutchratSword extends Entity {
 		}
 		boolean hit = false;
 		for (Entity hitMobs : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 1.0F, 1.0F))) {
-			if (!(hitMobs instanceof Pirats)) {
-				hitMobs.hurt(source, (float) (this.creator != null ? creator.getAttributeValue(Attributes.ATTACK_DAMAGE) : 5.0D));
-				hit = true;
-			}
+			hitMobs.hurt(source, (float) (this.creator != null ? creator.getAttributeValue(Attributes.ATTACK_DAMAGE) : 5.0D));
+			hit = true;
 		}
 		if (hit) {
 			this.getLevel().explode(this.getCreator(), this.getX(), this.getY(), this.getZ(), 2.0F, Level.ExplosionInteraction.NONE);

@@ -1,13 +1,12 @@
 package com.github.alexthe666.rats.server.entity.monster;
 
+import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisEntityTags;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.ai.goal.PiratWanderGoal;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
-import com.github.alexthe666.rats.server.entity.Pirats;
-import com.github.alexthe666.rats.server.entity.Ratlanteans;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
@@ -39,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-public class Pirat extends AbstractRat implements RangedAttackMob, Ratlanteans, Enemy, Pirats {
+public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 
 	private final RangedAttackGoal fireCannonballGoal = new RangedAttackGoal(this, 1.0D, 32, 70, 16.0F);
 	private final MeleeAttackGoal meleeAttackGoal = new MeleeAttackGoal(this, 1.45D, false);

@@ -1,9 +1,11 @@
-// 1.19.4	2023-05-07T21:10:32.460588	Tags for minecraft:entity_type mod id rats
+// 1.19.4	2023-05-14T22:26:03.8965687	Tags for minecraft:entity_type mod id rats
 c27c4f3c9c8a31b7aad3521e2cb93dab9d4bb028 data/forge/tags/entity_types/bosses.json
 cf746c872e8faa08e8d65ae975374b6f31471ca0 data/minecraft/tags/entity_types/arrows.json
 d692e80b62dd9cb710f49be7b191fc3e9c1e5527 data/minecraft/tags/entity_types/fall_damage_immune.json
 9c7b5f0f0227cefa50f56044aad765feb2d322e3 data/minecraft/tags/entity_types/freeze_hurts_extra_types.json
 f708b31252550f9258c89d0deb2b62c2be9b5b85 data/minecraft/tags/entity_types/impact_projectiles.json
 666dd240ac4d54f1594b8b49135195892da0e943 data/minecraft/tags/entity_types/powder_snow_walkable_mobs.json
+7cf0329fc61527136d51fa3b75f9fc0c59bc73da data/rats/tags/entity_types/plague_immune.json
+dd017cc9559d5c0ca81851730d36746b8b68c123 data/rats/tags/entity_types/plague_legion.json
 3e994ba8d902bc8543ea688800f918dc718b8a12 data/rats/tags/entity_types/rats.json
 f0556e41269fe000258ff635b3cfb1fef2d73fb4 data/rats/tags/entity_types/rat_mounts.json
