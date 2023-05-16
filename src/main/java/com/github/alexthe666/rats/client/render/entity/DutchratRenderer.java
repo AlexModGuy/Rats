@@ -28,7 +28,7 @@ public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<
 		this.addLayer(new DutchratHelmetLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 		this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()) {
 			public void render(PoseStack stack, MultiBufferSource buffer, int light, Dutchrat entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-				if (!entity.hasThrownSword() && !entity.isPowered()) {
+				if (!entity.hasThrownSword() && entity.getBellSummonTicks() <= 0) {
 					super.render(stack, buffer, light, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 				}
 			}

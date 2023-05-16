@@ -33,7 +33,7 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!rat.isPowered()) {
+		if (rat.getBellSummonTicks() <= 0) {
 			stack.pushPose();
 			this.getParentModel().body1.translateRotate(stack);
 			this.getParentModel().neck.translateRotate(stack);
