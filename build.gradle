@@ -108,7 +108,7 @@ dependencies {
     implementation fg.deobf("curse.maven:citadel-331936:${project.citadel_version}")
     //runtimeOnly fg.deobf("curse.maven:structure-expansion-398430:3909814")
     runtimeOnly fg.deobf("curse.maven:commandstructures-565119:${project.cs_version}")
-    runtimeOnly fg.deobf("io.github.flemmli97:debugutils:1.19.3-${project.du_version}-forge")
+    runtimeOnly fg.deobf("io.github.flemmli97:debugutils:${project.minecraft_sub_version}-${project.du_version}-forge")
     //runtimeOnly fg.deobf("curse.maven:domestication-innovation-591149:4476525")
     //runtimeOnly fg.deobf("curse.maven:wanna-skate-695018:4476693")
 }
