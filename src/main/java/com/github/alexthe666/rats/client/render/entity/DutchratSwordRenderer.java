@@ -25,12 +25,12 @@ public class DutchratSwordRenderer extends EntityRenderer<DutchratSword> {
 
 	public void render(DutchratSword entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
-		stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 180.0F));
 		stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 		stack.translate(0.0F, 0.5F, 0.0F);
 		stack.scale(3.0F, 3.0F, 3.0F);
 		stack.mulPose(Axis.YP.rotationDegrees(90.0F));
-		stack.mulPose(Axis.ZP.rotationDegrees((entity.tickCount + partialTicks) * 10.0F));
+		stack.mulPose(Axis.ZP.rotationDegrees((entity.tickCount + partialTicks) * 20.0F));
 		stack.translate(0.0F, -0.15F, 0.0F);
 		Minecraft.getInstance().getItemRenderer().renderStatic(PIRAT_SWORD, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, 0);
 		stack.popPose();

@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
+public class Dutchrat extends Monster implements IAnimatedEntity {
 
 	private int animationTick;
 	private boolean useRangedAttack = false;
@@ -73,6 +74,7 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 				.add(Attributes.ARMOR, 10.0D);
 	}
 
+	@Override
 	protected void customServerAiStep() {
 		if (this.getBellSummonTicks() > 0) {
 			if (!this.getLevel().getBlockState(this.getRestrictCenter()).is(RatlantisBlockRegistry.DUTCHRAT_BELL.get())) {
@@ -99,7 +101,7 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false) {
 			@Override
 			public boolean canContinueToUse() {
-				return super.canContinueToUse() && Dutchrat.this.getTarget() != null && Dutchrat.this.isWithinRestriction(Dutchrat.this.getTarget().blockPosition());
+				return super.canContinueToUse() && Dutchrat.this.getTarget() != null && Dutchrat.this.isWithinRestriction(Dutchrat.this.getTarget().blockPosition()) && Dutchrat.this.getBellSummonTicks() <= 0;
 			}
 		});
 	}
@@ -148,15 +150,20 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 		super.aiStep();
 		this.noPhysics = true;
 		if (this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() > 7) {
-			if (!this.hasThrownSword()) {
-				float radius = -1.5F;
-				float angle = (0.01745329251F * (this.yBodyRot)) - 230F;
-				double extraX = (double) (radius * Mth.sin((float) (Math.PI + angle))) + getX();
-				double extraZ = (double) (radius * Mth.cos(angle)) + getZ();
-				double extraY = 1.7F + getY();
-				DutchratSword sword = new DutchratSword(RatlantisEntityRegistry.DUTCHRAT_SWORD.get(), this.getLevel(), extraX, extraY, extraZ, this);
+			if (!this.hasThrownSword() && this.getTarget() != null && this.hasLineOfSight(this.getTarget())) {
+				float bodyFacingAngle = ((this.yBodyRot * Mth.PI) / 180F);
+				double sx = this.getX() + (Mth.cos(bodyFacingAngle) * 1);
+				double sy = this.getY() + (this.getBbHeight() * 0.82D);
+				double sz = this.getZ() + (Mth.sin(bodyFacingAngle) * 1);
+
+				double tx = this.getTarget().getX() - sx;
+				double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
+				double tz = this.getTarget().getZ() - sz;
+				DutchratSword sword = new DutchratSword(RatlantisEntityRegistry.DUTCHRAT_SWORD.get(), this.getLevel(), this);
+				sword.shoot(tx, ty, tz, 1.75F, 1.0F);
+				sword.moveTo(sx, sy, sz, this.getYRot(), this.getXRot());
 				this.getLevel().addFreshEntity(sword);
-				this.useRangedAttack = this.getRandom().nextInt(RatConfig.dutchratSwordThrowChance) == 0;
+				this.useRangedAttack = false;
 			}
 			this.setThrownSword(true);
 		}
@@ -164,7 +171,7 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 			if (this.hasThrownSword()) {
 				this.ticksSinceThrownSword++;
 			}
-			if (this.ticksSinceThrownSword > 60) {
+			if (this.ticksSinceThrownSword > 100) {
 				this.setThrownSword(false);
 				this.ticksSinceThrownSword = 0;
 			}
@@ -210,6 +217,7 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 	}
 
 	@Nullable
+	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()));
@@ -224,6 +232,11 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 		} else {
 			return super.hurt(source, amount);
 		}
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		return source.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(source);
 	}
 
 	@Override
@@ -350,16 +363,12 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 		}
 	}
 
-	@Override
-	public boolean isPowered() {
-		return this.getBellSummonTicks() > 0;
-	}
-
 	class DutchratMoveControl extends MoveControl {
 		public DutchratMoveControl(Dutchrat dutchrat) {
 			super(dutchrat);
 		}
 
+		@Override
 		public void tick() {
 			if (this.operation == MoveControl.Operation.MOVE_TO) {
 				Vec3 vec3d = new Vec3(this.getWantedX() - Dutchrat.this.getX(), this.getWantedY() - Dutchrat.this.getY(), this.getWantedZ() - Dutchrat.this.getZ());
@@ -389,6 +398,7 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
 		}
 
+		@Override
 		public boolean canUse() {
 			return Dutchrat.this.getBellSummonTicks() > 0;
 		}
@@ -400,14 +410,17 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 		}
 
+		@Override
 		public boolean canUse() {
-			return !Dutchrat.this.getMoveControl().hasWanted() && Dutchrat.this.getRandom().nextInt(2) == 0;
+			return Dutchrat.this.getBellSummonTicks() <= 0 && !Dutchrat.this.getMoveControl().hasWanted() && Dutchrat.this.getRandom().nextInt(2) == 0;
 		}
 
+		@Override
 		public boolean canContinueToUse() {
 			return false;
 		}
 
+		@Override
 		public void tick() {
 			BlockPos blockpos = Dutchrat.this.blockPosition();
 			if (Dutchrat.this.hasRestriction()) {
@@ -437,13 +450,15 @@ public class Dutchrat extends Monster implements PowerableMob, IAnimatedEntity {
 			this.dutchrat = dutchrat;
 		}
 
+		@Override
 		public boolean canUse() {
 			this.followDist = Dutchrat.this.getBoundingBox().getSize();
 			LivingEntity living = this.dutchrat.getTarget();
 			double maxFollow = this.dutchrat.useRangedAttack ? 5 * this.followDist : this.followDist;
-			return living != null && Dutchrat.this.isWithinRestriction(living.blockPosition()) && (living.distanceTo(this.dutchrat) >= maxFollow || !this.dutchrat.hasLineOfSight(living));
+			return Dutchrat.this.getBellSummonTicks() <= 0 && living != null && Dutchrat.this.isWithinRestriction(living.blockPosition()) && (living.distanceTo(this.dutchrat) >= maxFollow || !this.dutchrat.hasLineOfSight(living));
 		}
 
+		@Override
 		public void tick() {
 			LivingEntity living = this.dutchrat.getTarget();
 			double maxFollow = this.dutchrat.useRangedAttack ? 5 * this.followDist : this.followDist;

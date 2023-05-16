@@ -155,10 +155,6 @@ public abstract class ArrowlikeProjectile extends Projectile {
 			this.setPos(d7, d2, d3);
 			this.checkInsideBlocks();
 		}
-
-//		if (!this.getLevel().isClientSide() && this.getDeltaMovement().lengthSqr() < 2) {
-//			this.discard();
-//		}
 	}
 
 	private boolean shouldFall() {
@@ -224,14 +220,13 @@ public abstract class ArrowlikeProjectile extends Projectile {
 				}
 			}
 
-			this.discard();
 		} else {
 			entity.setRemainingFireTicks(k);
 			this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
 			this.setYRot(this.getYRot() + 180.0F);
 			this.yRotO += 180.0F;
 		}
-
+		this.discard();
 	}
 
 	@Override
