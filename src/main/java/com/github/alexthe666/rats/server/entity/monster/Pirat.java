@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -54,13 +54,9 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		this.setCombatTask();
 	}
 
-	public static boolean checkPiratSpawnRules(EntityType<Pirat> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		boolean flag = accessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnough(accessor, pos) && (reason == MobSpawnType.SPAWNER || accessor.getFluidState(pos).is(FluidTags.WATER));
+	public static boolean checkPiratSpawnRules(EntityType<Pirat> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		boolean flag = accessor.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.SPAWNER || accessor.getFluidState(pos.below()).is(FluidTags.WATER));
 		return random.nextInt(150) == 0 && flag;
-	}
-
-	public static boolean isDarkEnough(LevelAccessor accessor, BlockPos pos) {
-		return accessor.getBrightness(LightLayer.SKY, pos) > 10;
 	}
 
 	@Override
@@ -71,7 +67,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false, entity -> !(entity instanceof Ratlanteans) && !(entity instanceof Pirats) && entity != null && !entity.isAlliedTo(Pirat.this) && (!(entity instanceof Player player) || !player.isCreative())));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false, entity -> entity != null && !entity.getType().is(RatlantisEntityTags.RATLANTEAN) && !entity.isAlliedTo(Pirat.this) && (!(entity instanceof Player player) || !player.isCreative())));
 		this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
@@ -140,7 +136,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason) {
 		BlockPos pos = this.blockPosition();
 		BlockState state = this.getLevel().getBlockState(pos.below());
-		return this.getLevel().getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && state.getMaterial() == Material.WATER && this.getRandom().nextFloat() < 0.1F;
+		return this.getLevel().getDifficulty() != Difficulty.PEACEFUL && state.getMaterial() == Material.WATER && this.getRandom().nextFloat() < 0.1F;
 	}
 
 	@Override
@@ -159,6 +155,14 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 	public void stopRiding() {
 		super.stopRiding();
 		this.setCombatTask();
+	}
+
+	@Override
+	public void die(DamageSource source) {
+		super.die(source);
+		if (this.getVehicle() instanceof PiratBoat boat) {
+			boat.discard();
+		}
 	}
 
 	@Override
