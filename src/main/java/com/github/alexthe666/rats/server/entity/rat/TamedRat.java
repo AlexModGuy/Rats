@@ -4,7 +4,6 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.events.ForgeClientEvents;
-import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.RatCageBlock;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
@@ -94,7 +93,9 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -146,6 +147,8 @@ public class TamedRat extends InventoryRat {
 
 	public TamedRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
+		Arrays.fill(this.armorDropChances, 2.0F);
+		Arrays.fill(this.handDropChances, 2.0F);
 		this.xpReward = 0;
 		this.updateNavigationCooldown = 100;
 		this.setupDynamicAI();

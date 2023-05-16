@@ -47,8 +47,8 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 	public Pirat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		Arrays.fill(this.armorDropChances, 0.2F);
-		Arrays.fill(this.handDropChances, 0.2F);
+		Arrays.fill(this.armorDropChances, 0.1F);
+		Arrays.fill(this.handDropChances, 0.1F);
 		this.moveControl = new MoveControl(this);
 		this.navigation = new WaterBoundPathNavigation(this, this.getLevel());
 		this.setCombatTask();

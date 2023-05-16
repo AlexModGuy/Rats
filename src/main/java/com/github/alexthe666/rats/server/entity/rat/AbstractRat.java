@@ -5,18 +5,23 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.registry.*;
-import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
-import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
-import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
+import com.github.alexthe666.rats.registry.RatVariantRegistry;
+import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatFleePositionGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.RatMoveControl;
-import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
-import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
-import com.github.alexthe666.rats.server.misc.*;
+import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
+import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
+import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
+import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
+import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
+import com.github.alexthe666.rats.server.misc.RatUtils;
+import com.github.alexthe666.rats.server.misc.RatVariant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -34,9 +39,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -47,14 +50,12 @@ import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -459,15 +460,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		if (this.deathTime >= maxDeathTime && !this.getLevel().isClientSide() && !this.isRemoved()) {
 			this.level.broadcastEntityEvent(this, (byte) 60);
 			this.remove(RemovalReason.KILLED);
-		}
-	}
-
-	@Override
-	protected void dropEquipment() {
-		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			if (!this.getItemBySlot(slot).isEmpty()) {
-				this.spawnAtLocation(this.getItemBySlot(slot));
-			}
 		}
 	}
 
