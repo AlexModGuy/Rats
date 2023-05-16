@@ -12,7 +12,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "8.0.3-${project.minecraft_sub_version}"
+version = "8.0.4-${project.minecraft_sub_version}"
 group = 'com.github.alexthe666.rats'
 archivesBaseName = 'rats'
 
