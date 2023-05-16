@@ -43,7 +43,7 @@ public class RatlantisEntityRegistry {
 	public static final RegistryObject<EntityType<RatlanteanRatbot>> RATLANTEAN_RATBOT = registerEntity("ratlantean_ratbot", EntityType.Builder.of(RatlanteanRatbot::new, MobCategory.MONSTER).fireImmune().sized(1.2F, 1.3F), 0XA3A3A3, 0XFF0000);
 	public static final RegistryObject<EntityType<RatAutomatonMount>> RAT_MOUNT_AUTOMATON = registerEntityNoEgg("rat_mount_automaton", EntityType.Builder.of(RatAutomatonMount::new, MobCategory.MISC).fireImmune().sized(2F, 3.5F));
 	public static final RegistryObject<EntityType<RatBaron>> RAT_BARON = registerEntity("rat_baron", EntityType.Builder.of(RatBaron::new, MobCategory.MONSTER).sized(0.5F, 0.5F), 0X9F0A03, 0XE3E5DA);
-	public static final RegistryObject<EntityType<RatBaronPlane>> RAT_BARON_PLANE = registerEntityNoEgg("rat_baron_plane", EntityType.Builder.of(RatBaronPlane::new, MobCategory.MONSTER).fireImmune().sized(3.5F, 3.0F));
+	public static final RegistryObject<EntityType<RatBaronPlane>> RAT_BARON_PLANE = registerEntityNoEgg("rat_baron_plane", EntityType.Builder.of(RatBaronPlane::new, MobCategory.MONSTER).fireImmune().sized(5.5F, 4.0F));
 	public static final RegistryObject<EntityType<RatBiplaneMount>> RAT_MOUNT_BIPLANE = registerEntityNoEgg("rat_mount_biplane", EntityType.Builder.of(RatBiplaneMount::new, MobCategory.MISC).sized(3.5F, 2.3F));
 	public static final RegistryObject<EntityType<RatProtector>> RAT_PROTECTOR = registerEntityNoEgg("rat_protector", EntityType.Builder.of(RatProtector::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<RatlantisArrow>> RATLANTIS_ARROW = registerEntityNoEgg("ratlantis_arrow", EntityType.Builder.<RatlantisArrow>of(RatlantisArrow::new, MobCategory.MISC).sized(0.5F, 0.5F));
