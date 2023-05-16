@@ -144,12 +144,13 @@ public class RatBaron extends AbstractRat implements Enemy {
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setDropChance(EquipmentSlot.HEAD, 0);
 		if (!this.isPassenger()) {
-			RatBaronPlane boat = new RatBaronPlane(RatlantisEntityRegistry.RAT_BARON_PLANE.get(), this.getLevel());
-			boat.copyPosition(this);
+			RatBaronPlane plane = new RatBaronPlane(RatlantisEntityRegistry.RAT_BARON_PLANE.get(), this.getLevel());
+			plane.copyPosition(this);
+			plane.restrictTo(this.getRestrictCenter(), 16);
 			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(boat);
+				this.getLevel().addFreshEntity(plane);
 			}
-			this.startRiding(boat, true);
+			this.startRiding(plane, true);
 		}
 		return data;
 	}
@@ -157,5 +158,10 @@ public class RatBaron extends AbstractRat implements Enemy {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	protected boolean isVisuallySitting() {
+		return true;
 	}
 }

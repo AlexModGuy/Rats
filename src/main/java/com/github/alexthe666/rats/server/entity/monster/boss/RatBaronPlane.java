@@ -9,6 +9,9 @@ import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.misc.PlaneRotationUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -45,39 +48,35 @@ public class RatBaronPlane extends Mob implements Plane {
 	private int soundLoopCounter = 0;
 	public float prevPlanePitch;
 
-	public RatBaronPlane(EntityType<? extends Mob> type, Level world) {
-		super(type, world);
+	public RatBaronPlane(EntityType<? extends Mob> type, Level level) {
+		super(type, level);
 		this.moveControl = new PlaneMoveControl<>(this);
 		this.xpReward = 55;
-		if (world.isClientSide()) {
+		this.noPhysics = true;
+		if (level.isClientSide()) {
 			this.roll_buffer = new PlaneRotationUtil();
 			this.pitch_buffer = new PlaneRotationUtil();
 		}
 	}
 
 	public float getPlanePitch() {
-		return getEntityData().get(PLANE_PITCH);
+		return this.getEntityData().get(PLANE_PITCH);
 	}
 
 	public void setPlanePitch(float pitch) {
-		getEntityData().set(PLANE_PITCH, pitch);
+		this.getEntityData().set(PLANE_PITCH, pitch);
 	}
 
 	public void incrementPlanePitch(float pitch) {
-		getEntityData().set(PLANE_PITCH, getPlanePitch() + pitch);
+		this.getEntityData().set(PLANE_PITCH, this.getPlanePitch() + pitch);
 	}
 
 	public void decrementPlanePitch(float pitch) {
-		getEntityData().set(PLANE_PITCH, getPlanePitch() - pitch);
+		this.getEntityData().set(PLANE_PITCH, this.getPlanePitch() - pitch);
 	}
 
 	public boolean isAlliedTo(Entity entity) {
 		return super.isAlliedTo(entity) || entity instanceof RatBaron;
-	}
-
-	protected void registerGoals() {
-		super.registerGoals();
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	public void setTarget(@Nullable LivingEntity living) {
@@ -117,9 +116,9 @@ public class RatBaronPlane extends Mob implements Plane {
 			float distX = (float) (this.startPreyVec.x() - this.startAttackVec.x());
 			float distY = 1.5F;
 			float distZ = (float) (this.startPreyVec.z() - this.startAttackVec.z());
-			this.setFlightTarget(new Vec3(this.getTarget().getX() + distX, this.getTarget().getY() + distY, this.getTarget().getZ() + distZ));
+			this.setFlightTarget(new Vec3(this.getTarget().getX() + distX, this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, this.getRestrictCenter()).getY() + 5 + this.getRandom().nextInt(16) + distY, this.getTarget().getZ() + distZ));
 			if (this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 100) {
-				this.setFlightTarget(new Vec3(this.getTarget().getX() - distX, this.getTarget().getY() + distY, this.getTarget().getZ() - distZ));
+				this.setFlightTarget(new Vec3(this.getTarget().getX() - distX, this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, this.getRestrictCenter()).getY() + 5 + this.getRandom().nextInt(16) + distY, this.getTarget().getZ() - distZ));
 			}
 		}
 		if (this.getTarget() != null && this.hasLineOfSight(this.getTarget())) {
@@ -132,16 +131,15 @@ public class RatBaronPlane extends Mob implements Plane {
 					double extraX = this.getX() + radius * Mth.sin((float) (Math.PI + angle));
 					double extraZ = this.getZ() + radius * Mth.cos(angle);
 					double extraY = this.getY() + 1.35F;
-					double d0 = target.getY() + (double) target.getEyeHeight() / 2;
-					double d1 = target.getX() - extraX;
-					double d3 = target.getZ() - extraZ;
-					double d2 = d0 - extraY;
-					float velocity = 3.2F;
 					RattlingGunBullet bullet = new RattlingGunBullet(RatlantisEntityRegistry.RATTLING_GUN_BULLET.get(), this.getLevel(), this);
 					bullet.setPos(extraX, extraY, extraZ);
 					bullet.setBaseDamage(RatConfig.ratBaronBulletDamage);
 
-					bullet.shoot(d1, d2, d3, velocity, 1.4F);
+					double d0 = target.getX() - this.getX();
+					double d1 = target.getY(0.3333333333333333D) - bullet.getY();
+					double d2 = target.getZ() - this.getZ();
+					double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+					bullet.shoot(d0, d1 + d3 * (double)0.2F, d2, 3.2F, 1.4F);
 					this.playSound(RatsSoundRegistry.BIPLANE_SHOOT.get(), 3.0F, 2.3F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 					if (!this.getLevel().isClientSide()) {
 						this.getLevel().addFreshEntity(bullet);
@@ -152,7 +150,7 @@ public class RatBaronPlane extends Mob implements Plane {
 		}
 		if (this.getTarget() == null || this.getFlightTarget() == null || this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 9 || !this.getLevel().isEmptyBlock(BlockPos.containing(this.getFlightTarget()))) {
 			if (this.escortPosition == null) {
-				this.escortPosition = this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, this.blockPosition()).above(RatConfig.ratBaronYFlight + this.getRandom().nextInt(10));
+				this.escortPosition = this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, this.getRestrictCenter()).above(RatConfig.ratBaronYFlight + this.getRandom().nextInt(10));
 			}
 			this.setFlightTarget(this.getBlockInViewEscort());
 		}
@@ -189,6 +187,36 @@ public class RatBaronPlane extends Mob implements Plane {
 	}
 
 	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		if (this.getRestrictCenter() != BlockPos.ZERO) {
+			BlockPos home = this.getRestrictCenter();
+			tag.put("Home", this.makeDoubleList(home.getX(), home.getY(), home.getZ()));
+		}
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		if (tag.contains("Home", 9)) {
+			ListTag nbttaglist = tag.getList("Home", 6);
+			int hx = (int) nbttaglist.getDouble(0);
+			int hy = (int) nbttaglist.getDouble(1);
+			int hz = (int) nbttaglist.getDouble(2);
+			this.restrictTo(new BlockPos(hx, hy, hz), 16);
+		}
+	}
+
+	private ListTag makeDoubleList(double... pNumbers) {
+		ListTag listtag = new ListTag();
+		for (double d0 : pNumbers) {
+			listtag.add(DoubleTag.valueOf(d0));
+		}
+
+		return listtag;
+	}
+
+	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return true;
 	}
@@ -199,11 +227,8 @@ public class RatBaronPlane extends Mob implements Plane {
 	}
 
 	public boolean hurt(DamageSource source, float amount) {
-		if (this.isVehicle() && !this.getPassengers().isEmpty()) {
-			for (Entity passenger : this.getPassengers()) {
-				passenger.hurt(source, amount);
-			}
-			return super.hurt(source, 0.0F);
+		if (this.getControllingPassenger() != null) {
+			return this.getControllingPassenger().hurt(source, amount);
 		} else {
 			return super.hurt(source, amount);
 		}
@@ -237,12 +262,12 @@ public class RatBaronPlane extends Mob implements Plane {
 		BlockPos escortPos = this.getEscortPosition();
 		BlockPos ground = this.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, escortPos);
 		int distFromGround = escortPos.getY() - ground.getY();
-		int fromHome = 30;
+		int fromHome = 32;
 		for (int i = 0; i < 10; i++) {
 			BlockPos pos = new BlockPos(escortPos.getX() + this.getRandom().nextInt(fromHome) - fromHome / 2,
-					(distFromGround > 16 ? escortPos.getY() : escortPos.getY() + 5 + this.getRandom().nextInt(26)),
+					(distFromGround > 16 ? ground.getY() + 16 : escortPos.getY() + 10 + this.getRandom().nextInt(16)),
 					(escortPos.getZ() + this.getRandom().nextInt(fromHome) - fromHome / 2));
-			if (canBlockPosBeSeen(pos) && this.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 6) {
+			if (this.canBlockPosBeSeen(pos) && this.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 6) {
 				return new Vec3(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
 			}
 		}

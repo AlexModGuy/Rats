@@ -35,12 +35,13 @@ public class RattlingGunBullet extends ArrowlikeProjectile {
 
 	@Override
 	protected boolean canHitEntity(Entity entity) {
+		if (this.getOwner() == null) return true;
 		if (this.getOwner() instanceof TamedRat rat) {
 			if (rat.shouldHuntMonster() && !(entity instanceof Enemy)) return false;
 			if (rat.shouldHuntAnimal() && !(entity instanceof Animal)) return false;
 			if (rat.getTarget() != entity) return false;
 		}
-		return this.getOwner() == null || !this.getOwner().isAlliedTo(entity);
+		return entity != this && entity != this.getOwner() && !this.getOwner().isAlliedTo(entity);
 	}
 
 	@Override
