@@ -53,7 +53,8 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 		this.tag(Tags.Blocks.ORES).addTag(ORES_CHEESE).addTag(ORES_GEM_OF_RATLANTIS).addTag(ORES_ORATCHALCUM);
 		this.tag(Tags.Blocks.ORES_IN_GROUND_STONE).addTag(ORES_CHEESE).addTag(ORES_GEM_OF_RATLANTIS).addTag(ORES_ORATCHALCUM);
 
-		this.tag(RatsBlockTags.MARBLED_CHEESE).add(RatlantisBlockRegistry.MARBLED_CHEESE.get(),
+		this.tag(RatsBlockTags.MARBLED_CHEESE).add(
+				RatlantisBlockRegistry.MARBLED_CHEESE.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get(),
 				RatlantisBlockRegistry.MARBLED_CHEESE_TILE.get(), RatlantisBlockRegistry.MARBLED_CHEESE_CHISELED.get(),
 				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get(),
 				RatlantisBlockRegistry.BLACK_MARBLED_CHEESE.get(), RatlantisBlockRegistry.MARBLED_CHEESE_CHISELED.get(),
