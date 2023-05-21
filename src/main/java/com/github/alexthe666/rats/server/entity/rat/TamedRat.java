@@ -1206,8 +1206,12 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 
+		AttributeSupplier defaults = TamedRat.createAttributes().build();
 		ForgeRegistries.ATTRIBUTES.forEach(attribute -> {
 			if (this.getAttribute(attribute) != null && this.getAttributes().hasAttribute(attribute) && !Objects.requireNonNull(this.getAttribute(attribute)).getModifiers().isEmpty()) {
+				if (defaults.hasAttribute(attribute)) {
+					this.getAttribute(attribute).setBaseValue(defaults.getBaseValue(attribute));
+				}
 				Objects.requireNonNull(this.getAttribute(attribute)).removeModifiers();
 			}
 		});
