@@ -863,6 +863,7 @@ public class TamedRat extends InventoryRat {
 			} else if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
 				this.setDyeColor(0);
+				this.setSpecialDye("");
 				for (int i = 0; i < 8; i++) {
 					double d0 = this.getRandom().nextGaussian() * 0.02D;
 					double d1 = this.getRandom().nextGaussian() * 0.02D;
@@ -942,7 +943,7 @@ public class TamedRat extends InventoryRat {
 
 	public boolean applySpecialDyeIfPossible(ItemStack stack) {
 		String name = stack.getHoverName().getString();
-		if (!this.getSpecialDye().equals(name)) {
+		if (!this.getSpecialDye().equals(name) || !this.isDyed()) {
 			if (!this.isDyed()) {
 				this.setDyed(true);
 			}
