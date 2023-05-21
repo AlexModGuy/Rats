@@ -137,7 +137,12 @@ public class HatItem extends ArmorItem {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return new ResourceLocation(RatsMod.MODID, "textures/model/hat/" + ForgeRegistries.ITEMS.getKey(this).getPath() + ".png").toString();
+		String item = ForgeRegistries.ITEMS.getKey(this).getPath();
+		if (!item.equals("air")) {
+			return new ResourceLocation(RatsMod.MODID, "textures/model/hat/" + item +".png").toString();
+		}
+		//hehe
+		return "textures/particle/flea_0.png";
 	}
 
 	@Override
