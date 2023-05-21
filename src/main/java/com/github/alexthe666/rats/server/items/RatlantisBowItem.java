@@ -46,7 +46,8 @@ public class RatlantisBowItem extends BowItem {
 				if (!((double) f < 0.1D)) {
 					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, player));
 					if (!level.isClientSide) {
-						RatlantisArrow arrow = new RatlantisArrow(level, player);
+						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
+						AbstractArrow arrow = arrowitem == Items.ARROW ? new RatlantisArrow(level, player) : arrowitem.createArrow(level, itemstack, player);
 						arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
 						if (f == 1.0F) {
 							arrow.setCritArrow(true);
