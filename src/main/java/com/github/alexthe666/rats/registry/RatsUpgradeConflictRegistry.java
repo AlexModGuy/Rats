@@ -43,6 +43,7 @@ public class RatsUpgradeConflictRegistry {
 	}
 
 	public static boolean doesConflict(ItemStack newItem, ItemStack existingItem) {
+		if (!(existingItem.getItem() instanceof BaseRatUpgradeItem)) return false;
 		if (newItem.is(existingItem.getItem()) && !newItem.is(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get())) return true;
 		Item[] arr = REGISTERED_CONFLICTS.get(newItem.getItem());
 		if (newItem.getItem() instanceof CombinedUpgrade combined) {
@@ -56,20 +57,20 @@ public class RatsUpgradeConflictRegistry {
 					}
 				}
 			}
+		} else if (existingItem.getItem() instanceof CombinedUpgrade combined) {
+			CompoundTag tag = existingItem.getTag();
+			if (tag != null && tag.contains("Items", 9)) {
+				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
+				ContainerHelper.loadAllItems(tag, upgradeList);
+				for (ItemStack selectedUpgrade : upgradeList) {
+					if (doesConflict(selectedUpgrade, newItem)) {
+						return true;
+					}
+				}
+			}
 		} else if (arr != null) {
 			for (Item item : arr) {
-				if (existingItem.getItem() instanceof CombinedUpgrade combined) {
-					CompoundTag tag = existingItem.getTag();
-					if (tag != null && tag.contains("Items", 9)) {
-						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(tag, upgradeList);
-						for (ItemStack selectedUpgrade : upgradeList) {
-							if (doesConflict(selectedUpgrade, newItem)) {
-								return true;
-							}
-						}
-					}
-				} else if (existingItem.is(item)) {
+				if (existingItem.is(item)) {
 					return true;
 				}
 			}
