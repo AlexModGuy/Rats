@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.inventory.slot;
 import com.github.alexthe666.rats.server.items.RatListUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
@@ -19,6 +20,6 @@ public class RatListUpgradeSlot extends GhostItemSlot {
 		if (this.upgrade.isEmpty()) {
 			return super.mayPlace(stack);
 		}
-		return this.upgrade.getItem() instanceof RatListUpgradeItem || stack.getItem() instanceof BaseRatUpgradeItem && !stack.is(this.upgrade.getItem()) && CombinedRatUpgradeItem.canCombineWithUpgrade(this.upgrade, stack);
+		return this.upgrade.getItem() instanceof RatListUpgradeItem || (stack.getItem() instanceof CombinedUpgrade && !stack.is(this.upgrade.getItem()) && CombinedRatUpgradeItem.canCombineWithUpgrade(this.upgrade, stack));
 	}
 }
