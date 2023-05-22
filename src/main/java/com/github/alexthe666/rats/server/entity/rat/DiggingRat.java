@@ -149,7 +149,7 @@ public abstract class DiggingRat extends AbstractRat {
 		}
 	}
 
-	private boolean canDigBlock(Level level, BlockPos pos) {
+	protected boolean canDigBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		return (state.is(RatsBlockTags.DIGGABLE_BLOCKS) && state.isSolidRender(level, pos));
 	}

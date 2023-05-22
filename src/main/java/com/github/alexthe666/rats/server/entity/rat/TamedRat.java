@@ -1194,6 +1194,11 @@ public class TamedRat extends InventoryRat {
 		return false;
 	}
 
+	@Override
+	protected boolean canDigBlock(Level level, BlockPos pos) {
+		return false;
+	}
+
 	public void onUpgradeChanged() {
 		this.setupDynamicAI();
 
