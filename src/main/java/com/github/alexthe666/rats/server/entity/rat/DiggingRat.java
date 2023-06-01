@@ -45,7 +45,7 @@ public abstract class DiggingRat extends AbstractRat {
 	public void aiStep() {
 		super.aiStep();
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+		if (this.canDigThroughBlocks() && ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
 			if (this.getOwner() == null && this.getNavigation().isDone() && this.digCooldown-- <= 0 && RatConfig.ratsDigBlocks) {
 				this.findDigTarget();
 				this.digTarget();
@@ -149,7 +149,11 @@ public abstract class DiggingRat extends AbstractRat {
 		}
 	}
 
-	protected boolean canDigBlock(Level level, BlockPos pos) {
+	public boolean canDigThroughBlocks() {
+		return true;
+	}
+
+	private boolean canDigBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		return (state.is(RatsBlockTags.DIGGABLE_BLOCKS) && state.isSolidRender(level, pos));
 	}

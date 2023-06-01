@@ -1195,7 +1195,7 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected boolean canDigBlock(Level level, BlockPos pos) {
+	public boolean canDigThroughBlocks() {
 		return false;
 	}
 
