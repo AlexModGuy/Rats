@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -68,7 +67,7 @@ public class RatSackItem extends Item {
 					if (!ratTag.getString("CustomName").isEmpty()) {
 						rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
 					}
-					rat.moveTo(pos.getX() - 0.25F + (level.getRandom().nextFloat() * 0.5F), pos.getY(), pos.getZ() - 0.25F + (level.getRandom().nextFloat() * 0.5F), 0, 0);
+					rat.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 					if (!level.isClientSide()) {
 						level.addFreshEntity(rat);
 					}
