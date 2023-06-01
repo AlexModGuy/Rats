@@ -66,8 +66,9 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		return !state.is(BlockTags.WITHER_IMMUNE) && state.getDestroySpeed(this.getLevel(), pos) >= 0.0F;
 	}
 
-	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-		return true;
+	@Override
+	public boolean removeWhenFarAway(double dist) {
+		return false;
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -86,6 +87,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		return false;
 	}
 
+	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new AIFollowPrey(this));
@@ -96,6 +98,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
+	@Override
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
@@ -131,10 +134,12 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
+	@Override
 	public boolean canChangeDimensions() {
 		return false;
 	}
 
+	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.getAnimation() == NO_ANIMATION) {
 			this.setAnimation(this.useRangedAttack ? ANIMATION_MELEE : ANIMATION_RANGED);
@@ -142,6 +147,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		return true;
 	}
 
+	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		if (this.isInvulnerableTo(source)) {
 			return false;
@@ -168,18 +174,22 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return RatsSoundRegistry.RATLANTEAN_AUTOMATON_IDLE.get();
 	}
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return RatsSoundRegistry.RATLANTEAN_AUTOMATON_HURT.get();
 	}
 
+	@Override
 	protected SoundEvent getDeathSound() {
 		return RatsSoundRegistry.RATLANTEAN_AUTOMATON_DIE.get();
 	}
 
+	@Override
 	public void aiStep() {
 		super.aiStep();
 		if (!this.isOnGround() && this.getDeltaMovement().y() < 0.0D) {
@@ -266,6 +276,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		return new Animation[]{ANIMATION_MELEE, ANIMATION_RANGED};
 	}
 
+	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		if (this.hasCustomName()) {
@@ -273,16 +284,19 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
+	@Override
 	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
+	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
+	@Override
 	public void stopSeenByPlayer(ServerPlayer player) {
 		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
