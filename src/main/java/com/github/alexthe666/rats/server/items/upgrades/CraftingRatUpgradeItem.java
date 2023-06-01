@@ -51,7 +51,7 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 
 	@Override
 	public void tick(TamedRat rat) {
-		if (rat.isTame()) {
+		if (rat.getRespawnCountdown() <= 0 && rat.isTame()) {
 			BlockEntity te = rat.getLevel().getBlockEntity(rat.blockPosition().below());
 			if (te instanceof RatCraftingTableBlockEntity table && !rat.getLevel().isClientSide()) {
 				double d2 = rat.getRandom().nextGaussian() * 0.02D;
