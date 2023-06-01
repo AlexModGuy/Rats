@@ -193,7 +193,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.tame_rat.title"),
 						Component.translatable("advancements.rats.tame_rat.desc"),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("tame_rat", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(RatsEntityRegistry.RAT.get()).build()))
+				.addCriterion("tame_rat", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(RatsEntityRegistry.TAMED_RAT.get()).build()))
 				.save(consumer, "rats:tame_rat");
 
 		Advancement cage = Advancement.Builder.advancement().parent(tame).display(
@@ -240,7 +240,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.ratbow_essence.desc"),
 						null, FrameType.TASK, true, false, false)
 				//TODO maybe we need custom criteria for this?
-				.addCriterion("use_essence", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item().of(RatsItemRegistry.RATBOW_ESSENCE.get()), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.RAT.get()).build())))
+				.addCriterion("use_essence", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item().of(RatsItemRegistry.RATBOW_ESSENCE.get()), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.TAMED_RAT.get()).build())))
 				.save(consumer, "rats:ratbow_essence");
 
 		Advancement basic = Advancement.Builder.advancement().parent(tame).display(

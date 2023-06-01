@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-07T21:10:32.4625837	Advancements
+// 1.19.4	2023-05-31T21:49:40.3070221	Advancements
 1e483b8e6c68996316e849ab5b465add1b894332 data/rats/advancements/ball_of_filth.json
 f923600f6bb6bbf6799984f8de3360eb6aa28de5 data/rats/advancements/black_death.json
 99a3da4642b02461f031ab8b394e4a78b27bfebc data/rats/advancements/cheese.json
@@ -13,7 +13,7 @@ cbe33e72c69e9639e8c1a4273bd51bb2b46551c5 data/rats/advancements/garbage_pile.jso
 0545102ff764c68d9ffd747ad4d687962fe623c0 data/rats/advancements/plague.json
 732cba5d0ebc33ffe7db7a652dd47541951ffca7 data/rats/advancements/plague_cure.json
 1f83030ccb5727a7f05b22df28b0dec618fb14d0 data/rats/advancements/plague_doctor.json
-c053cadf9fffca21ec8e08b07dfd57f8c4c2504a data/rats/advancements/ratbow_essence.json
+fb765c665f60adea88b5f973b5fbf4cde4822fa4 data/rats/advancements/ratbow_essence.json
 4bb76dad03c47a08fc5f5590b9c2e203f37701b5 data/rats/advancements/rat_cage.json
 7f9835e249e705c9daa8bcb04ed8bc82ae1e924f data/rats/advancements/rat_cage_decoration.json
 98a1f7a12f4d4f3e41f5236e711876a3f00e4f38 data/rats/advancements/rat_cooking.json
@@ -30,5 +30,5 @@ fbc86028f1c93261cbf8a7f0a9046960e9d04fab data/rats/advancements/rat_upgrade_flig
 a2bbf062217458acf910257759f77ed3ddeb8ef3 data/rats/advancements/rat_upgrade_strength.json
 5db8ecc894da7442af90c24e270dc13db12a8299 data/rats/advancements/rat_upgrade_warrior.json
 e53c84d261aa0469ac78df32508ede3a7a29e29e data/rats/advancements/root.json
-07c4449db76c4b71ac838be674f3b894cfc5f20a data/rats/advancements/tame_rat.json
+03f63fcaa273bbc4a44eeb87cca7e2707a21d965 data/rats/advancements/tame_rat.json
 ac587cd3eb2e83a709f77c56da8c8dbc8a2c1ed8 data/rats/advancements/trash_can.json
