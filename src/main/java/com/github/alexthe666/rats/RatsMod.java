@@ -141,10 +141,10 @@ public class RatsMod {
 	private void setup(FMLCommonSetupEvent event) {
 		RatsAdvancementsRegistry.init();
 		RatsNetworkHandler.init();
-		RatsDispenserRegistry.init();
 		RatsUpgradeConflictRegistry.init();
 		event.enqueueWork(() -> {
 			RatsCauldronRegistry.init();
+			RatsDispenserRegistry.init();
 
 			Raid.RaiderType.create("RATS_PIPER", RatsEntityRegistry.PIED_PIPER.get(), new int[]{0, 0, 1, 0, 0, 1, 1, 2});
 			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
