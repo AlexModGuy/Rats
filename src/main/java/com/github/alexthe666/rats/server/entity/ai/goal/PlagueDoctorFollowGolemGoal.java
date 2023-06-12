@@ -25,10 +25,10 @@ public class PlagueDoctorFollowGolemGoal extends Goal {
 	public boolean canUse() {
 		if (this.doctor.getAge() >= 0) {
 			return false;
-		} else if (!this.doctor.getLevel().isDay()) {
+		} else if (!this.doctor.level().isDay()) {
 			return false;
 		} else {
-			List<IronGolem> list = this.doctor.getLevel().getEntitiesOfClass(IronGolem.class, this.doctor.getBoundingBox().inflate(6.0D, 2.0D, 6.0D), golem -> golem.getOfferFlowerTick() > 0);
+			List<IronGolem> list = this.doctor.level().getEntitiesOfClass(IronGolem.class, this.doctor.getBoundingBox().inflate(6.0D, 2.0D, 6.0D), golem -> golem.getOfferFlowerTick() > 0);
 			if (list.isEmpty()) {
 				return false;
 			} else {

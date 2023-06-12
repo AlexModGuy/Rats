@@ -41,5 +41,6 @@
     "recipes": [
       "rats:golden_rat_skull"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

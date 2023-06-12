@@ -45,7 +45,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 		if (!this.canPickUp())
 			return false;
 		if (this.rat.getTarget() != null) return false;
-		if (this.rat.getPickupPos().isEmpty() || !this.rat.getPickupPos().get().dimension().equals(this.rat.getLevel().dimension()) || RatUtils.isBlockProtected(this.rat.getLevel(), this.rat.getPickupPos().get().pos(), this.rat))
+		if (this.rat.getPickupPos().isEmpty() || !this.rat.getPickupPos().get().dimension().equals(this.rat.level().dimension()) || RatUtils.isBlockProtected(this.rat.level(), this.rat.getPickupPos().get().pos(), this.rat))
 			return false;
 
 		if (this.type == PickupType.INVENTORY) {
@@ -90,7 +90,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 
 	@Override
 	public void tick() {
-		BlockEntity te = this.rat.getLevel().getBlockEntity(this.targetBlock);
+		BlockEntity te = this.rat.level().getBlockEntity(this.targetBlock);
 		if (this.targetBlock != null && te != null) {
 			this.rat.getNavigation().moveTo(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D, 1.25D);
 			double distance = Math.sqrt(this.rat.getRatDistanceSq(this.targetBlock.getX() + 0.5D, this.targetBlock.getY() + 0.5D, this.targetBlock.getZ() + 0.5D));
@@ -112,11 +112,11 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 	public void toggleChest(Container te, boolean open) {
 		if (te instanceof ChestBlockEntity chest) {
 			if (open) {
-				this.rat.getLevel().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 1);
+				this.rat.level().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 1);
 			} else {
-				this.rat.getLevel().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 0);
+				this.rat.level().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 0);
 			}
-			this.rat.getLevel().gameEvent(this.rat, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, chest.getBlockPos());
+			this.rat.level().gameEvent(this.rat, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, chest.getBlockPos());
 		}
 	}
 
@@ -124,7 +124,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 		if (this.type == PickupType.INVENTORY) {
 			LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN);
 			if (handler.resolve().isPresent()) {
-				int slot = RatUtils.getItemSlotFromItemHandler(this.rat, handler.resolve().get(), this.rat.getLevel().getRandom());
+				int slot = RatUtils.getItemSlotFromItemHandler(this.rat, handler.resolve().get(), this.rat.level().getRandom());
 				int extractSize = RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get()) ? 64 : 1;
 				ItemStack stack = ItemStack.EMPTY;
 				try {
@@ -136,7 +136,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 				}
 				if (slot != -1 && stack != ItemStack.EMPTY) {
 					ItemStack duplicate = stack.copy();
-					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.getLevel().isClientSide()) {
+					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.level().isClientSide()) {
 						this.rat.spawnAtLocation(this.rat.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
 					}
 					this.rat.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
@@ -198,7 +198,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 					} else {
 						this.rat.transportingFluid.setAmount(this.rat.transportingFluid.getAmount() + Math.max(drainedStack.getAmount(), 0));
 					}
-					if (!this.rat.getLevel().isClientSide()) {
+					if (!this.rat.level().isClientSide()) {
 						RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
 					}
 					SoundEvent sound = this.rat.transportingFluid.isEmpty() ? SoundEvents.BUCKET_FILL : SoundEvents.BUCKET_EMPTY;

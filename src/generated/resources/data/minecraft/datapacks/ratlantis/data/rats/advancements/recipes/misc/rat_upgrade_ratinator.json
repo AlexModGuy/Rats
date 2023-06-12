@@ -80,5 +80,6 @@
     "recipes": [
       "rats:rat_upgrade_ratinator"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

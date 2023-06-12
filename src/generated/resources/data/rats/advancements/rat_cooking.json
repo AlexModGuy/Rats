@@ -42,5 +42,6 @@
       "eat_byaldi",
       "eat_knishes"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

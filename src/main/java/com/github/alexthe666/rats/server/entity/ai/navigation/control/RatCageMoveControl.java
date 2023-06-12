@@ -37,7 +37,7 @@ public class RatCageMoveControl extends RatMoveControl {
 				float f7 = f2 * f6 - f3 * f5;
 				float f8 = f3 * f6 + f2 * f5;
 				//only path towards a block if it's a cage
-				if (this.rat.getLevel().getBlockState(this.rat.blockPosition().offset((int) f7, 0, (int) f8)).getBlock() instanceof RatCageBlock) {
+				if (this.rat.level().getBlockState(this.rat.blockPosition().offset((int) f7, 0, (int) f8)).getBlock() instanceof RatCageBlock) {
 					this.strafeForwards = 1.0F;
 					this.strafeRight = 0.0F;
 				}
@@ -70,7 +70,7 @@ public class RatCageMoveControl extends RatMoveControl {
 //				}
 			} else if (this.operation == MoveControl.Operation.JUMPING) {
 				this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-				if (this.mob.isOnGround()) {
+				if (this.mob.onGround()) {
 					this.operation = MoveControl.Operation.WAIT;
 				}
 			} else {

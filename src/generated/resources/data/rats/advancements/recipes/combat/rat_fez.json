@@ -43,5 +43,6 @@
     "recipes": [
       "rats:rat_fez"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

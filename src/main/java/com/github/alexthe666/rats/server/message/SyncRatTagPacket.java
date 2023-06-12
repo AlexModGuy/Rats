@@ -29,7 +29,7 @@ public record SyncRatTagPacket(int ratId, List<GlobalPos> nodes) {
 				Player player = context.get().getSender();
 
 				if (player != null) {
-					Entity entity = player.getLevel().getEntity(packet.ratId());
+					Entity entity = player.level().getEntity(packet.ratId());
 					if (entity instanceof TamedRat rat) {
 						rat.getPatrolNodes().clear();
 						rat.getPatrolNodes().addAll(packet.nodes());

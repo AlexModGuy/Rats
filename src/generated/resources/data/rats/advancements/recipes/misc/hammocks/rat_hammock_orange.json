@@ -52,5 +52,6 @@
     "recipes": [
       "rats:hammocks/rat_hammock_orange"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

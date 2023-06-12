@@ -102,7 +102,7 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 	}
 
 	public boolean stillValid(Player player) {
-		if (this.getLevel().getBlockEntity(this.getBlockPos()) != this) {
+		if (player.level().getBlockEntity(this.getBlockPos()) != this) {
 			return false;
 		} else {
 			return player.distanceToSqr((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D, (double) this.getBlockPos().getZ() + 0.5D) <= 64.0D;

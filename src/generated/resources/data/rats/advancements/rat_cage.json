@@ -33,5 +33,6 @@
     [
       "get_cage"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

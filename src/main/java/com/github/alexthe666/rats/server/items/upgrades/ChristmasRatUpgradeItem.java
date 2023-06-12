@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
 import java.util.List;
@@ -34,26 +35,26 @@ public class ChristmasRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 
 	@Override
 	public void tick(TamedRat rat) {
-		if (!rat.getLevel().isClientSide()) {
+		if (!rat.level().isClientSide()) {
 			if (RatsDateFetcher.isStartOfHour() && rat.randomEffectCooldown == 0) {
 				//ensure we only fire the event once in the span of a minute. 1200 would work but I dont care
 				rat.randomEffectCooldown = 2000;
 				this.tryGiftgiving(rat);
-				rat.getLevel().broadcastEntityEvent(rat, (byte) 126);
+				rat.level().broadcastEntityEvent(rat, (byte) 126);
 			}
 		}
 	}
 
 	private void tryGiftgiving(TamedRat rat) {
 		ItemStack heldItem = rat.getMainHandItem();
-		if (!rat.getLevel().isClientSide()) {
-			LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerLevel) rat.getLevel());
-			lootcontext$builder.withLuck(1.0F);
+		if (!rat.level().isClientSide()) {
+			LootParams.Builder builder = new LootParams.Builder((ServerLevel) rat.level());
+			builder.withLuck(1.0F);
 			LootContextParamSet.Builder lootparameterset$builder = new LootContextParamSet.Builder();
-			List<ItemStack> result = rat.getLevel().getServer().getLootTables().get(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(lootcontext$builder.create(lootparameterset$builder.build()));
+			List<ItemStack> result = rat.level().getServer().getLootData().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build()));
 			if (RatsDateFetcher.isChristmasDay()) {
 				for (int i = 0; i < 5; i++) {
-					result.addAll(rat.getLevel().getServer().getLootTables().get(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(lootcontext$builder.create(lootparameterset$builder.build())));
+					result.addAll(rat.level().getServer().getLootData().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build())));
 				}
 			}
 			if (!result.isEmpty()) {
@@ -62,7 +63,7 @@ public class ChristmasRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 						rat.setItemInHand(InteractionHand.MAIN_HAND, stack.copy());
 					} else {
 						if (!rat.tryDepositItemInContainers(stack.copy())) {
-							if (!rat.getLevel().isClientSide()) {
+							if (!rat.level().isClientSide()) {
 								rat.spawnAtLocation(stack.copy(), 0.25F);
 							}
 						}

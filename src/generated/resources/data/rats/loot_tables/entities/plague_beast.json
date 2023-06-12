@@ -52,5 +52,6 @@
       ],
       "rolls": 2.0
     }
-  ]
+  ],
+  "random_sequence": "rats:entities/plague_beast"
 }

@@ -251,5 +251,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "rats:chest/tubes"
 }

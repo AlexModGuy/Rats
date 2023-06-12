@@ -61,7 +61,7 @@ public class RatUpgradeMenu extends AbstractContainerMenu {
 		if (!stack.isEmpty()) {
 			for (Slot cs : this.slots) {
 				var destination = cs.getItem();
-				if (cs instanceof RatListUpgradeSlot && ItemStack.isSame(destination, stack)) {
+				if (cs instanceof RatListUpgradeSlot && ItemStack.isSameItem(destination, stack)) {
 					break;
 				} else if (destination.isEmpty()) {
 					if (cs.mayPlace(stack)) {
@@ -93,7 +93,7 @@ public class RatUpgradeMenu extends AbstractContainerMenu {
 				if (slot.mayPlace(stack)) {
 					for (Slot cs : this.slots) {
 						var destination = cs.getItem();
-						if (cs instanceof RatListUpgradeSlot && ItemStack.isSame(destination, stack)) {
+						if (cs instanceof RatListUpgradeSlot && ItemStack.isSameItem(destination, stack)) {
 							return;
 						}
 					}

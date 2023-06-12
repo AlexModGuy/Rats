@@ -35,5 +35,6 @@
     [
       "kill_dutchrat"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

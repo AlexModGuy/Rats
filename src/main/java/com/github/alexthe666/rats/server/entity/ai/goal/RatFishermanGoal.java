@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -74,7 +75,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 				if (!this.hasReachedWater) {
 					this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
 				}
-				if (this.isShore(this.getTargetBlock(), this.rat.getLevel())) {
+				if (this.isShore(this.getTargetBlock(), this.rat.level())) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 					this.hasReachedWater = distance < this.rat.getRatHarvestDistance(-2.0D);
 				} else {
@@ -83,14 +84,14 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 			}
 		}
 		if (this.hasReachedWater) {
-			this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 85);
+			this.rat.level().broadcastEntityEvent(this.rat, (byte) 85);
 			this.rat.crafting = true;
 			if (this.fishingCooldown > 0) {
 				this.fishingCooldown--;
 			}
 			if (this.fishingCooldown == 0) {
 				this.spawnFishingLoot();
-				this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 101);
+				this.rat.level().broadcastEntityEvent(this.rat, (byte) 101);
 				this.rat.playSound(SoundEvents.FISHING_BOBBER_SPLASH, 1.0F, 1.0F);
 				this.rat.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
 				this.stop();
@@ -102,7 +103,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 		List<BlockPos> allBlocks = new ArrayList<>();
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
-			if (this.isShore(pos, this.rat.getLevel())) {
+			if (this.isShore(pos, this.rat.level())) {
 				allBlocks.add(pos);
 			}
 		}
@@ -114,7 +115,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 
 	private boolean isShore(BlockPos pos, Level world) {
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
-			if (world.getBlockState(pos.relative(facing)).is(Blocks.WATER) && world.getBlockState(pos).isSolidRender(this.rat.getLevel(), pos) && world.isEmptyBlock(pos.above())) {
+			if (world.getBlockState(pos.relative(facing)).is(Blocks.WATER) && world.getBlockState(pos).isSolidRender(this.rat.level(), pos) && world.isEmptyBlock(pos.above())) {
 				return true;
 			}
 		}
@@ -124,23 +125,23 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	public void spawnFishingLoot() {
 		this.fishingCooldown = 250 + this.rat.getRandom().nextInt(750);
 		double luck = 0.1D;
-		LootContext.Builder builder = new LootContext.Builder((ServerLevel) this.rat.getLevel()).withLuck((float) luck);
+		LootParams.Builder builder = new LootParams.Builder((ServerLevel) this.rat.level()).withLuck((float) luck);
 		LootContextParamSet.Builder paramBuilder = new LootContextParamSet.Builder();
-		List<ItemStack> result = this.rat.getLevel().getServer().getLootTables().get(BuiltInLootTables.FISHING).getRandomItems(builder.create(paramBuilder.build()));
+		List<ItemStack> result = this.rat.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING).getRandomItems(builder.create(paramBuilder.build()));
 
-		FakePlayer player = FakePlayerFactory.getMinecraft((ServerLevel) this.rat.getLevel());
+		FakePlayer player = FakePlayerFactory.getMinecraft((ServerLevel) this.rat.level());
 		player.setPos(this.rat.position());
 
-		FishingHook hook = new FishingHook(player, this.rat.getLevel(), this.rat.getRandom().nextInt(4), 0);
+		FishingHook hook = new FishingHook(player, this.rat.level(), this.rat.getRandom().nextInt(4), 0);
 		hook.setPos(this.rat.position());
 		ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (!event.isCanceled()) {
 			for (ItemStack itemstack : result) {
-				ItemEntity item = new ItemEntity(this.rat.getLevel(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), itemstack);
+				ItemEntity item = new ItemEntity(this.rat.level(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), itemstack);
 				item.setExtendedLifetime();
 				item.setNoPickUpDelay();
-				this.rat.getLevel().addFreshEntity(item);
+				this.rat.level().addFreshEntity(item);
 			}
 		}
 	}

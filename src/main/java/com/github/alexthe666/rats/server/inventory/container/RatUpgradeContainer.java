@@ -59,7 +59,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 	public void setItem(int index, ItemStack stack) {
 		ItemStack itemstack = this.items.get(index);
 		this.items.set(index, stack);
-		boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.isSameItemSameTags(stack, itemstack);
+		boolean flag = !stack.isEmpty() && stack.is(itemstack.getItem()) && ItemStack.isSameItemSameTags(stack, itemstack);
 		if (stack.getCount() > this.getMaxStackSize()) {
 			stack.setCount(this.getMaxStackSize());
 		}

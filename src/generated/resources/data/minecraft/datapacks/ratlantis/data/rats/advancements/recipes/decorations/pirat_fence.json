@@ -41,5 +41,6 @@
     "recipes": [
       "rats:pirat_fence"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

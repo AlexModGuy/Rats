@@ -41,5 +41,6 @@
     "recipes": [
       "rats:fish_barrel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

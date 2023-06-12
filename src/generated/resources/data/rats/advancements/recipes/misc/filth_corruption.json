@@ -30,5 +30,6 @@
     "recipes": [
       "rats:filth_corruption"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

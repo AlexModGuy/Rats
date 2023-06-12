@@ -67,5 +67,6 @@
     "recipes": [
       "rats:upgrades/poison_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

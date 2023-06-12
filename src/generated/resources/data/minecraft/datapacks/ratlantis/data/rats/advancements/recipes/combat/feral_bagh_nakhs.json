@@ -54,5 +54,6 @@
     "recipes": [
       "rats:feral_bagh_nakhs"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

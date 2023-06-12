@@ -41,5 +41,6 @@
     "recipes": [
       "rats:radius_stick"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

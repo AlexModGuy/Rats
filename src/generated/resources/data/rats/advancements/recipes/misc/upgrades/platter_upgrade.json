@@ -65,5 +65,6 @@
     "recipes": [
       "rats:upgrades/platter_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

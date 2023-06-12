@@ -95,5 +95,6 @@
     "recipes": [
       "rats:rat_upgrade_nonbeliever"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

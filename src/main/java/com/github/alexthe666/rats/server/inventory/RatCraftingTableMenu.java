@@ -83,7 +83,7 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 			itemstack = itemstack1.copy();
 
 			if (slotIndex == 0) {
-				itemstack1.getItem().onCraftedBy(itemstack1, player.level, player);
+				itemstack1.getItem().onCraftedBy(itemstack1, player.level(), player);
 
 				// Merge result slot to player inv
 				if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {

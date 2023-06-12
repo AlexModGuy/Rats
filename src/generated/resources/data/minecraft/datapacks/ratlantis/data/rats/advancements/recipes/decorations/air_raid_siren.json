@@ -54,5 +54,6 @@
     "recipes": [
       "rats:air_raid_siren"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

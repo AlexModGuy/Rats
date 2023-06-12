@@ -45,7 +45,7 @@ public abstract class DiggingRat extends AbstractRat {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.canDigThroughBlocks() && ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+		if (this.canDigThroughBlocks() && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
 			if (this.getOwner() == null && this.getNavigation().isDone() && this.digCooldown-- <= 0 && RatConfig.ratsDigBlocks) {
 				this.findDigTarget();
 				this.digTarget();
@@ -87,21 +87,21 @@ public abstract class DiggingRat extends AbstractRat {
 				this.playSound(RatsSoundRegistry.RAT_DIG.get(), this.getSoundVolume(), this.getVoicePitch());
 			}
 			if (i != this.previousBreakProgress) {
-				this.getLevel().destroyBlockProgress(this.getId(), this.diggingPos, i);
+				this.level().destroyBlockProgress(this.getId(), this.diggingPos, i);
 				this.previousBreakProgress = i;
 			}
 
 			if (this.breakingTime == 160) {
 				this.breakingTime = 0;
 				this.previousBreakProgress = -1;
-				BlockState prevState = this.getLevel().getBlockState(this.diggingPos);
-				this.getLevel().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().defaultBlockState());
+				BlockState prevState = this.level().getBlockState(this.diggingPos);
+				this.level().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().defaultBlockState());
 				for (Direction direction : Direction.Plane.HORIZONTAL) {
-					boolean empty = this.getLevel().isEmptyBlock(this.diggingPos.relative(direction));
-					this.getLevel().getBlockState(this.diggingPos).setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(direction), empty);
+					boolean empty = this.level().isEmptyBlock(this.diggingPos.relative(direction));
+					this.level().getBlockState(this.diggingPos).setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(direction), empty);
 				}
-				if (this.getLevel().getBlockState(this.diggingPos).is(RatsBlockRegistry.RAT_HOLE.get())) {
-					BlockEntity be = this.getLevel().getBlockEntity(this.diggingPos);
+				if (this.level().getBlockState(this.diggingPos).is(RatsBlockRegistry.RAT_HOLE.get())) {
+					BlockEntity be = this.level().getBlockEntity(this.diggingPos);
 					if (be instanceof RatHoleBlockEntity hole) {
 						hole.setImitatedBlockState(prevState);
 					}
@@ -113,7 +113,7 @@ public abstract class DiggingRat extends AbstractRat {
 			if (this.diggingPos != null && this.distanceToSqr(this.diggingPos.getX(), this.diggingPos.getY(), this.diggingPos.getZ()) > 2F) {
 				this.breakingTime = 0;
 				this.previousBreakProgress = -1;
-				this.getLevel().destroyBlockProgress(this.getId(), this.diggingPos, 0);
+				this.level().destroyBlockProgress(this.getId(), this.diggingPos, 0);
 				this.diggingPos = null;
 			}
 		} else {
@@ -126,8 +126,8 @@ public abstract class DiggingRat extends AbstractRat {
 		if (this.getNavigation().getTargetPos() != null) {
 			BlockPos digPos = this.rayTraceBlockPos(this.getNavigation().getTargetPos());
 			if (digPos != null && this.distanceToSqr(digPos.getX(), digPos.getY(), digPos.getZ()) < 2) {
-				if (this.getLevel().getBlockEntity(digPos) == null || this.getLevel().getBlockEntity(digPos) instanceof RatHoleBlockEntity) {
-					if (this.canDigBlock(this.getLevel(), digPos) && digPos.getY() == (int) Math.round(this.getY())) {
+				if (this.level().getBlockEntity(digPos) == null || this.level().getBlockEntity(digPos) instanceof RatHoleBlockEntity) {
+					if (this.canDigBlock(this.level(), digPos) && digPos.getY() == (int) Math.round(this.getY())) {
 						this.diggingPos = digPos;
 					}
 				}
@@ -137,12 +137,12 @@ public abstract class DiggingRat extends AbstractRat {
 
 	@Nullable
 	public BlockPos rayTraceBlockPos(BlockPos targetPos) {
-		BlockHitResult result = RatPathingHelper.clipWithConditions(this.getLevel(), new ClipContext(this.position(), Vec3.atCenterOf(targetPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this), false);
+		BlockHitResult result = RatPathingHelper.clipWithConditions(this.level(), new ClipContext(this.position(), Vec3.atCenterOf(targetPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this), false);
 		BlockPos pos = result.getBlockPos();
 		BlockPos sidePos = result.getBlockPos().relative(result.getDirection());
-		if (!this.getLevel().isEmptyBlock(sidePos)) {
+		if (!this.level().isEmptyBlock(sidePos)) {
 			return sidePos;
-		} else if (!this.getLevel().isEmptyBlock(pos)) {
+		} else if (!this.level().isEmptyBlock(pos)) {
 			return pos;
 		} else {
 			return null;

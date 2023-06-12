@@ -57,14 +57,14 @@ public class RattlingGun extends Entity {
 		return 0.45D;
 	}
 
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		super.positionRider(passenger);
 		float radius = 0.9F;
 		float angle = (0.01745329251F * (this.getYRot() + 150.0F));
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));
 		double extraZ = radius * Mth.cos(angle);
 		double extraY = 1.3D;
-		passenger.setPos(this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
+		callback.accept(passenger, this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class RattlingGun extends Entity {
 //				double d2 = this.random.nextGaussian() * 0.02D;
 //				double d0 = this.random.nextGaussian() * 0.02D;
 //				double d1 = this.random.nextGaussian() * 0.02D;
-//				this.getLevel().addParticle(ParticleTypes.EXPLOSION, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
+//				this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
 //			}
 //		}
 //	}
@@ -109,7 +109,7 @@ public class RattlingGun extends Entity {
 				this.getVehicle().startRiding(this, true);
 			}
 		}
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.prevFire != this.isFiring()) {
 				this.fireCooldown = 4;
 			}
@@ -180,7 +180,7 @@ public class RattlingGun extends Entity {
 				rat.setYRot(f % 360);
 				rat.yHeadRot = f % 360;
 			}
-			RattlingGunBullet bullet = new RattlingGunBullet(RatlantisEntityRegistry.RATTLING_GUN_BULLET.get(), this.getLevel(), rat);
+			RattlingGunBullet bullet = new RattlingGunBullet(RatlantisEntityRegistry.RATTLING_GUN_BULLET.get(), this.level(), rat);
 			float radius = 1.6F;
 			float angle = (0.01745329251F * (this.getYRot()));
 			double extraX = (double) (radius * Mth.sin((float) (Math.PI + angle))) + getX() + this.random.nextFloat() * 0.2F - 0.1;
@@ -194,8 +194,8 @@ public class RattlingGun extends Entity {
 			bullet.setPos(extraX, extraY, extraZ);
 			bullet.shoot(d1, d2, d3, velocity, 0.4F);
 			this.playSound(RatsSoundRegistry.RATTLING_GUN_SHOOT.get(), 0.5F, 2.3F / (this.random.nextFloat() * 0.4F + 0.8F));
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(bullet);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(bullet);
 			}
 			this.setFiring(true);
 		}

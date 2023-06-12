@@ -30,5 +30,6 @@
     "recipes": [
       "rats:scythe_to_essence"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

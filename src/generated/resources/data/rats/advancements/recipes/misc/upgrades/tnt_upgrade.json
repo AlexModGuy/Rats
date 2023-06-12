@@ -54,5 +54,6 @@
     "recipes": [
       "rats:upgrades/tnt_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

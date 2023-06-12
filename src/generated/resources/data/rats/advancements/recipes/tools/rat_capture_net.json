@@ -54,5 +54,6 @@
     "recipes": [
       "rats:rat_capture_net"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

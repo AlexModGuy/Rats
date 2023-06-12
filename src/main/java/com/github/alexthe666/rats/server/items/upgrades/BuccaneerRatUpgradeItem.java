@@ -49,7 +49,7 @@ public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements Holds
 		}
 		if (rat.rangedAttackCooldown == 0 && rat.getTarget() != null) {
 			rat.rangedAttackCooldown = 60;
-			CheeseCannonball cannonball = new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), rat.getLevel(), rat);
+			CheeseCannonball cannonball = new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), rat.level(), rat);
 			double extraY = 0.6 + rat.getY();
 			double d0 = rat.getTarget().getY() + rat.getTarget().getEyeHeight() - 1.1D;
 			double d1 = rat.getTarget().getX() - rat.getX();
@@ -61,8 +61,8 @@ public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements Holds
 			rat.setVisualFlag(true);
 			rat.visualCooldown = 4;
 			rat.playSound(RatsSoundRegistry.PIRAT_SHOOT.get(), 3.0F, 2.3F / (rat.getRandom().nextFloat() * 0.4F + 0.8F));
-			if (!rat.getLevel().isClientSide()) {
-				rat.getLevel().addFreshEntity(cannonball);
+			if (!rat.level().isClientSide()) {
+				rat.level().addFreshEntity(cannonball);
 			}
 		}
 	}

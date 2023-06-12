@@ -20,7 +20,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    mappings channel: 'official', version: '1.19.4'
+    mappings channel: 'official', version: '1.20'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -107,8 +107,8 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${project.jei_version}")
     implementation fg.deobf("curse.maven:citadel-331936:${project.citadel_version}")
     //runtimeOnly fg.deobf("curse.maven:structure-expansion-398430:3909814")
-    runtimeOnly fg.deobf("curse.maven:commandstructures-565119:${project.cs_version}")
-    runtimeOnly fg.deobf("io.github.flemmli97:debugutils:${project.minecraft_sub_version}-${project.du_version}-forge")
+    //runtimeOnly fg.deobf("curse.maven:commandstructures-565119:${project.cs_version}")
+   // runtimeOnly fg.deobf("io.github.flemmli97:debugutils:${project.minecraft_sub_version}-${project.du_version}-forge")
     //runtimeOnly fg.deobf("curse.maven:domestication-innovation-591149:4476525")
     //runtimeOnly fg.deobf("curse.maven:wanna-skate-695018:4476693")
 }

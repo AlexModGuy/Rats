@@ -16,8 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MangroveRootsBlock;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -25,7 +24,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RatTreeUtils {
@@ -93,8 +95,8 @@ public class RatTreeUtils {
 	@Nullable
 	public static Block getSaplingFromLeaves(ServerLevel level, Block leaves) {
 		try {
-			LootTable loot = level.getServer().getLootTables().get(leaves.getLootTable());
-			LootContext.Builder context = new LootContext.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe()).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
+			LootTable loot = level.getServer().getLootData().getLootTable(leaves.getLootTable());
+			LootParams.Builder context = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe()).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
@@ -175,7 +177,7 @@ public class RatTreeUtils {
 
 
 	public static Pair<Boolean, List<BlockPos>> isConnectedToLogs(Level level, BlockPos startpos) {
-		List<BlockPos> recursiveList = getBlocksNextToEachOtherMaterial(level, startpos, Arrays.asList(Material.WOOD, Material.LEAVES), 6);
+		List<BlockPos> recursiveList = getBlocksNextToEachOtherMaterial(level, startpos, 6);
 		for (BlockPos connectedpos : recursiveList) {
 			BlockState connectedblock = level.getBlockState(connectedpos);
 			if (isTreeLog(connectedblock)) {
@@ -215,21 +217,20 @@ public class RatTreeUtils {
 
 	private static final HashMap<BlockPos, Integer> rgnbmcount = new HashMap<>();
 
-	public static List<BlockPos> getBlocksNextToEachOtherMaterial(Level world, BlockPos
-			startpos, List<Material> possiblematerials, int maxDistance) {
+	public static List<BlockPos> getBlocksNextToEachOtherMaterial(Level level, BlockPos startpos, int maxDistance) {
 		List<BlockPos> checkedblocks = new ArrayList<>();
 		List<BlockPos> theblocksaround = new ArrayList<>();
-		if (possiblematerials.contains(world.getBlockState(startpos).getMaterial())) {
+		if (level.getBlockState(startpos).is(BlockTags.LOGS) || level.getBlockState(startpos).is(BlockTags.LEAVES)) {
 			theblocksaround.add(startpos);
 			checkedblocks.add(startpos);
 		}
 
 		rgnbmcount.put(startpos.immutable(), 0);
-		recursiveGetNextBlocksMaterial(world, startpos, startpos, possiblematerials, theblocksaround, checkedblocks, maxDistance);
+		recursiveGetNextBlocksMaterial(level, startpos, startpos, theblocksaround, checkedblocks, maxDistance);
 		return theblocksaround;
 	}
 
-	private static void recursiveGetNextBlocksMaterial(Level world, BlockPos startpos, BlockPos pos, List<Material> possiblematerials, List<BlockPos> theblocksaround, List<BlockPos> checkedblocks, int maxDistance) {
+	private static void recursiveGetNextBlocksMaterial(Level level, BlockPos startpos, BlockPos pos, List<BlockPos> theblocksaround, List<BlockPos> checkedblocks, int maxDistance) {
 		int rgnbmc = rgnbmcount.get(startpos);
 		if (rgnbmc > 100) {
 			return;
@@ -243,11 +244,11 @@ public class RatTreeUtils {
 			}
 			checkedblocks.add(pba);
 
-			if (possiblematerials.contains(world.getBlockState(pba).getMaterial())) {
+			if (level.getBlockState(pba).is(BlockTags.LOGS) || level.getBlockState(pba).is(BlockTags.LEAVES)) {
 				if (!theblocksaround.contains(pba)) {
 					theblocksaround.add(pba);
 					if (startpos.closerThan(pba, maxDistance)) {
-						recursiveGetNextBlocksMaterial(world, startpos, pba, possiblematerials, theblocksaround, checkedblocks, maxDistance);
+						recursiveGetNextBlocksMaterial(level, startpos, pba, theblocksaround, checkedblocks, maxDistance);
 					}
 				}
 			}

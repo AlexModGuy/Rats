@@ -41,5 +41,6 @@
     "recipes": [
       "rats:herb_bundle"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

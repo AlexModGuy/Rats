@@ -56,7 +56,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 
 	@Override
 	public void tick(TamedRat rat) {
-		if (rat.getLevel().isClientSide() && rat.getRandom().nextInt(5) == 0) {
+		if (rat.level().isClientSide() && rat.getRandom().nextInt(5) == 0) {
 			float sitAddition = 0.125f * (rat.sitProgress / 20F);
 			float radius = 0.45F - sitAddition;
 			float angle = (0.01745329251F * (rat.yBodyRot));
@@ -64,7 +64,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 			double extraZ = (double) (radius * Mth.cos(angle)) + rat.getZ();
 			double extraY = 0.12 + rat.getY() + sitAddition;
 			float particleRand = 0.4F;
-			rat.getLevel().addParticle(RatsParticleRegistry.LIGHTNING.get(),
+			rat.level().addParticle(RatsParticleRegistry.LIGHTNING.get(),
 					extraX + (double) (rat.getRandom().nextFloat() * particleRand * 2) - (double) particleRand,
 					extraY,
 					extraZ + (double) (rat.getRandom().nextFloat() * particleRand * 2) - (double) particleRand,
@@ -77,18 +77,18 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 				int searchRange = 10;
 				List<BlockPos> listOfAll = new ArrayList<>();
 				for (BlockPos pos : BlockPos.betweenClosedStream(ourPos.offset(-searchRange, -searchRange, -searchRange), ourPos.offset(searchRange, searchRange, searchRange)).map(BlockPos::immutable).toList()) {
-					BlockState state = rat.getLevel().getBlockState(pos);
-					if (!rat.getLevel().isEmptyBlock(pos) && state.canEntityDestroy(rat.getLevel(), pos, rat)) {
+					BlockState state = rat.level().getBlockState(pos);
+					if (!rat.level().isEmptyBlock(pos) && state.canEntityDestroy(rat.level(), pos, rat)) {
 						listOfAll.add(pos);
 					}
 				}
 				if (listOfAll.size() > 0) {
 					BlockPos pos = listOfAll.get(rat.getRandom().nextInt(listOfAll.size()));
-					ThrownBlock thrownBlock = new ThrownBlock(RatsEntityRegistry.THROWN_BLOCK.get(), rat.getLevel(), rat.getLevel().getBlockState(pos), rat);
+					ThrownBlock thrownBlock = new ThrownBlock(RatsEntityRegistry.THROWN_BLOCK.get(), rat.level(), rat.level().getBlockState(pos), rat);
 					thrownBlock.setPos(pos.getX() + 0.5D, pos.getY() + 2.5D, pos.getZ() + 0.5D);
 					thrownBlock.dropBlock = false;
-					if (!rat.getLevel().isClientSide()) {
-						rat.getLevel().addFreshEntity(thrownBlock);
+					if (!rat.level().isClientSide()) {
+						rat.level().addFreshEntity(thrownBlock);
 					}
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
 				} else {
@@ -98,8 +98,8 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 				rat.rangedAttackCooldown = 100;
 				int bounds = 5;
 				for (int i = 0; i < rat.getRandom().nextInt(2) + 1; i++) {
-					LaserPortal laserPortal = new LaserPortal(RatlantisEntityRegistry.LASER_PORTAL.get(), rat.getLevel(), rat.getTarget().getX() + rat.getRandom().nextInt(bounds * 2) - bounds, rat.getY() + 2, rat.getTarget().getZ() + rat.getRandom().nextInt(bounds * 2) - bounds, rat);
-					rat.getLevel().addFreshEntity(laserPortal);
+					LaserPortal laserPortal = new LaserPortal(RatlantisEntityRegistry.LASER_PORTAL.get(), rat.level(), rat.getTarget().getX() + rat.getRandom().nextInt(bounds * 2) - bounds, rat.getY() + 2, rat.getTarget().getZ() + rat.getRandom().nextInt(bounds * 2) - bounds, rat);
+					rat.level().addFreshEntity(laserPortal);
 				}
 			}
 		}

@@ -56,5 +56,6 @@
     "recipes": [
       "rats:corrupt_rat_skull"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

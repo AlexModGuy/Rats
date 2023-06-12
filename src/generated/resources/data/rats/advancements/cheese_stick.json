@@ -33,5 +33,6 @@
     [
       "get_stick"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

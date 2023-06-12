@@ -96,5 +96,6 @@
     "recipes": [
       "rats:upgrades/jury_rigged_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

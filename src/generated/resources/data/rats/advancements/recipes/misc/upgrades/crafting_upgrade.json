@@ -91,5 +91,6 @@
     "recipes": [
       "rats:upgrades/crafting_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:oratchalcum_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

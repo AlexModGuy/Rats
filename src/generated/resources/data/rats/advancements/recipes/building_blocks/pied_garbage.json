@@ -43,5 +43,6 @@
     "recipes": [
       "rats:pied_garbage"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

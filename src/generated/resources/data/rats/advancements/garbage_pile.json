@@ -33,5 +33,6 @@
     [
       "garbage_pile"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

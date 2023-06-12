@@ -30,5 +30,6 @@
     "recipes": [
       "rats:nether_cheese"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

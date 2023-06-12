@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ratlantis_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

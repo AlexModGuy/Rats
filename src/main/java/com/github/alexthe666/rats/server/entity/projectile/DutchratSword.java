@@ -50,8 +50,8 @@ public class DutchratSword extends ThrowableProjectile {
 			this.discard();
 		}
 
-		if (this.getLevel().isClientSide()) {
-			this.getLevel().addParticle(RatsParticleRegistry.PIRAT_GHOST.get(),
+		if (this.level().isClientSide()) {
+			this.level().addParticle(RatsParticleRegistry.PIRAT_GHOST.get(),
 					this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
 					this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()),
 					this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
@@ -76,9 +76,9 @@ public class DutchratSword extends ThrowableProjectile {
 			return;
 		}
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			result.getEntity().hurt(source, this.getOwner() instanceof LivingEntity living ? (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE) : 5.0F);
-			this.getLevel().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2.0F, Level.ExplosionInteraction.NONE);
+			this.level().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2.0F, Level.ExplosionInteraction.NONE);
 		}
 	}
 

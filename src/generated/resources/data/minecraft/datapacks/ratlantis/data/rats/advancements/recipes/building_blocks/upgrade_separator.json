@@ -69,5 +69,6 @@
     "recipes": [
       "rats:upgrade_separator"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

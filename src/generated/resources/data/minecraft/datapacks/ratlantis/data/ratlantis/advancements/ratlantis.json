@@ -27,5 +27,6 @@
     [
       "visit_ratlantis"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

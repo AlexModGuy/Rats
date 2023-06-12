@@ -56,5 +56,6 @@
     "recipes": [
       "rats:ratlantis_bow"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

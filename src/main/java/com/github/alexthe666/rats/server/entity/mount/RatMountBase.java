@@ -81,7 +81,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 	}
 
 	@Override
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		super.positionRider(passenger);
 		if (this.hasPassenger(passenger)) {
 			float radius = (float) this.riderXZ;
@@ -89,7 +89,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 			double extraX = radius * Mth.sin((float) (Math.PI + angle));
 			double extraZ = radius * Mth.cos(angle);
 			double extraY = this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset();
-			passenger.setPos(this.getX() + extraX, extraY, this.getZ() + extraZ);
+			callback.accept(passenger, this.getX() + extraX, extraY, this.getZ() + extraZ);
 			if (passenger instanceof LivingEntity living) {
 				living.yBodyRot = this.yBodyRot;
 			}
@@ -142,7 +142,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 		this.setDeltaMovement(vec3d.multiply(1.0D, 0.6D, 1.0D));
 		this.ambientSoundTime = 20;
 		++this.deathTime;
-		if (deathTime >= 5 && !this.getLevel().isClientSide()) {
+		if (deathTime >= 5 && !this.level().isClientSide()) {
 			if (rat != null) {
 				rat.setMountCooldown(1000);
 				rat.stopRiding();
@@ -154,7 +154,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 	@Override
 	public void remove(RemovalReason reason) {
 		TamedRat rat = this.getRat();
-		if (reason.shouldDestroy() && !this.getLevel().isClientSide() && rat != null) {
+		if (reason.shouldDestroy() && !this.level().isClientSide() && rat != null) {
 			rat.stopRiding();
 		}
 		super.remove(reason);

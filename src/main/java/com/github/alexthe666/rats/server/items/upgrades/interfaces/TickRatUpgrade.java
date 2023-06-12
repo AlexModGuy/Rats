@@ -28,14 +28,14 @@ public interface TickRatUpgrade {
 			double d1 = rat.getRandom().nextGaussian() * 0.02D;
 			if (rat.cookingProgress == 99) {
 				for (int i = 0; i < 3; i++) {
-					rat.getLevel().addParticle(ParticleTypes.HAPPY_VILLAGER, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
+					rat.level().addParticle(ParticleTypes.HAPPY_VILLAGER, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
 				}
 			} else {
 				for (int i = 0; i < amount; i++) {
-					rat.getLevel().addParticle(finishedParticle, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
+					rat.level().addParticle(finishedParticle, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
 				}
 				if (rat.getRandom().nextFloat() < chance) {
-					rat.getLevel().addParticle(rareParticle, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
+					rat.level().addParticle(rareParticle, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), d0, d1, d2);
 				}
 			}
 		}

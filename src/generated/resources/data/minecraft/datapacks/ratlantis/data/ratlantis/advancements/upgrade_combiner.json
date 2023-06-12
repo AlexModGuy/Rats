@@ -33,5 +33,6 @@
     [
       "get_combiner"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

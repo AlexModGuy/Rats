@@ -67,5 +67,6 @@
     "recipes": [
       "rats:upgrades/quarry_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -41,5 +41,6 @@
     "recipes": [
       "rats:pirat_planks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -11,8 +11,8 @@ public class TickAccelRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 
 	@Override
 	public void tick(TamedRat rat) {
-		RatUtils.accelerateTick(rat.getLevel(), rat.blockPosition().above());
-		RatUtils.accelerateTick(rat.getLevel(), rat.blockPosition());
-		RatUtils.accelerateTick(rat.getLevel(), rat.blockPosition().below());
+		RatUtils.accelerateTick(rat.level(), rat.blockPosition().above());
+		RatUtils.accelerateTick(rat.level(), rat.blockPosition());
+		RatUtils.accelerateTick(rat.level(), rat.blockPosition().below());
 	}
 }

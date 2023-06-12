@@ -24,12 +24,12 @@ import java.util.function.Function;
 public class RatPathingHelper {
 
 	public static boolean canSeeOrDigToBlock(DiggingRat rat, BlockPos destination) {
-		BlockHitResult result = clipWithConditions(rat.getLevel(), new ClipContext(rat.position(), Vec3.atCenterOf(destination), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, rat), !rat.isOnDiggingCooldown());
+		BlockHitResult result = clipWithConditions(rat.level(), new ClipContext(rat.position(), Vec3.atCenterOf(destination), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, rat), !rat.isOnDiggingCooldown());
 		return result.getType() == HitResult.Type.MISS;
 	}
 
 	public static boolean canSeeBlock(AbstractRat rat, BlockPos destination) {
-		BlockHitResult result = clipWithConditions(rat.getLevel(), new ClipContext(rat.position(), Vec3.atCenterOf(destination), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, rat), false);
+		BlockHitResult result = clipWithConditions(rat.level(), new ClipContext(rat.position(), Vec3.atCenterOf(destination), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, rat), false);
 		return result.getType() == HitResult.Type.MISS;
 	}
 

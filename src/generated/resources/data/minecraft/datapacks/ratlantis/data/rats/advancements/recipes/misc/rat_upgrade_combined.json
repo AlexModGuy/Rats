@@ -54,5 +54,6 @@
     "recipes": [
       "rats:rat_upgrade_combined"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

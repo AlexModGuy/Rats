@@ -56,5 +56,6 @@
     "recipes": [
       "rats:ratlantis_helmet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

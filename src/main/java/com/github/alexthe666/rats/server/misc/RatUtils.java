@@ -23,16 +23,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.GrassBlock;
-import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -66,15 +62,15 @@ public class RatUtils {
 		BlockPos pos;
 		BlockPos topY = BlockPos.containing(x, rat.getY(), z);
 		BlockPos bottomY = BlockPos.containing(x, rat.getY(), z);
-		while (level.getBlockState(topY).getMaterial() == Material.WATER && topY.getY() < level.getMaxBuildHeight()) {
+		while (level.getBlockState(topY).is(Blocks.WATER) && topY.getY() < level.getMaxBuildHeight()) {
 			topY = topY.above();
 		}
-		while (level.getBlockState(bottomY).getMaterial() == Material.WATER && bottomY.getY() > level.getMinBuildHeight()) {
+		while (level.getBlockState(bottomY).is(Blocks.WATER) && bottomY.getY() > level.getMinBuildHeight()) {
 			bottomY = bottomY.below();
 		}
 		for (int tries = 0; tries < 5; tries++) {
 			pos = BlockPos.containing(x, bottomY.getY() + 1 + rng.nextInt(Math.max(1, topY.getY() - bottomY.getY() - 2)), z);
-			if (level.getBlockState(pos).getMaterial() == Material.WATER) {
+			if (level.getBlockState(pos).is(Blocks.WATER)) {
 				return pos;
 			}
 		}
@@ -165,13 +161,13 @@ public class RatUtils {
 	}
 
 	public static BlockPos findLowestWater(BlockPos pos, PathfinderMob rat) {
-		if (rat.getLevel().getBlockState(pos).getMaterial() == Material.WATER) {
+		if (rat.level().getBlockState(pos).is(Blocks.WATER)) {
 			return pos;
 		} else {
 			BlockPos blockpos;
 			do {
 				blockpos = pos.below();
-			} while (blockpos.getY() > rat.getLevel().getMinBuildHeight() && rat.getLevel().getBlockState(blockpos).getMaterial() != Material.WATER);
+			} while (blockpos.getY() > rat.level().getMinBuildHeight() && rat.level().getBlockState(blockpos).is(Blocks.WATER));
 			return blockpos;
 		}
 	}
@@ -278,7 +274,7 @@ public class RatUtils {
 			newRat.setItemSlot(slot, rat.getItemBySlot(slot));
 		}
 		level.addFreshEntity(newRat);
-		newRat.getLevel().broadcastEntityEvent(rat, (byte) 83);
+		newRat.level().broadcastEntityEvent(rat, (byte) 83);
 		newRat.setYRot(rat.getYRot());
 		rat.discard();
 		return newRat;

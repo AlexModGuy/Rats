@@ -52,5 +52,6 @@
     "recipes": [
       "rats:rat_trap"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatStaffPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -50,7 +51,7 @@ public class CheeseStaffScreen extends Screen {
 			this.init();
 		}).bounds(i - maxLength / 2, j + 85, maxLength, 20).build());
 		this.addRenderableWidget(Button.builder(Component.translatable("entity.rats.rat.staff.set_home_point", getPosName()), button -> {
-			this.rat.setHomePoint(GlobalPos.of(Minecraft.getInstance().player.getLevel().dimension(), this.pos));
+			this.rat.setHomePoint(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
 			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 2));
 			this.init();
 		}).bounds(i - maxLength / 2, j + 110, maxLength, 20).build());
@@ -74,9 +75,9 @@ public class CheeseStaffScreen extends Screen {
 
 	private String getPosName() {
 		if (this.pos != null) {
-			BlockState state = this.rat.getLevel().getBlockState(this.pos);
+			BlockState state = this.rat.level().getBlockState(this.pos);
 			List<Component> namelist = null;
-			ItemStack pick = state.getBlock().getCloneItemStack(this.rat.getLevel(), this.pos, state);
+			ItemStack pick = state.getBlock().getCloneItemStack(this.rat.level(), this.pos, state);
 			try {
 				namelist = pick.getTooltipLines(Minecraft.getInstance().player, TooltipFlag.Default.NORMAL);
 			} catch (Throwable ignored) {
@@ -90,16 +91,16 @@ public class CheeseStaffScreen extends Screen {
 
 	private boolean isNoInventoryAtPos() {
 		if (this.pos != null) {
-			Level level = this.rat.getLevel();
+			Level level = this.rat.level();
 			return level.getBlockEntity(this.pos) == null;
 		}
 		return true;
 	}
 
 	@Override
-	public void render(PoseStack stack, int x, int y, float partialTicks) {
-		this.renderBackground(stack);
-		super.render(stack, x, y, partialTicks);
+	public void render(GuiGraphics graphics, int x, int y, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, x, y, partialTicks);
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
 		if (this.rat != null) {

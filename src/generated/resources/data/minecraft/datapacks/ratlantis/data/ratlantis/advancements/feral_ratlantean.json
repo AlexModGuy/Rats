@@ -76,5 +76,6 @@
       "hurt_by_feral_ratlantean",
       "killed_by_feral_ratlantean"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

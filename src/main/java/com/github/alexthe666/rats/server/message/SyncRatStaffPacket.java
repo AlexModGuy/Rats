@@ -39,21 +39,21 @@ public record SyncRatStaffPacket(int entityId, long pos, int facing, int control
 			context.get().enqueueWork(() -> {
 				Player player = context.get().getSender();
 				if (player != null) {
-					Entity e = player.getLevel().getEntity(packet.entityId());
+					Entity e = player.level().getEntity(packet.entityId());
 					if (e instanceof TamedRat rat) {
 						switch (packet.control) {
 							case 0 -> {//deposit
-								rat.setDepositPos(GlobalPos.of(player.getLevel().dimension(), BlockPos.of(packet.pos())));
+								rat.setDepositPos(GlobalPos.of(player.level().dimension(), BlockPos.of(packet.pos())));
 								rat.depositFacing = Direction.values()[packet.facing()];
 							}
 							case 1 ->//pickup
-									rat.setPickupPos(GlobalPos.of(player.getLevel().dimension(), BlockPos.of(packet.pos())));
+									rat.setPickupPos(GlobalPos.of(player.level().dimension(), BlockPos.of(packet.pos())));
 							case 2 ->//set homepoint
-									rat.setHomePoint(GlobalPos.of(player.getLevel().dimension(), BlockPos.of(packet.pos())));
+									rat.setHomePoint(GlobalPos.of(player.level().dimension(), BlockPos.of(packet.pos())));
 							case 3 ->//detach homepoint
 									rat.setHomePoint(null);
 							case 4 ->//set radius home point
-									rat.setRadiusCenter(GlobalPos.of(player.getLevel().dimension(), BlockPos.of(packet.pos())));
+									rat.setRadiusCenter(GlobalPos.of(player.level().dimension(), BlockPos.of(packet.pos())));
 							case 5 ->//set radius scale
 									rat.setRadius(packet.extraData());
 							case 6 -> {//reset radius

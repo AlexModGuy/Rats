@@ -148,7 +148,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 	public void remove(RemovalReason reason) {
 		if (!this.isAlive()) {
 			double dist = 20F;
-			for (Rat rat : this.getLevel().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
+			for (Rat rat : this.level().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
 				if (rat.isOwnedBy(this)) {
 					rat.setTame(false);
 					rat.setOwnerUUID(null);
@@ -299,7 +299,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (this.getLevel().isClientSide() && this.isSummoning()) {
+		if (this.level().isClientSide() && this.isSummoning()) {
 			double d0 = 0;
 			double d1 = 0;
 			double d2 = 0;
@@ -307,8 +307,8 @@ public class BlackDeath extends Monster implements RatSummoner {
 			float f1 = Mth.cos(f);
 			float f2 = Mth.sin(f);
 
-			this.getLevel().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
-			this.getLevel().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
+			this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
+			this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
 		}
 	}
 

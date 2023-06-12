@@ -20,6 +20,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class RatsAdvancementGenerator implements ForgeAdvancementProvider.AdvancementGenerator {
 
@@ -36,7 +37,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						new ResourceLocation(RatsMod.MODID, "textures/block/block_of_cheese.png"),
 						FrameType.TASK,
 						false, false, false)
-				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.ANY))
+				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.ANY))
 				.save(consumer, "rats:root");
 
 		Advancement trash = Advancement.Builder.advancement().parent(root).display(
@@ -105,7 +106,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.plague_doctor.title"),
 						Component.translatable("advancements.rats.plague_doctor.desc"),
 						null, FrameType.TASK, true, false, false)
-				.addCriterion("meet_doctor", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.PLAGUE_DOCTOR.get()).build())))
+				.addCriterion("meet_doctor", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.PLAGUE_DOCTOR.get()).build())))
 				.save(consumer, "rats:plague_doctor");
 
 		Advancement black_death = Advancement.Builder.advancement().parent(plague_doctor).display(
@@ -161,7 +162,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.milk_cauldron.title"),
 						Component.translatable("advancements.rats.milk_cauldron.desc"),
 						null, FrameType.TASK, true, false, false)
-				.addCriterion("curdle_milk", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.MILK_CAULDRON.get()).build()), ItemPredicate.Builder.item().of(Items.MILK_BUCKET)))
+				.addCriterion("curdle_milk", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.MILK_CAULDRON.get()).build()), ItemPredicate.Builder.item().of(Items.MILK_BUCKET)))
 				.save(consumer, "rats:milk_cauldron");
 
 		Advancement cheese = Advancement.Builder.advancement().parent(milk).display(
@@ -210,12 +211,12 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.rat_cage_decoration.desc"),
 						null, FrameType.TASK, true, false, false)
 				.requirements(RequirementsStrategy.OR)
-				.addCriterion("decorate_with_bottle", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_WATER_BOTTLE.get())))
-				.addCriterion("decorate_with_bowl", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_SEED_BOWL.get())))
-				.addCriterion("decorate_with_igloo", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemTags.IGLOOS)))
-				.addCriterion("decorate_with_hammock", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemTags.HAMMOCKS)))
-				.addCriterion("decorate_with_lantern", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_BREEDING_LANTERN.get())))
-				.addCriterion("decorate_with_wheel", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_WHEEL.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_WHEEL.get())))
+				.addCriterion("decorate_with_bottle", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_WATER_BOTTLE.get())))
+				.addCriterion("decorate_with_bowl", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_SEED_BOWL.get())))
+				.addCriterion("decorate_with_igloo", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemTags.IGLOOS)))
+				.addCriterion("decorate_with_hammock", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_DECORATED.get()).build()), ItemPredicate.Builder.item().of(RatsItemTags.HAMMOCKS)))
+				.addCriterion("decorate_with_lantern", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_BREEDING_LANTERN.get())))
+				.addCriterion("decorate_with_wheel", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(RatsBlockRegistry.RAT_CAGE_WHEEL.get()).build()), ItemPredicate.Builder.item().of(RatsItemRegistry.RAT_WHEEL.get())))
 				.save(consumer, "rats:rat_cage_decoration");
 
 		Advancement staff = Advancement.Builder.advancement().parent(tame).display(
@@ -240,7 +241,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancements.rats.ratbow_essence.desc"),
 						null, FrameType.TASK, true, false, false)
 				//TODO maybe we need custom criteria for this?
-				.addCriterion("use_essence", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item().of(RatsItemRegistry.RATBOW_ESSENCE.get()), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.TAMED_RAT.get()).build())))
+				.addCriterion("use_essence", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item().of(RatsItemRegistry.RATBOW_ESSENCE.get()), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.TAMED_RAT.get()).build())))
 				.save(consumer, "rats:ratbow_essence");
 
 		Advancement basic = Advancement.Builder.advancement().parent(tame).display(

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:ratglove_petals"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

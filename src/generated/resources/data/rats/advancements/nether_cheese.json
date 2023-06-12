@@ -33,5 +33,6 @@
     [
       "get_nether_cheese"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

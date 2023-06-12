@@ -90,11 +90,11 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (this.getLevel().isClientSide() && this.getRandom().nextFloat() < 0.15F) {
+		if (this.level().isClientSide() && this.getRandom().nextFloat() < 0.15F) {
 			double d2 = this.getRandom().nextGaussian() * 0.0075D;
 			double d0 = this.getRandom().nextGaussian() * 0.0075D;
 			double d1 = this.getRandom().nextGaussian() * 0.0075D;
-			this.getLevel().addParticle(this.isSoulVariant() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), d0, d1, d2);
+			this.level().addParticle(this.isSoulVariant() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), d0, d1, d2);
 		}
 	}
 

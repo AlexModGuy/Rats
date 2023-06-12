@@ -30,5 +30,6 @@
     "recipes": [
       "rats:marbled_cheese_brick_chiseled"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

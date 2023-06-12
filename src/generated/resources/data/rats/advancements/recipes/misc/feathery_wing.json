@@ -43,5 +43,6 @@
     "recipes": [
       "rats:feathery_wing"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

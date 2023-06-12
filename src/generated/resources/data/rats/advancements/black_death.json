@@ -56,5 +56,6 @@
       "hurt_death",
       "killed_death"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/psionic_rat_brain"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

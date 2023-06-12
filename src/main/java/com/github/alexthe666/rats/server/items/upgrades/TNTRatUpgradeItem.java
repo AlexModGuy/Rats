@@ -43,6 +43,6 @@ public class TNTRatUpgradeItem extends BaseRatUpgradeItem implements PostAttackU
 
 	@Override
 	public void afterHit(TamedRat rat, LivingEntity target) {
-		rat.getLevel().explode(null, rat.getX(), rat.getY() + (double) (rat.getBbHeight() / 16.0F), rat.getZ(), 4.0F, Level.ExplosionInteraction.MOB);
+		rat.level().explode(null, rat.getX(), rat.getY() + (double) (rat.getBbHeight() / 16.0F), rat.getZ(), 4.0F, Level.ExplosionInteraction.MOB);
 	}
 }

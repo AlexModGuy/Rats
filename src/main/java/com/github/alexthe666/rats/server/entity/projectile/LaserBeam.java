@@ -67,7 +67,7 @@ public class LaserBeam extends ArrowlikeProjectile {
 		float sqrt = (float) this.getDeltaMovement().length();
 		if (sqrt < 0.3F || this.inGround || this.horizontalCollision) {
 			this.discard();
-			Explosion explosion = this.getLevel().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 0.0F, Level.ExplosionInteraction.MOB);
+			Explosion explosion = this.level().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 0.0F, Level.ExplosionInteraction.MOB);
 			explosion.explode();
 			explosion.finalizeExplosion(true);
 		}

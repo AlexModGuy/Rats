@@ -183,5 +183,6 @@
         "min": 5.0
       }
     }
-  ]
+  ],
+  "random_sequence": "rats:chest/pet_shop_upstairs"
 }

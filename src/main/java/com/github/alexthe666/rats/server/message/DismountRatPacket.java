@@ -24,7 +24,7 @@ public record DismountRatPacket(int ratId) {
 			context.get().enqueueWork(() -> {
 				Player player = context.get().getSender();
 				if (player != null) {
-					Entity entity = player.getLevel().getEntity(packet.ratId());
+					Entity entity = player.level().getEntity(packet.ratId());
 					if (entity instanceof TamedRat rat) {
 						rat.stopRiding();
 						Vec3 dismountPos = rat.getDismountLocationForPassenger(player);

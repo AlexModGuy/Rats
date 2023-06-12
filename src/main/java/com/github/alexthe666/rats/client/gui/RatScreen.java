@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,7 +39,6 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 		this.rat = rat;
 		this.imageWidth = 192;
 		this.imageHeight = 166;
-		this.passEvents = false;
 	}
 
 	public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity entity, boolean rotating) {
@@ -89,10 +89,10 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(stack);
-		super.render(stack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(stack, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
@@ -118,36 +118,33 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(stack);
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TEXTURE_BACKDROP);
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+		this.renderBackground(graphics);
 		int k = (this.width - this.imageWidth) / 2;
 		int l = (this.height - this.imageHeight) / 2;
-		blit(stack, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
+		graphics.blit(TEXTURE, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
 		drawEntityOnScreen(k + 42, l + 64, 70, k + 51 - (float) mouseX, l + 75 - 50 - (float) mouseY, this.rat, false);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		blit(stack, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
-		blit(stack, k + 52, l + 20, this.rat.isMale() ? 0 : 16, 209, 16, 16);
+		graphics.blit(TEXTURE, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
+		graphics.blit(TEXTURE, k + 52, l + 20, this.rat.isMale() ? 0 : 16, 209, 16, 16);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		Component name = this.getTitle().getString().length() == 0 ? Component.translatable("entity.rats.rat") : this.getTitle();
-		this.font.draw(stack, name, this.imageWidth / 2.0F - this.font.width(name) / 2.0F, 6, 4210752);
+		graphics.drawString(this.font, name, this.imageWidth / 2 - this.font.width(name) / 2, 6, 4210752, false);
 
 		Component commandDesc = Component.translatable("entity.rats.rat.command.current");
-		this.font.draw(stack, commandDesc, this.imageWidth / 2.0F - this.font.width(commandDesc) / 2.0F + 38, 19, 4210752);
+		graphics.drawString(this.font, commandDesc, this.imageWidth / 2 - this.font.width(commandDesc) / 2 + 38, 19, 4210752, false);
 
 		Component command = Component.translatable(rat.getCommand().getTranslateName());
-		this.font.draw(stack, command, this.imageWidth / 2.0F - this.font.width(command) / 2.0F + 36, 31, 0XFFFFFF);
+		graphics.drawString(this.font, command, this.imageWidth / 2 - this.font.width(command) / 2 + 36, 31, 0XFFFFFF, false);
 
 		Component statusDesc = Component.translatable("entity.rats.rat.command.set");
-		this.font.draw(stack, statusDesc, this.imageWidth / 2.0F - this.font.width(statusDesc) / 2.0F + 36, 44, 4210752);
+		graphics.drawString(this.font, statusDesc, this.imageWidth / 2 - this.font.width(statusDesc) / 2 + 36, 44, 4210752, false);
 		RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
 		Component command2 = Component.translatable(command1.getTranslateName());
-		this.font.draw(stack, command2, this.imageWidth / 2.0F - this.font.width(command2) / 2.0F + 36, 56, 0XFFFFFF);
+		graphics.drawString(this.font, command2, this.imageWidth / 2 - this.font.width(command2) / 2 + 36, 56, 0XFFFFFF, false);
 		int i = (this.width - 248) / 2;
 		int j = (this.height - 166) / 2;
 		if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 22 && mouseY < j + 45) {
@@ -169,11 +166,11 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 			for (String str : list) {
 				convertedList.add(Component.literal(str));
 			}
-			this.renderTooltip(stack, Lists.transform(convertedList, Component::getVisualOrderText), mouseX - i - 30, mouseY - j + 10);
+			graphics.renderTooltip(this.font, Lists.transform(convertedList, Component::getVisualOrderText), mouseX - i - 30, mouseY - j + 10);
 		}
 		if (mouseX > i + 116 && mouseX < i + 198 && mouseY > j + 53 && mouseY < j + 69) {
 			MutableComponent commandText = Component.translatable(command1.getTranslateDescription());
-			this.renderTooltip(stack, this.font.split(commandText, 110), mouseX - i - 30, mouseY - j + 10);
+			graphics.renderTooltip(this.font, this.font.split(commandText, 110), mouseX - i - 30, mouseY - j + 10);
 		}
 	}
 }

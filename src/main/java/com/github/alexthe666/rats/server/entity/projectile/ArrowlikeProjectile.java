@@ -88,9 +88,9 @@ public abstract class ArrowlikeProjectile extends Projectile {
 		}
 
 		BlockPos blockpos = this.blockPosition();
-		BlockState blockstate = this.getLevel().getBlockState(blockpos);
+		BlockState blockstate = this.level().getBlockState(blockpos);
 		if (!blockstate.isAir() && !flag) {
-			VoxelShape voxelshape = blockstate.getCollisionShape(this.getLevel(), blockpos);
+			VoxelShape voxelshape = blockstate.getCollisionShape(this.level(), blockpos);
 			if (!voxelshape.isEmpty()) {
 				Vec3 vec31 = this.position();
 
@@ -114,14 +114,14 @@ public abstract class ArrowlikeProjectile extends Projectile {
 		if (this.inGround && !flag) {
 			if (this.lastState != blockstate && this.shouldFall()) {
 				this.startFalling();
-			} else if (!this.getLevel().isClientSide()) {
+			} else if (!this.level().isClientSide()) {
 				this.tickDespawn();
 			}
 
 			++this.inGroundTime;
 		} else {
 			this.inGroundTime = 0;
-			HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+			HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
 			if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
 				this.onHit(hitresult);
 			}
@@ -158,7 +158,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 	}
 
 	private boolean shouldFall() {
-		return this.inGround && this.getLevel().noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
+		return this.inGround && this.level().noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
 	}
 
 	private void startFalling() {
@@ -214,7 +214,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 			}
 
 			if (entity instanceof LivingEntity livingentity) {
-				if (!this.getLevel().isClientSide() && entity1 instanceof LivingEntity) {
+				if (!this.level().isClientSide() && entity1 instanceof LivingEntity) {
 					EnchantmentHelper.doPostHurtEffects(livingentity, entity1);
 					EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity);
 				}
@@ -233,7 +233,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 	protected void onHitBlock(BlockHitResult result) {
 		this.discard();
 		if (this.explodesOnHit()) {
-			Explosion explosion = this.getLevel().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 0.0F, Level.ExplosionInteraction.MOB);
+			Explosion explosion = this.level().explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 0.0F, Level.ExplosionInteraction.MOB);
 			explosion.explode();
 			explosion.finalizeExplosion(true);
 		}
@@ -257,7 +257,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 		super.readAdditionalSaveData(tag);
 		this.life = tag.getShort("life");
 		if (tag.contains("inBlockState", 10)) {
-			this.lastState = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), tag.getCompound("inBlockState"));
+			this.lastState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), tag.getCompound("inBlockState"));
 		}
 
 		this.shakeTime = tag.getByte("shake") & 255;

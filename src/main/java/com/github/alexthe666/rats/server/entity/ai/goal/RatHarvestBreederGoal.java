@@ -54,7 +54,7 @@ public class RatHarvestBreederGoal extends BaseRatHarvestGoal {
 		int radius = this.rat.getRadius();
 		AABB bb = new AABB(-radius, -radius, -radius, radius, radius, radius).move(this.rat.getSearchCenter());
 		Predicate<Animal> perRatPredicate = entity -> !(entity instanceof AbstractRat) && !entity.isBaby() && !entity.isInLove() && entity.getAge() == 0 && entity.isFood(this.rat.getMainHandItem());
-		List<Animal> list = this.rat.getLevel().getEntitiesOfClass(Animal.class, bb, perRatPredicate);
+		List<Animal> list = this.rat.level().getEntitiesOfClass(Animal.class, bb, perRatPredicate);
 		list.sort(Comparator.comparingDouble(this.rat::distanceToSqr));
 		if (!list.isEmpty()) {
 			this.setTargetEntity(list.get(0));

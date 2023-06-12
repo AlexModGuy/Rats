@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ghost_pirat_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

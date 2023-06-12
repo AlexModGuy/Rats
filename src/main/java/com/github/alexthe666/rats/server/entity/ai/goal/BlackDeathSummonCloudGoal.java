@@ -28,10 +28,10 @@ public class BlackDeathSummonCloudGoal extends BlackDeathAbstractSummonGoal {
 
 	@Override
 	public void summonEntity() {
-		PlagueCloud cloud = new PlagueCloud(RatsEntityRegistry.PLAGUE_CLOUD.get(), this.death.getLevel());
-		ForgeEventFactory.onFinalizeSpawn(cloud, (ServerLevel) this.death.getLevel(), this.death.getLevel().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+		PlagueCloud cloud = new PlagueCloud(RatsEntityRegistry.PLAGUE_CLOUD.get(), this.death.level());
+		ForgeEventFactory.onFinalizeSpawn(cloud, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 		cloud.copyPosition(this.death);
-		this.death.getLevel().addFreshEntity(cloud);
+		this.death.level().addFreshEntity(cloud);
 		cloud.setOwnerId(this.death.getUUID());
 		if (this.death.getTarget() != null) {
 			cloud.setTarget(this.death.getTarget());

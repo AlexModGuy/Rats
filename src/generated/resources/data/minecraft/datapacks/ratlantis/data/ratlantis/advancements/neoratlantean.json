@@ -35,5 +35,6 @@
     [
       "killed_neoratlantean"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -82,5 +82,6 @@
     "recipes": [
       "rats:upgrades/beast_mount_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

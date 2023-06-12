@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/dutchrat_wheel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

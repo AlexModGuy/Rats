@@ -107,7 +107,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 	public void remove(RemovalReason reason) {
 		double dist = 20F;
 		if (reason.shouldDestroy()) {
-			for (Rat rat : this.getLevel().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
+			for (Rat rat : this.level().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
 				if (rat.isOwnedBy(this)) {
 					rat.setTame(false);
 					rat.setOwnerUUID(null);
@@ -175,13 +175,13 @@ public class PiedPiper extends Raider implements RatSummoner {
 	}
 
 	public void summonRat() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.getRatsSummoned() < 6 && this.ratCooldown == 0) {
-				this.getLevel().broadcastEntityEvent(this, (byte) 82);
-				Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.getLevel());
-				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.getLevel(), this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+				this.level().broadcastEntityEvent(this, (byte) 82);
+				Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.level());
+				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 				rat.copyPosition(this);
-				this.getLevel().addFreshEntity(rat);
+				this.level().addFreshEntity(rat);
 				rat.setPlagued(false);
 				rat.setTame(false);
 				rat.setOwnerUUID(this.getUUID());
@@ -207,7 +207,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 			}
 			this.fluteTicks++;
 			if (this.fluteTicks % 10 == 0) {
-				this.getLevel().broadcastEntityEvent(this, (byte) 83);
+				this.level().broadcastEntityEvent(this, (byte) 83);
 			}
 
 			if (this.getRatsSummoned() < 6 && this.ratCooldown == 0 && this.tickCount > 20) {
@@ -241,11 +241,11 @@ public class PiedPiper extends Raider implements RatSummoner {
 		ParticleOptions p = ParticleTypes.NOTE;
 		if (type == 1) {
 			double d0 = 0.0;
-			this.getLevel().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, 0, 0);
+			this.level().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, 0, 0);
 		} else {
 			double d0 = 0.65;
 			for (int i = 0; i < 9; ++i) {
-				this.getLevel().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, 0, 0);
+				this.level().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, 0, 0);
 			}
 		}
 	}

@@ -27,9 +27,9 @@ public class RatlantisPackEvents {
 
 	@SubscribeEvent
 	public static void checkDatapackOnPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			if (event.getEntity().getLevel().getServer() != null) {
-				boolean enabled = event.getEntity().getLevel().getServer().getWorldData().getDataConfiguration().dataPacks().getEnabled().contains("ratlantis");
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+			if (event.getEntity().level().getServer() != null) {
+				boolean enabled = event.getEntity().level().getServer().getWorldData().getDataConfiguration().dataPacks().getEnabled().contains("ratlantis");
 				RatsMod.RATLANTIS_DATAPACK_ENABLED = enabled;
 				RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ChangeRatlantisStatusPacket(enabled));
 				RatsMod.LOGGER.debug("Ratlantis datapack flag has been set to {} for {} ({})", enabled, player.getDisplayName().getString(), player.getStringUUID());

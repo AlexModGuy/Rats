@@ -13,6 +13,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -57,7 +58,7 @@ public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistR
 	}
 
 	@Override
-	public void draw(ArcheologistRecipe recipe, IRecipeSlotsView view, PoseStack stack, double mouseX, double mouseY) {
-		this.arrow.draw(stack, 71, 49);
+	public void draw(ArcheologistRecipe recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.arrow.draw(graphics, 71, 49);
 	}
 }

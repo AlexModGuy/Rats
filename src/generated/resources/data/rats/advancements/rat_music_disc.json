@@ -46,5 +46,6 @@
       "mice_on_venus",
       "living_mice"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

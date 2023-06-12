@@ -39,5 +39,6 @@
     "recipes": [
       "rats:igloos/rat_igloo_orange"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

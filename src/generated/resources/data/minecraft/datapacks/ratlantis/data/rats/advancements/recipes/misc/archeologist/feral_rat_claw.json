@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/feral_rat_claw"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

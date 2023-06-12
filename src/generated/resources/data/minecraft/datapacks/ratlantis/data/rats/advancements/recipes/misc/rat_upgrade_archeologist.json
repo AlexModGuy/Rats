@@ -104,5 +104,6 @@
     "recipes": [
       "rats:rat_upgrade_archeologist"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

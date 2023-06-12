@@ -28,10 +28,10 @@ public class BlackDeathSummonBeastGoal extends BlackDeathAbstractSummonGoal {
 
 	@Override
 	public void summonEntity() {
-		PlagueBeast beast = new PlagueBeast(RatsEntityRegistry.PLAGUE_BEAST.get(), this.death.getLevel());
-		ForgeEventFactory.onFinalizeSpawn(beast, (ServerLevelAccessor) this.death.getLevel(), this.death.getLevel().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+		PlagueBeast beast = new PlagueBeast(RatsEntityRegistry.PLAGUE_BEAST.get(), this.death.level());
+		ForgeEventFactory.onFinalizeSpawn(beast, (ServerLevelAccessor) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 		beast.copyPosition(this.death);
-		this.death.getLevel().addFreshEntity(beast);
+		this.death.level().addFreshEntity(beast);
 		beast.setOwnerId(this.death.getUUID());
 		if (this.death.getTarget() != null) {
 			beast.setTarget(this.death.getTarget());

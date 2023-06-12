@@ -33,5 +33,6 @@
     [
       "get_gem"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

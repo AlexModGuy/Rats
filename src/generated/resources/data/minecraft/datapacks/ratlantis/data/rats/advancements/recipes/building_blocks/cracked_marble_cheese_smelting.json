@@ -30,5 +30,6 @@
     "recipes": [
       "rats:cracked_marble_cheese_smelting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

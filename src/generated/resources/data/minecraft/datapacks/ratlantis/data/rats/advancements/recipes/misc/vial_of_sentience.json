@@ -69,5 +69,6 @@
     "recipes": [
       "rats:vial_of_sentience"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

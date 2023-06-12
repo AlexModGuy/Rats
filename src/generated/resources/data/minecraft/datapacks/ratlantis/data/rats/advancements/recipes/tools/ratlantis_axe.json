@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ratlantis_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

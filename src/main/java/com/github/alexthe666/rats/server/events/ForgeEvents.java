@@ -55,6 +55,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -90,7 +91,7 @@ public class ForgeEvents {
 				double d0 = sheep.getRandom().nextGaussian() * 0.02D;
 				double d1 = sheep.getRandom().nextGaussian() * 0.02D;
 				double d2 = sheep.getRandom().nextGaussian() * 0.02D;
-				sheep.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsBlockRegistry.DYE_SPONGE.get())), sheep.getX() + (double) (sheep.getRandom().nextFloat() * sheep.getBbWidth() * 2.0F) - (double) sheep.getBbWidth(), sheep.getY() + (double) (sheep.getRandom().nextFloat() * sheep.getBbHeight() * 2.0F) - (double) sheep.getBbHeight(), sheep.getZ() + (double) (sheep.getRandom().nextFloat() * sheep.getBbWidth() * 2.0F) - (double) sheep.getBbWidth(), d0, d1, d2);
+				sheep.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsBlockRegistry.DYE_SPONGE.get())), sheep.getX() + (double) (sheep.getRandom().nextFloat() * sheep.getBbWidth() * 2.0F) - (double) sheep.getBbWidth(), sheep.getY() + (double) (sheep.getRandom().nextFloat() * sheep.getBbHeight() * 2.0F) - (double) sheep.getBbHeight(), sheep.getZ() + (double) (sheep.getRandom().nextFloat() * sheep.getBbWidth() * 2.0F) - (double) sheep.getBbWidth(), d0, d1, d2);
 			}
 			sheep.playSound(RatsSoundRegistry.DYE_SPONGE_USED.get(), 1.0F, 1.0F);
 
@@ -146,7 +147,7 @@ public class ForgeEvents {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void ejectRatsOutOfSack(ItemExpireEvent event) {
 		if (event.getEntity().getItem().is(RatsItemRegistry.RAT_SACK.get()) && RatSackItem.getRatsInSack(event.getEntity().getItem()) > 0) {
-			RatSackItem.ejectRatsFromSack(event.getEntity().getItem(), event.getEntity().getLevel(), event.getEntity().blockPosition());
+			RatSackItem.ejectRatsFromSack(event.getEntity().getItem(), event.getEntity().level(), event.getEntity().blockPosition());
 		}
 	}
 
@@ -171,7 +172,7 @@ public class ForgeEvents {
 					Vec3 vec3d = trueSource.getDeltaMovement();
 					double strength = 0.3D * protectors;
 					Vec3 vec3d1 = (new Vec3(event.getEntity().getX() - trueSource.getX(), 0.0D, event.getEntity().getZ() - trueSource.getZ())).normalize().scale(strength);
-					trueSource.setDeltaMovement(vec3d.x / 2.0D - vec3d1.x, trueSource.isOnGround() ? Math.min(0.4D, vec3d.y / 2.0D + strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
+					trueSource.setDeltaMovement(vec3d.x / 2.0D - vec3d1.x, trueSource.onGround() ? Math.min(0.4D, vec3d.y / 2.0D + strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
 
 				}
 
@@ -204,7 +205,7 @@ public class ForgeEvents {
 				husk.setDropChance(EquipmentSlot.HEAD, 1.0F);
 			}
 		}
-		if (event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton skele && event.getEntity().getLevel().getBiome(event.getEntity().blockPosition()).is(BiomeTags.IS_JUNGLE)) {
+		if (event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton skele && event.getEntity().level().getBiome(event.getEntity().blockPosition()).is(BiomeTags.IS_JUNGLE)) {
 			if (skele.getRandom().nextFloat() < 0.25F) {
 				skele.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT.get()));
 				skele.setDropChance(EquipmentSlot.HEAD, 1.0F);
@@ -216,18 +217,17 @@ public class ForgeEvents {
 	public static void ratlantisFishing(ItemFishedEvent event) {
 		FishingHook hook = event.getHookEntity();
 		Player player = event.getEntity();
-		Level level = player.getLevel();
+		Level level = player.level();
 		if (RatsMod.RATLANTIS_DATAPACK_ENABLED && level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
 			event.setCanceled(true);
-			LootContext.Builder builder = (new LootContext.Builder((ServerLevel) level))
+			LootParams.Builder builder = (new LootParams.Builder((ServerLevel) level))
 					.withParameter(LootContextParams.ORIGIN, hook.position())
 					//TODO this is a horrible assumption but it works for now I guess
 					.withParameter(LootContextParams.TOOL, player.getMainHandItem())
 					.withParameter(LootContextParams.KILLER_ENTITY, player)
 					.withParameter(LootContextParams.THIS_ENTITY, hook)
-					.withRandom(player.getRandom())
 					.withLuck((float) hook.luck + player.getLuck());
-			LootTable loottable = level.getServer().getLootTables().get(RatsLootRegistry.RATLANTIS_FISH);
+			LootTable loottable = level.getServer().getLootData().getLootTable(RatsLootRegistry.RATLANTIS_FISH);
 			List<ItemStack> list = loottable.getRandomItems(builder.create(LootContextParamSets.FISHING));
 
 			for (ItemStack itemstack : list) {
@@ -309,7 +309,7 @@ public class ForgeEvents {
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		if (event.getEntity() instanceof Player) {
-			List<TamedRat> list = event.getEntity().getLevel().getEntitiesOfClass(TamedRat.class, event.getEntity().getBoundingBox().inflate(RatConfig.ratVoodooDistance), rat -> rat.isTame() && rat.isOwnedBy(event.getEntity()) && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_VOODOO.get()));
+			List<TamedRat> list = event.getEntity().level().getEntitiesOfClass(TamedRat.class, event.getEntity().getBoundingBox().inflate(RatConfig.ratVoodooDistance), rat -> rat.isTame() && rat.isOwnedBy(event.getEntity()) && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_VOODOO.get()));
 			if (!list.isEmpty()) {
 				float damage = event.getAmount() / list.size();
 				event.setCanceled(true);
@@ -329,7 +329,7 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
-		if (event.getEntity().getLevel().isClientSide() && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+		if (event.getEntity().level().isClientSide() && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
 			RandomSource rand = event.getEntity().getRandom();
 			if (rand.nextInt(4) == 0) {
 				int entitySize = 1;
@@ -340,7 +340,7 @@ public class ForgeEvents {
 					float motionX = rand.nextFloat() * 0.1F - 0.05F;
 					float motionZ = rand.nextFloat() * 0.1F - 0.05F;
 
-					event.getEntity().getLevel().addParticle(RatsParticleRegistry.FLEA.get(),
+					event.getEntity().level().addParticle(RatsParticleRegistry.FLEA.get(),
 							event.getEntity().getX() + (double) (rand.nextFloat() * event.getEntity().getBbWidth() * 2F) - (double) event.getEntity().getBbWidth(),
 							event.getEntity().getY() + (double) (rand.nextFloat() * event.getEntity().getBbHeight()),
 							event.getEntity().getZ() + (double) (rand.nextFloat() * event.getEntity().getBbWidth() * 2F) - (double) event.getEntity().getBbWidth(),
@@ -373,7 +373,7 @@ public class ForgeEvents {
 	}
 
 	public static void maybeAddAndSyncPlague(@Nullable LivingEntity attacker, LivingEntity victim, int duration, int amplifier) {
-		if (RatConfig.plagueSpread && !victim.getLevel().isClientSide()) {
+		if (RatConfig.plagueSpread && !victim.level().isClientSide()) {
 			if (attacker == null || attacker.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
 				MobEffectInstance plague = new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), duration, amplifier);
 				if (!victim.hasEffect(RatsEffectRegistry.PLAGUE.get()) && victim.canBeAffected(plague)) {
@@ -394,11 +394,11 @@ public class ForgeEvents {
 					totalDmg += modifier.getAmount();
 				}
 				player.playSound(RatsSoundRegistry.PLAGUE_CLOUD_SHOOT.get(), 1, 1);
-				PlagueShot shot = new PlagueShot(RatsEntityRegistry.PLAGUE_SHOT.get(), player.getLevel(), player, totalDmg * 0.5F);
+				PlagueShot shot = new PlagueShot(RatsEntityRegistry.PLAGUE_SHOT.get(), player.level(), player, totalDmg * 0.5F);
 				Vec3 vec3 = player.getViewVector(1.0F);
 
 				shot.shoot(vec3.x(), vec3.y(), vec3.z(), 1.0F, 0.5F);
-				player.getLevel().addFreshEntity(shot);
+				player.level().addFreshEntity(shot);
 			}
 		}
 	}

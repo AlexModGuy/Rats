@@ -69,5 +69,6 @@
     "recipes": [
       "rats:upgrades/chef_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

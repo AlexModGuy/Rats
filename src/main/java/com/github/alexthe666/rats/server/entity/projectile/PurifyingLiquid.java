@@ -49,9 +49,9 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 
 	@Override
 	protected void onHit(HitResult result) {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			AABB aabb = this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
-			List<LivingEntity> list = this.getLevel().getEntitiesOfClass(LivingEntity.class, aabb);
+			List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, aabb);
 			if (!list.isEmpty()) {
 				for (LivingEntity living : list) {
 					if (living.isAffectedByPotions()) {
@@ -59,14 +59,14 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 						if (d0 < 16.0D) {
 							if (this.getEntityData().get(NETHER)) {
 								if (living instanceof DemonRat) {
-									Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.getLevel());
+									Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.level());
 									rat.copyPosition(living);
-									if (!this.getLevel().isClientSide()) {
-										ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.getLevel(), this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+									if (!this.level().isClientSide()) {
+										ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
 									}
 									rat.setTame(false);
 									rat.setOwnerUUID(null);
-									this.getLevel().addFreshEntity(rat);
+									this.level().addFreshEntity(rat);
 									living.discard();
 								}
 							} else {
@@ -87,7 +87,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 					}
 				}
 			}
-			this.getLevel().levelEvent(2002, this.blockPosition(), this.getEntityData().get(NETHER) ? 0XAD141E : 0XBFDFE2);
+			this.level().levelEvent(2002, this.blockPosition(), this.getEntityData().get(NETHER) ? 0XAD141E : 0XBFDFE2);
 			this.discard();
 		}
 	}

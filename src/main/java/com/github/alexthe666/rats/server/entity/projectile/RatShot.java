@@ -58,7 +58,7 @@ public class RatShot extends ThrowableProjectile {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 18; ++i) {
-				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.CHEESE.get())), this.getX(), this.getY(), this.getZ(), ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.CHEESE.get())), this.getX(), this.getY(), this.getZ(), ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class RatShot extends ThrowableProjectile {
 		}
 		Entity hitEntity = null;
 		float damage = this.getOwner() instanceof Player ? 6 : 8;
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (result instanceof EntityHitResult entityResult) {
 				if ((this.getOwner() == null || !entityResult.getEntity().isAlliedTo(this.getOwner())) && entityResult.getEntity() instanceof LivingEntity) {
 					entityResult.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), damage);
@@ -90,7 +90,7 @@ public class RatShot extends ThrowableProjectile {
 			}
 			Entity thrower = this.getOwner();
 			if (thrower != null) {
-				AbstractRat rat = thrower instanceof Player ? new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.getLevel()) : new Rat(RatsEntityRegistry.RAT.get(), this.getLevel());
+				AbstractRat rat = thrower instanceof Player ? new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level()) : new Rat(RatsEntityRegistry.RAT.get(), this.level());
 				rat.copyPosition(this);
 				if (thrower instanceof Player player) {
 					rat.tame(player);
@@ -106,14 +106,14 @@ public class RatShot extends ThrowableProjectile {
 				if (thrower instanceof RatSummoner ratter) {
 					ratter.setRatsSummoned(ratter.getRatsSummoned() + 1);
 				}
-				if (this.getLevel() instanceof ServerLevelAccessor accessor) {
-					ForgeEventFactory.onFinalizeSpawn(rat, accessor, this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
+				if (this.level() instanceof ServerLevelAccessor accessor) {
+					ForgeEventFactory.onFinalizeSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
 				}
 				rat.setColorVariant(this.getColorVariant());
 				if (rat instanceof Rat plagueable) {
 					plagueable.setPlagued(false);
 				}
-				this.getLevel().addFreshEntity(rat);
+				this.level().addFreshEntity(rat);
 			}
 
 			this.discard();
@@ -130,7 +130,7 @@ public class RatShot extends ThrowableProjectile {
 
 	public BlockPos getLightPosition() {
 		BlockPos pos = this.blockPosition();
-		if (!this.getLevel().getBlockState(pos).canOcclude()) {
+		if (!this.level().getBlockState(pos).canOcclude()) {
 			return pos.above();
 		}
 		return pos;

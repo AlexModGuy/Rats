@@ -30,5 +30,6 @@
     "recipes": [
       "rats:tubes/rat_tube_plastic"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

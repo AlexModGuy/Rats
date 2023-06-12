@@ -69,5 +69,6 @@
     "recipes": [
       "rats:upgrade_combiner"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

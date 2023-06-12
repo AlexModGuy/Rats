@@ -28,5 +28,6 @@
     "recipes": [
       "rats:block_of_cheese"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -66,7 +66,7 @@ public class PlagueBeast extends FeralRatlantean {
 		double d0 = 0D;
 		double d1 = this.getRandom().nextGaussian() * 0.05D + 0.5D;
 		double d2 = 0D;
-		this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+		this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 		if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof BlackDeath death) {
 			if (death.getTarget() != null && death.getTarget().isAlive()) {
 				this.setTarget(death.getTarget());
@@ -79,7 +79,7 @@ public class PlagueBeast extends FeralRatlantean {
 				double extraZ = (double) (radius * Mth.cos(angle)) + death.getZ();
 				BlockPos runToPos = BlockPos.containing(extraX, death.getY(), extraZ);
 				int steps = 0;
-				while (this.getLevel().getBlockState(runToPos).isSolidRender(this.getLevel(), runToPos) && steps < 10) {
+				while (this.level().getBlockState(runToPos).isSolidRender(this.level(), runToPos) && steps < 10) {
 					runToPos = runToPos.above();
 					steps++;
 				}
@@ -156,12 +156,12 @@ public class PlagueBeast extends FeralRatlantean {
 	public LivingEntity getOwner() {
 		try {
 			UUID uuid = this.getOwnerId();
-			LivingEntity player = uuid == null ? null : this.getLevel().getPlayerByUUID(uuid);
+			LivingEntity player = uuid == null ? null : this.level().getPlayerByUUID(uuid);
 			if (player != null) {
 				return player;
 			} else {
-				if (!this.getLevel().isClientSide()) {
-					Entity entity = this.getLevel().getServer().getLevel(this.getLevel().dimension()).getEntity(uuid);
+				if (!this.level().isClientSide()) {
+					Entity entity = this.level().getServer().getLevel(this.level().dimension()).getEntity(uuid);
 					if (entity instanceof LivingEntity living) {
 						return living;
 					}

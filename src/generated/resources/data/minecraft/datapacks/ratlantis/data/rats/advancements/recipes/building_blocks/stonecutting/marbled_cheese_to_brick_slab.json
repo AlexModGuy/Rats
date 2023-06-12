@@ -30,5 +30,6 @@
     "recipes": [
       "rats:stonecutting/marbled_cheese_to_brick_slab"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

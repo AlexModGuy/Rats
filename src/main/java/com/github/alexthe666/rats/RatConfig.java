@@ -13,6 +13,7 @@ public class RatConfig {
 	public static boolean ratAngelGlint = true;
 
 	// SERVER
+	public static boolean ratlantisEnabledByDefault = false;
 	public static int ratSpawnDecrease = 5;
 	public static int piperSpawnDecrease = 2;
 	public static boolean ratsSpawnLikeMonsters = true;
@@ -113,6 +114,8 @@ public class RatConfig {
 
 	public static void bakeServer() {
 		try {
+			ratlantisEnabledByDefault = ConfigHolder.SERVER.ratlantisEnabledByDefault.get();
+
 			ratSpawnDecrease = ConfigHolder.SERVER.ratSpawnDecrease.get();
 			piperSpawnDecrease = ConfigHolder.SERVER.piperSpawnDecrease.get();
 

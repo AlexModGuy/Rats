@@ -52,5 +52,6 @@
     "recipes": [
       "rats:upgrades/speed_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -48,7 +48,7 @@ public class ChefRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpg
 					rat.setItemInHand(InteractionHand.MAIN_HAND, burntItem);
 				} else {
 					if (!rat.tryDepositItemInContainers(burntItem)) {
-						if (!rat.getLevel().isClientSide()) {
+						if (!rat.level().isClientSide()) {
 							rat.spawnAtLocation(burntItem, 0.25F);
 						}
 					}
@@ -64,9 +64,9 @@ public class ChefRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpg
 			return specialChefRecipe.copy();
 		}
 
-		Optional<SmeltingRecipe> optional = rat.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), rat.getLevel());
+		Optional<SmeltingRecipe> optional = rat.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), rat.level());
 		if (optional.isPresent()) {
-			ItemStack itemstack = optional.get().getResultItem(rat.getLevel().registryAccess());
+			ItemStack itemstack = optional.get().getResultItem(rat.level().registryAccess());
 			if (!itemstack.isEmpty()) {
 				ItemStack itemstack1 = itemstack.copy();
 				itemstack1.setCount(stack.getCount() * itemstack.getCount());

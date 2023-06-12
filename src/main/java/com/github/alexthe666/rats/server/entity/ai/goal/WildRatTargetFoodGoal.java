@@ -44,8 +44,8 @@ public class WildRatTargetFoodGoal extends Goal {
 		}
 
 		//sort through items we can grab, get the closest one
-		List<ItemEntity> items = this.rat.getLevel().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(), item ->
-				(item.isOnGround() || item.isInWater()) &&
+		List<ItemEntity> items = this.rat.level().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(), item ->
+				(item.onGround() || item.isInWater()) &&
 						RatUtils.isRatFood(item.getItem()));
 		if (items.isEmpty()) return false;
 
@@ -84,7 +84,7 @@ public class WildRatTargetFoodGoal extends Goal {
 			ItemStack duplicate = this.targetItem.getItem().copy();
 			duplicate.setCount(1);
 			this.targetItem.getItem().shrink(1);
-			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.getLevel().isClientSide()) {
+			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.level().isClientSide()) {
 				this.rat.spawnAtLocation(this.rat.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
 			}
 			this.rat.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
@@ -93,10 +93,10 @@ public class WildRatTargetFoodGoal extends Goal {
 					wildBoi.setFleePos(this.targetItem.blockPosition());
 					wildBoi.wildTrust += 10 + wildBoi.getRandom().nextInt(10);
 					wildBoi.cheeseFeedings++;
-					wildBoi.getLevel().broadcastEntityEvent(wildBoi, (byte) 82);
+					wildBoi.level().broadcastEntityEvent(wildBoi, (byte) 82);
 					if (wildBoi.wildTrust >= 100 && wildBoi.getRandom().nextInt(3) == 0 || wildBoi.cheeseFeedings >= 15) {
-						TamedRat tamedRat = RatUtils.tameRat(wildBoi, wildBoi.getLevel());
-						tamedRat.getLevel().broadcastEntityEvent(wildBoi, (byte) 83);
+						TamedRat tamedRat = RatUtils.tameRat(wildBoi, wildBoi.level());
+						tamedRat.level().broadcastEntityEvent(wildBoi, (byte) 83);
 						tamedRat.tame(targetPlayer);
 						tamedRat.setCommand(RatCommand.SIT);
 					}

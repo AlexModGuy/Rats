@@ -56,5 +56,6 @@
     "recipes": [
       "rats:gilded_rat_flute"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

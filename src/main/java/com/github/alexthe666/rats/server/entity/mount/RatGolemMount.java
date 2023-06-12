@@ -61,9 +61,9 @@ public class RatGolemMount extends RatMountBase {
 			int i = Mth.floor(this.getX());
 			int j = Mth.floor(this.getY() - (double) 0.2F);
 			int k = Mth.floor(this.getZ());
-			BlockState blockstate = this.getLevel().getBlockState(new BlockPos(i, j, k));
+			BlockState blockstate = this.level().getBlockState(new BlockPos(i, j, k));
 			if (!blockstate.isAir()) {
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate), this.getX() + ((double) this.getRandom().nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + ((double) this.getRandom().nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.getRandom().nextFloat() - 0.5D), 0.5D, ((double) this.getRandom().nextFloat() - 0.5D) * 4.0D);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate), this.getX() + ((double) this.getRandom().nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + ((double) this.getRandom().nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.getRandom().nextFloat() - 0.5D), 0.5D, ((double) this.getRandom().nextFloat() - 0.5D) * 4.0D);
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class RatGolemMount extends RatMountBase {
 
 	public boolean doHurtTarget(Entity entity) {
 		this.attackTimer = 10;
-		this.getLevel().broadcastEntityEvent(this, (byte) 4);
+		this.level().broadcastEntityEvent(this, (byte) 4);
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) (7 + this.getRandom().nextInt(15)));
 		if (flag) {
 			entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.4F, 0.0D));

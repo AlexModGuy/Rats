@@ -25,12 +25,12 @@ public class CopyInputStateRuleProcessor extends StructureProcessor {
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader reader, BlockPos oldPos, BlockPos newPos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		RandomSource randomsource = RandomSource.create(Mth.getSeed(newInfo.pos));
-		BlockState blockstate = reader.getBlockState(newInfo.pos);
+		RandomSource randomsource = RandomSource.create(Mth.getSeed(newInfo.pos()));
+		BlockState blockstate = reader.getBlockState(newInfo.pos());
 
 		for (ProcessorRule processorrule : this.rules) {
-			if (processorrule.test(newInfo.state, blockstate, oldInfo.pos, newInfo.pos, newPos, randomsource)) {
-				return new StructureTemplate.StructureBlockInfo(newInfo.pos, processorrule.getOutputState().getBlock().withPropertiesOf(oldInfo.state), processorrule.getOutputTag());
+			if (processorrule.test(newInfo.state(), blockstate, oldInfo.pos(), newInfo.pos(), newPos, randomsource)) {
+				return new StructureTemplate.StructureBlockInfo(newInfo.pos(), processorrule.getOutputState().getBlock().withPropertiesOf(oldInfo.state()), processorrule.getOutputTag(randomsource, newInfo.nbt()));
 			}
 		}
 

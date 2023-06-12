@@ -33,5 +33,6 @@
     [
       "find_contaminated_food"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

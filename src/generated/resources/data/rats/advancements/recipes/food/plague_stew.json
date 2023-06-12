@@ -69,5 +69,6 @@
     "recipes": [
       "rats:plague_stew"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

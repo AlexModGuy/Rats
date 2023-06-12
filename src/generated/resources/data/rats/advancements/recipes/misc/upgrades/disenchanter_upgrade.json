@@ -80,5 +80,6 @@
     "recipes": [
       "rats:upgrades/disenchanter_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

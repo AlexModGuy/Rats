@@ -31,8 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +50,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		Arrays.fill(this.armorDropChances, 0.1F);
 		Arrays.fill(this.handDropChances, 0.1F);
 		this.moveControl = new MoveControl(this);
-		this.navigation = new WaterBoundPathNavigation(this, this.getLevel());
+		this.navigation = new WaterBoundPathNavigation(this, this.level());
 		this.setCombatTask();
 	}
 
@@ -80,7 +80,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 	}
 
 	public void setCombatTask() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.goalSelector.removeGoal(this.meleeAttackGoal);
 			this.goalSelector.removeGoal(this.fireCannonballGoal);
 			if (this.isPassenger()) {
@@ -121,10 +121,10 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(RatlantisItemRegistry.PIRAT_CUTLASS.get()));
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.PIRAT_HAT.get()));
 		if (!this.isPassenger()) {
-			PiratBoat boat = new PiratBoat(RatlantisEntityRegistry.PIRAT_BOAT.get(), this.getLevel());
+			PiratBoat boat = new PiratBoat(RatlantisEntityRegistry.PIRAT_BOAT.get(), this.level());
 			boat.copyPosition(this);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(boat);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(boat);
 			}
 			this.startRiding(boat, true);
 		}
@@ -135,8 +135,8 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 	@Override
 	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason) {
 		BlockPos pos = this.blockPosition();
-		BlockState state = this.getLevel().getBlockState(pos.below());
-		return this.getLevel().getDifficulty() != Difficulty.PEACEFUL && state.getMaterial() == Material.WATER && this.getRandom().nextFloat() < 0.1F;
+		BlockState state = this.level().getBlockState(pos.below());
+		return this.level().getDifficulty() != Difficulty.PEACEFUL && state.is(Blocks.WATER) && this.getRandom().nextFloat() < 0.1F;
 	}
 
 	@Override

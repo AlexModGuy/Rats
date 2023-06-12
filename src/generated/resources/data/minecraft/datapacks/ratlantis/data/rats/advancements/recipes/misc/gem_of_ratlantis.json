@@ -41,5 +41,6 @@
     "recipes": [
       "rats:gem_of_ratlantis"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

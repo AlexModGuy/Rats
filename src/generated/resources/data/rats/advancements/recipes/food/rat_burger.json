@@ -43,5 +43,6 @@
     "recipes": [
       "rats:rat_burger"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -29,5 +29,6 @@
     [
       "catch_plague"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

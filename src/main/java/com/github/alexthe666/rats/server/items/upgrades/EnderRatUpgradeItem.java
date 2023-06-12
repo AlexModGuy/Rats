@@ -32,7 +32,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 
 	@Override
 	public void tick(TamedRat rat) {
-		if (!rat.getLevel().isClientSide()) {
+		if (!rat.level().isClientSide()) {
 			if (rat.getNavigation().getPath() != null && rat.getNavigation().getPath().getEndNode() != null && !rat.isPassenger()) {
 				Vec3 target = new Vec3(rat.getNavigation().getPath().getEndNode().x, rat.getNavigation().getPath().getEndNode().y, rat.getNavigation().getPath().getEndNode().z);
 				if (rat.getRatDistanceCenterSq(target.x(), target.y(), target.z()) > 20 || !rat.getNavigation().getPath().canReach()) {
@@ -41,7 +41,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 				}
 			}
 		} else {
-			rat.getLevel().addParticle(ParticleTypes.PORTAL, rat.getRandomX(0.25D), rat.getRandomY() - 0.25D, rat.getRandomZ(0.25D), (rat.getRandom().nextDouble() - 0.5D) * 2.0D, -rat.getRandom().nextDouble(), (rat.getRandom().nextDouble() - 0.5D) * 2.0D);
+			rat.level().addParticle(ParticleTypes.PORTAL, rat.getRandomX(0.25D), rat.getRandomY() - 0.25D, rat.getRandomZ(0.25D), (rat.getRandom().nextDouble() - 0.5D) * 2.0D, -rat.getRandom().nextDouble(), (rat.getRandom().nextDouble() - 0.5D) * 2.0D);
 		}
 	}
 }

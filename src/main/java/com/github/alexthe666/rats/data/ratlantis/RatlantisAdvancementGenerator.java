@@ -38,7 +38,7 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 						Component.translatable("advancements.ratlantis.root.desc"),
 						new ResourceLocation(RatsMod.MODID, "textures/block/marbled_cheese.png"),
 						FrameType.TASK, false, false, false)
-				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.ANY))
+				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.ANY))
 				.save(consumer, "ratlantis:root");
 
 		Advancement token = Advancement.Builder.advancement().parent(root).display(

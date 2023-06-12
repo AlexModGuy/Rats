@@ -52,5 +52,6 @@
     "recipes": [
       "rats:hammocks/rat_hammock_lime"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

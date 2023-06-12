@@ -85,5 +85,6 @@
       "discover_stew",
       "discover_liquid"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

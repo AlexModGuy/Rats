@@ -33,5 +33,6 @@
     [
       "make_trap"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

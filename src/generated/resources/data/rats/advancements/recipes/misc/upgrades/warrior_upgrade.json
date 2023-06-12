@@ -91,5 +91,6 @@
     "recipes": [
       "rats:upgrades/warrior_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

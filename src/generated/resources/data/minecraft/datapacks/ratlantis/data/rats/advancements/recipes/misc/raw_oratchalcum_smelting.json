@@ -30,5 +30,6 @@
     "recipes": [
       "rats:raw_oratchalcum_smelting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

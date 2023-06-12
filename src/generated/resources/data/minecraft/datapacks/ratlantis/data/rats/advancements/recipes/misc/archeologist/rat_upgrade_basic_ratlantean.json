@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/rat_upgrade_basic_ratlantean"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

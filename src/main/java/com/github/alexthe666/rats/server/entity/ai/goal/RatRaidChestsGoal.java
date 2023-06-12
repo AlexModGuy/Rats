@@ -38,7 +38,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 			return false;
 		}
 		if (this.nextStartTick <= 0) {
-			if (!ForgeEventFactory.getMobGriefingEvent(this.entity.getLevel(), this.entity)) {
+			if (!ForgeEventFactory.getMobGriefingEvent(this.entity.level(), this.entity)) {
 				return false;
 			}
 		}
@@ -54,17 +54,17 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 	public void tick() {
 		super.tick();
 		if (this.isReachedTarget()) {
-			BlockEntity entity = this.entity.getLevel().getBlockEntity(this.blockPos);
+			BlockEntity entity = this.entity.level().getBlockEntity(this.blockPos);
 			if (entity instanceof Container feeder) {
 				double distance = this.entity.distanceToSqr(this.blockPos.getX(), this.blockPos.getY(), this.blockPos.getZ());
 				if (distance < 6.25F && distance > 2.72F) {
 					this.toggleChest(feeder, true);
-					this.entity.getLevel().playSound(null, this.blockPos, SoundEvents.CHEST_OPEN, SoundSource.BLOCKS);
+					this.entity.level().playSound(null, this.blockPos, SoundEvents.CHEST_OPEN, SoundSource.BLOCKS);
 				}
 				if (distance <= 2.89F) {
 					this.toggleChest(feeder, false);
-					this.entity.getLevel().playSound(null, this.blockPos, SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS);
-					ItemStack stack = RatUtils.getFoodFromInventory(feeder, this.entity.getLevel().getRandom());
+					this.entity.level().playSound(null, this.blockPos, SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS);
+					ItemStack stack = RatUtils.getFoodFromInventory(feeder, this.entity.level().getRandom());
 					if (stack != ItemStack.EMPTY) {
 						ItemStack duplicate = stack.copy();
 						duplicate.setCount(1);
@@ -74,7 +74,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 						this.entity.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
 						stack.shrink(1);
 						if (RatConfig.ratsContaminateFood && this.entity.getRandom().nextInt(3) == 0) {
-							int slotToReplace = RatUtils.getContaminatedSlot(feeder, this.entity.getLevel().getRandom());
+							int slotToReplace = RatUtils.getContaminatedSlot(feeder, this.entity.level().getRandom());
 							if (slotToReplace != -1) {
 								if (feeder.getItem(slotToReplace).isEmpty()) {
 									ItemStack stack1 = new ItemStack(RatsItemRegistry.CONTAMINATED_FOOD.get());
@@ -96,7 +96,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 		if (!reader.getBlockState(pos).is(RatsBlockTags.UNRAIDABLE_CONTAINERS)) {
 			if (reader.getBlockState(pos).getBlock() instanceof EntityBlock) {
 				if (!RatPathingHelper.canSeeOrDigToBlock(this.entity, pos)) return false;
-				if (RatUtils.isBlockProtected(this.entity.getLevel(), pos, this.entity)) return false;
+				if (RatUtils.isBlockProtected(this.entity.level(), pos, this.entity)) return false;
 				BlockEntity entity = reader.getBlockEntity(pos);
 				if (entity instanceof Container inventory) {
 					try {
@@ -120,9 +120,9 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 	public void toggleChest(Container te, boolean open) {
 		if (te instanceof ChestBlockEntity chest) {
 			if (open) {
-				this.entity.getLevel().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 1);
+				this.entity.level().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 1);
 			} else {
-				this.entity.getLevel().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
+				this.entity.level().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
 
 			}
 		}

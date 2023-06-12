@@ -39,7 +39,7 @@ public class RatTubeMoveControl extends RatMoveControl {
 			PathNavigation pathnavigate = this.rat.getNavigation();
 
 			NodeEvaluator nodeprocessor = pathnavigate.getNodeEvaluator();
-			if (nodeprocessor.getBlockPathType(this.rat.getLevel(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != BlockPathTypes.WALKABLE) {
+			if (nodeprocessor.getBlockPathType(this.rat.level(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != BlockPathTypes.WALKABLE) {
 				this.strafeForwards = 1.0F;
 				this.strafeRight = 0.0F;
 				f1 = f;
@@ -68,7 +68,7 @@ public class RatTubeMoveControl extends RatMoveControl {
 		} else if (this.operation == MoveControl.Operation.JUMPING) {
 			this.rat.setSpeed((float) (this.speedModifier * this.rat.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
 			this.rat.climbingTube = true;
-			if (this.rat.isOnGround()) {
+			if (this.rat.onGround()) {
 				this.operation = MoveControl.Operation.WAIT;
 			}
 		} else {

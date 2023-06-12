@@ -15,7 +15,7 @@ public class AristocratRatUpgradeItem extends BaseRatUpgradeItem implements Tick
 	public void tick(TamedRat rat) {
 		if (rat.coinCooldown <= 0) {
 			rat.coinCooldown = rat.getRandom().nextInt(6000) + 6000;
-			if (!rat.getLevel().isClientSide()) {
+			if (!rat.level().isClientSide()) {
 				rat.spawnAtLocation(new ItemStack(RatsItemRegistry.TINY_COIN.get(), 1 + rat.getRandom().nextInt(2)), 0.0F);
 			}
 			rat.playSound(RatsSoundRegistry.RAT_MAKE_COIN.get(), 1.0F, rat.getVoicePitch());

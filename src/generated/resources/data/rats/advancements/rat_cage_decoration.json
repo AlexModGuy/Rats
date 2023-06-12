@@ -3,99 +3,147 @@
   "criteria": {
     "decorate_with_bottle": {
       "conditions": {
-        "item": {
-          "items": [
-            "rats:rat_water_bottle"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_decorated"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_decorated"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "rats:rat_water_bottle"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     },
     "decorate_with_bowl": {
       "conditions": {
-        "item": {
-          "items": [
-            "rats:rat_seed_bowl"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_decorated"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_decorated"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "rats:rat_seed_bowl"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     },
     "decorate_with_hammock": {
       "conditions": {
-        "item": {
-          "tag": "rats:hammocks"
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_decorated"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_decorated"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "tag": "rats:hammocks"
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     },
     "decorate_with_igloo": {
       "conditions": {
-        "item": {
-          "tag": "rats:igloos"
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_decorated"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_decorated"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "tag": "rats:igloos"
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     },
     "decorate_with_lantern": {
       "conditions": {
-        "item": {
-          "items": [
-            "rats:rat_breeding_lantern"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_breeding_lantern"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_breeding_lantern"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "rats:rat_breeding_lantern"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     },
     "decorate_with_wheel": {
       "conditions": {
-        "item": {
-          "items": [
-            "rats:rat_wheel"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:rat_cage_wheel"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:rat_cage_wheel"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "rats:rat_wheel"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     }
@@ -124,5 +172,6 @@
       "decorate_with_lantern",
       "decorate_with_wheel"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

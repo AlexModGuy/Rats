@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ratlantis_pickaxe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

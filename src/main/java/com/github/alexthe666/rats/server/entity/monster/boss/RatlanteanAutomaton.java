@@ -63,7 +63,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 	}
 
 	public boolean canDestroyBlock(BlockState state, BlockPos pos) {
-		return !state.is(BlockTags.WITHER_IMMUNE) && state.getDestroySpeed(this.getLevel(), pos) >= 0.0F;
+		return !state.is(BlockTags.WITHER_IMMUNE) && state.getDestroySpeed(this.level(), pos) >= 0.0F;
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		if (this.blockBreakCounter > 0) {
 			--this.blockBreakCounter;
 
-			if (this.blockBreakCounter == 0 && ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+			if (this.blockBreakCounter == 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
 				int i1 = Mth.floor(this.getY());
 				int l1 = Mth.floor(this.getX());
 				int i2 = Mth.floor(this.getZ());
@@ -118,17 +118,17 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 							int k = i1 + j;
 							int l = i2 + l2;
 							BlockPos blockpos = new BlockPos(i3, k, l);
-							BlockState state = this.getLevel().getBlockState(blockpos);
+							BlockState state = this.level().getBlockState(blockpos);
 							Block block = state.getBlock();
-							if (!(block instanceof LiquidBlock) && this.canDestroyBlock(state, blockpos) && !state.isAir() && block.canEntityDestroy(state, this.getLevel(), blockpos, this) && ForgeEventFactory.onEntityDestroyBlock(this, blockpos, state)) {
-								flag = this.getLevel().destroyBlock(blockpos, true) || flag;
+							if (!(block instanceof LiquidBlock) && this.canDestroyBlock(state, blockpos) && !state.isAir() && block.canEntityDestroy(state, this.level(), blockpos, this) && ForgeEventFactory.onEntityDestroyBlock(this, blockpos, state)) {
+								flag = this.level().destroyBlock(blockpos, true) || flag;
 							}
 						}
 					}
 				}
 
 				if (flag) {
-					this.getLevel().levelEvent(null, 1022, this.blockPosition(), 0);
+					this.level().levelEvent(null, 1022, this.blockPosition(), 0);
 				}
 			}
 		}
@@ -192,7 +192,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (!this.isOnGround() && this.getDeltaMovement().y() < 0.0D) {
+		if (!this.onGround() && this.getDeltaMovement().y() < 0.0D) {
 			this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.75D, 1.0D));
 		}
 		if (this.getTarget() != null && !this.getTarget().isAlive()) {
@@ -218,13 +218,13 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 				this.useRangedAttack = this.getRandom().nextInt(RatConfig.automatonShootChance) == 0;
 			}
 		}
-		if (this.getLevel().isClientSide() && this.getRandom().nextDouble() < 0.5F) {
+		if (this.level().isClientSide() && this.getRandom().nextDouble() < 0.5F) {
 			float radius = -0.5F;
 			float angle = (0.01745329251F * (this.yBodyRot));
 			double extraX = (double) (radius * Mth.sin((float) (Math.PI + angle))) + this.getX();
 			double extraZ = (double) (radius * Mth.cos(angle)) + this.getZ();
 			double extraY = 0.75F + this.getY();
-			this.getLevel().addParticle(ParticleTypes.END_ROD, extraX + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
+			this.level().addParticle(ParticleTypes.END_ROD, extraX + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
 					extraY,
 					extraZ + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
 					0F, -0.15F, 0F);
@@ -238,12 +238,12 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 			double targetRelativeX = (this.getTarget() == null ? this.getViewVector(1.0F).x : this.getTarget().getX()) - extraX;
 			double targetRelativeY = (this.getTarget() == null ? this.getViewVector(1.0F).y : this.getTarget().getY()) - extraY;
 			double targetRelativeZ = (this.getTarget() == null ? this.getViewVector(1.0F).z : this.getTarget().getZ()) - extraZ;
-			GolemBeam beam = new GolemBeam(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON_BEAM.get(), this.getLevel(), this);
+			GolemBeam beam = new GolemBeam(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON_BEAM.get(), this.level(), this);
 			beam.setPos(extraX, extraY, extraZ);
 			beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
 			this.playSound(RatsSoundRegistry.LASER.get(), 1.0F, 0.75F + this.getRandom().nextFloat() * 0.5F);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(beam);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(beam);
 			}
 			this.useRangedAttack = this.getRandom().nextBoolean();
 		}

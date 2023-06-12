@@ -102,13 +102,13 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 				this.useRangedAttack = this.getRandom().nextBoolean();
 			}
 		}
-		if (this.getLevel().isClientSide() && this.getRandom().nextDouble() < 0.5F) {
+		if (this.level().isClientSide() && this.getRandom().nextDouble() < 0.5F) {
 			float radius = -0.5F;
 			float angle = (0.01745329251F * (this.yBodyRot));
 			double extraX = (double) (radius * Mth.sin((float) (Math.PI + angle))) + getX();
 			double extraZ = (double) (radius * Mth.cos(angle)) + getZ();
 			double extraY = 1.25 + getY();
-			this.getLevel().addParticle(ParticleTypes.END_ROD, extraX + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
+			this.level().addParticle(ParticleTypes.END_ROD, extraX + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
 					extraY,
 					extraZ + (double) (this.getRandom().nextFloat() * 0.5F) - (double) 0.25F,
 					0F, -0.1F, 0F);
@@ -122,12 +122,12 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 			double targetRelativeX = (target == null ? this.getViewVector(1.0F).x : target.getX()) - extraX;
 			double targetRelativeY = (target == null ? this.getViewVector(1.0F).y : target.getY()) - extraY;
 			double targetRelativeZ = (target == null ? this.getViewVector(1.0F).z : target.getZ()) - extraZ;
-			GolemBeam beam = new GolemBeam(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON_BEAM.get(), this.getLevel(), this);
+			GolemBeam beam = new GolemBeam(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON_BEAM.get(), this.level(), this);
 			beam.setPos(extraX, extraY, extraZ);
 			beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.1F);
 			this.playSound(RatsSoundRegistry.LASER.get(), 1.0F, 0.75F + this.getRandom().nextFloat() * 0.5F);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(beam);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(beam);
 			}
 			this.useRangedAttack = this.getRandom().nextBoolean();
 		}

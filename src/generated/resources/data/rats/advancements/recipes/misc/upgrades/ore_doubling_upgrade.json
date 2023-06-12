@@ -76,5 +76,6 @@
     "recipes": [
       "rats:upgrades/ore_doubling_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

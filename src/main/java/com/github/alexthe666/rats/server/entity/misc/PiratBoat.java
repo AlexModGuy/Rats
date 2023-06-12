@@ -58,13 +58,13 @@ public class PiratBoat extends Boat {
 	}
 
 	@Override
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		super.positionRider(passenger);
 		float radius = 0.25F;
 		float angle = (0.01745329251F * this.getYRot());
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));
 		double extraZ = radius * Mth.cos(angle);
-		passenger.setPos(this.getX() - extraX, this.getY() + 0.3D, this.getZ() - extraZ);
+		callback.accept(passenger, this.getX() - extraX, this.getY() + 0.3D, this.getZ() - extraZ);
 		if (passenger instanceof LivingEntity living) {
 			living.yBodyRot = this.getYRot();
 		}
@@ -94,7 +94,7 @@ public class PiratBoat extends Boat {
 			++this.outOfControlTicks;
 		}
 
-		if (!this.getLevel().isClientSide() && this.outOfControlTicks >= 60.0F) {
+		if (!this.level().isClientSide() && this.outOfControlTicks >= 60.0F) {
 			this.ejectPassengers();
 		}
 
@@ -117,8 +117,8 @@ public class PiratBoat extends Boat {
 			this.fireCooldown--;
 		}
 		this.prevFire = this.isFiring();
-		if (!this.isVehicle() && !this.getLevel().isClientSide()) {
-			this.hurt(this.damageSources().outOfWorld(), Float.MAX_VALUE);
+		if (!this.isVehicle() && !this.level().isClientSide()) {
+			this.hurt(this.damageSources().genericKill(), Float.MAX_VALUE);
 		}
 
 		this.baseTick();
@@ -129,7 +129,7 @@ public class PiratBoat extends Boat {
 			this.setYRot(this.getControllingPassenger().yBodyRot);
 
 			this.floatBoat();
-			if (this.getLevel().isClientSide()) {
+			if (this.level().isClientSide()) {
 				this.setDeltaMovement(this.getControllingPassenger().getDeltaMovement().scale(2.0F));
 			}
 			this.move(MoverType.SELF, this.getDeltaMovement());
@@ -147,7 +147,7 @@ public class PiratBoat extends Boat {
 						Vec3 vec3 = this.getViewVector(1.0F);
 						double d0 = i == 1 ? -vec3.z() : vec3.z();
 						double d1 = i == 1 ? vec3.x() : -vec3.x();
-						this.getLevel().playSound(null, this.getX() + d0, this.getY(), this.getZ() + d1, soundevent, this.getSoundSource(), 1.0F, 0.8F + 0.4F * this.random.nextFloat());
+						this.level().playSound(null, this.getX() + d0, this.getY(), this.getZ() + d1, soundevent, this.getSoundSource(), 1.0F, 0.8F + 0.4F * this.random.nextFloat());
 					}
 				}
 
@@ -158,9 +158,9 @@ public class PiratBoat extends Boat {
 		}
 
 		this.checkInsideBlocks();
-		List<Entity> list = this.getLevel().getEntities(this, this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F), EntitySelector.pushableBy(this));
+		List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F), EntitySelector.pushableBy(this));
 		if (!list.isEmpty()) {
-			boolean flag = !this.getLevel().isClientSide() && !(this.getControllingPassenger() instanceof Player);
+			boolean flag = !this.level().isClientSide() && !(this.getControllingPassenger() instanceof Player);
 
 			for (Entity entity : list) {
 				if (!entity.hasPassenger(this)) {
@@ -191,7 +191,7 @@ public class PiratBoat extends Boat {
 	public void shoot(Pirat pirat) {
 		LivingEntity target = pirat.getTarget();
 		if (target == null) {
-			target = this.getLevel().getNearestPlayer(this, 30);
+			target = this.level().getNearestPlayer(this, 30);
 		}
 		if (target != null) {
 			double xTarget = target.getX() - this.getX();
@@ -199,7 +199,7 @@ public class PiratBoat extends Boat {
 			float rot = (float) (Mth.atan2(zTarget, xTarget) * (180D / Math.PI)) - 90.0F;
 			this.setYRot(rot % 360);
 			this.setYRot(this.getYRot());
-			CheeseCannonball cannonball = new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), this.getLevel(), pirat);
+			CheeseCannonball cannonball = new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), this.level(), pirat);
 			float radius = 1.6F;
 			float angle = (0.01745329251F * (this.getYRot()));
 			double extraX = (double) (radius * Mth.sin((float) (Math.PI + angle))) + getX();
@@ -214,8 +214,8 @@ public class PiratBoat extends Boat {
 			cannonball.setPos(extraX, extraY, extraZ);
 			cannonball.shoot(d1, d2 + (double) f, d3, velocity, 0.4F);
 			this.playSound(RatsSoundRegistry.PIRAT_SHOOT.get(), 3.0F, 2.3F / (this.random.nextFloat() * 0.4F + 0.8F));
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(cannonball);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(cannonball);
 			}
 			this.setFiring(true);
 		}

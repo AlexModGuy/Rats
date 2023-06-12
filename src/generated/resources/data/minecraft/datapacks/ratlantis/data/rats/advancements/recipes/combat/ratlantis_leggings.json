@@ -56,5 +56,6 @@
     "recipes": [
       "rats:ratlantis_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:gemcutter/centipede"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

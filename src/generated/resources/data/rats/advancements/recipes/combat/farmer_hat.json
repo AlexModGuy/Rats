@@ -41,5 +41,6 @@
     "recipes": [
       "rats:farmer_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

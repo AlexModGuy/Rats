@@ -11,7 +11,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -40,11 +39,11 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 		List<BlockPos> allBlocks = new ArrayList<>();
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
-			BlockState state = this.rat.getLevel().getBlockState(pos);
+			BlockState state = this.rat.level().getBlockState(pos);
 			if (state.is(BlockTags.CROPS)) {
 				if (state.getBlock() instanceof CropBlock crop && !crop.isMaxAge(state)) continue;
 				if (!(state.getBlock() instanceof StemBlock) && !(state.getBlock() instanceof AttachedStemBlock)) {
-					if (RatUtils.canRatBreakBlock(this.rat.getLevel(), pos, this.rat)) {
+					if (RatUtils.canRatBreakBlock(this.rat.level(), pos, this.rat)) {
 						allBlocks.add(pos);
 					}
 				}
@@ -64,9 +63,9 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 	@Override
 	public void tick() {
 		if (this.getTargetBlock() != null) {
-			BlockState block = this.rat.getLevel().getBlockState(this.getTargetBlock());
+			BlockState block = this.rat.level().getBlockState(this.getTargetBlock());
 			this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
-			if (block.getBlock() instanceof BushBlock || block.getMaterial() == Material.VEGETABLE) {
+			if (block.is(BlockTags.CROPS)) {
 				if (block.getBlock() instanceof CropBlock crop && !crop.isMaxAge(block)) {
 					this.setTargetBlock(null);
 					this.stop();
@@ -74,10 +73,10 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 				}
 				double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 				if (distance < this.rat.getRatHarvestDistance(0.0D)) {
-					this.rat.getLevel().destroyBlock(this.getTargetBlock(), true);
+					this.rat.level().destroyBlock(this.getTargetBlock(), true);
 					if ((!RatConfig.ratsBreakBlockOnHarvest || RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_REPLANTER.get()))) {
 						if (block.getBlock() instanceof BonemealableBlock) {
-							this.rat.getLevel().setBlockAndUpdate(this.getTargetBlock(), block.getBlock().defaultBlockState());
+							this.rat.level().setBlockAndUpdate(this.getTargetBlock(), block.getBlock().defaultBlockState());
 						}
 					}
 					this.stop();

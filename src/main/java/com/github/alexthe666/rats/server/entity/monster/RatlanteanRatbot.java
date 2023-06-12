@@ -84,13 +84,13 @@ public class RatlanteanRatbot extends Monster implements IAnimatedEntity {
 			double targetRelativeY = this.getTarget().getY() + this.getTarget().getBbHeight() / 2 - extraY;
 			double targetRelativeZ = this.getTarget().getZ() - extraZ;
 			this.playSound(RatsSoundRegistry.LASER.get(), 1.0F, 0.75F + this.random.nextFloat() * 0.5F);
-			LaserBeam beam = new LaserBeam(RatlantisEntityRegistry.LASER_BEAM.get(), this.getLevel(), this);
+			LaserBeam beam = new LaserBeam(RatlantisEntityRegistry.LASER_BEAM.get(), this.level(), this);
 			beam.setRGB(1.0F, 0.0F, 0.0F);
 			beam.setBaseDamage(2.0F);
 			beam.setPos(extraX, extraY, extraZ);
 			beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(beam);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(beam);
 			}
 		}
 		AnimationHandler.INSTANCE.updateAnimations(this);

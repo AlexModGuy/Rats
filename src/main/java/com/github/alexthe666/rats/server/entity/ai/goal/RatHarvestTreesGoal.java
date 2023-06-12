@@ -47,12 +47,12 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 	}
 
 	private void resetTarget() {
-		Level level = this.rat.getLevel();
+		Level level = this.rat.level();
 		int RADIUS = this.rat.getRadius();
 		for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
 			if (RatTreeUtils.isTreeLog(level.getBlockState(pos)) && level.getBlockState(pos.below()).is(BlockTags.DIRT) && (this.treeSize = RatTreeUtils.calculateLogAmount(level, pos)) > 0) {
 				Path path = this.rat.getNavigation().createPath(this.getOffsetToAirPos(pos), 1);
-				if (path != null && path.canReach() && RatUtils.canRatBreakBlock(this.rat.getLevel(), pos, this.rat)) {
+				if (path != null && path.canReach() && RatUtils.canRatBreakBlock(this.rat.level(), pos, this.rat)) {
 					this.setTargetBlock(pos);
 					break;
 				}
@@ -63,7 +63,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 	@Override
 	public void start() {
 		super.start();
-		this.stumpBlocks = RatTreeUtils.getAllStumpBlocks(this.rat.getLevel(), this.getTargetBlock(), this.rat.getLevel().getBlockState(this.getTargetBlock()));
+		this.stumpBlocks = RatTreeUtils.getAllStumpBlocks(this.rat.level(), this.getTargetBlock(), this.rat.level().getBlockState(this.getTargetBlock()));
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		if (pos != null) {
 			for (Direction direction : Direction.Plane.HORIZONTAL) {
 				BlockPos offsetPos = pos.relative(direction);
-				if (this.rat.getLevel().isEmptyBlock(offsetPos) || !this.rat.getLevel().getBlockState(offsetPos).canOcclude()) {
+				if (this.rat.level().isEmptyBlock(offsetPos) || !this.rat.level().getBlockState(offsetPos).canOcclude()) {
 					return offsetPos;
 				}
 			}
@@ -96,10 +96,10 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		BlockPos offsetToAirPos = this.getOffsetToAirPos(this.getTargetBlock());
 		this.rat.getLookControl().setLookAt(this.getTargetBlock().getCenter());
 		this.rat.getNavigation().moveTo(offsetToAirPos.getX() + 0.5D, offsetToAirPos.getY(), offsetToAirPos.getZ() + 0.5D, 1.25D);
-		if (RatTreeUtils.isTreeLog(this.rat.getLevel().getBlockState(this.getTargetBlock()))) {
+		if (RatTreeUtils.isTreeLog(this.rat.level().getBlockState(this.getTargetBlock()))) {
 			double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 			if (distance < this.rat.getRatHarvestDistance(0.0D)) {
-				this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 85);
+				this.rat.level().broadcastEntityEvent(this.rat, (byte) 85);
 				this.rat.crafting = true;
 				if (distance < this.rat.getRatHarvestDistance(-1.0D)) {
 					this.rat.setDeltaMovement(Vec3.ZERO);
@@ -112,19 +112,19 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 					this.rat.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1, 0.5F);
 				}
 				if (i != this.previousBreakProgress) {
-					this.rat.getLevel().destroyBlockProgress(this.rat.getId(), this.getTargetBlock(), i);
+					this.rat.level().destroyBlockProgress(this.rat.getId(), this.getTargetBlock(), i);
 					this.previousBreakProgress = i;
 				}
 				if (this.breakingTime >= 160) {
-					this.rat.getLevel().broadcastEntityEvent(this.rat, (byte) 86);
+					this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
 					this.rat.playSound(SoundEvents.WOOD_BREAK, 1, 1);
 					this.breakingTime = 0;
 					this.previousBreakProgress = -1;
 					this.fellTree();
 					if (!this.stumpBlocks.isEmpty() && this.sapling != null) {
 						this.stumpBlocks.forEach(pos -> {
-							if (RatUtils.canRatPlaceBlock(this.rat.getLevel(), pos, this.rat)) {
-								this.rat.getLevel().setBlockAndUpdate(pos, this.sapling.defaultBlockState());
+							if (RatUtils.canRatPlaceBlock(this.rat.level(), pos, this.rat)) {
+								this.rat.level().setBlockAndUpdate(pos, this.sapling.defaultBlockState());
 							}
 						});
 					}
@@ -137,12 +137,12 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 	}
 
 	private void fellTree() {
-		Level level = this.rat.getLevel();
+		Level level = this.rat.level();
 		BlockPos base = this.getTargetBlock();
 		BlockState baseBlock = level.getBlockState(base);
 		List<BlockPos> logsToKill = RatTreeUtils.getLogsToBreak(level, base, new ArrayList<>(), level.getBlockState(base));
 		for (BlockPos logpos : logsToKill) {
-			if (RatUtils.canRatBreakBlock(this.rat.getLevel(), logpos, this.rat)) {
+			if (RatUtils.canRatBreakBlock(this.rat.level(), logpos, this.rat)) {
 				level.destroyBlock(logpos, true);
 			}
 		}
@@ -222,9 +222,9 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 
 		for (BlockPos leafPos : leaves) {
 			if (this.sapling == null) {
-				this.sapling = RatTreeUtils.getSaplingFromLeaves((ServerLevel) this.rat.getLevel(), this.rat.getLevel().getBlockState(leafPos).getBlock());
+				this.sapling = RatTreeUtils.getSaplingFromLeaves((ServerLevel) this.rat.level(), this.rat.level().getBlockState(leafPos).getBlock());
 			}
-			if (RatUtils.canRatBreakBlock(this.rat.getLevel(), leafPos, this.rat)) {
+			if (RatUtils.canRatBreakBlock(this.rat.level(), leafPos, this.rat)) {
 				level.destroyBlock(leafPos, true);
 			}
 		}

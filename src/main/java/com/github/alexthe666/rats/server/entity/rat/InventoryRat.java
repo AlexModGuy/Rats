@@ -211,7 +211,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	}
 
 	public void openGUI(Player player) {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			ServerPlayer sp = (ServerPlayer) player;
 			if (sp.containerMenu != sp.inventoryMenu) {
 				sp.closeContainer();
@@ -253,7 +253,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	}
 
 	public void setCommandInteger(int command) {
-		if (!this.getLevel().isClientSide() && command != this.getCommandInteger()) {
+		if (!this.level().isClientSide() && command != this.getCommandInteger()) {
 			this.getNavigation().stop();
 			this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
 			if (this instanceof TamedRat rat) rat.crafting = false;

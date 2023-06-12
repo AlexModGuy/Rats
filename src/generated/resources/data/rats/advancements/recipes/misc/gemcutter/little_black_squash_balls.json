@@ -30,5 +30,6 @@
     "recipes": [
       "rats:gemcutter/little_black_squash_balls"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

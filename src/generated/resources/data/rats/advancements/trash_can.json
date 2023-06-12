@@ -33,5 +33,6 @@
     [
       "trash_can"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

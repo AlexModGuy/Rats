@@ -52,5 +52,6 @@
     "recipes": [
       "rats:trash_can"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -41,9 +41,9 @@ public class PlagueShot extends ArrowlikeProjectile {
 		float f = (this.getBbWidth() + this.getBbHeight() + this.getBbWidth()) * 0.333F + 0.5F;
 		if (this.particleDistSq(x, y, z) < f * f) {
 			if (this.random.nextBoolean()) {
-				this.getLevel().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 0.5D, z, d0, d1, d2);
+				this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 0.5D, z, d0, d1, d2);
 			} else {
-				this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 0.5D, z, d0, d1, d2);
+				this.level().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 0.5D, z, d0, d1, d2);
 
 			}
 		}

@@ -52,5 +52,6 @@
     "recipes": [
       "rats:upgrades/elite_energy_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

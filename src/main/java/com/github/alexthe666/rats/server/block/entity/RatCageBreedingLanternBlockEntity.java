@@ -81,8 +81,8 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 					if (females.size() > 1) {
 						female = females.get(level.getRandom().nextInt(females.size() - 1));
 					}
-					male.getLevel().broadcastEntityEvent(male, (byte) 83);
-					female.getLevel().broadcastEntityEvent(female, (byte) 83);
+					male.level().broadcastEntityEvent(male, (byte) 83);
+					female.level().broadcastEntityEvent(female, (byte) 83);
 					for (int baby = 0; baby < female.getRandom().nextInt(RatConfig.maxRatLitterSize) + 1; baby++) {
 						female.createBabiesFrom(female, male);
 					}

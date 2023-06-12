@@ -4,6 +4,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfig {
 
+	public final ForgeConfigSpec.BooleanValue ratlantisEnabledByDefault;
+
 	public final ForgeConfigSpec.IntValue ratSpawnDecrease;
 	public final ForgeConfigSpec.IntValue piperSpawnDecrease;
 	public final ForgeConfigSpec.BooleanValue ratsSpawnLikeMonsters;
@@ -88,7 +90,10 @@ public class ServerConfig {
 	public final ForgeConfigSpec.DoubleValue ratBaronBulletDamage;
 
 	public ServerConfig(final ForgeConfigSpec.Builder builder) {
-		builder.push("Spawning");
+		builder.push("Ratlantis");
+		this.ratlantisEnabledByDefault = buildBoolean(builder, "Ratlantis Datapack Enabled by Default", false, "If true, the ratlantis datapack will automatically be enabled when creating a new world.");
+
+		builder.pop().push("Spawning");
 		this.garbageSpawnRate = buildDouble(builder, "Garbage Pile Spawn Chance", 0.15F, 0F, 1.0F, "Percentage for every random tick to spawn a rat for a garbage pile.");
 		this.ratsSpawnLikeMonsters = buildBoolean(builder, "Rats Spawn Like Monsters", true, "True if rats should spawn like monsters, meaning they will also despawn when get far away (this only applies to wild rats of course). False if they should only spawn once per world, like pigs and sheep.");
 		this.ratSpawnDecrease = buildInt(builder, "Rat Spawn Decrease", 5, 0, Integer.MAX_VALUE, "A separate random roll that only spawns rats if a one-out-of-X chance, x being this number. raise this number to make them more rare.");

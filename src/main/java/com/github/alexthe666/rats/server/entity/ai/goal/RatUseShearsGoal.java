@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
 	private final TamedRat rat;
-	private final Predicate<LivingEntity> SHEAR_PREDICATE = (com.google.common.base.Predicate<LivingEntity>) entity -> entity instanceof IForgeShearable && ((IForgeShearable) entity).isShearable(SHEAR_STACK, entity.getLevel(), entity.blockPosition());
+	private final Predicate<LivingEntity> SHEAR_PREDICATE = (com.google.common.base.Predicate<LivingEntity>) entity -> entity instanceof IForgeShearable && ((IForgeShearable) entity).isShearable(SHEAR_STACK, entity.level(), entity.blockPosition());
 
 	public RatUseShearsGoal(TamedRat rat) {
 		super(rat);
@@ -39,7 +39,7 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
 			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
 				if (this.getTargetEntity() instanceof IForgeShearable shearable) {
-					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.getLevel(), this.getTargetEntity().blockPosition(), 0);
+					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.level(), this.getTargetEntity().blockPosition(), 0);
 					this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 					for (ItemStack stack : drops) {
 						this.getTargetEntity().spawnAtLocation(stack, 0.0F);
@@ -56,7 +56,7 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private void resetTarget() {
 		int radius = this.rat.getRadius();
 		AABB bb = new AABB(-radius, -radius, -radius, radius, radius, radius).move(this.rat.getSearchCenter());
-		List<LivingEntity> list = this.rat.getLevel().getEntitiesOfClass(LivingEntity.class, bb, SHEAR_PREDICATE);
+		List<LivingEntity> list = this.rat.level().getEntitiesOfClass(LivingEntity.class, bb, SHEAR_PREDICATE);
 		LivingEntity closestSheep = null;
 		for (LivingEntity base : list) {
 			if (closestSheep == null || base.distanceToSqr(this.rat) < closestSheep.distanceToSqr(this.rat)) {

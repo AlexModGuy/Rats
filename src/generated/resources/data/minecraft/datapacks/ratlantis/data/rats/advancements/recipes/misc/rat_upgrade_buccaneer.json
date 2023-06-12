@@ -69,5 +69,6 @@
     "recipes": [
       "rats:rat_upgrade_buccaneer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

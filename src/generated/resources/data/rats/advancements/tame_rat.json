@@ -35,5 +35,6 @@
     [
       "tame_rat"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

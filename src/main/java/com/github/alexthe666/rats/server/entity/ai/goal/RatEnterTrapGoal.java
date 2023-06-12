@@ -38,7 +38,7 @@ public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 				return false;
 			} else {
-				return (this.nextStartTick > 0 || ForgeEventFactory.getMobGriefingEvent(this.rat.getLevel(), this.rat)) && super.canUse();
+				return (this.nextStartTick > 0 || ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat)) && super.canUse();
 			}
 		} else {
 			return false;
@@ -51,10 +51,10 @@ public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 	}
 
 	public boolean canSeeTrap() {
-		BlockHitResult result = this.rat.getLevel().clip(new ClipContext(this.rat.position(), Vec3.atCenterOf(this.blockPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.rat));
+		BlockHitResult result = this.rat.level().clip(new ClipContext(this.rat.position(), Vec3.atCenterOf(this.blockPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.rat));
 		BlockPos pos = result.getBlockPos();
 		BlockPos sidePos = result.getBlockPos().relative(result.getDirection());
-		return this.rat.getLevel().isEmptyBlock(sidePos) || this.rat.getLevel().isEmptyBlock(pos);
+		return this.rat.level().isEmptyBlock(sidePos) || this.rat.level().isEmptyBlock(pos);
 	}
 
 	@Override
@@ -62,18 +62,18 @@ public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 		super.tick();
 		if (this.isReachedTarget()) {
 			BlockPos trapPos = this.blockPos.above();
-			BlockEntity rat = this.rat.getLevel().getBlockEntity(trapPos);
+			BlockEntity rat = this.rat.level().getBlockEntity(trapPos);
 			if (rat instanceof RatTrapBlockEntity trap && !trap.getBlockState().getValue(RatTrapBlock.SHUT) && !trap.getBait().isEmpty()) {
 				double distance = this.rat.distanceToSqr(trapPos.getX(), trapPos.getY(), trapPos.getZ());
 				if (distance < 1.0F && this.canSeeTrap() && !this.rat.isDeadInTrap()) {
 					ItemStack duplicate = trap.getBait().copy();
 					duplicate.setCount(1);
-					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.getLevel().isClientSide()) {
+					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.level().isClientSide()) {
 						this.rat.spawnAtLocation(this.rat.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
 					}
 					this.rat.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
 					trap.getBait().shrink(1);
-					this.rat.getLevel().sendBlockUpdated(trapPos, this.rat.getLevel().getBlockState(trapPos), this.rat.getLevel().getBlockState(trapPos), 3);
+					this.rat.level().sendBlockUpdated(trapPos, this.rat.level().getBlockState(trapPos), this.rat.level().getBlockState(trapPos), 3);
 					this.rat.setFleePos(this.blockPos);
 				}
 			}

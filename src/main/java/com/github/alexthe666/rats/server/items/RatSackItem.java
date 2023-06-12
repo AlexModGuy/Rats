@@ -131,7 +131,7 @@ public class RatSackItem extends Item {
 	public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
 		ItemStack stack = entity.getItem();
 		if (getRatsInSack(stack) > 0) {
-			ejectRatsFromSack(stack, entity.getLevel(), entity.blockPosition());
+			ejectRatsFromSack(stack, entity.level(), entity.blockPosition());
 		}
 	}
 }

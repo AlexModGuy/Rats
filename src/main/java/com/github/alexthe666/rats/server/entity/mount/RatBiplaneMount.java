@@ -41,7 +41,7 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		this.riderY = 1.35F;
 		this.riderXZ = -0.35F;
 		this.moveControl = new PlaneMoveControl<>(this);
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			this.roll_buffer = new PlaneRotationUtil();
 			this.pitch_buffer = new PlaneRotationUtil();
 		}
@@ -52,14 +52,14 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		return 1.0F;
 	}
 
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		super.positionRider(passenger);
 		float radius = 0.35F;
 		float angle = (0.01745329251F * this.yBodyRot);
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));
 		double extraZ = radius * Mth.cos(angle);
 		double extraY = 1.35F;
-		passenger.setPos(this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
+		callback.accept(passenger, this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
 		if (passenger instanceof LivingEntity) {
 			((LivingEntity) passenger).yBodyRot = this.yBodyRot;
 			passenger.setYRot(this.yBodyRot);
@@ -113,10 +113,10 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		}
 
 		this.prevPlanePitch = this.getPlanePitch();
-		if (!this.isVehicle() && !this.getLevel().isClientSide()) {
+		if (!this.isVehicle() && !this.level().isClientSide()) {
 			this.hurt(this.damageSources().drown(), 1000);
 		}
-		if (!this.isOnGround() && this.getDeltaMovement().y < 0.0D) {
+		if (!this.onGround() && this.getDeltaMovement().y < 0.0D) {
 			this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
 		}
 		TamedRat rat = this.getRat();
@@ -141,13 +141,13 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 					double d3 = target.getZ() - extraZ;
 					double d2 = d0 - extraY;
 					float velocity = 3.2F;
-					RattlingGunBullet cannonball = new RattlingGunBullet(RatlantisEntityRegistry.RATTLING_GUN_BULLET.get(), this.getLevel(), this);
+					RattlingGunBullet cannonball = new RattlingGunBullet(RatlantisEntityRegistry.RATTLING_GUN_BULLET.get(), this.level(), this);
 					cannonball.setPos(extraX, extraY, extraZ);
 					cannonball.setBaseDamage(0.5F);
 					cannonball.shoot(d1, d2, d3, velocity, 1.4F);
 					this.playSound(RatsSoundRegistry.BIPLANE_SHOOT.get(), 3.0F, 2.3F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-					if (!this.getLevel().isClientSide()) {
-						this.getLevel().addFreshEntity(cannonball);
+					if (!this.level().isClientSide()) {
+						this.level().addFreshEntity(cannonball);
 					}
 				}
 			}
@@ -157,13 +157,13 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		if (this.getFlightTarget() == null || this.distanceToSqr(this.getFlightTarget().x(), this.getFlightTarget().y(), this.getFlightTarget().z()) < 20 || rat != null && !rat.canMove()) {
 			this.setFlightTarget(null);
 		}
-		if (this.getLevel().isClientSide()) {
-			if (!this.onGround) {
+		if (this.level().isClientSide()) {
+			if (!this.onGround()) {
 				this.roll_buffer.calculateChainFlapBuffer(40, 20, 0.5F, 0.5F, this);
 				this.pitch_buffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
 			}
 		}
-		if (!this.onGround) {
+		if (!this.onGround()) {
 			double ydist = this.yo - this.getY();//down 0.4 up -0.38
 			float planeDist = (float) ((Math.abs(this.getDeltaMovement().x()) + Math.abs(this.getDeltaMovement().z())) * 6F);
 			this.incrementPlanePitch((float) (ydist) * 10);

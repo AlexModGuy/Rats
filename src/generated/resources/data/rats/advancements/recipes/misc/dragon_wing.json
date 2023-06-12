@@ -39,5 +39,6 @@
     "recipes": [
       "rats:dragon_wing"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -41,8 +41,8 @@ public class RatDragonFire extends Fireball {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.getLevel().isClientSide()) {
-			this.getLevel().addParticle(ParticleTypes.FLAME, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
+		if (this.level().isClientSide()) {
+			this.level().addParticle(ParticleTypes.FLAME, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
 					this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()),
 					this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(), 0, 0, 0);
 		}
@@ -54,7 +54,7 @@ public class RatDragonFire extends Fireball {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.discard();
 		}
 	}

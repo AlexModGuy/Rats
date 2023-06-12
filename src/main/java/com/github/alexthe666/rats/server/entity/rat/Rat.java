@@ -84,7 +84,7 @@ public class Rat extends DiggingRat {
 		//this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> {
 			if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || !Rat.this.hasPlague()) return false;
-			return !entity.isAlliedTo(Rat.this) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) && entity.getLevel().getDifficulty() != Difficulty.PEACEFUL;
+			return !entity.isAlliedTo(Rat.this) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) && entity.level().getDifficulty() != Difficulty.PEACEFUL;
 		}));
 	}
 
@@ -137,12 +137,12 @@ public class Rat extends DiggingRat {
 			double d0 = 0D;
 			double d1 = this.getRandom().nextGaussian() * 0.05D + 0.5D;
 			double d2 = 0D;
-			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 		}
 
-		if (this.isBecomingRatKing() && (!this.getMainHandItem().is(RatsItemRegistry.FILTH_CORRUPTION.get()) || this.getLevel().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL)) {
+		if (this.isBecomingRatKing() && (!this.getMainHandItem().is(RatsItemRegistry.FILTH_CORRUPTION.get()) || this.level().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL)) {
 			this.getEntityData().set(RAT_KING_TRANSFORMATION, false);
-			if (this.getLevel().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.level().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
 				this.spawnAtLocation(this.getMainHandItem());
 				this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 			}
@@ -167,7 +167,7 @@ public class Rat extends DiggingRat {
 	public LivingEntity getOwner() {
 		try {
 			UUID uuid = this.getOwnerUUID();
-			if (this.getLevel() instanceof ServerLevel server) {
+			if (this.level() instanceof ServerLevel server) {
 				Entity entity = server.getEntity(uuid);
 				if (entity instanceof LivingEntity living) {
 					return living;
@@ -180,13 +180,13 @@ public class Rat extends DiggingRat {
 	}
 
 	private void handleRatKingTransform() {
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			if (this.ratKingTransformTicks < 120) {
 				for (int i = 0; i < 15; i++) {
 					Vec3 ratPos = DefaultRandomPos.getPos(this, 32, 10);
 					if (ratPos == null) continue;
-					if (this.getLevel().getBlockState(BlockPos.containing(ratPos)).isAir() && !this.getLevel().getBlockState(BlockPos.containing(ratPos).below()).isAir()) {
-						this.getLevel().addAlwaysVisibleParticle(RatsParticleRegistry.RUNNING_RAT.get(), ratPos.x(), ratPos.y(), ratPos.z(), this.blockPosition().getX(), this.blockPosition().getY(), this.blockPosition().getZ());
+					if (this.level().getBlockState(BlockPos.containing(ratPos)).isAir() && !this.level().getBlockState(BlockPos.containing(ratPos).below()).isAir()) {
+						this.level().addAlwaysVisibleParticle(RatsParticleRegistry.RUNNING_RAT.get(), ratPos.x(), ratPos.y(), ratPos.z(), this.blockPosition().getX(), this.blockPosition().getY(), this.blockPosition().getZ());
 						break;
 					}
 				}
@@ -194,7 +194,7 @@ public class Rat extends DiggingRat {
 			if (this.ratKingTransformTicks % 2 == 0) {
 				for (int i = 0; i < this.ratKingTransformTicks * 2; i++) {
 					double randomOff = Math.max(this.ratKingTransformTicks / 60.0D, 1.0D);
-					this.getLevel().addParticle(RatsParticleRegistry.RAT_KING_SMOKE.get(),
+					this.level().addParticle(RatsParticleRegistry.RAT_KING_SMOKE.get(),
 							this.position().x() - (randomOff / 2) + (this.getRandom().nextDouble() * randomOff),
 							this.position().y() + this.getRandom().nextDouble() * 0.75D,
 							this.position().z() - (randomOff / 2) + (this.getRandom().nextDouble() * randomOff),
@@ -203,11 +203,11 @@ public class Rat extends DiggingRat {
 			}
 		}
 
-		if (this.ratKingTransformTicks == 200 && !this.getLevel().isClientSide()) {
-			RatKing king = new RatKing(RatsEntityRegistry.RAT_KING.get(), this.getLevel());
+		if (this.ratKingTransformTicks == 200 && !this.level().isClientSide()) {
+			RatKing king = new RatKing(RatsEntityRegistry.RAT_KING.get(), this.level());
 			king.copyPosition(this);
-			ForgeEventFactory.onFinalizeSpawn(king, (ServerLevelAccessor) this.getLevel(), this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
-			this.getLevel().addFreshEntity(king);
+			ForgeEventFactory.onFinalizeSpawn(king, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+			this.level().addFreshEntity(king);
 			this.discard();
 		}
 	}
@@ -233,7 +233,7 @@ public class Rat extends DiggingRat {
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
-		if (this.getRandom().nextInt(15) == 0 && this.getLevel().getDifficulty() != Difficulty.PEACEFUL && type != MobSpawnType.CONVERSION) {
+		if (this.getRandom().nextInt(15) == 0 && this.level().getDifficulty() != Difficulty.PEACEFUL && type != MobSpawnType.CONVERSION) {
 			this.setPlagued(true);
 		}
 		if (accessor.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
@@ -265,7 +265,7 @@ public class Rat extends DiggingRat {
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (!this.hasPlague()) {
-			if (itemstack.is(RatsItemRegistry.FILTH_CORRUPTION.get()) && this.getLevel().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() != Difficulty.PEACEFUL) {
+			if (itemstack.is(RatsItemRegistry.FILTH_CORRUPTION.get()) && this.level().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() != Difficulty.PEACEFUL) {
 				this.playSound(RatsSoundRegistry.RAT_KING_SUMMON.get(), 1F, 1.5F);
 				if (!this.getMainHandItem().isEmpty()) {
 					this.spawnAtLocation(this.getMainHandItem());
@@ -278,9 +278,9 @@ public class Rat extends DiggingRat {
 				}
 				return InteractionResult.SUCCESS;
 			}
-			if (!this.getLevel().isClientSide() && itemstack.is(RatsItemRegistry.CREATIVE_CHEESE.get())) {
-				TamedRat rat = RatUtils.tameRat(this, this.getLevel());
-				this.getLevel().broadcastEntityEvent(rat, (byte) 83);
+			if (!this.level().isClientSide() && itemstack.is(RatsItemRegistry.CREATIVE_CHEESE.get())) {
+				TamedRat rat = RatUtils.tameRat(this, this.level());
+				this.level().broadcastEntityEvent(rat, (byte) 83);
 				rat.tame(player);
 				rat.setCommand(RatCommand.SIT);
 				return InteractionResult.SUCCESS;
@@ -392,7 +392,7 @@ public class Rat extends DiggingRat {
 
 	@Override
 	protected void doPush(Entity entity) {
-		if (!this.getLevel().isClientSide() && this.hasPlague()) {
+		if (!this.level().isClientSide() && this.hasPlague()) {
 			if (entity instanceof Rat rat && !rat.hasPlague()) {
 				rat.setPlagued(true);
 			} else if (entity instanceof LivingEntity living && this.rollForPlague(living)) {

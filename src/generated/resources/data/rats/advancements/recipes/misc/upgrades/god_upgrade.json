@@ -56,5 +56,6 @@
     "recipes": [
       "rats:upgrades/god_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

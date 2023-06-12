@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/ghost_pirat_ectoplasm"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

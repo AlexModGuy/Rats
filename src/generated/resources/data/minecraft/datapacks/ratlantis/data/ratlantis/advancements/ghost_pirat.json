@@ -76,5 +76,6 @@
       "hurt_by_ghost_pirat",
       "killed_by_ghost_pirat"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

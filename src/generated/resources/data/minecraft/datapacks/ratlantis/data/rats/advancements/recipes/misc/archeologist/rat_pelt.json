@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/rat_pelt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

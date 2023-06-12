@@ -25,11 +25,11 @@ public class RatShotRenderer extends EntityRenderer<RatShot> {
 	}
 
 	public void render(RatShot entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		long roundedTime = entity.getLevel().getDayTime() % 24000;
+		long roundedTime = entity.level().getDayTime() % 24000;
 		boolean night = roundedTime >= 13000 && roundedTime <= 22000;
 		BlockPos ratPos = entity.getLightPosition();
-		int brightI = entity.getLevel().getBrightness(LightLayer.SKY, ratPos);
-		int brightJ = entity.getLevel().getBrightness(LightLayer.BLOCK, ratPos);
+		int brightI = entity.level().getBrightness(LightLayer.SKY, ratPos);
+		int brightJ = entity.level().getBrightness(LightLayer.BLOCK, ratPos);
 		int brightness;
 		if (night) {
 			brightness = brightJ;

@@ -33,5 +33,6 @@
     [
       "get_core"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

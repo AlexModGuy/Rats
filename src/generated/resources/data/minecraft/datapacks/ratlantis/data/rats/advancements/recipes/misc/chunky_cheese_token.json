@@ -30,5 +30,6 @@
     "recipes": [
       "rats:chunky_cheese_token"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

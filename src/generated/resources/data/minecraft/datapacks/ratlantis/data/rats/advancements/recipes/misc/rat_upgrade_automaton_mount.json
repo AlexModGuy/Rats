@@ -82,5 +82,6 @@
     "recipes": [
       "rats:rat_upgrade_automaton_mount"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

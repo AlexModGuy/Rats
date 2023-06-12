@@ -28,5 +28,6 @@
     "recipes": [
       "rats:nether_cheese_compressed"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

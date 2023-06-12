@@ -52,5 +52,6 @@
     "recipes": [
       "rats:rat_flute"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -67,5 +67,6 @@
     "recipes": [
       "rats:upgrades/strider_mount_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

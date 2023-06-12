@@ -27,7 +27,7 @@ public record SetDancingRatPacket(int ratId, boolean setDancing, long blockPos, 
 			context.get().enqueueWork(() -> {
 				Player player = context.get().getSender();
 				if (player != null) {
-					Entity entity = player.getLevel().getEntity(packet.ratId());
+					Entity entity = player.level().getEntity(packet.ratId());
 					if (entity instanceof TamedRat rat) {
 						if (!rat.isDancing() && packet.setDancing()) {
 							rat.setDanceMoves(packet.moves());

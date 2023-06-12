@@ -56,5 +56,6 @@
     "recipes": [
       "rats:block_of_blue_cheese"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

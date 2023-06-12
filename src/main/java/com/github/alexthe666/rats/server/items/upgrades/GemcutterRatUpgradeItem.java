@@ -41,7 +41,7 @@ public class GemcutterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 					rat.setItemInHand(InteractionHand.MAIN_HAND, burntItem);
 				} else {
 					if (!rat.tryDepositItemInContainers(burntItem)) {
-						if (!rat.getLevel().isClientSide()) {
+						if (!rat.level().isClientSide()) {
 							rat.spawnAtLocation(burntItem, 0.25F);
 						}
 					}

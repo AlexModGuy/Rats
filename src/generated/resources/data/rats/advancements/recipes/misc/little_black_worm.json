@@ -43,5 +43,6 @@
     "recipes": [
       "rats:little_black_worm"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

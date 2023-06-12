@@ -82,5 +82,6 @@
     "recipes": [
       "rats:upgrades/voodoo_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

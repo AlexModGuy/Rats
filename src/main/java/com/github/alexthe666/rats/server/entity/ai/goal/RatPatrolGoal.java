@@ -21,7 +21,7 @@ public class RatPatrolGoal extends Goal {
 	}
 
 	public void tick() {
-		if ((this.nextNode == null || this.nextNode.dimension().equals(this.rat.getLevel().dimension())) && this.nodeIndex >= 0 && this.nodeIndex < this.rat.getPatrolNodes().size()) {
+		if ((this.nextNode == null || this.nextNode.dimension().equals(this.rat.level().dimension())) && this.nodeIndex >= 0 && this.nodeIndex < this.rat.getPatrolNodes().size()) {
 			this.nextNode = this.rat.getPatrolNodes().get(this.nodeIndex);
 		}
 

@@ -52,5 +52,6 @@
     "recipes": [
       "rats:fisherman_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -93,5 +93,6 @@
     "recipes": [
       "rats:upgrades/damage_protection_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

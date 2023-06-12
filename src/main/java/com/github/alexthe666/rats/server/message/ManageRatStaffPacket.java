@@ -44,7 +44,7 @@ public record ManageRatStaffPacket(int entityId, BlockPos pos, int dirOrd, boole
 					if (packet.clear()) {
 						Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(SelectedRatCapability::clearSelectedRat);
 					} else {
-						Entity e = Minecraft.getInstance().player.getLevel().getEntity(packet.entityId());
+						Entity e = Minecraft.getInstance().player.level().getEntity(packet.entityId());
 						if (e instanceof TamedRat rat) {
 							if (packet.openGUI()) {
 								switch (packet.staffToOpen()) {

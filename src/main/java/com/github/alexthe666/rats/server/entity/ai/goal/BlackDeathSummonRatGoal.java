@@ -20,13 +20,13 @@ public class BlackDeathSummonRatGoal extends BlackDeathAbstractSummonGoal {
 
 	@Override
 	public void summonEntity() {
-		this.death.getLevel().broadcastEntityEvent(this.death, (byte) 82);
+		this.death.level().broadcastEntityEvent(this.death, (byte) 82);
 
-		Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.death.getLevel());
-		ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.death.getLevel(), this.death.getLevel().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+		Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.death.level());
+		ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 		rat.copyPosition(this.death);
 		rat.setPlagued(true);
-		this.death.getLevel().addFreshEntity(rat);
+		this.death.level().addFreshEntity(rat);
 		rat.setOwnerUUID(this.death.getUUID());
 		if (this.death.getTarget() != null) {
 			rat.setTarget(this.death.getTarget());

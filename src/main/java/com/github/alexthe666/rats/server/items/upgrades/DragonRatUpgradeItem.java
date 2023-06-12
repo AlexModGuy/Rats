@@ -70,10 +70,10 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 			double targetRelativeY = rat.getTarget().getY() + rat.getTarget().getBbHeight() / 2 - extraY;
 			double targetRelativeZ = rat.getTarget().getZ() - extraZ;
 			rat.playSound(RatsSoundRegistry.RAT_SHOOT.get(), 1.0F, 1.25F + rat.getRandom().nextFloat() * 0.5F);
-			RatDragonFire beam = new RatDragonFire(RatsEntityRegistry.RAT_DRAGON_FIRE.get(), rat, rat.getLevel(), targetRelativeX, targetRelativeY, targetRelativeZ);
+			RatDragonFire beam = new RatDragonFire(RatsEntityRegistry.RAT_DRAGON_FIRE.get(), rat, rat.level(), targetRelativeX, targetRelativeY, targetRelativeZ);
 			beam.setPos(extraX, extraY, extraZ);
-			if (!rat.getLevel().isClientSide()) {
-				rat.getLevel().addFreshEntity(beam);
+			if (!rat.level().isClientSide()) {
+				rat.level().addFreshEntity(beam);
 			}
 		}
 		rat.clearFire();

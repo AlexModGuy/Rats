@@ -63,5 +63,6 @@
     "recipes": [
       "rats:upgrades/advanced_energy_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

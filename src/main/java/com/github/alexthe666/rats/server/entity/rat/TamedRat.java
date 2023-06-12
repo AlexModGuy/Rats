@@ -218,7 +218,7 @@ public class TamedRat extends InventoryRat {
 				})
 		);
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.goalSelector.removeGoal(this.harvestGoal);
 			this.goalSelector.removeGoal(this.depositGoal);
 			this.goalSelector.removeGoal(this.pickupGoal);
@@ -268,27 +268,27 @@ public class TamedRat extends InventoryRat {
 	public void switchNavigator(int type) {
 		if (type == 0) { //tamed
 			this.moveControl = new RatMoveControl(this);
-			this.navigation = new RatNavigation(this, this.getLevel());
+			this.navigation = new RatNavigation(this, this.level());
 			this.navigatorType = 0;
 		} else if (type == 1) { //flying
 			this.moveControl = new RatFlightMoveControl(this, 1.0F);
-			this.navigation = new RatFlightNavigation(this, this.getLevel());
+			this.navigation = new RatFlightNavigation(this, this.level());
 			this.navigatorType = 1;
 		} else if (type == 2) { //tube
 			this.moveControl = new RatTubeMoveControl(this);
-			this.navigation = new RatNavigation(this, this.getLevel());
+			this.navigation = new RatNavigation(this, this.level());
 			this.navigatorType = 2;
 		} else if (type == 3) { //aquatic
 			this.moveControl = new SmoothSwimmingMoveControl(this, 360, 360, 10.0F, 1.0F, true);
-			this.navigation = new AmphibiousPathNavigation(this, this.getLevel());
+			this.navigation = new AmphibiousPathNavigation(this, this.level());
 			this.navigatorType = 3;
 		} else if (type == 4) { //ethereal
 			this.moveControl = new EtherealRatMoveControl(this);
-			this.navigation = new EtherealRatNavigation(this, this.getLevel());
+			this.navigation = new EtherealRatNavigation(this, this.level());
 			this.navigatorType = 4;
 		} else if (type == 5) { //cage
 			this.moveControl = new RatCageMoveControl(this);
-			this.navigation = new RatNavigation(this, this.getLevel());
+			this.navigation = new RatNavigation(this, this.level());
 			this.navigatorType = 5;
 		}
 	}
@@ -323,11 +323,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean isInCage() {
-		return this.getLevel().getBlockState(this.blockPosition()).getBlock() instanceof RatCageBlock;
+		return this.level().getBlockState(this.blockPosition()).getBlock() instanceof RatCageBlock;
 	}
 
 	public boolean isInTube() {
-		return this.getLevel().getBlockState(this.blockPosition()).getBlock() instanceof RatTubeBlock;
+		return this.level().getBlockState(this.blockPosition()).getBlock() instanceof RatTubeBlock;
 	}
 
 	@Override
@@ -430,29 +430,29 @@ public class TamedRat extends InventoryRat {
 		}
 
 		if (this.getRespawnCountdown() > 0) {
-			if (this.getLevel().isClientSide() && this.tickCount % 5 == 0) {
+			if (this.level().isClientSide() && this.tickCount % 5 == 0) {
 				double d0 = this.position().x();
 				double d1 = this.position().y() + 0.25D;
 				double d2 = this.position().z();
 				double d3 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
 				double d4 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
 				double d5 = ((double) this.getRandom().nextFloat() - 0.5D) * 0.15D;
-				this.getLevel().addParticle(ParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
+				this.level().addParticle(ParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
 			}
 			this.setRespawnCountdown(this.getRespawnCountdown() - 1);
 		}
 
 		this.setNoAi(this.getRespawnCountdown() > 0);
 
-		if (!this.getLevel().isClientSide() && this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {
-			Entity entity = this.getMountEntityType().create(this.getLevel());
+		if (!this.level().isClientSide() && this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {
+			Entity entity = this.getMountEntityType().create(this.level());
 			entity.copyPosition(this);
-			if (entity instanceof Mob mob && this.getLevel() instanceof ServerLevelAccessor accessor) {
-				ForgeEventFactory.onFinalizeSpawn(mob, accessor, this.getLevel().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+			if (entity instanceof Mob mob && this.level() instanceof ServerLevelAccessor accessor) {
+				ForgeEventFactory.onFinalizeSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 			}
-			this.getLevel().addFreshEntity(entity);
+			this.level().addFreshEntity(entity);
 
-			this.getLevel().broadcastEntityEvent(this, (byte) 127);
+			this.level().broadcastEntityEvent(this, (byte) 127);
 			this.startRiding(entity, true);
 		}
 
@@ -482,7 +482,7 @@ public class TamedRat extends InventoryRat {
 
 		this.setNoGravity(this.isFlying());
 		if (this.isFlying()) {
-			if (this.isOrderedToSit() || this.verticalCollisionBelow || this.isOnGround()) {
+			if (this.isOrderedToSit() || this.verticalCollisionBelow || this.onGround()) {
 				this.setFlying(false);
 			}
 			if (Math.abs(this.getDeltaMovement().x()) < 0.01D && Math.abs(this.getDeltaMovement().z()) < 0.01D) {
@@ -492,7 +492,7 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 
-		if (this.isInWheel() && !this.getLevel().getBlockState(this.blockPosition()).is(RatsBlockRegistry.RAT_CAGE_WHEEL.get())) {
+		if (this.isInWheel() && !this.level().getBlockState(this.blockPosition()).is(RatsBlockRegistry.RAT_CAGE_WHEEL.get())) {
 			this.setInWheel(false);
 		}
 
@@ -511,15 +511,15 @@ public class TamedRat extends InventoryRat {
 		if (this.isDancing() && this.getAnimation() != this.getDanceAnimation()) {
 			this.setAnimation(this.getDanceAnimation());
 		}
-		if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distToCenterSqr(this.getX(), this.getY(), this.getZ()) > 256.0D || !this.getLevel().getBlockState(this.jukeboxPos).is(Blocks.JUKEBOX))) {
+		if (this.isDancing() && (this.jukeboxPos == null || this.jukeboxPos.distToCenterSqr(this.getX(), this.getY(), this.getZ()) > 256.0D || !this.level().getBlockState(this.jukeboxPos).is(Blocks.JUKEBOX))) {
 			this.setDancing(false);
 		}
-		if (!this.getLevel().isClientSide() && this.getLevel().getBlockState(this.blockPosition()).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) && this.getLevel().isEmptyBlock(this.blockPosition().above())) {
+		if (!this.level().isClientSide() && this.level().getBlockState(this.blockPosition()).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) && this.level().isEmptyBlock(this.blockPosition().above())) {
 			this.setPos(this.getX(), this.getY() + 1, this.getZ());
 			this.getNavigation().stop();
 		}
 
-		if (this.jumping && !this.getLevel().isClientSide() && this.getLevel().getBlockState(this.blockPosition().above()).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) && this.getLevel().isEmptyBlock(this.blockPosition().above(2))) {
+		if (this.jumping && !this.level().isClientSide() && this.level().getBlockState(this.blockPosition().above()).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) && this.level().isEmptyBlock(this.blockPosition().above(2))) {
 			this.setPos(this.getX(), this.getY() + 1, this.getZ());
 			this.getNavigation().stop();
 		}
@@ -686,11 +686,11 @@ public class TamedRat extends InventoryRat {
 		ItemStack handCopy = this.getMainHandItem().copy();
 		this.getMainHandItem().shrink(1);
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(handCopy)) {
-			ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(this.getLevel(), handCopy, true).copyWithCount(2);
+			ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(this.level(), handCopy, true).copyWithCount(2);
 			if (RatConfig.ratFartNoises) {
 				this.playSound(RatsSoundRegistry.RAT_POOP.get(), 0.5F + this.getRandom().nextFloat() * 0.5F, 1.0F + this.getRandom().nextFloat() * 0.5F);
 			}
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				this.spawnAtLocation(nugget, 0.0F);
 			}
 		} else if (this.getRandom().nextFloat() <= 0.05F) {
@@ -698,14 +698,14 @@ public class TamedRat extends InventoryRat {
 			if (RatConfig.ratFartNoises) {
 				this.playSound(RatsSoundRegistry.RAT_POOP.get(), 0.5F + this.getRandom().nextFloat() * 0.5F, 1.0F + this.getRandom().nextFloat() * 0.5F);
 			}
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				this.spawnAtLocation(nugget, 0.0F);
 			}
 		}
 	}
 
 	public void createBabiesFrom(TamedRat mother, TamedRat father) {
-		TamedRat baby = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.getLevel());
+		TamedRat baby = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level());
 		baby.setMale(this.getRandom().nextBoolean());
 		RatVariant babyColor;
 		if ((father.getColorVariant().isBreedingExclusive() || mother.getColorVariant().isBreedingExclusive()) && this.getRandom().nextInt(6) == 0) {
@@ -728,7 +728,7 @@ public class TamedRat extends InventoryRat {
 			baby.setTame(true);
 			baby.setOwnerUUID(father.getOwnerUUID());
 		}
-		this.getLevel().addFreshEntity(baby);
+		this.level().addFreshEntity(baby);
 	}
 
 	@Override
@@ -737,9 +737,9 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public ItemStack getResultForRecipe(RecipeType<? extends SingleItemRecipe> recipe, ItemStack stack) {
-		Optional<? extends SingleItemRecipe> optional = this.getLevel().getRecipeManager().getRecipeFor(recipe, new SimpleContainer(stack), this.getLevel());
+		Optional<? extends SingleItemRecipe> optional = this.level().getRecipeManager().getRecipeFor(recipe, new SimpleContainer(stack), this.level());
 		if (optional.isPresent()) {
-			ItemStack itemstack = optional.get().getResultItem(this.getLevel().registryAccess());
+			ItemStack itemstack = optional.get().getResultItem(this.level().registryAccess());
 			if (!itemstack.isEmpty()) {
 				ItemStack itemstack1 = itemstack.copy();
 				itemstack1.setCount(stack.getCount() * itemstack.getCount());
@@ -750,8 +750,8 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean tryDepositItemInContainers(ItemStack burntItem) {
-		if (getLevel().getBlockEntity(this.blockPosition()) != null) {
-			BlockEntity te = getLevel().getBlockEntity(this.blockPosition());
+		if (level().getBlockEntity(this.blockPosition()) != null) {
+			BlockEntity te = level().getBlockEntity(this.blockPosition());
 			if (te != null) {
 				LazyOptional<IItemHandler> handler = te.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
 				if (handler.resolve().isPresent()) {
@@ -788,7 +788,7 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public void spawnAngelCopy() {
-		TamedRat copy = RatsEntityRegistry.TAMED_RAT.get().create(this.getLevel());
+		TamedRat copy = RatsEntityRegistry.TAMED_RAT.get().create(this.level());
 		CompoundTag tag = new CompoundTag();
 		this.addAdditionalSaveData(tag);
 		tag.putShort("HurtTime", (short) 0);
@@ -805,7 +805,7 @@ public class TamedRat extends InventoryRat {
 			copy.setCustomName(this.getCustomName());
 		}
 		copy.clearFire();
-		this.getLevel().addFreshEntity(copy);
+		this.level().addFreshEntity(copy);
 	}
 
 	@Override
@@ -830,7 +830,7 @@ public class TamedRat extends InventoryRat {
 					double d0 = this.getRandom().nextGaussian() * 0.02D;
 					double d1 = this.getRandom().nextGaussian() * 0.02D;
 					double d2 = this.getRandom().nextGaussian() * 0.02D;
-					this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.CARROT)), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+					this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.CARROT)), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 				}
 				return InteractionResult.SUCCESS;
 			}
@@ -841,7 +841,7 @@ public class TamedRat extends InventoryRat {
 					this.startRiding(player, true);
 					player.displayClientMessage(Component.translatable("entity.rats.rat.dismount_instructions"), true);
 				}
-				return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
+				return InteractionResult.sidedSuccess(this.level().isClientSide());
 			}
 			if (itemstack.is(RatsItemRegistry.RAT_PAPERS.get())) {
 				InteractionResult result = itemstack.interactLivingEntity(player, this, hand);
@@ -854,7 +854,7 @@ public class TamedRat extends InventoryRat {
 						itemstack.shrink(1);
 					}
 				} else {
-					if (!this.getLevel().isClientSide()) {
+					if (!this.level().isClientSide()) {
 						this.spawnAtLocation(new ItemStack(RatlantisItemRegistry.RAT_TOGA.get()), 0.0F);
 					}
 				}
@@ -868,7 +868,7 @@ public class TamedRat extends InventoryRat {
 					double d0 = this.getRandom().nextGaussian() * 0.02D;
 					double d1 = this.getRandom().nextGaussian() * 0.02D;
 					double d2 = this.getRandom().nextGaussian() * 0.02D;
-					this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsBlockRegistry.DYE_SPONGE.get())), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+					this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsBlockRegistry.DYE_SPONGE.get())), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 				}
 				this.playSound(RatsSoundRegistry.DYE_SPONGE_USED.get(), this.getSoundVolume(), this.getVoicePitch());
 				return InteractionResult.SUCCESS;
@@ -890,7 +890,7 @@ public class TamedRat extends InventoryRat {
 			} else if (itemstack.getItem() instanceof RatStaffItem) {
 				player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat(this));
 				player.swing(hand);
-				if (!this.getLevel().isClientSide() && player instanceof ServerPlayer sp) {
+				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
 				}
 				player.displayClientMessage(Component.translatable("entity.rats.rat.staff.bind", this.getName()), true);
@@ -932,7 +932,7 @@ public class TamedRat extends InventoryRat {
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 			}
 			this.playSound(RatsSoundRegistry.ESSENCE_APPLIED.get(), this.getSoundVolume(), this.getVoicePitch());
 			stack.shrink(1);
@@ -953,7 +953,7 @@ public class TamedRat extends InventoryRat {
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.RATBOW_ESSENCE.get())), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(RatsItemRegistry.RATBOW_ESSENCE.get())), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 			}
 			this.playSound(RatsSoundRegistry.ESSENCE_APPLIED.get(), this.getSoundVolume(), this.getVoicePitch());
 			stack.shrink(1);
@@ -1002,7 +1002,7 @@ public class TamedRat extends InventoryRat {
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(ParticleTypes.POOF, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
+				this.level().addParticle(ParticleTypes.POOF, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2, d0, d1);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -1107,7 +1107,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isCurrentlyGlowing() {
-		if (this.getLevel().isClientSide() && ForgeClientEvents.isRatSelectedOnStaff(this)) return true;
+		if (this.level().isClientSide() && ForgeClientEvents.isRatSelectedOnStaff(this)) return true;
 		return super.isCurrentlyGlowing();
 	}
 
@@ -1116,18 +1116,18 @@ public class TamedRat extends InventoryRat {
 		double d1 = this.getY();
 		double d2 = this.getZ();
 		this.setPos(x, y, z);
-		this.getLevel().broadcastEntityEvent(this, (byte) 84);
+		this.level().broadcastEntityEvent(this, (byte) 84);
 		boolean flag = false;
 		BlockPos blockpos = this.blockPosition();
 
-		if (this.getLevel().isLoaded(blockpos)) {
+		if (this.level().isLoaded(blockpos)) {
 			boolean flag1 = false;
 
 			while (!flag1 && blockpos.getY() > 0) {
 				BlockPos blockpos1 = blockpos.below();
-				BlockState state = this.getLevel().getBlockState(blockpos1);
+				BlockState state = this.level().getBlockState(blockpos1);
 
-				if (state.getMaterial().blocksMotion()) {
+				if (state.blocksMotion()) {
 					flag1 = true;
 				} else {
 					this.setPos(this.getX(), this.getY() - 1, this.getZ());
@@ -1138,7 +1138,7 @@ public class TamedRat extends InventoryRat {
 			if (flag1) {
 				this.teleportTo(this.getX(), this.getY(), this.getZ());
 
-				if (this.getLevel().noCollision(this) && !this.getLevel().containsAnyLiquid(this.getBoundingBox())) {
+				if (this.level().noCollision(this) && !this.level().containsAnyLiquid(this.getBoundingBox())) {
 					flag = true;
 				}
 			}
@@ -1152,10 +1152,10 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean isDirectPathBetweenPoints(Vec3 target) {
-		BlockHitResult result = this.getLevel().clip(new ClipContext(this.position(), target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+		BlockHitResult result = this.level().clip(new ClipContext(this.position(), target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 		BlockPos pos = result.getBlockPos();
 		BlockPos sidePos = result.getBlockPos().relative(result.getDirection());
-		if (!this.getLevel().isEmptyBlock(pos) || !this.getLevel().isEmptyBlock(sidePos)) {
+		if (!this.level().isEmptyBlock(pos) || !this.level().isEmptyBlock(sidePos)) {
 			return true;
 		} else {
 			return result.getType() == HitResult.Type.MISS;
@@ -1203,9 +1203,9 @@ public class TamedRat extends InventoryRat {
 		this.setupDynamicAI();
 
 		Entity vehicle = this.getVehicle();
-		if (!this.getLevel().isClientSide() && vehicle instanceof RatMount mount) {
+		if (!this.level().isClientSide() && vehicle instanceof RatMount mount) {
 			if (!RatUpgradeUtils.hasUpgrade(this, mount.getUpgradeItem())) {
-				this.getLevel().broadcastEntityEvent(this, (byte) 127);
+				this.level().broadcastEntityEvent(this, (byte) 127);
 				this.stopRiding();
 				vehicle.discard();
 			}
@@ -1267,7 +1267,7 @@ public class TamedRat extends InventoryRat {
 		}
 		this.setDancing(partying);
 		this.jukeboxPos = pos;
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			RatsNetworkHandler.CHANNEL.sendToServer(new SetDancingRatPacket(this.getId(), partying, pos.asLong(), moves));
 		}
 	}

@@ -50,21 +50,21 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 				if (entity.isOnPortalCooldown()) {
 					entity.setPortalCooldown();
 				} else {
-					if (!entity.getLevel().isClientSide() && !pos.equals(entity.portalEntrancePos)) {
+					if (!entity.level().isClientSide() && !pos.equals(entity.portalEntrancePos)) {
 						entity.portalEntrancePos = pos.immutable();
 					}
-					Level entityLevel = entity.getLevel();
+					Level entityLevel = entity.level();
 					if (entityLevel != null) {
 						MinecraftServer server = entityLevel.getServer();
-						ResourceKey<Level> destination = entity.getLevel().dimension() == RatlantisDimensionRegistry.DIMENSION_KEY ? Level.OVERWORLD : RatlantisDimensionRegistry.DIMENSION_KEY;
+						ResourceKey<Level> destination = entity.level().dimension() == RatlantisDimensionRegistry.DIMENSION_KEY ? Level.OVERWORLD : RatlantisDimensionRegistry.DIMENSION_KEY;
 						if (server != null) {
 							ServerLevel dest = server.getLevel(destination);
 							if (dest != null && server.isNetherEnabled() && !entity.isPassenger()) {
-								entity.getLevel().getProfiler().push("ratlantis_portal");
+								entity.level().getProfiler().push("ratlantis_portal");
 								entity.setPortalCooldown();
 								entity.changeDimension(dest, new RatlantisTeleporter(dest));
 								entity.setDeltaMovement(Vec3.ZERO);
-								entity.getLevel().getProfiler().pop();
+								entity.level().getProfiler().pop();
 							}
 						}
 					}

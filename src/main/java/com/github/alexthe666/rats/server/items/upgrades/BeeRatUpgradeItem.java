@@ -37,7 +37,7 @@ public class BeeRatUpgradeItem extends BaseFlightRatUpgradeItem implements Chang
 		if (rat.randomEffectCooldown == 0) {
 			rat.randomEffectCooldown = 500 + rat.getRandom().nextInt(500);
 			if (rat.getRandom().nextInt(3) == 0) {
-				RatUtils.polinateAround(rat.getLevel(), rat.blockPosition());
+				RatUtils.polinateAround(rat.level(), rat.blockPosition());
 			}
 		}
 	}

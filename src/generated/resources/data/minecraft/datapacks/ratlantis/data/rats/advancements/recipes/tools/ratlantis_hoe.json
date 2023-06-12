@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ratlantis_hoe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

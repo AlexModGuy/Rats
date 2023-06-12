@@ -22,7 +22,7 @@ public class RatHasTogaInRatlantisCondition implements LootItemCondition {
 	@Override
 	public boolean test(LootContext context) {
 		if (!context.hasParam(LootContextParams.THIS_ENTITY)) return false;
-		return context.getParam(LootContextParams.THIS_ENTITY) instanceof Rat rat && rat.hasToga() && rat.getLevel().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY);
+		return context.getParam(LootContextParams.THIS_ENTITY) instanceof Rat rat && rat.hasToga() && rat.level().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY);
 	}
 
 	public static class ConditionSerializer implements Serializer<RatHasTogaInRatlantisCondition> {

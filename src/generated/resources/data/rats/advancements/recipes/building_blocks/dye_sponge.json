@@ -41,5 +41,6 @@
     "recipes": [
       "rats:dye_sponge"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

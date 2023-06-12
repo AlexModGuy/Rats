@@ -79,8 +79,8 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.getLevel().isDay() && !doctor.isInvisible()));
-		this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), RatsSoundRegistry.PLAGUE_DOCTOR_REAPPEAR.get(), doctor -> this.getLevel().isDay() && doctor.isInvisible()));
+		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
+		this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), RatsSoundRegistry.PLAGUE_DOCTOR_REAPPEAR.get(), doctor -> this.level().isDay() && doctor.isInvisible()));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
@@ -132,11 +132,11 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (!this.getLevel().isClientSide() && this.willDespawn()) {
+		if (!this.level().isClientSide() && this.willDespawn()) {
 			this.handleDespawn();
 		}
 
-		if (!this.getLevel().isClientSide() && this.getHealth() < this.getMaxHealth() && this.getItemInHand(InteractionHand.MAIN_HAND).getFoodProperties(this) != null && this.getRandom().nextInt(25) == 0) {
+		if (!this.level().isClientSide() && this.getHealth() < this.getMaxHealth() && this.getItemInHand(InteractionHand.MAIN_HAND).getFoodProperties(this) != null && this.getRandom().nextInt(25) == 0) {
 			this.eating = true;
 		}
 
@@ -151,12 +151,12 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				this.munchCounter++;
 				this.playSound(this.getEatingSound(stack), 0.75F, 1.0F + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.4F);
 				this.gameEvent(GameEvent.EAT);
-				this.getLevel().broadcastEntityEvent(this, (byte) 77);
+				this.level().broadcastEntityEvent(this, (byte) 77);
 			}
 
 			if (this.munchCounter == 10) {
 				this.heal(stack.getFoodProperties(this).getNutrition());
-				this.addEatEffect(stack, this.getLevel(), this);
+				this.addEatEffect(stack, this.level(), this);
 				stack.shrink(1);
 				this.munchCounter = 0;
 				this.eating = false;
@@ -164,9 +164,9 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		}
 
 		if (!this.willDespawn()) {
-			if (this.getLevel().isNight() && this.restockedToday) this.restockedToday = false;
+			if (this.level().isNight() && this.restockedToday) this.restockedToday = false;
 
-			if (!this.restockedToday && this.exhaustedAnyTrades() && this.getLevel().isDay()) {
+			if (!this.restockedToday && this.exhaustedAnyTrades() && this.level().isDay()) {
 				for (MerchantOffer merchantoffer : this.getOffers()) {
 					merchantoffer.resetUses();
 				}
@@ -199,10 +199,10 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 					vec31 = vec31.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
 					vec31 = vec31.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
 					vec31 = vec31.add(this.getX(), this.getEyeY(), this.getZ());
-					if (this.getLevel() instanceof ServerLevel server)
+					if (this.level() instanceof ServerLevel server)
 						server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), 1, vec3.x(), vec3.y() + 0.05D, vec3.z(), 0.0D);
 					else
-						this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), vec3.x(), vec3.y() + 0.05D, vec3.z());
+						this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), vec3.x(), vec3.y() + 0.05D, vec3.z());
 				}
 			}
 		} else {
@@ -296,11 +296,11 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		double d2 = d0 - this.getY();
 		double d3 = target.getZ() + target.getDeltaMovement().z() - this.getZ();
 		float f = Mth.sqrt((float) (d1 * d1 + d3 * d3));
-		PurifyingLiquid entitypotion = new PurifyingLiquid(this.getLevel(), this, false);
+		PurifyingLiquid entitypotion = new PurifyingLiquid(this.level(), this, false);
 		entitypotion.setXRot(entitypotion.getXRot() + 20.0F);
 		entitypotion.shoot(d1, d2 + (double) (f * 0.2F), d3, 0.75F, 8.0F);
-		this.getLevel().playSound(null, this.getX(), this.getY(), this.getZ(), RatsSoundRegistry.PLAGUE_DOCTOR_THROW.get(), this.getSoundSource(), 1.0F, 0.8F + this.getRandom().nextFloat() * 0.4F);
-		this.getLevel().addFreshEntity(entitypotion);
+		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), RatsSoundRegistry.PLAGUE_DOCTOR_THROW.get(), this.getSoundSource(), 1.0F, 0.8F + this.getRandom().nextFloat() * 0.4F);
+		this.level().addFreshEntity(entitypotion);
 	}
 
 	@Override
@@ -329,7 +329,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	protected void rewardTradeXp(MerchantOffer offer) {
 		if (offer.shouldRewardExp()) {
-			this.getLevel().addFreshEntity(new ExperienceOrb(this.getLevel(), this.getX(), this.getY() + 0.5D, this.getZ(), offer.getXp()));
+			this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY() + 0.5D, this.getZ(), offer.getXp()));
 		}
 	}
 
@@ -436,19 +436,19 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.is(RatsItemRegistry.PLAGUE_TOME.get())) {
-			if (!this.isBaby() && !this.getLevel().isClientSide()) {
-				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.getLevel());
+			if (!this.isBaby() && !this.level().isClientSide()) {
+				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.level());
 				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				ForgeEventFactory.onFinalizeSpawn(death, (ServerLevelAccessor) this.getLevel(), this.getLevel().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+				ForgeEventFactory.onFinalizeSpawn(death, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
 				if (this.hasCustomName()) {
 					death.setCustomName(this.getCustomName());
 				}
 				if (!this.getMainHandItem().isEmpty()) {
 					this.spawnAtLocation(this.getMainHandItem());
 				}
-				this.getLevel().addFreshEntity(death);
+				this.level().addFreshEntity(death);
 				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
-				this.getLevel().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
+				this.level().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
 				this.discard();
 				if (!player.isCreative()) {
 					itemstack.shrink(1);
@@ -463,12 +463,12 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (this.getOffers().isEmpty()) {
 				return super.mobInteract(player, hand);
 			} else {
-				if (!this.getLevel().isClientSide()) {
+				if (!this.level().isClientSide()) {
 					this.setTradingPlayer(player);
 					this.openTradingScreen(player, this.getDisplayName(), 1);
 				}
 
-				return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
+				return InteractionResult.sidedSuccess(this.level().isClientSide());
 			}
 		}
 		return super.mobInteract(player, hand);

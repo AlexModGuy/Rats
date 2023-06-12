@@ -69,5 +69,6 @@
     "recipes": [
       "rats:rat_upgrade_feral_bite"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

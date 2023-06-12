@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -80,33 +81,30 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(stack);
-		super.render(stack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(stack, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float partialTicks, int x, int y) {
-		this.renderBackground(stack);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TEXTURE);
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int x, int y) {
+		this.renderBackground(graphics);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 
-		blit(stack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+		graphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.curdler.getCookProgressionScaled();
-		blit(stack, i + 63, j + 35, 176, 0, l + 1, 16);
+		graphics.blit(TEXTURE, i + 63, j + 35, 176, 0, l + 1, 16);
 		int tankWidth = 24;
 		int tankHeight = 63;
 		int amount = Math.round((this.curdler.getFluidAmount() / (float) this.curdler.getTankCapacity()) * (tankHeight - 4));
-		renderFluidStack(stack, i + 29, j + 73, tankWidth, amount, ForgeMod.MILK.get());
-		RenderSystem.setShaderTexture(0, TEXTURE);
-		blit(stack, i + 29, j + 12, 0, 166, tankWidth, tankHeight);
+		renderFluidStack(graphics.pose(), i + 29, j + 73, tankWidth, amount, ForgeMod.MILK.get());
+		graphics.blit(TEXTURE, i + 29, j + 12, 0, 166, tankWidth, tankHeight);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		int screenW = (this.width - this.imageWidth) / 2;
 		int screenH = (this.height - this.imageHeight) / 2;
 
@@ -114,7 +112,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 			String fluidName = new FluidStack(ForgeMod.MILK.get(), this.curdler.getTankCapacity()).getDisplayName().getString();
 			String fluidSize = this.curdler.getFluidAmount() + " " + Component.translatable("container.auto_curdler.mb").getString();
 			List<Component> list = Arrays.asList(Component.literal(fluidName).withStyle(ChatFormatting.BLUE), Component.literal(fluidSize).withStyle(ChatFormatting.GRAY));
-			this.renderTooltip(stack, Lists.transform(list, Component::getVisualOrderText), mouseX - screenW, mouseY - screenH);
+			graphics.renderTooltip(this.font, Lists.transform(list, Component::getVisualOrderText), mouseX - screenW, mouseY - screenH);
 		}
 	}
 }

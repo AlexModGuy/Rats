@@ -39,5 +39,6 @@
     "recipes": [
       "rats:rat_seed_bowl"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

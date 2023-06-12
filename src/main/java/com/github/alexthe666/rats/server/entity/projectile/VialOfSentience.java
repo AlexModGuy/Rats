@@ -28,9 +28,9 @@ public class VialOfSentience extends ThrowableItemProjectile {
 	}
 
 	protected void onHit(HitResult result) {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			AABB axisalignedbb = this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
-			List<LivingEntity> list = this.getLevel().getEntitiesOfClass(LivingEntity.class, axisalignedbb);
+			List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, axisalignedbb);
 
 			if (!list.isEmpty()) {
 				for (LivingEntity living : list) {
@@ -38,12 +38,12 @@ public class VialOfSentience extends ThrowableItemProjectile {
 						double d0 = this.distanceToSqr(living);
 						if (d0 < 16.0D) {
 							if (living instanceof FeralRatlantean) {
-								NeoRatlantean ratlantean = new NeoRatlantean(RatlantisEntityRegistry.NEO_RATLANTEAN.get(), this.getLevel());
+								NeoRatlantean ratlantean = new NeoRatlantean(RatlantisEntityRegistry.NEO_RATLANTEAN.get(), this.level());
 								ratlantean.setColorVariant(((FeralRatlantean) living).getColorVariant());
 								ratlantean.copyPosition(living);
 								living.discard();
-								if (!this.getLevel().isClientSide()) {
-									this.getLevel().addFreshEntity(ratlantean);
+								if (!this.level().isClientSide()) {
+									this.level().addFreshEntity(ratlantean);
 								}
 							} else {
 								living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 600, 4));
@@ -55,7 +55,7 @@ public class VialOfSentience extends ThrowableItemProjectile {
 				}
 			}
 		}
-		this.getLevel().levelEvent(2002, this.blockPosition(), 0XFEFE7E);
+		this.level().levelEvent(2002, this.blockPosition(), 0XFEFE7E);
 		this.discard();
 	}
 

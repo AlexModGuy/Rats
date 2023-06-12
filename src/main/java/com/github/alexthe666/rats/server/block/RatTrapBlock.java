@@ -50,11 +50,6 @@ public class RatTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
-	}
-
-	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return state.getValue(FACING).getAxis() == Direction.Axis.Z ? NS_AABB : EW_AABB;
 	}

@@ -70,9 +70,9 @@ public class PlagueCloud extends Monster {
 		float f = (this.getBbWidth() + this.getBbHeight() + this.getBbWidth()) * 0.333F + 0.5F;
 		if (this.particleDistSq(x, y, z) < f * f) {
 			if (this.getRandom().nextBoolean()) {
-				this.getLevel().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 1.5F, z, d0, d1, d2);
+				this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 1.5F, z, d0, d1, d2);
 			} else {
-				this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 1.5F, z, d0, d1, d2);
+				this.level().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 1.5F, z, d0, d1, d2);
 
 			}
 		}
@@ -189,12 +189,12 @@ public class PlagueCloud extends Monster {
 	public LivingEntity getOwner() {
 		try {
 			UUID uuid = this.getOwnerId();
-			LivingEntity player = uuid == null ? null : this.getLevel().getPlayerByUUID(uuid);
+			LivingEntity player = uuid == null ? null : this.level().getPlayerByUUID(uuid);
 			if (player != null) {
 				return player;
 			} else {
-				if (!this.getLevel().isClientSide()) {
-					Entity entity = this.getLevel().getServer().getLevel(this.getLevel().dimension()).getEntity(uuid);
+				if (!this.level().isClientSide()) {
+					Entity entity = this.level().getServer().getLevel(this.level().dimension()).getEntity(uuid);
 					if (entity instanceof LivingEntity) {
 						return (LivingEntity) entity;
 					}
@@ -255,7 +255,7 @@ public class PlagueCloud extends Monster {
 			for (int i = 0; i < 3; ++i) {
 				BlockPos blockpos1 = blockpos.offset(PlagueCloud.this.getRandom().nextInt(15) - 7, PlagueCloud.this.getRandom().nextInt(11) - 5, PlagueCloud.this.getRandom().nextInt(15) - 7);
 
-				if (PlagueCloud.this.getLevel().isEmptyBlock(blockpos1)) {
+				if (PlagueCloud.this.level().isEmptyBlock(blockpos1)) {
 					PlagueCloud.this.getMoveControl().setWantedPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
 
 					if (PlagueCloud.this.getTarget() == null) {

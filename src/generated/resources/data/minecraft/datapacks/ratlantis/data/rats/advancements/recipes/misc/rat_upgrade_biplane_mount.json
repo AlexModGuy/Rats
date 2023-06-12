@@ -80,5 +80,6 @@
     "recipes": [
       "rats:rat_upgrade_biplane_mount"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

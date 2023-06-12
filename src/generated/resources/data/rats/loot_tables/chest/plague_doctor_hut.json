@@ -387,5 +387,6 @@
         "min": 3.0
       }
     }
-  ]
+  ],
+  "random_sequence": "rats:chest/plague_doctor_hut"
 }

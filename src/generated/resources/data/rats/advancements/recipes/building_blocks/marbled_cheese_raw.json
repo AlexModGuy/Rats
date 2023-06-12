@@ -39,5 +39,6 @@
     "recipes": [
       "rats:marbled_cheese_raw"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

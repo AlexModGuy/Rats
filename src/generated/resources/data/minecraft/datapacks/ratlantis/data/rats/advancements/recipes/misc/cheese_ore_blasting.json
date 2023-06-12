@@ -30,5 +30,6 @@
     "recipes": [
       "rats:cheese_ore_blasting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

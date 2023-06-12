@@ -23,5 +23,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "rats:gameplay/hero_of_the_village/pet_shop_owner"
 }

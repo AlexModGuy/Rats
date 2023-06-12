@@ -52,5 +52,6 @@
     "recipes": [
       "rats:upgrades/placer_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:ectoplasm_from_wheel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

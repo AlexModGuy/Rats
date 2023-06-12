@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/ratfish"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

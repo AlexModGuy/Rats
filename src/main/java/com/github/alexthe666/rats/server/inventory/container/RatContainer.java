@@ -21,7 +21,7 @@ public class RatContainer extends SimpleContainer {
 	@Override
 	public void setItem(int index, ItemStack stack) {
 		super.setItem(index, stack);
-		if (index >= 3 && this.rat instanceof TamedRat tamed && tamed.isAlive() && !tamed.getLevel().isClientSide()) {
+		if (index >= 3 && this.rat instanceof TamedRat tamed && tamed.isAlive() && !tamed.level().isClientSide()) {
 			tamed.onUpgradeChanged();
 		}
 	}

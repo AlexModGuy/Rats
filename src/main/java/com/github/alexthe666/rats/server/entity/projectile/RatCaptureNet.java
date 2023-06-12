@@ -31,9 +31,9 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 	@Override
 	protected void onHit(HitResult result) {
 		ItemStack sack = new ItemStack(RatsItemRegistry.RAT_SACK.get());
-		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
+		if (!this.level().isClientSide() && this.getOwner() != null) {
 			AABB axisalignedbb = this.getBoundingBox().inflate(16);
-			List<TamedRat> list = this.getLevel().getEntitiesOfClass(TamedRat.class, axisalignedbb);
+			List<TamedRat> list = this.level().getEntitiesOfClass(TamedRat.class, axisalignedbb);
 			int capturedRat = 0;
 			if (!list.isEmpty()) {
 				for (TamedRat rat : list) {
@@ -41,7 +41,7 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
 						capturedRat++;
 						RatSackItem.packRatIntoSack(sack, rat, capturedRat);
-						this.getLevel().broadcastEntityEvent(rat, (byte) 86);
+						this.level().broadcastEntityEvent(rat, (byte) 86);
 						rat.discard();
 					}
 				}
@@ -49,10 +49,10 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 			}
 			this.discard();
 		}
-		ItemEntity itemEntity = new ItemEntity(this.getLevel(), this.getX(), this.getY(), this.getZ(), sack);
+		ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), sack);
 		itemEntity.setInvulnerable(true);
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().addFreshEntity(itemEntity);
+		if (!this.level().isClientSide()) {
+			this.level().addFreshEntity(itemEntity);
 		}
 	}
 

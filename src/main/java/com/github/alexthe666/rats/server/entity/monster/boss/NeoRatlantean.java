@@ -151,8 +151,8 @@ public class NeoRatlantean extends Monster {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.getLevel().isClientSide()) {
-			this.getLevel().addParticle(RatsParticleRegistry.LIGHTNING.get(),
+		if (this.level().isClientSide()) {
+			this.level().addParticle(RatsParticleRegistry.LIGHTNING.get(),
 					this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
 					this.getY() + this.getEyeHeight() + (this.getRandom().nextFloat() * 0.35F),
 					this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
@@ -170,29 +170,29 @@ public class NeoRatlantean extends Monster {
 			this.playSound(RatsSoundRegistry.NEORATLANTEAN_LOOP.get(), 1, 1);
 		}
 		this.humTicks++;
-		if (!this.getLevel().isClientSide() && this.getTarget() != null) {
+		if (!this.level().isClientSide() && this.getTarget() != null) {
 			Entity entity = this.getTarget();
 			if (RatConfig.neoratlanteanSummonLaserPortals && this.attackSelection == 0 && this.summonCooldown == 0) {
 				this.summonCooldown = RatConfig.neoratlanteanLaserAttackCooldown;
 				int bounds = 5;
 				for (int i = 0; i < this.getRandom().nextInt(2) + 2; i++) {
-					LaserPortal laserPortal = new LaserPortal(RatlantisEntityRegistry.LASER_PORTAL.get(), this.getLevel(), entity.getX() + this.getRandom().nextInt(bounds * 2) - bounds, this.getY() + 2, entity.getZ() + this.getRandom().nextInt(bounds * 2) - bounds, this);
-					this.getLevel().addFreshEntity(laserPortal);
+					LaserPortal laserPortal = new LaserPortal(RatlantisEntityRegistry.LASER_PORTAL.get(), this.level(), entity.getX() + this.getRandom().nextInt(bounds * 2) - bounds, this.getY() + 2, entity.getZ() + this.getRandom().nextInt(bounds * 2) - bounds, this);
+					this.level().addFreshEntity(laserPortal);
 				}
 				this.resetAttacks();
 			}
 			if (RatConfig.neoratlanteanSummonFakeLightning && this.attackSelection == 1 && this.summonCooldown == 0) {
 				int bounds = 20;
-				if (!this.getLevel().isClientSide()) {
-					LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(this.getLevel());
+				if (!this.level().isClientSide()) {
+					LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(this.level());
 					bolt.moveTo(entity.position());
 					bolt.setVisualOnly(true);
-					this.getLevel().addFreshEntity(bolt);
+					this.level().addFreshEntity(bolt);
 					for (int i = 0; i < this.getRandom().nextInt(3) + 2; i++) {
-						LightningBolt boltAgain = EntityType.LIGHTNING_BOLT.create(this.getLevel());
+						LightningBolt boltAgain = EntityType.LIGHTNING_BOLT.create(this.level());
 						boltAgain.moveTo(new Vec3(entity.getX() + this.getRandom().nextInt(bounds * 2) - bounds, entity.getY(), entity.getZ() + this.getRandom().nextInt(bounds * 2) - bounds));
 						boltAgain.setVisualOnly(true);
-						this.getLevel().addFreshEntity(boltAgain);
+						this.level().addFreshEntity(boltAgain);
 					}
 				}
 
@@ -204,20 +204,20 @@ public class NeoRatlantean extends Monster {
 				BlockPos ourPos = this.blockPosition();
 				List<BlockPos> listOfAll = new ArrayList<>();
 				for (BlockPos pos : BlockPos.betweenClosedStream(ourPos.offset(-searchRange, -searchRange, -searchRange), ourPos.offset(searchRange, searchRange, searchRange)).map(BlockPos::immutable).toList()) {
-					BlockState state = this.getLevel().getBlockState(pos);
-					if (!this.getLevel().isEmptyBlock(pos) && this.canPickupBlock(this.getLevel(), state, pos) && this.getLevel().isEmptyBlock(pos.above())) {
+					BlockState state = this.level().getBlockState(pos);
+					if (!this.level().isEmptyBlock(pos) && this.canPickupBlock(this.level(), state, pos) && this.level().isEmptyBlock(pos.above())) {
 						listOfAll.add(pos);
 					}
 				}
 				if (listOfAll.size() > 0) {
 					BlockPos pos = listOfAll.get(this.getRandom().nextInt(listOfAll.size()));
-					ThrownBlock thrownBlock = new ThrownBlock(RatsEntityRegistry.THROWN_BLOCK.get(), this.getLevel(), this.getLevel().getBlockState(pos), this);
+					ThrownBlock thrownBlock = new ThrownBlock(RatsEntityRegistry.THROWN_BLOCK.get(), this.level(), this.level().getBlockState(pos), this);
 					thrownBlock.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-					if (!this.getLevel().isClientSide()) {
-						this.getLevel().addFreshEntity(thrownBlock);
+					if (!this.level().isClientSide()) {
+						this.level().addFreshEntity(thrownBlock);
 					}
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
-					this.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					this.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					this.summonCooldown = RatConfig.neoratlanteanBlockAttackCooldown;
 				}
 				this.resetAttacks();
@@ -362,7 +362,7 @@ public class NeoRatlantean extends Monster {
 			for (int i = 0; i < 3; ++i) {
 				BlockPos blockpos1 = blockpos.offset(NeoRatlantean.this.getRandom().nextInt(5) - 8, NeoRatlantean.this.getRandom().nextInt(4) - 6, NeoRatlantean.this.getRandom().nextInt(5) - 8);
 
-				if (NeoRatlantean.this.getLevel().isEmptyBlock(blockpos1)) {
+				if (NeoRatlantean.this.level().isEmptyBlock(blockpos1)) {
 					NeoRatlantean.this.getMoveControl().setWantedPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 1D);
 
 					if (NeoRatlantean.this.getTarget() == null) {

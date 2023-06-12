@@ -65,5 +65,6 @@
     "recipes": [
       "rats:dutchrat_bell"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

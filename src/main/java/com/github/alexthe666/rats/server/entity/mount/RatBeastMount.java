@@ -95,7 +95,7 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 				this.getTarget().knockback(0.25F, this.getX() - this.getTarget().getX(), this.getZ() - this.getTarget().getZ());
 			}
 		}
-		if (!this.getLevel().isClientSide() && this.getTarget() == null && this.getRandom().nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
+		if (!this.level().isClientSide() && this.getTarget() == null && this.getRandom().nextInt(150) == 0 && this.getAnimation() == NO_ANIMATION) {
 			this.setAnimation(ANIMATION_SNIFF);
 		}
 	}

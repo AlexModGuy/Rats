@@ -12,7 +12,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -32,6 +32,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.common.ForgeMod;
 
 import java.util.UUID;
 
@@ -88,7 +89,7 @@ public class RatStriderMount extends RatMountBase {
 	}
 
 	@Override
-	protected float getRiddenSpeed(LivingEntity entity) {
+	protected float getRiddenSpeed(Player player) {
 		return (float) (this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isSuffocating() ? 0.35D : 0.55D));
 	}
 
@@ -115,9 +116,9 @@ public class RatStriderMount extends RatMountBase {
 	@Override
 	public void tick() {
 		if (!this.isNoAi()) {
-			BlockState blockstate = this.level.getBlockState(this.blockPosition());
+			BlockState blockstate = this.level().getBlockState(this.blockPosition());
 			BlockState blockstate1 = this.getBlockStateOn();
-			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidHeight(FluidTags.LAVA) > 0.0D;
+			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidTypeHeight(ForgeMod.LAVA_TYPE.get()) > 0.0D;
 
 			this.setSuffocating(!flag);
 		}
@@ -130,8 +131,8 @@ public class RatStriderMount extends RatMountBase {
 	private void floatStrider() {
 		if (this.isInLava()) {
 			CollisionContext collisioncontext = CollisionContext.of(this);
-			if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
-				this.onGround = true;
+			if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+				this.setOnGround(true);
 			} else {
 				this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
 			}

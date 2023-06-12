@@ -50,5 +50,6 @@
       "killed_baron",
       "killed_plane"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

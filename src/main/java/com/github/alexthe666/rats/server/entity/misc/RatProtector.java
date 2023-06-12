@@ -18,7 +18,7 @@ public class RatProtector extends AbstractRat {
 	public RatProtector(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
 		this.moveControl = new EtherealRatMoveControl(this);
-		this.navigation = new EtherealRatNavigation(this, this.getLevel());
+		this.navigation = new EtherealRatNavigation(this, this.level());
 	}
 
 	@Override
@@ -53,9 +53,9 @@ public class RatProtector extends AbstractRat {
 		++this.deathTime;
 		if (this.deathTime == 10) {
 			this.discard();
-			if (this.getLevel().isClientSide()) {
+			if (this.level().isClientSide()) {
 				for (int i = 0; i < 15; i++) {
-					this.getLevel().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
+					this.level().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
 							this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
 							this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()),
 							this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
@@ -74,7 +74,7 @@ public class RatProtector extends AbstractRat {
 	public void tick() {
 		super.tick();
 		this.noPhysics = true;
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.getTarget() == null || !this.getTarget().isAlive()) {
 				this.kill();
 			} else {

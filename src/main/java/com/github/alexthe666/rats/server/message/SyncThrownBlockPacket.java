@@ -26,10 +26,10 @@ public record SyncThrownBlockPacket(int blockEntityId, long blockPos) {
 			context.get().enqueueWork(() -> {
 				Player player = context.get().getSender();
 				if (player != null) {
-					Entity entity = player.getLevel().getEntity(packet.blockEntityId());
+					Entity entity = player.level().getEntity(packet.blockEntityId());
 					if (entity instanceof ThrownBlock blocc) {
 						BlockPos pos = BlockPos.of(packet.blockPos());
-						blocc.setHeldBlockState(player.getLevel().getBlockState(pos));
+						blocc.setHeldBlockState(player.level().getBlockState(pos));
 					}
 				}
 				context.get().setPacketHandled(true);

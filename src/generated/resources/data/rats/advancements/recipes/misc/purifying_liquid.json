@@ -67,5 +67,6 @@
     "recipes": [
       "rats:purifying_liquid"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

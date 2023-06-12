@@ -43,5 +43,6 @@
     "recipes": [
       "rats:plague_doctorate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "rats:compressed_rat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

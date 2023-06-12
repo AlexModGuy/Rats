@@ -91,5 +91,6 @@
     "recipes": [
       "rats:rat_upgrade_psychic"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

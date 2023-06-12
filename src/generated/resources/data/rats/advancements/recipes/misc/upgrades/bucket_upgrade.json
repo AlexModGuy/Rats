@@ -54,5 +54,6 @@
     "recipes": [
       "rats:upgrades/bucket_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

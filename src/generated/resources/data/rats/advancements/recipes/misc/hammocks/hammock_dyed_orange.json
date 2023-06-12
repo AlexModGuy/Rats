@@ -39,5 +39,6 @@
     "recipes": [
       "rats:hammocks/hammock_dyed_orange"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -43,5 +43,6 @@
     "recipes": [
       "rats:purified_garbage"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

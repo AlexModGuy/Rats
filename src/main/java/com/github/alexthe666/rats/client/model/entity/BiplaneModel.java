@@ -3,12 +3,13 @@ package com.github.alexthe666.rats.client.model.entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.alexthe666.rats.server.entity.Plane;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
 import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.Mob;
 
-public class BiplaneModel<T extends Mob> extends AdvancedEntityModel<T> {
+public class BiplaneModel<T extends Mob & Plane> extends AdvancedEntityModel<T> {
 	public final AdvancedModelBox body1;
 	public final AdvancedModelBox body2;
 	public final AdvancedModelBox cabin;
@@ -182,13 +183,13 @@ public class BiplaneModel<T extends Mob> extends AdvancedEntityModel<T> {
 	@Override
 	public void setupAnim(T t, float v, float v1, float v2, float v3, float v4) {
 		this.resetToDefaultPose();
-		if (!t.isOnGround() && t instanceof RatBaronPlane plane) {
+		if (!t.onGround() && t instanceof RatBaronPlane plane) {
 			plane.roll_buffer.applyChainFlapBuffer(this.body1);
 			plane.pitch_buffer.applyChainWaveBuffer(this.body1);
 			float f7 = plane.prevPlanePitch + (plane.getPlanePitch() - plane.prevPlanePitch) * v3;
 			this.body1.rotateAngleX = (float) Math.toRadians(f7);
 		}
-		if (!t.isOnGround() && t instanceof RatBiplaneMount plane) {
+		if (!t.onGround() && t instanceof RatBiplaneMount plane) {
 			plane.roll_buffer.applyChainFlapBuffer(this.body1);
 			plane.pitch_buffer.applyChainWaveBuffer(this.body1);
 			float f7 = plane.prevPlanePitch + (plane.getPlanePitch() - plane.prevPlanePitch) * v3;

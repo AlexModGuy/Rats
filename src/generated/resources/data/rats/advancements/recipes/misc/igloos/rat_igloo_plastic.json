@@ -30,5 +30,6 @@
     "recipes": [
       "rats:igloos/rat_igloo_plastic"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

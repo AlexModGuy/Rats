@@ -91,5 +91,6 @@
     "recipes": [
       "rats:upgrades/aristocrat_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

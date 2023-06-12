@@ -35,5 +35,6 @@
     [
       "kill_king"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -33,5 +33,6 @@
     [
       "get_vial"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

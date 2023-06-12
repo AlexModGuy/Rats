@@ -41,5 +41,6 @@
     "recipes": [
       "rats:marbled_cheese_dirt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

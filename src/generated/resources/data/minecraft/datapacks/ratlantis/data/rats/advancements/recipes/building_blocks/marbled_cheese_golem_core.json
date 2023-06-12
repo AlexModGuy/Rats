@@ -39,5 +39,6 @@
     "recipes": [
       "rats:marbled_cheese_golem_core"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

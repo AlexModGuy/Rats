@@ -17,14 +17,14 @@ public class AquaticRatMoveControl extends RatMoveControl {
 
 	public void tick() {
 		if (this.operation == MoveControl.Operation.MOVE_TO && this.rat.isInWater()) {
-			if (this.rat.horizontalCollision && !this.rat.isOnGround()) {
+			if (this.rat.horizontalCollision && !this.rat.onGround()) {
 				this.rat.setYRot(this.rat.getYRot() + 180.0F);
 				int dist = 3;
 				if (!this.rat.isInCage()) {
 					this.speedModifier = 0.1F;
 					dist = 8;
 				}
-				BlockPos target = RatUtils.getPositionRelativetoWater(this.rat, this.rat.getLevel(), this.rat.getX() + this.rat.getRandom().nextInt(dist * 2) - dist, this.rat.getZ() + this.rat.getRandom().nextInt(dist * 2) - dist, this.rat.getRandom());
+				BlockPos target = RatUtils.getPositionRelativetoWater(this.rat, this.rat.level(), this.rat.getX() + this.rat.getRandom().nextInt(dist * 2) - dist, this.rat.getZ() + this.rat.getRandom().nextInt(dist * 2) - dist, this.rat.getRandom());
 				this.setWantedPosition(target.getX(), target.getY(), target.getZ(), this.speedModifier);
 			}
 			Vec3 vec3d = new Vec3(this.getWantedX() - this.rat.getX(), this.getWantedY() - this.rat.getY(), this.getWantedZ() - this.rat.getZ());

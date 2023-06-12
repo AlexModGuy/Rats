@@ -41,5 +41,6 @@
     "recipes": [
       "rats:upgrades/basic_mount_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -49,7 +49,7 @@ public class RatArrow extends AbstractArrow {
 				entity = eResult.getEntity();
 				pos = eResult.getEntity().blockPosition();
 			}
-			TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.getLevel());
+			TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level());
 			CompoundTag ratTag = new CompoundTag();
 			if (this.stack.getTag() != null && !this.stack.getTag().getCompound("Rat").isEmpty()) {
 				ratTag = this.stack.getTag().getCompound("Rat");
@@ -74,15 +74,15 @@ public class RatArrow extends AbstractArrow {
 				}
 			}
 			rat.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(rat);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(rat);
 			}
 			if (entity instanceof LivingEntity living && !rat.isAlliedTo(entity)) {
 				rat.setTarget(living);
 			}
 			if (this.inGround) {
 				this.discard();
-				if (!this.getLevel().isClientSide()) {
+				if (!this.level().isClientSide()) {
 					this.spawnAtLocation(this.getPickupItem(), 0.0F);
 				}
 			}

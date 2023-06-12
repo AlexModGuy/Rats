@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/pirat_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

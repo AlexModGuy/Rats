@@ -50,5 +50,6 @@
     "recipes": [
       "rats:rat_quarry"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

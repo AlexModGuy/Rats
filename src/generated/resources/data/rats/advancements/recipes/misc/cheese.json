@@ -30,5 +30,6 @@
     "recipes": [
       "rats:cheese"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

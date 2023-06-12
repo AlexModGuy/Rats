@@ -134,7 +134,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			this.setRatStatus(RatStatus.MOVING);
 		}
 		if (!this.isNoAi()) {
-			if (!this.getLevel().isClientSide() && this.getRatStatus() == RatStatus.IDLE && this.getMainHandItem().isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(350) == 0 && this.shouldPlayIdleAnimations()) {
+			if (!this.level().isClientSide() && this.getRatStatus() == RatStatus.IDLE && this.getMainHandItem().isEmpty() && this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(350) == 0 && this.shouldPlayIdleAnimations()) {
 				this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_IDLE_SNIFF : ANIMATION_IDLE_SCRATCH);
 			}
 		}
@@ -142,7 +142,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			this.eatingTicks++;
 			this.eatItem(this.getMainHandItem());
 			if (this.eatingTicks >= 40) {
-				if (!this.getMainHandItem().isEmpty() && !this.getLevel().isClientSide()) {
+				if (!this.getMainHandItem().isEmpty() && !this.level().isClientSide()) {
 					this.onItemEaten();
 				}
 				int healAmount = 1;
@@ -154,7 +154,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			}
 		}
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.isEating()) {
 				this.setAnimation(ANIMATION_EAT);
 				this.setRatStatus(RatStatus.EATING);
@@ -175,7 +175,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 				this.deadInTrapProgress += 1.0F;
 			}
 		}
-		if (this.getLevel().getBlockState(this.blockPosition()).is(BlockTags.BEDS) && this.isOrderedToSit()) {
+		if (this.level().getBlockState(this.blockPosition()).is(BlockTags.BEDS) && this.isOrderedToSit()) {
 			this.sitProgress = 0.0F;
 			this.getEntityData().set(SLEEPING, true);
 			this.refreshDimensions();
@@ -189,7 +189,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 				this.sleepProgress -= 1.0F;
 			}
 		}
-		if (!this.getLevel().isClientSide() && this.getOwner() instanceof RatSummoner summoner && this.getOwner() instanceof Mob mob) {
+		if (!this.level().isClientSide() && this.getOwner() instanceof RatSummoner summoner && this.getOwner() instanceof Mob mob) {
 			if (mob.getTarget() != null) {
 				this.setTarget(mob.getTarget());
 			}
@@ -212,7 +212,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 					double extraZ = (double) (radius * Mth.cos(angle)) + mob.getZ();
 					BlockPos runToPos = BlockPos.containing(extraX, mob.getY(), extraZ);
 					int steps = 0;
-					while (this.getLevel().getBlockState(runToPos).isSolidRender(getLevel(), runToPos) && steps < 10) {
+					while (this.level().getBlockState(runToPos).isSolidRender(level(), runToPos) && steps < 10) {
 						runToPos = runToPos.above();
 						steps++;
 					}
@@ -265,7 +265,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 				double d3 = this.xo + (this.getX() - this.xo) * d6 + (getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2.0D;
 				double d4 = this.yo + (this.getY() - this.yo) * d6 + getRandom().nextDouble() * (double) this.getBbHeight();
 				double d5 = this.zo + (this.getZ() - this.zo) * d6 + (getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2.0D;
-				getLevel().addParticle(ParticleTypes.SPLASH, d3, d4, d5, f, f1, f2);
+				level().addParticle(ParticleTypes.SPLASH, d3, d4, d5, f, f1, f2);
 			}
 		} else if (type == 2) {
 			for (int j = 0; j < 5; ++j) {
@@ -276,7 +276,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 				double d3 = this.xo + (this.getX() - this.xo) * d6 + (getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2.0D;
 				double d4 = this.yo + (this.getY() - this.yo) * d6 + getRandom().nextDouble() * (double) this.getBbHeight();
 				double d5 = this.zo + (this.getZ() - this.zo) * d6 + (getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2.0D;
-				getLevel().addParticle(ParticleTypes.PORTAL, d3, d4, d5, f, f1, f2);
+				level().addParticle(ParticleTypes.PORTAL, d3, d4, d5, f, f1, f2);
 			}
 		} else {
 			ParticleOptions p = ParticleTypes.SMOKE;
@@ -291,7 +291,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+				this.level().addParticle(p, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + 0.5D + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 			}
 		}
 	}
@@ -457,8 +457,8 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected void tickDeath() {
 		++this.deathTime;
 		int maxDeathTime = this.isDeadInTrap() ? 60 : 20;
-		if (this.deathTime >= maxDeathTime && !this.getLevel().isClientSide() && !this.isRemoved()) {
-			this.level.broadcastEntityEvent(this, (byte) 60);
+		if (this.deathTime >= maxDeathTime && !this.level().isClientSide() && !this.isRemoved()) {
+			this.level().broadcastEntityEvent(this, (byte) 60);
 			this.remove(RemovalReason.KILLED);
 		}
 	}
@@ -541,7 +541,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		if (!stack.isEmpty()) {
 			if (stack.getUseAnimation() == UseAnim.DRINK) {
 				this.gameEvent(GameEvent.DRINK);
-				this.playSound(RatsSoundRegistry.RAT_DRINK.get(), 0.5F, this.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
+				this.playSound(RatsSoundRegistry.RAT_DRINK.get(), 0.5F, this.level().getRandom().nextFloat() * 0.1F + 0.9F);
 			}
 			if (RatUtils.isRatFood(stack) || (this instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()))) {
 				for (int i = 0; i < 3; ++i) {
@@ -553,7 +553,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 					vec3d1 = vec3d1.xRot(-this.getXRot() * 0.017453292F);
 					vec3d1 = vec3d1.yRot(-this.getYRot() * 0.017453292F);
 					vec3d1 = vec3d1.add(this.getX(), this.getY() + 0.25D, this.getZ());
-					this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec3d1.x(), vec3d1.y(), vec3d1.z(), vec3d.x(), vec3d.y() + 0.05D, vec3d.z());
+					this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec3d1.x(), vec3d1.y(), vec3d1.z(), vec3d.x(), vec3d.y() + 0.05D, vec3d.z());
 				}
 				this.gameEvent(GameEvent.EAT);
 				this.playSound(RatsSoundRegistry.RAT_EAT.get(), 0.25F + 0.25F * (float) this.getRandom().nextInt(2), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.3F);
@@ -563,10 +563,10 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	public boolean isValidLightLevel() {
 		BlockPos blockpos = BlockPos.containing(this.getX(), this.getBoundingBox().minY, this.getZ());
-		if (this.getLevel().getBrightness(LightLayer.SKY, blockpos) > this.getRandom().nextInt(32)) {
+		if (this.level().getBrightness(LightLayer.SKY, blockpos) > this.getRandom().nextInt(32)) {
 			return false;
 		} else {
-			int i = this.getLevel().isThundering() ? this.getLevel().getMaxLocalRawBrightness(blockpos, 10) : this.getLevel().getMaxLocalRawBrightness(blockpos);
+			int i = this.level().isThundering() ? this.level().getMaxLocalRawBrightness(blockpos, 10) : this.level().getMaxLocalRawBrightness(blockpos);
 			return i <= this.getRandom().nextInt(8);
 		}
 	}
@@ -618,7 +618,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	public BlockPos getLightPosition() {
 		BlockPos pos = this.blockPosition();
-		if (!this.getLevel().getBlockState(pos).canOcclude()) {
+		if (!this.level().getBlockState(pos).canOcclude()) {
 			return pos.above();
 		}
 		return pos;

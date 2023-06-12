@@ -30,5 +30,6 @@
     "recipes": [
       "rats:rat_pelt_to_leather"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

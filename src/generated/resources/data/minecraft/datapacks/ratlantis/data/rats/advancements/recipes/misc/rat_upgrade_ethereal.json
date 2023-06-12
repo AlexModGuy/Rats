@@ -82,5 +82,6 @@
     "recipes": [
       "rats:rat_upgrade_ethereal"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

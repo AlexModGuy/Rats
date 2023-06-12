@@ -30,5 +30,6 @@
     "recipes": [
       "rats:ratlantean_gem_blasting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

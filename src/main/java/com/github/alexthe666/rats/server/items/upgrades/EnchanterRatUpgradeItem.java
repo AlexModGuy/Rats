@@ -50,8 +50,8 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 				if (!disenchant) {
 					float power = 0;
 					for (BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
-						if (EnchantmentTableBlock.isValidBookShelf(rat.getLevel(), rat.blockPosition(), blockpos)) {
-							power += rat.getLevel().getBlockState(rat.blockPosition().offset(blockpos)).getEnchantPowerBonus(rat.getLevel(), rat.blockPosition().offset(blockpos));
+						if (EnchantmentTableBlock.isValidBookShelf(rat.level(), rat.blockPosition(), blockpos)) {
+							power += rat.level().getBlockState(rat.blockPosition().offset(blockpos)).getEnchantPowerBonus(rat.level(), rat.blockPosition().offset(blockpos));
 						}
 					}
 					burntItem = EnchantmentHelper.enchantItem(rat.getRandom(), burntItem, (int) (2.0F + rat.getRandom().nextInt(2) + power), false);
@@ -60,7 +60,7 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 					rat.setItemInHand(InteractionHand.MAIN_HAND, burntItem);
 				} else {
 					if (!rat.tryDepositItemInContainers(burntItem)) {
-						if (!rat.getLevel().isClientSide()) {
+						if (!rat.level().isClientSide()) {
 							rat.spawnAtLocation(burntItem, 0.25F);
 						}
 					}

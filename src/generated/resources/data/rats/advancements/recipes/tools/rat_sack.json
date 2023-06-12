@@ -39,5 +39,6 @@
     "recipes": [
       "rats:rat_sack"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

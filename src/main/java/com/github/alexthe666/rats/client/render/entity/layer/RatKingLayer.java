@@ -30,11 +30,11 @@ public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, RatKing king, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		long roundedTime = king.getLevel().getDayTime() % 24000;
+		long roundedTime = king.level().getDayTime() % 24000;
 		boolean night = roundedTime >= 13000 && roundedTime <= 22000;
 		BlockPos ratPos = king.getLightPosition();
-		int brightI = king.getLevel().getBrightness(LightLayer.SKY, ratPos);
-		int brightJ = king.getLevel().getBrightness(LightLayer.BLOCK, ratPos);
+		int brightI = king.level().getBrightness(LightLayer.SKY, ratPos);
+		int brightJ = king.level().getBrightness(LightLayer.BLOCK, ratPos);
 		int brightness;
 		if (night) {
 			brightness = brightJ;

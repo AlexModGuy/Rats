@@ -39,5 +39,6 @@
     "recipes": [
       "rats:igloos/rat_igloo_light_blue"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

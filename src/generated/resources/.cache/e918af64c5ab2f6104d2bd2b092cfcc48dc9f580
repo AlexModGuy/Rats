@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-14T22:26:03.8965687	Tags for minecraft:entity_type mod id rats
+// 1.20	2023-06-12T15:41:42.1712723	Tags for minecraft:entity_type mod id rats
 c27c4f3c9c8a31b7aad3521e2cb93dab9d4bb028 data/forge/tags/entity_types/bosses.json
 cf746c872e8faa08e8d65ae975374b6f31471ca0 data/minecraft/tags/entity_types/arrows.json
 d692e80b62dd9cb710f49be7b191fc3e9c1e5527 data/minecraft/tags/entity_types/fall_damage_immune.json

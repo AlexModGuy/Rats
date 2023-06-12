@@ -43,5 +43,6 @@
     "recipes": [
       "rats:ratlantis_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

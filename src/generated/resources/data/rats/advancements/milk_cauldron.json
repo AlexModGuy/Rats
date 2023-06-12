@@ -3,18 +3,26 @@
   "criteria": {
     "curdle_milk": {
       "conditions": {
-        "item": {
-          "items": [
-            "minecraft:milk_bucket"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "rats:cauldron_milk"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "rats:cauldron_milk"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "minecraft:milk_bucket"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     }
@@ -38,5 +46,6 @@
     [
       "curdle_milk"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

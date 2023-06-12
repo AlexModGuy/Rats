@@ -32,7 +32,7 @@ public record UpdateRatFluidPacket(int ratId, FluidStack fluid) {
 			context.get().enqueueWork(() -> {
 				Player player = context.get().getSender();
 				if (player != null) {
-					Entity entity = player.getLevel().getEntity(packet.ratId());
+					Entity entity = player.level().getEntity(packet.ratId());
 					if (entity instanceof TamedRat rat) {
 						rat.transportingFluid = packet.fluid();
 

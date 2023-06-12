@@ -216,7 +216,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	public void makeCheese(Level level) {
 		if (this.canMakeCheese()) {
 			ItemStack toAdd = new ItemStack(RatsBlockRegistry.BLOCK_OF_CHEESE.get());
-			if (this.getItem(1).sameItem(toAdd) && this.getItem(1).getCount() < 64) {
+			if (this.getItem(1).is(toAdd.getItem()) && this.getItem(1).getCount() < 64) {
 				this.getItem(1).grow(1);
 			} else if (this.getItem(1).isEmpty()) {
 				this.setItem(1, toAdd.copy());
@@ -246,7 +246,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 				ItemStack itemstack1 = this.getItem(1);
 				if (itemstack1.isEmpty()) {
 					return true;
-				} else if (!itemstack1.sameItem(itemstack)) {
+				} else if (!itemstack1.is(itemstack.getItem())) {
 					return false;
 				} else if (itemstack1.getCount() + itemstack.getCount() <= this.getMaxStackSize() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize())  // Forge fix: make furnace respect stack sizes in furnace recipes
 				{

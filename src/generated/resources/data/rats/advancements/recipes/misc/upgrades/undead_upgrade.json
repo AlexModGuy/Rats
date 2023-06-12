@@ -67,5 +67,6 @@
     "recipes": [
       "rats:upgrades/undead_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

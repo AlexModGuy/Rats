@@ -73,8 +73,8 @@ public class RatKing extends Monster implements RatSummoner {
 	public void aiStep() {
 		super.aiStep();
 		LivingEntity target = this.getTarget();
-		if (!this.getLevel().isClientSide() && target != null & this.tickCount % 15 == 0 && this.getRatsSummoned() < RatConfig.ratKingMaxRatSpawns) {
-			RatShot shot = new RatShot(RatsEntityRegistry.RAT_SHOT.get(), this.getLevel(), this);
+		if (!this.level().isClientSide() && target != null & this.tickCount % 15 == 0 && this.getRatsSummoned() < RatConfig.ratKingMaxRatSpawns) {
+			RatShot shot = new RatShot(RatsEntityRegistry.RAT_SHOT.get(), this.level(), this);
 			shot.setColorVariant(RatVariantRegistry.getRandomVariant(this.getRandom(), false));
 			double extraX = this.getX();
 			double extraZ = this.getZ();
@@ -88,8 +88,8 @@ public class RatKing extends Monster implements RatSummoner {
 			shot.setPos(extraX, extraY, extraZ);
 			shot.shoot(d1, d2 + (double) f, d3, velocity, 0);
 			this.playSound(RatsSoundRegistry.RAT_KING_SHOOT.get(), 3.0F, 2.3F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(shot);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(shot);
 			}
 		}
 	}
@@ -131,14 +131,14 @@ public class RatKing extends Monster implements RatSummoner {
 
 			this.dead = true;
 			this.getCombatTracker().recheckStatus();
-			if (this.level instanceof ServerLevel) {
-				if (entity == null || entity.wasKilled((ServerLevel) this.level, this)) {
+			if (this.level() instanceof ServerLevel server) {
+				if (entity == null || entity.killedEntity(server, this)) {
 					this.gameEvent(GameEvent.ENTITY_DIE);
 					//this.dropAllDeathLoot(source);
 					this.createWitherRose(livingentity);
 				}
 
-				this.level.broadcastEntityEvent(this, (byte) 3);
+				this.level().broadcastEntityEvent(this, (byte) 3);
 			}
 
 			this.setPose(Pose.DYING);
@@ -148,8 +148,8 @@ public class RatKing extends Monster implements RatSummoner {
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
-		if (this.deathTime >= 100 && !this.level.isClientSide() && !this.isRemoved()) {
-			this.level.broadcastEntityEvent(this, (byte) 60);
+		if (this.deathTime >= 100 && !this.level().isClientSide() && !this.isRemoved()) {
+			this.level().broadcastEntityEvent(this, (byte) 60);
 			this.remove(Entity.RemovalReason.KILLED);
 			if (this.getLastDamageSource() != null) {
 				this.dropAllDeathLoot(this.getLastDamageSource());
@@ -164,7 +164,7 @@ public class RatKing extends Monster implements RatSummoner {
 	@Override
 	public DamageSource getLastDamageSource() {
 		if (!this.isDeadOrDying()) {
-			if (this.level.getGameTime() - this.lastDamageStamp > 40L) {
+			if (this.level().getGameTime() - this.lastDamageStamp > 40L) {
 				this.lastDamageSource = null;
 			}
 		}
@@ -287,7 +287,7 @@ public class RatKing extends Monster implements RatSummoner {
 
 	public BlockPos getLightPosition() {
 		BlockPos pos = this.blockPosition();
-		if (!this.getLevel().getBlockState(pos).canOcclude()) {
+		if (!this.level().getBlockState(pos).canOcclude()) {
 			return pos.above();
 		}
 		return pos;

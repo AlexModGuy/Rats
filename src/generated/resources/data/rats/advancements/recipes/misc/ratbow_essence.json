@@ -41,5 +41,6 @@
     "recipes": [
       "rats:ratbow_essence"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

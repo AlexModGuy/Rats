@@ -50,10 +50,10 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 		if (!this.rat.canMove()) return false;
 		if (!this.rat.getCommand().workCommand) return false;
 		if (this.rat.getTarget() != null) return false;
-		if (this.rat.getDepositPos().isEmpty() || !this.rat.getDepositPos().get().dimension().equals(this.rat.getLevel().dimension()) || RatUtils.isBlockProtected(this.rat.getLevel(), this.rat.getDepositPos().get().pos(), this.rat))
+		if (this.rat.getDepositPos().isEmpty() || !this.rat.getDepositPos().get().dimension().equals(this.rat.level().dimension()) || RatUtils.isBlockProtected(this.rat.level(), this.rat.getDepositPos().get().pos(), this.rat))
 			return false;
 
-		BlockEntity te = this.rat.getLevel().getBlockEntity(this.rat.getDepositPos().get().pos());
+		BlockEntity te = this.rat.level().getBlockEntity(this.rat.getDepositPos().get().pos());
 		if (te == null) return false;
 
 		if (this.type == DepositType.INVENTORY) {
@@ -89,7 +89,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 	}
 
 	private List<ItemEntity> getItemsOfTypeAround(ItemStack stack) {
-		return this.rat.getLevel().getEntitiesOfClass(ItemEntity.class, this.rat.getBoundingBox().inflate(this.rat.getRadius()), item -> {
+		return this.rat.level().getEntitiesOfClass(ItemEntity.class, this.rat.getBoundingBox().inflate(this.rat.getRadius()), item -> {
 			if (!ItemStack.isSameItemSameTags(stack, item.getItem())) return false;
 			Path path = this.rat.getNavigation().createPath(item, 1);
 			return path != null && path.canReach();
@@ -125,7 +125,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 
 	@Override
 	public void tick() {
-		BlockEntity te = this.rat.getLevel().getBlockEntity(this.targetBlock);
+		BlockEntity te = this.rat.level().getBlockEntity(this.targetBlock);
 		if (this.targetBlock != null && te != null) {
 			this.rat.getNavigation().moveTo(this.getMovePos().x(), this.getMovePos().y(), this.getMovePos().z(), 1.25D);
 			double distance = Math.sqrt(this.rat.distanceToSqr(this.getMovePos().x(), this.getMovePos().y(), this.getMovePos().z()));
@@ -147,11 +147,11 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 	public void toggleChest(Container te, boolean open) {
 		if (te instanceof ChestBlockEntity chest) {
 			if (open) {
-				this.rat.getLevel().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 1);
+				this.rat.level().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 1);
 			} else {
-				this.rat.getLevel().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 0);
+				this.rat.level().blockEvent(this.targetBlock, chest.getBlockState().getBlock(), 1, 0);
 			}
-			this.rat.getLevel().gameEvent(this.rat, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, chest.getBlockPos());
+			this.rat.level().gameEvent(this.rat, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, chest.getBlockPos());
 		}
 	}
 
@@ -222,9 +222,9 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 						} else {
 							this.rat.transportingFluid.setAmount(total);
 						}
-						if (!this.rat.getLevel().isClientSide()) {
+						if (!this.rat.level().isClientSide()) {
 							RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
-							if (this.rat.getLevel().getBlockEntity(this.targetBlock) instanceof AutoCurdlerBlockEntity curdler) {
+							if (this.rat.level().getBlockEntity(this.targetBlock) instanceof AutoCurdlerBlockEntity curdler) {
 								RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateCurdlerFluidPacket(this.targetBlock.asLong(), curdler.getTank().getFluid()));
 							}
 						}

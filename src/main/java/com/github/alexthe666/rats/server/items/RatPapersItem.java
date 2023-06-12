@@ -65,17 +65,17 @@ public class RatPapersItem extends Item {
 			try {
 				if (nbt.hasUUID("RatUUID")) {
 					UUID ratUUID = nbt.getUUID("RatUUID");
-					if (!target.getLevel().isClientSide()) {
-						Entity entity = target.getLevel().getServer().getLevel(target.getLevel().dimension()).getEntity(ratUUID);
+					if (!target.level().isClientSide()) {
+						Entity entity = target.level().getServer().getLevel(target.level().dimension()).getEntity(ratUUID);
 						if (entity instanceof TamedRat rat) {
 							if (rat.isTame() && rat.isOwnedBy(player)) {
 								rat.tame(transferTo);
 								stack.shrink(1);
-								player.getLevel().playSound(player, player.blockPosition(), RatsSoundRegistry.RAT_TRANSFER.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+								player.level().playSound(player, player.blockPosition(), RatsSoundRegistry.RAT_TRANSFER.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 							}
 						}
 					}
-					return InteractionResult.sidedSuccess(player.getLevel().isClientSide());
+					return InteractionResult.sidedSuccess(player.level().isClientSide());
 				}
 			} catch (Exception e) {
 				player.displayClientMessage(Component.literal("Couldnt transfer ownership! Check the log and report this!").withStyle(ChatFormatting.RED), true);
@@ -91,7 +91,7 @@ public class RatPapersItem extends Item {
 			nbt.putUUID("RatUUID", rat.getUUID());
 			stack.setTag(nbt);
 
-			return InteractionResult.sidedSuccess(player.getLevel().isClientSide());
+			return InteractionResult.sidedSuccess(player.level().isClientSide());
 		}
 		return InteractionResult.PASS;
 	}

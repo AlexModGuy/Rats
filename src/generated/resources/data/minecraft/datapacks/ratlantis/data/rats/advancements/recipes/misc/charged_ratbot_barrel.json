@@ -41,5 +41,6 @@
     "recipes": [
       "rats:charged_ratbot_barrel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

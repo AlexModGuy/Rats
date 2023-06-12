@@ -20,7 +20,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -109,7 +109,7 @@ public class ForgeClientEvents {
 
 	@SubscribeEvent
 	public static void removeAutomatonHeadOutline(RenderHighlightEvent.Block event) {
-		BlockState state = event.getCamera().getEntity().getLevel().getBlockState(event.getTarget().getBlockPos());
+		BlockState state = event.getCamera().getEntity().level().getBlockState(event.getTarget().getBlockPos());
 		if (state.is(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get())) {
 			event.setCanceled(true);
 		}
@@ -134,10 +134,10 @@ public class ForgeClientEvents {
 				}
 
 				if (prevSynesthesiaProgress == 2 && synesthesia) {
-					event.getEntity().getLevel().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_BEGIN.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
+					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_BEGIN.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
 				if (prevSynesthesiaProgress == 38 && !synesthesia) {
-					event.getEntity().getLevel().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_END.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
+					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_END.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
 				prevSynesthesiaProgress = synesthesiaProgress;
 				if (synesthesia && synesthesiaProgress < MAX_SYNESTESIA) {
@@ -182,11 +182,10 @@ public class ForgeClientEvents {
 		if (event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type() || event.isCanceled() || !player.hasEffect(RatsEffectRegistry.PLAGUE.get()) || !RatConfig.plagueHearts) {
 			return;
 		}
-		PoseStack stack = event.getPoseStack();
+		GuiGraphics graphics = event.getGuiGraphics();
 		int width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
 		int height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 		int leftHeight = 39;
-		RenderSystem.setShaderTexture(0, PLAGUE_HEART_TEXTURE);
 		RenderSystem.enableBlend();
 		int health = Mth.ceil(player.getHealth());
 		Gui gui = Minecraft.getInstance().gui;
@@ -238,24 +237,24 @@ public class ForgeClientEvents {
 				y -= 2;
 			}
 
-			drawTexturedModalRect(stack, x, y, 0, 9);
+			drawTexturedModalRect(graphics, x, y, 0, 9);
 			int fullHealth = currentHeart * 2;
 			if (currentHeart >= healthAmount) {
 				int k2 = fullHealth - health * 2;
 				if (k2 < absorption) {
 					boolean halfHeart = k2 + 1 == absorption;
-					drawTexturedModalRect(stack, x, y, halfHeart ? 9 : 0, 0);
+					drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
 				}
 			}
 
 			if (highlight && fullHealth < healthLast) {
 				boolean halfHeart = fullHealth + 1 == healthLast;
-				drawTexturedModalRect(stack, x, y, halfHeart ? 9 : 0, 0);
+				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
 			}
 
 			if (fullHealth < health) {
 				boolean halfHeart = fullHealth + 1 == health;
-				drawTexturedModalRect(stack, x, y, halfHeart ? 9 : 0, 0);
+				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
 			}
 		}
 
@@ -263,8 +262,8 @@ public class ForgeClientEvents {
 		Minecraft.getInstance().getProfiler().endTick();
 	}
 
-	private static void drawTexturedModalRect(PoseStack stack, int x, int y, int textureX, int textureY) {
-		GuiComponent.blit(stack, x, y, textureX, textureY, 9, 9);
+	private static void drawTexturedModalRect(GuiGraphics graphics, int x, int y, int textureX, int textureY) {
+		graphics.blit(PLAGUE_HEART_TEXTURE, x, y, textureX, textureY, 9, 9);
 	}
 
 
@@ -330,17 +329,17 @@ public class ForgeClientEvents {
 				if (heldItem.is(RatsItemRegistry.CHEESE_STICK.get())) {
 					float finalBob = bob;
 					rat.getDepositPos().ifPresent(pos -> {
-						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
 					rat.getPickupPos().ifPresent(pos -> {
-						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
 					rat.getHomePoint().ifPresent(pos -> {
-						if (Minecraft.getInstance().player.getLevel().isLoaded(pos.pos()) && pos.dimension().equals(rat.getLevel().dimension())) {
+						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
 						}
 					});
@@ -356,7 +355,7 @@ public class ForgeClientEvents {
 					}
 				} else if (heldItem.is(RatsItemRegistry.RADIUS_STICK.get())) {
 					BlockPos blockPos = rat.getSearchCenter();
-					if (!Minecraft.getInstance().player.getLevel().isLoaded(blockPos)) return;
+					if (!Minecraft.getInstance().player.level().isLoaded(blockPos)) return;
 					Vec3 renderCenter = new Vec3(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D);
 					double renderRadius = rat.getRadius();
 					AABB aabb = new AABB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
@@ -366,7 +365,7 @@ public class ForgeClientEvents {
 
 					for (int i = 0; i < rat.getPatrolNodes().size(); ++i) {
 						GlobalPos node = rat.getPatrolNodes().get(i);
-						if (!Minecraft.getInstance().player.getLevel().isLoaded(node.pos())) return;
+						if (!Minecraft.getInstance().player.level().isLoaded(node.pos())) return;
 						float r = 0.6F;
 						float g = 0.1F;
 						float b = 0.1F;
@@ -379,7 +378,7 @@ public class ForgeClientEvents {
 							g = 0.3F;
 						}
 
-						if (node.dimension().equals(Minecraft.getInstance().player.getLevel().dimension()) && prev.dimension().equals(Minecraft.getInstance().player.getLevel().dimension())) {
+						if (node.dimension().equals(Minecraft.getInstance().player.level().dimension()) && prev.dimension().equals(Minecraft.getInstance().player.level().dimension())) {
 							stack.pushPose();
 							stack.translate(-px, -py, -pz);
 							stack.translate((float) prev.pos().getX() + 0.5F, (float) prev.pos().getY() + bob - 0.25F, (float) prev.pos().getZ() + 0.5F);
@@ -394,7 +393,7 @@ public class ForgeClientEvents {
 							stack.popPose();
 						}
 
-						if (node.dimension().equals(Minecraft.getInstance().player.getLevel().dimension())) {
+						if (node.dimension().equals(Minecraft.getInstance().player.level().dimension())) {
 							RatsIconRenderUtil.renderPOIIcon(RAT_PATROL_NODE_TEXTURE, viewPosition, node.pos(), bob, stack, buffer, tessellator);
 						}
 					}

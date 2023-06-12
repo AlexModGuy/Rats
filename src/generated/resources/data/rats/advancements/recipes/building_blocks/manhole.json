@@ -43,5 +43,6 @@
     "recipes": [
       "rats:manhole"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

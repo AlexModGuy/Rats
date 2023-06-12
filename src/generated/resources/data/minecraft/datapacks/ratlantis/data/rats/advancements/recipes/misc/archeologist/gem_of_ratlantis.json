@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/gem_of_ratlantis"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

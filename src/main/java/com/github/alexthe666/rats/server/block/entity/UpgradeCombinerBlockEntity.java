@@ -135,7 +135,7 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 	@Override
 	public void setItem(int index, ItemStack stack) {
 		ItemStack itemstack = this.combinerStacks.get(index);
-		boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.isSameItemSameTags(stack, itemstack);
+		boolean flag = !stack.isEmpty() && stack.is(itemstack.getItem()) && ItemStack.isSameItemSameTags(stack, itemstack);
 		this.combinerStacks.set(index, stack);
 
 		if (stack.getCount() > this.getMaxStackSize()) {
@@ -274,7 +274,7 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 
 			if (itemstack2.isEmpty()) {
 				this.combinerStacks.set(3, itemstack1.copy());
-			} else if (itemstack2.sameItem(itemstack1)) {
+			} else if (itemstack2.is(itemstack1.getItem())) {
 				itemstack2.grow(itemstack1.getCount());
 			}
 			itemstack.shrink(1);

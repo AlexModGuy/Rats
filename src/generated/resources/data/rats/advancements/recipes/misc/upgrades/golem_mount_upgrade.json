@@ -76,5 +76,6 @@
     "recipes": [
       "rats:upgrades/golem_mount_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

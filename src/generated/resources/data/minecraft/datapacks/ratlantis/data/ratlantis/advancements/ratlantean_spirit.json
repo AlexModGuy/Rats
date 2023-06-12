@@ -76,5 +76,6 @@
       "hurt_by_ratlantean_spirit",
       "killed_by_ratlantean_spirit"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

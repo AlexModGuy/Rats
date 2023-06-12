@@ -30,5 +30,6 @@
     "recipes": [
       "rats:potato_pancake"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

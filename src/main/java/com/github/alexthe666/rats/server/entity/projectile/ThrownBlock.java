@@ -81,13 +81,13 @@ public class ThrownBlock extends Entity {
 	}
 
 	public void tick() {
-		if (this.getLevel().isClientSide() || (this.shootingEntity == null || this.shootingEntity.isAlive()) && this.getLevel().isLoaded(this.blockPosition())) {
+		if (this.level().isClientSide() || (this.shootingEntity == null || this.shootingEntity.isAlive()) && this.level().isLoaded(this.blockPosition())) {
 			super.tick();
 
 			++this.ticksInAir;
 			if (ticksInAir > 25) {
 				this.noPhysics = true;
-				HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canCollideWith);
+				HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canCollideWith);
 				this.onHit(raytraceresult);
 			} else {
 				this.noPhysics = false;
@@ -96,7 +96,7 @@ public class ThrownBlock extends Entity {
 			ProjectileUtil.rotateTowardsMovement(this, 0.2F);
 			if (this.isInWater()) {
 				for (int i = 0; i < 4; ++i) {
-					this.getLevel().addParticle(ParticleTypes.BUBBLE, this.getX() - this.getDeltaMovement().x * 0.25D, this.getY() - this.getDeltaMovement().y * 0.25D, this.getZ() - this.getDeltaMovement().z * 0.25D, this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z);
+					this.level().addParticle(ParticleTypes.BUBBLE, this.getX() - this.getDeltaMovement().x * 0.25D, this.getY() - this.getDeltaMovement().y * 0.25D, this.getZ() - this.getDeltaMovement().z * 0.25D, this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z);
 				}
 			}
 			if (this.shootingEntity != null && shootingEntity instanceof Mob mob) {
@@ -129,16 +129,16 @@ public class ThrownBlock extends Entity {
 				pos = entityResult.getEntity().blockPosition();
 			}
 			if (pos != null) {
-				for (Entity hitMobs : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 1.0F, 1.0F))) {
+				for (Entity hitMobs : this.level().getEntities(this, this.getBoundingBox().inflate(1.0F, 1.0F, 1.0F))) {
 					hitMobs.hurt(this.damageSources().inWall(), 8.0F);
 				}
 				BlockPos blockpos1 = pos.above();
 
 				if (this.dropBlock) {
-					this.getLevel().setBlockAndUpdate(blockpos1, this.getHeldBlockState());
+					this.level().setBlockAndUpdate(blockpos1, this.getHeldBlockState());
 				}
 				if (this.tileEntityData != null && this.getHeldBlockState().hasBlockEntity()) {
-					BlockEntity tileentity = this.getLevel().getBlockEntity(blockpos1);
+					BlockEntity tileentity = this.level().getBlockEntity(blockpos1);
 
 					if (tileentity != null) {
 						CompoundTag CompoundTag = tileentity.saveWithoutMetadata();
@@ -155,8 +155,8 @@ public class ThrownBlock extends Entity {
 				}
 				this.discard();
 
-				if (this.getLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-					if (!getLevel().isClientSide() && this.dropBlock) {
+				if (this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+					if (!level().isClientSide() && this.dropBlock) {
 						this.spawnAtLocation(new ItemStack(block, 1), 0.0F);
 					}
 					this.discard();
@@ -195,7 +195,7 @@ public class ThrownBlock extends Entity {
 
 		BlockState blockstate = null;
 		if (compound.contains("carriedBlockState", 10)) {
-			blockstate = NbtUtils.readBlockState(this.getLevel().registryAccess().lookupOrThrow(Registries.BLOCK), compound.getCompound("carriedBlockState"));
+			blockstate = NbtUtils.readBlockState(this.level().registryAccess().lookupOrThrow(Registries.BLOCK), compound.getCompound("carriedBlockState"));
 			if (blockstate.isAir()) {
 				blockstate = null;
 			}

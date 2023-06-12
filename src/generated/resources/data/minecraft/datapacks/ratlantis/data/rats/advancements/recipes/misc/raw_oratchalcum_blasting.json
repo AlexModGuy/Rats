@@ -30,5 +30,6 @@
     "recipes": [
       "rats:raw_oratchalcum_blasting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

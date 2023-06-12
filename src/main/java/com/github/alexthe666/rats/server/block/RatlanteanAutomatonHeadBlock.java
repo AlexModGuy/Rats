@@ -28,11 +28,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
-import net.minecraft.world.level.block.state.predicate.BlockMaterialPredicate;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -107,16 +105,18 @@ public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements Wea
 		if (matcher != null) {
 			for (int j = 0; j < getGolemPattern().getWidth(); ++j) {
 				for (int k = 0; k < getGolemPattern().getHeight(); ++k) {
-					level.setBlock(matcher.getBlock(j, k, 0).getPos(), Blocks.AIR.defaultBlockState(), 2);
+					if (!matcher.getBlock(j, k, 0).getState().canBeReplaced()) {
+						level.setBlock(matcher.getBlock(j, k, 0).getPos(), Blocks.AIR.defaultBlockState(), 2);
+					}
 				}
 			}
 
 			BlockPos blockpos = matcher.getBlock(1, 2, 0).getPos();
-			RatlanteanAutomaton entityirongolem = new RatlanteanAutomaton(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get(), level);
-			entityirongolem.moveTo((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
-			level.addFreshEntity(entityirongolem);
-			for (ServerPlayer serverplayerentity1 : level.getEntitiesOfClass(ServerPlayer.class, entityirongolem.getBoundingBox().inflate(5.0D))) {
-				CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayerentity1, entityirongolem);
+			RatlanteanAutomaton automaton = new RatlanteanAutomaton(RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get(), level);
+			automaton.moveTo((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
+			level.addFreshEntity(automaton);
+			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, automaton.getBoundingBox().inflate(5.0D))) {
+				CriteriaTriggers.SUMMONED_ENTITY.trigger(player, automaton);
 			}
 
 			for (int i1 = 0; i1 < getGolemPattern().getWidth(); ++i1) {
@@ -143,7 +143,7 @@ public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements Wea
 		if (golemBasePattern == null) {
 			golemBasePattern = BlockPatternBuilder.start().aisle("~ ~", "#X#", "~#~")
 					.where('#', BlockInWorld.hasState(IS_MARBLE))
-					.where('~', BlockInWorld.hasState(BlockMaterialPredicate.forMaterial(Material.AIR)))
+					.where('~', BlockInWorld.hasState(BlockStateBase::canBeReplaced))
 					.where('X', BlockInWorld.hasState(BlockStatePredicate.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE.get()))).build();
 		}
 
@@ -155,7 +155,7 @@ public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements Wea
 			golemPattern = BlockPatternBuilder.start().aisle("~^~", "#X#", "~#~")
 					.where('^', BlockInWorld.hasState(BlockStatePredicate.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get())))
 					.where('#', BlockInWorld.hasState(IS_MARBLE))
-					.where('~', BlockInWorld.hasState(BlockMaterialPredicate.forMaterial(Material.AIR)))
+					.where('~', BlockInWorld.hasState(BlockStateBase::canBeReplaced))
 					.where('X', BlockInWorld.hasState(BlockStatePredicate.forBlock(RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE.get()))).build();
 		}
 

@@ -40,13 +40,13 @@ public class RatlanteanFlame extends Fireball {
 		float f1 = -Mth.sin(pitch * ((float) Math.PI / 180F));
 		float f2 = Mth.cos(yaw * ((float) Math.PI / 180F)) * Mth.cos(pitch * ((float) Math.PI / 180F));
 		this.shoot(f, f1, f2, velocity, inaccuracy);
-		this.setDeltaMovement(this.getDeltaMovement().add(shooter.getDeltaMovement().x, shooter.isOnGround() ? 0.0D : shooter.getDeltaMovement().y, shooter.getDeltaMovement().z));
+		this.setDeltaMovement(this.getDeltaMovement().add(shooter.getDeltaMovement().x, shooter.onGround() ? 0.0D : shooter.getDeltaMovement().y, shooter.getDeltaMovement().z));
 	}
 
 	public void tick() {
 		super.tick();
-		if (this.getLevel().isClientSide()) {
-			this.getLevel().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
+		if (this.level().isClientSide()) {
+			this.level().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
 					this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
 					this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()),
 					this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),

@@ -35,5 +35,6 @@
     [
       "killed_automaton"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

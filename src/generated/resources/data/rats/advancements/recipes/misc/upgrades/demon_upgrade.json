@@ -67,5 +67,6 @@
     "recipes": [
       "rats:upgrades/demon_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

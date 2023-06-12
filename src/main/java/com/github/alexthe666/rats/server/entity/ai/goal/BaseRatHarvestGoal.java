@@ -51,8 +51,8 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 	}
 
 	private boolean anyHoldableItemsAround() {
-		List<ItemEntity> items = this.rat.getLevel().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(), item ->
-				(item.isOnGround() || item.isInWater()) &&
+		List<ItemEntity> items = this.rat.level().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(), item ->
+				(item.onGround() || item.isInWater()) &&
 						this.rat.canRatPickupItem(item.getItem()));
 		if (items.isEmpty()) return false;
 

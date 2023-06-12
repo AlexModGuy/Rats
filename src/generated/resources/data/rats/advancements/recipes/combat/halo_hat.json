@@ -39,5 +39,6 @@
     "recipes": [
       "rats:halo_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

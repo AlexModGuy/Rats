@@ -39,5 +39,6 @@
     "recipes": [
       "rats:tubes/rat_tube_cyan"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

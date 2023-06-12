@@ -99,7 +99,7 @@ public class RatlantisTeleporter implements ITeleporter {
 	@Override
 	public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel level, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
 		boolean ratlantis = level.dimension() == RatlantisDimensionRegistry.DIMENSION_KEY;
-		if (entity.getLevel().dimension() != RatlantisDimensionRegistry.DIMENSION_KEY && !ratlantis) {
+		if (entity.level().dimension() != RatlantisDimensionRegistry.DIMENSION_KEY && !ratlantis) {
 			return null;
 		} else {
 			WorldBorder border = level.getWorldBorder();
@@ -107,15 +107,15 @@ public class RatlantisTeleporter implements ITeleporter {
 			double minZ = Math.max(-2.9999872E7D, border.getMinZ() + 16.0D);
 			double maxX = Math.min(2.9999872E7D, border.getMaxX() - 16.0D);
 			double maxZ = Math.min(2.9999872E7D, border.getMaxZ() - 16.0D);
-			double coordinateDifference = DimensionType.getTeleportationScale(entity.level.dimensionType(), level.dimensionType());
+			double coordinateDifference = DimensionType.getTeleportationScale(entity.level().dimensionType(), level.dimensionType());
 			BlockPos blockpos = BlockPos.containing(Mth.clamp(entity.getX() * coordinateDifference, minX, maxX), entity.getY(), Mth.clamp(entity.getZ() * coordinateDifference, minZ, maxZ));
 			return this.getOrMakePortal(blockpos).map((result) -> {
-				BlockState state = entity.level.getBlockState(entity.portalEntrancePos);
+				BlockState state = entity.level().getBlockState(entity.portalEntrancePos);
 				Direction.Axis axis;
 				Vec3 vector3d;
 				if (state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
 					axis = state.getValue(BlockStateProperties.HORIZONTAL_AXIS);
-					BlockUtil.FoundRectangle rectangle = BlockUtil.getLargestRectangleAround(entity.portalEntrancePos, axis, 21, Direction.Axis.Y, 21, (pos) -> entity.level.getBlockState(pos) == state);
+					BlockUtil.FoundRectangle rectangle = BlockUtil.getLargestRectangleAround(entity.portalEntrancePos, axis, 21, Direction.Axis.Y, 21, (pos) -> entity.level().getBlockState(pos) == state);
 					vector3d = PortalShape.getRelativePosition(rectangle, axis, entity.position(), entity.getDimensions(entity.getPose()));
 				} else {
 					axis = Direction.Axis.X;

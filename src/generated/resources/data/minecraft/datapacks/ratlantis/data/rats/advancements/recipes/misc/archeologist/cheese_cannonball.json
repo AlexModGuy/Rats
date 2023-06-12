@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/cheese_cannonball"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

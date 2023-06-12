@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/marbled_cheese_rat_head"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

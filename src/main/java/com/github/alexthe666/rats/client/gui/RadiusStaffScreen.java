@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatStaffPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -38,7 +39,7 @@ public class RadiusStaffScreen extends Screen {
 		int maxLength = Math.max(150, Minecraft.getInstance().font.width(topText.getString()) + 20);
 		this.addRenderableWidget(Button.builder(topText, button -> {
 			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 4, 0));
-			this.rat.setRadiusCenter(GlobalPos.of(Minecraft.getInstance().player.getLevel().dimension(), this.pos));
+			this.rat.setRadiusCenter(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
 			this.sliderValue = this.rat.getRadius();
 		}).bounds(i - maxLength / 2, j + 60, maxLength, 20).build());
 		this.addRenderableWidget(new AbstractSliderButton(i - 150 / 2, j + 85, 150, 20, Component.translatable("entity.rat.staff.radius", RadiusStaffScreen.this.sliderValue), 0.0D) {
@@ -68,10 +69,10 @@ public class RadiusStaffScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(stack);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
 
-		super.render(stack, mouseX, mouseY, partialTicks);
+		super.render(graphics, mouseX, mouseY, partialTicks);
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
 		if (this.rat != null) {

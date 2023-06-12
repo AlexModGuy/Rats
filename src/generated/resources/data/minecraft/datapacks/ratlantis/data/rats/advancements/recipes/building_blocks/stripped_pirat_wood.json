@@ -30,5 +30,6 @@
     "recipes": [
       "rats:stripped_pirat_wood"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

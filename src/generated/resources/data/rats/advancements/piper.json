@@ -64,5 +64,6 @@
       "hurt_piper",
       "killed_piper"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

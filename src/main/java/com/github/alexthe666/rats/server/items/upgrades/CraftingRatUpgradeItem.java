@@ -52,21 +52,21 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 	@Override
 	public void tick(TamedRat rat) {
 		if (rat.getRespawnCountdown() <= 0 && rat.isTame()) {
-			BlockEntity te = rat.getLevel().getBlockEntity(rat.blockPosition().below());
-			if (te instanceof RatCraftingTableBlockEntity table && !rat.getLevel().isClientSide()) {
+			BlockEntity te = rat.level().getBlockEntity(rat.blockPosition().below());
+			if (te instanceof RatCraftingTableBlockEntity table && !rat.level().isClientSide()) {
 				double d2 = rat.getRandom().nextGaussian() * 0.02D;
 				double d0 = rat.getRandom().nextGaussian() * 0.02D;
 				double d1 = rat.getRandom().nextGaussian() * 0.02D;
 				if (table.getCookTime() > 0) {
 					rat.crafting = true;
-					rat.getLevel().broadcastEntityEvent(rat, (byte) 85);
+					rat.level().broadcastEntityEvent(rat, (byte) 85);
 					if (table.getRecipeUsed() != null) {
-						ItemStack stack = table.getRecipeUsed().getResultItem(rat.getLevel().registryAccess());
+						ItemStack stack = table.getRecipeUsed().getResultItem(rat.level().registryAccess());
 						if (stack.isEmpty()) {
-							((ServerLevel) rat.getLevel()).sendParticles(ParticleTypes.SMOKE, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
+							((ServerLevel) rat.level()).sendParticles(ParticleTypes.SMOKE, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
 						} else {
-							((ServerLevel) rat.getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY(), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
-							((ServerLevel) rat.getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY(), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
+							((ServerLevel) rat.level()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY(), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
+							((ServerLevel) rat.level()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY(), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
 						}
 					}
 					if (table.prevCookTime % 20 == 0) {
@@ -74,11 +74,11 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 					}
 				} else {
 					rat.crafting = false;
-					rat.getLevel().broadcastEntityEvent(rat, (byte) 86);
+					rat.level().broadcastEntityEvent(rat, (byte) 86);
 				}
 				if (table.prevCookTime == 199) {
 					for (int i = 0; i < 4; i++) {
-						((ServerLevel) rat.getLevel()).sendParticles(ParticleTypes.HAPPY_VILLAGER, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
+						((ServerLevel) rat.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
 					}
 					rat.playSound(SoundEvents.ITEM_PICKUP, 1, 1);
 				}

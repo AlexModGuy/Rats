@@ -52,5 +52,6 @@
     "recipes": [
       "rats:rat_breeding_lantern"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

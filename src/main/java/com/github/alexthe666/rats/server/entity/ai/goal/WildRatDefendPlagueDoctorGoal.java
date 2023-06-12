@@ -23,7 +23,7 @@ public class WildRatDefendPlagueDoctorGoal extends TargetGoal {
 	}
 
 	public boolean canUse() {
-		if (this.rat.hasPlague() || !this.rat.isLeashed() || this.rat.getLevel().getCurrentDifficultyAt(this.rat.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
+		if (this.rat.hasPlague() || !this.rat.isLeashed() || this.rat.level().getCurrentDifficultyAt(this.rat.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
 			return false;
 		} else {
 			Entity entity = this.rat.getLeashHolder();

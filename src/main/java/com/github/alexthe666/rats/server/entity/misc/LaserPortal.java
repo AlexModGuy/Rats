@@ -45,7 +45,7 @@ public class LaserPortal extends Entity {
 
 	public void tick() {
 		super.tick();
-		if (this.tickCount > 300 || this.getLevel().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
+		if (this.tickCount > 300 || this.level().getCurrentDifficultyAt(this.blockPosition()).getDifficulty() == Difficulty.PEACEFUL) {
 			this.discard();
 		}
 		if (this.tickCount < 250 && this.scaleOfPortal < 1.0F) {
@@ -59,8 +59,8 @@ public class LaserPortal extends Entity {
 		} else {
 			this.faceTarget();
 		}
-		if (this.getLevel().isClientSide() && this.scaleOfPortal >= 0.5F) {
-			this.getLevel().addParticle(RatsParticleRegistry.LIGHTNING.get(),
+		if (this.level().isClientSide() && this.scaleOfPortal >= 0.5F) {
+			this.level().addParticle(RatsParticleRegistry.LIGHTNING.get(),
 					this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
 					this.getY() + (double) (this.random.nextFloat() * this.getBbHeight()),
 					this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() / 2,
@@ -75,7 +75,7 @@ public class LaserPortal extends Entity {
 			if (this.getCreator() != null && this.getCreator() instanceof Mob mob) {
 				LivingEntity target = mob.getTarget();
 				if (target == null && this.getCreator() instanceof Monster) {
-					target = this.getLevel().getNearestPlayer(this, 30);
+					target = this.level().getNearestPlayer(this, 30);
 				}
 				this.facingTarget = target;
 			}
@@ -92,11 +92,11 @@ public class LaserPortal extends Entity {
 		if (this.getCreator() != null && this.getCreator() instanceof Mob) {
 			LivingEntity target = ((Mob) this.getCreator()).getTarget();
 			if (target == null && this.getCreator() instanceof Monster) {
-				target = this.getLevel().getNearestPlayer(this, 30);
+				target = this.level().getNearestPlayer(this, 30);
 			}
 			if (target == null && this.getCreator() instanceof TamedRat) {
 				LivingEntity closest = null;
-				for (Entity entity : this.getLevel().getEntities(this.getCreator(), this.getBoundingBox().inflate(40, 10, 40), MONSTER_NOT_RAT)) {
+				for (Entity entity : this.level().getEntities(this.getCreator(), this.getBoundingBox().inflate(40, 10, 40), MONSTER_NOT_RAT)) {
 					if (entity instanceof LivingEntity && (closest == null || entity.distanceToSqr(this) < closest.distanceToSqr(this))) {
 						closest = (LivingEntity) entity;
 					}
@@ -111,12 +111,12 @@ public class LaserPortal extends Entity {
 				double targetRelativeX = target.getX() - this.getX();
 				double targetRelativeY = target.getY() + target.getBbHeight() / 2 - this.getY() - 1.0F;
 				double targetRelativeZ = target.getZ() - this.getZ();
-				LaserBeam beam = new LaserBeam(RatlantisEntityRegistry.LASER_BEAM.get(), this.getLevel(), this.getCreator());
+				LaserBeam beam = new LaserBeam(RatlantisEntityRegistry.LASER_BEAM.get(), this.level(), this.getCreator());
 				this.playSound(RatsSoundRegistry.LASER.get(), 1.0F, 0.75F + this.random.nextFloat() * 0.5F);
 				beam.setPos(this.getX(), this.getY() + 1.0F, this.getZ());
 				beam.shoot(targetRelativeX, targetRelativeY, targetRelativeZ, 2.0F, 0.4F);
-				if (!this.getLevel().isClientSide()) {
-					this.getLevel().addFreshEntity(beam);
+				if (!this.level().isClientSide()) {
+					this.level().addFreshEntity(beam);
 				}
 			}
 		}
@@ -124,8 +124,8 @@ public class LaserPortal extends Entity {
 
 	@Nullable
 	public LivingEntity getCreator() {
-		if (this.creator == null && this.ownerUniqueId != null && this.getLevel() instanceof ServerLevel) {
-			Entity entity = ((ServerLevel) this.getLevel()).getEntity(this.ownerUniqueId);
+		if (this.creator == null && this.ownerUniqueId != null && this.level() instanceof ServerLevel) {
+			Entity entity = ((ServerLevel) this.level()).getEntity(this.ownerUniqueId);
 			if (entity instanceof LivingEntity) {
 				this.creator = (LivingEntity) entity;
 			}

@@ -80,7 +80,7 @@ public class FeralRatlantean extends Monster implements IAnimatedEntity {
 	public void aiStep() {
 		super.aiStep();
 		AnimationHandler.INSTANCE.updateAnimations(this);
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 3.0D && this.hasLineOfSight(this.getTarget())) {
 				if (this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
 					if (this.getAnimation() == NO_ANIMATION) {

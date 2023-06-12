@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -38,7 +39,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 		}
 
 		if (this.nextStartTick <= 0) {
-			if (!ForgeEventFactory.getMobGriefingEvent(this.rat.getLevel(), this.rat)) {
+			if (!ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat)) {
 				return false;
 			}
 		}
@@ -55,10 +56,10 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 		super.tick();
 		if (this.isReachedTarget()) {
 			BlockPos cropsPos = this.blockPos.above();
-			BlockState block = this.rat.getLevel().getBlockState(cropsPos);
+			BlockState block = this.rat.level().getBlockState(cropsPos);
 			double distance = this.rat.distanceToSqr(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
 			if (distance < 3.5F) {
-				LootContext.Builder loot = new LootContext.Builder((ServerLevel) this.rat.getLevel()).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, this.rat.position()).withRandom(this.rat.getRandom()).withLuck(1.0F);
+				LootParams.Builder loot = new LootParams.Builder((ServerLevel) this.rat.level()).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, this.rat.position()).withLuck(1.0F);
 				List<ItemStack> drops = block.getBlock().getDrops(block, loot);
 				if (drops.isEmpty()) {
 					this.stop();
@@ -69,7 +70,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 						if (count == 0) {
 							ItemStack duplicate = stack.copy();
 							duplicate.setCount(1);
-							if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.getLevel().isClientSide()) {
+							if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.rat.level().isClientSide()) {
 								this.rat.spawnAtLocation(this.rat.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
 							}
 							this.rat.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
@@ -77,7 +78,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 						}
 						count++;
 					}
-					this.rat.getLevel().destroyBlock(cropsPos, false);
+					this.rat.level().destroyBlock(cropsPos, false);
 					drops.forEach(stack -> this.rat.spawnAtLocation(stack, 0.0F));
 				}
 				this.rat.setFleePos(cropsPos);
@@ -93,7 +94,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 		if (state.getBlock() instanceof FarmBlock) {
 			if (!RatPathingHelper.canSeeOrDigToBlock(this.rat, pos.above())) return false;
 			if (cropState.getBlock() instanceof CropBlock crop) return crop.isMaxAge(cropState);
-			return cropState.is(BlockTags.CROPS) && !(cropState.getBlock() instanceof StemBlock) && RatUtils.canRatBreakBlock(this.rat.getLevel(), pos.above(), this.rat);
+			return cropState.is(BlockTags.CROPS) && !(cropState.getBlock() instanceof StemBlock) && RatUtils.canRatBreakBlock(this.rat.level(), pos.above(), this.rat);
 		}
 		return false;
 	}

@@ -62,7 +62,7 @@ public class RatsMod {
 	public static final Rarity RATLANTIS_SPECIAL = Rarity.create("RATS_RATLANTIS_SPECIAL", ChatFormatting.GREEN);
 	public static final MobCategory RATS = MobCategory.create("RATS_RATS", "rats", 25, true, false, 128);
 
-	public static final BlockSetType PIRAT_WOOD_SET = BlockSetType.register(new BlockSetType(new ResourceLocation(MODID, "pirat").toString(), SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN, SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
+	public static final BlockSetType PIRAT_WOOD_SET = BlockSetType.register(new BlockSetType(new ResourceLocation(MODID, "pirat").toString(), true, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN, SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
 	public static final WoodType PIRAT_WOOD_TYPE = WoodType.register(new WoodType(new ResourceLocation(MODID, "pirat").toString(), PIRAT_WOOD_SET, SoundType.NETHER_WOOD, SoundType.NETHER_WOOD_HANGING_SIGN, SoundEvents.NETHER_WOOD_FENCE_GATE_CLOSE, SoundEvents.NETHER_WOOD_FENCE_GATE_OPEN));
 
 	public static final GameRules.Key<GameRules.BooleanValue> SPAWN_RATS = GameRules.register("doRatSpawning", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
@@ -100,6 +100,7 @@ public class RatsMod {
 		RatsRecipeRegistry.RECIPES.register(bus);
 		RatsRecipeRegistry.SERIALIZERS.register(bus);
 		RatsSoundRegistry.SOUNDS.register(bus);
+		RatsCreativeTabRegistry.TABS.register(bus);
 
 		RatlantisBlockRegistry.BLOCKS.register(bus);
 		RatlantisBlockEntityRegistry.BLOCK_ENTITIES.register(bus);
@@ -121,8 +122,8 @@ public class RatsMod {
 	public void addRatlantisDatapack(AddPackFindersEvent event) {
 		if (event.getPackType() == PackType.SERVER_DATA) {
 			var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("data", "minecraft", "datapacks", "ratlantis");
-			var pack = Pack.readMetaAndCreate("ratlantis", Component.literal("Ratlantis"), false,
-					name -> new PathPackResources(name, resourcePath, false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.FEATURE);
+			var pack = Pack.readMetaAndCreate("ratlantis", Component.literal("Ratlantis"), RatConfig.ratlantisEnabledByDefault,
+					name -> new PathPackResources(name, resourcePath, true), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.FEATURE);
 			event.addRepositorySource(packConsumer -> packConsumer.accept(pack));
 		}
 	}

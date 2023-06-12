@@ -30,5 +30,6 @@
     "recipes": [
       "rats:archeologist/ratlantean_flame"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

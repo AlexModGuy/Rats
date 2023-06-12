@@ -125,18 +125,18 @@ public class RatRangedAttackGoal extends Goal implements RatWorkGoal {
 
 	public void performRangedAttack(LivingEntity target) {
 		new ItemStack(Items.ARROW);
-		AbstractArrow arrow = new SmallArrow(this.rat.getLevel(), this.rat);
+		AbstractArrow arrow = new SmallArrow(this.rat.level(), this.rat);
 		double d0 = target.getX() - this.rat.getX();
 		double d1 = target.getY(0.3333333333333333D) - arrow.getY();
 		double d2 = target.getZ() - this.rat.getZ();
 		double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-		arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.rat.getLevel().getDifficulty().getId() * 4));
+		arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.rat.level().getDifficulty().getId() * 4));
 		if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_CROSSBOW.get())) {
 			arrow.setBaseDamage(arrow.getBaseDamage() + 2.5D);
 		}
 
 		this.rat.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 1.0F / (this.rat.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.rat.getLevel().addFreshEntity(arrow);
+		this.rat.level().addFreshEntity(arrow);
 	}
 
 	@Override

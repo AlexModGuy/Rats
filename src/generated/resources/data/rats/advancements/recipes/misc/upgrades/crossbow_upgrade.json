@@ -65,5 +65,6 @@
     "recipes": [
       "rats:upgrades/crossbow_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

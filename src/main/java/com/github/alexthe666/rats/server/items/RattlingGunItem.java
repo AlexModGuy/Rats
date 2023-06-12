@@ -20,7 +20,7 @@ public class RattlingGunItem extends LoreTagItem {
 		RattlingGun entity = new RattlingGun(RatlantisEntityRegistry.RATTLING_GUN.get(), context.getLevel());
 		Player player = context.getPlayer();
 		BlockPos offset = context.getClickedPos().relative(context.getClickedFace());
-		if (context.getLevel().getBlockState(offset).getMaterial().isReplaceable()) {
+		if (context.getLevel().getBlockState(offset).canBeReplaced()) {
 			entity.moveTo(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, player.getYRot(), 0);
 			float yaw = Mth.wrapDegrees(player.getYRot() + 180F);
 			entity.yRotO = yaw;

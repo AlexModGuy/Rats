@@ -39,5 +39,6 @@
     "recipes": [
       "rats:cheese_stick"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

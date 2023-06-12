@@ -56,5 +56,6 @@
     "recipes": [
       "rats:jack_o_ratern"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

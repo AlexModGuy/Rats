@@ -69,5 +69,6 @@
     "recipes": [
       "rats:upgrades/carrat_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

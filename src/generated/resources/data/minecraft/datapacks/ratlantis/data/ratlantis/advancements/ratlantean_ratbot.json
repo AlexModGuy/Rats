@@ -76,5 +76,6 @@
       "hurt_by_ratlantean_ratbot",
       "killed_by_ratlantean_ratbot"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

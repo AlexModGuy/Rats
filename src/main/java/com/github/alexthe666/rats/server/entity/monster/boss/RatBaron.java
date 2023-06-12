@@ -108,9 +108,9 @@ public class RatBaron extends AbstractRat implements Enemy {
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.hasRestriction()) {
-				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), RatlantisBlockRegistry.AIR_RAID_SIREN.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictCenter(), RatlantisBlockRegistry.AIR_RAID_SIREN.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -143,11 +143,11 @@ public class RatBaron extends AbstractRat implements Enemy {
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setDropChance(EquipmentSlot.HEAD, 0);
 		if (!this.isPassenger()) {
-			RatBaronPlane plane = new RatBaronPlane(RatlantisEntityRegistry.RAT_BARON_PLANE.get(), this.getLevel());
+			RatBaronPlane plane = new RatBaronPlane(RatlantisEntityRegistry.RAT_BARON_PLANE.get(), this.level());
 			plane.copyPosition(this);
 			plane.restrictTo(this.getRestrictCenter(), 16);
-			if (!this.getLevel().isClientSide()) {
-				this.getLevel().addFreshEntity(plane);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(plane);
 			}
 			this.startRiding(plane, true);
 		}

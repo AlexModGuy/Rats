@@ -36,7 +36,7 @@ public class SelectedRatCapability implements SelectedRat {
 	}
 
 	private void sendPacket() {
-		if (!this.host.getLevel().isClientSide()) {
+		if (!this.host.level().isClientSide()) {
 			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateSelectedRatPacket(this.host, this));
 		}
 	}

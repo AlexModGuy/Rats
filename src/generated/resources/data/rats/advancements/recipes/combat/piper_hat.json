@@ -43,5 +43,6 @@
     "recipes": [
       "rats:piper_hat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

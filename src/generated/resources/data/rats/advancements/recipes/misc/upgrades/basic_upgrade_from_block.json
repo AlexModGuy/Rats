@@ -30,5 +30,6 @@
     "recipes": [
       "rats:upgrades/basic_upgrade_from_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

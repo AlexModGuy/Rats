@@ -30,5 +30,6 @@
     "recipes": [
       "rats:token_fragment"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

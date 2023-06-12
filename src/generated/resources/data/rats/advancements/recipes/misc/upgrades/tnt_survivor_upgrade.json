@@ -56,5 +56,6 @@
     "recipes": [
       "rats:upgrades/tnt_survivor_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

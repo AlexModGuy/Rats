@@ -52,5 +52,6 @@
     "recipes": [
       "rats:rat_attractor"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

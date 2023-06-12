@@ -75,9 +75,9 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity {
 		this.noPhysics = false;
 		this.setNoGravity(true);
 		AnimationHandler.INSTANCE.updateAnimations(this);
-		if (this.getLevel().isClientSide() && this.getLevel().getNearestPlayer(this, 64.0D) != null) {
+		if (this.level().isClientSide() && this.level().getNearestPlayer(this, 64.0D) != null) {
 
-			this.getLevel().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
+			this.level().addParticle(RatsParticleRegistry.RAT_GHOST.get(),
 					this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
 					this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()),
 					this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2F) - (double) this.getBbWidth(),
@@ -172,7 +172,7 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity {
 			for (int i = 0; i < 3; ++i) {
 				BlockPos blockpos1 = blockpos.offset(RatlanteanSpirit.this.getRandom().nextInt(15) - 7, RatlanteanSpirit.this.getRandom().nextInt(11) - 5, RatlanteanSpirit.this.getRandom().nextInt(15) - 7);
 
-				if (RatlanteanSpirit.this.getLevel().isEmptyBlock(blockpos1)) {
+				if (RatlanteanSpirit.this.level().isEmptyBlock(blockpos1)) {
 					RatlanteanSpirit.this.getMoveControl().setWantedPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
 
 					if (RatlanteanSpirit.this.getTarget() == null) {
@@ -210,7 +210,7 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity {
 				RatlanteanSpirit.this.getMoveControl().setWantedPosition(living.getX(), living.getY(), living.getZ(), 0.5D);
 			}
 			if (living.distanceToSqr(this.parentEntity) < 4096.0D) {
-				Level level = this.parentEntity.getLevel();
+				Level level = this.parentEntity.level();
 				++this.attackTimer;
 
 				if (this.attackTimer == 20) {
