@@ -513,30 +513,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		return RatsSoundRegistry.RAT_DIE.get();
 	}
 
-	@Override
-	public void rideTick() {
-		super.rideTick();
-		if (this.getVehicle() instanceof Player player) {
-			this.updateRiding(player);
-		}
-	}
-
-	public void updateRiding(Player riding) {
-		int i = riding.getPassengers().indexOf(this);
-		float radius = (i == 0 ? 0F : 0.4F) + (riding.isFallFlying() ? 2 : 0);
-		float angle = (0.01745329251F * riding.yBodyRot + (i == 2 ? -92.5F : i == 1 ? 92.5F : 0));
-		double extraX = radius * Mth.sin((float) (Math.PI + angle));
-		double extraZ = radius * Mth.cos(angle);
-		double extraY = (riding.isCrouching() ? 1.1D : 1.4D);
-		this.setYRot(riding.yHeadRot);
-		this.yHeadRot = riding.yHeadRot;
-		this.yRotO = riding.yHeadRot;
-		this.setPos(riding.getX() + extraX, riding.getY() + extraY, riding.getZ() + extraZ);
-		if (riding.isFallFlying()) {
-			this.stopRiding();
-		}
-	}
-
 	protected void eatItem(ItemStack stack) {
 		if (!stack.isEmpty()) {
 			if (stack.getUseAnimation() == UseAnim.DRINK) {
