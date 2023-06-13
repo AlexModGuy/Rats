@@ -114,7 +114,7 @@ public class RatlantisToolItem {
 
 	public static class Hoe extends HoeItem {
 		public Hoe(Item.Properties properties) {
-			super(RatsToolMaterialRegistry.RATLANTIS, -3, 0, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, -7, 0.0F, properties);
 		}
 
 		@Override

@@ -709,10 +709,10 @@ public class TamedRat extends InventoryRat {
 		baby.setMale(this.getRandom().nextBoolean());
 		RatVariant babyColor;
 		if ((father.getColorVariant().isBreedingExclusive() || mother.getColorVariant().isBreedingExclusive()) && this.getRandom().nextInt(6) == 0) {
-			babyColor = RatVariantRegistry.getRandomBreedingExclusiveVariant(this.getRandom());
+			babyColor = RatVariant.getRandomBreedingExclusiveVariant(this.getRandom());
 		} else {
 			if (this.getRandom().nextInt(10) == 0) {
-				babyColor = RatVariantRegistry.getRandomVariant(this.getRandom(), true);
+				babyColor = RatVariant.getRandomVariant(this.getRandom(), true);
 			} else {
 				babyColor = this.getRandom().nextBoolean() ? father.getColorVariant() : mother.getColorVariant();
 			}

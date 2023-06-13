@@ -22,38 +22,38 @@ public enum RatsArmorMaterialRegistry implements ArmorMaterial {
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 2);
-	}), 30, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsBlockRegistry.PIED_WOOL.get()))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsBlockRegistry.PIED_WOOL.get()))),
 	CHEF_TOQUE("chef_toque", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Blocks.WHITE_WOOL))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Blocks.WHITE_WOOL))),
 	PLAGUE_MASK("plague_mask", 25, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 3);
-	}), 20, SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE.get()))),
-	RATLANTIS("ratlantis", 35, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-		map.put(ArmorItem.Type.BOOTS, 5);
-		map.put(ArmorItem.Type.LEGGINGS, 8);
-		map.put(ArmorItem.Type.CHESTPLATE, 10);
-		map.put(ArmorItem.Type.HELMET, 5);
-	}), 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 1.0F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE.get()))),
+	RATLANTIS("ratlantis", 40, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+		map.put(ArmorItem.Type.BOOTS, 4);
+		map.put(ArmorItem.Type.LEGGINGS, 6);
+		map.put(ArmorItem.Type.CHESTPLATE, 8);
+		map.put(ArmorItem.Type.HELMET, 4);
+	}), 17, SoundEvents.ARMOR_EQUIP_NETHERITE, 4.0F, 0.1F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))),
 
 	FARMER_HAT("farmer_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.HAY_BLOCK))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.HAY_BLOCK))),
 	TOP_HAT("top_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.BLACK_WOOL))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.BLACK_WOOL))),
 	FEZ("fez", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
@@ -65,25 +65,25 @@ public enum RatsArmorMaterialRegistry implements ArmorMaterial {
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.RED_WOOL))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.RED_WOOL))),
 	HALO("halo", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_NUGGET))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_NUGGET))),
 	CROWN("crown", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_INGOT))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(Items.GOLD_INGOT))),
 	GHOST_HAT("ghost_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
 		map.put(ArmorItem.Type.CHESTPLATE, 1);
 		map.put(ArmorItem.Type.HELMET, 1);
-	}), 100, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))),
 	GENERIC_HAT("generic_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 1);
 		map.put(ArmorItem.Type.LEGGINGS, 1);
