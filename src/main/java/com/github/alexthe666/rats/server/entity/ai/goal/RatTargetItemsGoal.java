@@ -39,6 +39,7 @@ public class RatTargetItemsGoal extends Goal {
 			//sort through items we can grab, get the closest one
 			List<ItemEntity> items = this.rat.level().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(), item ->
 					(item.onGround() || item.isInWater()) &&
+							this.rat.shouldCollectItem(item.getItem()) &&
 							this.rat.canRatPickupItem(item.getItem()));
 			if (items.isEmpty()) return false;
 

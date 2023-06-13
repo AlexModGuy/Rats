@@ -43,9 +43,16 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 	}
 
 	/**
-	 * True if the rat should deposit or cook an item instead of holding it.
+	 * True if the rat should deposit an item into containers instead of holding onto it.
 	 */
 	public boolean shouldDepositItem(TamedRat rat, ItemStack stack) {
+		return true;
+	}
+
+	/**
+	 * True if the rat should pick up the specified item off the ground.
+	 */
+	public boolean shouldCollectItem(TamedRat rat, ItemStack stack) {
 		return true;
 	}
 

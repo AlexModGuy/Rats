@@ -1276,6 +1276,10 @@ public class TamedRat extends InventoryRat {
 		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.shouldDepositItem(this, item), true);
 	}
 
+	public boolean shouldCollectItem(ItemStack item) {
+		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.shouldCollectItem(this, item), true);
+	}
+
 	public int getRFTransferRate() {
 		AtomicInteger energy = new AtomicInteger();
 		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof EnergyRatUpgradeItem, stack ->
