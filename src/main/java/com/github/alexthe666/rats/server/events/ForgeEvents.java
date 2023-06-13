@@ -259,42 +259,43 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void initVillagerTrades(VillagerTradesEvent event) {
+		//1-2, 5-10, 10-20, 15, 30
 		if (event.getType() == RatsVillagerRegistry.PET_SHOP_OWNER.get()) {
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(Items.BONE, 32, 12, 1));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(Items.ROTTEN_FLESH, 45, 12, 1));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(Items.COD, 10, 12, 1));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(Items.STRING, 35, 12, 1));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(Items.EGG, 16, 12, 2));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAW_RAT.get(), 45, 12, 1));
-			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.CHEESE.get(), 1, 5, 2));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(Items.BONE, 12, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(Items.ROTTEN_FLESH, 11, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(Items.COD, 10, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(Items.STRING, 12, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(Items.EGG, 16, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.ItemsToEmeralds(RatsItemRegistry.RAW_RAT.get(), 11, 12, 1));
+			event.getTrades().get(1).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.CHEESE.get(), 1, 5, 1));
 
-			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.COOKED_RAT.get(), 1, 5, 5));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsAndEmeraldsToItems(RatsBlockRegistry.GARBAGE_PILE.get(), 3, 5, RatsItemRegistry.PLASTIC_WASTE.get(), 3, 12, 10));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.FEATHERY_WING.get(), 5, 1, 10));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAT_SEED_BOWL.get(), 3, 5, 5));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAT_BREEDING_LANTERN.get(), 3, 5, 5));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAT_WATER_BOTTLE.get(), 3, 5, 5));
-			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAT_WHEEL.get(), 3, 5, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.COOKED_RAT.get(), 1, 5, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsAndEmeraldsToItems(RatsBlockRegistry.GARBAGE_PILE.get(), 10, 3, RatsItemRegistry.PLASTIC_WASTE.get(), 10, 12, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldsToItems(RatsBlockRegistry.MARBLED_CHEESE_RAW.get(), 1, 8, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.EmeraldsToItems(RatsBlockRegistry.GARBAGE_PILE.get(), 1, 6, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsToEmeralds(RatsItemRegistry.RAW_PLASTIC.get(), 5, 12, 5));
+			event.getTrades().get(2).add(new PlagueDoctorTrades.ItemsToEmeralds(RatsItemRegistry.RAT_FLUTE.get(), 1, 12, 5));
 
-			event.getTrades().get(3).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsBlockRegistry.MARBLED_CHEESE_RAW.get(), 10, 23, 12, 15));
-			event.getTrades().get(3).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsBlockRegistry.GARBAGE_PILE.get(), 1, 5, 12, 15));
-			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAW_PLASTIC.get(), 2, 12, 10));
-			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldForItems(RatsItemRegistry.RAT_FLUTE.get(), 1, 5, 20));
-			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldForItems(RatsBlockRegistry.RAT_CAGE.get(), 3, 10, 10));
+			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.ARCHEOLOGIST_HAT.get(), 12, 1, 10));
+			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.SANTA_HAT.get(), 20, 1, 15));
+			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.PARTY_HAT.get(), 20, 1, 15));
+			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.HALO_HAT.get(), 8, 1, 10));
+			event.getTrades().get(3).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.EXTERMINATOR_HAT.get(), 14, 1, 10));
 
-			for (DyeColor color : DyeColor.values()) {
-				event.getTrades().get(4).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_TUBES[color.ordinal()].get(), 5, 8, 15));
-				event.getTrades().get(4).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_HAMMOCKS[color.ordinal()].get(), 5, 1, 15));
-				event.getTrades().get(4).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_IGLOOS[color.ordinal()].get(), 5, 1, 15));
-			}
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_BASIC.get(), 5, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get(), 16, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get(), 8, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_WHITELIST.get(), 8, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_SPEED.get(), 10, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_HEALTH.get(), 10, 1, 20));
+			event.getTrades().get(4).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_ARMOR.get(), 10, 1, 20));
 
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_UPGRADE_BASIC.get(), 25, 1, 30));
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get(), 32, 1, 30));
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.ARCHEOLOGIST_HAT.get(), 15, 1, 6, 30));
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.PIRAT_HAT.get(), 15, 1, 6, 30));
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.RAT_PAPERS.get(), 10, 1, 6, 30));
-			event.getTrades().get(5).add(new PlagueDoctorTrades.ItemsForEmeralds(RatsItemRegistry.TINY_COIN.get(), 5, 8, 4, 30));
-			//TODO add rat credit card trade once its implemented
+			event.getTrades().get(5).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.PLAGUE_DOCTORATE.get(), 10, 1, 30));
+			event.getTrades().get(5).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.PLAGUE_TOME.get(), 32, 1, 30));
+			event.getTrades().get(5).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.RAT_PAPERS.get(), 5, 1, 30));
+			event.getTrades().get(5).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.CHARGED_CREEPER_CHUNK.get(), 3, 1, 30));
+			event.getTrades().get(5).add(new PlagueDoctorTrades.EmeraldsToItems(RatsItemRegistry.TINY_COIN.get(), 1, 8, 30));
+
 		}
 	}
 
