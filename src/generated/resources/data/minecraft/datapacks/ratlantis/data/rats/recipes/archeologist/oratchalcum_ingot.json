@@ -2,7 +2,7 @@
   "type": "rats:archeologist",
   "count": 1,
   "ingredient": {
-    "item": "minecraft:diamond_block"
+    "item": "minecraft:netherite_ingot"
   },
   "result": "rats:oratchalcum_ingot"
 }

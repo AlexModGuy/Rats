@@ -1,8 +1,0 @@
-{
-  "type": "rats:archeologist",
-  "count": 1,
-  "ingredient": {
-    "item": "minecraft:rabbit_hide"
-  },
-  "result": "rats:rat_pelt"
-}

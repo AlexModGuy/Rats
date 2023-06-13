@@ -699,18 +699,12 @@ public class RatlantisRecipes extends RecipeProvider {
 		this.archeology(Items.RABBIT_FOOT, RatlantisItemRegistry.FERAL_RAT_CLAW.get(), consumer);
 		this.archeology(Items.FIRE_CHARGE, RatlantisItemRegistry.CHEESE_CANNONBALL.get(), consumer);
 		this.archeology(Items.IRON_SWORD, RatlantisItemRegistry.PIRAT_CUTLASS.get(), consumer);
-		this.archeology(Items.RABBIT_HIDE, RatsItemRegistry.RAT_PELT.get(), consumer);
 		this.archeology(Items.PHANTOM_MEMBRANE, RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get(), consumer);
 		this.archeology(Items.TROPICAL_FISH, RatlantisItemRegistry.RATFISH.get(), consumer);
 		this.archeology(Items.DISPENSER, RatlantisItemRegistry.RATBOT_BARREL.get(), consumer);
-		this.archeology(Items.DIAMOND_BLOCK, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), consumer);
-		this.archeology(Items.BEACON, RatlantisItemRegistry.ARCANE_TECHNOLOGY.get(), consumer);
-		this.archeology(Items.DRAGON_BREATH, RatlantisItemRegistry.PSIONIC_RAT_BRAIN.get(), consumer);
-		this.archeology(Items.CONDUIT, RatlantisItemRegistry.DUTCHRAT_WHEEL.get(), consumer);
-		this.archeology(Items.ELYTRA, RatlantisItemRegistry.BIPLANE_WING.get(), consumer);
+		this.archeology(Items.NETHERITE_INGOT, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), consumer);
 		this.archeology(Items.SKELETON_SKULL, RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get(), consumer);
 		this.archeology(Items.BLUE_ORCHID, RatlantisBlockRegistry.RATGLOVE_FLOWER.get(), consumer);
-		this.archeology(RatsBlockRegistry.BLOCK_OF_CHEESE.get(), RatsBlockRegistry.MARBLED_CHEESE_RAW.get(), consumer);
 	}
 
 	private void archeology(ItemLike input, ItemLike output, Consumer<FinishedRecipe> consumer) {

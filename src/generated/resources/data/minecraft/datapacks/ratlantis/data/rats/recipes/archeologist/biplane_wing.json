@@ -1,8 +1,0 @@
-{
-  "type": "rats:archeologist",
-  "count": 1,
-  "ingredient": {
-    "item": "minecraft:elytra"
-  },
-  "result": "rats:biplane_wing"
-}
