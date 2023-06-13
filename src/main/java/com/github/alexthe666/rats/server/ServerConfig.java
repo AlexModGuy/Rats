@@ -166,19 +166,19 @@ public class ServerConfig {
 		this.warriorHealthUpgrade = buildDouble(builder, "Warrior Health Upgrade", 40.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Warrior Upgrade.");
 		this.warriorArmorUpgrade = buildDouble(builder, "Warrior Armor Upgrade", 2.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Warrior Upgrade.");
 		this.warriorDamageUpgrade = buildDouble(builder, "Warrior Damage Upgrade", 5.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the Warrior Upgrade.");
-		this.godHealthUpgrade = buildDouble(builder, "God Health Upgrade", 500.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the God Upgrade.");
-		this.godArmorUpgrade = buildDouble(builder, "God Armor Upgrade", 15.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the God Upgrade.");
-		this.godDamageUpgrade = buildDouble(builder, "God Damage Upgrade", 50.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the God Upgrade.");
+		this.godHealthUpgrade = buildDouble(builder, "God Health Upgrade", 150.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the God Upgrade.");
+		this.godArmorUpgrade = buildDouble(builder, "God Armor Upgrade", 10.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the God Upgrade.");
+		this.godDamageUpgrade = buildDouble(builder, "God Damage Upgrade", 15.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the God Upgrade.");
 		this.dragonHealthUpgrade = buildDouble(builder, "Dragon Health Upgrade", 50.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the God Upgrade.");
 		this.dragonArmorUpgrade = buildDouble(builder, "Dragon Armor Upgrade", 5.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the God Upgrade.");
 		this.dragonDamageUpgrade = buildDouble(builder, "Dragon Damage Upgrade", 8.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the God Upgrade.");
 		this.demonHealthUpgrade = buildDouble(builder, "Demon Health Upgrade", 40.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Demon Upgrade.");
 		this.demonDamageUpgrade = buildDouble(builder, "Demon Damage Upgrade", 4.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the Demon Upgrade.");
 		this.voodooHealthUpgrade = buildDouble(builder, "Voodoo Health Upgrade", 100.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Voodoo Upgrade.");
-		this.ratinatorArmorUpgrade = buildDouble(builder, "Ratinator Armor Upgrade", 25.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Ratinator Upgrade.");
-		this.nonbelieverHealthUpgrade = buildDouble(builder, "Nonbeliever Health Upgrade", 1000.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Nonbeliever Upgrade.");
-		this.nonbelieverArmorUpgrade = buildDouble(builder, "Nonbeliever Armor Upgrade", 30.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Nonbeliever Upgrade.");
-		this.nonbelieverDamageUpgrade = buildDouble(builder, "Nonbeliever Damage Upgrade", 100.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the Nonbeliever Upgrade.");
+		this.ratinatorArmorUpgrade = buildDouble(builder, "Ratinator Armor Upgrade", 15.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Ratinator Upgrade.");
+		this.nonbelieverHealthUpgrade = buildDouble(builder, "Nonbeliever Health Upgrade", 350.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Nonbeliever Upgrade.");
+		this.nonbelieverArmorUpgrade = buildDouble(builder, "Nonbeliever Armor Upgrade", 20.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Nonbeliever Upgrade.");
+		this.nonbelieverDamageUpgrade = buildDouble(builder, "Nonbeliever Damage Upgrade", 40.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the Nonbeliever Upgrade.");
 		this.upgradeRegenRate = buildInt(builder, "Upgrade Regeneration Rate", 30, 0, Integer.MAX_VALUE, "Rats that have an upgrade that regenerates health will regen half a heart every X ticks, X being the number defined here. Set to 0 to disable health regeneration.");
 		this.ratPsychicThrowsBlocks = buildBoolean(builder, "Psychic Throws Blocks", false, "If true, Rats that have the Psychic upgrade will pick up blocks and throw them towards enemies.");
 

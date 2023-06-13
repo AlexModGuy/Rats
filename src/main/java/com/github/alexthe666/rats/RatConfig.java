@@ -48,9 +48,9 @@ public class RatConfig {
 	public static double warriorHealthUpgrade = 40.0D;
 	public static double warriorDamageUpgrade = 5.0D;
 	public static double warriorArmorUpgrade = 10.0D;
-	public static double godHealthUpgrade = 500.0D;
-	public static double godDamageUpgrade = 50.0D;
-	public static double godArmorUpgrade = 15.0D;
+	public static double godHealthUpgrade = 150.0D;
+	public static double godDamageUpgrade = 15.0D;
+	public static double godArmorUpgrade = 10.0D;
 	public static double dragonHealthUpgrade = 50.0D;
 	public static double dragonDamageUpgrade = 8.0D;
 	public static double dragonArmorUpgrade = 5.0D;
@@ -58,10 +58,10 @@ public class RatConfig {
 	public static double demonDamageUpgrade = 4.0D;
 	public static double voodooHealthUpgrade = 100.0D;
 	public static double ratVoodooDistance = 32;
-	public static double ratinatorArmorUpgrade = 25.0D;
-	public static double nonbelieverHealthUpgrade = 1000.0D;
-	public static double nonbelieverDamageUpgrade = 100.0D;
-	public static double nonbelieverArmorUpgrade = 30.0D;
+	public static double ratinatorArmorUpgrade = 15.0D;
+	public static double nonbelieverHealthUpgrade = 350.0D;
+	public static double nonbelieverDamageUpgrade = 40.0D;
+	public static double nonbelieverArmorUpgrade = 20.0D;
 	public static boolean ratPsychicThrowsBlocks = false;
 
 	public static boolean blackDeathLightning = true;
