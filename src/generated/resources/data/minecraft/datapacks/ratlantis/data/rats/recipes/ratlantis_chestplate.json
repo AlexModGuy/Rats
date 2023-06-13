@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "minecraft:diamond_chestplate"
+      "item": "minecraft:netherite_chestplate"
     },
     "I": {
       "item": "rats:oratchalcum_ingot"

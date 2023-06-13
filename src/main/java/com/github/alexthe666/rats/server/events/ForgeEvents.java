@@ -177,15 +177,13 @@ public class ForgeEvents {
 		if (protectors > 0) {
 			if (event.getSource() != null && event.getSource().getEntity() != null) {
 				Entity trueSource = event.getSource().getEntity();
-				if (trueSource.distanceTo(event.getEntity()) < 6D) {
-					trueSource.hurt(event.getEntity().damageSources().magic(), 2.0F * protectors);
+				if (trueSource.distanceTo(event.getEntity()) < 4.0D) {
+					trueSource.hurt(event.getEntity().damageSources().magic(), 0.75F * protectors);
 					Vec3 vec3d = trueSource.getDeltaMovement();
-					double strength = 0.3D * protectors;
+					double strength = 0.15D * protectors;
 					Vec3 vec3d1 = (new Vec3(event.getEntity().getX() - trueSource.getX(), 0.0D, event.getEntity().getZ() - trueSource.getZ())).normalize().scale(strength);
 					trueSource.setDeltaMovement(vec3d.x / 2.0D - vec3d1.x, trueSource.onGround() ? Math.min(0.4D, vec3d.y / 2.0D + strength) : vec3d.y, vec3d.z / 2.0D - vec3d1.z);
-
 				}
-
 			}
 		}
 	}

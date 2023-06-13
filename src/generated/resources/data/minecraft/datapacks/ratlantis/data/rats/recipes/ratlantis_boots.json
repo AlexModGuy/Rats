@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "minecraft:diamond_boots"
+      "item": "minecraft:netherite_boots"
     },
     "I": {
       "item": "rats:oratchalcum_ingot"

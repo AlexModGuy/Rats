@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "minecraft:diamond_helmet"
+      "item": "minecraft:netherite_helmet"
     },
     "B": {
       "item": "rats:psionic_rat_brain"

@@ -36,10 +36,10 @@ public enum RatsArmorMaterialRegistry implements ArmorMaterial {
 		map.put(ArmorItem.Type.HELMET, 3);
 	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 0.0F, () -> Ingredient.of(new ItemStack(RatsItemRegistry.PLAGUE_ESSENCE.get()))),
 	RATLANTIS("ratlantis", 40, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-		map.put(ArmorItem.Type.BOOTS, 4);
-		map.put(ArmorItem.Type.LEGGINGS, 6);
-		map.put(ArmorItem.Type.CHESTPLATE, 8);
-		map.put(ArmorItem.Type.HELMET, 4);
+		map.put(ArmorItem.Type.BOOTS, 5);
+		map.put(ArmorItem.Type.LEGGINGS, 8);
+		map.put(ArmorItem.Type.CHESTPLATE, 10);
+		map.put(ArmorItem.Type.HELMET, 5);
 	}), 17, SoundEvents.ARMOR_EQUIP_NETHERITE, 4.0F, 0.1F, () -> Ingredient.of(new ItemStack(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))),
 
 	FARMER_HAT("farmer_hat", 0, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {

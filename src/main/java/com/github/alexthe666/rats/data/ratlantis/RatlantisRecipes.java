@@ -103,7 +103,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.DIAMOND_HELMET).unlockedBy("has_armor", has(Items.DIAMOND_HELMET))
+				.define('A', Items.NETHERITE_HELMET).unlockedBy("has_armor", has(Items.NETHERITE_HELMET))
 				.define('B', RatlantisItemRegistry.PSIONIC_RAT_BRAIN.get()).unlockedBy("has_brain", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
 				.save(consumer);
 
@@ -113,7 +113,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.DIAMOND_CHESTPLATE).unlockedBy("has_armor", has(Items.DIAMOND_CHESTPLATE))
+				.define('A', Items.NETHERITE_CHESTPLATE).unlockedBy("has_armor", has(Items.NETHERITE_CHESTPLATE))
 				.define('T', RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()).unlockedBy("has_tech", has(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()))
 				.save(consumer);
 
@@ -123,7 +123,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.DIAMOND_LEGGINGS).unlockedBy("has_armor", has(Items.DIAMOND_LEGGINGS))
+				.define('A', Items.NETHERITE_LEGGINGS).unlockedBy("has_armor", has(Items.NETHERITE_LEGGINGS))
 				.define('W', RatlantisItemRegistry.BIPLANE_WING.get()).unlockedBy("has_wing", has(RatlantisItemRegistry.BIPLANE_WING.get()))
 				.save(consumer);
 
@@ -133,7 +133,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.DIAMOND_BOOTS).unlockedBy("has_armor", has(Items.DIAMOND_BOOTS))
+				.define('A', Items.NETHERITE_BOOTS).unlockedBy("has_armor", has(Items.NETHERITE_BOOTS))
 				.define('W', RatlantisItemRegistry.DUTCHRAT_WHEEL.get()).unlockedBy("has_wheel", has(RatlantisItemRegistry.DUTCHRAT_WHEEL.get()))
 				.save(consumer);
 
