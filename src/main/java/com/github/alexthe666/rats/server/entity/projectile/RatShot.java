@@ -34,7 +34,7 @@ public class RatShot extends ThrowableProjectile {
 
 	@Override
 	protected void defineSynchedData() {
-		this.getEntityData().define(RAT_COLOR, RatVariantRegistry.getVariantId(RatVariantRegistry.getRandomVariant(this.random, false)));
+		this.getEntityData().define(RAT_COLOR, RatVariant.getVariantId(RatVariant.getRandomVariant(this.random, false)));
 	}
 
 	public RatShot(EntityType<? extends ThrowableProjectile> type, Level level) {
@@ -47,12 +47,12 @@ public class RatShot extends ThrowableProjectile {
 
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("RatColor", RatVariantRegistry.getVariantId(this.getColorVariant()));
+		compound.putString("RatColor", RatVariant.getVariantId(this.getColorVariant()));
 	}
 
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setColorVariant(RatVariantRegistry.getVariant(compound.getString("RatColor")));
+		this.setColorVariant(RatVariant.getVariant(compound.getString("RatColor")));
 	}
 
 	public void handleEntityEvent(byte id) {
@@ -121,11 +121,11 @@ public class RatShot extends ThrowableProjectile {
 	}
 
 	public RatVariant getColorVariant() {
-		return RatVariantRegistry.getVariant(this.getEntityData().get(RAT_COLOR));
+		return RatVariant.getVariant(this.getEntityData().get(RAT_COLOR));
 	}
 
 	public void setColorVariant(RatVariant variant) {
-		this.getEntityData().set(RAT_COLOR, RatVariantRegistry.getVariantId(variant));
+		this.getEntityData().set(RAT_COLOR, RatVariant.getVariantId(variant));
 	}
 
 	public BlockPos getLightPosition() {

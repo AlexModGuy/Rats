@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatShot;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
+import com.github.alexthe666.rats.server.misc.RatVariant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -75,7 +76,7 @@ public class RatKing extends Monster implements RatSummoner {
 		LivingEntity target = this.getTarget();
 		if (!this.level().isClientSide() && target != null & this.tickCount % 15 == 0 && this.getRatsSummoned() < RatConfig.ratKingMaxRatSpawns) {
 			RatShot shot = new RatShot(RatsEntityRegistry.RAT_SHOT.get(), this.level(), this);
-			shot.setColorVariant(RatVariantRegistry.getRandomVariant(this.getRandom(), false));
+			shot.setColorVariant(RatVariant.getRandomVariant(this.getRandom(), false));
 			double extraX = this.getX();
 			double extraZ = this.getZ();
 			double extraY = 0.2 + this.getY();

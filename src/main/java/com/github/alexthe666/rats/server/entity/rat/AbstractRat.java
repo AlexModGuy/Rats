@@ -315,11 +315,11 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	public RatVariant getColorVariant() {
-		return RatVariantRegistry.getVariant(this.getEntityData().get(COLOR_VARIANT));
+		return RatVariant.getVariant(this.getEntityData().get(COLOR_VARIANT));
 	}
 
 	public void setColorVariant(RatVariant variant) {
-		this.getEntityData().set(COLOR_VARIANT, RatVariantRegistry.getVariantId(variant));
+		this.getEntityData().set(COLOR_VARIANT, RatVariant.getVariantId(variant));
 	}
 
 	public boolean canMove() {
@@ -415,7 +415,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
-		this.setColorVariant(RatVariantRegistry.getRandomVariant(this.getRandom(), false));
+		this.setColorVariant(RatVariant.getRandomVariant(this.getRandom(), false));
 		this.setMale(this.getRandom().nextBoolean());
 		return data;
 	}
@@ -425,7 +425,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("IsMale", this.isMale());
 		tag.putBoolean("Sitting", this.isOrderedToSit());
-		tag.putString("ColorVariant", RatVariantRegistry.getVariantId(this.getColorVariant()));
+		tag.putString("ColorVariant", RatVariant.getVariantId(this.getColorVariant()));
 		tag.putInt("RaidCooldown", this.raidCooldown);
 	}
 
@@ -438,7 +438,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			this.setColorVariant(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant")));
 			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
 		} else if (tag.contains("ColorVariant", Tag.TAG_STRING)) {
-			this.setColorVariant(RatVariantRegistry.getVariant(tag.getString("ColorVariant")));
+			this.setColorVariant(RatVariant.getVariant(tag.getString("ColorVariant")));
 		}
 		this.raidCooldown = tag.getInt("RaidCooldown");
 	}
