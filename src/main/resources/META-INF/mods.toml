@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[46,)"
 license = "GNU LESSER GENERAL PUBLIC LICENSE"
 issueTrackerURL = "https://github.com/Alex-the-666/Rats/issues"
 
@@ -17,7 +17,7 @@ description = '''What are we going to do today Pinky?'''
 [[dependencies.rats]]
 modId = "forge"
 mandatory = true
-versionRange = "[45.0.25,)"
+versionRange = "[46.0.12,)"
 ordering = "BEFORE"
 side = "BOTH"
 
