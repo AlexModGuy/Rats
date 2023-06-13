@@ -1,6 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_bow": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:bow"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_flame": {
       "conditions": {
         "items": [
@@ -48,6 +60,7 @@
     [
       "has_tech",
       "has_ingot",
+      "has_bow",
       "has_flame",
       "has_the_recipe"
     ]

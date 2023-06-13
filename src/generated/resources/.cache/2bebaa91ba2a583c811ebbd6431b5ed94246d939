@@ -1,4 +1,4 @@
-// 1.20	2023-06-13T15:24:22.2885698	ratlantis/Recipes
+// 1.20	2023-06-13T15:46:24.290731	ratlantis/Recipes
 acda5dd1fe1c043bba9cddbfbb3669058eba2c72 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/black_marbled_cheese.json
 a92430e0670a85e705cfd51a05b25f8e644be549 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/brain_block.json
 ab9d549816004a88095522143648b588b9c24ead data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/building_blocks/compressed_rat.json
@@ -47,7 +47,7 @@ ff8f421cbc02518477ec55537b0e4fb859939c77 data/minecraft/datapacks/ratlantis/data
 a6f33119de73f61a773d6b48ac15a5138aac83bf data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ghost_pirat_cutlass.json
 1f92e0445212268fc7ce41021222e5895deb9022 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ghost_pirat_hat.json
 05e13566adaf8faa790619d60e70e82169617c25 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_boots.json
-e87a1db90d8764750a18a904d852c7473a03577c data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_bow.json
+36793df645ca7fb234616d461444f9e415d41d94 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_bow.json
 fe13718b5d93dc5971000b5d3b0f58d9044bd917 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_chestplate.json
 f6040fcf31294018caab52e3a006f7c6a03a0ac3 data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_helmet.json
 0c6e87e0f0b06ed3b0c8730ec1b57ca42d56921f data/minecraft/datapacks/ratlantis/data/rats/advancements/recipes/combat/ratlantis_leggings.json
@@ -182,17 +182,17 @@ eacfabc11a00eb37f1aa0a34e603fdb863fcd04b data/minecraft/datapacks/ratlantis/data
 41553ccf695ab79c83737641940365d4db2b4ed8 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratglove_petals.json
 2986ec6da0e8adb685078d8f363138765c8d36e3 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantean_gem_blasting.json
 dfb417fe618394d8e24ddb65162dd0fb3202cede data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantean_gem_smelting.json
-4fc3f000f6bac628772662d8487fd11a917e2153 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_axe.json
+d469fa6570d0473b531898527d07193647601f4f data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_axe.json
 62d7ac64bb235ee2268ebc8fdf02e6854cdbfa81 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_boots.json
-0e799257928ba414a92a5d0c6f79dd009788a830 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_bow.json
+a611348175c58b47b3dbd2a07ac7bcb722ab8538 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_bow.json
 44bc728d1f2aab049b230aa687e10ccc860f653a data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_chestplate.json
 dfebe809e76369dae5114f07119a0ecbc30a9586 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_helmet.json
-725d0c5f36a521646cb97791f025083008d4fa47 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_hoe.json
+7313640d46d425a7b33e90b4e44eb5f1f3e9bf5e data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_hoe.json
 64513ed573f8a2e822e3933637babf2c32c0ef6d data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_leggings.json
-109756f62f70fbca8461df56bbf061562e25be77 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_pickaxe.json
+6443d917146ed3e1237866a3839eb52e7a112d5e data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_pickaxe.json
 b13ec2e9dc98abc68b59616a86a960320b0431a7 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_rat_skull.json
-13c549a4035d9107fdfc81070dc2367029248a43 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_shovel.json
-342302b4c41f35c70500f85be47c558fcb6ee7ef data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_sword.json
+66b32bfbb84bc8646e077956ecf5a5117f2bdf2e data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_shovel.json
+e9bf9354c2580c04a213507b66099e6f228f1c39 data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_sword.json
 261eb1debb84a020291678cde26d10915a924c7c data/minecraft/datapacks/ratlantis/data/rats/recipes/ratlantis_upgrade_block.json
 2f907711a44c9d6f9e769b72b41b2e24b7f2b29c data/minecraft/datapacks/ratlantis/data/rats/recipes/rattling_gun.json
 7edef9d101d26a3e724f876008308810c4ca52a8 data/minecraft/datapacks/ratlantis/data/rats/recipes/rat_and_sickle_banner_pattern.json

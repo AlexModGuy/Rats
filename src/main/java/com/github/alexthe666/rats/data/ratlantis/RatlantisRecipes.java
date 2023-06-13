@@ -143,7 +143,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.DIAMOND_SWORD).unlockedBy("has_tool", has(Items.DIAMOND_SWORD))
+				.define('T', Items.NETHERITE_SWORD).unlockedBy("has_tool", has(Items.DIAMOND_SWORD))
 				.save(consumer);
 
 
@@ -152,7 +152,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.DIAMOND_PICKAXE).unlockedBy("has_tool", has(Items.DIAMOND_PICKAXE))
+				.define('T', Items.NETHERITE_PICKAXE).unlockedBy("has_tool", has(Items.DIAMOND_PICKAXE))
 				.save(consumer);
 
 
@@ -161,7 +161,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.DIAMOND_AXE).unlockedBy("has_tool", has(Items.DIAMOND_AXE))
+				.define('T', Items.NETHERITE_AXE).unlockedBy("has_tool", has(Items.DIAMOND_AXE))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatlantisItemRegistry.RATLANTIS_SHOVEL.get())
@@ -169,7 +169,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.DIAMOND_SHOVEL).unlockedBy("has_tool", has(Items.DIAMOND_SHOVEL))
+				.define('T', Items.NETHERITE_SHOVEL).unlockedBy("has_tool", has(Items.DIAMOND_SHOVEL))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatlantisItemRegistry.RATLANTIS_HOE.get())
@@ -177,15 +177,16 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.DIAMOND_HOE).unlockedBy("has_tool", has(Items.DIAMOND_HOE))
+				.define('T', Items.NETHERITE_HOE).unlockedBy("has_tool", has(Items.DIAMOND_HOE))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, RatlantisItemRegistry.RATLANTIS_BOW.get())
-				.pattern("SI ")
-				.pattern("S A")
-				.pattern("SI ")
+				.pattern(" IS")
+				.pattern("ABS")
+				.pattern(" IS")
 				.define('A', RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()).unlockedBy("has_tech", has(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()))
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
+				.define('B', Items.BOW).unlockedBy("has_bow", has(Items.BOW))
 				.define('S', RatlantisItemRegistry.RATLANTEAN_FLAME.get()).unlockedBy("has_flame", has(RatlantisItemRegistry.RATLANTEAN_FLAME.get()))
 				.save(consumer);
 

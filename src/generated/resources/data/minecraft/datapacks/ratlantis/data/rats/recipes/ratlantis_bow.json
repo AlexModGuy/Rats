@@ -5,6 +5,9 @@
     "A": {
       "item": "rats:arcane_technology"
     },
+    "B": {
+      "item": "minecraft:bow"
+    },
     "I": {
       "item": "rats:oratchalcum_ingot"
     },
@@ -13,9 +16,9 @@
     }
   },
   "pattern": [
-    "SI ",
-    "S A",
-    "SI "
+    " IS",
+    "ABS",
+    " IS"
   ],
   "result": {
     "item": "rats:ratlantis_bow"
