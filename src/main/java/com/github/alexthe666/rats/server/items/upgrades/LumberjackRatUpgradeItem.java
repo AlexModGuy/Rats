@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LumberjackRatUpgradeItem extends BaseRatUpgradeItem implements DamageImmunityUpgrade, ChangesAIUpgrade, HoldsItemUpgrade, ChangesOverlayUpgrade {
 	public LumberjackRatUpgradeItem(Properties properties) {
-		super(properties, 1, 1);
+		super(properties, 1, 2);
 	}
 
 	@Override

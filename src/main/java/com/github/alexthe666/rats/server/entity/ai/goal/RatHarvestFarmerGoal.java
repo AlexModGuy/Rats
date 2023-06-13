@@ -38,7 +38,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(this.rat.getDepositPos().isPresent(), false) && !this.holdingSeeds() && !this.holdingBlock() && !this.holdingBonemeal()) {
+		if (!this.checkTheBasics(this.rat.getDepositPos().isPresent(), false) && !this.holdingSeeds() && !this.holdingBonemeal()) {
 			return false;
 		}
 		this.resetTarget();
@@ -55,14 +55,9 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 		return !stack.isEmpty() && stack.is(Items.BONE_MEAL);
 	}
 
-	private boolean holdingBlock() {
-		ItemStack stack = this.rat.getItemInHand(InteractionHand.MAIN_HAND);
-		return !stack.isEmpty() && stack.getItem() instanceof BlockItem;
-	}
-
 	@Override
 	public boolean canContinueToUse() {
-		return this.checkTheBasics(false, false) && this.getTargetBlock() != null && (this.holdingSeeds() || this.holdingBonemeal() || this.holdingBlock());
+		return this.checkTheBasics(false, false) && this.getTargetBlock() != null && (this.holdingSeeds() || this.holdingBonemeal());
 	}
 
 	@Override
@@ -110,29 +105,6 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 				} else {
 					this.stop();
 				}
-			} else if (this.holdingBlock()) {
-				BlockItem itemBlock = ((BlockItem) this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem());
-				this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
-				if (this.rat.level().isEmptyBlock(this.getTargetBlock())) {
-					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
-					if (distance < 4.5F) {
-						if (this.holdingBlock()) {
-							BlockHitResult raytrace = this.rat.level().clip(new ClipContext(new Vec3(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ()), new Vec3(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ()), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.rat));
-							BlockPlaceContext itemusecontext = new BlockPlaceContext(this.rat.level(), null, InteractionHand.MAIN_HAND, this.rat.getItemInHand(InteractionHand.MAIN_HAND), raytrace);
-							BlockState state = itemBlock.getBlock().getStateForPlacement(new BlockPlaceContext(itemusecontext));
-							this.rat.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-							this.rat.level().setBlockAndUpdate(this.getTargetBlock(), state);
-							if (this.rat.isInWall()) {
-								this.rat.setPos(this.rat.getX(), this.rat.getY() + 1.5D, this.rat.getZ());
-							}
-							SoundType placeSound = state.getBlock().getSoundType(state, this.rat.level(), this.getTargetBlock(), this.rat);
-							this.rat.playSound(placeSound.getPlaceSound(), (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
-						}
-						this.stop();
-					}
-				} else {
-					this.stop();
-				}
 			}
 		}
 	}
@@ -161,32 +133,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 				allBlocks.sort(this.getTargetSorter());
 				this.setTargetBlock(allBlocks.get(0));
 			}
-		} else if (this.holdingBlock()) {
-			List<BlockPos> allBlocks = new ArrayList<>();
-			Block block = null;
-			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem item) {
-				block = item.getBlock();
-			}
-			if (block == null) return;
-			for (BlockPos pos : BlockPos.betweenClosedStream(this.rat.getSearchCenter().offset(-RADIUS, -RADIUS, -RADIUS), this.rat.getSearchCenter().offset(RADIUS, RADIUS, RADIUS)).map(BlockPos::immutable).toList()) {
-				//dont allow placing on points of interest (on the tops of transport positions or the home point)
-				if (this.rat.getDepositPos().isPresent() && pos.equals(this.rat.getDepositPos().get().pos().above()))
-					continue;
-				if (this.rat.getPickupPos().isPresent() && pos.equals(this.rat.getPickupPos().get().pos().above()))
-					continue;
-				if (this.rat.getHomePoint().isPresent() && (pos.equals(this.rat.getHomePoint().get().pos()) || pos.equals(this.rat.getHomePoint().get().pos().above())))
-					continue;
-
-				if (block.canSurvive(block.defaultBlockState(), this.rat.level(), pos) && this.rat.level().isEmptyBlock(pos.above()) && this.rat.level().isEmptyBlock(pos) && RatUtils.canRatPlaceBlock(this.rat.level(), pos, this.rat)) {
-					allBlocks.add(pos);
-				}
-			}
-			if (!allBlocks.isEmpty()) {
-				allBlocks.sort(this.getTargetSorter());
-				this.setTargetBlock(allBlocks.get(0));
-			}
 		}
-
 	}
 
 	private boolean canPlantBeBonemealed(BlockPos pos, BlockState state) {

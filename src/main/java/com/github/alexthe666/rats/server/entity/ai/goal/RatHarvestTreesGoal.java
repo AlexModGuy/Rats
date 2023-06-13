@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatTreeUtils;
+import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -121,7 +123,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 					this.breakingTime = 0;
 					this.previousBreakProgress = -1;
 					this.fellTree();
-					if (!this.stumpBlocks.isEmpty() && this.sapling != null) {
+					if (!this.stumpBlocks.isEmpty() && this.sapling != null && RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_REPLANTER.get())) {
 						this.stumpBlocks.forEach(pos -> {
 							if (RatUtils.canRatPlaceBlock(this.rat.level(), pos, this.rat)) {
 								this.rat.level().setBlockAndUpdate(pos, this.sapling.defaultBlockState());
@@ -221,7 +223,7 @@ public class RatHarvestTreesGoal extends BaseRatHarvestGoal {
 		}
 
 		for (BlockPos leafPos : leaves) {
-			if (this.sapling == null) {
+			if (this.sapling == null && this.rat.level().getBlockState(leafPos).is(BlockTags.LEAVES)) {
 				this.sapling = RatTreeUtils.getSaplingFromLeaves((ServerLevel) this.rat.level(), this.rat.level().getBlockState(leafPos).getBlock());
 			}
 			if (RatUtils.canRatBreakBlock(this.rat.level(), leafPos, this.rat)) {

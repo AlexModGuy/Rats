@@ -20,7 +20,7 @@ import java.util.List;
 
 public class FarmerRatUpgradeItem extends BaseRatUpgradeItem implements ChangesAIUpgrade, HoldsItemUpgrade {
 	public FarmerRatUpgradeItem(Properties properties) {
-		super(properties, 1, 3);
+		super(properties, 1, 2);
 	}
 
 	@Override
