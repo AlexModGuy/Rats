@@ -246,16 +246,19 @@ public class RatUtils {
 	public static void accelerateTick(Level level, BlockPos pos) {
 		BlockState blockState = level.getBlockState(pos);
 		Block block = blockState.getBlock();
-		if (!level.isClientSide() && level instanceof ServerLevel) {
+		if (!level.isClientSide()) {
 			if (block.isRandomlyTicking(blockState) && level.getRandom().nextInt(40) == 0) {
 				block.randomTick(blockState, (ServerLevel) level, pos, level.getRandom());
 			}
-		}
-		BlockEntity entity = level.getBlockEntity(pos);
-		if (entity != null) {
-			BlockEntityTicker<BlockEntity> ticker = blockState.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
-			if (ticker != null)
-				ticker.tick(level, pos, blockState, entity);
+
+			if (level.getRandom().nextInt(7) == 0) {
+				BlockEntity entity = level.getBlockEntity(pos);
+				if (entity != null) {
+					BlockEntityTicker<BlockEntity> ticker = blockState.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
+					if (ticker != null)
+						ticker.tick(level, pos, blockState, entity);
+				}
+			}
 		}
 	}
 
