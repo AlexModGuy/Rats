@@ -83,14 +83,11 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 							}
 						}
 						this.stop();
-						return;
 					}
 				} else {
 					this.stop();
-					return;
 				}
-			}
-			if (this.holdingBonemeal()) {
+			} else if (this.holdingBonemeal()) {
 				BlockState block = this.rat.level().getBlockState(this.getTargetBlock());
 				this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
 				if (this.canPlantBeBonemealed(this.getTargetBlock(), block)) {
@@ -116,7 +113,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 			} else if (this.holdingBlock()) {
 				BlockItem itemBlock = ((BlockItem) this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem());
 				this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
-				if (this.rat.level().isEmptyBlock(this.getTargetBlock().above())) {
+				if (this.rat.level().isEmptyBlock(this.getTargetBlock())) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 					if (distance < 4.5F) {
 						if (this.holdingBlock()) {
@@ -137,7 +134,6 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 					this.stop();
 				}
 			}
-
 		}
 	}
 
