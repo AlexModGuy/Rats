@@ -151,6 +151,16 @@ public class ForgeEvents {
 		}
 	}
 
+	//complete hack workaround for rats not cooking food dropped by victims if they kill them in 1 shot
+	@SubscribeEvent
+	public static void hackySetFireFix(LivingAttackEvent event) {
+		if (!event.getEntity().fireImmune()) {
+			if (event.getSource().getEntity() instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_DEMON.get())) {
+				event.getEntity().setSecondsOnFire(1);
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void checkIfPlagueCanApplyToMob(MobEffectEvent.Applicable event) {
 		if (event.getEffectInstance().getEffect() == RatsEffectRegistry.PLAGUE.get() && event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE)) {
