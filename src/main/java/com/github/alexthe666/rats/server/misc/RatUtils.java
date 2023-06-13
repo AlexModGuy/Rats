@@ -174,7 +174,7 @@ public class RatUtils {
 
 	public static boolean canRatBreakBlock(Level level, BlockPos pos, DiggingRat rat) {
 		BlockState blockState = level.getBlockState(pos);
-		if (level.getBlockEntity(pos) != null) {
+		if (blockState.isAir() || blockState.liquid() || level.getBlockEntity(pos) != null) {
 			return false;
 		}
 		float hardness = blockState.getDestroySpeed(level, pos);
