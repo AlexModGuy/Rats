@@ -24,6 +24,7 @@ public class RatsCreativeTabRegistry {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RatsMod.MODID);
 
 	public static final RegistryObject<CreativeModeTab> RATS = TABS.register("rats", () -> CreativeModeTab.builder()
+			.withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
 			.title(Component.translatable("itemGroup.rats.rats"))
 			.icon(() -> new ItemStack(RatsItemRegistry.CHEESE.get()))
 			.displayItems((parameters, output) -> {
