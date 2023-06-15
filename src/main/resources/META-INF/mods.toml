@@ -28,5 +28,5 @@ versionRange = "[2.2,)"
 ordering = "AFTER"
 side = "BOTH"
 
-[modproperties.twilightforest]
+[modproperties.rats]
 configuredBackground="rats:textures/block/marbled_cheese.png"

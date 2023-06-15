@@ -12,7 +12,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "8.0.5-${project.minecraft_sub_version}"
+version = "8.0.5-${project.minecraft_version}"
 group = 'com.github.alexthe666.rats'
 archivesBaseName = 'rats'
 
@@ -102,9 +102,9 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-    implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${project.jei_version}")
+    implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
     implementation fg.deobf("curse.maven:citadel-331936:${project.citadel_version}")
     //runtimeOnly fg.deobf("curse.maven:structure-expansion-398430:3909814")
     //runtimeOnly fg.deobf("curse.maven:commandstructures-565119:${project.cs_version}")
