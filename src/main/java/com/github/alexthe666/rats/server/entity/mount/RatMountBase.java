@@ -82,7 +82,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 
 	@Override
 	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		super.positionRider(passenger);
+		super.positionRider(passenger, callback);
 		if (this.hasPassenger(passenger)) {
 			float radius = (float) this.riderXZ;
 			float angle = (0.01745329251F * this.yBodyRot);

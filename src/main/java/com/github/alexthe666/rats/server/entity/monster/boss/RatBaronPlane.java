@@ -243,7 +243,7 @@ public class RatBaronPlane extends Mob implements Plane {
 	}
 
 	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		super.positionRider(passenger);
+		super.positionRider(passenger, callback);
 		float radius = 0.35F;
 		float angle = (0.01745329251F * this.yBodyRot);
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));

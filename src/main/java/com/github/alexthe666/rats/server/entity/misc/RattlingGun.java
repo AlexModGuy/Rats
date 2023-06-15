@@ -58,7 +58,7 @@ public class RattlingGun extends Entity {
 	}
 
 	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		super.positionRider(passenger);
+		super.positionRider(passenger, callback);
 		float radius = 0.9F;
 		float angle = (0.01745329251F * (this.getYRot() + 150.0F));
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));

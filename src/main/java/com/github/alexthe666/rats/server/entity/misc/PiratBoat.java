@@ -59,7 +59,7 @@ public class PiratBoat extends Boat {
 
 	@Override
 	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		super.positionRider(passenger);
+		super.positionRider(passenger, callback);
 		float radius = 0.25F;
 		float angle = (0.01745329251F * this.getYRot());
 		double extraX = radius * Mth.sin((float) (Math.PI + angle));
