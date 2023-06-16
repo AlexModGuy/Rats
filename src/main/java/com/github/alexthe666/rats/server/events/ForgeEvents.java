@@ -318,7 +318,7 @@ public class ForgeEvents {
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		if (event.getEntity() instanceof Player) {
-			List<TamedRat> list = event.getEntity().level().getEntitiesOfClass(TamedRat.class, event.getEntity().getBoundingBox().inflate(RatConfig.ratVoodooDistance), rat -> rat.isTame() && rat.isOwnedBy(event.getEntity()) && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_VOODOO.get()));
+			List<TamedRat> list = event.getEntity().level().getEntitiesOfClass(TamedRat.class, event.getEntity().getBoundingBox().inflate(RatConfig.ratVoodooDistance), rat -> rat.isTame() && rat.isOwnedBy(event.getEntity()) && !rat.isInvulnerable() && !rat.isInvulnerableTo(event.getSource()) && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_VOODOO.get()));
 			if (!list.isEmpty()) {
 				float damage = event.getAmount() / list.size();
 				event.setCanceled(true);
