@@ -222,7 +222,9 @@ public class Dutchrat extends Monster implements IAnimatedEntity {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()));
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.GHOST_PIRAT_HAT.get()));
-		this.restrictTo(this.blockPosition(), RatConfig.dutchratRestrictionRadius);
+		if (type != MobSpawnType.MOB_SUMMONED) {
+			this.restrictTo(this.blockPosition(), RatConfig.dutchratRestrictionRadius);
+		}
 		return data;
 	}
 

@@ -142,7 +142,9 @@ public class RatBaron extends AbstractRat implements Enemy {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setDropChance(EquipmentSlot.HEAD, 0);
-		this.restrictTo(this.blockPosition(), 16);
+		if (type != MobSpawnType.MOB_SUMMONED) {
+			this.restrictTo(this.blockPosition(), 16);
+		}
 		if (!this.isPassenger()) {
 			RatBaronPlane plane = new RatBaronPlane(RatlantisEntityRegistry.RAT_BARON_PLANE.get(), this.level());
 			plane.copyPosition(this);
