@@ -71,9 +71,9 @@ public class DutchratBellBlockEntity extends BlockEntity {
 					te.ticksToExplode = 0;
 					Dutchrat dutchrat = new Dutchrat(RatlantisEntityRegistry.DUTCHRAT.get(), level);
 					dutchrat.setPos(pos.getX() + 0.5D, pos.getY() + 10.0D, pos.getZ() + 0.5D);
-					dutchrat.restrictTo(pos, RatConfig.dutchratRestrictionRadius);
 					dutchrat.setBellSummoned();
 					ForgeEventFactory.onFinalizeSpawn(dutchrat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+					dutchrat.restrictTo(pos, RatConfig.dutchratRestrictionRadius);
 					level.addFreshEntity(dutchrat);
 					level.blockEvent(pos, state.getBlock(), 2, Direction.NORTH.get2DDataValue());
 				}
