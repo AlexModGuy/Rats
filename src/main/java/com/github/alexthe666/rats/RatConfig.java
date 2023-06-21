@@ -25,7 +25,11 @@ public class RatConfig {
 	public static boolean ratsContaminateFood = true;
 	public static boolean golemsTargetRats = true;
 	public static boolean villagePetShops = true;
+	public static int villagePetShopWeight = 15;
+	public static int zombieVillagePetShopWeight = 10;
 	public static boolean villageGarbageHeaps = true;
+	public static int villageGarbageHeapWeight = 1;
+	public static int zombieVillageGarbageHeapWeight = 5;
 	public static boolean ratsBreakBlockOnHarvest = true;
 	public static boolean plagueSpread = true;
 	public static float ratStrengthThreshold = 4.0F;
@@ -128,7 +132,11 @@ public class RatConfig {
 			ratsContaminateFood = ConfigHolder.SERVER.ratsContaminateFood.get();
 			golemsTargetRats = ConfigHolder.SERVER.golemsTargetRats.get();
 			villagePetShops = ConfigHolder.SERVER.villagePetShops.get();
+			villagePetShopWeight = ConfigHolder.SERVER.villagePetShopWeight.get();
+			zombieVillagePetShopWeight = ConfigHolder.SERVER.zombieVillagePetShopWeight.get();
 			villageGarbageHeaps = ConfigHolder.SERVER.villageGarbageHeaps.get();
+			villageGarbageHeapWeight = ConfigHolder.SERVER.villageGarbageHeapWeight.get();
+			zombieVillageGarbageHeapWeight = ConfigHolder.SERVER.zombieVillageGarbageHeapWeight.get();
 			ratsBreakBlockOnHarvest = ConfigHolder.SERVER.ratsBreakBlockOnHarvest.get();
 			plagueSpread = ConfigHolder.SERVER.plagueSpread.get();
 			ratStrengthThreshold = ConfigHolder.SERVER.ratStrengthThreshold.get().floatValue();

@@ -181,31 +181,31 @@ public class RatsMod {
 		Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess().registry(Registries.PROCESSOR_LIST).orElseThrow();
 
 		if (RatConfig.villagePetShops) {
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:pet_shops/plains", 25, ProcessorLists.MOSSIFY_10_PERCENT);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:pet_shops/snowy", 25, ProcessorLists.EMPTY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:pet_shops/savanna", 15, ProcessorLists.EMPTY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:pet_shops/taiga", 15, ProcessorLists.MOSSIFY_10_PERCENT);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:pet_shops/desert", 25, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:pet_shops/plains", RatConfig.villagePetShopWeight, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:pet_shops/snowy", RatConfig.villagePetShopWeight, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:pet_shops/savanna", RatConfig.villagePetShopWeight, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:pet_shops/taiga", RatConfig.villagePetShopWeight, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:pet_shops/desert", RatConfig.villagePetShopWeight, ProcessorLists.EMPTY);
 
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:pet_shops/zombie_plains", 10, ProcessorLists.ZOMBIE_PLAINS);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:pet_shops/zombie_snowy", 10, ProcessorLists.ZOMBIE_SNOWY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:pet_shops/zombie_savanna", 10, ProcessorLists.ZOMBIE_SAVANNA);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:pet_shops/zombie_taiga", 10, ProcessorLists.ZOMBIE_TAIGA);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:pet_shops/zombie_desert", 10, ProcessorLists.ZOMBIE_DESERT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:pet_shops/zombie_plains", RatConfig.zombieVillagePetShopWeight, ProcessorLists.ZOMBIE_PLAINS);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:pet_shops/zombie_snowy", RatConfig.zombieVillagePetShopWeight, ProcessorLists.ZOMBIE_SNOWY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:pet_shops/zombie_savanna", RatConfig.zombieVillagePetShopWeight, ProcessorLists.ZOMBIE_SAVANNA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:pet_shops/zombie_taiga", RatConfig.zombieVillagePetShopWeight, ProcessorLists.ZOMBIE_TAIGA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:pet_shops/zombie_desert", RatConfig.zombieVillagePetShopWeight, ProcessorLists.ZOMBIE_DESERT);
 		}
 
 		if (RatConfig.villageGarbageHeaps) {
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:garbage_heaps/plains", 1, ProcessorLists.MOSSIFY_10_PERCENT);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:garbage_heaps/snowy", 1, ProcessorLists.EMPTY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:garbage_heaps/savanna", 1, ProcessorLists.EMPTY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:garbage_heaps/taiga", 1, ProcessorLists.MOSSIFY_10_PERCENT);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:garbage_heaps/desert", 1, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/houses"), "rats:garbage_heaps/plains", RatConfig.villageGarbageHeapWeight, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/houses"), "rats:garbage_heaps/snowy", RatConfig.villageGarbageHeapWeight, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/houses"), "rats:garbage_heaps/savanna", RatConfig.villageGarbageHeapWeight, ProcessorLists.EMPTY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/houses"), "rats:garbage_heaps/taiga", RatConfig.villageGarbageHeapWeight, ProcessorLists.MOSSIFY_10_PERCENT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/houses"), "rats:garbage_heaps/desert", RatConfig.villageGarbageHeapWeight, ProcessorLists.EMPTY);
 
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:garbage_heaps/plains", 5, ProcessorLists.ZOMBIE_PLAINS);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:garbage_heaps/snowy", 5, ProcessorLists.ZOMBIE_SNOWY);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:garbage_heaps/savanna", 5, ProcessorLists.ZOMBIE_SAVANNA);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:garbage_heaps/taiga", 5, ProcessorLists.ZOMBIE_TAIGA);
-			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:garbage_heaps/desert", 5, ProcessorLists.ZOMBIE_DESERT);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/plains/zombie/houses"), "rats:garbage_heaps/plains", RatConfig.zombieVillageGarbageHeapWeight, ProcessorLists.ZOMBIE_PLAINS);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/snowy/zombie/houses"), "rats:garbage_heaps/snowy", RatConfig.zombieVillageGarbageHeapWeight, ProcessorLists.ZOMBIE_SNOWY);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/savanna/zombie/houses"), "rats:garbage_heaps/savanna", RatConfig.zombieVillageGarbageHeapWeight, ProcessorLists.ZOMBIE_SAVANNA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/taiga/zombie/houses"), "rats:garbage_heaps/taiga", RatConfig.zombieVillageGarbageHeapWeight, ProcessorLists.ZOMBIE_TAIGA);
+			this.addBuildingToPool(templatePoolRegistry, processorListRegistry, new ResourceLocation("minecraft:village/desert/zombie/houses"), "rats:garbage_heaps/desert", RatConfig.zombieVillageGarbageHeapWeight, ProcessorLists.ZOMBIE_DESERT);
 		}
 	}
 

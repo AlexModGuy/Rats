@@ -17,7 +17,11 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue ratsContaminateFood;
 	public final ForgeConfigSpec.BooleanValue golemsTargetRats;
 	public final ForgeConfigSpec.BooleanValue villagePetShops;
+	public final ForgeConfigSpec.IntValue villagePetShopWeight;
+	public final ForgeConfigSpec.IntValue zombieVillagePetShopWeight;
 	public final ForgeConfigSpec.BooleanValue villageGarbageHeaps;
+	public final ForgeConfigSpec.IntValue villageGarbageHeapWeight;
+	public final ForgeConfigSpec.IntValue zombieVillageGarbageHeapWeight;
 	public final ForgeConfigSpec.BooleanValue ratsBreakBlockOnHarvest;
 	public final ForgeConfigSpec.BooleanValue plagueSpread;
 	public final ForgeConfigSpec.DoubleValue ratStrengthThreshold;
@@ -102,7 +106,11 @@ public class ServerConfig {
 		builder.pop().push("Villages");
 		this.golemsTargetRats = buildBoolean(builder, "Golems Target Rats", true, "True if iron golems will attack wild rats");
 		this.villagePetShops = buildBoolean(builder, "Village Pet Shops", true, "True if pet shops can spawn in villages");
+		this.villagePetShopWeight = buildInt(builder, "Village Pet Shop Weight", 15, 0, 100, "Defines how often Pet Shops should spawn in villages. A higher number means Pet Shops will spawn more often.");
+		this.zombieVillagePetShopWeight = buildInt(builder, "Zombie Village Pet Shop Weight", 10, 0, 100, "Defines how often Pet Shops should spawn in zombie villages. A higher number means Pet Shops will spawn more often.");
 		this.villageGarbageHeaps = buildBoolean(builder, "Village Garbage Heap", true, "True if garbage heaps can spawn in villages");
+		this.villageGarbageHeapWeight = buildInt(builder, "Village Garbage Heap Weight", 1, 0, 100, "Defines how often Garbage Heaps should spawn in villages. A higher number means Garbage Heaps will spawn more often.");
+		this.zombieVillageGarbageHeapWeight = buildInt(builder, "Zombie Village Garbage Heap Weight", 5, 0, 100, "Defines how often Garbage Heaps should spawn in villages. A higher number means Garbage Heaps will spawn more often.");
 
 		builder.pop().push("Cheesemaking");
 		this.cheesemaking = buildBoolean(builder, "Cheesemaking", true, "True if cheese can be created in cauldrons");
