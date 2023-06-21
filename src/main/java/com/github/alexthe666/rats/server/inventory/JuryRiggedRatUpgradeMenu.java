@@ -3,11 +3,13 @@ package com.github.alexthe666.rats.server.inventory;
 import com.github.alexthe666.rats.registry.RatsMenuRegistry;
 import com.github.alexthe666.rats.server.inventory.slot.JuryRiggedUpgradeSlot;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.JuryRiggedRatUpgradeItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -85,5 +87,11 @@ public class JuryRiggedRatUpgradeMenu extends AbstractContainerMenu {
 		}
 
 		return itemstack;
+	}
+
+	@Override
+	public void clicked(int slot, int action, ClickType type, Player player) {
+		if (slot > 0 && this.slots.get(slot).hasItem() && this.slots.get(slot).getItem().getItem() instanceof JuryRiggedRatUpgradeItem) return;
+		super.clicked(slot, action, type, player);
 	}
 }
