@@ -3,10 +3,12 @@ package com.github.alexthe666.rats.server.entity.mount;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.GolemBeam;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -27,7 +29,7 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 
 	public RatAutomatonMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.riderY = 2.85F;
+		this.riderY = 2.725F;
 		this.moveControl = new FlyingMoveControl(this, 10, false);
 	}
 
@@ -137,5 +139,11 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 	@Override
 	public Item getUpgradeItem() {
 		return RatlantisItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT.get();
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 0.5F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.3F, 0.0F, 0.0F, 20.0F);
 	}
 }

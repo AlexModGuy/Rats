@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -34,7 +36,7 @@ public class RatGolemMount extends RatMountBase {
 
 	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.riderY = 2.05F;
+		this.riderY = 1.95F;
 		this.riderXZ = -0.1F;
 	}
 
@@ -143,6 +145,11 @@ public class RatGolemMount extends RatMountBase {
 	@Override
 	public Item getUpgradeItem() {
 		return RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT.get();
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, -0.5F, 0.0F, 0.0F, 20.0F);
 	}
 
 	public enum Cracks {

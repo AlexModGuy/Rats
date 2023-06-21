@@ -1,11 +1,13 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.Plane;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.PlaneMoveControl;
 import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.PlaneRotationUtil;
 import net.minecraft.core.BlockPos;
@@ -221,5 +223,11 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 	@Override
 	public void setFlightTarget(@Nullable Vec3 target) {
 		this.flightTarget = target;
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.3F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.2F, 0.0F, 0.0F, 20.0F);
 	}
 }

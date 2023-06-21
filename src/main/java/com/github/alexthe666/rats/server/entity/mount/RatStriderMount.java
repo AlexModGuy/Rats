@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -182,6 +184,12 @@ public class RatStriderMount extends RatMountBase {
 	@Override
 	public Item getUpgradeItem() {
 		return RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT.get();
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.0F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.1F, 0.0F, 0.0F, 20.0F);
 	}
 
 	static class StriderPathNavigation extends GroundPathNavigation {

@@ -1,9 +1,12 @@
 package com.github.alexthe666.rats.server.entity.misc;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.entity.AdjustsRatTail;
 import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,7 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class RattlingGun extends Entity {
+public class RattlingGun extends Entity implements AdjustsRatTail {
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(RattlingGun.class, EntityDataSerializers.BOOLEAN);
 	private boolean prevFire;
 	private int fireCooldown = 0;
@@ -199,5 +202,11 @@ public class RattlingGun extends Entity {
 			}
 			this.setFiring(true);
 		}
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.1F, 0.17453292F, 0.6981317F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, 0.3F, 0.61086524F, 0.0F, 20.0F);
 	}
 }

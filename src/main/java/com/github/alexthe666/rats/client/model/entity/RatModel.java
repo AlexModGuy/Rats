@@ -3,16 +3,16 @@ package com.github.alexthe666.rats.client.model.entity;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.client.events.ModClientEvents;
+import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.AdjustsRatTail;
+import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
 
 public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 
@@ -122,14 +122,11 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 		boolean holdingInHands = !rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && (rat instanceof TamedRat realRat && realRat.cookingProgress > 0) || rat.getAnimation() == AbstractRat.ANIMATION_EAT || (rat instanceof TamedRat actualRat && (actualRat.holdsItemInHandUpgrade() || actualRat.getMBTransferRate() > 0));
 		float maxTailRotation = (float) Math.toRadians(15.0D);
 		float f12 = (float) Math.toRadians(-15.0D) + f1;
-		int tailBehavior = rat.getTailBehaviorForMount();
-		if (rat.getVehicle() != null && rat.getVehicle() instanceof LivingEntity rider) {
+		if (rat.getVehicle() != null && rat.getVehicle() instanceof LivingEntity rider && !(rider instanceof AdjustsRatTail)) {
 			maxTailRotation = (float) Math.toRadians(30.0D);
 			f12 = (float) Math.toRadians(-15.0D) + rider.walkAnimation.speed();
-			if (tailBehavior == 0) {
-				this.walk(this.tail1, speedIdle, degreeIdle, false, -1.0F, 0.0F, rider.walkAnimation.position(), rider.walkAnimation.speed());
-				this.walk(this.tail2, speedIdle, degreeIdle * 0.5F, false, -2.0F, 0.0F, rider.walkAnimation.position(), rider.walkAnimation.speed());
-			}
+			this.walk(this.tail1, speedIdle, degreeIdle, false, -1.0F, 0.0F, rider.walkAnimation.position(), rider.walkAnimation.speed());
+			this.walk(this.tail2, speedIdle, degreeIdle * 0.5F, false, -2.0F, 0.0F, rider.walkAnimation.position(), rider.walkAnimation.speed());
 		}
 
 		if (f12 > maxTailRotation) {
@@ -175,28 +172,8 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 			this.progressRotation(this.tail1, rat.sitProgress, 1.1F, 0.0F, 0.0F, 20.0F);
 		}
 
-		if (tailBehavior == 1) {
-			this.progressRotation(this.tail1, rat.sitProgress, -0.5F, 0.0F, 0.0F, 20.0F);
-		}
-
-		if (tailBehavior == 2) {
-			this.progressRotation(this.tail1, rat.sitProgress, 1.0F, 0.0F, 0.0F, 20.0F);
-			this.progressRotation(this.tail2, rat.sitProgress, -0.1F, 0.0F, 0.0F, 20.0F);
-		}
-
-		if (tailBehavior == 3) {
-			this.progressRotation(this.tail1, rat.sitProgress, 1.3F, 0.0F, 0.0F, 20.0F);
-			this.progressRotation(this.tail2, rat.sitProgress, -0.2F, 0.0F, 0.0F, 20.0F);
-		}
-
-		if (tailBehavior == 4) {
-			this.progressRotation(this.tail1, rat.sitProgress, 0.5F, 0.0F, 0.0F, 20.0F);
-			this.progressRotation(this.tail2, rat.sitProgress, -0.3F, 0.0F, 0.0F, 20.0F);
-		}
-
-		if (tailBehavior == 5) {
-			this.progressRotation(this.tail2, rat.sitProgress, 0.3F, 0.61086524F, 0.0F, 20.0F);
-			this.progressRotation(this.tail1, rat.sitProgress, 1.1F, 0.17453292F, 0.6981317F, 20.0F);
+		if (rat.getVehicle() instanceof AdjustsRatTail adjuster) {
+			adjuster.adjustRatTailRotation(rat, this.tail1, this.tail2);
 		}
 
 		this.progressPosition(this.body1, rat.sitProgress, 0.0F, 16.0F, 0.0F, 20.0F);
@@ -247,7 +224,7 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 			}
 		}
 
-		if (tailBehavior == 0) {
+		if (rat.getVehicle() == null || !(rat.getVehicle() instanceof AdjustsRatTail)) {
 			this.tail1.rotateAngleX += f12;
 			this.tail2.rotateAngleX -= f12 / 2F;
 		}

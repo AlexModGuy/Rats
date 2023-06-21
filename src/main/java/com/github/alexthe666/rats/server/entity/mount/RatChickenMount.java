@@ -1,6 +1,8 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +26,7 @@ public class RatChickenMount extends RatMountBase {
 
 	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.riderY = 0.7F;
+		this.riderY = 0.55F;
 		this.riderXZ = 0.1F;
 	}
 
@@ -86,5 +88,11 @@ public class RatChickenMount extends RatMountBase {
 	@Override
 	public Item getUpgradeItem() {
 		return RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT.get();
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.0F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.1F, 0.0F, 0.0F, 20.0F);
 	}
 }

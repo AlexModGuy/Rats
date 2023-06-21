@@ -1,8 +1,10 @@
 package com.github.alexthe666.rats.server.entity.monster.boss;
 
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.entity.AdjustsRatTail;
 import com.github.alexthe666.rats.server.entity.Plane;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.PlaneMoveControl;
 import com.github.alexthe666.rats.server.entity.projectile.RattlingGunBullet;
@@ -33,7 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class RatBaronPlane extends Mob implements Plane {
+public class RatBaronPlane extends Mob implements Plane, AdjustsRatTail {
 
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(RatBaronPlane.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Float> PLANE_PITCH = SynchedEntityData.defineId(RatBaronPlane.class, EntityDataSerializers.FLOAT);
@@ -329,5 +331,11 @@ public class RatBaronPlane extends Mob implements Plane {
 	@Override
 	protected boolean canRide(Entity entity) {
 		return false;
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.3F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.2F, 0.0F, 0.0F, 20.0F);
 	}
 }

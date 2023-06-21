@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
 import com.github.alexthe666.rats.server.entity.RatMount;
+import com.github.alexthe666.rats.server.entity.AdjustsRatTail;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -19,7 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class RatMountBase extends PathfinderMob implements RatMount {
+public abstract class RatMountBase extends PathfinderMob implements RatMount, AdjustsRatTail {
 
 	protected double riderY;
 	protected double riderXZ;
@@ -91,7 +92,10 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount {
 			double extraY = this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset();
 			callback.accept(passenger, this.getX() + extraX, extraY, this.getZ() + extraZ);
 			if (passenger instanceof LivingEntity living) {
-				living.yBodyRot = this.yBodyRot;
+				living.yBodyRot = this.getYRot();
+				living.setYHeadRot(this.getYRot());
+				living.setXRot(this.getXRot());
+				living.setYRot(this.getYRot());
 			}
 		}
 	}

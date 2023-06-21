@@ -3,8 +3,10 @@ package com.github.alexthe666.rats.server.entity.mount;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -183,5 +185,11 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 	@Override
 	public Item getUpgradeItem() {
 		return RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT.get();
+	}
+
+	@Override
+	public void adjustRatTailRotation(AbstractRat rat, AdvancedModelBox upperTail, AdvancedModelBox lowerTail) {
+		this.progressRotation(upperTail, rat.sitProgress, 1.3F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(lowerTail, rat.sitProgress, -0.2F, 0.0F, 0.0F, 20.0F);
 	}
 }

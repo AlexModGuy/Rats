@@ -6,18 +6,14 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
-import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatFleePositionGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.RatMoveControl;
-import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
-import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
-import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -48,7 +44,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Ocelot;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
@@ -554,33 +549,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 			int i = accessor.getLevelData().isThundering() ? accessor.getMaxLocalRawBrightness(pos, 10) : accessor.getMaxLocalRawBrightness(pos);
 			return i <= random.nextInt(8);
 		}
-	}
-
-	public int getTailBehaviorForMount() {
-		if (this instanceof TamedRat rat) {
-			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT.get()) && rat.isRidingSpecialMount()) {
-				return 1;
-			}
-			if ((RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT.get()) || RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT.get())) && rat.isRidingSpecialMount()) {
-				return 2;
-			}
-			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT.get()) && rat.isRidingSpecialMount()) {
-				return 3;
-			}
-			if (RatUpgradeUtils.hasUpgrade(rat, RatlantisItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT.get()) && rat.isRidingSpecialMount()) {
-				return 4;
-			}
-		}
-		if (this.isPassenger() && this.getVehicle() instanceof RattlingGun) {
-			return 5;
-		}
-		if (this.isPassenger() && this.getVehicle() instanceof RatBaronPlane || this.getVehicle() instanceof RatBiplaneMount) {
-			return 3;
-		}
-		if (this.getVehicle() instanceof Strider) {
-			return 2;
-		}
-		return 0;//normal (down + riding)
 	}
 
 	protected ListTag makeDoubleList(double... pNumbers) {
