@@ -137,11 +137,7 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 			f12 = (float) Math.toRadians(-15.0D);
 		}
 
-		this.wisker1.showModel = this.wisker2.showModel = !rat.getItemBySlot(EquipmentSlot.HEAD).is(Items.CARVED_PUMPKIN) &&
-				!rat.getItemBySlot(EquipmentSlot.HEAD).is(Items.JACK_O_LANTERN) &&
-				!rat.getItemBySlot(EquipmentSlot.HEAD).is(Tags.Items.HEADS) &&
-				!rat.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) &&
-				!rat.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.PLAGUE_DOCTOR_MASK.get());
+		this.wisker1.showModel = this.wisker2.showModel = !rat.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemTags.HIDES_RAT_WHISKERS);
 		this.progressRotation(this.leftThigh, rat.deadInTrapProgress, (float) Math.toRadians(20.0D), 0.0F, (float) Math.toRadians(-60.0D), 5.0F);
 		this.progressRotation(this.rightThigh, rat.deadInTrapProgress, (float) Math.toRadians(20.0D), 0.0F, (float) Math.toRadians(60.0D), 5.0F);
 		this.progressRotation(this.leftFoot, rat.deadInTrapProgress, (float) Math.toRadians(20.0D), 0.0F, 0.0F, 5.0F);

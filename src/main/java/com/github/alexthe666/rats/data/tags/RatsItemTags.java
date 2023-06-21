@@ -31,6 +31,7 @@ public class RatsItemTags extends ItemTagsProvider {
 	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(new ResourceLocation("forge", "crafting_tables"));
 	public static final TagKey<Item> VEGETABLES = ItemTags.create(new ResourceLocation("forge", "vegetables"));
 	public static final TagKey<Item> PLASTICS = ItemTags.create(new ResourceLocation("forge", "plastics"));
+	public static final TagKey<Item> HIDES_RAT_WHISKERS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "hides_rat_whiskers"));
 
 	public static final TagKey<Item> IGLOOS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "igloos"));
 	public static final TagKey<Item> TUBES = ItemTags.create(new ResourceLocation(RatsMod.MODID, "tubes"));
@@ -65,6 +66,10 @@ public class RatsItemTags extends ItemTagsProvider {
 			this.tag(IGLOOS).add(ResourceKey.create(Registries.ITEM, new ResourceLocation(RatsMod.MODID, "rat_igloo_" + color.getName())));
 			this.tag(TUBES).add(ResourceKey.create(Registries.ITEM, new ResourceLocation(RatsMod.MODID, "rat_tube_" + color.getName())));
 		}
+
+		this.tag(HIDES_RAT_WHISKERS).addTag(Tags.Items.HEADS).add(
+				Items.CARVED_PUMPKIN, Items.JACK_O_LANTERN,
+				RatsItemRegistry.BLACK_DEATH_MASK.get(), RatsItemRegistry.PLAGUE_DOCTOR_MASK.get());
 
 		this.tag(Tags.Items.ARMORS_HELMETS).add(
 				RatsItemRegistry.PIPER_HAT.get(), RatsItemRegistry.ARCHEOLOGIST_HAT.get(),

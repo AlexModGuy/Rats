@@ -1,4 +1,4 @@
-// 1.20	2023-06-12T15:41:42.1657552	Tags for minecraft:item mod id rats
+// 1.20.1	2023-06-20T18:40:46.8428349	Tags for minecraft:item mod id rats
 e219bec1b519c84c23f34b8a5fafa1e550d97a2e data/forge/tags/items/armors/helmets.json
 7127c83d822a7ae1b6a7fab613b9d09df70dca01 data/forge/tags/items/cheeses.json
 ef009e37bee6b5e71102a5503bc932bcd3984ec7 data/forge/tags/items/cheeses/blue.json
@@ -15,6 +15,7 @@ cf746c872e8faa08e8d65ae975374b6f31471ca0 data/minecraft/tags/items/arrows.json
 0f2b5f8d3265ca2562d22f15f1b7f98cfd49ad07 data/minecraft/tags/items/piglin_loved.json
 00a2feb404391b4e3c8142274bb6642b7649a268 data/minecraft/tags/items/wool.json
 20476f057164f3730c9ef2e8730a671a376a06aa data/rats/tags/items/hammocks.json
+f2a1c4d2a08cc7f928214c5f101c01720e83b6aa data/rats/tags/items/hides_rat_whiskers.json
 42581877ef1a4bb763744ecdac46889a87f516d2 data/rats/tags/items/igloos.json
 0faaf07753124e7bdd17c7bb1eb18cf9998f096e data/rats/tags/items/marbled_cheese.json
 5f5d576b6a8ee2d2b8f4859f537ad97548e8a6b4 data/rats/tags/items/tubes.json
