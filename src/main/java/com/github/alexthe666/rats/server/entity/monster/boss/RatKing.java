@@ -1,12 +1,10 @@
 package com.github.alexthe666.rats.server.entity.monster.boss;
 
 import com.github.alexthe666.rats.RatConfig;
-import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.entity.projectile.RatShot;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
-import com.github.alexthe666.rats.registry.RatVariantRegistry;
+import com.github.alexthe666.rats.server.entity.projectile.RatShot;
 import com.github.alexthe666.rats.server.misc.RatVariant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +16,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

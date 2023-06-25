@@ -1,13 +1,8 @@
 package com.github.alexthe666.rats.server.misc;
 
-import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import org.antlr.v4.runtime.misc.Triple;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;

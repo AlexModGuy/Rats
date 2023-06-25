@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.server.entity.monster;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.data.tags.RatsEntityTags;
-import com.github.alexthe666.rats.registry.RatsEffectRegistry;
-import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.core.BlockPos;
@@ -14,7 +12,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

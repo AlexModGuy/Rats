@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
-import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
+import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;

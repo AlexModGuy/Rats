@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatArrow;
-import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

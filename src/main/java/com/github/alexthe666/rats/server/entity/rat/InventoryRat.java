@@ -2,12 +2,12 @@ package com.github.alexthe666.rats.server.entity.rat;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.registry.RatsDataSerializerRegistry;
 import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.inventory.container.RatContainer;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.OpenRatScreenPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
-import com.github.alexthe666.rats.registry.RatsDataSerializerRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;

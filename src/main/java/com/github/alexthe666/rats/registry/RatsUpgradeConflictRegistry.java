@@ -44,7 +44,8 @@ public class RatsUpgradeConflictRegistry {
 
 	public static boolean doesConflict(ItemStack newItem, ItemStack existingItem) {
 		if (!(existingItem.getItem() instanceof BaseRatUpgradeItem)) return false;
-		if (newItem.is(existingItem.getItem()) && !newItem.is(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get())) return true;
+		if (newItem.is(existingItem.getItem()) && !newItem.is(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get()))
+			return true;
 		Item[] arr = REGISTERED_CONFLICTS.get(newItem.getItem());
 		if (newItem.getItem() instanceof CombinedUpgrade combined) {
 			CompoundTag tag = newItem.getTag();

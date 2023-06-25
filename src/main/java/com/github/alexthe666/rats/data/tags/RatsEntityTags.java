@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.data.tags;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

@@ -91,7 +91,8 @@ public class JuryRiggedRatUpgradeMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slot, int action, ClickType type, Player player) {
-		if (slot > 0 && this.slots.get(slot).hasItem() && this.slots.get(slot).getItem().getItem() instanceof JuryRiggedRatUpgradeItem) return;
+		if (slot > 0 && this.slots.get(slot).hasItem() && this.slots.get(slot).getItem().getItem() instanceof JuryRiggedRatUpgradeItem)
+			return;
 		super.clicked(slot, action, type, player);
 	}
 }

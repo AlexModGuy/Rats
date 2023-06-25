@@ -5,8 +5,8 @@ import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.hats.*;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.monster.GhostPirat;
+import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -139,7 +139,7 @@ public class HatItem extends ArmorItem {
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		String item = ForgeRegistries.ITEMS.getKey(this).getPath();
 		if (!item.equals("air")) {
-			return new ResourceLocation(RatsMod.MODID, "textures/model/hat/" + item +".png").toString();
+			return new ResourceLocation(RatsMod.MODID, "textures/model/hat/" + item + ".png").toString();
 		}
 		//hehe
 		return "textures/particle/flea_0.png";

@@ -1,7 +1,5 @@
 package com.github.alexthe666.rats;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-
 public class RatConfig {
 	//CLIENT
 	public static boolean plagueHearts = true;

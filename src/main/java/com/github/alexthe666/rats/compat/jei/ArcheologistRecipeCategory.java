@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.compat.jei;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.recipes.ArcheologistRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;

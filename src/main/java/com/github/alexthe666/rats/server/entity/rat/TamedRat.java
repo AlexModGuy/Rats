@@ -183,13 +183,13 @@ public class TamedRat extends InventoryRat {
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F) {
 			@Override
 			public boolean canUse() {
-				return ((TamedRat)this.mob).sleepProgress <= 0.0F && super.canUse();
+				return ((TamedRat) this.mob).sleepProgress <= 0.0F && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this) {
 			@Override
 			public boolean canUse() {
-				return ((TamedRat)this.mob).sleepProgress <= 0.0F && super.canUse();
+				return ((TamedRat) this.mob).sleepProgress <= 0.0F && super.canUse();
 			}
 		});
 		this.targetSelector.addGoal(0, new RatTargetItemsGoal(this));
@@ -916,7 +916,7 @@ public class TamedRat extends InventoryRat {
 				player.swing(hand);
 				this.discard();
 				return InteractionResult.SUCCESS;
-			}else {
+			} else {
 				return super.mobInteract(player, hand);
 			}
 		}

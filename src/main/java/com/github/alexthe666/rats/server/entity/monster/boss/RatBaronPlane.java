@@ -26,8 +26,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -141,7 +139,7 @@ public class RatBaronPlane extends Mob implements Plane, AdjustsRatTail {
 					double d1 = target.getY(0.3333333333333333D) - bullet.getY();
 					double d2 = target.getZ() - this.getZ();
 					double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-					bullet.shoot(d0, d1 + d3 * (double)0.2F, d2, 3.2F, 1.4F);
+					bullet.shoot(d0, d1 + d3 * (double) 0.2F, d2, 3.2F, 1.4F);
 					this.playSound(RatsSoundRegistry.BIPLANE_SHOOT.get(), 3.0F, 2.3F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 					if (!this.level().isClientSide()) {
 						this.level().addFreshEntity(bullet);

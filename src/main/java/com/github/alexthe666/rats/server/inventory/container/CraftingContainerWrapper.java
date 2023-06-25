@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.inventory.container;
 
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;

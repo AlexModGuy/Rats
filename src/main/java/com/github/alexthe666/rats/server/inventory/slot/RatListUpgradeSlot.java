@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.inventory.slot;
 
 import com.github.alexthe666.rats.server.items.RatListUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.world.Container;

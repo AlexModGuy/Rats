@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
-import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
+import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

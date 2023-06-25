@@ -1,8 +1,5 @@
 package com.github.alexthe666.rats.registry;
 
-import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
-import com.github.alexthe666.rats.registry.RatsBlockRegistry;
-import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

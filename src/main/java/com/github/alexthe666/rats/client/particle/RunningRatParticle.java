@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client.particle;
 
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
-import com.github.alexthe666.rats.registry.RatVariantRegistry;
 import com.github.alexthe666.rats.server.misc.RatVariant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -20,7 +20,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class RatsAdvancementGenerator implements ForgeAdvancementProvider.AdvancementGenerator {
 

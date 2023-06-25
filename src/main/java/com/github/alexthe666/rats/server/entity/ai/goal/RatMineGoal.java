@@ -1,30 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
-import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.misc.RatPathingHelper;
-import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
-import com.github.alexthe666.rats.server.misc.RatUtils;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
-public class RatMineGoal{}/* extends BaseRatHarvestGoal {
+public class RatMineGoal {
+}/* extends BaseRatHarvestGoal {
 	private final TamedRat rat;
 	private int breakingTime;
 	private int previousBreakProgress;

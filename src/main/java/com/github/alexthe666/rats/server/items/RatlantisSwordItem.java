@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
-import com.github.alexthe666.rats.server.entity.misc.RatProtector;
 import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
+import com.github.alexthe666.rats.server.entity.misc.RatProtector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.block.DutchratBellBlock;
 import com.github.alexthe666.rats.server.block.RatAttractorBlock;
 import com.github.alexthe666.rats.server.block.RatCageBlock;
-import com.github.alexthe666.rats.server.block.RatHoleBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;

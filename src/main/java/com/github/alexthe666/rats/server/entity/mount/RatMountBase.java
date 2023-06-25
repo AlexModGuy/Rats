@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.entity.mount;
 
-import com.github.alexthe666.rats.server.entity.RatMount;
 import com.github.alexthe666.rats.server.entity.AdjustsRatTail;
+import com.github.alexthe666.rats.server.entity.RatMount;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

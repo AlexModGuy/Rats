@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.entity.monster.boss;
 
-import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;

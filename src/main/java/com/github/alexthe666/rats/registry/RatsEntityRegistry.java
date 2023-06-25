@@ -1,7 +1,10 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.server.entity.monster.*;
+import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
+import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
+import com.github.alexthe666.rats.server.entity.monster.PlagueBeast;
+import com.github.alexthe666.rats.server.entity.monster.PlagueCloud;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
 import com.github.alexthe666.rats.server.entity.mount.RatBeastMount;
@@ -12,7 +15,6 @@ import com.github.alexthe666.rats.server.entity.projectile.*;
 import com.github.alexthe666.rats.server.entity.rat.DemonRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
