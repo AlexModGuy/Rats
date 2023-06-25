@@ -624,6 +624,7 @@
   "entity.rats.rat.status.eating": "Eating",
   "entity.rats.rat.dismount_instructions": "Sneak and punch air to remove rats from shoulder",
   "entity.rats.rat.respawned_angel": "%s respawned as an angel",
+  "entity.rats.rat.griefing_off": "NOTICE: this world has Mob Griefing turned off. Rats may not work as expected! Tamed rats will not be able to perform many tasks you would normally expect them to because of this.\nTo fix this, all you need to do is enable the mob griefing gamerule.\nThis message will not appear again.",
   "entity.rats.rat.staff.bind": "Staff is now bound to %s",
   "entity.rats.rat.staff.no_rat": "Staff is not bound to any rat",
   "entity.rats.rat.staff.mark_block_deposit": "Deposit items in %s from the",
