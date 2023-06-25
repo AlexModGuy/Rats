@@ -96,10 +96,7 @@ public abstract class DiggingRat extends AbstractRat {
 				this.previousBreakProgress = -1;
 				BlockState prevState = this.level().getBlockState(this.diggingPos);
 				this.level().setBlockAndUpdate(this.diggingPos, RatsBlockRegistry.RAT_HOLE.get().defaultBlockState());
-				for (Direction direction : Direction.Plane.HORIZONTAL) {
-					boolean empty = this.level().isEmptyBlock(this.diggingPos.relative(direction));
-					this.level().getBlockState(this.diggingPos).setValue(RatHoleBlock.PROPERTY_BY_DIRECTION.get(direction), empty);
-				}
+
 				if (this.level().getBlockState(this.diggingPos).is(RatsBlockRegistry.RAT_HOLE.get())) {
 					BlockEntity be = this.level().getBlockEntity(this.diggingPos);
 					if (be instanceof RatHoleBlockEntity hole) {

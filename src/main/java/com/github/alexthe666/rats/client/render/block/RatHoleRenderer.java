@@ -36,7 +36,11 @@ public class RatHoleRenderer implements BlockEntityRenderer<RatHoleBlockEntity> 
 	private static final RenderType TEXTURE = RenderType.entitySmoothCutout(InventoryMenu.BLOCK_ATLAS);
 
 	public RatHoleRenderer(BlockEntityRendererProvider.Context context) {
+	}
 
+	@Override
+	public int getViewDistance() {
+		return 256;
 	}
 
 	private void renderAABB(MultiBufferSource buffer, AABB boundingBox, PoseStack stack, TextureAtlasSprite sprite, int light, int overlay) {
@@ -121,6 +125,9 @@ public class RatHoleRenderer implements BlockEntityRenderer<RatHoleBlockEntity> 
 		}
 		if (connectedSouth) {
 			this.renderAABB(buffer, SOUTH_CONNECT_AABB, stack, model.getParticleIcon(ModelData.EMPTY), LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos()), overlay);
+		}
+		if (entity.getLevel() != null) {
+			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(entity.getBlockState(), entity.getBlockPos(), entity.getLevel(), stack, buffer.getBuffer(RenderType.solid()), ModelData.EMPTY);
 		}
 		stack.popPose();
 	}

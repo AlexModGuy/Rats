@@ -8,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,10 +26,17 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -74,7 +82,7 @@ public class RatHoleBlock extends BaseEntityBlock {
 
 	@Override
 	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.ENTITYBLOCK_ANIMATED;
+		return RenderShape.MODEL;
 	}
 
 	@Override
@@ -82,39 +90,30 @@ public class RatHoleBlock extends BaseEntityBlock {
 		return context instanceof EntityCollisionContext ctx && ctx.getEntity() instanceof DiggingRat ? TOP_AABB : super.getCollisionShape(state, getter, pos, context);
 	}
 
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if (level.getBlockEntity(pos) != null && level.getBlockEntity(pos) instanceof RatHoleBlockEntity hole) {
-			NonNullList<ItemStack> ret = NonNullList.create();
-			if (!level.isClientSide() && level instanceof ServerLevel) {
-				getDrops(hole.getImitatedBlockState(), (ServerLevel) level, pos, null);
-				for (ItemStack stack : ret) {
-					ItemEntity ItemEntity = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
-					level.addFreshEntity(ItemEntity);
-				}
-			}
-		}
-		super.onRemove(state, level, pos, newState, moving);
-	}
-
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Level level = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
-		BlockPos blockpos1 = blockpos.north();
-		BlockPos blockpos2 = blockpos.east();
-		BlockPos blockpos3 = blockpos.south();
-		BlockPos blockpos4 = blockpos.west();
-		BlockState blockstate = level.getBlockState(blockpos1);
-		BlockState blockstate1 = level.getBlockState(blockpos2);
-		BlockState blockstate2 = level.getBlockState(blockpos3);
-		BlockState blockstate3 = level.getBlockState(blockpos4);
+		BlockState northState = level.getBlockState(blockpos.north());
+		BlockState eastState = level.getBlockState(blockpos.east());
+		BlockState southState = level.getBlockState(blockpos.south());
+		BlockState westState = level.getBlockState(blockpos.west());
 		return Objects.requireNonNull(super.getStateForPlacement(context))
-				.setValue(NORTH, this.canFenceConnectTo(blockstate, blockstate.isFaceSturdy(level, blockpos, Direction.SOUTH)))
-				.setValue(EAST, this.canFenceConnectTo(blockstate1, blockstate.isFaceSturdy(level, blockpos, Direction.WEST)))
-				.setValue(SOUTH, this.canFenceConnectTo(blockstate2, blockstate.isFaceSturdy(level, blockpos, Direction.NORTH)))
-				.setValue(WEST, this.canFenceConnectTo(blockstate3, blockstate.isFaceSturdy(level, blockpos, Direction.EAST)));
+				.setValue(NORTH, this.shouldFaceHaveHole(northState, northState.isFaceSturdy(level, blockpos.north(), Direction.SOUTH)))
+				.setValue(EAST, this.shouldFaceHaveHole(eastState, eastState.isFaceSturdy(level, blockpos.east(), Direction.WEST)))
+				.setValue(SOUTH, this.shouldFaceHaveHole(southState, southState.isFaceSturdy(level, blockpos.south(), Direction.NORTH)))
+				.setValue(WEST, this.shouldFaceHaveHole(westState, westState.isFaceSturdy(level, blockpos.west(), Direction.EAST)));
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+		BlockEntity entity = builder.getParameter(LootContextParams.BLOCK_ENTITY);
+		if (entity instanceof RatHoleBlockEntity hole) {
+			return List.of(new ItemStack(hole.getImitatedBlockState().getBlock()));
+		}
+
+		return super.getDrops(state, builder);
 	}
 
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -141,10 +140,8 @@ public class RatHoleBlock extends BaseEntityBlock {
 		builder.add(NORTH, EAST, WEST, SOUTH);
 	}
 
-
-	private boolean canFenceConnectTo(BlockState state, boolean connectToFace) {
-		Block block = state.getBlock();
-		return !connectToFace && block != this;
+	private boolean shouldFaceHaveHole(BlockState state, boolean occluding) {
+		return occluding || state.getBlock() == this;
 	}
 
 	@Nullable
@@ -165,7 +162,7 @@ public class RatHoleBlock extends BaseEntityBlock {
 		if (connect == null) {
 			return state;
 		}
-		return state.setValue(connect, this.canFenceConnectTo(facingState, facingState.isFaceSturdy(level, facingPos, facing.getOpposite())));
+		return state.setValue(connect, this.shouldFaceHaveHole(facingState, facingState.isFaceSturdy(level, facingPos, facing.getOpposite())));
 	}
 
 	@Override

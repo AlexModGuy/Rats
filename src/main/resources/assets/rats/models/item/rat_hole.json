@@ -1,7 +1,0 @@
-{
-  "parent": "rats:block/rat_hole",
-  "textures": {
-    "particle": "minecraft:block/oak_planks",
-    "0": "minecraft:block/oak_planks"
-  }
-}

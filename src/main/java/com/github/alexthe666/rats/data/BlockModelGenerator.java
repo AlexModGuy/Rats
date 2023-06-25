@@ -92,13 +92,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 						this.blockPrefix("rat_crafting_table_side"), this.blockPrefix("rat_crafting_table_side"),
 						this.blockPrefix("rat_crafting_table"), this.blockPrefix("rat_crafting_table"))
 				.texture("particle", this.blockPrefix("rat_crafting_table")));
-		this.getMultipartBuilder(RatsBlockRegistry.RAT_HOLE.get())
-				.part().modelFile(models().getExistingFile(new ResourceLocation(RatsMod.MODID, "block/rat_hole"))).addModel().end()
-				.part().modelFile(models().getExistingFile(new ResourceLocation(RatsMod.MODID, "block/rat_hole_plug"))).addModel().condition(RatHoleBlock.NORTH, false).end()
-				.part().modelFile(models().getExistingFile(new ResourceLocation(RatsMod.MODID, "block/rat_hole_plug"))).rotationY(180).addModel().condition(RatHoleBlock.SOUTH, false).end()
-				.part().modelFile(models().getExistingFile(new ResourceLocation(RatsMod.MODID, "block/rat_hole_plug"))).rotationY(900).addModel().condition(RatHoleBlock.EAST, false).end()
-				.part().modelFile(models().getExistingFile(new ResourceLocation(RatsMod.MODID, "block/rat_hole_plug"))).rotationY(270).addModel().condition(RatHoleBlock.WEST, false).end();
-
+		this.builtinEntity(RatsBlockRegistry.RAT_HOLE.get(), "minecraft:block/oak_planks");
 		this.simpleBlock(RatsBlockRegistry.RAT_QUARRY.get(), this.models().cube("rat_quarry",
 						this.blockPrefix("rat_quarry_bottom"), this.blockPrefix("rat_quarry_top"),
 						this.blockPrefix("rat_quarry_side"), this.blockPrefix("rat_quarry_side"),
