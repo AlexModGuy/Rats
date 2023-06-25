@@ -509,7 +509,7 @@
   "item.rats.black_death_mask": "Black Death Mask",
   "item.rats.black_death_mask.desc": "Plague Rats will no longer target you when worn",
   "item.rats.plague_scythe": "Black Death Scythe",
-  "item.rats.plague_scythe.desc": "Summons Plague Clouds on attack",
+  "item.rats.plague_scythe.desc": "Summons Plague Clouds when swung",
   "item.rats.purifying_liquid": "Purifying Liquid",
   "item.rats.purifying_liquid.desc": "Cures mobs with plague and zombie villagers",
   "item.rats.crimson_liquid": "Crimson Liquid",
