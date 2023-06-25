@@ -17,7 +17,7 @@ description = '''What are we going to do today Pinky?'''
 [[dependencies.rats]]
 modId = "forge"
 mandatory = true
-versionRange = "[46.0.12,)"
+versionRange = "[46.0.18,)"
 ordering = "BEFORE"
 side = "BOTH"
 
