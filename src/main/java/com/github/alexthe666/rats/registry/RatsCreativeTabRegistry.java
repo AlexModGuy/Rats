@@ -195,6 +195,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_QUARRY.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_REPLANTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_SHEARS.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get());
 
 				output.accept(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get());

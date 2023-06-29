@@ -142,6 +142,7 @@ public class TamedRat extends InventoryRat {
 	public int rangedAttackCooldown = 0;
 	public int visualCooldown = 0;
 	private int poopCooldown = 0;
+	public int pickpocketCooldown = 0;
 	public int randomEffectCooldown = 0;
 	private int updateNavigationCooldown;
 	public boolean isCurrentlyWorking;
@@ -358,6 +359,7 @@ public class TamedRat extends InventoryRat {
 		tag.putInt("CookingProgress", this.cookingProgress);
 		tag.putInt("BreedCooldown", this.breedCooldown);
 		tag.putInt("CoinCooldown", this.coinCooldown);
+		tag.putInt("PickpocketCooldown", this.pickpocketCooldown);
 		tag.putInt("MountCooldown", this.getMountCooldown());
 		tag.putInt("TransportingRF", this.getHeldRF());
 		tag.putInt("RespawnCountdown", this.getRespawnCountdown());
@@ -385,6 +387,7 @@ public class TamedRat extends InventoryRat {
 		this.cookingProgress = tag.getInt("CookingProgress");
 		this.breedCooldown = tag.getInt("BreedCooldown");
 		this.coinCooldown = tag.getInt("CoinCooldown");
+		this.pickpocketCooldown = tag.getInt("PickpocketCooldown");
 		this.setMountCooldown(tag.getInt("MountCooldown"));
 		this.randomEffectCooldown = tag.getInt("RandomEffectCooldown");
 		this.setHeldRF(tag.getInt("TransportingRF"));
@@ -442,7 +445,6 @@ public class TamedRat extends InventoryRat {
 			}
 			this.setRespawnCountdown(this.getRespawnCountdown() - 1);
 		}
-
 		this.setNoAi(this.getRespawnCountdown() > 0);
 
 		if (!this.level().isClientSide() && this.getMountEntityType() != null && !this.isPassenger() && this.getMountCooldown() == 0) {

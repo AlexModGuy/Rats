@@ -515,6 +515,17 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('S', Items.STONECUTTER).unlockedBy("has_stonecutter", has(Items.STONECUTTER))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/gemcutter_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get())
+				.pattern("EGE")
+				.pattern("PUP")
+				.pattern("EBE")
+				.define('E', Tags.Items.GEMS_EMERALD).unlockedBy("has_emerald", has(Tags.Items.GEMS_EMERALD))
+				.define('G', RatsItemRegistry.GOLDEN_RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.GOLDEN_RAT_SKULL.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.define('P', RatsItemRegistry.RAT_PAW.get()).unlockedBy("has_paw", has(RatsItemRegistry.RAT_PAW.get()))
+				.define('B', Tags.Items.STORAGE_BLOCKS_EMERALD).unlockedBy("has_emerald_block", has(Tags.Items.STORAGE_BLOCKS_EMERALD))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/pickpocket_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get())
 				.pattern("BEB")
 				.pattern("SUS")

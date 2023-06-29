@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/emerald"
+    },
+    "E": {
+      "tag": "forge:gems/emerald"
+    },
+    "G": {
+      "item": "rats:golden_rat_skull"
+    },
+    "P": {
+      "item": "rats:rat_paw"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "EGE",
+    "PUP",
+    "EBE"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_pickpocket"
+  },
+  "show_notification": true
+}
