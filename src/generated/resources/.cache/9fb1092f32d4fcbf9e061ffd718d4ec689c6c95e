@@ -402,6 +402,7 @@ c7014e889c43ea39abf80b63ca5c2dce739d2377 data/rats/recipes/upgrades/platter_upgr
 16512966dfab9942d92748ee202b3bb5a908a49c data/rats/recipes/upgrades/poison_upgrade.json
 68d3d967e6fab79b1e2fcec28ba3958b5f13c6b2 data/rats/recipes/upgrades/quarry_upgrade.json
 0757ac78d79018299605c514fda5333d10468238 data/rats/recipes/upgrades/replanter_upgrade.json
+a3062471c962f420500352f6a6b9cf58d5e7170e data/rats/recipes/upgrades/sculked_upgrade.json
 f37b53f2d8071cc2471684efa6deee21f798a55b data/rats/recipes/upgrades/shears_upgrade.json
 35ac1839e574214c015ec3e85433da1aad65db92 data/rats/recipes/upgrades/speed_upgrade.json
 8db854c78d7c3fb844f7e09ea9cbbf02657a0c8c data/rats/recipes/upgrades/strength_upgrade.json

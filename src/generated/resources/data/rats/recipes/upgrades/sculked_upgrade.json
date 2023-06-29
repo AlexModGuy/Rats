@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:echo_shard"
+    },
+    "P": {
+      "item": "rats:rat_paw"
+    },
+    "S": {
+      "item": "minecraft:sculk"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "SES",
+    "PUP",
+    "WEW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_sculked"
+  },
+  "show_notification": true
+}

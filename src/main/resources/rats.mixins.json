@@ -5,6 +5,7 @@
   "refmap": "rats.refmap.json",
   "mixins": [
     "PiglinAiMixin",
+    "WardenMixin"
   ],
   "minVersion": "0.8"
 }

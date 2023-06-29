@@ -545,6 +545,17 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('R', Tags.Items.STORAGE_BLOCKS_RAW_GOLD).unlockedBy("has_raw_gold", has(Tags.Items.STORAGE_BLOCKS_RAW_GOLD))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/idol_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_SCULKED.get())
+				.pattern("SES")
+				.pattern("PUP")
+				.pattern("WEW")
+				.define('E', Items.ECHO_SHARD).unlockedBy("has_shard", has(Items.ECHO_SHARD))
+				.define('W', ItemTags.WOOL)
+				.define('S', Items.SCULK)
+				.define('P', RatsItemRegistry.RAT_PAW.get()).unlockedBy("has_paw", has(RatsItemRegistry.RAT_PAW.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/sculked_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get())
 				.pattern("BEB")
 				.pattern("SUS")

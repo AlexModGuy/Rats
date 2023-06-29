@@ -198,6 +198,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GARDENER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_IDOL.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_SCULKED.get());
 
 				output.accept(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get());

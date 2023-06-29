@@ -348,6 +348,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
+	protected MovementEmission getMovementEmission() {
+		return RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_SCULKED.get()) ? MovementEmission.SOUNDS : MovementEmission.ALL;
+	}
+
+	@Override
 	public boolean canDrownInFluidType(FluidType type) {
 		return type == ForgeMod.WATER_TYPE.get() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
 	}

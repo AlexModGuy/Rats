@@ -207,6 +207,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_PICKPOCKET = ITEMS.register("rat_upgrade_pickpocket", () -> new PickpocketRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_GARDENER = ITEMS.register("rat_upgrade_gardener", () -> new RatGardenerUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_IDOL = ITEMS.register("rat_upgrade_idol", () -> new IdolRatUpgradeItem(new Item.Properties()));
+	public static final RegistryObject<Item> RAT_UPGRADE_SCULKED = ITEMS.register("rat_upgrade_sculked", () -> new SculkedRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BASIC_MOUNT = ITEMS.register("rat_upgrade_basic_mount", () -> new BaseRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_CHICKEN_MOUNT = ITEMS.register("rat_upgrade_chicken_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_CHICKEN));
 	public static final RegistryObject<Item> RAT_UPGRADE_GOLEM_MOUNT = ITEMS.register("rat_upgrade_golem_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_GOLEM));
