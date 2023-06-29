@@ -1,18 +1,6 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bottle": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:glass_bottle"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_claw": {
       "conditions": {
         "items": [
@@ -60,7 +48,6 @@
     [
       "has_claw",
       "has_petals",
-      "has_bottle",
       "has_flame",
       "has_the_recipe"
     ]

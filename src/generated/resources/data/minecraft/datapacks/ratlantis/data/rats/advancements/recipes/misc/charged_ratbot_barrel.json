@@ -1,23 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cutlass": {
+    "has_barrel": {
       "conditions": {
         "items": [
           {
             "items": [
               "rats:ratbot_barrel"
             ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_redstone": {
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:storage_blocks/redstone"
           }
         ]
       },
@@ -32,8 +22,7 @@
   },
   "requirements": [
     [
-      "has_redstone",
-      "has_cutlass",
+      "has_barrel",
       "has_the_recipe"
     ]
   ],

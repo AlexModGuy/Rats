@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rats:pirat_log"
-            ]
+            "tag": "rats:pirat_logs"
           }
         ]
       },

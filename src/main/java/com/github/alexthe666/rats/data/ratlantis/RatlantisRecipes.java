@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.data.ratlantis;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisItemTags;
 import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.*;
@@ -11,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -66,8 +68,8 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("SFC")
 				.pattern(" FC")
 				.define('C', RatlantisItemRegistry.FERAL_RAT_CLAW.get()).unlockedBy("has_claw", has(RatlantisItemRegistry.FERAL_RAT_CLAW.get()))
-				.define('F', Items.ROTTEN_FLESH).unlockedBy("has_flesh", has(Items.ROTTEN_FLESH))
-				.define('S', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+				.define('F', Items.ROTTEN_FLESH)
+				.define('S', Tags.Items.STRING)
 				.save(consumer);
 
 
@@ -103,7 +105,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.NETHERITE_HELMET).unlockedBy("has_armor", has(Items.NETHERITE_HELMET))
+				.define('A', Items.NETHERITE_HELMET)
 				.define('B', RatlantisItemRegistry.PSIONIC_RAT_BRAIN.get()).unlockedBy("has_brain", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
 				.save(consumer);
 
@@ -113,7 +115,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.NETHERITE_CHESTPLATE).unlockedBy("has_armor", has(Items.NETHERITE_CHESTPLATE))
+				.define('A', Items.NETHERITE_CHESTPLATE)
 				.define('T', RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()).unlockedBy("has_tech", has(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()))
 				.save(consumer);
 
@@ -123,7 +125,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.NETHERITE_LEGGINGS).unlockedBy("has_armor", has(Items.NETHERITE_LEGGINGS))
+				.define('A', Items.NETHERITE_LEGGINGS)
 				.define('W', RatlantisItemRegistry.BIPLANE_WING.get()).unlockedBy("has_wing", has(RatlantisItemRegistry.BIPLANE_WING.get()))
 				.save(consumer);
 
@@ -133,7 +135,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("IAI")
 				.pattern("III")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('A', Items.NETHERITE_BOOTS).unlockedBy("has_armor", has(Items.NETHERITE_BOOTS))
+				.define('A', Items.NETHERITE_BOOTS)
 				.define('W', RatlantisItemRegistry.DUTCHRAT_WHEEL.get()).unlockedBy("has_wheel", has(RatlantisItemRegistry.DUTCHRAT_WHEEL.get()))
 				.save(consumer);
 
@@ -143,7 +145,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.NETHERITE_SWORD).unlockedBy("has_tool", has(Items.DIAMOND_SWORD))
+				.define('T', Items.NETHERITE_SWORD)
 				.save(consumer);
 
 
@@ -152,7 +154,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.NETHERITE_PICKAXE).unlockedBy("has_tool", has(Items.DIAMOND_PICKAXE))
+				.define('T', Items.NETHERITE_PICKAXE)
 				.save(consumer);
 
 
@@ -161,7 +163,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.NETHERITE_AXE).unlockedBy("has_tool", has(Items.DIAMOND_AXE))
+				.define('T', Items.NETHERITE_AXE)
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatlantisItemRegistry.RATLANTIS_SHOVEL.get())
@@ -169,7 +171,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.NETHERITE_SHOVEL).unlockedBy("has_tool", has(Items.DIAMOND_SHOVEL))
+				.define('T', Items.NETHERITE_SHOVEL)
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatlantisItemRegistry.RATLANTIS_HOE.get())
@@ -177,7 +179,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("ITI")
 				.pattern(" I ")
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('T', Items.NETHERITE_HOE).unlockedBy("has_tool", has(Items.DIAMOND_HOE))
+				.define('T', Items.NETHERITE_HOE)
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, RatlantisItemRegistry.RATLANTIS_BOW.get())
@@ -186,7 +188,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern(" IS")
 				.define('A', RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()).unlockedBy("has_tech", has(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()))
 				.define('I', RatlantisItemRegistry.ORATCHALCUM_INGOT.get()).unlockedBy("has_ingot", has(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()))
-				.define('B', Items.BOW).unlockedBy("has_bow", has(Items.BOW))
+				.define('B', Items.BOW)
 				.define('S', RatlantisItemRegistry.RATLANTEAN_FLAME.get()).unlockedBy("has_flame", has(RatlantisItemRegistry.RATLANTEAN_FLAME.get()))
 				.save(consumer);
 
@@ -196,7 +198,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("SBS")
 				.define('C', RatlantisItemRegistry.FERAL_RAT_CLAW.get()).unlockedBy("has_claw", has(RatlantisItemRegistry.FERAL_RAT_CLAW.get()))
 				.define('P', RatlantisItemRegistry.RATGLOVE_PETALS.get()).unlockedBy("has_petals", has(RatlantisItemRegistry.RATGLOVE_PETALS.get()))
-				.define('B', Items.GLASS_BOTTLE).unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
+				.define('B', Items.GLASS_BOTTLE)
 				.define('S', RatlantisItemRegistry.RATLANTEAN_FLAME.get()).unlockedBy("has_flame", has(RatlantisItemRegistry.RATLANTEAN_FLAME.get()))
 				.save(consumer);
 
@@ -238,8 +240,8 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("RRR")
 				.pattern("RBR")
 				.pattern("RRR")
-				.define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE).unlockedBy("has_redstone", has(Tags.Items.STORAGE_BLOCKS_REDSTONE))
-				.define('B', RatlantisItemRegistry.RATBOT_BARREL.get()).unlockedBy("has_cutlass", has(RatlantisItemRegistry.RATBOT_BARREL.get()))
+				.define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
+				.define('B', RatlantisItemRegistry.RATBOT_BARREL.get()).unlockedBy("has_barrel", has(RatlantisItemRegistry.RATBOT_BARREL.get()))
 				.save(consumer);
 
 
@@ -250,7 +252,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('I', Tags.Items.INGOTS_IRON).unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 				.define('B', Tags.Items.STORAGE_BLOCKS_IRON).unlockedBy("has_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
 				.define('C', RatlantisItemRegistry.CHARGED_RATBOT_BARREL.get()).unlockedBy("has_barrel", has(RatlantisItemRegistry.CHARGED_RATBOT_BARREL.get()))
-				.define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_sticc", has(Tags.Items.RODS_WOODEN))
+				.define('S', Tags.Items.RODS_WOODEN)
 				.save(consumer);
 
 
@@ -272,7 +274,7 @@ public class RatlantisRecipes extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.RAS_BANNER_PATTERN.get())
 				.requires(RatlantisItemRegistry.MILITARY_HAT.get()).unlockedBy("has_hat", has(RatlantisItemRegistry.MILITARY_HAT.get()))
-				.requires(Items.PAPER).unlockedBy("has_paper", has(Items.PAPER))
+				.requires(Items.PAPER)
 				.save(consumer);
 
 
@@ -408,29 +410,15 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("PPP")
 				.pattern("PEP")
 				.pattern("PPP")
-				.define('P', ItemTags.PLANKS).unlockedBy("has_planks", has(ItemTags.PLANKS))
+				.define('P', ItemTags.PLANKS)
 				.define('E', RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()).unlockedBy("has_ectoplasm", has(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))
 				.save(consumer);
 
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_PLANKS.get(), 4)
-				.requires(RatlantisBlockRegistry.PIRAT_LOG.get()).unlockedBy("has_log", has(RatlantisBlockRegistry.PIRAT_LOG.get()))
+				.requires(RatlantisItemTags.PIRAT_LOGS).unlockedBy("has_log", has(RatlantisItemTags.PIRAT_LOGS))
+				.group("planks")
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "pirat_planks_from_log"));
-
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_PLANKS.get(), 4)
-				.requires(RatlantisBlockRegistry.PIRAT_WOOD.get()).unlockedBy("has_wood", has(RatlantisBlockRegistry.PIRAT_WOOD.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "pirat_planks_from_wood"));
-
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_PLANKS.get(), 4)
-				.requires(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get()).unlockedBy("has_stripped_log", has(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "pirat_planks_from_stripped_log"));
-
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_PLANKS.get(), 4)
-				.requires(RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get()).unlockedBy("has_stripped_wood", has(RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "pirat_planks_from_stripped_wood"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_WOOD.get(), 3)

@@ -18,24 +18,11 @@
         "recipe": "rats:ratlantis_hoe"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_tool": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:diamond_hoe"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_ingot",
-      "has_tool",
       "has_the_recipe"
     ]
   ],

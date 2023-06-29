@@ -407,7 +407,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			builder = builder.renderType(renderType);
 		}
 		if (fullbright)
-			builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();
+			builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
 		return builder;
 	}
 
