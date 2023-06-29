@@ -1,12 +1,18 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.server.block.*;
+import com.github.alexthe666.rats.server.block.entity.PiratHangingSignBlockEntity;
+import com.github.alexthe666.rats.server.block.entity.PiratSignBlockEntity;
 import com.github.alexthe666.rats.server.items.RatsBlockItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.HangingSignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
@@ -20,6 +26,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("deprecation")
 public class RatlantisBlockRegistry {
 
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, RatsMod.MODID);
@@ -62,21 +69,50 @@ public class RatlantisBlockRegistry {
 	public static final RegistryObject<Block> RATLANTIS_PORTAL = register("ratlantis_portal", () -> new RatlantisPortalBlock(Block.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.BONE_BLOCK).strength(-1.0F).lightLevel(value -> 15).noCollission()));
 	public static final RegistryObject<Block> COMPRESSED_RAT = register("compressed_rat", () -> new CompressedRatBlock(Block.Properties.of().mapColor(MapColor.WOOL).sound(SoundType.WOOL).strength(0.6F, 0.0F)));
 	public static final RegistryObject<Block> BRAIN_BLOCK = register("brain_block", () -> new SetupHorizontalBlock(Block.Properties.of().mapColor(MapColor.WOOL).sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
-	public static final RegistryObject<Block> PIRAT_PLANKS = register("pirat_planks", () -> new Block(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> PIRAT_LOG = register("pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_BROWN).lightLevel(value -> 3).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> STRIPPED_PIRAT_LOG = register("stripped_pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> PIRAT_WOOD = register("pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> STRIPPED_PIRAT_WOOD = register("stripped_pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> PIRAT_PRESSURE_PLATE = register("pirat_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET));
+	public static final RegistryObject<Block> PIRAT_PLANKS = register("pirat_planks", () -> new HalfTransparentBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> PIRAT_LOG = register("pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_BROWN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
+	public static final RegistryObject<Block> STRIPPED_PIRAT_LOG = register("stripped_pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
+	public static final RegistryObject<Block> PIRAT_WOOD = register("pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
+	public static final RegistryObject<Block> STRIPPED_PIRAT_WOOD = register("stripped_pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
+	public static final RegistryObject<Block> PIRAT_PRESSURE_PLATE = register("pirat_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion(), RatsMod.PIRAT_WOOD_SET));
 	public static final RegistryObject<Block> PIRAT_TRAPDOOR = register("pirat_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET));
-	public static final RegistryObject<Block> PIRAT_STAIRS = register("pirat_stairs", () -> new StairBlock(() -> PIRAT_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(PIRAT_PLANKS.get())));
-	public static final RegistryObject<Block> PIRAT_BUTTON = register("pirat_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET, 30, true));
-	public static final RegistryObject<Block> PIRAT_SLAB = register("pirat_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get())));
-	public static final RegistryObject<Block> PIRAT_FENCE_GATE = register("pirat_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_TYPE));
-	public static final RegistryObject<Block> PIRAT_FENCE = register("pirat_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get())));
-	public static final RegistryObject<Block> PIRAT_DOOR = register("pirat_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET));
+	public static final RegistryObject<Block> PIRAT_STAIRS = register("pirat_stairs", () -> new StairBlock(() -> PIRAT_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion()));
+	public static final RegistryObject<Block> PIRAT_BUTTON = register("pirat_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion(), RatsMod.PIRAT_WOOD_SET, 30, true));
+	public static final RegistryObject<Block> PIRAT_SLAB = register("pirat_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion()));
+	public static final RegistryObject<Block> PIRAT_FENCE_GATE = register("pirat_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion(), RatsMod.PIRAT_WOOD_TYPE));
+	public static final RegistryObject<Block> PIRAT_FENCE = register("pirat_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion()));
+	public static final RegistryObject<Block> PIRAT_DOOR = register("pirat_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion(), RatsMod.PIRAT_WOOD_SET));
+	public static final RegistryObject<Block> PIRAT_SIGN = BLOCKS.register("pirat_sign", () -> new StandingSignBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noCollission().noOcclusion().strength(1.0F), RatsMod.PIRAT_WOOD_TYPE) {
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new PiratSignBlockEntity(pos, state);
+		}
+	});
+
+	public static final RegistryObject<Block> PIRAT_WALL_SIGN = BLOCKS.register("pirat_wall_sign", () -> new WallSignBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).dropsLike(PIRAT_SIGN.get()).noCollission().noOcclusion().strength(1.0F), RatsMod.PIRAT_WOOD_TYPE) {
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new PiratSignBlockEntity(pos, state);
+		}
+	});
+
+	public static final RegistryObject<Block> PIRAT_HANGING_SIGN = BLOCKS.register("pirat_hanging_sign", () -> new CeilingHangingSignBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noCollission().noOcclusion().strength(1.0F), RatsMod.PIRAT_WOOD_TYPE) {
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new PiratHangingSignBlockEntity(pos, state);
+		}
+	});
+
+	public static final RegistryObject<Block> PIRAT_WALL_HANGING_SIGN = BLOCKS.register("pirat_wall_hanging_sign", () -> new WallHangingSignBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).dropsLike(PIRAT_HANGING_SIGN.get()).noCollission().noOcclusion().strength(1.0F), RatsMod.PIRAT_WOOD_TYPE) {
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new PiratHangingSignBlockEntity(pos, state);
+		}
+	});
+
+
 	public static final RegistryObject<Block> DUTCHRAT_BELL = register("dutchrat_bell", () -> new DutchratBellBlock(Block.Properties.of().mapColor(MapColor.GOLD).strength(5.0F).requiresCorrectToolForDrops().sound(SoundType.ANVIL)));
-	public static final RegistryObject<Block> AIR_RAID_SIREN = register("air_raid_siren", () -> new AirRaidSirenBlock(Block.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.METAL).strength(5.0F, 1000.0F).dynamicShape()));
+	public static final RegistryObject<Block> AIR_RAID_SIREN = register("air_raid_siren", () -> new AirRaidSirenBlock(Block.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.METAL).strength(5.0F, 1000.0F)));
 	public static final RegistryObject<Block> RATLANTIS_UPGRADE_BLOCK = register("ratlantis_upgrade_block", () -> new RatUpgradeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_YELLOW).sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
 
 	public static RegistryObject<Block> register(String name, Supplier<Block> blockSupplier) {

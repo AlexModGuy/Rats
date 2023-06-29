@@ -437,6 +437,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("LL")
 				.pattern("LL")
 				.define('L', RatlantisBlockRegistry.PIRAT_LOG.get()).unlockedBy("has_log", has(RatlantisBlockRegistry.PIRAT_LOG.get()))
+				.group("bark")
 				.save(consumer);
 
 
@@ -444,6 +445,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("LL")
 				.pattern("LL")
 				.define('L', RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get()).unlockedBy("has_log", has(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get()))
+				.group("bark")
 				.save(consumer);
 
 
@@ -482,7 +484,7 @@ public class RatlantisRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, RatlantisBlockRegistry.PIRAT_FENCE_GATE.get())
 				.pattern("SPS")
 				.pattern("SPS")
-				.define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
+				.define('S', Tags.Items.RODS_WOODEN)
 				.define('P', RatlantisBlockRegistry.PIRAT_PLANKS.get()).unlockedBy("has_planks", has(RatlantisBlockRegistry.PIRAT_PLANKS.get()))
 				.save(consumer);
 
@@ -490,7 +492,7 @@ public class RatlantisRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, RatlantisBlockRegistry.PIRAT_FENCE.get(), 3)
 				.pattern("PSP")
 				.pattern("PSP")
-				.define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
+				.define('S', Tags.Items.RODS_WOODEN)
 				.define('P', RatlantisBlockRegistry.PIRAT_PLANKS.get()).unlockedBy("has_planks", has(RatlantisBlockRegistry.PIRAT_PLANKS.get()))
 				.save(consumer);
 
@@ -502,6 +504,37 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('P', RatlantisBlockRegistry.PIRAT_PLANKS.get()).unlockedBy("has_planks", has(RatlantisBlockRegistry.PIRAT_PLANKS.get()))
 				.save(consumer);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, RatlantisItemRegistry.PIRAT_SIGN.get(), 3)
+				.pattern("PPP")
+				.pattern("PPP")
+				.pattern(" S ")
+				.define('P', RatlantisBlockRegistry.PIRAT_PLANKS.get()).unlockedBy("has_planks", has(RatlantisBlockRegistry.PIRAT_PLANKS.get()))
+				.define('S', Tags.Items.RODS_WOODEN)
+				.group("sign")
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, RatlantisItemRegistry.PIRAT_HANGING_SIGN.get(), 6)
+				.pattern("C C")
+				.pattern("PPP")
+				.pattern("PPP")
+				.define('P', RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get()).unlockedBy("has_wood", has(RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get()))
+				.define('C', Items.CHAIN)
+				.group("hanging_sign")
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, RatlantisItemRegistry.PIRAT_BOAT.get())
+				.pattern("P P")
+				.pattern("PPP")
+				.group("boat")
+				.define('P', RatlantisBlockRegistry.PIRAT_PLANKS.get()).unlockedBy("in_water", insideOf(Blocks.WATER))
+				.save(consumer);
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, RatlantisItemRegistry.PIRAT_CHEST_BOAT.get())
+				.requires(RatlantisItemRegistry.PIRAT_BOAT.get())
+				.requires(Tags.Items.CHESTS_WOODEN)
+				.group("chest_boat")
+				.unlockedBy("has_boat", has(ItemTags.BOATS))
+				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, RatlantisBlockRegistry.DUTCHRAT_BELL.get())
 				.pattern("LLL")

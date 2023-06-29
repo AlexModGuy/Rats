@@ -47,7 +47,8 @@ public class RatlantisEntityRegistry {
 	public static final RegistryObject<EntityType<RatBiplaneMount>> RAT_MOUNT_BIPLANE = registerEntityNoEgg("rat_mount_biplane", EntityType.Builder.of(RatBiplaneMount::new, MobCategory.MISC).sized(3.5F, 2.3F));
 	public static final RegistryObject<EntityType<RatProtector>> RAT_PROTECTOR = registerEntityNoEgg("rat_protector", EntityType.Builder.of(RatProtector::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<RatlantisArrow>> RATLANTIS_ARROW = registerEntityNoEgg("ratlantis_arrow", EntityType.Builder.<RatlantisArrow>of(RatlantisArrow::new, MobCategory.MISC).sized(0.5F, 0.5F));
-
+	public static final RegistryObject<EntityType<PiratWoodBoat>> BOAT = registerEntityNoEgg("boat", EntityType.Builder.<PiratWoodBoat>of(PiratWoodBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10));
+	public static final RegistryObject<EntityType<PiratWoodChestBoat>> CHEST_BOAT = registerEntityNoEgg("chest_boat", EntityType.Builder.<PiratWoodChestBoat>of(PiratWoodChestBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10));
 
 	private static <E extends Mob> RegistryObject<EntityType<E>> registerEntity(String entityName, EntityType.Builder<E> builder, int baseEggColor, int overlayEggColor) {
 		ResourceLocation nameLoc = new ResourceLocation(RatsMod.MODID, entityName);

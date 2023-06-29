@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBannerPatternTags;
+import com.github.alexthe666.rats.server.entity.misc.PiratWoodBoat;
 import com.github.alexthe666.rats.server.items.*;
 import com.github.alexthe666.rats.server.items.upgrades.*;
 import net.minecraft.sounds.SoundEvents;
@@ -56,6 +57,11 @@ public class RatlantisItemRegistry {
 	public static final RegistryObject<Item> CHARGED_RATBOT_BARREL = ITEMS.register("charged_ratbot_barrel", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> RATTLING_GUN = ITEMS.register("rattling_gun", () -> new RattlingGunItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> IDOL_OF_RATLANTIS = ITEMS.register("idol_of_ratlantis", () -> new LoreTagItem(new Item.Properties().rarity(RatsMod.RATLANTIS_SPECIAL).fireResistant(), 1));
+
+	public static final RegistryObject<Item> PIRAT_SIGN = ITEMS.register("pirat_sign", () -> new SignItem(new Item.Properties().stacksTo(16), RatlantisBlockRegistry.PIRAT_SIGN.get(), RatlantisBlockRegistry.PIRAT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> PIRAT_HANGING_SIGN = ITEMS.register("pirat_hanging_sign", () -> new HangingSignItem(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get(), RatlantisBlockRegistry.PIRAT_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> PIRAT_BOAT = ITEMS.register("pirat_boat", () -> new PiratBoatItem(false, PiratWoodBoat.Type.PIRAT, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> PIRAT_CHEST_BOAT = ITEMS.register("pirat_chest_boat", () -> new PiratBoatItem(true, PiratWoodBoat.Type.PIRAT, new Item.Properties().stacksTo(1)));
 
 	public static final RegistryObject<Item> RAT_UPGRADE_ARCHEOLOGIST = ITEMS.register("rat_upgrade_archeologist", () -> new ArcheologistRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_AUTOMATON_MOUNT = ITEMS.register("rat_upgrade_automaton_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON));

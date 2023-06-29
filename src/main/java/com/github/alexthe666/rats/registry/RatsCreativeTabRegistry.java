@@ -337,6 +337,10 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatlantisBlockRegistry.PIRAT_TRAPDOOR.get());
 				output.accept(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
 				output.accept(RatlantisBlockRegistry.PIRAT_BUTTON.get());
+				output.accept(RatlantisItemRegistry.PIRAT_SIGN.get());
+				output.accept(RatlantisItemRegistry.PIRAT_HANGING_SIGN.get());
+				output.accept(RatlantisItemRegistry.PIRAT_BOAT.get());
+				output.accept(RatlantisItemRegistry.PIRAT_CHEST_BOAT.get());
 
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "feral_ratlantean_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ratlantean_spirit_spawn_egg"))));

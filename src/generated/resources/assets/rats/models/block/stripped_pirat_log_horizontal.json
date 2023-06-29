@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
+  "render_type": "minecraft:translucent",
   "textures": {
     "end": "rats:block/stripped_pirat_log_top",
     "side": "rats:block/stripped_pirat_log"

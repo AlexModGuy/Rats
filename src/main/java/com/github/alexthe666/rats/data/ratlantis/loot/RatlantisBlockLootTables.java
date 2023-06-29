@@ -57,9 +57,11 @@ public class RatlantisBlockLootTables extends BlockLootSubProvider {
 		this.add(RatlantisBlockRegistry.PIRAT_DOOR.get(), createDoorTable(RatlantisBlockRegistry.PIRAT_DOOR.get()));
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_FENCE.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
+		this.dropSelf(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_LOG.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
+		this.dropSelf(RatlantisBlockRegistry.PIRAT_SIGN.get());
 		this.add(RatlantisBlockRegistry.PIRAT_SLAB.get(), createSlabItemTable(RatlantisBlockRegistry.PIRAT_SLAB.get()));
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_STAIRS.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_TRAPDOOR.get());

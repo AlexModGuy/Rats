@@ -19,16 +19,21 @@ import com.github.alexthe666.rats.client.render.entity.layer.PartyHatLayer;
 import com.github.alexthe666.rats.client.render.entity.layer.PlagueLayer;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.entity.RatTubeBlockEntity;
+import com.github.alexthe666.rats.server.entity.misc.PiratWoodBoat;
 import com.github.alexthe666.rats.server.items.*;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -120,6 +125,11 @@ public class ModClientEvents {
 
 	@SubscribeEvent
 	public static void registerRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		for(PiratWoodBoat.Type boatType : PiratWoodBoat.Type.values()) {
+			event.registerLayerDefinition(PiratWoodBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
+			event.registerLayerDefinition(PiratWoodBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
+		}
+
 		event.registerLayerDefinition(RatsModelLayers.BLACK_DEATH, BlackDeathModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PIPER, PiedPiperModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PIRAT_BOAT, PiratBoatModel::create);
@@ -212,11 +222,15 @@ public class ModClientEvents {
 		event.registerEntityRenderer(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(RatlantisEntityRegistry.PIRAT_BOAT.get(), context -> new PiratBoatRenderer<>(context, new PiratBoatModel<>(context.bakeLayer(RatsModelLayers.PIRAT_BOAT))));
 		event.registerEntityRenderer(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(RatlantisEntityRegistry.BOAT.get(), context -> new PiratWoodBoatRenderer(context, false));
+		event.registerEntityRenderer(RatlantisEntityRegistry.CHEST_BOAT.get(), context -> new PiratWoodBoatRenderer(context, true));
 
 		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.RATLANTIS_PORTAL.get(), RatlantisPortalRenderer::new);
 		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.DUTCHRAT_BELL.get(), DutchratBellRenderer::new);
 		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.AUTOMATON_HEAD.get(), RatlanteanAutomatonHeadRenderer::new);
 		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.TOKEN.get(), RatlantisTokenRenderer::new);
+		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.PIRAT_SIGN.get(), PiratSignRenderer::new);
+		event.registerBlockEntityRenderer(RatlantisBlockEntityRegistry.PIRAT_HANGING_SIGN.get(), PiratHangingSignRenderer::new);
 	}
 
 	@SubscribeEvent

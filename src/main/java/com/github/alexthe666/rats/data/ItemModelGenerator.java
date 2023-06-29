@@ -16,6 +16,7 @@ import net.minecraftforge.client.model.generators.loaders.ItemLayerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.toBlock(RatsBlockRegistry.FISH_BARREL.get());
 		this.singleTex(RatsItemRegistry.FISHERMAN_HAT);
 		this.toBlockModel(RatsBlockRegistry.GARBAGE_PILE.get(), this.blockPrefix("garbage_0"));
-		this.buildItem("gilded_rat_flute", "rats:item/rat_flute", false, this.itemPrefix("gilded_rat_flute"));
+		this.buildItem(RatsItemRegistry.GILDED_RAT_FLUTE.getId().getPath(), "rats:item/rat_flute", false, null, this.itemPrefix("gilded_rat_flute"));
 		this.singleTex(RatsItemRegistry.GOLDEN_RAT_SKULL);
 		this.singleTex(RatsItemRegistry.HALO_HAT);
 		this.singleTex(RatsItemRegistry.HERB_BUNDLE);
@@ -251,10 +252,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.toBlock(RatlantisBlockRegistry.COMPRESSED_RAT.get());
 		this.generated(RatlantisBlockRegistry.DUTCHRAT_BELL.getId().getPath(), true, this.itemPrefix("dutchrat_bell"));
 		this.fullbrightSingleTex(RatlantisItemRegistry.DUTCHRAT_WHEEL);
-		this.buildItem(RatlantisItemRegistry.FERAL_BAGH_NAKHS.getId().getPath(), "rats:item/bagh_nakhs", false, this.itemPrefix("feral_bagh_nakhs"));
+		this.buildItem(RatlantisItemRegistry.FERAL_BAGH_NAKHS.getId().getPath(), "rats:item/bagh_nakhs", false, null, this.itemPrefix("feral_bagh_nakhs"));
 		this.singleTex(RatlantisItemRegistry.FERAL_RAT_CLAW);
 		this.fullbrightSingleTex(RatlantisItemRegistry.GEM_OF_RATLANTIS);
-		this.buildItem(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.getId().getPath(), "rats:item/cutlass", true, this.itemPrefix("ghost_pirat_cutlass"));
+		this.buildItem(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.getId().getPath(), "rats:item/cutlass", true, null, this.itemPrefix("ghost_pirat_cutlass"));
 		this.fullbrightSingleTex(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM);
 		this.fullbrightSingleTex(RatlantisItemRegistry.GHOST_PIRAT_HAT);
 		this.fullbrightSingleTex(RatlantisItemRegistry.IDOL_OF_RATLANTIS);
@@ -283,14 +284,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.singleTex(RatlantisItemRegistry.RAW_ORATCHALCUM);
 		this.singleTex(RatlantisItemRegistry.ORATCHALCUM_NUGGET);
 		this.toBlock(RatlantisBlockRegistry.ORATCHALCUM_ORE.get());
+		this.singleTexRenderType(RatlantisItemRegistry.PIRAT_BOAT, "minecraft:translucent");
 		this.buttonInventory(RatlantisBlockRegistry.PIRAT_BUTTON.getId().getPath(), this.blockPrefix("pirat_planks"));
-		this.buildItem(RatlantisItemRegistry.PIRAT_CUTLASS.getId().getPath(), "rats:item/cutlass", false, this.itemPrefix("pirat_cutlass"));
-		this.generated(RatlantisBlockRegistry.PIRAT_DOOR.getId().getPath(), false, this.itemPrefix("pirat_door"));
+		this.singleTexRenderType(RatlantisItemRegistry.PIRAT_CHEST_BOAT, "minecraft:translucent");
+		this.buildItem(RatlantisItemRegistry.PIRAT_CUTLASS.getId().getPath(), "rats:item/cutlass", false, null, this.itemPrefix("pirat_cutlass"));
+		this.generatedRenderType(RatlantisBlockRegistry.PIRAT_DOOR.getId().getPath(), false, "minecraft:translucent", this.itemPrefix("pirat_door"));
 		this.fenceInventory(RatlantisBlockRegistry.PIRAT_FENCE.getId().getPath(), this.blockPrefix("pirat_planks"));
 		this.toBlock(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
+		this.generatedRenderType(RatlantisItemRegistry.PIRAT_HANGING_SIGN.getId().getPath(), false, "minecraft:translucent", this.itemPrefix("pirat_hanging_sign"));
 		this.toBlock(RatlantisBlockRegistry.PIRAT_LOG.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
+		this.generatedRenderType(RatlantisItemRegistry.PIRAT_SIGN.getId().getPath(), false, "minecraft:translucent", this.itemPrefix("pirat_sign"));
 		this.toBlock(RatlantisBlockRegistry.PIRAT_SLAB.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_STAIRS.get());
 		this.toBlockModel(RatlantisBlockRegistry.PIRAT_TRAPDOOR.get(), this.blockPrefix("pirat_trapdoor_bottom"));
@@ -369,26 +374,37 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return generated(item.getId().getPath(), false, itemPrefix(item.getId().getPath()));
 	}
 
+	private ItemModelBuilder singleTexRenderType(RegistryObject<? extends Item> item, String renderType) {
+		return generatedRenderType(item.getId().getPath(), false, renderType, itemPrefix(item.getId().getPath()));
+	}
+
 	private ItemModelBuilder fullbrightSingleTex(RegistryObject<Item> item) {
 		return generated(item.getId().getPath(), true, itemPrefix(item.getId().getPath()));
 	}
 
 	private ItemModelBuilder generated(String name, boolean fullbright, ResourceLocation... layers) {
-		return buildItem(name, "item/generated", fullbright, layers);
+		return buildItem(name, "item/generated", fullbright, null, layers);
+	}
+
+	private ItemModelBuilder generatedRenderType(String name, boolean fullbright, @Nullable String renderType, ResourceLocation... layers) {
+		return buildItem(name, "item/generated", fullbright, renderType, layers);
 	}
 
 	private void tool(String name, boolean fullbright, ResourceLocation... layers) {
-		buildItem(name, "item/handheld", fullbright, layers);
+		buildItem(name, "item/handheld", fullbright, null, layers);
 	}
 
 	private ItemModelBuilder bow(String name, ResourceLocation... layers) {
-		return buildItem(name, "item/bow", false, layers);
+		return buildItem(name, "item/bow", false, null, layers);
 	}
 
-	private ItemModelBuilder buildItem(String name, String parent, boolean fullbright, ResourceLocation... layers) {
+	private ItemModelBuilder buildItem(String name, String parent, boolean fullbright, @Nullable String renderType, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, parent);
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
+		}
+		if (renderType != null) {
+			builder = builder.renderType(renderType);
 		}
 		if (fullbright)
 			builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();

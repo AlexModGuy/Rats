@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-20T18:40:46.8464367	ratlantis/Tags for minecraft:item mod id rats
+// 1.20.1	2023-06-28T12:10:49.2873106	ratlantis/Tags for minecraft:item mod id rats
 4cd39fb1c14d483c2a8547587be15c04b6eadfa3 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/boots.json
 6d9091a550868d3941529ccb87df30673a46dfe3 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/chestplates.json
 664db897c79d0deba08419b337c157190d472b97 data/minecraft/datapacks/ratlantis/data/forge/tags/items/armors/helmets.json
@@ -24,12 +24,16 @@ ad455405d14b04c58d66812ba877e5b38cc82057 data/minecraft/datapacks/ratlantis/data
 ea0607afc57f88e4731293a89ca996cc849d747d data/minecraft/datapacks/ratlantis/data/forge/tags/items/tools/bows.json
 f62c975ffa0e9e766d9946c6bf51d89b98dfca6b data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/axes.json
 c3eed20f2b4585fe4fca970a618d06b81492c93b data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/beacon_payment_items.json
+8ef54dcb43c916b88b48e65d0437b7148761d9c0 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/boats.json
+5b6470e615b52ecbed65ebb955c5f2cdde3b6f8c data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/chest_boats.json
 14ba6fae9d23a2c599202e5ed60a20026101f04d data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/cluster_max_harvestables.json
 675865a26db9919bbacab758393342c9af60239d data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/fishes.json
+81f51998d14535bcaebf90be0bd5c33c54aabdad data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/hanging_signs.json
 39b108ea9e22a8c02bb5b1633e0ef1ba7b0e4b00 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/hoes.json
 14ba6fae9d23a2c599202e5ed60a20026101f04d data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/pickaxes.json
 7a70317014ad74da6ac9f22aedf4126e9e250a92 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/planks.json
 8ad385909c76eea54d07b6736ed11caa63bfc0ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/shovels.json
+cb951ad944ae6b4a6b8634f6fb1d876af87e7327 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/signs.json
 edbb1ec5d970aae77749e5c4adf9cc761fb8beaf data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/slabs.json
 0f29dc03b296319d2224495b0454f7de820005ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/stairs.json
 7801e498568220ed1d47310f45080c85ef712233 data/minecraft/datapacks/ratlantis/data/minecraft/tags/items/swords.json

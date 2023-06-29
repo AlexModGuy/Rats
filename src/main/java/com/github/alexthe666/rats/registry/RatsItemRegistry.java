@@ -30,7 +30,6 @@ public class RatsItemRegistry {
 	//confetti launcher
 	//hardhat
 	//holocards
-	//pirat sign
 	//rat credit card
 	//rat diamond
 	//rat upgrade fragment

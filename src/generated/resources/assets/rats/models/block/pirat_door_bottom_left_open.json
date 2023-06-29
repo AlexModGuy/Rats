@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/door_bottom_left_open",
+  "render_type": "minecraft:translucent",
   "textures": {
     "bottom": "rats:block/pirat_door_bottom",
     "top": "rats:block/pirat_door_top"

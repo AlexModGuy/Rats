@@ -16,6 +16,8 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class BlockModelGenerator extends BlockStateProvider {
 
 	public BlockModelGenerator(PackOutput output, ExistingFileHelper helper) {
@@ -24,7 +26,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		this.builtinEntity(RatsBlockRegistry.AUTO_CURDLER.get(), "minecraft:block/cauldron_side");
+		this.builtinEntity(RatsBlockRegistry.AUTO_CURDLER.get(), Objects.requireNonNull(ResourceLocation.tryParse("minecraft:block/cauldron_side")));
 		this.simpleBlock(RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE.get());
 		this.simpleBlock(RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE.get());
 		this.simpleBlock(RatsBlockRegistry.BLOCK_OF_CHEESE.get());
@@ -91,7 +93,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 						this.blockPrefix("rat_crafting_table_side"), this.blockPrefix("rat_crafting_table_side"),
 						this.blockPrefix("rat_crafting_table"), this.blockPrefix("rat_crafting_table"))
 				.texture("particle", this.blockPrefix("rat_crafting_table")));
-		this.builtinEntity(RatsBlockRegistry.RAT_HOLE.get(), "minecraft:block/oak_planks");
+		this.builtinEntity(RatsBlockRegistry.RAT_HOLE.get(), Objects.requireNonNull(ResourceLocation.tryParse("minecraft:block/oak_planks")));
 		this.simpleBlock(RatsBlockRegistry.RAT_QUARRY.get(), this.models().cube("rat_quarry",
 						this.blockPrefix("rat_quarry_bottom"), this.blockPrefix("rat_quarry_top"),
 						this.blockPrefix("rat_quarry_side"), this.blockPrefix("rat_quarry_side"),
@@ -122,20 +124,20 @@ public class BlockModelGenerator extends BlockStateProvider {
 		this.getVariantBuilder(RatlantisBlockRegistry.DUTCHRAT_BELL.get()).forAllStates(state -> {
 			ModelFile type = switch (state.getValue(DutchratBellBlock.ATTACHMENT)) {
 				case FLOOR ->
-						this.models().withExistingParent("dutchrat_bell_floor", new ResourceLocation("block/bell_floor"))
+						this.models().withExistingParent("dutchrat_bell_floor", new ResourceLocation("block/bell_floor")).renderType("minecraft:translucent")
 								.texture("particle", this.blockPrefix("pirat_log"))
 								.texture("bar", this.blockPrefix("pirat_log"))
 								.texture("post", this.blockPrefix("pirat_log"));
 				case CEILING ->
-						this.models().withExistingParent("dutchrat_bell_ceiling", new ResourceLocation("block/bell_ceiling"))
+						this.models().withExistingParent("dutchrat_bell_ceiling", new ResourceLocation("block/bell_ceiling")).renderType("minecraft:translucent")
 								.texture("particle", this.blockPrefix("pirat_log"))
 								.texture("bar", this.blockPrefix("pirat_log"));
 				case SINGLE_WALL ->
-						this.models().withExistingParent("dutchrat_bell_wall", new ResourceLocation("block/bell_wall"))
+						this.models().withExistingParent("dutchrat_bell_wall", new ResourceLocation("block/bell_wall")).renderType("minecraft:translucent")
 								.texture("particle", this.blockPrefix("pirat_log"))
 								.texture("bar", this.blockPrefix("pirat_log"));
 				case DOUBLE_WALL ->
-						this.models().withExistingParent("dutchrat_bell_between_walls", new ResourceLocation("block/bell_between_walls"))
+						this.models().withExistingParent("dutchrat_bell_between_walls", new ResourceLocation("block/bell_between_walls")).renderType("minecraft:translucent")
 								.texture("particle", this.blockPrefix("pirat_log"))
 								.texture("bar", this.blockPrefix("pirat_log"));
 			};
@@ -168,17 +170,21 @@ public class BlockModelGenerator extends BlockStateProvider {
 		this.simpleBlock(RatlantisBlockRegistry.MARBLED_CHEESE_TILE.get());
 		this.simpleBlock(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get());
 		this.simpleBlock(RatlantisBlockRegistry.ORATCHALCUM_ORE.get());
-		this.buttonBlock((ButtonBlock) RatlantisBlockRegistry.PIRAT_BUTTON.get(), this.blockPrefix("pirat_planks"));
-		this.doorBlock((DoorBlock) RatlantisBlockRegistry.PIRAT_DOOR.get(), this.blockPrefix("pirat_door_bottom"), this.blockPrefix("pirat_door_top"));
-		this.fenceBlock((FenceBlock) RatlantisBlockRegistry.PIRAT_FENCE.get(), this.blockPrefix("pirat_planks"));
-		this.fenceGateBlock((FenceGateBlock) RatlantisBlockRegistry.PIRAT_FENCE_GATE.get(), this.blockPrefix("pirat_planks"));
-		this.logBlock((RotatedPillarBlock) RatlantisBlockRegistry.PIRAT_LOG.get());
-		this.simpleBlock(RatlantisBlockRegistry.PIRAT_PLANKS.get());
-		this.pressurePlateBlock((PressurePlateBlock) RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get(), this.blockPrefix("pirat_planks"));
-		this.slabBlock((SlabBlock) RatlantisBlockRegistry.PIRAT_SLAB.get(), this.blockPrefix("pirat_planks"), this.blockPrefix("pirat_planks"));
-		this.stairsBlock((StairBlock) RatlantisBlockRegistry.PIRAT_STAIRS.get(), this.blockPrefix("pirat_planks"));
-		this.trapdoorBlock((TrapDoorBlock) RatlantisBlockRegistry.PIRAT_TRAPDOOR.get(), this.blockPrefix("pirat_trapdoor"), true);
-		this.axisBlock((RotatedPillarBlock) RatlantisBlockRegistry.PIRAT_WOOD.get(), this.blockPrefix("pirat_log"), this.blockPrefix("pirat_log"));
+		this.buttonBlockTranslucent((ButtonBlock) RatlantisBlockRegistry.PIRAT_BUTTON.get(), this.blockPrefix("pirat_planks"));
+		this.doorBlockWithRenderType((DoorBlock) RatlantisBlockRegistry.PIRAT_DOOR.get(), this.blockPrefix("pirat_door_bottom"), this.blockPrefix("pirat_door_top"), "minecraft:translucent");
+		this.fenceBlockWithRenderType((FenceBlock) RatlantisBlockRegistry.PIRAT_FENCE.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
+		this.fenceGateBlockWithRenderType((FenceGateBlock) RatlantisBlockRegistry.PIRAT_FENCE_GATE.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
+		this.builtinEntity(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get(), this.blockPrefix("pirat_planks"));
+		this.logBlockWithRenderType((RotatedPillarBlock) RatlantisBlockRegistry.PIRAT_LOG.get(), "minecraft:translucent");
+		this.simpleBlockTranslucent(RatlantisBlockRegistry.PIRAT_PLANKS.get());
+		this.pressurePlateBlockTranslucent((PressurePlateBlock) RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get(), this.blockPrefix("pirat_planks"));
+		this.builtinEntity(RatlantisBlockRegistry.PIRAT_SIGN.get(), this.blockPrefix("pirat_planks"));
+		this.slabBlockTranslucent((SlabBlock) RatlantisBlockRegistry.PIRAT_SLAB.get(), this.blockPrefix("pirat_planks"), this.blockPrefix("pirat_planks"));
+		this.stairsBlockWithRenderType((StairBlock) RatlantisBlockRegistry.PIRAT_STAIRS.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
+		this.trapdoorBlockWithRenderType((TrapDoorBlock) RatlantisBlockRegistry.PIRAT_TRAPDOOR.get(), this.blockPrefix("pirat_trapdoor"), true, "minecraft:translucent");
+		this.builtinEntity(RatlantisBlockRegistry.PIRAT_WALL_SIGN.get(), this.blockPrefix("pirat_planks"));
+		this.builtinEntity(RatlantisBlockRegistry.PIRAT_WALL_HANGING_SIGN.get(), this.blockPrefix("pirat_planks"));
+		this.axisBlockWithRenderType((RotatedPillarBlock) RatlantisBlockRegistry.PIRAT_WOOD.get(), this.blockPrefix("pirat_log"), this.blockPrefix("pirat_log"), "minecraft:translucent");
 		this.simpleBlock(RatlantisBlockRegistry.RATGLOVE_FLOWER.get(), this.models().cross("ratglove_flower", this.blockPrefix("ratglove_flower")).renderType(new ResourceLocation("cutout")));
 		this.simpleBlock(RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER.get(), models().withExistingParent(RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER.getId().getPath(), "block/flower_pot_cross").renderType(new ResourceLocation("cutout")).texture("plant", blockTexture(RatlantisBlockRegistry.RATGLOVE_FLOWER.get())));
 		this.simpleBlock(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get());
@@ -187,10 +193,29 @@ public class BlockModelGenerator extends BlockStateProvider {
 		this.directionalBlock(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get(), this.models().cubeAll("ratlantis_upgrade_block", new ResourceLocation(RatsMod.MODID, "block/ratlantis_upgrade_block")));
 		this.logBlock((RotatedPillarBlock) RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
 		this.axisBlock((RotatedPillarBlock) RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get(), this.blockPrefix("stripped_pirat_log"), this.blockPrefix("stripped_pirat_log"));
-
 	}
 
-	private void builtinEntity(Block b, String particle) {
+	public void simpleBlockTranslucent(Block block) {
+		simpleBlock(block, models().cubeAll(ForgeRegistries.BLOCKS.getKey(block).getPath(), blockTexture(block)).renderType("minecraft:translucent"));
+	}
+
+	public void slabBlockTranslucent(SlabBlock block, ResourceLocation doubleslab, ResourceLocation texture) {
+		slabBlock(block, models().slab(ForgeRegistries.BLOCKS.getKey(block).getPath(), texture, texture, texture).renderType("minecraft:translucent"), models().slabTop(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top", texture, texture, texture).renderType("minecraft:translucent"), models().getExistingFile(doubleslab));
+	}
+
+	public void pressurePlateBlockTranslucent(PressurePlateBlock block, ResourceLocation texture) {
+		ModelFile pressurePlate = models().pressurePlate(ForgeRegistries.BLOCKS.getKey(block).getPath(), texture).renderType("minecraft:translucent");
+		ModelFile pressurePlateDown = models().pressurePlateDown(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_down", texture).renderType("minecraft:translucent");
+		pressurePlateBlock(block, pressurePlate, pressurePlateDown);
+	}
+
+	public void buttonBlockTranslucent(ButtonBlock block, ResourceLocation texture) {
+		ModelFile button = models().button(ForgeRegistries.BLOCKS.getKey(block).getPath(), texture).renderType("minecraft:translucent");
+		ModelFile buttonPressed = models().buttonPressed(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_pressed", texture).renderType("minecraft:translucent");
+		buttonBlock(block, button, buttonPressed);
+	}
+
+	private void builtinEntity(Block b, ResourceLocation particle) {
 		simpleBlock(b, models().getBuilder(ForgeRegistries.BLOCKS.getKey(b).getPath())
 				.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
 				.texture("particle", particle));

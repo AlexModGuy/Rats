@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/template_orientable_trapdoor_bottom",
+  "render_type": "minecraft:translucent",
   "textures": {
     "texture": "rats:block/pirat_trapdoor"
   }

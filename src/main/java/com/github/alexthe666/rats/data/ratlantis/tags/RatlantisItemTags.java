@@ -86,6 +86,11 @@ public class RatlantisItemTags extends ItemTagsProvider {
 		this.tag(ItemTags.SWORDS).add(RatlantisItemRegistry.RATLANTIS_SWORD.get());
 		this.tag(ItemTags.SHOVELS).add(RatlantisItemRegistry.RATLANTIS_SHOVEL.get());
 
+		this.tag(ItemTags.BOATS).add(RatlantisItemRegistry.PIRAT_BOAT.get());
+		this.tag(ItemTags.CHEST_BOATS).add(RatlantisItemRegistry.PIRAT_CHEST_BOAT.get());
+		this.tag(ItemTags.SIGNS).add(RatlantisItemRegistry.PIRAT_SIGN.get());
+		this.tag(ItemTags.HANGING_SIGNS).add(RatlantisItemRegistry.PIRAT_HANGING_SIGN.get());
+
 		this.tag(ItemTags.TRIMMABLE_ARMOR).add(
 				RatlantisItemRegistry.RATLANTIS_HELMET.get(), RatlantisItemRegistry.RATLANTIS_CHESTPLATE.get(),
 				RatlantisItemRegistry.RATLANTIS_LEGGINGS.get(), RatlantisItemRegistry.RATLANTIS_BOOTS.get()

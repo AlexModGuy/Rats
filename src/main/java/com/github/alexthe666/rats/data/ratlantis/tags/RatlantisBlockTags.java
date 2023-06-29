@@ -88,6 +88,12 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 		this.tag(BlockTags.STAIRS).add(RatlantisBlockRegistry.MARBLED_CHEESE_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get(),
 				RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get());
 
+		this.tag(BlockTags.STANDING_SIGNS).add(RatlantisBlockRegistry.PIRAT_SIGN.get());
+		this.tag(BlockTags.WALL_SIGNS).add(RatlantisBlockRegistry.PIRAT_WALL_SIGN.get());
+
+		this.tag(BlockTags.CEILING_HANGING_SIGNS).add(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get());
+		this.tag(BlockTags.WALL_HANGING_SIGNS).add(RatlantisBlockRegistry.PIRAT_WALL_HANGING_SIGN.get());
+
 		this.tag(BlockTags.SMALL_FLOWERS).add(RatlantisBlockRegistry.RATGLOVE_FLOWER.get());
 		this.tag(BlockTags.INVALID_SPAWN_INSIDE).add(RatlantisBlockRegistry.RATLANTIS_PORTAL.get());
 		this.tag(BlockTags.BEACON_BASE_BLOCKS).add(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get());

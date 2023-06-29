@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/slab_top",
+  "render_type": "minecraft:translucent",
   "textures": {
     "bottom": "rats:block/pirat_planks",
     "side": "rats:block/pirat_planks",

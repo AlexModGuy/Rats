@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-20T18:40:46.8730826	ratlantis/Tags for minecraft:block mod id rats
+// 1.20.1	2023-06-28T12:10:49.2903028	ratlantis/Tags for minecraft:block mod id rats
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fences/wooden.json
 8c84352fdf0bc0292279dbb4aa6056c15563c3ed data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/fence_gates.json
@@ -11,6 +11,7 @@ ad455405d14b04c58d66812ba877e5b38cc82057 data/minecraft/datapacks/ratlantis/data
 50c5903472a165e0143c383d5d1e0633c1f6dd07 data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/storage_blocks.json
 94fd17c1be6678cb8830cdf3fb21c4aaead87097 data/minecraft/datapacks/ratlantis/data/forge/tags/blocks/storage_blocks/oratchalcum.json
 94fd17c1be6678cb8830cdf3fb21c4aaead87097 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/beacon_base_blocks.json
+81f51998d14535bcaebf90be0bd5c33c54aabdad data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/ceiling_hanging_signs.json
 6b604275f5af914f7d47b6eca52c118c8ca796c0 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/dead_bush_may_place_on.json
 851bb9e8af82cdac966db9367552e4f8ac993989 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/dragon_immune.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/fences.json
@@ -29,6 +30,9 @@ b10d7de8a5bd4db899e008466d408a4ceef5f091 data/minecraft/datapacks/ratlantis/data
 edbb1ec5d970aae77749e5c4adf9cc761fb8beaf data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/slabs.json
 3d4dce32d3328d15faf427c561b19d7c46a7a8de data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/small_flowers.json
 0f29dc03b296319d2224495b0454f7de820005ae data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/stairs.json
+cb951ad944ae6b4a6b8634f6fb1d876af87e7327 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/standing_signs.json
+292d1dc89cbb42f8007e2f7d2bbd1be34f720d96 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wall_hanging_signs.json
+f4913688955bdbe3b3dc70b57671e3b159b0d2ee data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wall_signs.json
 6835fb6638b6a7bb8068914902ed80bef9f4c015 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_buttons.json
 0a000658119e8e191c770abda9f0f7c3aa747190 data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_doors.json
 a8173584f412f119467f273a477ac674dd483c6f data/minecraft/datapacks/ratlantis/data/minecraft/tags/blocks/wooden_fences.json
