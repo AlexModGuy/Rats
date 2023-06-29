@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "rats:rat_upgrade_tick_accelerator"
+    },
+    "C": {
+      "item": "rats:charged_creeper_chunk"
+    },
+    "S": {
+      "item": "minecraft:nether_star"
+    },
+    "T": {
+      "item": "minecraft:clock"
+    }
+  },
+  "pattern": [
+    "TCT",
+    "ASA",
+    "TCT"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_time_manipulator"
+  },
+  "show_notification": true
+}

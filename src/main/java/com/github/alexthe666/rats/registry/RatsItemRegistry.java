@@ -178,6 +178,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_BREEDER = ITEMS.register("rat_upgrade_breeder", () -> new BreederRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_FISHERMAN = ITEMS.register("rat_upgrade_fisherman", () -> new FishermanRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_TICK_ACCELERATOR = ITEMS.register("rat_upgrade_tick_accelerator", () -> new TickAccelRatUpgradeItem(new Item.Properties()));
+	public static final RegistryObject<Item> RAT_UPGRADE_TIME_MANIPULATOR = ITEMS.register("rat_upgrade_time_manipulator", () -> new TimeManipuRatorUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_ASBESTOS = ITEMS.register("rat_upgrade_asbestos", () -> new AsbestosRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_UNDERWATER = ITEMS.register("rat_upgrade_underwater", () -> new UnderwaterRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_POISON = ITEMS.register("rat_upgrade_poison", () -> new PoisonRatUpgradeItem(new Item.Properties()));

@@ -556,6 +556,16 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/sculked_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_TIME_MANIPULATOR.get())
+				.pattern("TCT")
+				.pattern("ASA")
+				.pattern("TCT")
+				.define('T', Items.CLOCK)
+				.define('S', Items.NETHER_STAR).unlockedBy("has_star", has(Items.NETHER_STAR))
+				.define('A', RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR.get()))
+				.define('C', RatsItemRegistry.CHARGED_CREEPER_CHUNK.get()).unlockedBy("has_chunk", has(RatsItemRegistry.CHARGED_CREEPER_CHUNK.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/time_manipulator_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get())
 				.pattern("BEB")
 				.pattern("SUS")

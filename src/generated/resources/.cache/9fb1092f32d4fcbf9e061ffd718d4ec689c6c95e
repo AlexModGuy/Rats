@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-20T18:40:46.8670984	Recipes
+// 1.20.1	2023-06-29T08:33:48.5770458	Recipes
 ebaaaf0902a3fcf612166371cab9d27b42bbbc1f data/rats/advancements/recipes/building_blocks/auto_curdler.json
 987bd89935ed98bb9364bd497e27180b979b7fc4 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
 a5dd1a2bb72dc214a29362949d0dde182ac23a42 data/rats/advancements/recipes/building_blocks/block_of_cheese.json
@@ -192,6 +192,7 @@ a9c55345e1c3509be60494d7948e2ba81501ea04 data/rats/advancements/recipes/misc/upg
 df3bca8e880bf442d4df1173544ac2584a638a2a data/rats/advancements/recipes/misc/upgrades/strength_upgrade.json
 caa94d97bd5290992cde704daa8cae13578e280f data/rats/advancements/recipes/misc/upgrades/strider_mount_upgrade.json
 cf4437db0fedb1df0880f3a92e4c3f03cb531834 data/rats/advancements/recipes/misc/upgrades/tick_accelerator_upgrade.json
+8f5fbf4bff0f558766d0f535328f355b3c25eb7a data/rats/advancements/recipes/misc/upgrades/time_manipulator_upgrade.json
 374b2e4c1c009f2bcb336b351dc47ff45e3c29fc data/rats/advancements/recipes/misc/upgrades/tnt_survivor_upgrade.json
 81381a969e842e329e9ed7083ac1aaa07a7397d1 data/rats/advancements/recipes/misc/upgrades/tnt_upgrade.json
 4d02ecf727d179a008d4491fb669ba1ea84aa515 data/rats/advancements/recipes/misc/upgrades/undead_upgrade.json
@@ -408,6 +409,7 @@ f37b53f2d8071cc2471684efa6deee21f798a55b data/rats/recipes/upgrades/shears_upgra
 8db854c78d7c3fb844f7e09ea9cbbf02657a0c8c data/rats/recipes/upgrades/strength_upgrade.json
 603112fdfa9fe478d4b2d76915f55d5c4ce62658 data/rats/recipes/upgrades/strider_mount_upgrade.json
 c44c5a0288725c284b6be19b871d4c929d40e2c2 data/rats/recipes/upgrades/tick_accelerator_upgrade.json
+d18533147b89dd4e6c54a81cd35146c5caddc0b8 data/rats/recipes/upgrades/time_manipulator_upgrade.json
 021c9951895241d81333168ffc69c816110aff4a data/rats/recipes/upgrades/tnt_survivor_upgrade.json
 d6007374ba25ff58f690b4f73672528625117709 data/rats/recipes/upgrades/tnt_upgrade.json
 71cb6ba0cf25bf3f32a80ebf0364404f2e4e120e data/rats/recipes/upgrades/undead_upgrade.json

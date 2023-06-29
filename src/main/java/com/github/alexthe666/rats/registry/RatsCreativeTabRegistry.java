@@ -221,6 +221,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_WHITELIST.get());
 
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_TIME_MANIPULATOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_PLATTER.get());
 
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get());

@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-28T11:50:49.842852	Item Models: rats
+// 1.20.1	2023-06-28T22:04:22.6031306	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -327,6 +327,7 @@ b62b03b6d7ce0bf1c2e0c28e1270deea9bb9ebff assets/rats/models/item/rat_upgrade_spe
 0aa25904c043162539eb6c326f0e2e2a6afaaf5c assets/rats/models/item/rat_upgrade_strength.json
 596585d474a6141eb52c7351f1a99946fd0584cc assets/rats/models/item/rat_upgrade_strider_mount.json
 360e823800a519b039b66a8beb23e0d573bd9d8f assets/rats/models/item/rat_upgrade_tick_accelerator.json
+4989b8aa45b8948382bfb6dc6551dcda99aa2cc6 assets/rats/models/item/rat_upgrade_time_manipulator.json
 eb5fa624b915f8f34fdb8546eed97585054c0ecf assets/rats/models/item/rat_upgrade_tnt.json
 9c7091430f9fbe427a915597693340bb0bc4d5a2 assets/rats/models/item/rat_upgrade_tnt_survivor.json
 dfbb95f51992fd34abd7078911c05a2f370cf622 assets/rats/models/item/rat_upgrade_undead.json
