@@ -356,6 +356,32 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('M', RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get()).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get()))
 				.save(consumer);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_SLAB.get(), 6)
+				.pattern("MMM")
+				.define('M', RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()))
+				.save(consumer);
+
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(), 4)
+				.pattern("M  ")
+				.pattern("MM ")
+				.pattern("MMM")
+				.define('M', RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()))
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_SLAB.get(), 6)
+				.pattern("MMM")
+				.define('M', RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()))
+				.save(consumer);
+
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get(), 4)
+				.pattern("M  ")
+				.pattern("MM ")
+				.pattern("MMM")
+				.define('M', RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()))
+				.save(consumer);
+
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED.get())
 				.pattern("M")
@@ -712,6 +738,12 @@ public class RatlantisRecipes extends RecipeProvider {
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_SLAB.get(), 2, "marbled_cheese_brick_to_slab");
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_STAIRS.get(), "marbled_cheese_brick_to_stairs");
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CHISELED.get(), "marbled_cheese_brick_to_chiseled");
+
+		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_SLAB.get(), 2, "cracked_marbled_cheese_brick_to_slab");
+		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(), "cracked_marbled_cheese_brick_to_stairs");
+		
+		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_SLAB.get(), 2, "mossy_marbled_cheese_brick_to_slab");
+		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get(), "mossy_marbled_cheese_brick_to_stairs");
 
 		this.archeology(Items.EMERALD, RatlantisItemRegistry.GEM_OF_RATLANTIS.get(), consumer);
 		this.archeology(RatsItemRegistry.RAT_UPGRADE_BASIC.get(), RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get(), consumer);

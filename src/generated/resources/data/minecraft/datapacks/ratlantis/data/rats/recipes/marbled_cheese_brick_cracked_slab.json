@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "M": {
+      "item": "rats:marbled_cheese_brick_cracked"
+    }
+  },
+  "pattern": [
+    "MMM"
+  ],
+  "result": {
+    "count": 6,
+    "item": "rats:marbled_cheese_brick_cracked_slab"
+  },
+  "show_notification": true
+}
