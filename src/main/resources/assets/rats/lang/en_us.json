@@ -461,6 +461,8 @@
   "item.rats.rat_upgrade_pickpocket": "Rat Upgrade: Pickpocket",
   "item.rats.rat_upgrade_pickpocket.desc0": "Rats will randomly take one of a Villager's trade results when set to the 'Harvest' command.",
   "item.rats.rat_upgrade_pickpocket.desc1": "Pickpocketing will sometimes result in your reputation going down or Iron Golems targeting your rat",
+  "item.rats.rat_upgrade_gardener": "Rat Upgrade: Gardener",
+  "item.rats.rat_upgrade_gardener.desc": "Rats will break nearby tall grass and flowers when set to the 'Harvest' command",
   "item.rats.rat_flute": "Rat Flute",
   "item.rats.rat_flute.desc0": "Commands all tamed rats within the local area",
   "item.rats.rat_flute.desc1": "Sneak and use to change command",

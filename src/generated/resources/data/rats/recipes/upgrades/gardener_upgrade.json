@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "minecraft:flowers"
+    },
+    "S": {
+      "tag": "forge:seeds"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "SFS",
+    "FUF",
+    "SFS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_gardener"
+  },
+  "show_notification": true
+}

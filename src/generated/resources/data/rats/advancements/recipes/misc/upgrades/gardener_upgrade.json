@@ -1,37 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bale": {
+    "has_flower": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:hay_block"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_hat": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "rats:farmer_hat"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_hoe": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:iron_hoe"
-            ]
+            "tag": "minecraft:flowers"
           }
         ]
       },
@@ -49,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:upgrades/farmer_upgrade"
+        "recipe": "rats:upgrades/gardener_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -58,7 +32,7 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_gardener"
+              "rats:rat_upgrade_basic"
             ]
           }
         ]
@@ -68,17 +42,15 @@
   },
   "requirements": [
     [
-      "has_bale",
-      "has_hoe",
-      "has_upgrade",
-      "has_hat",
+      "has_flower",
       "has_seeds",
+      "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:upgrades/farmer_upgrade"
+      "rats:upgrades/gardener_upgrade"
     ]
   },
   "sends_telemetry_event": false

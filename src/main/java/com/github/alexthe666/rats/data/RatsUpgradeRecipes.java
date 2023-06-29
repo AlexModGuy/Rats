@@ -278,14 +278,13 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('C', RatsItemTags.STORAGE_BLOCKS_BLUE_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.STORAGE_BLOCKS_BLUE_CHEESE))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/quarry_upgrade"));
 
-		//TODO replace base upgrade with gardener once 8.1 development begins
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_FARMER.get())
 				.pattern("BFB")
 				.pattern("HUH")
 				.pattern("SSS")
 				.define('B', Items.HAY_BLOCK).unlockedBy("has_bale", has(Items.HAY_BLOCK))
 				.define('H', Items.IRON_HOE).unlockedBy("has_hoe", has(Items.IRON_HOE))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_GARDENER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_GARDENER.get()))
 				.define('F', RatsItemRegistry.FARMER_HAT.get()).unlockedBy("has_hat", has(RatsItemRegistry.FARMER_HAT.get()))
 				.define('S', Tags.Items.SEEDS).unlockedBy("has_seeds", has(Tags.Items.SEEDS))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/farmer_upgrade"));
@@ -525,6 +524,15 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('P', RatsItemRegistry.RAT_PAW.get()).unlockedBy("has_paw", has(RatsItemRegistry.RAT_PAW.get()))
 				.define('B', Tags.Items.STORAGE_BLOCKS_EMERALD).unlockedBy("has_emerald_block", has(Tags.Items.STORAGE_BLOCKS_EMERALD))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/pickpocket_upgrade"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_GARDENER.get())
+				.pattern("SFS")
+				.pattern("FUF")
+				.pattern("SFS")
+				.define('F', ItemTags.FLOWERS).unlockedBy("has_flower", has(ItemTags.FLOWERS))
+				.define('S', Tags.Items.SEEDS).unlockedBy("has_seeds", has(Tags.Items.SEEDS))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/gardener_upgrade"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get())
 				.pattern("BEB")
