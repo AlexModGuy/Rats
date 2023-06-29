@@ -534,6 +534,17 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/gardener_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_IDOL.get())
+				.pattern("GCG")
+				.pattern("SUS")
+				.pattern("GRG")
+				.define('G', Tags.Items.STORAGE_BLOCKS_GOLD).unlockedBy("has_gold", has(Tags.Items.STORAGE_BLOCKS_GOLD))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.define('S', RatsItemRegistry.GOLDEN_RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.GOLDEN_RAT_SKULL.get()))
+				.define('C', RatsItemRegistry.RAT_KING_CROWN.get()).unlockedBy("has_crown", has(RatsItemRegistry.RAT_KING_CROWN.get()))
+				.define('R', Tags.Items.STORAGE_BLOCKS_RAW_GOLD).unlockedBy("has_raw_gold", has(Tags.Items.STORAGE_BLOCKS_RAW_GOLD))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/idol_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get())
 				.pattern("BEB")
 				.pattern("SUS")

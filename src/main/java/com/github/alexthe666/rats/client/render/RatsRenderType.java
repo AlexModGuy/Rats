@@ -39,6 +39,7 @@ public class RatsRenderType extends RenderType {
 	private static final RenderType GREEN_ENTITY_GLINT = create("green_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/green_glint.png"), true, false)).setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING).createCompositeState(false));
 	private static final RenderType YELLOW_ENTITY_GLINT = create("yellow_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/yellow_glint.png"), true, false)).setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING).createCompositeState(false));
 	private static final RenderType WHITE_ENTITY_GLINT = create("white_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/white_glint.png"), true, false)).setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING).createCompositeState(false));
+	private static final RenderType GOLD_ENTITY_GLINT = create("gold_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/gold_glint.png"), true, false)).setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING).createCompositeState(false));
 
 	public RatsRenderType(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumble, boolean sort, Runnable builder1, Runnable builder2) {
 		super(name, format, mode, bufferSize, affectsCrumble, sort, builder1, builder2);
@@ -54,6 +55,10 @@ public class RatsRenderType extends RenderType {
 
 	public static RenderType getWhiteGlint() {
 		return WHITE_ENTITY_GLINT;
+	}
+
+	public static RenderType getGoldGlint() {
+		return GOLD_ENTITY_GLINT;
 	}
 
 	public static RenderType getRatlantisPortal() {

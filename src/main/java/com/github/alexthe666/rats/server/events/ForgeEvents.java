@@ -44,6 +44,7 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -126,6 +127,15 @@ public class ForgeEvents {
 			protectors++;
 		}
 		return protectors;
+	}
+
+	@SubscribeEvent
+	public static void piglinsDontAttackGoldRatsEver(LivingChangeTargetEvent event) {
+		if (event.getEntity() instanceof Piglin) {
+			if (event.getNewTarget() instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_IDOL.get())) {
+				event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

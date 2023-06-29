@@ -2,15 +2,18 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "8.0.6-${project.minecraft_version}"
 group = 'com.github.alexthe666.rats'
@@ -30,6 +33,9 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'rats'
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            arg "-mixin.config="+"citadel.mixins.json"
+            arg "-mixin.config="+"rats.mixins.json"
 
             mods {
                 rats {
@@ -43,6 +49,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'rats'
+            arg "-mixin.config="+"citadel.mixins.json"
+            arg "-mixin.config="+"rats.mixins.json"
 
             mods {
                 rats {
@@ -56,6 +64,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'rats'
+            arg "-mixin.config="+"citadel.mixins.json"
+            arg "-mixin.config="+"rats.mixins.json"
 
             mods {
                 rats {
@@ -111,6 +121,13 @@ dependencies {
    // runtimeOnly fg.deobf("io.github.flemmli97:debugutils:${project.minecraft_sub_version}-${project.du_version}-forge")
     //runtimeOnly fg.deobf("curse.maven:domestication-innovation-591149:4476525")
     //runtimeOnly fg.deobf("curse.maven:wanna-skate-695018:4476693")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, "rats.refmap.json"
+    config 'rats.mixins.json'
 }
 
 jar {

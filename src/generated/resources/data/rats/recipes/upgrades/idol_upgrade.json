@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "rats:rat_king_crown"
+    },
+    "G": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/raw_gold"
+    },
+    "S": {
+      "item": "rats:golden_rat_skull"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "GCG",
+    "SUS",
+    "GRG"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_idol"
+  },
+  "show_notification": true
+}
