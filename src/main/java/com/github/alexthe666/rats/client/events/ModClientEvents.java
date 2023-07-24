@@ -73,14 +73,6 @@ public class ModClientEvents {
 		return Minecraft.getInstance().screen == null || !(Minecraft.getInstance().screen instanceof RatScreen) && !(Minecraft.getInstance().screen instanceof CheeseStaffScreen);
 	}
 
-	public static ItemStack getIngotHereBecauseClassloading(ItemStack stack) {
-		return OreRatNuggetItem.getIngot(Minecraft.getInstance().level, stack);
-	}
-
-	public static ItemStack saveIngotHereBecauseClassloading(ItemStack stack) {
-		return OreRatNuggetItem.saveResourceToNugget(Minecraft.getInstance().level, stack, false);
-	}
-
 	@SubscribeEvent
 	public static void setupShaders(RegisterShadersEvent event) throws IOException {
 		ResourceProvider provider = event.getResourceProvider();

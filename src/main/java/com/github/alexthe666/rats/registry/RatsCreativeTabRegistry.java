@@ -148,7 +148,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "black_death_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_cloud_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_beast_spawn_egg"))));
-				registerOreNuggets(output);
+				output.accept(RatsItemRegistry.RAT_NUGGET.get());
 			}).build());
 
 	public static final RegistryObject<CreativeModeTab> UPGRADES = TABS.register("rats_upgrades", () -> CreativeModeTab.builder()
@@ -358,21 +358,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "dutchrat_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_baron_spawn_egg"))));
 			}).build());
-
-
-	private static void registerOreNuggets(CreativeModeTab.Output output) {
-		output.accept(RatsItemRegistry.RAT_NUGGET.get());
-		List<ItemStack> uniqueOres = new ArrayList<>();
-		for (Item item : ForgeRegistries.ITEMS.tags().getTag(Tags.Items.ORES)) {
-			ItemStack oreDrop = ModClientEvents.getIngotHereBecauseClassloading(item.getDefaultInstance());
-			if (!uniqueOres.contains(oreDrop) && !oreDrop.isEmpty()) {
-				uniqueOres.add(oreDrop);
-			}
-		}
-		for (ItemStack ore : uniqueOres) {
-			output.accept(ModClientEvents.saveIngotHereBecauseClassloading(ore));
-		}
-	}
 
 	private static void registerColoredItems(CreativeModeTab.Output output, String itemType) {
 		for (DyeColor color : DyeColor.values()) {
