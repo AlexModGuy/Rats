@@ -17,6 +17,7 @@ public class RatConfig {
 	public static boolean ratsSpawnLikeMonsters = true;
 	public static boolean cheesemaking = true;
 	public static int milkCauldronTime = 150;
+	public static int ratSackCapacity = 16;
 	public static boolean ratsDigBlocks = true;
 	public static boolean ratsBreakCrops = true;
 	public static boolean ratsStealItems = true;
@@ -124,6 +125,7 @@ public class RatConfig {
 			ratsSpawnLikeMonsters = ConfigHolder.SERVER.ratsSpawnLikeMonsters.get();
 			cheesemaking = ConfigHolder.SERVER.cheesemaking.get();
 			milkCauldronTime = ConfigHolder.SERVER.milkCauldronTime.get();
+			ratSackCapacity = ConfigHolder.SERVER.ratSackCapacity.get();
 			ratsDigBlocks = ConfigHolder.SERVER.ratsDigBlocks.get();
 			ratsBreakCrops = ConfigHolder.SERVER.ratsBreakCrops.get();
 			ratsStealItems = ConfigHolder.SERVER.ratsStealItems.get();

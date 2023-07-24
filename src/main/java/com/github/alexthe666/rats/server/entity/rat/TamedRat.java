@@ -885,7 +885,7 @@ public class TamedRat extends InventoryRat {
 			} else if (this.applyNormalDyeIfPossible(itemstack)) {
 				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(RatsItemRegistry.RAT_SACK.get())) {
-				if (RatSackItem.getRatsInSack(itemstack) >= RatSackItem.RAT_SACK_ROOM) {
+				if (RatSackItem.getRatsInSack(itemstack) >= RatConfig.ratSackCapacity) {
 					player.displayClientMessage(Component.translatable("item.rats.rat_sack.too_full").withStyle(ChatFormatting.RED), true);
 					return InteractionResult.PASS;
 				} else {

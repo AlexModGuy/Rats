@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
@@ -37,7 +38,7 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 			int capturedRat = 0;
 			if (!list.isEmpty()) {
 				for (TamedRat rat : list) {
-					if (capturedRat >= RatSackItem.RAT_SACK_ROOM) break;
+					if (capturedRat >= RatConfig.ratSackCapacity) break;
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
 						capturedRat++;
 						RatSackItem.packRatIntoSack(sack, rat, capturedRat);

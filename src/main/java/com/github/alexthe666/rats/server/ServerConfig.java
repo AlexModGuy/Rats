@@ -11,6 +11,7 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue ratsSpawnLikeMonsters;
 	public final ForgeConfigSpec.BooleanValue cheesemaking;
 	public final ForgeConfigSpec.IntValue milkCauldronTime;
+	public final ForgeConfigSpec.IntValue ratSackCapacity;
 	public final ForgeConfigSpec.BooleanValue ratsDigBlocks;
 	public final ForgeConfigSpec.BooleanValue ratsBreakCrops;
 	public final ForgeConfigSpec.BooleanValue ratsStealItems;
@@ -191,6 +192,7 @@ public class ServerConfig {
 		this.ratPsychicThrowsBlocks = buildBoolean(builder, "Psychic Throws Blocks", false, "If true, Rats that have the Psychic upgrade will pick up blocks and throw them towards enemies.");
 
 		builder.pop().push("Misc Rat Adjustments");
+		this.ratSackCapacity = buildInt(builder, "Rat Sack Capacity", 16, 1, 64, "Defines the amount of rats you can store in a sack at one time.");
 		this.ratCageCramming = buildInt(builder, "Rat Cage Max Occupancy", 4, 1, 10000, "Rats will continue to breed in cages until there are this many rats in one cage block");
 		this.maxRatLitterSize = buildInt(builder, "Rat Litter Size", 1, 1, 10, "The max amount of Baby Rats will be produced when Rats breed. You will get anywhere between 1 and this number of baby rats.");
 		this.ratBreedingCooldown = buildInt(builder, "Rat Breeding Cooldown", 24000, 0, Integer.MAX_VALUE, "The amount of time it takes after a rat successfully breeds for it to breed again. Time is in ticks. (24000 ticks = 1200 seconds = 20 minutes)");

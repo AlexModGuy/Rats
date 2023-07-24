@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
@@ -22,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RatSackItem extends Item {
-
-	public static int RAT_SACK_ROOM = 16;
 
 	public RatSackItem(Item.Properties properties) {
 		super(properties);
@@ -97,7 +96,7 @@ public class RatSackItem extends Item {
 				}
 			}
 		}
-		tooltip.add(Component.translatable("item.rats.rat_sack.contains", ratCount, RAT_SACK_ROOM).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.rats.rat_sack.contains", ratCount, RatConfig.ratSackCapacity).withStyle(ChatFormatting.GRAY));
 		if (!ratNames.isEmpty()) {
 			for (int i = 0; i < ratNames.size(); i++) {
 				if (i < 3) {
