@@ -156,7 +156,6 @@ public class RatKingModel<T extends RatKing> extends AdvancedEntityModel<T> {
 		this.tail1.rotateAngleX += f12;
 		this.tail2.rotateAngleX -= f12 / 2F;
 		float ulating0 = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
-		this.faceTarget(f3, f4, 2, neck, head);
 		if (rat.deathTime > 0) {
 			int deathTime = Math.min(Math.max(0, rat.deathTime - this.index * 5), 5);
 

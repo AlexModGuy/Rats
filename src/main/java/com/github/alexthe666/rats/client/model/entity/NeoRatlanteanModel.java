@@ -255,8 +255,9 @@ public class NeoRatlanteanModel<T extends NeoRatlantean> extends AdvancedEntityM
 		this.floatyPivot.rotateAngleX += f12;
 		this.walk(this.tail1, speedRun, degreeRun, false, -1, 0.1F, f, f1);
 		this.walk(this.tail2, speedRun, degreeRun * 0.5F, false, -2, 0.1F, f, f1);
-		this.faceTarget(f3, f4, 2, this.neck, this.head);
-		this.faceTarget(f3, f4, 2, this.floatyPivot);
+		this.head.rotateAngleX = f4 * ((float) Math.PI / 180F) + 45;
+		this.head.rotateAngleY = f3 * ((float) Math.PI / 180F);
+		//this.faceTarget(f3, f4, 2, this.floatyPivot);
 		if (rat.onGround()) {
 			this.walk(this.rightThigh, speedWalk, degreeWalk * 4F, false, 1, 0, f, f1);
 			this.walk(this.rightFoot, speedWalk, degreeWalk * 2F, false, 3.5F, -0.1F, f, f1);

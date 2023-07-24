@@ -93,6 +93,11 @@ public class NeoRatlantean extends Monster {
 	}
 
 	@Override
+	public float getEyeHeight(Pose pose) {
+		return 0.9F;
+	}
+
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.getEntityData().define(COLOR_VARIANT, 0);

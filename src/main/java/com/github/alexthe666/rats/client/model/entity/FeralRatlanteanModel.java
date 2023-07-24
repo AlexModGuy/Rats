@@ -522,7 +522,8 @@ public class FeralRatlanteanModel<T extends Mob & IAnimatedEntity> extends Advan
 		this.swing(this.frontRightLeg, walkSpeed, -walkDegree, true, 1.5F, -0.25F, f, f1);
 		this.swing(this.backLeftThigh, walkSpeed, -walkDegree * 1.25F, false, 0F, -0.25F, f, f1);
 		this.swing(this.backRightThigh, walkSpeed, -walkDegree * 1.25F, true, 0F, -0.25F, f, f1);
-		this.faceTarget(f3, f4, 2, this.neck, this.head1);
+		this.head1.rotateAngleX = f4 * ((float) Math.PI / 180F);
+		this.head1.rotateAngleY = f3 * ((float) Math.PI / 180F);
 	}
 
 	public void setRotateAngle(AdvancedModelBox box, float x, float y, float z) {

@@ -27,6 +27,7 @@ public class RatlateanSpiritRenderer<T extends Mob> extends MobRenderer<T, Ratla
 
 	protected void scale(T living, PoseStack stack, float partialTickTime) {
 		float scale = living instanceof PlagueCloud ? 2 : 1.5F;
+		stack.translate(0.0F, -0.5F, 0.0F);
 		stack.scale(scale, scale, scale);
 	}
 }

@@ -35,7 +35,7 @@ public class RatlantisEntityRegistry {
 	public static final RegistryObject<EntityType<Pirat>> PIRAT = registerEntity("pirat", EntityType.Builder.of(Pirat::new, MobCategory.MONSTER).sized(0.49F, 0.49F), 0X30333E, 0XAF363A);
 	public static final RegistryObject<EntityType<CheeseCannonball>> CHEESE_CANNONBALL = registerEntityNoEgg("cheese_cannonball", EntityType.Builder.<CheeseCannonball>of(CheeseCannonball::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<GhostPirat>> GHOST_PIRAT = registerEntity("ghost_pirat", EntityType.Builder.of(GhostPirat::new, MobCategory.MONSTER).sized(1.0F, 0.75F), 0X54AA55, 0X7BD77D);
-	public static final RegistryObject<EntityType<Dutchrat>> DUTCHRAT = registerEntity("dutchrat", EntityType.Builder.of(Dutchrat::new, MobCategory.MONSTER).sized(2.0F, 2.75F).fireImmune(), 0XBBF9BB, 0XD0E2B5);
+	public static final RegistryObject<EntityType<Dutchrat>> DUTCHRAT = registerEntity("dutchrat", EntityType.Builder.of(Dutchrat::new, MobCategory.MONSTER).sized(2.0F, 3.0F).fireImmune(), 0XBBF9BB, 0XD0E2B5);
 	public static final RegistryObject<EntityType<DutchratSword>> DUTCHRAT_SWORD = registerEntityNoEgg("dutchrat_sword", EntityType.Builder.<DutchratSword>of(DutchratSword::new, MobCategory.MISC).fireImmune().sized(0.95F, 0.95F));
 	public static final RegistryObject<EntityType<Ratfish>> RATFISH = registerEntity("ratfish", EntityType.Builder.of(Ratfish::new, MobCategory.WATER_AMBIENT).sized(0.45F, 0.45F), 0X30333E, 0X7EA8BD);
 	public static final RegistryObject<EntityType<RattlingGun>> RATTLING_GUN = registerEntityNoEgg("rattling_gun", EntityType.Builder.of(RattlingGun::new, MobCategory.MISC).sized(1.5F, 1.6F));

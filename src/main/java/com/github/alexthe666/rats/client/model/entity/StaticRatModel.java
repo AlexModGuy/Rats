@@ -171,6 +171,8 @@ public class StaticRatModel<T extends Entity> extends AdvancedEntityModel<T> {
 
 		float ulating0 = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
 		this.faceTarget(f3, f4, 2, this.neck, this.head);
+		this.head.rotateAngleX = f4 * ((float) Math.PI / 180F);
+		this.head.rotateAngleY = f3 * ((float) Math.PI / 180F);
 
 		this.swing(this.wisker2, speedIdle, degreeIdle, false, 0, 0, f2, 1);
 		this.swing(this.wisker1, speedIdle, degreeIdle, true, 0, 0, f2, 1);
