@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.events.ModClientEvents;
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.PinkieModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.client.render.entity.layer.TamedRatEyesLayer;
@@ -19,14 +20,14 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TamedRatRenderer extends AbstractRatRenderer<TamedRat> {
+public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatModel<TamedRat>> {
 
-	private static final RatModel<TamedRat> RAT_MODEL = new RatModel<>(0.0F);
+	private static final RatModel<TamedRat> RAT_MODEL = new RatModel<>();
 	private static final PinkieModel<TamedRat> PINKIE_MODEL = new PinkieModel<>();
 	private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/baby.png");
 
 	public TamedRatRenderer(EntityRendererProvider.Context context) {
-		super(context);
+		super(context, new RatModel<>());
 		this.addLayer(new TamedRatOverlayLayer(this));
 		this.addLayer(new TamedRatEyesLayer(this));
 	}

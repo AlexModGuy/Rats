@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class RunningRatParticle extends Particle {
 
-	private final StaticRatModel<?> model = new StaticRatModel<>(0.0F, false);
+	private final StaticRatModel<?> model = new StaticRatModel<>();
 	private final RenderType renderType = RenderType.entityCutoutNoCull(RatVariant.getRandomVariant(RandomSource.create(), false).getTexture());
 	private final Vec3 headingTo;
 	private int oldAge;

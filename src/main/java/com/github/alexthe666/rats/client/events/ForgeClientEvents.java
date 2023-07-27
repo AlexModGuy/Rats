@@ -77,7 +77,7 @@ public class ForgeClientEvents {
 	private static float synesthesiaProgress = 0;
 	private static float prevSynesthesiaProgress = 0;
 	private static final float MAX_SYNESTESIA = 40;
-	private static final StaticRatModel<LivingEntity> RAT_MODEL = new StaticRatModel<>(0, false);
+	private static final StaticRatModel<LivingEntity> RAT_MODEL = new StaticRatModel<>();
 
 	@SubscribeEvent
 	public static void adjustSynesthesiaFOV(ViewportEvent.ComputeFov event) {

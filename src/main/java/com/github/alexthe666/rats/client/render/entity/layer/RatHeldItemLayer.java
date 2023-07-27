@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.ChristmasChestModel;
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
+import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
@@ -20,17 +22,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatModel<T>> {
+public class RatHeldItemLayer<T extends AbstractRat, M extends AbstractRatModel<T>> extends RenderLayer<T, M> {
 
 	public static final ChristmasChestModel CHRISTMAS_CHEST_MODEL = new ChristmasChestModel(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.CHEST));
 
-	public RatHeldItemLayer(RenderLayerParent<T, RatModel<T>> parent) {
+	public RatHeldItemLayer(RenderLayerParent<T, M> parent) {
 		super(parent);
 	}
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!entity.isBaby()) {
+		if (!entity.isBaby() && this.getParentModel() instanceof RatModel<?> model) {
 			ItemStack itemstack = entity.getItemInHand(InteractionHand.MAIN_HAND);
 			if (!itemstack.isEmpty()) {
 				stack.pushPose();
@@ -40,7 +42,7 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 					stack.scale(0.5F, 0.5F, 0.5F);
 				}
 				if (!entity.isHoldingItemInHands()) {
-					this.translateToHead(stack);
+					this.getParentModel().translateToHead(stack);
 					stack.mulPose(Axis.ZP.rotationDegrees(180));
 					stack.mulPose(Axis.YP.rotationDegrees(180));
 					stack.mulPose(Axis.XP.rotationDegrees(90));
@@ -51,7 +53,7 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 					boolean flag = false;
 					boolean model3d = Minecraft.getInstance().getItemRenderer().getModel(itemstack, Minecraft.getInstance().level, entity, 0).isGui3d();
 					if (entity instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get())) {
-						this.translateToHand(true, stack);
+						this.translateToHand(model, true, stack);
 						stack.translate(-0.125F, -0.15F, -0.2F);
 						if (model3d) {
 							stack.mulPose(Axis.XP.rotationDegrees(110));
@@ -68,7 +70,7 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 						stack.scale(0.5F, 0.5F, 0.5F);
 						flag = true;
 					} else {
-						this.translateToHand(true, stack);
+						this.translateToHand(model, true, stack);
 						stack.mulPose(Axis.ZP.rotationDegrees(180));
 						stack.mulPose(Axis.XP.rotationDegrees(20));
 						stack.scale(0.65F, 0.65F, 0.65F);
@@ -95,8 +97,7 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 					Minecraft minecraft = Minecraft.getInstance();
 					float wingAngle = 0;
 					float wingFold = -45.0F;
-					this.getParentModel().body1.translateRotate(stack);
-					this.getParentModel().body2.translateRotate(stack);
+					this.getParentModel().translateToBody(stack);
 					stack.pushPose();
 					stack.mulPose(Axis.ZN.rotationDegrees(wingAngle));
 					stack.mulPose(Axis.YP.rotationDegrees(wingFold));
@@ -117,7 +118,7 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 				} else {
 					RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
 						stack.pushPose();
-						((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, this.getParentModel(), stack, buffer, light, ageInTicks);
+						((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, model, stack, buffer, light, ageInTicks);
 						stack.popPose();
 					});
 				}
@@ -125,22 +126,15 @@ public class RatHeldItemLayer<T extends AbstractRat> extends RenderLayer<T, RatM
 		}
 	}
 
-	protected void translateToHead(PoseStack stack) {
-		this.getParentModel().body1.translateRotate(stack);
-		this.getParentModel().body2.translateRotate(stack);
-		this.getParentModel().neck.translateRotate(stack);
-		this.getParentModel().head.translateRotate(stack);
-	}
-
-	protected void translateToHand(boolean left, PoseStack stack) {
-		this.getParentModel().body1.translateRotate(stack);
-		this.getParentModel().body2.translateRotate(stack);
+	protected void translateToHand(RatModel<?> model, boolean left, PoseStack stack) {
+		model.body1.translateRotate(stack);
+		model.body2.translateRotate(stack);
 		if (left) {
-			this.getParentModel().leftArm.translateRotate(stack);
-			this.getParentModel().leftHand.translateRotate(stack);
+			model.leftArm.translateRotate(stack);
+			model.leftHand.translateRotate(stack);
 		} else {
-			this.getParentModel().rightArm.translateRotate(stack);
-			this.getParentModel().rightHand.translateRotate(stack);
+			model.rightArm.translateRotate(stack);
+			model.rightHand.translateRotate(stack);
 		}
 	}
 }

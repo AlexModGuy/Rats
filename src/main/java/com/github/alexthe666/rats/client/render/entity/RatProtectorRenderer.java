@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
+import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.misc.RatProtector;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,12 +14,12 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RatProtectorRenderer extends AbstractRatRenderer<RatProtector> {
+public class RatProtectorRenderer extends AbstractRatRenderer<RatProtector, RatModel<RatProtector>> {
 
 	public static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat_protector.png");
 
 	public RatProtectorRenderer(EntityRendererProvider.Context context) {
-		super(context);
+		super(context, new RatModel<>());
 		this.addLayer(new Overlay(this));
 	}
 

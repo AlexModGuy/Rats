@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
@@ -15,7 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
 
-public class RatEyesLayer<T extends AbstractRat, M extends RatModel<T>> extends RenderLayer<T, M> {
+public class RatEyesLayer<T extends AbstractRat, M extends AbstractRatModel<T>> extends RenderLayer<T, M> {
 	protected static final RenderType EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
 	protected static final RenderType PLAGUE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/plague.png"));
 

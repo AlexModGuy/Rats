@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
@@ -21,12 +22,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 
-public class TamedRatOverlayLayer extends RenderLayer<TamedRat, RatModel<TamedRat>> {
+public class TamedRatOverlayLayer extends RenderLayer<TamedRat, AbstractRatModel<TamedRat>> {
 	private static final RenderType TEXTURE_DYED_NOT = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/undyed_part.png"));
 	private static final RenderType TEXTURE_DYED = RenderType.entityNoOutline(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/dyed_part.png"));
 	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/toga.png"));
 
-	public TamedRatOverlayLayer(RenderLayerParent<TamedRat, RatModel<TamedRat>> parent) {
+	public TamedRatOverlayLayer(RenderLayerParent<TamedRat, AbstractRatModel<TamedRat>> parent) {
 		super(parent);
 	}
 

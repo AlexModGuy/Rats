@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity;
 
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.BiplaneModel;
-import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.client.render.entity.layer.PartyHatLayer;
 import com.github.alexthe666.rats.client.render.entity.layer.RatHeldItemLayer;
 import com.github.alexthe666.rats.client.render.entity.layer.RatHelmetLayer;
@@ -25,9 +25,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public abstract class AbstractRatRenderer<T extends AbstractRat> extends MobRenderer<T, RatModel<T>> {
-	public AbstractRatRenderer(EntityRendererProvider.Context context) {
-		super(context, new RatModel<>(0.0F), 0.15F);
+public abstract class AbstractRatRenderer<T extends AbstractRat, M extends AbstractRatModel<T>> extends MobRenderer<T, M> {
+
+	public AbstractRatRenderer(EntityRendererProvider.Context context, M model) {
+		super(context, model, 0.15F);
 		this.addLayer(new RatHelmetLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 		this.addLayer(new RatHeldItemLayer<>(this));
 		this.addLayer(new PartyHatLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));

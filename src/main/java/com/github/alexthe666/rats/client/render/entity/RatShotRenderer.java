@@ -18,7 +18,7 @@ import net.minecraft.world.level.LightLayer;
 public class RatShotRenderer extends EntityRenderer<RatShot> {
 
 	private static final RenderType TEXTURE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
-	private static final StaticRatModel<RatShot> MODEL_STATIC_RAT = new StaticRatModel<>(0, false);
+	private static final StaticRatModel<RatShot> MODEL_STATIC_RAT = new StaticRatModel<>();
 
 	public RatShotRenderer(EntityRendererProvider.Context context) {
 		super(context);

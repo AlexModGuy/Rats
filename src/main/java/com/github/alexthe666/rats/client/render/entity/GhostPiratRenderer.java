@@ -14,19 +14,19 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class GhostPiratRenderer extends AbstractRatRenderer<GhostPirat> {
+public class GhostPiratRenderer extends AbstractRatRenderer<GhostPirat, RatModel<GhostPirat>> {
 
 	private static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ghost_pirat/ghost_pirat.png");
 
 	public GhostPiratRenderer(EntityRendererProvider.Context context) {
-		super(context);
+		super(context, new RatModel<>());
+		this.shadowRadius = 0.35F;
 		this.addLayer(new GhostPiratLayer<>(this));
 	}
 
-
+	@Override
 	protected void scale(GhostPirat rat, PoseStack stack, float partialTicks) {
 		super.scale(rat, stack, partialTicks);
-		this.shadowRadius = 0.35F;
 		stack.scale(2.0F, 2.0F, 2.0F);
 	}
 

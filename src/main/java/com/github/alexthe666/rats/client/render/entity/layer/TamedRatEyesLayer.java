@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
+import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
@@ -14,8 +15,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TamedRatEyesLayer extends RatEyesLayer<TamedRat, RatModel<TamedRat>> {
-	public TamedRatEyesLayer(RenderLayerParent<TamedRat, RatModel<TamedRat>> parent) {
+public class TamedRatEyesLayer extends RatEyesLayer<TamedRat, AbstractRatModel<TamedRat>> {
+	public TamedRatEyesLayer(RenderLayerParent<TamedRat, AbstractRatModel<TamedRat>> parent) {
 		super(parent);
 	}
 

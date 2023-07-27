@@ -16,14 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 
-	public RatModel(float scale) {
-		this(scale, false);
-	}
-
-	public RatModel(float scale, boolean pinkie) {
-		super(scale, pinkie);
-	}
-
 	public void animate(IAnimatedEntity entity) {
 		this.resetToDefaultPose();
 
