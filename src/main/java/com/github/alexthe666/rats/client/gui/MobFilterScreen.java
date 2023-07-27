@@ -304,7 +304,7 @@ public class MobFilterScreen extends Screen {
 				if (!tags.isEmpty()) {
 					tags.forEach(key -> {
 						this.filteredMobs.addAll(this.allMobs.stream().filter(pair -> ForgeRegistries.ENTITY_TYPES.tags().getTag(key).contains(ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(pair.getFirst())))).toList());
-						if (!this.visibleTags.contains(key)) this.visibleTags.add(key);
+						this.visibleTags.add(key);
 					});
 				}
 			} else {

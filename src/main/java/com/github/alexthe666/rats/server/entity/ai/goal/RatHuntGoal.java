@@ -49,8 +49,4 @@ public class RatHuntGoal extends TargetGoal {
 		this.rat.setTarget(this.target);
 		super.start();
 	}
-
-	public void setTarget(@Nullable LivingEntity entity) {
-		this.target = entity;
-	}
 }

@@ -532,16 +532,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		}
 	}
 
-	public boolean isValidLightLevel() {
-		BlockPos blockpos = BlockPos.containing(this.getX(), this.getBoundingBox().minY, this.getZ());
-		if (this.level().getBrightness(LightLayer.SKY, blockpos) > this.getRandom().nextInt(32)) {
-			return false;
-		} else {
-			int i = this.level().isThundering() ? this.level().getMaxLocalRawBrightness(blockpos, 10) : this.level().getMaxLocalRawBrightness(blockpos);
-			return i <= this.getRandom().nextInt(8);
-		}
-	}
-
 	protected static boolean isValidLightLevel(LevelAccessor accessor, RandomSource random, BlockPos pos) {
 		if (accessor.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
 			return false;

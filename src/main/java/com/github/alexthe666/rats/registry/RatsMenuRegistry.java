@@ -14,7 +14,6 @@ public class RatsMenuRegistry {
 	public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, RatsMod.MODID);
 
 	public static final RegistryObject<MenuType<RatMenu>> RAT_CONTAINER = MENUS.register("rat_container", () -> new MenuType<>(RatMenu::new, FeatureFlags.REGISTRY.allFlags()));
-	public static final RegistryObject<MenuType<EmptyMenu>> EMPTY_CONTAINER = MENUS.register("empty_container", () -> new MenuType<>((id, inventory) -> new EmptyMenu(id), FeatureFlags.REGISTRY.allFlags()));
 	public static final RegistryObject<MenuType<RatCraftingTableMenu>> RAT_CRAFTING_TABLE_CONTAINER = MENUS.register("rat_crafting_table_container", () -> IForgeMenuType.create(RatCraftingTableMenu::new));
 	public static final RegistryObject<MenuType<RatUpgradeMenu>> RAT_UPGRADE_CONTAINER = MENUS.register("rat_upgrade_container", () -> new MenuType<>(RatUpgradeMenu::new, FeatureFlags.REGISTRY.allFlags()));
 	public static final RegistryObject<MenuType<JuryRiggedRatUpgradeMenu>> RAT_UPGRADE_JR_CONTAINER = MENUS.register("rat_upgrade_jurry_rigged_container", () -> new MenuType<>(JuryRiggedRatUpgradeMenu::new, FeatureFlags.REGISTRY.allFlags()));

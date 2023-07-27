@@ -69,8 +69,4 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 			}
 		}
 	}
-
-	private float getPower(Level level, BlockPos pos) {
-		return level.getBlockState(pos).getEnchantPowerBonus(level, pos);
-	}
 }

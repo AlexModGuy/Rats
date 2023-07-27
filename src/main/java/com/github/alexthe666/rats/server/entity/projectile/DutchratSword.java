@@ -17,9 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DutchratSword extends ThrowableProjectile {
 
-	@Nullable
-	private Entity target;
-
 	public DutchratSword(EntityType<? extends ThrowableProjectile> type, Level level) {
 		super(type, level);
 	}
