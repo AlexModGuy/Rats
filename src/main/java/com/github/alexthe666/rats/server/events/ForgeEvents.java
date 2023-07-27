@@ -20,6 +20,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,10 +31,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -53,6 +51,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -65,6 +64,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -209,6 +209,19 @@ public class ForgeEvents {
 			List<CustomSpawner> spawners = new ArrayList<>(server.customSpawners);
 			spawners.add(new PlagueDoctorSpawner(server));
 			server.customSpawners = spawners;
+		}
+	}
+
+	@SubscribeEvent
+	public static void maybeSendPlayerWarning(PlayerEvent.PlayerLoggedInEvent event) {
+		if (!event.getEntity().level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+			CompoundTag playerData = event.getEntity().getPersistentData();
+			CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
+			if (data != null && !data.getBoolean("rats_griefing_warning")) {
+				event.getEntity().displayClientMessage(Component.translatable("entity.rats.rat.griefing_off").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
+				data.putBoolean("rats_griefing_warning", true);
+				playerData.put(Player.PERSISTED_NBT_TAG, data);
+			}
 		}
 	}
 
