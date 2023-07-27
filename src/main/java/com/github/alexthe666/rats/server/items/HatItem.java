@@ -74,7 +74,7 @@ public class HatItem extends ArmorItem {
 		}
 		if (this == RatsItemRegistry.PIPER_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(10.0F));
-			stack.translate(0.0F, 0.1F, 0.1F);
+			stack.translate(0.0F, 0.0F, 0.1F);
 		}
 		if (this == RatsItemRegistry.PIRAT_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
@@ -91,47 +91,45 @@ public class HatItem extends ArmorItem {
 		}
 		if (this == RatsItemRegistry.ARCHEOLOGIST_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0.0F, -0.1F, 0.0F);
 			stack.scale(1.425F, 1.425F, 1.425F);
 		}
 		if (this == RatsItemRegistry.FARMER_HAT.get() || this == RatsItemRegistry.FISHERMAN_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0.0F, -0.1F, 0.0F);
 			stack.scale(1.425F, 1.425F, 1.425F);
 		}
 		if (this == RatsItemRegistry.PLAGUE_DOCTOR_MASK.get() || this == RatsItemRegistry.BLACK_DEATH_MASK.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(15.0F));
-			stack.translate(0.0F, 0.0F, 0.0F);
+			stack.translate(0.0F, -0.1F, 0.0F);
 			stack.scale(1.5F, 1.2F, 1.5F);
 		}
 		if (this == RatsItemRegistry.RAT_FEZ.get()) {
-			stack.translate(-0.15F, -0.05F, -0.1F);
+			stack.translate(-0.05F, -0.15F, -0.1F);
 			stack.scale(1.425F, 1.425F, 1.425F);
 		}
 		if (this == RatsItemRegistry.TOP_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0.0F, -0.125F, 0.0F);
 			stack.scale(1.425F, 1.425F, 1.425F);
 		}
 		if (this == RatsItemRegistry.SANTA_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
-			stack.translate(0.0F, 0.1F, 0.1F);
+			stack.translate(0.0F, 0.0F, 0.1F);
 			stack.scale(1.25F, 1.25F, 1.25F);
 		}
 		if (this == RatlantisItemRegistry.MILITARY_HAT.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0.0F, -0.1F, 0.0F);
 			stack.scale(1.425F, 1.425F, 1.425F);
 		}
 		if (this == RatsItemRegistry.RAT_KING_CROWN.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
-			stack.translate(0.0F, 0.075F, 0.0F);
 			stack.scale(1.25F, 1.25F, 1.25F);
 		}
 		if (this == RatlantisItemRegistry.AVIATOR_HAT.get()) {
 			stack.scale(1.25F, 1.25F, 1.25F);
-			stack.translate(0, 0.035F, 0.01F);
-		}
-		if (this == RatlantisItemRegistry.RATLANTIS_HELMET.get()) {
-			stack.scale(1.25F, 1.25F, 1.25F);
-			stack.translate(0, -0.1F, 0.01F);
-			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0, -0.035F, 0.01F);
 		}
 	}
 

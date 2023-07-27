@@ -68,7 +68,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 						stack.translate(0.0D, 0.025D, -0.05D);
 						stack.scale(0.65F, 0.65F, 0.65F);
 					}
-					stack.translate(0, -0.375F, -0.045F);
+					stack.translate(0, -0.325F, -0.045F);
 					stack.scale(0.55F, 0.55F, 0.55F);
 					if (itemstack.getItem() instanceof HatItem hat) {
 						hat.transformOnHead(rat, stack);
@@ -107,13 +107,15 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 						}
 					} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
 						stack.mulPose(Axis.YP.rotationDegrees(180));
-						stack.translate(0.0D, 0.6D, -0.05D);
-						stack.scale(1.8F, 1.8F, 1.8F);
+						stack.translate(0.0D, 0.55D, -0.0D);
+						stack.scale(2.0F, 2.0F, 2.0F);
 						if (rat.isBaby()) {
 							stack.scale(0.3F, 0.3F, 0.3F);
 							stack.translate(0.0D, -0.75D, -0.25D);
 						}
 					}
+					stack.translate(0.0D, -0.1D, 0.0D);
+					stack.scale(0.85F, 0.85F, 0.85F);
 					Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 				}
 			}
