@@ -36,13 +36,9 @@ public class RatGolemMount extends RatMountBase {
 
 	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
+		this.setMaxUpStep(1.0F);
 		this.riderY = 1.95F;
 		this.riderXZ = -0.1F;
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

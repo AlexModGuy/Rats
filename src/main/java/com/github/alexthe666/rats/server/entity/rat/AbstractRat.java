@@ -85,14 +85,14 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected AbstractRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
 		this.moveControl = new RatMoveControl(this);
-		this.setPathfindingMalus(BlockPathTypes.FENCE, 0.0F);
+		this.setPathfindingMalus(BlockPathTypes.FENCE, RatConfig.ratsClimbOverFences ? 0.0F : -1.0F);
 		this.setPathfindingMalus(BlockPathTypes.RAIL, 0.0F);
 		this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
 	}
 
 	@Override
-	public float getStepHeight() {
-		return 1.55F;
+	public float maxUpStep() {
+		return RatConfig.ratsClimbOverFences ? 1.55F : 1.0F;
 	}
 
 	@Override

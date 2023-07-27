@@ -17,7 +17,9 @@ import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
 import com.google.common.collect.Multimap;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -73,9 +75,11 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -209,6 +213,17 @@ public class ForgeEvents {
 			List<CustomSpawner> spawners = new ArrayList<>(server.customSpawners);
 			spawners.add(new PlagueDoctorSpawner(server));
 			server.customSpawners = spawners;
+		}
+
+		if (event.getLevel() instanceof ClientLevel level) {
+			if (RatsMod.MOB_CACHE.isEmpty()) {
+				List<Pair<String, Component>> unsortedCache = new ArrayList<>();
+				ForgeRegistries.ENTITY_TYPES.getEntries().stream().filter(entry -> entry.getValue().create(level) instanceof Mob || entry.getValue() == EntityType.PLAYER).forEach(entry ->
+						unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription())));
+
+				RatsMod.MOB_CACHE.addAll(unsortedCache.stream().sorted(Comparator.comparing(o -> o.getSecond().getString())).toList());
+				RatsMod.LOGGER.debug("Cached {} mob ids for later use.", RatsMod.MOB_CACHE.size());
+			}
 		}
 	}
 

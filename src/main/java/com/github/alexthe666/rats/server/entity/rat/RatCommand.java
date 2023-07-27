@@ -4,12 +4,11 @@ public enum RatCommand {
 	WANDER(true, true, true, true, false),
 	SIT(false, true, false, false, false),
 	FOLLOW(true, true, false, true, false),
-	HUNT_ANIMALS(true, false, true, true, true),
+	HUNT(true, false, true, true, true),
 	GATHER(true, false, false, false, true),
 	HARVEST(true, false, false, false, true),
 	TRANSPORT(true, false, false, false, true),
-	HUNT_MONSTERS(true, false, true, true, false),
-	PATROL(true, true, true, true, false);
+	PATROL(true, true, false, true, false);
 
 	public final boolean freeMove;
 	public final boolean allowsEating;

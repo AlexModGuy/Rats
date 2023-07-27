@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
-import com.github.alexthe666.rats.client.model.entity.PinkieModel;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;

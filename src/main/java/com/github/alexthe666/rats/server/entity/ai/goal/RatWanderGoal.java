@@ -23,7 +23,7 @@ public class RatWanderGoal extends WaterAvoidingRandomStrollGoal {
 
 	@Override
 	public boolean canUse() {
-		return this.rat.canMove() && this.rat.shouldWander() && !this.rat.isPatrolCommand() && super.canUse();
+		return this.rat.canMove() && this.rat.shouldWander() && super.canUse();
 	}
 
 	@Override

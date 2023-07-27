@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.gui;
 
+import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatTagPacket;
@@ -83,7 +84,7 @@ public class PatrolStaffScreen extends Screen {
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
 		if (this.rat != null) {
-			RatScreen.drawEntityOnScreen(i + 114, j + 40, 70, 0.0F, 0.0F, this.rat, true);
+			EntityRenderingUtil.drawEntityOnScreen(i + 114, j + 40, 70, 0.0F, 0.0F, this.rat, true);
 		}
 
 	}

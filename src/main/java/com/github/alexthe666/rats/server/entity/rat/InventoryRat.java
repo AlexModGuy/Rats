@@ -278,12 +278,8 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 		return this.getCommandInteger() == 4 || this.getCommandInteger() == 5;
 	}
 
-	public boolean shouldHuntAnimal() {
-		return this.getCommandInteger() == 3;
-	}
-
-	public boolean shouldHuntMonster() {
-		return this.getCommandInteger() == 7 || this.isPatrolCommand();
+	public boolean shouldHunt() {
+		return this.getCommandInteger() == 3 || this.isPatrolCommand();
 	}
 
 	public boolean shouldWander() {

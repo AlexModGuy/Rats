@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
-import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -26,13 +26,9 @@ public class RatChickenMount extends RatMountBase {
 
 	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
+		this.setMaxUpStep(1.0F);
 		this.riderY = 0.55F;
 		this.riderXZ = 0.1F;
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override

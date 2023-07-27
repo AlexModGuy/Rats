@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 
 public class RattlingGunBullet extends ArrowlikeProjectile {
@@ -37,8 +35,6 @@ public class RattlingGunBullet extends ArrowlikeProjectile {
 	protected boolean canHitEntity(Entity entity) {
 		if (this.getOwner() == null) return true;
 		if (this.getOwner() instanceof TamedRat rat) {
-			if (rat.shouldHuntMonster() && !(entity instanceof Enemy)) return false;
-			if (rat.shouldHuntAnimal() && !(entity instanceof Animal)) return false;
 			if (rat.getTarget() != entity) return false;
 		}
 		return entity != this && entity != this.getOwner() && !this.getOwner().isAlliedTo(entity);

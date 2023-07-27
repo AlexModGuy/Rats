@@ -32,6 +32,7 @@ public class RatsNetworkHandler {
 		CHANNEL.registerMessage(id++, SyncRatTagPacket.class, SyncRatTagPacket::encode, SyncRatTagPacket::decode, SyncRatTagPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, SyncThrownBlockPacket.class, SyncThrownBlockPacket::encode, SyncThrownBlockPacket::decode, SyncThrownBlockPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, UpdateCurdlerFluidPacket.class, UpdateCurdlerFluidPacket::encode, UpdateCurdlerFluidPacket::decode, UpdateCurdlerFluidPacket.Handler::handle);
+		CHANNEL.registerMessage(id++, UpdateMobFilterPacket.class, UpdateMobFilterPacket::encode, UpdateMobFilterPacket::decode, UpdateMobFilterPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, UpdateRatFluidPacket.class, UpdateRatFluidPacket::encode, UpdateRatFluidPacket::decode, UpdateRatFluidPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, UpdateSelectedRatPacket.class, UpdateSelectedRatPacket::encode, UpdateSelectedRatPacket::decode, UpdateSelectedRatPacket.Handler::handle);
 	}

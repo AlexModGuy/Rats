@@ -22,6 +22,7 @@ public class RatConfig {
 	public static boolean ratsBreakCrops = true;
 	public static boolean ratsStealItems = true;
 	public static boolean ratsContaminateFood = true;
+	public static boolean ratsClimbOverFences = true;
 	public static boolean golemsTargetRats = true;
 	public static boolean villagePetShops = true;
 	public static int villagePetShopWeight = 15;
@@ -129,6 +130,7 @@ public class RatConfig {
 			ratsDigBlocks = ConfigHolder.SERVER.ratsDigBlocks.get();
 			ratsBreakCrops = ConfigHolder.SERVER.ratsBreakCrops.get();
 			ratsStealItems = ConfigHolder.SERVER.ratsStealItems.get();
+			ratsClimbOverFences = ConfigHolder.SERVER.ratsClimbOverFences.get();
 			ratsContaminateFood = ConfigHolder.SERVER.ratsContaminateFood.get();
 			golemsTargetRats = ConfigHolder.SERVER.golemsTargetRats.get();
 			villagePetShops = ConfigHolder.SERVER.villagePetShops.get();

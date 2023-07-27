@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.data.ratlantis;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisItemTags;
 import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.*;

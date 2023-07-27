@@ -15,6 +15,7 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue ratsDigBlocks;
 	public final ForgeConfigSpec.BooleanValue ratsBreakCrops;
 	public final ForgeConfigSpec.BooleanValue ratsStealItems;
+	public final ForgeConfigSpec.BooleanValue ratsClimbOverFences;
 	public final ForgeConfigSpec.BooleanValue ratsContaminateFood;
 	public final ForgeConfigSpec.BooleanValue golemsTargetRats;
 	public final ForgeConfigSpec.BooleanValue villagePetShops;
@@ -160,6 +161,7 @@ public class ServerConfig {
 		builder.pop().push("Rat Griefing");
 		this.ratsBreakCrops = buildBoolean(builder, "Rats Raid Crops", true, "True if wild rats will destroy and eat crops");
 		this.ratsStealItems = buildBoolean(builder, "Rats Steal From Chests", true, "True if wild rats will steal from chests");
+		this.ratsClimbOverFences = buildBoolean(builder, "Rats Climb over Fences and Walls", true, "True if wild rats should be allowed to climb over tall blocks, such as fences and walls.");
 		this.ratsContaminateFood = buildBoolean(builder, "Rats Contaminate Food", true, "True if wild rats contaminate food when they steal from chests");
 		this.ratsDigBlocks = buildBoolean(builder, "Rats Dig Holes", true, "True if rats can dig holes");
 		this.plagueSpread = buildBoolean(builder, "Other Mobs can spread Plague", true, "True if infected mobs with plague can spread it by interacting or attacking.");

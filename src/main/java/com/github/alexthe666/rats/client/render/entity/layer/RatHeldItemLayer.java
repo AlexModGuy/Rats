@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 import com.github.alexthe666.rats.client.model.ChristmasChestModel;
 import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
-import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;

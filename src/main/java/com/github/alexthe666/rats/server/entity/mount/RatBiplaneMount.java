@@ -37,6 +37,7 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 
 	public RatBiplaneMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
+		this.setMaxUpStep(1.0F);
 		this.riderY = 1.35F;
 		this.riderXZ = -0.35F;
 		this.moveControl = new PlaneMoveControl<>(this);
@@ -44,11 +45,6 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 			this.roll_buffer = new PlaneRotationUtil();
 			this.pitch_buffer = new PlaneRotationUtil();
 		}
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override

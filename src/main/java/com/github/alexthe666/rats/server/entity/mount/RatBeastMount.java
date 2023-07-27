@@ -33,11 +33,7 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 
 	public RatBeastMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
+		this.setMaxUpStep(1.0F);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

@@ -18,10 +18,7 @@ import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
-import com.github.alexthe666.rats.server.items.upgrades.BucketRatUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.EnergyRatUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.MountRatUpgradeItem;
-import com.github.alexthe666.rats.server.items.upgrades.OreDoublingRatUpgradeItem;
+import com.github.alexthe666.rats.server.items.upgrades.*;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.*;
 import com.github.alexthe666.rats.server.message.ManageRatStaffPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
@@ -61,10 +58,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.DyeItem;
@@ -94,9 +88,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -130,6 +122,7 @@ public class TamedRat extends InventoryRat {
 	private Goal pickupGoal;
 	private Goal depositGoal;
 	private Goal attackGoal;
+	private Goal targetGoal;
 	/*
 	   0 = tamed navigator
 	   1 = flight navigator
@@ -156,6 +149,11 @@ public class TamedRat extends InventoryRat {
 		this.setupDynamicAI();
 	}
 
+	@Override
+	public float maxUpStep() {
+		return 1.0F;
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 8.0D)
@@ -171,6 +169,7 @@ public class TamedRat extends InventoryRat {
 		this.pickupGoal = new RatPickupGoal(this, RatPickupGoal.PickupType.INVENTORY);
 		this.depositGoal = new RatDepositGoal(this, RatDepositGoal.DepositType.INVENTORY);
 		this.attackGoal = new RatMeleeAttackGoal(this, 1.3D, true);
+		this.targetGoal = new RatHuntGoal(this, true, new ArrayList<>());
 		this.goalSelector.addGoal(0, new RatFloatGoal(this));
 		this.goalSelector.addGoal(1, this.attackGoal);
 		this.goalSelector.addGoal(2, new RatFollowOwnerGoal(this, 1.25D, 10.0F, 3.0F));
@@ -194,8 +193,7 @@ public class TamedRat extends InventoryRat {
 			}
 		});
 		this.targetSelector.addGoal(0, new RatTargetItemsGoal(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Animal.class, true, entity -> EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && !entity.isBaby() && TamedRat.this.canMove() && TamedRat.this.shouldHuntAnimal()));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, true, entity -> entity instanceof Enemy && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity) && TamedRat.this.canMove() && TamedRat.this.shouldHuntMonster()));
+		this.targetSelector.addGoal(1, this.targetGoal);
 		this.targetSelector.addGoal(2, new RatOwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(3, new RatOwnerHurtTargetGoal(this));
 	}
@@ -235,6 +233,17 @@ public class TamedRat extends InventoryRat {
 			this.goalSelector.addGoal(3, this.depositGoal);
 			this.goalSelector.addGoal(4, this.pickupGoal);
 			this.goalSelector.addGoal(5, this.harvestGoal);
+
+			this.targetSelector.removeGoal(this.targetGoal);
+			ItemStack filterUpgrade = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_MOB_FILTER.get());
+
+			if (!filterUpgrade.isEmpty()) {
+				this.targetGoal = new RatHuntGoal(this, MobFilterUpgradeItem.isWhitelist(filterUpgrade), MobFilterUpgradeItem.getSelectedMobs(filterUpgrade));
+			} else {
+				this.targetGoal = new RatHuntGoal(this, true, new ArrayList<>());
+			}
+
+			this.targetSelector.addGoal(1, this.targetGoal);
 
 			if (this.hasFlightUpgrade()) {
 				this.switchNavigator(1);

@@ -1,12 +1,10 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
-import com.github.alexthe666.rats.client.events.ModClientEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,8 +12,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -219,6 +215,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_EXTREME_ENERGY.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_WHITELIST.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_MOB_FILTER.get());
 
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TIME_MANIPULATOR.get());

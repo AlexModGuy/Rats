@@ -72,6 +72,7 @@ public class RatsMod {
 	public static boolean ICEANDFIRE_LOADED;
 	public static boolean RATLANTIS_DATAPACK_ENABLED = false;
 	public static final List<Item> RATLANTIS_ITEMS = new ArrayList<>();
+	public static final List<Pair<String, Component>> MOB_CACHE = new ArrayList<>();
 
 	public RatsMod() {
 		ICEANDFIRE_LOADED = ModList.get().isLoaded("iceandfire");

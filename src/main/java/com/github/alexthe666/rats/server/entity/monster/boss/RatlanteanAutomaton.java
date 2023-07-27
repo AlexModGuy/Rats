@@ -52,14 +52,10 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 
 	public RatlanteanAutomaton(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
+		this.setMaxUpStep(2.0F);
 		this.getNavigation().setCanFloat(true);
 		this.xpReward = 50;
 		this.moveControl = new FlyingMoveControl(this, 10, false);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 2.0F;
 	}
 
 	public boolean canDestroyBlock(BlockState state, BlockPos pos) {

@@ -32,8 +32,6 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -71,6 +69,10 @@ public class ModClientEvents {
 
 	public static boolean shouldRenderNameplates() {
 		return Minecraft.getInstance().screen == null || !(Minecraft.getInstance().screen instanceof RatScreen) && !(Minecraft.getInstance().screen instanceof CheeseStaffScreen);
+	}
+
+	public static void openMobFilterScreen(ItemStack upgrade) {
+		Minecraft.getInstance().setScreen(new MobFilterScreen(upgrade));
 	}
 
 	@SubscribeEvent
