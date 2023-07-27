@@ -877,6 +877,7 @@ public class TamedRat extends InventoryRat {
 				}
 				this.setToga(!this.hasToga());
 				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
+				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
 				this.setDyeColor(0);
