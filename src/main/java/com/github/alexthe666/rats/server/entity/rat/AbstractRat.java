@@ -465,7 +465,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	@Override
 	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return this.isOrderedToSit() && this.sleepProgress <= 0.0F ? super.getStandingEyeHeight(pose, dimensions) : dimensions.height * 0.5F;
+		return this.sitProgress > 0.0F && this.sleepProgress <= 0.0F ? super.getStandingEyeHeight(pose, dimensions) : dimensions.height * 0.5F;
 	}
 
 	@Override

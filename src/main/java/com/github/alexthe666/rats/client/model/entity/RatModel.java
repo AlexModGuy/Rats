@@ -220,7 +220,7 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 		float ulatingScale = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
 		if (!rat.isDeadInTrap()) {
 			if (ModClientEvents.shouldRenderNameplates() && rat.getAnimation() != AbstractRat.ANIMATION_IDLE_SCRATCH && (!(rat instanceof TamedRat realRat) || !realRat.isInWheel())) {
-				this.head.rotateAngleX = (f4 + (rat.isInSittingPose() ? 45 : 0)) * ((float) Math.PI / 180F);
+				this.head.rotateAngleX = (f4 + (rat.isInSittingPose() && !(rat.sleepProgress > 0.0F) ? 45 : 0)) * ((float) Math.PI / 180F);
 				this.head.rotateAngleY = f3 * ((float) Math.PI / 180F);
 			}
 
