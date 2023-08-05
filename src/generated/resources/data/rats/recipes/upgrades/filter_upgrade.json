@@ -1,0 +1,53 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "rats:rat_upgrade_blacklist"
+    },
+    "D": [
+      {
+        "item": "minecraft:rotten_flesh"
+      },
+      {
+        "item": "minecraft:bone"
+      },
+      {
+        "item": "minecraft:string"
+      },
+      {
+        "item": "minecraft:spider_eye"
+      },
+      {
+        "item": "minecraft:feather"
+      },
+      {
+        "item": "minecraft:leather"
+      },
+      {
+        "item": "minecraft:ender_pearl"
+      },
+      {
+        "item": "minecraft:ink_sac"
+      },
+      {
+        "item": "minecraft:slime_ball"
+      }
+    ],
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "item": "rats:rat_upgrade_whitelist"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "WUB",
+    "DDD"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_mob_filter"
+  },
+  "show_notification": true
+}

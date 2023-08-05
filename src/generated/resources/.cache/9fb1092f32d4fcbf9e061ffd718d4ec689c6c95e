@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T08:33:48.5770458	Recipes
+// 1.20.1	2023-08-04T20:20:19.0983994	Recipes
 ebaaaf0902a3fcf612166371cab9d27b42bbbc1f data/rats/advancements/recipes/building_blocks/auto_curdler.json
 987bd89935ed98bb9364bd497e27180b979b7fc4 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
 a5dd1a2bb72dc214a29362949d0dde182ac23a42 data/rats/advancements/recipes/building_blocks/block_of_cheese.json
@@ -161,12 +161,14 @@ e0e708aec78ac1daf499011bafd82fefdddc2540 data/rats/advancements/recipes/misc/upg
 1e4caed2039e33d61b84518ba0cb622d6632bae3 data/rats/advancements/recipes/misc/upgrades/damage_protection_upgrade.json
 a8d21c2652b43617bd39284aba40b039a321729c data/rats/advancements/recipes/misc/upgrades/demon_upgrade.json
 55e802f42536835e153387f65a736e36dc5dd235 data/rats/advancements/recipes/misc/upgrades/disenchanter_upgrade.json
+8687fd3cb239ed34838398ac8d9ccf9d67c0a896 data/rats/advancements/recipes/misc/upgrades/dj_upgrade.json
 9d46b2651a4bf4a3cb4d7e469371a455ce38606a data/rats/advancements/recipes/misc/upgrades/dragon_upgrade.json
 69071efd7b4b8ea2b176fb4a6d5f383707ea260a data/rats/advancements/recipes/misc/upgrades/elite_energy_upgrade.json
 7732a780614b28d42c75e8f4838f4300485f92b5 data/rats/advancements/recipes/misc/upgrades/enchanter_upgrade.json
 cac0d98a2dd0479fa1a5ae59aff909aa83dc325b data/rats/advancements/recipes/misc/upgrades/ender_upgrade.json
 77ae82f705194c5919de7d240132c561ba514c2f data/rats/advancements/recipes/misc/upgrades/extreme_energy_upgrade.json
 73e17424996b86b4b586abc9bf905b98a0725654 data/rats/advancements/recipes/misc/upgrades/farmer_upgrade.json
+f28457ad123bbaab9408c2d721bb18944deda051 data/rats/advancements/recipes/misc/upgrades/filter_upgrade.json
 4fda8cb544587e570ba8bf74c5aab0ef66d877a1 data/rats/advancements/recipes/misc/upgrades/fisherman_upgrade.json
 8c7a2872bbce668a2bd63ac0d7b0103dcf04a374 data/rats/advancements/recipes/misc/upgrades/flight_upgrade.json
 b8402a15327705fab9b84badd51b91dbf7bc8cde data/rats/advancements/recipes/misc/upgrades/flute_upgrade.json
@@ -191,6 +193,7 @@ a9c55345e1c3509be60494d7948e2ba81501ea04 data/rats/advancements/recipes/misc/upg
 92b2c490ad5e6bcea238e701f5cb9ef2db966d28 data/rats/advancements/recipes/misc/upgrades/speed_upgrade.json
 df3bca8e880bf442d4df1173544ac2584a638a2a data/rats/advancements/recipes/misc/upgrades/strength_upgrade.json
 caa94d97bd5290992cde704daa8cae13578e280f data/rats/advancements/recipes/misc/upgrades/strider_mount_upgrade.json
+d3b1357eefcc92e6faa5015aa0a8010f146132c6 data/rats/advancements/recipes/misc/upgrades/support_upgrade.json
 cf4437db0fedb1df0880f3a92e4c3f03cb531834 data/rats/advancements/recipes/misc/upgrades/tick_accelerator_upgrade.json
 8f5fbf4bff0f558766d0f535328f355b3c25eb7a data/rats/advancements/recipes/misc/upgrades/time_manipulator_upgrade.json
 374b2e4c1c009f2bcb336b351dc47ff45e3c29fc data/rats/advancements/recipes/misc/upgrades/tnt_survivor_upgrade.json
@@ -378,12 +381,14 @@ ffb31d5430c8759a79960d243f56aa0f598a5899 data/rats/recipes/upgrades/crossbow_upg
 eddd5feb9568b43bd240027cddd001a4e42d68fb data/rats/recipes/upgrades/damage_protection_upgrade.json
 c3680c4f3bdec9112d6e080a0b1958ecdfa2759a data/rats/recipes/upgrades/demon_upgrade.json
 749bbf4f0c4b2d282ff29077997f6ce83f6bd822 data/rats/recipes/upgrades/disenchanter_upgrade.json
+483bf79cd84270fadc920ca9169d2fcec6709cd2 data/rats/recipes/upgrades/dj_upgrade.json
 ac56463c4d460c278b72edb263418a02b44edba3 data/rats/recipes/upgrades/dragon_upgrade.json
 a3e3a8498dcc457df3139aa60232ecdc9b98582d data/rats/recipes/upgrades/elite_energy_upgrade.json
 f981c3892d8289599e1412edee714d079a46b16e data/rats/recipes/upgrades/enchanter_upgrade.json
 8a10af1ef1d9c0c5f478da5efe9c7413f9eeff8a data/rats/recipes/upgrades/ender_upgrade.json
 c158ff0afa4f348d98bfbcc6dc1d92286b2bfd1c data/rats/recipes/upgrades/extreme_energy_upgrade.json
 76e49f1538d781d008ab33614ae3c17baa6b45b1 data/rats/recipes/upgrades/farmer_upgrade.json
+fdd294cd15d0b4621698cc276e7259e5eb0965e9 data/rats/recipes/upgrades/filter_upgrade.json
 3f9be31b4a6e4cafa11dfaf2d9d80b204d104b33 data/rats/recipes/upgrades/fisherman_upgrade.json
 8f01e4fa4aae8b55dffa668410efd16abbc1aa0c data/rats/recipes/upgrades/flight_upgrade.json
 7b8c99782d0e8c8cdb850b25ada8f2fa56629c19 data/rats/recipes/upgrades/flute_upgrade.json
@@ -408,6 +413,7 @@ f37b53f2d8071cc2471684efa6deee21f798a55b data/rats/recipes/upgrades/shears_upgra
 35ac1839e574214c015ec3e85433da1aad65db92 data/rats/recipes/upgrades/speed_upgrade.json
 8db854c78d7c3fb844f7e09ea9cbbf02657a0c8c data/rats/recipes/upgrades/strength_upgrade.json
 603112fdfa9fe478d4b2d76915f55d5c4ce62658 data/rats/recipes/upgrades/strider_mount_upgrade.json
+53111a391aeeba54e2e50e1d4762dcf169933f74 data/rats/recipes/upgrades/support_upgrade.json
 c44c5a0288725c284b6be19b871d4c929d40e2c2 data/rats/recipes/upgrades/tick_accelerator_upgrade.json
 d18533147b89dd4e6c54a81cd35146c5caddc0b8 data/rats/recipes/upgrades/time_manipulator_upgrade.json
 021c9951895241d81333168ffc69c816110aff4a data/rats/recipes/upgrades/tnt_survivor_upgrade.json

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:brewing_stand"
+    },
+    "G": {
+      "item": "minecraft:glass_bottle"
+    },
+    "M": {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "item": "minecraft:nether_wart"
+    }
+  },
+  "pattern": [
+    "WMW",
+    "GUG",
+    "WBW"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_support"
+  },
+  "show_notification": true
+}

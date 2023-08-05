@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -607,6 +608,37 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('R', Tags.Items.DYES_RED).unlockedBy("has_dye", has(Tags.Items.DYES_RED))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/flute_upgrade"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MOB_FILTER.get())
+				.pattern("DDD")
+				.pattern("WUB")
+				.pattern("DDD")
+				.define('D', Ingredient.of(Items.ROTTEN_FLESH, Items.BONE, Items.STRING, Items.SPIDER_EYE, Items.FEATHER, Items.LEATHER, Items.ENDER_PEARL, Items.INK_SAC, Items.SLIME_BALL))
+				.define('W', RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()).unlockedBy("has_whitelist", has(RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()))
+				.define('B', RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()).unlockedBy("has_blacklist", has(RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/filter_upgrade"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_DJ.get())
+				.pattern("PMP")
+				.pattern("PUP")
+				.pattern("PDP")
+				.define('P', ItemTags.PLANKS).unlockedBy("has_planks", has(ItemTags.PLANKS))
+				.define('M', ItemTags.MUSIC_DISCS).unlockedBy("has_disc", has(ItemTags.MUSIC_DISCS))
+				.define('D', Tags.Items.GEMS_DIAMOND).unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/dj_upgrade"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_SUPPORT.get())
+				.pattern("WMW")
+				.pattern("GUG")
+				.pattern("WBW")
+				.define('W', Items.NETHER_WART).unlockedBy("has_wart", has(Items.NETHER_WART))
+				.define('M', Items.GLISTERING_MELON_SLICE).unlockedBy("has_slice", has(Items.GLISTERING_MELON_SLICE))
+				.define('G', Items.GLASS_BOTTLE).unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
+				.define('B', Items.BREWING_STAND).unlockedBy("has_stand", has(Items.BREWING_STAND))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/support_upgrade"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_CARRAT.get())
 				.pattern("GCG")
