@@ -1,90 +1,61 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7.+'
-    }
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
+version = "${project.mod_version}-${project.minecraft_version}"
+group = group_name
 
-version = "8.0.6-${project.minecraft_version}"
-group = 'com.github.alexthe666.rats'
-archivesBaseName = 'rats'
+base {
+    archivesName = mod_name
+}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    mappings channel: 'official', version: "${project.minecraft_version}"
+    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
+    mappings channel: mapping_channel, version: mapping_version
+
+    copyIdeResources = true
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client {
+        configureEach {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'rats'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            arg "-mixin.config="+"citadel.mixins.json"
-            arg "-mixin.config="+"rats.mixins.json"
+            property 'fml.earlyprogresswindow', 'false'
+            property 'mixin.env.disableRefMap', 'true'
 
             mods {
-                rats {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'rats'
-            arg "-mixin.config="+"citadel.mixins.json"
-            arg "-mixin.config="+"rats.mixins.json"
-
-            mods {
-                rats {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
         }
 
-        gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'rats'
-            arg "-mixin.config="+"citadel.mixins.json"
-            arg "-mixin.config="+"rats.mixins.json"
-
-            mods {
-                rats {
-                    source sourceSets.main
-                }
-            }
+       gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'rats', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                rats {
-                    source sourceSets.main
-                }
-            }
+            workingDirectory project.file('run-data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
@@ -99,20 +70,14 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-
     maven {
         name 'Jared\'s Maven' // JEI
         url 'https://maven.blamejared.com/'
     }
-
-    maven {
-        name 'Gitlab Maven' // Debugging Utils
-        url "https://gitlab.com/api/v4/projects/21830712/packages/maven"
-    }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    minecraft "net.neoforged:forge:${project.minecraft_version}-${project.neo_version}"
 
     implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
     implementation fg.deobf("curse.maven:citadel-331936:4579078")
@@ -121,37 +86,73 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, "rats.refmap.json"
-    config 'rats.mixins.json'
+    add sourceSets.main, "${project.mod_id}.refmap.json"
+    config "${project.mod_id}.mixins.json"
 }
 
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "Rats",
-                "Specification-Vendor"    : "AlexThe666",
-                "Specification-Version"   : "${version}",
-                "Implementation-Title"    : "Rats",
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "AlexThe666",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version: neo_version,
+            neo_version_range: neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id,
+            mod_name: mod_name,
+            mod_authors: mod_authors,
+            mod_version: version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties + [project: project]
     }
 }
 
-jar.finalizedBy('reobfJar')
+tasks.named('jar', Jar).configure {
+    manifest {
+        archiveClassifier = 'universal'
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : "TeamTwilight",
+                'Specification-Version'   : "1",
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : "TeamTwilight",
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    finalizedBy 'reobfJar'
+}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
+            afterEvaluate {
+                artifact project.jar
+                artifact project.sourceJar
+            }
+            setGroupId 'teamtwilight'
+            setArtifactId project.mod_id
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            //url "file:///${project.projectDir}/mcmodsrepo"
+            url "https://modmaven.dev:443/artifactory/local-releases"
+            credentials {
+                username System.getenv('ARTIFACTORY_USER')
+                password System.getenv('ARTIFACTORY_PASS')
+            }
         }
     }
+}
+
+tasks.register('sourceJar', Jar) {
+    dependsOn 'classes'
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -19,7 +19,6 @@ import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -208,17 +207,17 @@ public class ForgeEvents {
 	}
 
 	@SubscribeEvent
-	public static void addPlagueDoctorSpawning(LevelEvent.Load event) {
+	public static void addPlagueDoctorSpawningAndCacheMobs(LevelEvent.Load event) {
 		if (event.getLevel() instanceof ServerLevel server && server.dimension().equals(Level.OVERWORLD)) {
 			List<CustomSpawner> spawners = new ArrayList<>(server.customSpawners);
 			spawners.add(new PlagueDoctorSpawner(server));
 			server.customSpawners = spawners;
 		}
 
-		if (event.getLevel() instanceof ClientLevel level) {
+		if (event.getLevel().isClientSide()) {
 			if (RatsMod.MOB_CACHE.isEmpty()) {
 				List<Pair<String, Component>> unsortedCache = new ArrayList<>();
-				ForgeRegistries.ENTITY_TYPES.getEntries().stream().filter(entry -> entry.getValue().create(level) instanceof Mob || entry.getValue() == EntityType.PLAYER).forEach(entry ->
+				ForgeRegistries.ENTITY_TYPES.getEntries().stream().filter(entry -> entry.getValue().create((Level) event.getLevel()) instanceof Mob || entry.getValue() == EntityType.PLAYER).forEach(entry ->
 						unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription())));
 
 				RatsMod.MOB_CACHE.addAll(unsortedCache.stream().sorted(Comparator.comparing(o -> o.getSecond().getString())).toList());

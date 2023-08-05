@@ -15,7 +15,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-//TODO dont assume unsafe casting later on
 public record UpdateRatMusicPacket(int id, RecordItem record) {
 
 	public static UpdateRatMusicPacket decode(FriendlyByteBuf buf) {
@@ -28,13 +27,17 @@ public record UpdateRatMusicPacket(int id, RecordItem record) {
 	}
 
 	public static class Handler {
+		@SuppressWarnings("Convert2Lambda")
 		public static void handle(UpdateRatMusicPacket packet, Supplier<NetworkEvent.Context> context) {
-			context.get().enqueueWork(() -> {
-				if (Minecraft.getInstance().level != null) {
-					Entity entity = Minecraft.getInstance().level.getEntity(packet.id());
-					if (entity instanceof TamedRat rat) {
-						Minecraft.getInstance().getSoundManager().queueTickingSound(new RatRecordSoundInstance(rat, packet.record()));
-						Minecraft.getInstance().gui.setNowPlaying(packet.record().getDisplayName());
+			context.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					if (Minecraft.getInstance().level != null) {
+						Entity entity = Minecraft.getInstance().level.getEntity(packet.id());
+						if (entity instanceof TamedRat rat) {
+							Minecraft.getInstance().getSoundManager().queueTickingSound(new RatRecordSoundInstance(rat, packet.record()));
+							Minecraft.getInstance().gui.setNowPlaying(packet.record().getDisplayName());
+						}
 					}
 				}
 			});

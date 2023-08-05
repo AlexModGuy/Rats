@@ -1,32 +1,39 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
-license = "GNU LESSER GENERAL PUBLIC LICENSE"
+loaderVersion = "${loader_version_range}"
 issueTrackerURL = "https://github.com/Alex-the-666/Rats/issues"
+license = "GNU LESSER GENERAL PUBLIC LICENSE"
 
 [[mods]]
-modId = "rats"
-version = "${file.jarVersion}"
-displayName = "Rats"
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
 itemIcon = "rats:cheese"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/rats"
 logoFile = "rats_logo.png"
-authors = "Alexthe666, GizmoTheMoonPig"
+authors = "${mod_authors}"
 description = '''What are we going to do today Pinky?'''
 
 # order forge to load before us so we can properly replace the milk texture
-[[dependencies.rats]]
-modId = "forge"
-mandatory = true
-versionRange = "[46.0.14,47.1.3]"
-ordering = "BEFORE"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "${neo_version_range}"
+    ordering = "BEFORE"
+    side = "BOTH"
 
-[[dependencies.rats]]
-modId = "citadel"
-mandatory = true
-versionRange = "[2.2,)"
-ordering = "AFTER"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId = "citadel"
+    mandatory = true
+    versionRange = "[2.2,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.${mod_id}]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "${minecraft_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
 
 [modproperties.rats]
-configuredBackground="rats:textures/block/marbled_cheese.png"
+    configuredBackground = "rats:textures/block/marbled_cheese.png"
