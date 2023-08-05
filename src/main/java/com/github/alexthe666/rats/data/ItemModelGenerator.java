@@ -235,6 +235,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_SPEED);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_STRENGTH);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_STRIDER_MOUNT);
+		this.singleTex(RatsItemRegistry.RAT_UPGRADE_SUPPORT);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_TIME_MANIPULATOR);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_TNT);

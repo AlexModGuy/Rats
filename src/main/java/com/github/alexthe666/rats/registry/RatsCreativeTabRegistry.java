@@ -181,6 +181,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_VOODOO.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_SUPPORT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BREEDER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_FISHERMAN.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK.get());
