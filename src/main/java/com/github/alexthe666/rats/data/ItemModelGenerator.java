@@ -201,6 +201,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DEMON);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER);
+		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DJ);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DRAGON);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_ELITE_ENERGY);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_ENCHANTER);

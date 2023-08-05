@@ -409,6 +409,8 @@
   "item.rats.rat_upgrade_disenchanter.desc": "Rat will disenchant any enchanted held item",
   "item.rats.rat_upgrade_no_flute": "Rat Upgrade: Flute Denier",
   "item.rats.rat_upgrade_no_flute.desc": "Rat will not listen to flute commands",
+  "item.rats.rat_upgrade_dj": "Rat Upgrade: DJ",
+  "item.rats.rat_upgrade_dj.desc": "Rat will play held record",
   "item.rats.rat_upgrade_dragon": "Rat Upgrade: Dragon",
   "item.rats.rat_upgrade_dragon.desc0": "Rat can fly and breathe fire",
   "item.rats.rat_upgrade_dragon.desc1": "Rat will not take fire damage",

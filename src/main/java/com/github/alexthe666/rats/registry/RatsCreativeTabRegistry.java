@@ -171,7 +171,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_UNDEAD.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_CARRAT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_NO_FLUTE.get());
-
+				output.accept(RatsItemRegistry.RAT_UPGRADE_DJ.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ANGEL.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ASBESTOS.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_POISON.get());
@@ -181,7 +181,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TNT_SURVIVOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_VOODOO.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BREEDER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_FISHERMAN.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_LUMBERJACK.get());
@@ -195,7 +194,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GARDENER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_IDOL.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_SCULKED.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ENCHANTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_PLACER.get());
@@ -205,7 +203,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BUCKET.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_MILKER.get());
@@ -216,11 +213,9 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_WHITELIST.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_MOB_FILTER.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TICK_ACCELERATOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_TIME_MANIPULATOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_PLATTER.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_CHICKEN_MOUNT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT.get());
@@ -228,7 +223,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BEAST_MOUNT.get());
 				output.accept(RatlantisItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT.get());
 				output.accept(RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_COMBINED.get());
 				output.accept(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get());

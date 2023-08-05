@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-30T11:08:08.7739723	Item Models: rats
+// 1.20.1	2023-08-02T15:23:24.4939396	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -291,6 +291,7 @@ cc52a954ed1a55e5b16d25b7c0087f552184fb45 assets/rats/models/item/rat_upgrade_cre
 f544cf8463497b14d5af26d9253daa0e095125d5 assets/rats/models/item/rat_upgrade_damage_protection.json
 152049b740dc3c22bf42b985deff4e665045e95f assets/rats/models/item/rat_upgrade_demon.json
 10c8b787cc15533240bdab4fb3a5a58d89899a0a assets/rats/models/item/rat_upgrade_disenchanter.json
+d586cbc51e8ba63e48839476796f82b84c84aa67 assets/rats/models/item/rat_upgrade_dj.json
 f63578a36902138c835443b9658d082c148b1c66 assets/rats/models/item/rat_upgrade_dragon.json
 e518c224e492c4240b7defb13de8315986103624 assets/rats/models/item/rat_upgrade_elite_energy.json
 632c3253f4d3b4ebc345590dee29cd7cf1523201 assets/rats/models/item/rat_upgrade_enchanter.json
