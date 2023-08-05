@@ -7,7 +7,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = "${project.mod_version}-${project.minecraft_version}"
+version = "${project.minecraft_version}-${project.mod_version}"
 group = group_name
 
 base {
@@ -111,7 +111,6 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.named('jar', Jar).configure {
     manifest {
-        archiveClassifier = 'universal'
         attributes([
                 'Specification-Title'     : mod_id,
                 'Specification-Vendor'    : "TeamTwilight",
