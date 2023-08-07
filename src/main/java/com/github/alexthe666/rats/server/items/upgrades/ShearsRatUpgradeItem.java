@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ShearsRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, ChangesAIUpgrade {
 	public ShearsRatUpgradeItem(Properties properties) {
-		super(properties, 0, 1);
+		super(properties, 0, 2);
 	}
 
 	@Override
