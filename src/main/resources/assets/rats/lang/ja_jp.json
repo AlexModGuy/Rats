@@ -290,7 +290,7 @@
   "item.rats.rat_upgrade_farmer.desc1": "作物や苗木に骨粉を使うようになる",
   "item.rats.rat_upgrade_farmer.desc2": "Rats will randomly place any other held blocks",
   "item.rats.rat_upgrade_breeder": "Rat Upgrade: Animal Breeder",
-  "item.rats.rat_upgrade_breeder.desc0": "Rats will any held food to breeed animals when set to the 'Harvest' command",
+  "item.rats.rat_upgrade_breeder.desc0": "Rats will any held food to breed animals when set to the 'Harvest' command",
   "item.rats.rat_upgrade_breeder.desc1": "Rats will pickup food items from chests",
   "item.rats.rat_upgrade_fisherman": "ネズミアップグレード：釣り人",
   "item.rats.rat_upgrade_fisherman.desc0": "ネズミは水源へと赴き釣りを始める",
