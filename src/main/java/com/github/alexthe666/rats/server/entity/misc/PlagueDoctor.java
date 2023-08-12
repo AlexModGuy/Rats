@@ -35,10 +35,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -57,12 +59,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 
 	private static final EntityDataAccessor<Boolean> WILL_DESPAWN = SynchedEntityData.defineId(PlagueDoctor.class, EntityDataSerializers.BOOLEAN);
-	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && entity.hasEffect(RatsEffectRegistry.PLAGUE.get()) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION) || (entity instanceof Rat rat && rat.hasPlague());
+	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && (entity.hasEffect(RatsEffectRegistry.PLAGUE.get()) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION) || (entity instanceof Rat rat && rat.hasPlague()));
 
 	private BlockPos wanderTarget;
 	private int despawnDelay;
@@ -81,22 +84,22 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
 		this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), RatsSoundRegistry.PLAGUE_DOCTOR_REAPPEAR.get(), doctor -> this.level().isDay() && doctor.isInvisible()));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vex.class, 8.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 0.5D, 0.5D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 0.5D, 0.5D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vex.class, 8.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 1.1D, 1.35D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 1.1D, 1.35D));
 		this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-		this.goalSelector.addGoal(1, new PanicGoal(this, 0.5D));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.0D));
 		this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
 		this.goalSelector.addGoal(2, new RangedAttackGoal(this, 1.0D, 60, 10.0F));
-		this.goalSelector.addGoal(2, new PlagueDoctor.MoveToGoal(this, 2.0D, 0.35D));
+		this.goalSelector.addGoal(2, new PlagueDoctor.MoveToGoal(this, 2.0D, 1.2D));
 		this.goalSelector.addGoal(3, new PlagueDoctorFollowGolemGoal(this));
 		this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(new ItemStack(Blocks.POPPY)), false));
 		this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 1.0D));
-		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.35D));
+		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(9, new InteractGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, ZombieVillager.class, 0, true, false, entity -> entity != null && entity.isAlive() && !((ZombieVillager) entity).isConverting()));
@@ -126,7 +129,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.5D);
+				.add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
 	@Override
@@ -154,8 +157,8 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				this.level().broadcastEntityEvent(this, (byte) 77);
 			}
 
-			if (this.munchCounter == 10) {
-				this.heal(stack.getFoodProperties(this).getNutrition());
+			if (this.munchCounter == 10 && stack.getFoodProperties(this) != null) {
+				this.heal(Objects.requireNonNull(stack.getFoodProperties(this)).getNutrition());
 				this.addEatEffect(stack, this.level(), this);
 				stack.shrink(1);
 				this.munchCounter = 0;
@@ -183,6 +186,44 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		}
 
 		return false;
+	}
+
+	@Override
+	protected void pickUpItem(ItemEntity item) {
+		ItemStack itemstack = item.getItem();
+		if (this.canHoldItem(itemstack)) {
+			int i = itemstack.getCount();
+			if (i > 1) {
+				this.dropItemStack(itemstack.split(i - 1));
+			}
+
+			this.dropItem(this.getItemBySlot(EquipmentSlot.MAINHAND));
+			this.onItemPickup(item);
+			this.setItemSlot(EquipmentSlot.MAINHAND, itemstack.split(1));
+			this.setGuaranteedDrop(EquipmentSlot.MAINHAND);
+			this.take(item, itemstack.getCount());
+			item.discard();
+		}
+	}
+
+	private void dropItemStack(ItemStack stack) {
+		ItemEntity itementity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
+		this.level().addFreshEntity(itementity);
+	}
+
+	private void dropItem(ItemStack stack) {
+		if (!stack.isEmpty() && !this.level().isClientSide()) {
+			ItemEntity itementity = new ItemEntity(this.level(), this.getX() + this.getLookAngle().x(), this.getY() + 1.0D, this.getZ() + this.getLookAngle().z(), stack);
+			itementity.setPickUpDelay(40);
+			itementity.setThrower(this.getUUID());
+			this.level().addFreshEntity(itementity);
+		}
+	}
+
+	public boolean canHoldItem(ItemStack stack) {
+		Item item = stack.getItem();
+		ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
+		return itemstack.isEmpty() || (item.isEdible() && !itemstack.getItem().isEdible());
 	}
 
 	@Override
