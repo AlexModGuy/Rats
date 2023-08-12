@@ -134,6 +134,15 @@ public class HatItem extends ArmorItem {
 		}
 	}
 
+	public float getRatOffsetOnHead() {
+		if (this == RatsItemRegistry.TOP_HAT.get()) {
+			return -0.85F;
+		} else if (this == RatlantisItemRegistry.MILITARY_HAT.get() || this == RatlantisItemRegistry.GHOST_PIRAT_HAT.get() || this == RatsItemRegistry.PIRAT_HAT.get()) {
+			return -0.45F;
+		}
+		return 0.0F;
+	}
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		String item = ForgeRegistries.ITEMS.getKey(this).getPath();

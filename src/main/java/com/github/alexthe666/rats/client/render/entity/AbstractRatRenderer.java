@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
 import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
+import com.github.alexthe666.rats.server.items.HatItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -49,13 +50,16 @@ public abstract class AbstractRatRenderer<T extends AbstractRat, M extends Abstr
 		stack.scale(0.6F, 0.6F, 0.6F);
 		if (rat.isPassenger() && rat.getVehicle() != null && rat.getVehicle().getPassengers().size() >= 1) {
 			if (rat.getVehicle() != null) {
-				if (rat.getVehicle() instanceof Player) {
+				if (rat.getVehicle() instanceof Player player) {
 					Entity riding = rat.getVehicle();
 					if (riding.getPassengers().get(0) != null && riding.getPassengers().get(0) == rat) {
 						EntityRenderer<?> playerRender = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(riding);
 						if (playerRender instanceof LivingEntityRenderer<?, ?> renderer && renderer.getModel() instanceof HumanoidModel<?> human) {
 							human.getHead().translateAndRotate(stack);
 							stack.translate(0.0F, -0.7F, 0.25F);
+							if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HatItem hatItem) {
+								stack.translate(0.0F, hatItem.getRatOffsetOnHead(), 0.0F);
+							}
 						}
 					}
 				}
