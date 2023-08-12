@@ -125,6 +125,7 @@ public class HatItem extends ArmorItem {
 		}
 		if (this == RatsItemRegistry.RAT_KING_CROWN.get()) {
 			stack.mulPose(Axis.XN.rotationDegrees(5.0F));
+			stack.translate(0.0F, -0.05F, 0.0F);
 			stack.scale(1.25F, 1.25F, 1.25F);
 		}
 		if (this == RatlantisItemRegistry.AVIATOR_HAT.get()) {
@@ -168,7 +169,7 @@ public class HatItem extends ArmorItem {
 					case "pirat_hat" ->
 							new PiratHatModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.PIRATE_HAT));
 					case "rat_king_crown" ->
-							new TopHatModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.CROWN));
+							new CrownModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.CROWN));
 					case "plague_doctor_mask", "black_death_mask" ->
 							new PlagueDoctorMaskModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.PLAGUE_DOCTOR_MASK));
 					case "exterminator_hat" ->

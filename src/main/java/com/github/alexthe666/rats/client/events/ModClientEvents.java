@@ -146,7 +146,7 @@ public class ModClientEvents {
 		event.registerLayerDefinition(RatsModelLayers.HALO, HaloHatModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PARTY_HAT, PartyHatModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PIRATE_HAT, PiratHatModel::create);
-		event.registerLayerDefinition(RatsModelLayers.CROWN, TopHatModel::create);
+		event.registerLayerDefinition(RatsModelLayers.CROWN, CrownModel::create);
 		event.registerLayerDefinition(RatsModelLayers.PLAGUE_DOCTOR_MASK, PlagueDoctorMaskModel::create);
 		event.registerLayerDefinition(RatsModelLayers.EXTERMINATOR_HAT, ExterminatorHatModel::create);
 		event.registerLayerDefinition(RatsModelLayers.AVIATOR_HAT, AviatorHatModel::create);
