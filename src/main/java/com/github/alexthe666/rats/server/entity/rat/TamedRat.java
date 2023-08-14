@@ -26,6 +26,8 @@ import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -139,6 +141,7 @@ public class TamedRat extends InventoryRat {
 	public int randomEffectCooldown = 0;
 	private int updateNavigationCooldown;
 	public boolean isCurrentlyWorking;
+	private final Multimap<Attribute, AttributeModifier> attributeChanges = HashMultimap.create();
 
 	public TamedRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
@@ -1250,15 +1253,10 @@ public class TamedRat extends InventoryRat {
 			}
 		}
 
-		AttributeSupplier defaults = TamedRat.createAttributes().build();
-		ForgeRegistries.ATTRIBUTES.forEach(attribute -> {
-			if (this.getAttribute(attribute) != null && this.getAttributes().hasAttribute(attribute) && !Objects.requireNonNull(this.getAttribute(attribute)).getModifiers().isEmpty()) {
-				if (defaults.hasAttribute(attribute)) {
-					this.getAttribute(attribute).setBaseValue(defaults.getBaseValue(attribute));
-				}
-				Objects.requireNonNull(this.getAttribute(attribute)).removeModifiers();
-			}
-		});
+		if (!this.attributeChanges.isEmpty()) {
+			this.getAttributes().removeAttributeModifiers(this.attributeChanges);
+			this.attributeChanges.clear();
+		}
 
 		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, stack ->
 				((StatBoostingUpgrade) stack.getItem()).getAttributeBoosts().forEach((attribute, aDouble) -> this.tryIncreaseStat(stack.getHoverName().getString(), attribute, aDouble)));
@@ -1272,7 +1270,9 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
-		Objects.requireNonNull(this.getAttribute(stat)).addPermanentModifier(new AttributeModifier(itemName + " " + Component.translatable(stat.getDescriptionId()).getString() + " Modifier", value, AttributeModifier.Operation.ADDITION));
+		AttributeModifier modifier = new AttributeModifier(itemName + " " + Component.translatable(stat.getDescriptionId()).getString() + " Modifier", value, AttributeModifier.Operation.ADDITION);
+		Objects.requireNonNull(this.getAttribute(stat)).addTransientModifier(modifier);
+		this.attributeChanges.put(stat, modifier);
 	}
 
 	@Override
