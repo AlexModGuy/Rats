@@ -230,6 +230,16 @@ public abstract class ArrowlikeProjectile extends Projectile {
 	}
 
 	@Override
+	protected boolean canHitEntity(Entity entity) {
+		return super.canHitEntity(entity) && (this.getOwner() == null || !this.isAlliedToOwner(entity));
+	}
+
+	protected boolean isAlliedToOwner(Entity entity) {
+		if (this.getOwner() instanceof OwnableEntity ownable && ownable.getOwner() == entity) return true;
+		return entity instanceof OwnableEntity ownable && ownable.getOwner() == entity;
+	}
+
+	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		this.discard();
 		if (this.explodesOnHit()) {

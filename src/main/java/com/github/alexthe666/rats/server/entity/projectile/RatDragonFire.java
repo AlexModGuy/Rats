@@ -6,8 +6,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -52,8 +54,8 @@ public class RatDragonFire extends Fireball {
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
-		super.onHit(result);
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
 		if (!this.level().isClientSide()) {
 			this.discard();
 		}
@@ -68,7 +70,21 @@ public class RatDragonFire extends Fireball {
 			if (flag && this.getOwner() instanceof LivingEntity living) {
 				this.doEnchantDamageEffects(living, entity);
 			}
+
+			if (!this.level().isClientSide()) {
+				this.discard();
+			}
 		}
+	}
+
+	@Override
+	protected boolean canHitEntity(Entity entity) {
+		return super.canHitEntity(entity) && (this.getOwner() == null || !this.isAlliedToOwner(entity));
+	}
+
+	private boolean isAlliedToOwner(Entity entity) {
+		if (this.getOwner() instanceof OwnableEntity ownable && ownable.getOwner() == entity) return true;
+		return entity instanceof OwnableEntity ownable && ownable.getOwner() == entity;
 	}
 
 	@Override
