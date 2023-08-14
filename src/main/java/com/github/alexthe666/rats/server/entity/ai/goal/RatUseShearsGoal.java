@@ -46,6 +46,11 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	}
 
 	@Override
+	public boolean canContinueToUse() {
+		return this.getTargetEntity() != null || this.getTargetBlock() != null;
+	}
+
+	@Override
 	public void tick() {
 		if (this.getTargetEntity() != null && this.getTargetEntity().isAlive() && this.rat.getMainHandItem().isEmpty()) {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
@@ -57,10 +62,9 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 						this.getTargetEntity().spawnAtLocation(stack, 0.0F);
 					}
 				}
-				this.setTargetEntity(null);
 				this.stop();
 			}
-		} else if (this.getTargetBlock() != null) {
+		} else if (this.getTargetBlock() != null && this.rat.getMainHandItem().isEmpty()) {
 			this.rat.getNavigation().moveTo(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY(), this.getTargetBlock().getZ() + 0.5D, 1.25D);
 			if (this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ()) < this.rat.getRatHarvestDistance(0.0D)) {
 				BlockState state = this.rat.level().getBlockState(this.getTargetBlock());
@@ -77,7 +81,6 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 				} else {
 					this.rat.level().setBlock(this.getTargetBlock(), state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
 				}
-				this.setTargetBlock(null);
 				this.stop();
 			}
 		} else {
@@ -88,7 +91,7 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private void angerNearbyBees(Level level, BlockPos pos) {
 		List<Bee> list = level.getEntitiesOfClass(Bee.class, (new AABB(pos)).inflate(8.0D, 6.0D, 8.0D));
 		if (!list.isEmpty()) {
-			for(Bee bee : list) {
+			for (Bee bee : list) {
 				if (bee.getTarget() == null) {
 					bee.setTarget(this.rat);
 				}
@@ -110,21 +113,15 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 		level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof BeehiveBlockEntity beehive) {
-			this.emptyAllLivingFromHive(state, status, beehive);
-		}
-
-	}
-
-	public void emptyAllLivingFromHive(BlockState state, BeehiveBlockEntity.BeeReleaseStatus status, BeehiveBlockEntity beehive) {
-		List<Entity> list = beehive.releaseAllOccupants(state, status);
-		for(Entity entity : list) {
-			if (entity instanceof Bee) {
-				Bee bee = (Bee)entity;
-				if (this.rat.position().distanceToSqr(entity.position()) <= 16.0D) {
-					if (!beehive.isSedated()) {
-						bee.setTarget(this.rat);
-					} else {
-						bee.setStayOutOfHiveCountdown(400);
+			List<Entity> list = beehive.releaseAllOccupants(state, status);
+			for (Entity entity : list) {
+				if (entity instanceof Bee bee) {
+					if (this.rat.position().distanceToSqr(entity.position()) <= 16.0D) {
+						if (!beehive.isSedated()) {
+							bee.setTarget(this.rat);
+						} else {
+							bee.setStayOutOfHiveCountdown(400);
+						}
 					}
 				}
 			}

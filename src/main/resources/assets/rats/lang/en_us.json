@@ -362,6 +362,8 @@
   "item.rats.rat_upgrade_energy.desc0": "Rat will transfer energy instead of items",
   "item.rats.rat_upgrade_energy.desc1": "Works with RF and RE",
   "item.rats.rat_upgrade_energy.transfer_rate": "Max transfer rate: %s kRF",
+  "item.rats.rat_upgrade_bottler": "Rat Upgrade: Bottler",
+  "item.rats.rat_upgrade_bottler.desc": "Rat will pick up water or honey from nearby blocks when holding glass bottles and is set to the 'Harvest' command",
   "item.rats.rat_upgrade_bucket": "Rat Upgrade: Bucket",
   "item.rats.rat_upgrade_bucket.desc0": "Rat will transfer fluids instead of items",
   "item.rats.rat_upgrade_bucket.desc1": "Rat will transfer 1000 mb at a time",

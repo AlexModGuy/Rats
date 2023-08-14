@@ -189,6 +189,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_ADVANCED_ENERGY = ITEMS.register("rat_upgrade_advanced_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 1, RatConfig.ratRFTransferAdvanced));
 	public static final RegistryObject<Item> RAT_UPGRADE_ELITE_ENERGY = ITEMS.register("rat_upgrade_elite_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 2, RatConfig.ratRFTransferElite));
 	public static final RegistryObject<Item> RAT_UPGRADE_EXTREME_ENERGY = ITEMS.register("rat_upgrade_extreme_energy", () -> new EnergyRatUpgradeItem(new Item.Properties().fireResistant(), 3, RatConfig.ratRFTransferExtreme));
+	public static final RegistryObject<Item> RAT_UPGRADE_BOTTLER = ITEMS.register("rat_upgrade_bottler", () -> new BottlerRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BUCKET = ITEMS.register("rat_upgrade_bucket", () -> new BucketRatUpgradeItem(new Item.Properties(), 0, 2, FluidType.BUCKET_VOLUME));
 	public static final RegistryObject<Item> RAT_UPGRADE_BIG_BUCKET = ITEMS.register("rat_upgrade_big_bucket", () -> new BucketRatUpgradeItem(new Item.Properties(), 2, 2, FluidType.BUCKET_VOLUME * 5));
 	public static final RegistryObject<Item> RAT_UPGRADE_MILKER = ITEMS.register("rat_upgrade_milker", () -> new MilkerRatUpgradeItem(new Item.Properties()));

@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-02T15:23:24.4939396	Item Models: rats
+// 1.20.1	2023-08-14T09:25:04.2747225	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -275,6 +275,7 @@ e91c84ba5d8bde4748d60fd767a2c97e35469589 assets/rats/models/item/rat_upgrade_bas
 338af46c2dd0c8da26e68e2a9961460655478026 assets/rats/models/item/rat_upgrade_biplane_mount.json
 a7f63a6c0141f3cd02140180c2637354a222a470 assets/rats/models/item/rat_upgrade_blacklist.json
 b3091c42e0119f604ecf4e75ed699428c24592d1 assets/rats/models/item/rat_upgrade_block.json
+17919ac23dcb86367091db51df12852c7f6026aa assets/rats/models/item/rat_upgrade_bottler.json
 0127b01000d9cd7cf858487c0e382f62bf0494cb assets/rats/models/item/rat_upgrade_bow.json
 8e2064bb33279065162639c8d68624e12c44b229 assets/rats/models/item/rat_upgrade_breeder.json
 9c075c821f6a4705bb55dbf92295f3348a361ec6 assets/rats/models/item/rat_upgrade_buccaneer.json

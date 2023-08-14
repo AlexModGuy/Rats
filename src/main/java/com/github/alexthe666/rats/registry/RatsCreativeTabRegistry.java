@@ -161,7 +161,6 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GOD.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BOW.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_CROSSBOW.get());
-
 				output.accept(RatsItemRegistry.RAT_UPGRADE_AQUATIC.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_FLIGHT.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_DRAGON.get());
@@ -204,6 +203,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_CHRISTMAS.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_BOTTLER.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BUCKET.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BIG_BUCKET.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_MILKER.get());
