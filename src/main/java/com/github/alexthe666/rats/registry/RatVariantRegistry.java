@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class RatVariantRegistry {
 	public static final ResourceKey<Registry<RatVariant>> RAT_VARIANT_KEY = ResourceKey.createRegistryKey(new ResourceLocation(RatsMod.MODID, "rat_variant"));
 	public static final DeferredRegister<RatVariant> RAT_VARIANTS = DeferredRegister.create(RAT_VARIANT_KEY, RatsMod.MODID);
-	public static final Supplier<IForgeRegistry<RatVariant>> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(RegistryBuilder::new);
+	public static final Supplier<IForgeRegistry<RatVariant>> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(() -> new RegistryBuilder<RatVariant>().hasTags());
 
 	public static final RegistryObject<RatVariant> BLACK = RAT_VARIANTS.register("black", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/black.png"))));
 	public static final RegistryObject<RatVariant> BLUE = RAT_VARIANTS.register("blue", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/blue.png"))));
