@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,7 @@ public class RatPapersItem extends Item {
 		}
 		tooltip.add(Component.translatable("item.rats.rat_papers.desc2").withStyle(ChatFormatting.GRAY));
 		if (stack.getTag() != null) {
-			tooltip.add(Component.translatable("item.rats.rat_papers.rat_desc").withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable(RatsLangConstants.RAT_PAPERS_BOUND_RAT).withStyle(ChatFormatting.GRAY));
 			String ratName = I18n.get("entity.rats.rat");
 			String entity = stack.getTag().getString("RatName");
 			if (stack.getTag().hasUUID("RatUUID")) {

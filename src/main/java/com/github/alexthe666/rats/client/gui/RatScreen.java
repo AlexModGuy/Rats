@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.message.RatCommandPacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.misc.RatUtils;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -74,16 +75,15 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		Component name = this.getTitle().getString().length() == 0 ? Component.translatable("entity.rats.rat") : this.getTitle();
-		graphics.drawString(this.font, name, this.imageWidth / 2 - this.font.width(name) / 2, 6, 4210752, false);
+		graphics.drawString(this.font, this.getTitle(), this.imageWidth / 2 - this.font.width(this.getTitle()) / 2, 6, 4210752, false);
 
-		Component commandDesc = Component.translatable("entity.rats.rat.command.current");
+		Component commandDesc = Component.translatable(RatsLangConstants.RAT_CURRENT_COMMAND);
 		graphics.drawString(this.font, commandDesc, this.imageWidth / 2 - this.font.width(commandDesc) / 2 + 38, 19, 4210752, false);
 
 		Component command = Component.translatable(rat.getCommand().getTranslateName());
 		graphics.drawString(this.font, command, this.imageWidth / 2 - this.font.width(command) / 2 + 36, 31, 0XFFFFFF, false);
 
-		Component statusDesc = Component.translatable("entity.rats.rat.command.set");
+		Component statusDesc = Component.translatable(RatsLangConstants.RAT_COMMAND_SET);
 		graphics.drawString(this.font, statusDesc, this.imageWidth / 2 - this.font.width(statusDesc) / 2 + 36, 44, 4210752, false);
 		RatCommand command1 = RatUtils.wrapCommand(currentDisplayCommand);
 		Component command2 = Component.translatable(command1.getTranslateName());

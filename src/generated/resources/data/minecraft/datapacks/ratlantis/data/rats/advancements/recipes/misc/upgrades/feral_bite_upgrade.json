@@ -1,56 +1,36 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bone": {
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:bones"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_cheese": {
-      "conditions": {
-        "items": [
-          {
-            "tag": "rats:marbled_cheese"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_hat": {
+    "has_claw": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:archeologist_hat"
+              "rats:feral_rat_claw"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_pick": {
+    "has_eye": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:iron_pickaxe"
+              "minecraft:spider_eye"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_shovel": {
+    "has_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:iron_shovel"
+              "minecraft:rotten_flesh"
             ]
           }
         ]
@@ -59,28 +39,16 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_archeologist"
+        "recipe": "rats:upgrades/feral_bite_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_token": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "rats:chunky_cheese_token"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     },
     "has_upgrade": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_basic"
+              "rats:rat_upgrade_basic_ratlantean"
             ]
           }
         ]
@@ -90,19 +58,16 @@
   },
   "requirements": [
     [
-      "has_cheese",
-      "has_hat",
-      "has_bone",
-      "has_pick",
-      "has_token",
-      "has_shovel",
+      "has_claw",
+      "has_flesh",
+      "has_eye",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_archeologist"
+      "rats:upgrades/feral_bite_upgrade"
     ]
   },
   "sends_telemetry_event": false

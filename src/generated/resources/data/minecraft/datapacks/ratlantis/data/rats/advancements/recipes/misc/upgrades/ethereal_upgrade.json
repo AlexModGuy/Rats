@@ -1,48 +1,48 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_core": {
+    "has_cutlass": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:marbled_cheese_golem_core"
+              "rats:ghost_pirat_cutlass"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_head": {
+    "has_ectoplasm": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:marbled_cheese_rat_head"
+              "rats:ghost_pirat_ectoplasm"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_saw": {
+    "has_hat": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:ancient_sawblade"
+              "rats:ghost_pirat_hat"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_technology": {
+    "has_membrane": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:arcane_technology"
+              "minecraft:phantom_membrane"
             ]
           }
         ]
@@ -51,7 +51,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_automaton_mount"
+        "recipe": "rats:upgrades/ethereal_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -60,7 +60,7 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_basic_mount"
+              "rats:rat_upgrade_basic_ratlantean"
             ]
           }
         ]
@@ -70,17 +70,17 @@
   },
   "requirements": [
     [
-      "has_head",
-      "has_saw",
-      "has_core",
-      "has_technology",
+      "has_hat",
+      "has_ectoplasm",
+      "has_cutlass",
+      "has_membrane",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_automaton_mount"
+      "rats:upgrades/ethereal_upgrade"
     ]
   },
   "sends_telemetry_event": false

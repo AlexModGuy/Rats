@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Warden.class)
-public class WardenMixin {
+public abstract class WardenMixin {
 
 	@Inject(method = "canTargetEntity", at = @At("HEAD"), cancellable = true)
 	public void rats$wardensDontTargetSculkedRats(Entity entity, CallbackInfoReturnable<Boolean> cir) {

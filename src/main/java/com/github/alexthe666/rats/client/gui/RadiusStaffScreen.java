@@ -2,9 +2,11 @@ package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatStaffPacket;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -23,7 +25,7 @@ public class RadiusStaffScreen extends Screen {
 	private final BlockPos pos;
 
 	public RadiusStaffScreen(TamedRat rat, BlockPos pos) {
-		super(Component.translatable("radius_staff"));
+		super(Component.translatable(RatsItemRegistry.RADIUS_STICK.get().getDescriptionId()));
 		this.rat = rat;
 		this.pos = pos;
 		this.sliderValue = rat.getRadius();
@@ -34,15 +36,15 @@ public class RadiusStaffScreen extends Screen {
 		this.renderables.clear();
 		int i = (this.width) / 2;
 		int j = (this.height - 166) / 2;
-		Component topText = Component.translatable("entity.rat.staff.set_radius_loc", this.pos.toShortString());
-		Component secondText = Component.translatable("entity.rat.staff.reset_radius");
+		Component topText = Component.translatable(RatsLangConstants.RAT_STAFF_SET_RADIUS, this.pos.toShortString());
+		Component secondText = Component.translatable(RatsLangConstants.RAT_STAFF_RESET_RADIUS);
 		int maxLength = Math.max(150, Minecraft.getInstance().font.width(topText.getString()) + 20);
 		this.addRenderableWidget(Button.builder(topText, button -> {
 			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 4, 0));
 			this.rat.setRadiusCenter(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
 			this.sliderValue = this.rat.getRadius();
 		}).bounds(i - maxLength / 2, j + 60, maxLength, 20).build());
-		this.addRenderableWidget(new AbstractSliderButton(i - 150 / 2, j + 85, 150, 20, Component.translatable("entity.rat.staff.radius", RadiusStaffScreen.this.sliderValue), 0.0D) {
+		this.addRenderableWidget(new AbstractSliderButton(i - 150 / 2, j + 85, 150, 20, Component.translatable(RatsLangConstants.RAT_STAFF_RADIUS, RadiusStaffScreen.this.sliderValue), 0.0D) {
 			{
 				this.updateMessage();
 				RadiusStaffScreen.this.sliderValue = RadiusStaffScreen.this.rat.getRadius();
@@ -50,7 +52,7 @@ public class RadiusStaffScreen extends Screen {
 
 			@Override
 			protected void updateMessage() {
-				this.setMessage(Component.translatable("entity.rat.staff.radius", RadiusStaffScreen.this.sliderValue));
+				this.setMessage(Component.translatable(RatsLangConstants.RAT_STAFF_RADIUS, RadiusStaffScreen.this.sliderValue));
 			}
 
 			@Override

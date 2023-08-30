@@ -31,7 +31,7 @@ public class RatlantisBlockRegistry {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, RatsMod.MODID);
 
 	public static final RegistryObject<Block> RATLANTIS_REACTOR = register("ratlantis_reactor", () -> new RatlantisReactorBlock(Block.Properties.of().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(100.0F).lightLevel(value -> 15)));
-	public static final RegistryObject<Block> RATGLOVE_FLOWER = register("ratglove_flower", () -> new FlowerBlock(RatsEffectRegistry.CONFIT_BYALDI, 6, Block.Properties.of().pushReaction(PushReaction.DESTROY).mapColor(MapColor.PLANT).noCollission().randomTicks().sound(SoundType.CROP).offsetType(BlockBehaviour.OffsetType.XZ)) {
+	public static final RegistryObject<Block> RATGLOVE_FLOWER = register("ratglove_flower", () -> new FlowerBlock(RatsEffectRegistry.SYNESTHESIA, 6, Block.Properties.of().pushReaction(PushReaction.DESTROY).mapColor(MapColor.PLANT).noCollission().randomTicks().sound(SoundType.CROP).offsetType(BlockBehaviour.OffsetType.XZ)) {
 		@Override
 		public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 			Vec3 vec3 = state.getOffset(getter, pos);

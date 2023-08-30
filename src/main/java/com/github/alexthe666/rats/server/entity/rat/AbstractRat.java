@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatVariantRegistry;
+import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
@@ -18,6 +19,7 @@ import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
+import com.github.alexthe666.rats.server.misc.RatsDateFetcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -493,7 +495,11 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		if (this.getHealth() <= this.getMaxHealth() / 2D || this.isBaby()) {
 			return RatsSoundRegistry.RAT_IDLE.get();
 		}
-		return super.getAmbientSound();
+		//aaarrrr
+		if (RatsDateFetcher.isPirateDay() && (this.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.PIRAT_HAT.get()) || this.getItemBySlot(EquipmentSlot.HEAD).is(RatlantisItemRegistry.GHOST_PIRAT_HAT.get()))) {
+			return RatsSoundRegistry.RAT_PIRATE.get();
+		}
+		return null;
 	}
 
 	@Nullable

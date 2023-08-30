@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.items;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -48,7 +49,7 @@ public class RatWhistleItem extends LoreTagItem {
 			}
 		}
 		player.swing(hand);
-		player.displayClientMessage(Component.translatable("item.rats.rat_flute.rat_count", ratCount).withStyle(ChatFormatting.GRAY), true);
+		player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_FLUTE_COUNT, ratCount).withStyle(ChatFormatting.GRAY), true);
 		level.playSound(player, player.blockPosition(), RatsSoundRegistry.RAT_WHISTLE.get(), SoundSource.PLAYERS, 1, 1.25F);
 
 		return InteractionResultHolder.success(stack);

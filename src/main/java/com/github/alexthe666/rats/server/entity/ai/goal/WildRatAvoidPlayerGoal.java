@@ -13,18 +13,18 @@ public class WildRatAvoidPlayerGoal extends AvoidEntityGoal<Player> {
 	private final Rat rat;
 
 	public WildRatAvoidPlayerGoal(Rat rat, Predicate<LivingEntity> predicate) {
-		super(rat, Player.class, 10.0F, 0.8D, 1.225D, predicate);
+		super(rat, Player.class, 10.0F, 1.225D, 1.75D, predicate);
 		this.rat = rat;
 		this.avoidEntityTargeting = TargetingConditions.forNonCombat().range(10.0F).selector(predicate);
 	}
 
 	@Override
 	public boolean canUse() {
-		return !this.rat.hasPlague() && super.canUse();
+		return !this.rat.hasPlague() && this.rat.getNavigation().isDone() && super.canUse();
 	}
 
 	@Override
 	public void tick() {
-		this.mob.getNavigation().setSpeedModifier(0.4D + ((double) (50 - Math.min(this.rat.wildTrust, 50)) * 0.04D));
+		this.mob.getNavigation().setSpeedModifier(0.6D + ((double) (50 - Math.min(this.rat.wildTrust, 50)) * 0.04D));
 	}
 }

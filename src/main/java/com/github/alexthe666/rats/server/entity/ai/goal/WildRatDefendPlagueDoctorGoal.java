@@ -27,14 +27,13 @@ public class WildRatDefendPlagueDoctorGoal extends TargetGoal {
 			return false;
 		} else {
 			Entity entity = this.rat.getLeashHolder();
-			if (!(entity instanceof PlagueDoctor doctor)) {
-				return false;
-			} else {
+			if (entity instanceof PlagueDoctor doctor && !(doctor.getLastHurtByMob() instanceof PlagueDoctor)) {
 				this.ownerLastHurtBy = doctor.getLastHurtByMob();
 				int i = doctor.getLastHurtByMobTimestamp();
 				return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT);
 			}
 		}
+		return false;
 	}
 
 	public void start() {

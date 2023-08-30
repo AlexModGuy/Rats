@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatEnterTrapGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.WildRatDefendPlagueDoctorGoal;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -81,7 +82,7 @@ public class Rat extends DiggingRat {
 				return !Rat.this.hasPlague() && this.mob.getLastHurtByMob() instanceof Player;
 			}
 		});
-		//this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
+		this.targetSelector.addGoal(1, new WildRatDefendPlagueDoctorGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> {
 			if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || !Rat.this.hasPlague()) return false;
 			return !entity.isAlliedTo(Rat.this) && !entity.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemRegistry.BLACK_DEATH_MASK.get()) && entity.level().getDifficulty() != Difficulty.PEACEFUL;
@@ -96,6 +97,7 @@ public class Rat extends DiggingRat {
 		this.getEntityData().define(RAT_KING_TRANSFORMATION, false);
 	}
 
+	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		if (this.getRestrictCenter() != BlockPos.ZERO) {
@@ -110,6 +112,7 @@ public class Rat extends DiggingRat {
 		compound.putBoolean("Toga", this.hasToga());
 	}
 
+	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		if (compound.contains("Home", 9)) {
@@ -250,6 +253,9 @@ public class Rat extends DiggingRat {
 				ItemStack stack = new ItemStack(RatsItemRegistry.PARTY_HAT.get());
 				((DyeableLeatherItem) stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
 				this.setItemSlot(EquipmentSlot.HEAD, stack);
+				this.setGuaranteedDrop(EquipmentSlot.HEAD);
+			} else if (RatsDateFetcher.isPirateDay() && this.getRandom().nextFloat() <= 0.25F) {
+				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.PIRAT_HAT.get()));
 				this.setGuaranteedDrop(EquipmentSlot.HEAD);
 			}
 		}

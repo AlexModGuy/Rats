@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements TickRatUpgrade, HoldsItemUpgrade {
 	public PsychicRatUpgradeItem(Properties properties) {
-		super(properties, 2, 2, Map::of, true);
+		super(properties, 2, 1, Map::of, true);
 	}
 
 	@Override

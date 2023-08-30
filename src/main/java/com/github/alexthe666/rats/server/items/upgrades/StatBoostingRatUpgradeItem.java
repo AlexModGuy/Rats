@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.StatBoostingUpgrade;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -43,12 +44,12 @@ public class StatBoostingRatUpgradeItem extends BaseRatUpgradeItem implements St
 		super.appendHoverText(stack, level, tooltip, flag);
 		this.statChanges.get().forEach((attribute, aDouble) -> {
 			if (aDouble > 0.0D) {
-				tooltip.add(Component.translatable("item.rats.rat_upgrade.stat_boost", aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA));
+				tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA));
 			}
 		});
 
 		if (this.regens) {
-			tooltip.add(Component.translatable("item.rats.rat_upgrade.regenerates_health").withStyle(ChatFormatting.AQUA));
+			tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_REGENS).withStyle(ChatFormatting.AQUA));
 		}
 	}
 }

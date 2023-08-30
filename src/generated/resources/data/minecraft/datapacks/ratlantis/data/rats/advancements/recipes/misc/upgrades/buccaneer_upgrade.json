@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_claw": {
+    "has_cannonball": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:feral_rat_claw"
+              "rats:cheese_cannonball"
             ]
           }
         ]
@@ -18,19 +18,19 @@
         "items": [
           {
             "items": [
-              "minecraft:spider_eye"
+              "rats:pirat_cutlass"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_flesh": {
+    "has_hat": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:rotten_flesh"
+              "rats:pirat_hat"
             ]
           }
         ]
@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_feral_bite"
+        "recipe": "rats:upgrades/buccaneer_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -58,8 +58,8 @@
   },
   "requirements": [
     [
-      "has_claw",
-      "has_flesh",
+      "has_cannonball",
+      "has_hat",
       "has_eye",
       "has_upgrade",
       "has_the_recipe"
@@ -67,7 +67,7 @@
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_feral_bite"
+      "rats:upgrades/buccaneer_upgrade"
     ]
   },
   "sends_telemetry_event": false

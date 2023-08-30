@@ -3,13 +3,16 @@ package com.github.alexthe666.rats.server.items.upgrades;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatDragonFire;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.GlowingEyesUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.StatBoostingUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -29,8 +32,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements StatBoostingUpgrade, ChangesTextureUpgrade, TickRatUpgrade, GlowingEyesUpgrade {
-	public DragonRatUpgradeItem(Properties properties, Item wing) {
-		super(properties, 1, 2, wing);
+	public DragonRatUpgradeItem(Properties properties) {
+		super(properties, 1, 2);
+	}
+
+	@Override
+	public ItemStack getWing() {
+		return new ItemStack(RatsItemRegistry.DRAGON_WING.get());
 	}
 
 	@Override
@@ -41,7 +49,7 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		this.getAttributeBoosts().forEach((attribute, aDouble) -> tooltip.add(Component.translatable("item.rats.rat_upgrade.stat_boost", aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA)));
+		this.getAttributeBoosts().forEach((attribute, aDouble) -> tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA)));
 	}
 
 	@Override

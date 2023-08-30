@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisBlockTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisEntityTags;
 import com.github.alexthe666.rats.data.ratlantis.tags.RatlantisItemTags;
 import com.github.alexthe666.rats.data.tags.*;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -42,6 +43,7 @@ public class RatsDataRegistry {
 
 		generator.addProvider(event.includeClient(), new BlockModelGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new RatsLangGenerator(output));
 
 		generator.addProvider(event.includeServer(), new RatsBannerPatternTags(output, provider, helper));
 		generator.addProvider(event.includeServer(), new RatsBiomeTags(output, provider, helper));
@@ -57,7 +59,7 @@ public class RatsDataRegistry {
 		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output));
 		generator.addProvider(event.includeServer(), new RatsRecipes(output));
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
-				Component.translatable("pack.rats.rats"),
+				Component.translatable(RatsLangConstants.RATS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
 				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 
@@ -71,7 +73,7 @@ public class RatsDataRegistry {
 		ratlantisPack.addProvider(RatlantisLootTables::new);
 		ratlantisPack.addProvider(RatlantisRecipes::new);
 		ratlantisPack.addProvider(ratOutput -> new PackMetadataGenerator(ratOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
-				Component.translatable("pack.rats.ratlantis"),
+				Component.translatable(RatsLangConstants.RATLANTIS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
 				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 	}

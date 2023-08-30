@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.compat.jei;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -42,7 +43,7 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("gui.rats.jei.cheesemaking");
+		return Component.translatable(RatsLangConstants.CHEESEMAKING_JEI);
 	}
 
 	@Override

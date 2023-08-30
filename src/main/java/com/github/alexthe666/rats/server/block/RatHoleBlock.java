@@ -2,9 +2,6 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.server.block.entity.RatHoleBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.DiggingRat;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +26,6 @@ import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("deprecation")
@@ -39,13 +35,6 @@ public class RatHoleBlock extends BaseEntityBlock {
 	public static final BooleanProperty EAST = BooleanProperty.create("east");
 	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
 	public static final BooleanProperty WEST = BooleanProperty.create("west");
-
-	public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), map -> {
-		map.put(Direction.NORTH, NORTH);
-		map.put(Direction.EAST, EAST);
-		map.put(Direction.SOUTH, SOUTH);
-		map.put(Direction.WEST, WEST);
-	}));
 
 	private static final VoxelShape TOP_AABB = Block.box(0, 8, 0, 16, 16, 16);
 	private static final VoxelShape NS_LEFT_AABB = Block.box(0, 0, 0, 4, 8, 16);
@@ -102,7 +91,7 @@ public class RatHoleBlock extends BaseEntityBlock {
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		BlockEntity entity = builder.getParameter(LootContextParams.BLOCK_ENTITY);
 		if (entity instanceof RatHoleBlockEntity hole) {
-			return List.of(new ItemStack(hole.getImitatedBlockState().getBlock()));
+			return hole.getImitatedBlockState().getDrops(builder);
 		}
 
 		return super.getDrops(state, builder);

@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -65,7 +66,7 @@ public class DutchratBellBlockEntity extends BlockEntity {
 				if (level.isDay()) {
 					AABB bb = new AABB(pos.getX() - 10, pos.getY() - 10, pos.getZ() - 10, pos.getX() + 10, pos.getY() + 10, pos.getZ() + 10);
 					for (Player players : level.getEntitiesOfClass(Player.class, bb)) {
-						players.displayClientMessage(Component.translatable("entity.rats.dutchrat.daytime"), true);
+						players.displayClientMessage(Component.translatable(RatsLangConstants.DUTCHRAT_SPAWNS_AT_NIGHT), true);
 					}
 				} else if (level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
 					te.ticksToExplode = 0;

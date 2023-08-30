@@ -11,10 +11,6 @@ public enum RatStatus {
 		this.precedence = precedence;
 	}
 
-	public String getTranslateName() {
-		return "entity.rats.rat.status." + this.name().toLowerCase();
-	}
-
 	public boolean canBeOverriden(AbstractRat rat) {
 		if (this == MOVING && rat.isMoving()) {
 			return false;

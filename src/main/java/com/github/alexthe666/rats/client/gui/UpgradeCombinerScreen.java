@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.block.entity.UpgradeCombinerBlockEntity;
 import com.github.alexthe666.rats.server.inventory.UpgradeCombinerMenu;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -59,7 +60,7 @@ public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombin
 		int screenH = (this.height - this.imageHeight) / 2;
 		if (UpgradeCombinerBlockEntity.canCombine(this.combiner.container.getItem(0), this.combiner.container.getItem(2)) && !this.combiner.container.getItem(0).isEmpty() && !this.combiner.container.getItem(2).isEmpty()) {
 			if (mouseX > screenW + 42 && mouseX < screenW + 63 && mouseY > screenH + 34 && mouseY < screenH + 55) {
-				Component ratDesc = Component.translatable("container.upgrade_combiner.cannot_combine");
+				Component ratDesc = Component.translatable(RatsLangConstants.COMBINER_CANNOT_COMBINE);
 				List<Component> list = List.of(ratDesc);
 				graphics.renderTooltip(this.font, Lists.transform(list, Component::getVisualOrderText), mouseX - screenW, mouseY - screenH + 10);
 			}

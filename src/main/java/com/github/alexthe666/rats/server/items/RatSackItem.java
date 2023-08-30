@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -96,17 +97,17 @@ public class RatSackItem extends Item {
 				}
 			}
 		}
-		tooltip.add(Component.translatable("item.rats.rat_sack.contains", ratCount, RatConfig.ratSackCapacity).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.RAT_SACK_CONTAINED_RATS, ratCount, RatConfig.ratSackCapacity).withStyle(ChatFormatting.GRAY));
 		if (!ratNames.isEmpty()) {
 			for (int i = 0; i < ratNames.size(); i++) {
 				if (i < 3) {
-					tooltip.add(Component.translatable("item.rats.rat_sack.contain_rat", ratNames.get(i)).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(ratNames.get(i)).withStyle(ChatFormatting.GRAY));
 				} else {
 					break;
 				}
 			}
 			if (ratNames.size() > 3) {
-				tooltip.add(Component.translatable("item.rats.rat_sack.and_more").withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable(RatsLangConstants.AND_MORE, ratNames.size() - 3).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}
@@ -118,16 +119,16 @@ public class RatSackItem extends Item {
 			int ratCount = ejectRatsFromSack(stack, context.getLevel(), context.getClickedPos().relative(context.getClickedFace()));
 
 			if (ratCount > 0) {
-				context.getPlayer().swing(context.getHand());
-				context.getPlayer().displayClientMessage(Component.translatable("entity.rats.rat.sack.release", ratCount), true);
+				context.getPlayer().displayClientMessage(Component.translatable(RatsLangConstants.RAT_SACK_RELEASED_RATS, ratCount), true);
 				stack.setTag(new CompoundTag());
+				return InteractionResult.SUCCESS;
 			}
 		}
 		return InteractionResult.PASS;
 	}
 
 	@Override
-	public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
+	public void onDestroyed(ItemEntity entity, DamageSource source) {
 		ItemStack stack = entity.getItem();
 		if (getRatsInSack(stack) > 0) {
 			ejectRatsFromSack(stack, entity.level(), entity.blockPosition());

@@ -16,19 +16,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, DamageImmunityUpgrade {
+public abstract class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, DamageImmunityUpgrade {
 
-	private final Item wing;
-
-	public BaseFlightRatUpgradeItem(Properties properties, int rarity, int textLines, Item wing) {
+	public BaseFlightRatUpgradeItem(Properties properties, int rarity, int textLines) {
 		super(properties, rarity, textLines);
-		this.wing = wing;
 	}
 
 	@Override
 	public boolean canFly(TamedRat rat) {
 		return true;
 	}
+
+	public abstract ItemStack getWing();
 
 	@Override
 	public boolean playIdleAnimation(TamedRat rat) {
@@ -49,7 +48,7 @@ public class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implements Hold
 		stack.translate(0.55F, 0, 0.2F);
 		stack.mulPose(Axis.XN.rotationDegrees(90));
 		stack.scale(2, 2, 1);
-		minecraft.getItemRenderer().renderStatic(new ItemStack(this.wing), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
+		minecraft.getItemRenderer().renderStatic(this.getWing(), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 		stack.popPose();
 		stack.pushPose();
 		stack.translate(0F, -0.1F, 0F);
@@ -59,7 +58,7 @@ public class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implements Hold
 		stack.mulPose(Axis.XN.rotationDegrees(90));
 		stack.mulPose(Axis.YP.rotationDegrees(180));
 		stack.scale(2, 2, 1);
-		minecraft.getItemRenderer().renderStatic(new ItemStack(this.wing), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
+		minecraft.getItemRenderer().renderStatic(this.getWing(), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 		stack.popPose();
 	}
 

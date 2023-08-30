@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BreederRatUpgradeItem extends BaseRatUpgradeItem implements ChangesAIUpgrade {
 	public BreederRatUpgradeItem(Properties properties) {
-		super(properties, 1, 2);
+		super(properties, 1, 1);
 	}
 
 	@Override

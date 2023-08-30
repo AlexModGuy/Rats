@@ -30,7 +30,7 @@ public class GhostPirat extends AbstractRat implements Enemy {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.35D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
+				.add(Attributes.ATTACK_DAMAGE, 0.0D)
 				.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 

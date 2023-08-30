@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBannerPatternTags;
@@ -72,7 +73,6 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_CAPTURE_NET = ITEMS.register("rat_capture_net", () -> new RatCaptureNetItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> FEATHERY_WING = ITEMS.register("feathery_wing", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DRAGON_WING = ITEMS.register("dragon_wing", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> BEE_WING = ITEMS.register("bee_wing", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> PLASTIC_WASTE = ITEMS.register("plastic_waste", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> RAW_PLASTIC = ITEMS.register("raw_plastic", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CONTAMINATED_FOOD = ITEMS.register("contaminated_food", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.5F)
@@ -101,7 +101,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> FILTH = ITEMS.register("filth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FILTH_CORRUPTION = ITEMS.register("filth_corruption", () -> new LoreTagItem(new Item.Properties().rarity(Rarity.RARE), 1));
 	public static final RegistryObject<Item> TANGLED_RAT_TAILS = ITEMS.register("tangled_rat_tails", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> CHARGED_CREEPER_CHUNK = ITEMS.register("charged_creeper_chunk", () -> new LoreTagItem(new Item.Properties().rarity(Rarity.UNCOMMON), 1));
+	public static final RegistryObject<Item> CHARGED_CREEPER_CHUNK = ITEMS.register("charged_creeper_chunk", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> RATBOW_ESSENCE = ITEMS.register("ratbow_essence", () -> new LoreTagItem(new Item.Properties(), 1));
 	public static final RegistryObject<Item> RAT_PAPERS = ITEMS.register("rat_papers", () -> new RatPapersItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item>[] RAT_HAMMOCKS = new RegistryObject[16];
@@ -121,12 +121,12 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_SEED_BOWL = ITEMS.register("rat_seed_bowl", () -> new RatDecorationItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_BREEDING_LANTERN = ITEMS.register("rat_breeding_lantern", () -> new RatDecorationItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_WHEEL = ITEMS.register("rat_wheel", () -> new RatDecorationItem(new Item.Properties()));
-	public static final RegistryObject<Item> CONFIT_BYALDI = ITEMS.register("confit_byaldi", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.CONFIT_BYALDI.get(), 2400), 1.0F).alwaysEat().build())));
+	public static final RegistryObject<Item> CONFIT_BYALDI = ITEMS.register("confit_byaldi", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA.get(), 2400), 1.0F).alwaysEat().build())));
 	public static final RegistryObject<Item> POTATO_PANCAKE = ITEMS.register("potato_pancake", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.5F).alwaysEat().build())));
 	public static final RegistryObject<Item> LITTLE_BLACK_SQUASH_BALLS = ITEMS.register("little_black_squash_balls", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> LITTLE_BLACK_WORM = ITEMS.register("little_black_worm", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CENTIPEDE = ITEMS.register("centipede", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> POTATO_KNISHES = ITEMS.register("potato_knishes", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.CONFIT_BYALDI.get(), 2400), 1.0F).alwaysEat().build())));
+	public static final RegistryObject<Item> POTATO_KNISHES = ITEMS.register("potato_knishes", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA.get(), 2400), 1.0F).alwaysEat().build())));
 	public static final RegistryObject<Item> TINY_COIN = ITEMS.register("tiny_coin", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> TOKEN_FRAGMENT = ITEMS.register("token_fragment", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> TOKEN_PIECE = ITEMS.register("token_piece", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
@@ -166,9 +166,9 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_WHITELIST = ITEMS.register("rat_upgrade_whitelist", () -> new RatListUpgradeItem(new Item.Properties().stacksTo(1), 0, 3));
 	public static final RegistryObject<Item> RAT_UPGRADE_MOB_FILTER = ITEMS.register("rat_upgrade_mob_filter", () -> new MobFilterUpgradeItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> RAT_UPGRADE_REPLANTER = ITEMS.register("rat_upgrade_replanter", () -> new BaseRatUpgradeItem(new Item.Properties(), 0, 1));
-	public static final RegistryObject<Item> RAT_UPGRADE_FLIGHT = ITEMS.register("rat_upgrade_flight", () -> new BaseFlightRatUpgradeItem(new Item.Properties(), 0, 3, FEATHERY_WING.get()));
-	public static final RegistryObject<Item> RAT_UPGRADE_DRAGON = ITEMS.register("rat_upgrade_dragon", () -> new DragonRatUpgradeItem(new Item.Properties(), DRAGON_WING.get()));
-	public static final RegistryObject<Item> RAT_UPGRADE_BEE = ITEMS.register("rat_upgrade_bee", () -> new BeeRatUpgradeItem(new Item.Properties(), BEE_WING.get()));
+	public static final RegistryObject<Item> RAT_UPGRADE_FLIGHT = ITEMS.register("rat_upgrade_flight", () -> new BaseFlightRatUpgradeItem(new Item.Properties(), 0, 3) { public ItemStack getWing() { return RatsItemRegistry.FEATHERY_WING.get().getDefaultInstance(); }});
+	public static final RegistryObject<Item> RAT_UPGRADE_DRAGON = ITEMS.register("rat_upgrade_dragon", () -> new DragonRatUpgradeItem(new Item.Properties()));
+	public static final RegistryObject<Item> RAT_UPGRADE_BEE = ITEMS.register("rat_upgrade_bee", () -> new BeeRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_AQUATIC = ITEMS.register("rat_upgrade_aquatic", () -> new AquaticRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_ENDER = ITEMS.register("rat_upgrade_ender", () -> new EnderRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_LUMBERJACK = ITEMS.register("rat_upgrade_lumberjack", () -> new LumberjackRatUpgradeItem(new Item.Properties()));
@@ -214,10 +214,10 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_IDOL = ITEMS.register("rat_upgrade_idol", () -> new IdolRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_SCULKED = ITEMS.register("rat_upgrade_sculked", () -> new SculkedRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BASIC_MOUNT = ITEMS.register("rat_upgrade_basic_mount", () -> new BaseRatUpgradeItem(new Item.Properties()));
-	public static final RegistryObject<Item> RAT_UPGRADE_CHICKEN_MOUNT = ITEMS.register("rat_upgrade_chicken_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_CHICKEN));
-	public static final RegistryObject<Item> RAT_UPGRADE_GOLEM_MOUNT = ITEMS.register("rat_upgrade_golem_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_GOLEM));
-	public static final RegistryObject<Item> RAT_UPGRADE_STRIDER_MOUNT = ITEMS.register("rat_upgrade_strider_mount", () -> new StriderMountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_STRIDER_MOUNT));
-	public static final RegistryObject<Item> RAT_UPGRADE_BEAST_MOUNT = ITEMS.register("rat_upgrade_beast_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatsEntityRegistry.RAT_MOUNT_BEAST));
+	public static final RegistryObject<Item> RAT_UPGRADE_CHICKEN_MOUNT = ITEMS.register("rat_upgrade_chicken_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatsEntityRegistry.RAT_MOUNT_CHICKEN));
+	public static final RegistryObject<Item> RAT_UPGRADE_GOLEM_MOUNT = ITEMS.register("rat_upgrade_golem_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatsEntityRegistry.RAT_MOUNT_GOLEM));
+	public static final RegistryObject<Item> RAT_UPGRADE_STRIDER_MOUNT = ITEMS.register("rat_upgrade_strider_mount", () -> new StriderMountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatsEntityRegistry.RAT_STRIDER_MOUNT));
+	public static final RegistryObject<Item> RAT_UPGRADE_BEAST_MOUNT = ITEMS.register("rat_upgrade_beast_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatsEntityRegistry.RAT_MOUNT_BEAST));
 	public static final RegistryObject<Item> RAT_UPGRADE_COMBINED = ITEMS.register("rat_upgrade_combined", () -> new CombinedRatUpgradeItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> RAT_UPGRADE_COMBINED_CREATIVE = ITEMS.register("rat_upgrade_combined_creative", () -> new CombinedRatUpgradeItem(new Item.Properties().stacksTo(1).fireResistant()));
 

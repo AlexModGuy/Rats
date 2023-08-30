@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.entity.ai.goal.RatPickupGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesOverlayUpgrade;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -35,9 +36,9 @@ public class EnergyRatUpgradeItem extends BaseRatUpgradeItem implements ChangesO
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(Component.translatable("item.rats.rat_upgrade_energy.desc0").withStyle(ChatFormatting.GRAY));
-		tooltip.add(Component.translatable("item.rats.rat_upgrade_energy.desc1").withStyle(ChatFormatting.GRAY));
-		tooltip.add(Component.translatable("item.rats.rat_upgrade_energy.transfer_rate", this.transferRate).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_ENERGY_DESC0).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_ENERGY_DESC1).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_ENERGY_TRANSFER, this.transferRate).withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override

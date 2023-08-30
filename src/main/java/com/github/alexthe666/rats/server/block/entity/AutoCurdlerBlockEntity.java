@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.inventory.AutoCurdlerMenu;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -309,7 +310,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.translatable("container.auto_curdler");
+		return Component.translatable(RatsLangConstants.CURDLER);
 	}
 
 	@Nonnull

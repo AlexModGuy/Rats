@@ -88,6 +88,7 @@ public class RatsSoundRegistry {
 	public static final RegistryObject<SoundEvent> RAT_MAKE_COIN = createSoundEvent("entity.rats.rat.coin");
 	public static final RegistryObject<SoundEvent> RAT_NET_THROW = createSoundEvent("item.rats.rat_net.throw");
 	public static final RegistryObject<SoundEvent> RAT_NUGGET_ORE = createSoundEvent("item.rats.rat_nugget.ore");
+	public static final RegistryObject<SoundEvent> RAT_PIRATE = createSoundEvent("entity.rats.rat.pirate");
 	public static final RegistryObject<SoundEvent> RAT_POOP = createSoundEvent("entity.rats.rat.poop");
 	public static final RegistryObject<SoundEvent> RAT_SANTA = createSoundEvent("entity.rats.rat.santa");
 	public static final RegistryObject<SoundEvent> RAT_SHOOT = createSoundEvent("entity.rats.rat.shoot");

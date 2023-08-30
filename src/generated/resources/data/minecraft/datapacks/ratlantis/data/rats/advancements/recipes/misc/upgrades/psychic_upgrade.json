@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cutlass": {
+    "has_brain": {
       "conditions": {
         "items": [
           {
@@ -13,49 +13,45 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_ectoplasm": {
+    "has_crystal": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:dutchrat_wheel"
+              "minecraft:end_crystal"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_idol": {
+    "has_crystals": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:gems/prismarine"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_pearl": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:idol_of_ratlantis"
+              "minecraft:ender_pearl"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_skull": {
+    "has_shard": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "rats:corrupt_rat_skull"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_tech": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "rats:arcane_technology"
-            ]
+            "tag": "forge:dusts/prismarine"
           }
         ]
       },
@@ -63,7 +59,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_nonbeliever"
+        "recipe": "rats:upgrades/psychic_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -72,7 +68,7 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_god"
+              "rats:rat_upgrade_basic_ratlantean"
             ]
           }
         ]
@@ -82,18 +78,18 @@
   },
   "requirements": [
     [
-      "has_tech",
-      "has_ectoplasm",
-      "has_cutlass",
-      "has_idol",
-      "has_skull",
+      "has_shard",
+      "has_pearl",
+      "has_crystal",
+      "has_brain",
+      "has_crystals",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_nonbeliever"
+      "rats:upgrades/psychic_upgrade"
     ]
   },
   "sends_telemetry_event": false

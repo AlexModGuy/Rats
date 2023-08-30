@@ -1,23 +1,35 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_claw": {
+    "has_barrel": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:feral_rat_claw"
+              "rats:ratbot_barrel"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_gem": {
+    "has_hat": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/ratlantis_gem"
+            "items": [
+              "rats:aviator_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:storage_blocks/iron"
           }
         ]
       },
@@ -25,7 +37,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_combined"
+        "recipe": "rats:upgrades/biplane_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -34,7 +46,19 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_basic_ratlantean"
+              "rats:rat_upgrade_basic_mount"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_wing": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:biplane_wing"
             ]
           }
         ]
@@ -44,15 +68,17 @@
   },
   "requirements": [
     [
-      "has_claw",
-      "has_gem",
+      "has_iron",
+      "has_hat",
+      "has_barrel",
+      "has_wing",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_combined"
+      "rats:upgrades/biplane_upgrade"
     ]
   },
   "sends_telemetry_event": false

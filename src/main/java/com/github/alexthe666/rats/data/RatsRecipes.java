@@ -2,9 +2,7 @@ package com.github.alexthe666.rats.data;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsItemTags;
-import com.github.alexthe666.rats.registry.RatsBlockRegistry;
-import com.github.alexthe666.rats.registry.RatsItemRegistry;
-import com.github.alexthe666.rats.registry.RatsRecipeRegistry;
+import com.github.alexthe666.rats.registry.*;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;

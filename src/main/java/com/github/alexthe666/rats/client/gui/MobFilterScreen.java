@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.server.items.upgrades.MobFilterUpgradeItem;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateMobFilterPacket;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -50,7 +51,7 @@ public class MobFilterScreen extends Screen {
 
 	//stuff from the itemstack
 	private final ItemStack stack;
-	private final boolean isWhitelist;
+	private boolean isWhitelist;
 	private final List<String> selectedMobs;
 
 	//screen fields
@@ -67,7 +68,7 @@ public class MobFilterScreen extends Screen {
 	private final Set<TagKey<EntityType<?>>> visibleTags = new HashSet<>();
 
 	public MobFilterScreen(ItemStack stack) {
-		super(Component.translatable("gui.rats.mob_filter_screen"));
+		super(Component.translatable(RatsLangConstants.MOB_FILTER));
 		this.allMobs = RatsMod.MOB_CACHE;
 		this.stack = stack;
 		this.isWhitelist = MobFilterUpgradeItem.isWhitelist(stack);
@@ -82,18 +83,18 @@ public class MobFilterScreen extends Screen {
 		this.topPos = (this.height - this.imageHeight) / 2;
 
 		//blacklist/whitelist checkbox
-		this.whitelistSelected = new CheckBox(this.leftPos + 7, this.topPos + 20, Component.translatable("gui.rats.isWhitelist"), this.isWhitelist, box -> {});
+		this.whitelistSelected = new CheckBox(this.leftPos + 7, this.topPos + 20, this.isWhitelist, box -> this.isWhitelist = !this.isWhitelist);
 		this.addRenderableWidget(this.whitelistSelected);
 
 		//selected mobs checkbox
-		this.selectedMobsShown = new CheckBox(this.leftPos + 7, this.topPos + 60, Component.translatable("gui.rats.selectedMobs"), false, box -> {
+		this.selectedMobsShown = new CheckBox(this.leftPos + 7, this.topPos + 60, false, box -> {
 			this.searchBar.setValue("");
 			this.refreshSearchResults();
 		});
 		this.addRenderableWidget(this.selectedMobsShown);
 
 		//search bar
-		this.searchBar = new EditBox(this.font, this.leftPos + 121, this.topPos + 8, 85, 12, Component.translatable("itemGroup.search"));
+		this.searchBar = new EditBox(this.font, this.leftPos + 121, this.topPos + 8, 85, 12, Component.empty());
 		this.searchBar.setMaxLength(50);
 		this.searchBar.setBordered(false);
 		this.searchBar.setTextColor(16777215);
@@ -119,7 +120,7 @@ public class MobFilterScreen extends Screen {
 		//draw title
 		graphics.drawString(this.font, this.title, this.leftPos + 7, this.topPos + 7, 4210752, false);
 		//draw whitelist/blacklist icon under checkbox
-		graphics.blit(TEXTURE, this.leftPos + 8, this.topPos + 35, this.whitelistSelected.selected ? 44 : 30, 125, 12, 14);
+		graphics.blit(TEXTURE, this.leftPos + 8, this.topPos + 35, this.isWhitelist ? 44 : 30, 125, 12, 14);
 		//draw selected mob icon
 		graphics.blit(TEXTURE, this.leftPos + 8, this.topPos + 75, 58, 125, 12, 12);
 		//search bar!
@@ -151,12 +152,12 @@ public class MobFilterScreen extends Screen {
 
 		//render a tooltip for rendering over the whitelist checkbox
 		if (this.whitelistSelected.isHovered()) {
-			graphics.renderTooltip(this.font, Component.literal("Toggle Whitelist"), mouseX, mouseY);
+			graphics.renderTooltip(this.font, Component.translatable(RatsLangConstants.FILTER_WHITELIST), mouseX, mouseY);
 		}
 
 		//render a tooltip for rendering over the selected mob filter checkbox
 		if (this.selectedMobsShown.isHovered()) {
-			graphics.renderTooltip(this.font, Component.literal("Show Selected Mobs"), mouseX, mouseY);
+			graphics.renderTooltip(this.font, Component.translatable(RatsLangConstants.FILTER_SELECTED_MOBS), mouseX, mouseY);
 		}
 	}
 
@@ -322,7 +323,7 @@ public class MobFilterScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		MobFilterUpgradeItem.setWhitelist(this.stack, this.whitelistSelected.selected);
+		MobFilterUpgradeItem.setWhitelist(this.stack, this.isWhitelist);
 		MobFilterUpgradeItem.setMobs(this.stack, this.selectedMobs);
 		RatsNetworkHandler.CHANNEL.sendToServer(new UpdateMobFilterPacket(this.stack, this.isWhitelist, this.selectedMobs));
 	}
@@ -334,10 +335,10 @@ public class MobFilterScreen extends Screen {
 
 	public static class CheckBox extends AbstractButton {
 		private boolean selected;
-		private CheckBox.OnPress press;
+		private final CheckBox.OnPress press;
 
-		public CheckBox(int x, int y, Component message, boolean selected, CheckBox.OnPress press) {
-			super(x, y, 12, 12, message);
+		public CheckBox(int x, int y, boolean selected, CheckBox.OnPress press) {
+			super(x, y, 12, 12, Component.empty());
 			this.selected = selected;
 			this.press = press;
 		}

@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.block.entity.RatCageBreedingLanternBloc
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.RatCageDecoration;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
@@ -83,7 +84,6 @@ public class RatCageBlock extends Block {
 	public RatCageBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(getDefaultCage(this.getStateDefinition()));
-
 	}
 
 	private static BlockState getDefaultCage(StateDefinition<Block, BlockState> definition) {
@@ -218,14 +218,14 @@ public class RatCageBlock extends Block {
 						ratCount++;
 					}
 				}
-				player.displayClientMessage(Component.translatable("entity.rats.rat.cage.deposit", ratCount), true);
+				player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_DEPOSIT, ratCount), true);
 			} else {
 				List<TamedRat> list = level.getEntitiesOfClass(TamedRat.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), rat -> !rat.isBaby() && rat.isOwnedBy(player));
 				for (TamedRat rat : list) {
 					rat.setPos(player.getX(), player.getY(), player.getZ());
 					ratCount++;
 				}
-				player.displayClientMessage(Component.translatable("entity.rats.rat.cage.withdrawal", ratCount), true);
+				player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_WITHDRAW, ratCount), true);
 			}
 			return InteractionResult.SUCCESS;
 		}

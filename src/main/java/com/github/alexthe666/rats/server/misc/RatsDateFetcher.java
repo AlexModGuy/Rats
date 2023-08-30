@@ -19,6 +19,11 @@ public class RatsDateFetcher {
 		return date.get(ChronoField.MONTH_OF_YEAR) == 4 && date.get(ChronoField.DAY_OF_MONTH) == 1;
 	}
 
+	public static boolean isPirateDay() {
+		LocalDate date = LocalDate.now();
+		return date.get(ChronoField.MONTH_OF_YEAR) == 9 && date.get(ChronoField.DAY_OF_MONTH) == 19;
+	}
+
 	public static boolean isHalloweenDay() {
 		LocalDate date = LocalDate.now();
 		return date.get(ChronoField.MONTH_OF_YEAR) == 10 && date.get(ChronoField.DAY_OF_MONTH) == 31;

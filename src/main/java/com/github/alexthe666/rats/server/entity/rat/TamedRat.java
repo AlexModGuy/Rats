@@ -26,6 +26,7 @@ import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatVariant;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -859,7 +860,7 @@ public class TamedRat extends InventoryRat {
 			if (player.isSecondaryUseActive() && !this.isPassenger()) {
 				if (player.getPassengers().size() < 3) {
 					this.startRiding(player, true);
-					player.displayClientMessage(Component.translatable("entity.rats.rat.dismount_instructions"), true);
+					player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_DISMOUNT), true);
 				}
 				return InteractionResult.sidedSuccess(this.level().isClientSide());
 			}
@@ -899,7 +900,7 @@ public class TamedRat extends InventoryRat {
 				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(RatsItemRegistry.RAT_SACK.get())) {
 				if (RatSackItem.getRatsInSack(itemstack) >= RatConfig.ratSackCapacity) {
-					player.displayClientMessage(Component.translatable("item.rats.rat_sack.too_full").withStyle(ChatFormatting.RED), true);
+					player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_SACK_TOO_FULL).withStyle(ChatFormatting.RED), true);
 					return InteractionResult.PASS;
 				} else {
 					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInSack(itemstack) + 1);
@@ -914,7 +915,7 @@ public class TamedRat extends InventoryRat {
 				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
 				}
-				player.displayClientMessage(Component.translatable("entity.rats.rat.staff.bind", this.getName()), true);
+				player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_BIND, this.getName()), true);
 				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(Items.ARROW)) {
 				itemstack.shrink(1);

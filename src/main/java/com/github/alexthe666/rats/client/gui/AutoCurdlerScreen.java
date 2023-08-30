@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.AutoCurdlerMenu;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -110,7 +111,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 
 		if (this.isHovering(29, 15, 24, 58, mouseX, mouseY)) {
 			String fluidName = new FluidStack(ForgeMod.MILK.get(), this.curdler.getTankCapacity()).getDisplayName().getString();
-			String fluidSize = this.curdler.getFluidAmount() + " " + Component.translatable("container.auto_curdler.mb").getString();
+			String fluidSize = this.curdler.getFluidAmount() + " " + Component.translatable(RatsLangConstants.CURDLER_MB).getString();
 			List<Component> list = Arrays.asList(Component.literal(fluidName).withStyle(ChatFormatting.BLUE), Component.literal(fluidSize).withStyle(ChatFormatting.GRAY));
 			graphics.renderTooltip(this.font, Lists.transform(list, Component::getVisualOrderText), mouseX - screenW, mouseY - screenH);
 		}

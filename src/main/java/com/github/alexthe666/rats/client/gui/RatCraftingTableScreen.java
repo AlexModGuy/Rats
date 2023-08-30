@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.message.CycleRatRecipePacket;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -76,7 +77,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		String s = this.getTitle().getString();
 		graphics.drawString(this.font, s, this.imageWidth / 2.0F - font.width(s) / 2.0F, 5, 4210752, false);
 		graphics.drawString(this.font, this.playerInventory.getDisplayName().getString(), 8, this.imageHeight - 93, 4210752, false);
-		graphics.drawString(this.font, Component.translatable("container.rat_crafting_table.input"), 8, this.imageHeight - 125, 4210752, false);
+		graphics.drawString(this.font, Component.translatable(RatsLangConstants.CRAFTING_INPUT), 8, this.imageHeight - 125, 4210752, false);
 		int screenW = (this.width - 248) / 2;
 		int screenH = (this.height - 166) / 2;
 		Optional<CraftingRecipe> recipe = this.table.getCraftingTable().getGuideRecipe();
@@ -99,7 +100,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 		if (!this.table.getCraftingTable().hasRat()) {
 			if (this.isHovering(6, 34, 25, 29, mouseX, mouseY)) {
-				Component ratDesc = Component.translatable("container.rat_crafting_table.rat_desc");
+				Component ratDesc = Component.translatable(RatsLangConstants.CRAFTING_NEEDS_RAT);
 				graphics.renderTooltip(this.font, this.font.split(ratDesc, 200), mouseX - screenW - 40, mouseY - screenH + 10);
 			}
 		}

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades.interfaces;
 
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +32,7 @@ public interface CombinedUpgrade {
 				}
 			}
 			if (nonnulllist.stream().filter(stack1 -> !stack1.isEmpty()).toList().size() > 5) {
-				tooltip.add(Component.translatable("item.rats.rat_upgrade_combined.and_more", nonnulllist.stream().filter(stack1 -> !stack1.isEmpty()).toList().size() - 5).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable(RatsLangConstants.AND_MORE, nonnulllist.stream().filter(stack1 -> !stack1.isEmpty()).toList().size() - 5).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

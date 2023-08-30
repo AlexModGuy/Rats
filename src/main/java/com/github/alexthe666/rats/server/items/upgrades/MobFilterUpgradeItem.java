@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.client.events.ModClientEvents;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -62,19 +63,19 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(Component.translatable("item.rats.rat_upgrade_mob_filter.mode", Component.translatable("item.rats.rat_upgrade_mob_filter." + (isWhitelist(stack) ? "whitelist" : "blacklist"))).withStyle(ChatFormatting.GRAY));
-		tooltip.add(Component.translatable("item.rats.rat_upgrade_mob_filter.selected_mobs").withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.MOB_FILTER_MODE, Component.translatable(isWhitelist(stack) ? RatsLangConstants.MOB_FILTER_WHITELIST : RatsLangConstants.MOB_FILTER_BLACKLIST)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(RatsLangConstants.MOB_FILTER_SELECTED_MOBS).withStyle(ChatFormatting.GRAY));
 		if (getSelectedMobs(stack).size() > 0) {
 			List<String> mobs = getSelectedMobs(stack);
 			for (int i = 0; i < mobs.size(); i++) {
 				if (i < 3) {
-					tooltip.add(CommonComponents.space().append(Component.translatable("item.rats.rat_sack.contain_rat", mobs.get(i)).withStyle(ChatFormatting.GRAY)));
+					tooltip.add(CommonComponents.space().append(Component.literal(mobs.get(i)).withStyle(ChatFormatting.GRAY)));
 				} else {
 					break;
 				}
 			}
 			if (mobs.size() > 3) {
-				tooltip.add(CommonComponents.space().append(Component.translatable("item.rats.rat_upgrade_combined.and_more", mobs.size() - 3).withStyle(ChatFormatting.GRAY)));
+				tooltip.add(CommonComponents.space().append(Component.translatable(RatsLangConstants.AND_MORE, mobs.size() - 3).withStyle(ChatFormatting.GRAY)));
 			}
 		}
 	}

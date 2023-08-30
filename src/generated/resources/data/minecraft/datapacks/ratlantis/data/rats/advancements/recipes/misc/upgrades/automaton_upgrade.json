@@ -1,36 +1,48 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cannonball": {
+    "has_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:cheese_cannonball"
+              "rats:marbled_cheese_golem_core"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_eye": {
+    "has_head": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:pirat_cutlass"
+              "rats:marbled_cheese_rat_head"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_hat": {
+    "has_saw": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:pirat_hat"
+              "rats:ancient_sawblade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_technology": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:arcane_technology"
             ]
           }
         ]
@@ -39,7 +51,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_buccaneer"
+        "recipe": "rats:upgrades/automaton_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -48,7 +60,7 @@
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_basic_ratlantean"
+              "rats:rat_upgrade_basic_mount"
             ]
           }
         ]
@@ -58,16 +70,17 @@
   },
   "requirements": [
     [
-      "has_cannonball",
-      "has_hat",
-      "has_eye",
+      "has_head",
+      "has_saw",
+      "has_core",
+      "has_technology",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_buccaneer"
+      "rats:upgrades/automaton_upgrade"
     ]
   },
   "sends_telemetry_event": false

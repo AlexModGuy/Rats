@@ -49,7 +49,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_ratinator"
+        "recipe": "rats:upgrades/ratinator_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -78,7 +78,7 @@
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_ratinator"
+      "rats:upgrades/ratinator_upgrade"
     ]
   },
   "sends_telemetry_event": false

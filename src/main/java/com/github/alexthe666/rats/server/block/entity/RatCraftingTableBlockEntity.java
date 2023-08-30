@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.inventory.container.CraftingContainerWrapper;
 import com.github.alexthe666.rats.server.inventory.container.TableItemHandlers;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -54,7 +55,7 @@ import java.util.stream.IntStream;
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked", "unused"})
 public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProvider, RecipeHolder, Clearable {
 
-	private static final Component DEFAULT_NAME = Component.translatable("container.rats.rat_crafting_table");
+	private static final Component DEFAULT_NAME = Component.translatable(RatsLangConstants.RAT_CRAFTING_TABLE);
 	private Component customName;
 	public int prevCookTime;
 	private boolean hasRat;

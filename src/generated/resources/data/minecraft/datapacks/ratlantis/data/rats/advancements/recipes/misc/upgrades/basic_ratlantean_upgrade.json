@@ -1,13 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_block": {
+    "has_cheese": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "rats:ratlantis_upgrade_block"
-            ]
+            "tag": "rats:marbled_cheese"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_gem": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/ratlantis_gem"
           }
         ]
       },
@@ -15,20 +23,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:upgrades/basic_upgrade_from_block"
+        "recipe": "rats:upgrades/basic_ratlantean_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_gem",
+      "has_cheese",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:upgrades/basic_upgrade_from_block"
+      "rats:upgrades/basic_ratlantean_upgrade"
     ]
   },
   "sends_telemetry_event": false

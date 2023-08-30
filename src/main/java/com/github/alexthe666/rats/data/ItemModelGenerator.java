@@ -42,7 +42,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 		this.singleTex(RatsItemRegistry.ARCHEOLOGIST_HAT);
 		this.singleTex(RatsItemRegistry.ASSORTED_VEGETABLES);
-		this.singleTex(RatsItemRegistry.BEE_WING);
 		this.singleTex(RatsItemRegistry.BLACK_DEATH_MASK);
 		this.toBlock(RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE.get());
 		this.toBlock(RatsBlockRegistry.BLOCK_OF_CHEESE.get());

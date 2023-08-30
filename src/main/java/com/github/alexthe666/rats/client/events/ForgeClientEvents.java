@@ -120,7 +120,7 @@ public class ForgeClientEvents {
 		if (RatConfig.synesthesiaShader) {
 			if (event.getEntity() == Minecraft.getInstance().player) {
 				GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-				MobEffectInstance active = event.getEntity().getEffect(RatsEffectRegistry.CONFIT_BYALDI.get());
+				MobEffectInstance active = event.getEntity().getEffect(RatsEffectRegistry.SYNESTHESIA.get());
 				boolean synesthesia = active != null;
 				try {
 					if (synesthesia && renderer.currentEffect() == null) {

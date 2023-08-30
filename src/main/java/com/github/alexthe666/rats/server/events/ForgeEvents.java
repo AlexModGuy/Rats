@@ -15,6 +15,7 @@ import com.github.alexthe666.rats.server.message.*;
 import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
@@ -156,7 +157,7 @@ public class ForgeEvents {
 			rat.spawnAngelCopy();
 			rat.playSound(RatsSoundRegistry.RAT_DIE.get());
 			if (rat.getOwner() instanceof Player player) {
-				player.sendSystemMessage(Component.translatable("entity.rats.rat.respawned_angel", rat.getName().getString()));
+				player.sendSystemMessage(Component.translatable(RatsLangConstants.RAT_ANGEL_RESPAWN, rat.getName().getString()));
 			}
 			rat.discard();
 		}
@@ -232,7 +233,7 @@ public class ForgeEvents {
 			CompoundTag playerData = event.getEntity().getPersistentData();
 			CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
 			if (data != null && !data.getBoolean("rats_griefing_warning")) {
-				event.getEntity().displayClientMessage(Component.translatable("entity.rats.rat.griefing_off").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
+				event.getEntity().displayClientMessage(Component.translatable(RatsLangConstants.MOB_GRIEFING_WARNING).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
 				data.putBoolean("rats_griefing_warning", true);
 				playerData.put(Player.PERSISTED_NBT_TAG, data);
 			}
@@ -418,7 +419,7 @@ public class ForgeEvents {
 					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new ManageRatStaffPacket(rat.getId(), event.getPos(), event.getFace().ordinal(), false, true, staff.getStaff(stack)));
 				}
 			} else {
-				event.getEntity().displayClientMessage(Component.literal("Staff is not bound to a rat!").withStyle(ChatFormatting.RED), true);
+				event.getEntity().displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_NO_RAT).withStyle(ChatFormatting.RED), true);
 			}
 		}
 	}

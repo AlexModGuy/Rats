@@ -1,9 +1,11 @@
 package com.github.alexthe666.rats.client.gui;
 
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatTagPacket;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -22,7 +24,7 @@ public class PatrolStaffScreen extends Screen {
 	private final List<GlobalPos> nodes = new ArrayList<>();
 
 	public PatrolStaffScreen(TamedRat rat, BlockPos pos) {
-		super(Component.translatable("patrol_staff"));
+		super(Component.translatable(RatsItemRegistry.PATROL_STICK.get().getDescriptionId()));
 		this.rat = rat;
 		this.pos = pos;
 		this.nodes.clear();
@@ -35,9 +37,9 @@ public class PatrolStaffScreen extends Screen {
 		this.renderables.clear();
 		int i = this.width / 2;
 		int j = (this.height - 166) / 2;
-		Component addText = Component.translatable("entity.rats.rat.staff.add_patrol_node", this.pos.toShortString());
-		Component removeText = Component.translatable("entity.rats.rat.staff.remove_patrol_node", this.pos.toShortString());
-		Component removeAllText = Component.translatable("entity.rats.rat.staff.remove_all_patrol_nodes", this.pos.toShortString());
+		Component addText = Component.translatable(RatsLangConstants.RAT_STAFF_ADD_NODE, this.pos.toShortString());
+		Component removeText = Component.translatable(RatsLangConstants.RAT_STAFF_REMOVE_NODE, this.pos.toShortString());
+		Component removeAllText = Component.translatable(RatsLangConstants.RAT_STAFF_REMOVE_NODES, this.pos.toShortString());
 		int maxLength = Math.max(150, Minecraft.getInstance().font.width(addText.getString()) + 20);
 		int removeIndex = -1;
 

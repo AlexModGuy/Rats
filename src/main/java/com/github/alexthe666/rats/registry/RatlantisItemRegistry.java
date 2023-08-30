@@ -64,8 +64,8 @@ public class RatlantisItemRegistry {
 	public static final RegistryObject<Item> PIRAT_CHEST_BOAT = ITEMS.register("pirat_chest_boat", () -> new PiratBoatItem(true, PiratWoodBoat.Type.PIRAT, new Item.Properties().stacksTo(1)));
 
 	public static final RegistryObject<Item> RAT_UPGRADE_ARCHEOLOGIST = ITEMS.register("rat_upgrade_archeologist", () -> new ArcheologistRatUpgradeItem(new Item.Properties()));
-	public static final RegistryObject<Item> RAT_UPGRADE_AUTOMATON_MOUNT = ITEMS.register("rat_upgrade_automaton_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON));
-	public static final RegistryObject<Item> RAT_UPGRADE_BIPLANE_MOUNT = ITEMS.register("rat_upgrade_biplane_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 3, RatlantisEntityRegistry.RAT_MOUNT_BIPLANE));
+	public static final RegistryObject<Item> RAT_UPGRADE_AUTOMATON_MOUNT = ITEMS.register("rat_upgrade_automaton_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatlantisEntityRegistry.RAT_MOUNT_AUTOMATON));
+	public static final RegistryObject<Item> RAT_UPGRADE_BIPLANE_MOUNT = ITEMS.register("rat_upgrade_biplane_mount", () -> new MountRatUpgradeItem<>(new Item.Properties(), 2, 2, RatlantisEntityRegistry.RAT_MOUNT_BIPLANE));
 	public static final RegistryObject<Item> RAT_UPGRADE_BASIC_RATLANTEAN = ITEMS.register("rat_upgrade_basic_ratlantean", () -> new BaseRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_FERAL_BITE = ITEMS.register("rat_upgrade_feral_bite", () -> new FeralBiteRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BUCCANEER = ITEMS.register("rat_upgrade_buccaneer", () -> new BuccaneerRatUpgradeItem(new Item.Properties()));

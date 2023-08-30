@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.compat.jei;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.recipes.ChefRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -39,7 +40,7 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("gui.rats.jei.cooking");
+		return Component.translatable(RatsLangConstants.CHEF_JEI);
 	}
 
 	@Override

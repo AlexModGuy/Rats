@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.server.inventory.UpgradeCombinerMenu;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -374,13 +375,9 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 		return super.getCapability(capability, facing);
 	}
 
-	public Component getDisplayName() {
-		return Component.translatable("container.upgrade_combiner");
-	}
-
 	@Override
 	protected Component getDefaultName() {
-		return this.getDisplayName();
+		return Component.translatable(RatsLangConstants.UPGRADE_COMBINER);
 	}
 
 	@Override

@@ -1,20 +1,32 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
+import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.PostAttackUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
 import com.github.alexthe666.rats.server.misc.RatUtils;
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class BeeRatUpgradeItem extends BaseFlightRatUpgradeItem implements ChangesTextureUpgrade, PostAttackUpgrade, TickRatUpgrade {
-	public BeeRatUpgradeItem(Properties properties, Item wing) {
-		super(properties, 1, 3, wing);
+
+	public BeeRatUpgradeItem(Properties properties) {
+		super(properties, 1, 3);
+	}
+
+	@Override
+	public ItemStack getWing() {
+		ItemStack wing = new ItemStack(Citadel.ICON_ITEM.get());
+		wing.setTag(Util.make(new CompoundTag(), tag -> tag.putString("IconLocation", "rats:textures/item/bee_wing.png")));
+		return wing;
 	}
 
 	@Override

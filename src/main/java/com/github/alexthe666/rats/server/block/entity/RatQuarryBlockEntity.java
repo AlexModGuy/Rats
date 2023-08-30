@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.block.entity;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -160,7 +161,7 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.translatable("container.rat_quarry");
+		return Component.translatable(RatsLangConstants.QUARRY);
 	}
 
 	@Override

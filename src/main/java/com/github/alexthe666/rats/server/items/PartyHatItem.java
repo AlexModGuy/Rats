@@ -28,7 +28,7 @@ public class PartyHatItem extends Item implements DyeableLeatherItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.getTag() == null || !stack.getTag().getCompound("display").contains("color", 99)) {
-			tooltip.add(Component.translatable("item.rats.party_hat.dye").withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("item.rats.party_hat.desc").withStyle(ChatFormatting.GRAY));
 		}
 	}
 

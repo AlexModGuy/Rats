@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.compat.jei;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.recipes.GemcutterRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -39,7 +40,7 @@ public class GemcutterRecipeCategory implements IRecipeCategory<GemcutterRecipe>
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("gui.rats.jei.gemcutting");
+		return Component.translatable(RatsLangConstants.GEMCUTTER_JEI);
 	}
 
 	@Override

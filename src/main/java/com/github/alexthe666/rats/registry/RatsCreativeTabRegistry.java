@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,7 @@ public class RatsCreativeTabRegistry {
 
 	public static final RegistryObject<CreativeModeTab> RATS = TABS.register("rats", () -> CreativeModeTab.builder()
 			.withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-			.title(Component.translatable("itemGroup.rats.rats"))
+			.title(Component.translatable(RatsLangConstants.RATS_TAB))
 			.icon(() -> new ItemStack(RatsItemRegistry.CHEESE.get()))
 			.displayItems((parameters, output) -> {
 				output.accept(RatsItemRegistry.CHEESE.get());
@@ -149,7 +150,7 @@ public class RatsCreativeTabRegistry {
 
 	public static final RegistryObject<CreativeModeTab> UPGRADES = TABS.register("rats_upgrades", () -> CreativeModeTab.builder()
 			.withTabsBefore(RATS.getKey())
-			.title(Component.translatable("itemGroup.rats.upgrades"))
+			.title(Component.translatable(RatsLangConstants.RAT_UPGRADE_TAB))
 			.icon(() -> new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 			.displayItems((parameters, output) -> {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BASIC.get());
@@ -238,7 +239,7 @@ public class RatsCreativeTabRegistry {
 
 	public static final RegistryObject<CreativeModeTab> RATLANTIS = TABS.register("ratlantis", () -> CreativeModeTab.builder()
 			.withTabsBefore(UPGRADES.getKey())
-			.title(Component.translatable("itemGroup.rats.ratlantis"))
+			.title(Component.translatable(RatsLangConstants.RATLANTIS_TAB))
 			.icon(() -> new ItemStack(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get()))
 			.displayItems((parameters, output) -> {
 

@@ -1,25 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cutlass": {
+    "has_bone": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "rats:ghost_pirat_cutlass"
-            ]
+            "tag": "forge:bones"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_ectoplasm": {
+    "has_cheese": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "rats:ghost_pirat_ectoplasm"
-            ]
+            "tag": "rats:marbled_cheese"
           }
         ]
       },
@@ -30,19 +26,31 @@
         "items": [
           {
             "items": [
-              "rats:ghost_pirat_hat"
+              "rats:archeologist_hat"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_membrane": {
+    "has_pick": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:phantom_membrane"
+              "minecraft:iron_pickaxe"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_shovel": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_shovel"
             ]
           }
         ]
@@ -51,16 +59,28 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:rat_upgrade_ethereal"
+        "recipe": "rats:upgrades/archeologist_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_token": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:chunky_cheese_token"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_upgrade": {
       "conditions": {
         "items": [
           {
             "items": [
-              "rats:rat_upgrade_basic_ratlantean"
+              "rats:rat_upgrade_basic"
             ]
           }
         ]
@@ -70,17 +90,19 @@
   },
   "requirements": [
     [
+      "has_cheese",
       "has_hat",
-      "has_ectoplasm",
-      "has_cutlass",
-      "has_membrane",
+      "has_bone",
+      "has_pick",
+      "has_token",
+      "has_shovel",
       "has_upgrade",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "rats:rat_upgrade_ethereal"
+      "rats:upgrades/archeologist_upgrade"
     ]
   },
   "sends_telemetry_event": false

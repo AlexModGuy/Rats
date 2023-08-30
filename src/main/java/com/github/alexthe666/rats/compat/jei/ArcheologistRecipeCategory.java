@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.compat.jei;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.recipes.ArcheologistRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -37,7 +38,7 @@ public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistR
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("gui.rats.jei.archeology");
+		return Component.translatable(RatsLangConstants.ARCHEOLOGIST_JEI);
 	}
 
 	@Override
