@@ -396,7 +396,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.refreshDimensions();
 	}
 
-	protected boolean isVisuallySitting() {
+	public boolean isVisuallySitting() {
 		return this.getVehicle() instanceof Player || this.getVehicle() instanceof RatMountBase || this.getEntityData().get(SITTING) || this.isEating() || this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF;
 	}
 

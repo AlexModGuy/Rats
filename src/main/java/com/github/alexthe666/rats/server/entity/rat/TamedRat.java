@@ -314,7 +314,7 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected boolean isVisuallySitting() {
+	public boolean isVisuallySitting() {
 		return super.isVisuallySitting() || this.isDancing();
 	}
 

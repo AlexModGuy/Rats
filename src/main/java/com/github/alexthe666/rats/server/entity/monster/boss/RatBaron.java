@@ -162,7 +162,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 	}
 
 	@Override
-	protected boolean isVisuallySitting() {
+	public boolean isVisuallySitting() {
 		return true;
 	}
 }

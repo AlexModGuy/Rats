@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import com.github.alexthe666.rats.server.entity.projectile.PlagueShot;
+import com.github.alexthe666.rats.server.entity.rat.DemonRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.RatSackItem;
@@ -31,6 +32,9 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -44,6 +48,7 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -55,6 +60,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -260,6 +266,24 @@ public class ForgeEvents {
 			if (skele.getRandom().nextFloat() < 0.25F) {
 				skele.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatsItemRegistry.ARCHEOLOGIST_HAT.get()));
 				skele.setDropChance(EquipmentSlot.HEAD, 1.0F);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void spawnStriderJockeys(MobSpawnEvent.FinalizeSpawn event) {
+		if (event.getDifficulty().getDifficulty() != Difficulty.PEACEFUL) {
+			if (event.getEntity() instanceof Strider strider && event.getEntity().getType() == EntityType.STRIDER) {
+				if (!strider.isBaby() && !strider.isSaddled() && strider.getPassengers().isEmpty() && strider.getRandom().nextFloat() < 0.1F) {
+					DemonRat demonRat = RatsEntityRegistry.DEMON_RAT.get().create(event.getLevel().getLevel());
+					if (demonRat != null) {
+						demonRat.moveTo(strider.getX(), strider.getY(), strider.getZ(), strider.getYRot(), 0.0F);
+						demonRat.finalizeSpawn(event.getLevel(), event.getDifficulty(), MobSpawnType.JOCKEY, null, null);
+						demonRat.startRiding(strider, true);
+						demonRat.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK));
+						strider.equipSaddle(null);
+					}
+				}
 			}
 		}
 	}

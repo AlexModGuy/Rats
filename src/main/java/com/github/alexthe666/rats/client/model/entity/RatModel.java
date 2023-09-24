@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -129,6 +130,11 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 			f12 = (float) Math.toRadians(-15.0D);
 		}
 
+		if (!rat.isDeadInTrap() && rat.getAnimation() != AbstractRat.ANIMATION_IDLE_SCRATCH && (!(rat instanceof TamedRat realRat) || !realRat.isInWheel())) {
+			this.head.rotateAngleX = f4 * Mth.DEG_TO_RAD;
+			this.head.rotateAngleY = f3 * Mth.DEG_TO_RAD;
+		}
+
 		this.wisker1.showModel = this.wisker2.showModel = !rat.getItemBySlot(EquipmentSlot.HEAD).is(RatsItemTags.HIDES_RAT_WHISKERS);
 		this.progressRotation(this.leftThigh, rat.deadInTrapProgress, (float) Math.toRadians(20.0D), 0.0F, (float) Math.toRadians(-60.0D), 5.0F);
 		this.progressRotation(this.rightThigh, rat.deadInTrapProgress, (float) Math.toRadians(20.0D), 0.0F, (float) Math.toRadians(60.0D), 5.0F);
@@ -144,9 +150,9 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 		this.progressRotation(this.leftFoot, rat.sitProgress, 0.0F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.leftThigh, rat.sitProgress, 1.134464F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.body1, rat.sitProgress, -1.134464F, 0.0F, 0.0F, 20.0F);
-		this.progressRotation(this.head, rat.sitProgress, 0.7285004F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.rightThigh, rat.sitProgress, 1.134464F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.neck, rat.sitProgress, 0.091106184F, 0.0F, 0.0F, 20.0F);
+		this.progressRotation(this.head, rat.sitProgress, 0.8285004F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.leftEar, rat.sitProgress, -0.17453292F, -0.7853982F, 0.7853982F, 20.0F);
 		this.progressRotation(this.leftArm, rat.sitProgress, 1.3089969F, 0.0F, 0.0F, 20.0F);
 		this.progressRotation(this.rightArm, rat.sitProgress, 1.3089969F, 0.0F, 0.0F, 20.0F);
@@ -219,11 +225,6 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 
 		float ulatingScale = 0.9F + (float) Math.sin(f2 * 0.75F) * 0.1F;
 		if (!rat.isDeadInTrap()) {
-			if (ModClientEvents.shouldRenderNameplates() && rat.getAnimation() != AbstractRat.ANIMATION_IDLE_SCRATCH && (!(rat instanceof TamedRat realRat) || !realRat.isInWheel())) {
-				this.head.rotateAngleX = (f4 + (rat.isInSittingPose() && !(rat.sleepProgress > 0.0F) ? 45 : 0)) * ((float) Math.PI / 180F);
-				this.head.rotateAngleY = f3 * ((float) Math.PI / 180F);
-			}
-
 			this.swing(this.wisker2, speedIdle, degreeIdle, false, 0.0F, 0.0F, f2, 1.0F);
 			this.swing(this.wisker1, speedIdle, degreeIdle, true, 0.0F, 0.0F, f2, 1.0F);
 			this.flap(this.wisker2, speedIdle, degreeIdle, false, 1.0F, 0.0F, f2, 1.0F);
