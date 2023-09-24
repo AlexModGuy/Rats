@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "rats:gemcutter/little_black_squash_balls"
+        "recipe": "rats:chef/little_black_squash_balls"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "rats:gemcutter/little_black_squash_balls"
+      "rats:chef/little_black_squash_balls"
     ]
   },
   "sends_telemetry_event": false

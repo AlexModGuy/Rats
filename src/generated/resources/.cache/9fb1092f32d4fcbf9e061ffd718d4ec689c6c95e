@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-04T20:20:19.0983994	Recipes
+// 1.20.1	2023-09-23T23:03:17.5947287	Recipes
 ebaaaf0902a3fcf612166371cab9d27b42bbbc1f data/rats/advancements/recipes/building_blocks/auto_curdler.json
 987bd89935ed98bb9364bd497e27180b979b7fc4 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
 a5dd1a2bb72dc214a29362949d0dde182ac23a42 data/rats/advancements/recipes/building_blocks/block_of_cheese.json
@@ -30,6 +30,7 @@ d339cc1517b928a2efbbcb7411358fe69bd633e5 data/rats/advancements/recipes/combat/t
 133708d574fb3e1d1e364e389e666f821fb1c424 data/rats/advancements/recipes/decorations/rat_trap.json
 5720e4f04f3917e9a0cf9e4ed092de9fa57cf72e data/rats/advancements/recipes/food/assorted_vegetables.json
 7e053f29235ba5aeb814361824d0b516f6484751 data/rats/advancements/recipes/food/chef/confit_byaldi.json
+c0191ae79dfa069f3c34ff6520e9d90c8f9e0a11 data/rats/advancements/recipes/food/chef/little_black_squash_balls.json
 2dc5acfa06bc77dbabf5437856129f5dd6ac647d data/rats/advancements/recipes/food/chef/potato_knishes.json
 5858e84a3558dc1e85de37097efd18b2cb05079b data/rats/advancements/recipes/food/chef/string_cheese.json
 9bc59470ad4d17cafc0ee7605da84d794d155b29 data/rats/advancements/recipes/food/cooked_rat_campfire.json
@@ -48,8 +49,6 @@ b24e517f13bcf9097db7f56df2d2f4127e0f0354 data/rats/advancements/recipes/misc/dra
 fc7d45f34bcf60c3d6ce7869ad414f21f8c8a2a1 data/rats/advancements/recipes/misc/feathery_wing.json
 8d66ae688ff0e8d5a7977612b22105b8b2af3b0c data/rats/advancements/recipes/misc/filth.json
 92790408aff228d45b1611a4ceb98c66aaebc2c6 data/rats/advancements/recipes/misc/filth_corruption.json
-33e73c68f9653bf9921533543233371eb2059208 data/rats/advancements/recipes/misc/gemcutter/centipede.json
-9f158431ddf10f85e35387cde1f79066e5f85678 data/rats/advancements/recipes/misc/gemcutter/little_black_squash_balls.json
 f14139b6012056ab9cb372cc95b803b0af0b9cb2 data/rats/advancements/recipes/misc/golden_rat_skull.json
 fd1fa431b626e02d123f3062d149ed64dace47d1 data/rats/advancements/recipes/misc/hammocks/hammock_dyed_black.json
 59917c9d3443fb7972e9f4de41979784e983dc3a data/rats/advancements/recipes/misc/hammocks/hammock_dyed_blue.json
@@ -173,7 +172,6 @@ f28457ad123bbaab9408c2d721bb18944deda051 data/rats/advancements/recipes/misc/upg
 8c7a2872bbce668a2bd63ac0d7b0103dcf04a374 data/rats/advancements/recipes/misc/upgrades/flight_upgrade.json
 b8402a15327705fab9b84badd51b91dbf7bc8cde data/rats/advancements/recipes/misc/upgrades/flute_upgrade.json
 2f30ee6561b9c1483629636c54a28962de004f32 data/rats/advancements/recipes/misc/upgrades/gardener_upgrade.json
-2ddb191aacc6883bf5c58faf35828dcbadfa1d09 data/rats/advancements/recipes/misc/upgrades/gemcutter_upgrade.json
 cd72f222779bbf0d41c16c66caf4c79978cf9fdc data/rats/advancements/recipes/misc/upgrades/god_upgrade.json
 49f1452bfcfc348be4bdc5be62a5fa15cfafd5a2 data/rats/advancements/recipes/misc/upgrades/golem_mount_upgrade.json
 2fd4f31e513504fc2fd599a84e90042bc3637147 data/rats/advancements/recipes/misc/upgrades/health_upgrade.json
@@ -221,6 +219,7 @@ bf71c7422fd98b47eb4ed71e26148f01b5686ec7 data/rats/recipes/cheese.json
 ea9af830a8a8ebdf37624c94642889b3bda4548d data/rats/recipes/cheese_banner_pattern.json
 bd0fcfa23549ba69b48dfe1f9b06448678735c08 data/rats/recipes/cheese_stick.json
 e74af994db9a25c32c69cf2ca21249c480bcabdb data/rats/recipes/chef/confit_byaldi.json
+cdb91884fb3ae2afb945823d161bcb099becc145 data/rats/recipes/chef/little_black_squash_balls.json
 72709bd9a41d791b6bfe4fa0c40b5eb944c6cc45 data/rats/recipes/chef/potato_knishes.json
 d69ffb30c7e9d542c9290dadd7dfcb6ffcdfffc4 data/rats/recipes/chef/string_cheese.json
 75f99d0b79bad8d44fa32569a89b1fcbe1040540 data/rats/recipes/chef_toque.json
@@ -239,8 +238,6 @@ bffa12908f635303cd437b87c9ab85136ea2a6c5 data/rats/recipes/filth.json
 483ea9d9c5ddeade1a1967f7f49f11207c4ae068 data/rats/recipes/filth_corruption.json
 91cf54a7e07236faf9e0c29e10c212fa48eb3041 data/rats/recipes/fisherman_hat.json
 c9143988ac18d1ec279cee90681e5d8fc8e48576 data/rats/recipes/fish_barrel.json
-4143b78f09e8926e113007db05d89a6d208b78e2 data/rats/recipes/gemcutter/centipede.json
-2abe043caea338efc31b9d9a3233245672f34894 data/rats/recipes/gemcutter/little_black_squash_balls.json
 513a7b1c9417bd2f98630014b705f3ef0e35cb10 data/rats/recipes/gilded_rat_flute.json
 54791c8b6d344894ea108b2d89366e9556501ab4 data/rats/recipes/golden_rat_skull.json
 59cb36125623c388babcd267cca3c35da980c478 data/rats/recipes/halo_hat.json
@@ -393,7 +390,6 @@ fdd294cd15d0b4621698cc276e7259e5eb0965e9 data/rats/recipes/upgrades/filter_upgra
 8f01e4fa4aae8b55dffa668410efd16abbc1aa0c data/rats/recipes/upgrades/flight_upgrade.json
 7b8c99782d0e8c8cdb850b25ada8f2fa56629c19 data/rats/recipes/upgrades/flute_upgrade.json
 817b04edbf0f9153dc3e4a7a4d2524286e570687 data/rats/recipes/upgrades/gardener_upgrade.json
-9721efc4da998414749274e14383efa0c9e83ead data/rats/recipes/upgrades/gemcutter_upgrade.json
 5e73657b137ebbc91e53d82521a21e1b9d47486d data/rats/recipes/upgrades/god_upgrade.json
 49512adf470cdd321806ce9939f5d40eaf65336d data/rats/recipes/upgrades/golem_mount_upgrade.json
 28834170e397bd1d5da5d4ab526bcc507610c6d9 data/rats/recipes/upgrades/health_upgrade.json

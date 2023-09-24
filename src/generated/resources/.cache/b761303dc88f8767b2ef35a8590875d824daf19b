@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-30T10:58:20.9362032	Item Models: rats
+// 1.20.1	2023-09-23T22:42:57.6035527	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -303,7 +303,6 @@ e518c224e492c4240b7defb13de8315986103624 assets/rats/models/item/rat_upgrade_eli
 84cb87102ccfa44f1962ca90c748c65457ab6ab4 assets/rats/models/item/rat_upgrade_fisherman.json
 9b051f97800654f585cdd3f0ef11fe46fb08d9b7 assets/rats/models/item/rat_upgrade_flight.json
 f70703ee6488e1c22ca3df8661a1a68d04b5da9d assets/rats/models/item/rat_upgrade_gardener.json
-256e8f69485d1e913df49a2473cefebd7378f80a assets/rats/models/item/rat_upgrade_gemcutter.json
 dcdefec2e383c62caa33c1031b0de23ab97c6f75 assets/rats/models/item/rat_upgrade_god.json
 98c081f76674540c4bc144c32d1733e6cd6dc449 assets/rats/models/item/rat_upgrade_golem_mount.json
 3ff050fa19a525c60648b3f8b41dec27e81b6993 assets/rats/models/item/rat_upgrade_health.json

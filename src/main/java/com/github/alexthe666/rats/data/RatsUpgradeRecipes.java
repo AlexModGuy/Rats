@@ -504,17 +504,6 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('S', RatsItemRegistry.RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.RAT_SKULL.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/voodoo_upgrade"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_GEMCUTTER.get())
-				.pattern("FEF")
-				.pattern("DUD")
-				.pattern("FSF")
-				.define('F', Items.FLINT).unlockedBy("has_flint", has(Items.FLINT))
-				.define('E', Tags.Items.GEMS_EMERALD).unlockedBy("has_emerald", has(Tags.Items.GEMS_EMERALD))
-				.define('D', Tags.Items.GEMS_DIAMOND).unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
-				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
-				.define('S', Items.STONECUTTER).unlockedBy("has_stonecutter", has(Items.STONECUTTER))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/gemcutter_upgrade"));
-
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get())
 				.pattern("EGE")
 				.pattern("PUP")

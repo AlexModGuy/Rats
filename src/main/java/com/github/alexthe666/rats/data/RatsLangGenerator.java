@@ -122,7 +122,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItem(RatsItemRegistry.ASSORTED_VEGETABLES, "Assorted Vegetables");
 		this.addItemWithDesc(RatsItemRegistry.BLACK_DEATH_MASK, "Black Death Mask", "Plague Rats will no longer target you when worn");
 		this.addItem(RatsItemRegistry.BLUE_CHEESE, "Blue Cheese");
-		this.addItem(RatsItemRegistry.CENTIPEDE, "Centipede");
+		this.addItemWithJEIDesc(RatsItemRegistry.CENTIPEDE, "Centipede", "Right click a Little Black Worm onto some coarse dirt to turn it into a Centipede.");
 		this.addItem(RatsItemRegistry.CHARGED_CREEPER_CHUNK, "Charged Creeper Chunk");
 		this.addItemWithJEIDesc(RatsItemRegistry.CHEESE, "Cheese", "Used to tame rats. Throw cheese on the ground and let the wild rat eat it to tame one.");
 		this.addItemWithBothDescs(RatsItemRegistry.CHEESE_STICK, "Cheese Staff", "Used to set rat deposit and pickup inventories and rat home points. Right click on a rat with it to bind, then right click on a block or container (chest, furnace, machine, etc) for more item transport related options.", "Use on a rat to bind it", "Interact with a block to allow the rat to deposit or pick up items in it");
@@ -243,7 +243,6 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_FISHERMAN, "Rat Upgrade: Fisherman", "Rats will move to water sources and start fishing", "Rats can catch fish, junk and treasure items");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_FLIGHT, "Rat Upgrade: Flight", "Rats gain the ability to flap rudimentary wings and fly", "Rats will move faster while flying and will not be bound the the constraints of land based travel", "Pretty much turns rats into pigeons");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_GARDENER, "Rat Upgrade: Gardener", "Rats will break nearby tall grass and flowers when set to the 'Harvest' command");
-		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_GEMCUTTER, "Rat Upgrade: Gemcutter", "Can cut gems into specific shapes and forms");
 		this.addItem(RatsItemRegistry.RAT_UPGRADE_GOD, "Rat Upgrade: Battle-God");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_GOLEM_MOUNT, "Rat Upgrade: Golem Mount", "§6Mount Upgrade§r§7: rat gains a golem mount", "Golem mount has 100 health");
 		this.addItem(RatsItemRegistry.RAT_UPGRADE_HEALTH, "Rat Upgrade: Health");

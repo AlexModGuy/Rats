@@ -568,16 +568,10 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 		this.cooking(RatsItemRegistry.ASSORTED_VEGETABLES.get(), RatsItemRegistry.CONFIT_BYALDI.get(), 1, consumer);
 		this.cooking(RatsItemRegistry.CHEESE.get(), RatsItemRegistry.STRING_CHEESE.get(), 4, consumer);
 		this.cooking(RatsItemRegistry.CENTIPEDE.get(), RatsItemRegistry.POTATO_KNISHES.get(), 1, consumer);
-
-		this.gemcutter(Items.COAL, RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS.get(), consumer);
-		this.gemcutter(RatsItemRegistry.LITTLE_BLACK_WORM.get(), RatsItemRegistry.CENTIPEDE.get(), consumer);
+		this.cooking(Items.COAL, RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS.get(), 1, consumer);
 	}
 
 	private void cooking(ItemLike input, ItemLike output, int amount, Consumer<FinishedRecipe> consumer) {
 		new SingleItemRecipeBuilder(RecipeCategory.FOOD, RatsRecipeRegistry.CHEF_SERIALIZER.get(), Ingredient.of(input), output, amount).unlockedBy("has_input", has(input)).save(consumer, new ResourceLocation(RatsMod.MODID, "chef/" + ForgeRegistries.ITEMS.getKey(output.asItem()).getPath()));
-	}
-
-	private void gemcutter(ItemLike input, ItemLike output, Consumer<FinishedRecipe> consumer) {
-		new SingleItemRecipeBuilder(RecipeCategory.MISC, RatsRecipeRegistry.GEMCUTTER_SERIALIZER.get(), Ingredient.of(input), output, 1).unlockedBy("has_input", has(input)).save(consumer, new ResourceLocation(RatsMod.MODID, "gemcutter/" + ForgeRegistries.ITEMS.getKey(output.asItem()).getPath()));
 	}
 }

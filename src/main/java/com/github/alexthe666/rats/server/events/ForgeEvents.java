@@ -27,6 +27,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BiomeTags;
@@ -61,6 +63,8 @@ import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -285,6 +289,20 @@ public class ForgeEvents {
 					}
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void makeCentipede(PlayerInteractEvent.RightClickBlock event) {
+		if (event.getItemStack().is(RatsItemRegistry.LITTLE_BLACK_WORM.get()) && event.getLevel().getBlockState(event.getHitVec().getBlockPos()).is(Blocks.COARSE_DIRT)) {
+			event.getItemStack().shrink(1);
+			ItemStack centipede = new ItemStack(RatsItemRegistry.CENTIPEDE.get());
+			if (!event.getEntity().addItem(centipede.copy())) {
+				event.getEntity().drop(centipede, false);
+			}
+			event.getEntity().swing(event.getHand());
+			event.getLevel().setBlockAndUpdate(event.getHitVec().getBlockPos(), Blocks.DIRT.defaultBlockState());
+			event.getLevel().playSound(null, event.getHitVec().getBlockPos(), SoundEvents.ROOTED_DIRT_BREAK, SoundSource.BLOCKS, 2.0F, 1.0F);
 		}
 	}
 

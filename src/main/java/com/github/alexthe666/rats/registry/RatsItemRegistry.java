@@ -199,7 +199,6 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_TNT_SURVIVOR = ITEMS.register("rat_upgrade_tnt_survivor", () -> new TNTSurvivorRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_PLACER = ITEMS.register("rat_upgrade_placer", () -> new PlacerRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_VOODOO = ITEMS.register("rat_upgrade_voodoo", () -> new StatBoostingRatUpgradeItem(new Item.Properties(), 2, 0, () -> Map.of(Attributes.MAX_HEALTH, RatConfig.voodooHealthUpgrade), true));
-	public static final RegistryObject<Item> RAT_UPGRADE_GEMCUTTER = ITEMS.register("rat_upgrade_gemcutter", () -> new GemcutterRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_ENCHANTER = ITEMS.register("rat_upgrade_enchanter", () -> new EnchanterRatUpgradeItem(new Item.Properties(), 1, 2));
 	public static final RegistryObject<Item> RAT_UPGRADE_DISENCHANTER = ITEMS.register("rat_upgrade_disenchanter", () -> new EnchanterRatUpgradeItem(new Item.Properties(), 1, 1));
 	public static final RegistryObject<Item> RAT_UPGRADE_CHRISTMAS = ITEMS.register("rat_upgrade_christmas", () -> new ChristmasRatUpgradeItem(new Item.Properties()));
