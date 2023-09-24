@@ -3,12 +3,28 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
+def secrets = new Properties()
+def secretsFile = file('secrets.properties')
+if (secretsFile.exists()) {
+    secretsFile.withInputStream {
+        stream -> secrets.load(stream)
+    }
+
+    fileTree("secrets").matching {
+        include "**/*.properties"
+    }.each {
+        File file ->
+            file.withInputStream {
+                stream -> secrets.load(stream)
+            }
+    }
+}
+
 version = "${project.minecraft_version}-${project.mod_version}"
-group = group_name
+group = 'com.github.alexthe666.rats'
 
 base {
     archivesName = mod_name
@@ -19,7 +35,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
     mappings channel: mapping_channel, version: mapping_version
 
     copyIdeResources = true
@@ -41,19 +56,24 @@ minecraft {
         }
 
         client {
+            taskName "Minecraft_Client_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
+            args '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
         }
 
         server {
+            taskName "Minecraft_Server_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
         }
 
        gameTestServer {
+           taskName "Minecraft_GameTestServer_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         data {
+            taskName "Minecraft_Data_${project.minecraft_version}"
             workingDirectory project.file('run-data')
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
@@ -81,6 +101,9 @@ dependencies {
 
     implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
     implementation fg.deobf("curse.maven:citadel-331936:4579078")
+    implementation fg.deobf("curse.maven:jade-324717:4681833")
+
+    runtimeOnly fg.deobf("curse.maven:spark-361579:4738952")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
@@ -90,68 +113,20 @@ mixin {
     config "${project.mod_id}.mixins.json"
 }
 
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version: minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version: neo_version,
-            neo_version_range: neo_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id,
-            mod_name: mod_name,
-            mod_authors: mod_authors,
-            mod_version: version
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml']) {
-        expand replaceProperties + [project: project]
-    }
-}
-
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : "TeamTwilight",
+                'Specification-Vendor'    : "AlexThe666",
                 'Specification-Version'   : "1",
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : "TeamTwilight",
+                'Implementation-Vendor'   : "AlexThe666",
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 
     finalizedBy 'reobfJar'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            afterEvaluate {
-                artifact project.jar
-                artifact project.sourceJar
-            }
-            setGroupId 'teamtwilight'
-            setArtifactId project.mod_id
-        }
-    }
-    repositories {
-        maven {
-            //url "file:///${project.projectDir}/mcmodsrepo"
-            url "https://modmaven.dev:443/artifactory/local-releases"
-            credentials {
-                username System.getenv('ARTIFACTORY_USER')
-                password System.getenv('ARTIFACTORY_PASS')
-            }
-        }
-    }
-}
-
-tasks.register('sourceJar', Jar) {
-    dependsOn 'classes'
-    from sourceSets.main.allSource
-    archiveClassifier = 'sources'
 }
 
 tasks.withType(JavaCompile).configureEach {

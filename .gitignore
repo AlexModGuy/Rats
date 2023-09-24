@@ -21,8 +21,5 @@ build
 eclipse
 run
 
-# Files from Forge MDK
-forge*changelog.txt
-/local.gradle
-/settings.gradle
 /run-data/
+secrets.properties
