@@ -37,7 +37,7 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 
 		tag(PLAGUE_IMMUNE).addTag(RATS).addTag(RAT_MOUNTS).addTag(PLAGUE_LEGION).add(RatsEntityRegistry.PIED_PIPER.get(), RatsEntityRegistry.RAT_KING.get(), RatsEntityRegistry.PLAGUE_DOCTOR.get());
 
-		tag(PLAGUE_LEGION).add(RatsEntityRegistry.BLACK_DEATH.get(), RatsEntityRegistry.PLAGUE_CLOUD.get(), RatsEntityRegistry.PLAGUE_BEAST.get(), RatsEntityRegistry.RAT.get());
+		tag(PLAGUE_LEGION).add(RatsEntityRegistry.BLACK_DEATH.get(), RatsEntityRegistry.PLAGUE_CLOUD.get(), RatsEntityRegistry.PLAGUE_BEAST.get());
 
 		tag(Tags.EntityTypes.BOSSES).add(
 				RatsEntityRegistry.BLACK_DEATH.get(), RatsEntityRegistry.RAT_KING.get());
