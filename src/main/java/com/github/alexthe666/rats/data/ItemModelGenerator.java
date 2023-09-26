@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -23,8 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ItemModelGenerator extends ItemModelProvider {
-
-	private static final List<TrimModelData> GENERATED_TRIM_MODELS = List.of(new TrimModelData("quartz", 0.1F, Map.of()), new TrimModelData("iron", 0.2F, Map.of(ArmorMaterials.IRON, "iron_darker")), new TrimModelData("netherite", 0.3F, Map.of(ArmorMaterials.NETHERITE, "netherite_darker")), new TrimModelData("redstone", 0.4F, Map.of()), new TrimModelData("copper", 0.5F, Map.of()), new TrimModelData("gold", 0.6F, Map.of(ArmorMaterials.GOLD, "gold_darker")), new TrimModelData("emerald", 0.7F, Map.of()), new TrimModelData("diamond", 0.8F, Map.of(ArmorMaterials.DIAMOND, "diamond_darker")), new TrimModelData("lapis", 0.9F, Map.of()), new TrimModelData("amethyst", 1.0F, Map.of()));
 
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper helper) {
 		super(output, RatsMod.MODID, helper);
@@ -318,7 +317,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.fullbrightSingleTex(RatlantisItemRegistry.RATLANTEAN_FLAME);
 		this.toBlock(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get());
 		this.singleTexTool(RatlantisItemRegistry.RATLANTIS_AXE);
-		this.singleTex(RatlantisItemRegistry.RATLANTIS_BOOTS);
+		this.trimmedArmor(RatlantisItemRegistry.RATLANTIS_BOOTS);
 		ModelFile bowPulling0 = bow("ratlantis_bow_pulling_0", itemPrefix("ratlantis_bow_pulling_0"));
 		ModelFile bowPulling1 = bow("ratlantis_bow_pulling_1", itemPrefix("ratlantis_bow_pulling_1"));
 		ModelFile bowPulling2 = bow("ratlantis_bow_pulling_2", itemPrefix("ratlantis_bow_pulling_2"));
@@ -326,10 +325,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(new ResourceLocation("pulling"), 1).model(bowPulling0).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(bowPulling1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(bowPulling2).end();
-		this.singleTex(RatlantisItemRegistry.RATLANTIS_CHESTPLATE);
-		this.singleTex(RatlantisItemRegistry.RATLANTIS_HELMET);
+		this.trimmedArmor(RatlantisItemRegistry.RATLANTIS_CHESTPLATE);
+		this.trimmedArmor(RatlantisItemRegistry.RATLANTIS_HELMET);
 		this.singleTexTool(RatlantisItemRegistry.RATLANTIS_HOE);
-		this.singleTex(RatlantisItemRegistry.RATLANTIS_LEGGINGS);
+		this.trimmedArmor(RatlantisItemRegistry.RATLANTIS_LEGGINGS);
 		this.singleTexTool(RatlantisItemRegistry.RATLANTIS_PICKAXE);
 		this.fullbrightSingleTex(RatlantisItemRegistry.RATLANTIS_RAT_SKULL);
 		this.toBlock(RatlantisBlockRegistry.RATLANTIS_REACTOR.get());
@@ -367,13 +366,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void trimmedArmor(RegistryObject<ArmorItem> armor) {
 		ItemModelBuilder base = this.singleTex(armor);
-		for (TrimModelData trim : GENERATED_TRIM_MODELS) {
-			base.override()
-					.predicate(new ResourceLocation("trim_type"), trim.itemModelIndex())
-					.model(this.generated(armor.getId().getPath() + "_" + trim.name(armor.get().getMaterial()) + "_trim", false,
-							itemPrefix(armor.getId().getPath()),
-							new ResourceLocation("trims/items/" + armor.get().getType().getName() + "_trim_" + trim.name())
-					));
+		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
+			String material = trim.name();
+			String name = armor.getId().getPath() + "_" + material + "_trim";
+			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
+					.texture("layer0", this.itemPrefix(armor.getId().getPath()))
+					.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
+			base.override().predicate(new ResourceLocation("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
 	}
 
@@ -424,11 +423,5 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private ResourceLocation itemPrefix(String name) {
 		return new ResourceLocation(RatsMod.MODID, "item/" + name);
-	}
-
-	record TrimModelData(String name, float itemModelIndex, Map<ArmorMaterial, String> overrideArmorMaterials) {
-		public String name(ArmorMaterial material) {
-			return this.overrideArmorMaterials.getOrDefault(material, this.name);
-		}
 	}
 }
