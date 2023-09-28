@@ -19,7 +19,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.rats.tame_rat.desc"
+      "translate": "advancement.rats.tame_rat.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -28,7 +28,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.tame_rat.title"
+      "translate": "advancement.rats.tame_rat.title"
     }
   },
   "requirements": [

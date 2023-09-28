@@ -9,7 +9,7 @@
     "announce_to_chat": false,
     "background": "rats:textures/block/block_of_cheese.png",
     "description": {
-      "translate": "advancements.rats.root.desc"
+      "translate": "advancement.rats.root.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -18,7 +18,7 @@
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.rats.root.title"
+      "translate": "advancement.rats.root.title"
     }
   },
   "requirements": [

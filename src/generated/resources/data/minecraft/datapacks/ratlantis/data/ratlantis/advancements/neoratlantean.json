@@ -19,7 +19,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.ratlantis.neoratlantean.desc"
+      "translate": "advancement.ratlantis.neoratlantean.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -28,7 +28,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.neoratlantean.title"
+      "translate": "advancement.ratlantis.neoratlantean.title"
     }
   },
   "requirements": [

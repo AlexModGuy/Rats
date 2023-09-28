@@ -30,7 +30,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.milk_cauldron.desc"
+      "translate": "advancement.rats.milk_cauldron.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -39,7 +39,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.milk_cauldron.title"
+      "translate": "advancement.rats.milk_cauldron.title"
     }
   },
   "requirements": [

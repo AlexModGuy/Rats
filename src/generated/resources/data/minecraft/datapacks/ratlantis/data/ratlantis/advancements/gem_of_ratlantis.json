@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.gem_of_ratlantis.desc"
+      "translate": "advancement.ratlantis.gem_of_ratlantis.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.gem_of_ratlantis.title"
+      "translate": "advancement.ratlantis.gem_of_ratlantis.title"
     }
   },
   "requirements": [

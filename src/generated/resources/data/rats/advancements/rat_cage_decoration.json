@@ -151,7 +151,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.rat_cage_decoration.desc"
+      "translate": "advancement.rats.rat_cage_decoration.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -160,7 +160,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.rat_cage_decoration.title"
+      "translate": "advancement.rats.rat_cage_decoration.title"
     }
   },
   "requirements": [

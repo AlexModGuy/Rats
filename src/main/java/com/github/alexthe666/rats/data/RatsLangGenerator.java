@@ -633,7 +633,7 @@ public class RatsLangGenerator extends LanguageProvider {
 	}
 
 	public void addAdvancement(String key, String title, String desc) {
-		this.add("advancement.rats." + key, title);
+		this.add("advancement.rats." + key + ".title", title);
 		this.add("advancement.rats." + key + ".desc", desc);
 	}
 

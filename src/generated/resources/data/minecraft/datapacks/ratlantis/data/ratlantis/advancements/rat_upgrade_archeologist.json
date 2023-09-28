@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.rat_upgrade_archeologist.desc"
+      "translate": "advancement.ratlantis.rat_upgrade_archeologist.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.rat_upgrade_archeologist.title"
+      "translate": "advancement.ratlantis.rat_upgrade_archeologist.title"
     }
   },
   "requirements": [

@@ -37,7 +37,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.rats.black_death.desc"
+      "translate": "advancement.rats.black_death.desc"
     },
     "frame": "goal",
     "hidden": false,
@@ -47,7 +47,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.black_death.title"
+      "translate": "advancement.rats.black_death.title"
     }
   },
   "requirements": [

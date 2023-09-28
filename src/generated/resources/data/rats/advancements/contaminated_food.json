@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.contaminated_food.desc"
+      "translate": "advancement.rats.contaminated_food.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.contaminated_food.title"
+      "translate": "advancement.rats.contaminated_food.title"
     }
   },
   "requirements": [

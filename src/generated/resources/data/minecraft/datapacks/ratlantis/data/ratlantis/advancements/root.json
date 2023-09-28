@@ -9,7 +9,7 @@
     "announce_to_chat": false,
     "background": "rats:textures/block/marbled_cheese.png",
     "description": {
-      "translate": "advancements.ratlantis.root.desc"
+      "translate": "advancement.ratlantis.root.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -18,7 +18,7 @@
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ratlantis.root.title"
+      "translate": "advancement.ratlantis.root.title"
     }
   },
   "requirements": [

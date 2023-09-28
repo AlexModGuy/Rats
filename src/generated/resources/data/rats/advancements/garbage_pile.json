@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.garbage_pile.desc"
+      "translate": "advancement.rats.garbage_pile.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.garbage_pile.title"
+      "translate": "advancement.rats.garbage_pile.title"
     }
   },
   "requirements": [

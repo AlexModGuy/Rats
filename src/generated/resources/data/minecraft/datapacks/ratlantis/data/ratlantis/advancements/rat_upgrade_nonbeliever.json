@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.ratlantis.rat_upgrade_nonbeliever.desc"
+      "translate": "advancement.ratlantis.rat_upgrade_nonbeliever.desc"
     },
     "frame": "challenge",
     "hidden": true,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.rat_upgrade_nonbeliever.title"
+      "translate": "advancement.ratlantis.rat_upgrade_nonbeliever.title"
     }
   },
   "requirements": [

@@ -65,7 +65,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.plague_cure.desc"
+      "translate": "advancement.rats.plague_cure.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -74,7 +74,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.plague_cure.title"
+      "translate": "advancement.rats.plague_cure.title"
     }
   },
   "requirements": [

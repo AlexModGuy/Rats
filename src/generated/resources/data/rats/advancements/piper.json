@@ -45,7 +45,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.piper.desc"
+      "translate": "advancement.rats.piper.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -55,7 +55,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.piper.title"
+      "translate": "advancement.rats.piper.title"
     }
   },
   "requirements": [

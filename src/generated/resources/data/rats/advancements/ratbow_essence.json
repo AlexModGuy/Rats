@@ -24,7 +24,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.ratbow_essence.desc"
+      "translate": "advancement.rats.ratbow_essence.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -33,7 +33,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.ratbow_essence.title"
+      "translate": "advancement.rats.ratbow_essence.title"
     }
   },
   "requirements": [

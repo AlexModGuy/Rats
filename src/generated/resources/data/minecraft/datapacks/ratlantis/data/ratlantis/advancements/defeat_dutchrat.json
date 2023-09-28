@@ -19,7 +19,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.ratlantis.dutchrat_wheel.desc"
+      "translate": "advancement.ratlantis.dutchrat_wheel.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -28,7 +28,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.dutchrat_wheel.title"
+      "translate": "advancement.ratlantis.dutchrat_wheel.title"
     }
   },
   "requirements": [

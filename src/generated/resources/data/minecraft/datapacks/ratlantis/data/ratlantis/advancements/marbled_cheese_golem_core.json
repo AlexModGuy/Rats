@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.marbled_cheese_golem_core.desc"
+      "translate": "advancement.ratlantis.marbled_cheese_golem_core.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.marbled_cheese_golem_core.title"
+      "translate": "advancement.ratlantis.marbled_cheese_golem_core.title"
     }
   },
   "requirements": [

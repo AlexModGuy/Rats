@@ -11,7 +11,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.ratlantis.desc"
+      "translate": "advancement.ratlantis.ratlantis.desc"
     },
     "frame": "goal",
     "hidden": false,
@@ -20,7 +20,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.ratlantis.title"
+      "translate": "advancement.ratlantis.ratlantis.title"
     }
   },
   "requirements": [

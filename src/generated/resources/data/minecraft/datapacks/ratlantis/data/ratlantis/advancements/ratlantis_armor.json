@@ -53,7 +53,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.ratlantis.ratlantis_armor.desc"
+      "translate": "advancement.ratlantis.ratlantis_armor.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -63,7 +63,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.ratlantis_armor.title"
+      "translate": "advancement.ratlantis.ratlantis_armor.title"
     }
   },
   "requirements": [

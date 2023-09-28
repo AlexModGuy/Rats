@@ -17,7 +17,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.vial_of_sentience.desc"
+      "translate": "advancement.ratlantis.vial_of_sentience.desc"
     },
     "frame": "goal",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.vial_of_sentience.title"
+      "translate": "advancement.ratlantis.vial_of_sentience.title"
     }
   },
   "requirements": [

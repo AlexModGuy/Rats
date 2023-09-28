@@ -19,7 +19,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.rats.defeat_black_death.desc"
+      "translate": "advancement.rats.defeat_black_death.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -29,7 +29,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.defeat_black_death.title"
+      "translate": "advancement.rats.defeat_black_death.title"
     }
   },
   "requirements": [

@@ -33,7 +33,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.ratlantis.defeat_rat_baron.desc"
+      "translate": "advancement.ratlantis.defeat_rat_baron.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -42,7 +42,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.defeat_rat_baron.title"
+      "translate": "advancement.ratlantis.defeat_rat_baron.title"
     }
   },
   "requirements": [

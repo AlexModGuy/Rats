@@ -13,7 +13,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.plague.desc"
+      "translate": "advancement.rats.plague.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -22,7 +22,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.plague.title"
+      "translate": "advancement.rats.plague.title"
     }
   },
   "requirements": [

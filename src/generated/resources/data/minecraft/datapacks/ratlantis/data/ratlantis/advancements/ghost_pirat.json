@@ -57,7 +57,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ratlantis.ghost_pirat.desc"
+      "translate": "advancement.ratlantis.ghost_pirat.desc"
     },
     "frame": "goal",
     "hidden": false,
@@ -66,7 +66,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.ratlantis.ghost_pirat.title"
+      "translate": "advancement.ratlantis.ghost_pirat.title"
     }
   },
   "requirements": [

@@ -20,7 +20,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.rats.plague_doctor.desc"
+      "translate": "advancement.rats.plague_doctor.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -30,7 +30,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.plague_doctor.title"
+      "translate": "advancement.rats.plague_doctor.title"
     }
   },
   "requirements": [

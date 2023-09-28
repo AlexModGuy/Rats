@@ -29,7 +29,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.rats.rat_music_disc.desc"
+      "translate": "advancement.rats.rat_music_disc.desc"
     },
     "frame": "challenge",
     "hidden": false,
@@ -38,7 +38,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.rat_music_disc.title"
+      "translate": "advancement.rats.rat_music_disc.title"
     }
   },
   "requirements": [

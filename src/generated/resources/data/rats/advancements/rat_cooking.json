@@ -25,7 +25,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.rats.rat_cooking.desc"
+      "translate": "advancement.rats.rat_cooking.desc"
     },
     "frame": "challenge",
     "hidden": true,
@@ -34,7 +34,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.rats.rat_cooking.title"
+      "translate": "advancement.rats.rat_cooking.title"
     }
   },
   "requirements": [
