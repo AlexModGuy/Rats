@@ -6,9 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
@@ -66,7 +68,7 @@ public class ThickBranchingTrunkPlacer extends TrunkPlacer {
 					for (int baseHeight = 0; baseHeight <= random.nextInt(this.baseRadius + 1); baseHeight++) {
 						consumer.accept(basePos.above(baseHeight), config.trunkProvider.getState(random, basePos.above(baseHeight)));
 					}
-					setDirtAt(reader, consumer, random, basePos.below(), config);
+					this.setDirtIfNeeded(reader, consumer, random, basePos.below(), config);
 				}
 			}
 		}
@@ -117,6 +119,12 @@ public class ThickBranchingTrunkPlacer extends TrunkPlacer {
 			boolean flag1 = random.nextFloat() < f;
 			mutablePos.move(flag1 ? direction : genDir);
 			this.placeLog(reader, consumer, random, mutablePos, config, flag1 ? Function.identity() : function);
+		}
+	}
+
+	private void setDirtIfNeeded(LevelSimulatedReader reader, BiConsumer<BlockPos, BlockState> consumer, RandomSource random, BlockPos pos, TreeConfiguration config) {
+		if (!(((LevelReader) reader).getBlockState(pos).onTreeGrow((LevelReader) reader, consumer, random, pos, config)) && Feature.isDirt(((LevelReader) reader).getBlockState(pos))) {
+			consumer.accept(pos, config.dirtProvider.getState(random, pos));
 		}
 	}
 }
