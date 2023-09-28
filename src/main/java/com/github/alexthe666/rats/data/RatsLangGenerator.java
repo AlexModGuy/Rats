@@ -115,7 +115,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addEntityType(RatsEntityRegistry.RAT_STRIDER_MOUNT, "Rat Strider Mount");
 		this.addEntityType(RatsEntityRegistry.RAT_SHOT, "Thrown Rat");
 		this.addEntityType(RatsEntityRegistry.SMALL_ARROW, "Arrow");
-		this.addEntityType(RatsEntityRegistry.TAMED_RAT, "Tamed Rat");
+		this.addEntityType(RatsEntityRegistry.TAMED_RAT, "Rat");
 
 		//Items
 		this.addItemWithDesc(RatsItemRegistry.ARCHEOLOGIST_HAT, "Archeologist Hat", "Drops from Husks or skeletons in jungles");
@@ -363,7 +363,6 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addSubtitle(RatsSoundRegistry.TRASH_CAN_FILL, "Trash Can fills");
 		this.addSubtitle(RatsSoundRegistry.TRASH_CAN, "Trash Can lid swings");
 
-
 		//Containers
 		this.add(RatsLangConstants.CURDLER, "Curdling Station");
 		this.add(RatsLangConstants.CURDLER_MB, "Mb");
@@ -379,7 +378,6 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.ARCHEOLOGIST_JEI, "Archeologist Rat");
 		this.add(RatsLangConstants.CHEESEMAKING_JEI, "Cheesemaking");
 		this.add(RatsLangConstants.CHEF_JEI, "Chef Rat");
-		this.add(RatsLangConstants.GEMCUTTER_JEI, "Gemcutter Rat");
 
 		//staff messages
 		this.add(RatsLangConstants.RAT_STAFF_BIND, "Staff is now bound to %s");
@@ -397,7 +395,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.RAT_STAFF_REMOVE_NODES, "Remove all patrol nodes");
 
 		//rat commands
-		this.add(RatsLangConstants.RAT_CURRENT_COMMAND, "Current Command: %s");
+		this.add(RatsLangConstants.RAT_CURRENT_COMMAND, "Current Command:");
 		this.add(RatsLangConstants.RAT_COMMAND_SET, "Set Command:");
 		this.add("entity.rats.rat.command.wander", "Wander");
 		this.add("entity.rats.rat.command.wander.desc", "The rat will move around similar to wild behavior.");

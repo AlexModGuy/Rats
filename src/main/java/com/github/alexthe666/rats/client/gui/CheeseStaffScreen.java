@@ -40,7 +40,7 @@ public class CheeseStaffScreen extends Screen {
 		this.clearWidgets();
 		int i = (this.width) / 2;
 		int j = (this.height - 166) / 2;
-		Component topText = Component.translatable(RatsLangConstants.RAT_STAFF_DEPOSIT_POS, this.getPosName()).append(Component.literal(" ").append(Component.translatable("rats.direction." + this.clickedFace.getName())));
+		Component topText = Component.translatable(RatsLangConstants.RAT_STAFF_DEPOSIT_POS, this.getPosName(), Component.translatable("rats.direction." + this.clickedFace.getName()));
 		int maxLength = Math.max(150, Minecraft.getInstance().font.width(topText.getString()) + 20);
 		this.addRenderableWidget(Button.builder(topText, button -> {
 			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, this.clickedFace, 0));
