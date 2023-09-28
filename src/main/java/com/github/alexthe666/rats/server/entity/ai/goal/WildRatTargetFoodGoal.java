@@ -26,6 +26,7 @@ public class WildRatTargetFoodGoal extends Goal {
 	private final PathNavigation navigation;
 	@Nullable
 	private ItemEntity targetItem = null;
+	protected int nextStartTick;
 
 	public WildRatTargetFoodGoal(AbstractRat rat) {
 		this.rat = rat;
@@ -39,8 +40,11 @@ public class WildRatTargetFoodGoal extends Goal {
 		if (!this.rat.canMove() || this.rat.getOwner() != null || !this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || this.rat.isEating())
 			return false;
 
-		if (this.rat.getRandom().nextInt(reducedTickDelay(RatConfig.ratUpdateDelay)) != 0) {
+		if (this.nextStartTick > 0) {
+			--this.nextStartTick;
 			return false;
+		} else {
+			this.nextStartTick = this.adjustedTickDelay(RatConfig.ratUpdateDelay);
 		}
 
 		//sort through items we can grab, get the closest one
