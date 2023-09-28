@@ -3,15 +3,22 @@ package com.github.alexthe666.rats.data.ratlantis.loot;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
@@ -58,9 +65,17 @@ public class RatlantisBlockLootTables extends BlockLootSubProvider {
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_FENCE.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get());
+		this.add(RatlantisBlockRegistry.PIRAT_LEAVES.get(), createSilkTouchOrShearsDispatchTable(RatlantisBlockRegistry.PIRAT_LEAVES.get(), this.applyExplosionCondition(RatlantisBlockRegistry.PIRAT_LEAVES.get(), LootItem.lootTableItem(RatlantisBlockRegistry.PIRAT_SAPLING.get()))
+				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F)))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(Tags.Items.SHEARS)).or(HAS_SILK_TOUCH).invert())
+						.add(this.applyExplosionCondition(RatlantisBlockRegistry.PIRAT_LEAVES.get(), LootItem.lootTableItem(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))
+								.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_LOG.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
+		this.dropSelf(RatlantisBlockRegistry.PIRAT_SAPLING.get());
+		this.dropPottedContents(RatlantisBlockRegistry.POTTED_PIRAT_SAPLING.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_SIGN.get());
 		this.add(RatlantisBlockRegistry.PIRAT_SLAB.get(), createSlabItemTable(RatlantisBlockRegistry.PIRAT_SLAB.get()));
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_STAIRS.get());

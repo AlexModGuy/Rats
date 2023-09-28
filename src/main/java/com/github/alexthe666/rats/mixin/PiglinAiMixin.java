@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PiglinAi.class)
 public abstract class PiglinAiMixin {
 
-	@Inject(at = @At("RETURN"), method = "isWearingGold", cancellable = true)
+	@Inject(method = "isWearingGold", at = @At("RETURN"), cancellable = true)
 	private static void rats$isEntityHoldingGoldRat(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
 		for (Entity passenger : entity.getPassengers()) {
 			if (passenger instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_IDOL.get())) {

@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-28T10:53:54.8135919	ratlantis/Loot Tables
+// 1.20.1	2023-09-27T22:32:30.2330846	ratlantis/Loot Tables
 e73dde781a96bcb30dd350acc7403bdd665b2ab1 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/air_raid_siren.json
 849832c190003bb4e4c3f2d6908e5e0abd848ffb data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/black_marbled_cheese.json
 68a7d58ec50ef388245821c12387a665b7337e7f data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/brain_block.json
@@ -33,14 +33,17 @@ eab0e52c5d982e74072058100489806501361f1c data/minecraft/datapacks/ratlantis/data
 57f0b67934af08a03bb044b8192c69da9dcd77b4 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_fence.json
 715ec8103a3a2e3c5c57681fc1a7dc33904d82e5 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_fence_gate.json
 a1ae292d48262b74a0322e6b58adb4fa03be87f3 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_hanging_sign.json
+fd3ff09c12afa7a7d4ed06ad9556e4f63ca9f32b data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_leaves.json
 7a0932546bcbaecb7a27e77c91f06466860799c9 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_log.json
 3ada9f1527994dfed7cee52b30203ba09b20bc36 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_planks.json
 1dcbbc2617ba151c50b312ce68961a63e97bfa3c data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_pressure_plate.json
+ed2abaf9a316de4b1b7d8d9ae31f8a4bba2ae7b9 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_sapling.json
 ef5ace07594c529b9e986512e767b005640e6f22 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_sign.json
 1e3b4e6cdad57e986c1eedc8846744416ce80137 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_slab.json
 c2f1a6e1e526ba26bd03939c07bf80732ea98a40 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_stairs.json
 9070c7ce67e6cf6a41c9e35724b5747ea1b09239 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_trapdoor.json
 578d099fbb0414ce7abfa2e8708d6ebf092c29ad data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/pirat_wood.json
+3d42a2652a535d4f7a597aa84a42f26453295c34 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/potted_pirat_sapling.json
 e4e6f9bb51fb0314cc9c2c63d079a8fd6478a71f data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/potted_ratglove_flower.json
 faf88831354dc05ff25339fe62813e82e05ca346 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratglove_flower.json
 2058f6c4564053c76889ccc686371f054a36b372 data/minecraft/datapacks/ratlantis/data/rats/loot_tables/blocks/ratlantean_gem_ore.json

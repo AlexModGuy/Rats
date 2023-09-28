@@ -321,6 +321,8 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.get());
 				output.accept(RatlantisBlockRegistry.MARBLED_CHEESE_DIRT.get());
 
+				output.accept(RatlantisBlockRegistry.PIRAT_SAPLING.get());
+				output.accept(RatlantisBlockRegistry.PIRAT_LEAVES.get());
 				output.accept(RatlantisBlockRegistry.PIRAT_LOG.get());
 				output.accept(RatlantisBlockRegistry.PIRAT_WOOD.get());
 				output.accept(RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());

@@ -80,7 +80,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 									living.hurt(this.damageSources().magic(), 10);
 								}
 								if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {
-									zomb.startConverting(living.getUUID(), 200);
+									zomb.startConverting(this.getOwner() != null ? this.getOwner().getUUID() : null, 200);
 								}
 							}
 						}

@@ -79,6 +79,7 @@
   "entity.rats.rat_king.shoot": {"sounds": ["random/bow"], "subtitle": "subtitles.rats.entity.rat_king.shoot"},
   "entity.rats.rat_king.summon": {"sounds": ["mob/zombie/remedy"], "subtitle": "subtitles.rats.entity.rat_king.summon"},
   "item.rats.dye_sponge.used": {"sounds": ["item/bucket/fill1", "item/bucket/fill2", "item/bucket/fill3"], "subtitle": "subtitles.rats.item.dye_sponge.used"},
+  "item.rats.ectoplasm.transform": {"sounds": ["mob/zombie/infect"], "subtitle": "subtitles.rats.item.ectoplasm.transform"},
   "item.rats.rat_whistle.whistle": {"sounds": ["rats:item/whistle0", "rats:item/whistle1", "rats:item/whistle2"], "subtitle": "subtitles.rats.item.rat_whistle.whistle"},
   "item.rats.rat_flute.no_funny": {"sounds": ["rats:item/flute0", "rats:item/flute1", "rats:item/flute3"], "subtitle": "subtitles.rats.item.rat_flute"},
   "item.rats.rat_flute.normal": {"sounds": ["rats:item/flute0", "rats:item/flute1", "rats:item/flute2", "rats:item/flute3"], "subtitle": "subtitles.rats.item.rat_flute"},

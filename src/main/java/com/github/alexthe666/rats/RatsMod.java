@@ -110,6 +110,7 @@ public class RatsMod {
 		RatlantisFeatureRegistry.FEATURES.register(bus);
 		RatlantisItemRegistry.ITEMS.register(bus);
 		RatlantisFeatureRegistry.PROCESSORS.register(bus);
+		RatlantisFeatureRegistry.TRUNK_PLACERS.register(bus);
 
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, RatsCapabilityRegistry::attachCap);
 		bus.addListener(RatsCapabilityRegistry::registerCapabilities);
@@ -155,13 +156,16 @@ public class RatsMod {
 
 			FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 			pot.addPlant(RatlantisBlockRegistry.RATGLOVE_FLOWER.getId(), RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER);
+			pot.addPlant(RatlantisBlockRegistry.PIRAT_SAPLING.getId(), RatlantisBlockRegistry.POTTED_PIRAT_SAPLING);
 
 			ComposterBlock.add(0.3F, RatsItemRegistry.RAT_NUGGET.get());
+			ComposterBlock.add(0.3F, RatlantisBlockRegistry.PIRAT_SAPLING.get());
+			ComposterBlock.add(0.3F, RatlantisBlockRegistry.PIRAT_LEAVES.get());
 			ComposterBlock.add(0.5F, RatsItemRegistry.CONTAMINATED_FOOD.get());
 			ComposterBlock.add(0.65F, RatlantisBlockRegistry.RATGLOVE_FLOWER.get());
-			ComposterBlock.add(0.65F, RatsItemRegistry.POTATO_PANCAKE.get());
+			ComposterBlock.add(0.65F, RatlantisItemRegistry.RATGLOVE_PETALS.get());
+			ComposterBlock.add(0.85F, RatsItemRegistry.POTATO_PANCAKE.get());
 			ComposterBlock.add(0.85F, RatsItemRegistry.HERB_BUNDLE.get());
-			ComposterBlock.add(0.85F, RatlantisItemRegistry.RATGLOVE_PETALS.get());
 			ComposterBlock.add(1.0F, RatsItemRegistry.CONFIT_BYALDI.get());
 			ComposterBlock.add(1.0F, RatsItemRegistry.POTATO_KNISHES.get());
 

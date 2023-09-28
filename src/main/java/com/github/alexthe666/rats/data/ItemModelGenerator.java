@@ -298,10 +298,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.fenceInventory(RatlantisBlockRegistry.PIRAT_FENCE.getId().getPath(), this.blockPrefix("pirat_planks"));
 		this.toBlock(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
 		this.generatedRenderType(RatlantisItemRegistry.PIRAT_HANGING_SIGN.getId().getPath(), false, "minecraft:translucent", this.itemPrefix("pirat_hanging_sign"));
+		this.toBlock(RatlantisBlockRegistry.PIRAT_LEAVES.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_LOG.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
 		this.generatedRenderType(RatlantisItemRegistry.PIRAT_SIGN.getId().getPath(), false, "minecraft:translucent", this.itemPrefix("pirat_sign"));
+		this.generatedRenderType(RatlantisBlockRegistry.PIRAT_SAPLING.getId().getPath(), false, "minecraft:translucent", this.blockPrefix("pirat_sapling"));
 		this.toBlock(RatlantisBlockRegistry.PIRAT_SLAB.get());
 		this.toBlock(RatlantisBlockRegistry.PIRAT_STAIRS.get());
 		this.toBlockModel(RatlantisBlockRegistry.PIRAT_TRAPDOOR.get(), this.blockPrefix("pirat_trapdoor_bottom"));

@@ -44,6 +44,9 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 				RatlantisBlockRegistry.PIRAT_WOOD.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());
 		this.tag(BlockTags.LOGS).addTag(PIRAT_LOGS);
 
+		this.tag(BlockTags.LEAVES).add(RatlantisBlockRegistry.PIRAT_LEAVES.get());
+		this.tag(BlockTags.SAPLINGS).add(RatlantisBlockRegistry.PIRAT_SAPLING.get());
+
 		this.tag(STORAGE_BLOCKS_ORATCHALCUM).add(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get());
 		this.tag(Tags.Blocks.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_ORATCHALCUM);
 
@@ -100,7 +103,7 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 		this.tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).add(RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.get(), RatlantisBlockRegistry.MARBLED_CHEESE_DIRT.get());
 		this.tag(BlockTags.DRAGON_IMMUNE).add(RatlantisBlockRegistry.RATLANTIS_PORTAL.get(), RatlantisBlockRegistry.AIR_RAID_SIREN.get(), RatlantisBlockRegistry.DUTCHRAT_BELL.get());
 		this.tag(BlockTags.PORTALS).add(RatlantisBlockRegistry.RATLANTIS_PORTAL.get());
-		this.tag(BlockTags.FLOWER_POTS).add(RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER.get());
+		this.tag(BlockTags.FLOWER_POTS).add(RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER.get(), RatlantisBlockRegistry.POTTED_PIRAT_SAPLING.get());
 
 		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				RatlantisBlockRegistry.RATLANTIS_REACTOR.get(), RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get(),

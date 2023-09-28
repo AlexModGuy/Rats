@@ -46,7 +46,7 @@ public class RatlantisItemRegistry {
 	public static final RegistryObject<Item> PIRAT_CUTLASS = ITEMS.register("pirat_cutlass", () -> new PiratCutlassItem(new Item.Properties(), false));
 	public static final RegistryObject<Item> CHEESE_CANNONBALL = ITEMS.register("cheese_cannonball", () -> new LoreTagItem(new Item.Properties(), 1));
 	public static final RegistryObject<Item> GHOST_PIRAT_HAT = ITEMS.register("ghost_pirat_hat", () -> new HatItem(new Item.Properties().stacksTo(1).fireResistant(), RatsArmorMaterialRegistry.GHOST_HAT, 0));
-	public static final RegistryObject<Item> GHOST_PIRAT_ECTOPLASM = ITEMS.register("ghost_pirat_ectoplasm", () -> new Item(new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> GHOST_PIRAT_ECTOPLASM = ITEMS.register("ghost_pirat_ectoplasm", () -> new EctoplasmItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> GHOST_PIRAT_CUTLASS = ITEMS.register("ghost_pirat_cutlass", () -> new PiratCutlassItem(new Item.Properties().fireResistant(), true));
 	public static final RegistryObject<Item> DUTCHRAT_WHEEL = ITEMS.register("dutchrat_wheel", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
 	public static final RegistryObject<Item> MILITARY_HAT = ITEMS.register("military_hat", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.GENERIC_HAT, 0));

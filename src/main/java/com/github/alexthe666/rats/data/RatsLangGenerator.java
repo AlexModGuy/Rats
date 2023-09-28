@@ -358,6 +358,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addSubtitle(RatsSoundRegistry.RATLANTEAN_SPIRIT_DIE, "Ratlantean Spirit dies");
 		this.addSubtitle(RatsSoundRegistry.RATLANTEAN_SPIRIT_HURT, "Ratlantean Spirit hurts");
 		this.addSubtitle(RatsSoundRegistry.RATTLING_GUN_SHOOT, "Rattling Gun fires");
+		this.addSubtitle(RatsSoundRegistry.SAPLING_TRANSFORM, "Sapling transforms");
 		this.addSubtitle(RatsSoundRegistry.TRASH_CAN_EMPTY, "Trash Can empties");
 		this.addSubtitle(RatsSoundRegistry.TRASH_CAN_FILL, "Trash Can fills");
 		this.addSubtitle(RatsSoundRegistry.TRASH_CAN, "Trash Can lid swings");
@@ -580,7 +581,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItem(RatlantisItemRegistry.FERAL_RAT_CLAW, "Feral Rat Claw");
 		this.addItem(RatlantisItemRegistry.GEM_OF_RATLANTIS, "Gem of Ratlantis");
 		this.addItem(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS, "Ghost Pirat Cutlass");
-		this.addItem(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM, "Ghost Pirat Ectoplasm");
+		this.addItemWithDesc(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM, "Ghost Pirat Ectoplasm", "Turns saplings incorporeal");
 		this.addItem(RatlantisItemRegistry.GHOST_PIRAT_HAT, "Ghost Pirat Hat");
 		this.addItemWithDesc(RatlantisItemRegistry.IDOL_OF_RATLANTIS, "Avatar of Ratlantis", "Power incarnate");
 		this.addItem(RatlantisItemRegistry.MILITARY_HAT, "Ratlantean Officer Hat");
@@ -699,6 +700,9 @@ public class RatsLangGenerator extends LanguageProvider {
 	}
 
 	public void createWoodSet(String woodPrefix, String woodName) {
+		this.add("block.rats.potted_" + woodPrefix + "_sapling", "Potted " + woodName + " Sapling");
+		this.add("block.rats." + woodPrefix + "_sapling", woodName + " Sapling");
+		this.add("block.rats." + woodPrefix + "_leaves", woodName + " Leaves");
 		this.add("block.rats." + woodPrefix + "_log", woodName + " Log");
 		this.add("block.rats." + woodPrefix + "_wood", woodName + " Wood");
 		this.add("block.rats.stripped_" + woodPrefix + "_log", "Stripped " + woodName + " Log");

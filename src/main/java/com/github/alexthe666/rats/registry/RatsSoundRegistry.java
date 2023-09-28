@@ -99,6 +99,7 @@ public class RatsSoundRegistry {
 	public static final RegistryObject<SoundEvent> RAT_TRAP_ADD_BAIT = createSoundEvent("block.rats.rat_trap.add_bait");
 	public static final RegistryObject<SoundEvent> RAT_TRAP_REMOVE_BAIT = createSoundEvent("block.rats.rat_trap.remove_bait");
 	public static final RegistryObject<SoundEvent> RAT_WHISTLE = createSoundEvent("item.rats.rat_whistle.whistle");
+	public static final RegistryObject<SoundEvent> SAPLING_TRANSFORM = createSoundEvent("item.rats.ectoplasm.transform");
 	public static final RegistryObject<SoundEvent> TRASH_CAN = createSoundEvent("block.rats.trash_can.open");
 	public static final RegistryObject<SoundEvent> TRASH_CAN_EMPTY = createSoundEvent("block.rats.trash_can.empty");
 	public static final RegistryObject<SoundEvent> TRASH_CAN_FILL = createSoundEvent("block.rats.trash_can.fill");

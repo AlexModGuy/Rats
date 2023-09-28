@@ -175,9 +175,12 @@ public class BlockModelGenerator extends BlockStateProvider {
 		this.fenceBlockWithRenderType((FenceBlock) RatlantisBlockRegistry.PIRAT_FENCE.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
 		this.fenceGateBlockWithRenderType((FenceGateBlock) RatlantisBlockRegistry.PIRAT_FENCE_GATE.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
 		this.builtinEntity(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get(), this.blockPrefix("pirat_planks"));
+		this.simpleBlockTranslucent(RatlantisBlockRegistry.PIRAT_LEAVES.get());
 		this.logBlockWithRenderType((RotatedPillarBlock) RatlantisBlockRegistry.PIRAT_LOG.get(), "minecraft:translucent");
 		this.simpleBlockTranslucent(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.pressurePlateBlockTranslucent((PressurePlateBlock) RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get(), this.blockPrefix("pirat_planks"));
+		this.simpleBlock(RatlantisBlockRegistry.PIRAT_SAPLING.get(), this.models().cross("pirat_sapling", this.blockPrefix("pirat_sapling")).renderType(new ResourceLocation("tripwire")));
+		this.simpleBlock(RatlantisBlockRegistry.POTTED_PIRAT_SAPLING.get(), models().withExistingParent(RatlantisBlockRegistry.POTTED_PIRAT_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(new ResourceLocation("tripwire")).texture("plant", blockTexture(RatlantisBlockRegistry.PIRAT_SAPLING.get())));
 		this.builtinEntity(RatlantisBlockRegistry.PIRAT_SIGN.get(), this.blockPrefix("pirat_planks"));
 		this.slabBlockTranslucent((SlabBlock) RatlantisBlockRegistry.PIRAT_SLAB.get(), this.blockPrefix("pirat_planks"), this.blockPrefix("pirat_planks"));
 		this.stairsBlockWithRenderType((StairBlock) RatlantisBlockRegistry.PIRAT_STAIRS.get(), this.blockPrefix("pirat_planks"), "minecraft:translucent");
