@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
-import com.github.alexthe666.rats.server.entity.ai.goal.RatPickpocketGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatPickpocketGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;

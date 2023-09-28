@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +23,7 @@ public class RatPickpocketGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(false, false)) {
+		if (!super.canUse() || !this.checkTheBasics(false, false)) {
 			return false;
 		}
 		if (!this.rat.getMainHandItem().isEmpty() || this.rat.pickpocketCooldown > 0) {

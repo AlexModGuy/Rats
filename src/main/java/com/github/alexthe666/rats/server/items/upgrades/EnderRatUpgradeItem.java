@@ -35,7 +35,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 		if (!rat.level().isClientSide()) {
 			if (rat.getNavigation().getPath() != null && rat.getNavigation().getPath().getEndNode() != null && !rat.isPassenger()) {
 				Vec3 target = new Vec3(rat.getNavigation().getPath().getEndNode().x, rat.getNavigation().getPath().getEndNode().y, rat.getNavigation().getPath().getEndNode().z);
-				if (rat.getRatDistanceCenterSq(target.x(), target.y(), target.z()) > 20 || !rat.getNavigation().getPath().canReach()) {
+				if (rat.getRatDistanceCenterSq(target.x(), target.y(), target.z()) > 20) {
 					rat.attemptTeleport(target.x(), target.y(), target.z());
 					rat.getNavigation().stop();
 				}

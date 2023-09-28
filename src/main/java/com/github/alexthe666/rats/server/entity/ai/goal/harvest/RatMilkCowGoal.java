@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
@@ -32,7 +32,7 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(false, false)) {
+		if (!super.canUse() || !this.checkTheBasics(false, false)) {
 			return false;
 		}
 		if (!this.rat.transportingFluid.isEmpty() && this.rat.transportingFluid.getAmount() >= this.rat.getMBTransferRate()) {

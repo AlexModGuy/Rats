@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.block.RatCageBlock;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
 import com.github.alexthe666.rats.server.entity.RatMount;
 import com.github.alexthe666.rats.server.entity.ai.goal.*;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatHarvestCropsGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.*;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.EtherealRatNavigation;
 import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.RatFlightNavigation;
@@ -150,7 +151,6 @@ public class TamedRat extends InventoryRat {
 		Arrays.fill(this.handDropChances, 2.0F);
 		this.xpReward = 0;
 		this.updateNavigationCooldown = 100;
-		this.setupDynamicAI();
 	}
 
 	@Override

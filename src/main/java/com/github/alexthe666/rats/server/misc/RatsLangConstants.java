@@ -20,7 +20,6 @@ public class RatsLangConstants {
 
 	public static final String ARCHEOLOGIST_JEI = "gui.rats.jei.archeologist";
 	public static final String CHEF_JEI = "gui.rats.jei.chef";
-	public static final String GEMCUTTER_JEI = "gui.rats.jei.gemcutter";
 	public static final String CHEESEMAKING_JEI = "gui.rats.jei.cheesemaking";
 
 	public static final String RATS_TAB = "itemGroup.rats.rats";

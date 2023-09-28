@@ -30,8 +30,6 @@ public class ServerConfig {
 	public final ForgeConfigSpec.IntValue ratFluteDistance;
 	public final ForgeConfigSpec.IntValue ratCageCramming;
 	public final ForgeConfigSpec.IntValue ratUpdateDelay;
-	public final ForgeConfigSpec.IntValue defaultRatRadius;
-	public final ForgeConfigSpec.IntValue maxRatRadius;
 	public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
 	public final ForgeConfigSpec.IntValue maxRatLitterSize;
 	public final ForgeConfigSpec.IntValue ratBreedingCooldown;
@@ -199,8 +197,6 @@ public class ServerConfig {
 		this.maxRatLitterSize = buildInt(builder, "Rat Litter Size", 1, 1, 10, "The max amount of Baby Rats will be produced when Rats breed. You will get anywhere between 1 and this number of baby rats.");
 		this.ratBreedingCooldown = buildInt(builder, "Rat Breeding Cooldown", 24000, 0, Integer.MAX_VALUE, "The amount of time it takes after a rat successfully breeds for it to breed again. Time is in ticks. (24000 ticks = 1200 seconds = 20 minutes)");
 		this.ratUpdateDelay = buildInt(builder, "Rat Update Delay", 100, 1, 10000, "Rats will conduct expensive CPU operations like looking for crops or chests, once every this number of ticks(with added standard deviation for servers)");
-		this.defaultRatRadius = buildInt(builder, "Default Rat Radius", 16, 1, Integer.MAX_VALUE, "Default radius for tamed rats conducting their searches for items, harvests, etc.");
-		this.maxRatRadius = buildInt(builder, "Max Rat Radius", 32, 1, Integer.MAX_VALUE, "Largest possible radius for tamed rats conducting their searches for items, harvests, etc.");
 		this.ratsSpawnWithSantaHats = buildBoolean(builder, "Rats Spawn with Santa Hats", false, "If true, wild rats will rarely spawn wearing a santa hat. Rats will spawn with Santa hats during the Christmas season regardless, this will enable you to find them year round.");
 		this.ratsSpawnWithPartyHats = buildBoolean(builder, "Rats Spawn with Party Hats", false, "If true, wild rats will rarely spawn wearing a randomly colored party hat. Rats will spawn with Party hats during the New Year's Eve and special dates regardless, this will enable you to find them year round.");
 	}

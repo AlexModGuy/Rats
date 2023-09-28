@@ -37,12 +37,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			return false;
 		}
 
-		if (this.nextStartTick <= 0) {
-			if (!ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat)) {
-				return false;
-			}
-		}
-		return super.canUse();
+		return ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
 	}
 
 	@Override

@@ -1,7 +1,8 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import com.github.alexthe666.rats.server.entity.ai.goal.RatWorkGoal;
 import com.github.alexthe666.rats.server.entity.rat.RatCommand;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
@@ -30,6 +31,8 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 	private Entity targetEntity = null;
 	protected final TamedRat rat;
 
+	protected int nextStartTick;
+
 	protected BaseRatHarvestGoal(TamedRat rat) {
 		this.rat = rat;
 		this.targetSorter = new BlockSorter(rat);
@@ -40,6 +43,16 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 		if (!this.rat.canMove() || this.rat.getCommand() != RatCommand.HARVEST || this.rat.isInCage()) return false;
 		if (checkForItemHolding && !this.checkIfItemCanBeHeld()) return false;
 		return !checkForItems || !this.anyHoldableItemsAround();
+	}
+
+	@Override
+	public boolean canUse() {
+		if (this.nextStartTick > 0) {
+			this.nextStartTick--;
+			return false;
+		}
+		this.nextStartTick = this.adjustedTickDelay(RatConfig.ratHarvestDelay);
+		return true;
 	}
 
 	protected boolean checkIfItemCanBeHeld() {

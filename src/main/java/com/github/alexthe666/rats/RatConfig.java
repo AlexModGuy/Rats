@@ -37,8 +37,9 @@ public class RatConfig {
 	public static int ratCageCramming = 4;
 	public static int ratBreedingCooldown = 24000;
 	public static int ratUpdateDelay = 100;
-	public static int defaultRatRadius = 16;
-	public static int maxRatRadius = 32;
+	public static int ratHarvestDelay = 20;
+	public static int defaultRatRadius = 8;
+	public static int maxRatRadius = 16;
 	public static double garbageSpawnRate = 0.15F;
 	public static int maxRatLitterSize = 1;
 	public static boolean ratsSpawnWithSantaHats = false;
@@ -145,8 +146,6 @@ public class RatConfig {
 			ratFluteDistance = ConfigHolder.SERVER.ratFluteDistance.get();
 			ratCageCramming = ConfigHolder.SERVER.ratCageCramming.get();
 			ratUpdateDelay = ConfigHolder.SERVER.ratUpdateDelay.get();
-			defaultRatRadius = ConfigHolder.SERVER.defaultRatRadius.get();
-			maxRatRadius = ConfigHolder.SERVER.maxRatRadius.get();
 			garbageSpawnRate = ConfigHolder.SERVER.garbageSpawnRate.get();
 			maxRatLitterSize = ConfigHolder.SERVER.maxRatLitterSize.get();
 			ratBreedingCooldown = ConfigHolder.SERVER.ratBreedingCooldown.get();

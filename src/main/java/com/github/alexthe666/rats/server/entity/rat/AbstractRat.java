@@ -109,7 +109,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.225D));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(0, new WildRatTargetFoodGoal(this));
 		this.targetSelector.addGoal(2, new HurtByTargetGoal(this, AbstractRat.class, Cat.class, Ocelot.class, Fox.class));
 		this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(4, new OwnerHurtTargetGoal(this));

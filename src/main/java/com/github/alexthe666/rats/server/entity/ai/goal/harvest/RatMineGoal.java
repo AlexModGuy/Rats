@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 public class RatMineGoal {
 }/* extends BaseRatHarvestGoal {
@@ -15,7 +15,7 @@ public class RatMineGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(false, this.rat.getDepositPos().isPresent())) {
+		if (!super.canUse() || !this.checkTheBasics(false, this.rat.getDepositPos().isPresent())) {
 			return false;
 		}
 		this.resetTarget();

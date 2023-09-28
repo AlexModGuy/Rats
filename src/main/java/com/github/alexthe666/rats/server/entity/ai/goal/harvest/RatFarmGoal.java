@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
+public class RatFarmGoal extends BaseRatHarvestGoal {
 	private final TamedRat rat;
 
-	public RatHarvestFarmerGoal(TamedRat rat) {
+	public RatFarmGoal(TamedRat rat) {
 		super(rat);
 		this.rat = rat;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -31,7 +31,7 @@ public class RatHarvestFarmerGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(this.rat.getDepositPos().isPresent(), false) && !this.holdingSeeds() && !this.holdingBonemeal()) {
+		if (!super.canUse() || !this.checkTheBasics(this.rat.getDepositPos().isPresent(), false) || (!this.holdingSeeds() && !this.holdingBonemeal())) {
 			return false;
 		}
 		this.resetTarget();

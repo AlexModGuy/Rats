@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.client.model.entity.RatModel;
-import com.github.alexthe666.rats.server.entity.ai.goal.RatFishermanGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatFishermanGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;

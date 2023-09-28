@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
-import com.github.alexthe666.rats.server.entity.ai.goal.RatBottlerGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatBottlerGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import net.minecraft.world.entity.ai.goal.Goal;

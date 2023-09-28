@@ -1,4 +1,4 @@
-package com.github.alexthe666.rats.server.entity.ai.goal;
+package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.checkTheBasics(false, this.rat.getDepositPos().isPresent())) {
+		if (!super.canUse() || !this.checkTheBasics(false, this.rat.getDepositPos().isPresent())) {
 			return false;
 		}
 		this.resetTarget();

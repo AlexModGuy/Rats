@@ -42,8 +42,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 	@Override
 	public boolean canUse() {
 		if (!this.rat.canMove()) return false;
-		if (!this.canPickUp())
-			return false;
+		if (!this.canPickUp()) return false;
 		if (this.rat.getTarget() != null) return false;
 		if (this.rat.getPickupPos().isEmpty() || !this.rat.getPickupPos().get().dimension().equals(this.rat.level().dimension()) || RatUtils.isBlockProtected(this.rat.level(), this.rat.getPickupPos().get().pos(), this.rat))
 			return false;

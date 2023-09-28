@@ -1,7 +1,7 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.rats.client.model.entity.RatModel;
-import com.github.alexthe666.rats.server.entity.ai.goal.RatHarvestFarmerGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatFarmGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
@@ -46,6 +46,6 @@ public class FarmerRatUpgradeItem extends BaseRatUpgradeItem implements ChangesA
 
 	@Override
 	public List<Goal> addNewWorkGoals(TamedRat rat) {
-		return List.of(new RatHarvestFarmerGoal(rat));
+		return List.of(new RatFarmGoal(rat));
 	}
 }

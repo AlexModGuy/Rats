@@ -1,6 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
-import com.github.alexthe666.rats.server.entity.ai.goal.RatQuarryGoal;
+import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatQuarryGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.DamageImmunityUpgrade;
 import net.minecraft.tags.DamageTypeTags;
