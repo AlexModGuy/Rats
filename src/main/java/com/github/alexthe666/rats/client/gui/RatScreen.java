@@ -68,7 +68,7 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 		int k = (this.width - this.imageWidth) / 2;
 		int l = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE_BACKDROP, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
-		EntityRenderingUtil.drawEntityOnScreen(k + 42, l + 64, 70, k + 51 - (float) mouseX, l + 75 - 50 - (float) mouseY, this.rat, false);
+		EntityRenderingUtil.drawEntityOnScreen(graphics, k + 42, l + 64, 70, k + 51 - (float) mouseX, l + 75 - 50 - (float) mouseY, this.rat, false);
 		graphics.blit(TEXTURE, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
 		graphics.blit(TEXTURE, k + 52, l + 20, this.rat.isMale() ? 0 : 16, 209, 16, 16);
 	}

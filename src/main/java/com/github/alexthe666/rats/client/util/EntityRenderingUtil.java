@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import java.util.HashMap;
@@ -65,25 +67,15 @@ public class EntityRenderingUtil {
 		ENTITY_MAP.remove(entityName);
 	}
 
-	public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, @Nullable LivingEntity entity, boolean rotating) {
+	public static void drawEntityOnScreen(GuiGraphics graphics, int posX, int posY, int scale, float mouseX, float mouseY, @Nullable LivingEntity entity, boolean rotating) {
 		if (entity != null) {
 			float rotate = (Minecraft.getInstance().getPartialTick() + Minecraft.getInstance().player.tickCount) * 2F;
 			float f = (float) Math.atan(mouseX / 40.0F);
 			float f1 = (float) Math.atan(mouseY / 40.0F);
-			PoseStack posestack = RenderSystem.getModelViewStack();
-			posestack.pushPose();
-			posestack.translate(posX, posY, 1050.0D);
-			posestack.scale(1.0F, 1.0F, -1.0F);
-			RenderSystem.applyModelViewMatrix();
-			PoseStack matrixstack = new PoseStack();
-			matrixstack.translate(0.0D, 0.0D, 1000.0D);
-			matrixstack.scale((float) scale, (float) scale, (float) scale);
 			Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
 			Quaternionf quaternion1 = Axis.XP.rotationDegrees(f1 * 20.0F);
 			Quaternionf quaternion2 = Axis.YP.rotationDegrees(rotate);
 			quaternion.mul(quaternion1);
-			matrixstack.mulPose(quaternion);
-			if (rotating) matrixstack.mulPose(quaternion2);
 			float f2 = entity.yBodyRot;
 			float f3 = entity.getYRot();
 			float f4 = entity.getXRot();
@@ -94,23 +86,26 @@ public class EntityRenderingUtil {
 			entity.setXRot(-f1 * 20.0F);
 			entity.yHeadRot = entity.getYRot();
 			entity.yHeadRotO = entity.getYRot();
+			graphics.pose().pushPose();
+			graphics.pose().translate(posX, posY, 50.0D);
+			graphics.pose().mulPoseMatrix((new Matrix4f()).scaling(scale, scale, -scale));
+			graphics.pose().mulPose(quaternion);
+			if (rotating) graphics.pose().mulPose(quaternion2);
 			Lighting.setupForEntityInInventory();
 			EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 			quaternion1.conjugate();
 			dispatcher.overrideCameraOrientation(quaternion1);
 			dispatcher.setRenderShadow(false);
-			MultiBufferSource.BufferSource source = Minecraft.getInstance().renderBuffers().bufferSource();
-			RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, source, 15728880));
-			source.endBatch();
+			RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, graphics.pose(), graphics.bufferSource(), 15728880));
+			graphics.flush();
 			dispatcher.setRenderShadow(true);
+			graphics.pose().popPose();
+			Lighting.setupFor3DItems();
 			entity.yBodyRot = f2;
 			entity.setYRot(f3);
 			entity.setXRot(f4);
 			entity.yHeadRotO = f5;
 			entity.yHeadRot = f6;
-			posestack.popPose();
-			RenderSystem.applyModelViewMatrix();
-			Lighting.setupFor3DItems();
 		}
 	}
 }

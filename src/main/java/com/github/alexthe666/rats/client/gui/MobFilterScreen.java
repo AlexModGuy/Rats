@@ -111,7 +111,7 @@ public class MobFilterScreen extends Screen {
 		LivingEntity entity = EntityRenderingUtil.fetchEntity(this.hoveredEntityName, Minecraft.getInstance().level);
 		int scale = EntityRenderingUtil.getAdjustedMobScale(this.hoveredEntityName);
 		if (entity != null) {
-			EntityRenderingUtil.drawEntityOnScreen(this.leftPos + 70, this.topPos + 110, scale, this.leftPos + 69 - (float) mouseX, this.topPos + 110 - (entity.getEyeHeight() * scale) - (float) mouseY, entity, false);
+			EntityRenderingUtil.drawEntityOnScreen(graphics, this.leftPos + 70, this.topPos + 110, scale, this.leftPos + 69 - (float) mouseX, this.topPos + 110 - (entity.getEyeHeight() * scale) - (float) mouseY, entity, false);
 		}
 		graphics.disableScissor();
 		//render normal GUI
@@ -133,7 +133,7 @@ public class MobFilterScreen extends Screen {
 
 		//show a tooltip with the entity's id and any selected tags if hovering over its name
 		if (this.isHovering(121, 24, 90, 90, mouseX, mouseY) && !this.filteredMobs.isEmpty()) {
-			int y = (mouseY - 90) / 18;
+			int y = (mouseY - this.topPos - 26) / 18;
 			this.hoveredEntityName = ResourceLocation.tryParse(this.filteredMobs.get(Mth.clamp(this.startIndex + y, 0, Math.max(0, this.filteredMobs.size() - 1))).getFirst());
 			if (hoveredEntityName != null && this.startIndex + y < this.filteredMobs.size()) {
 				graphics.blit(TEXTURE, this.leftPos + 121, this.topPos + 26 + (y * 18), 0, 168, 90, 15);

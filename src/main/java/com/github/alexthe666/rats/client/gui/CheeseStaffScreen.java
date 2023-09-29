@@ -106,7 +106,7 @@ public class CheeseStaffScreen extends Screen {
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
 		if (this.rat != null) {
-			EntityRenderingUtil.drawEntityOnScreen(i + 114, j + 40, 70, 0, 0, this.rat, true);
+			EntityRenderingUtil.drawEntityOnScreen(graphics, i + 114, j + 40, 70, 0, 0, this.rat, true);
 		}
 
 	}
