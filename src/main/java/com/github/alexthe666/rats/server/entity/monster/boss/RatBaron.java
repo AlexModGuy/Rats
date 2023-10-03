@@ -34,6 +34,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 
 	public RatBaron(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
+		this.setGuaranteedDrop(EquipmentSlot.HEAD);
 	}
 
 	@Override
