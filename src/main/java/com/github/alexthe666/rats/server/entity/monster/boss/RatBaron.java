@@ -34,7 +34,6 @@ public class RatBaron extends AbstractRat implements Enemy {
 
 	public RatBaron(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
-		this.setGuaranteedDrop(EquipmentSlot.HEAD);
 	}
 
 	@Override
@@ -141,7 +140,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
-		this.setDropChance(EquipmentSlot.HEAD, 0);
+		this.setGuaranteedDrop(EquipmentSlot.HEAD);
 		if (type != MobSpawnType.MOB_SUMMONED) {
 			this.restrictTo(this.blockPosition(), 16);
 		}
