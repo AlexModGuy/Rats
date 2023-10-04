@@ -2,10 +2,8 @@ package com.github.alexthe666.rats.data.ratlantis;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.*;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.RequirementsStrategy;
+import com.google.common.collect.Maps;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -249,5 +247,33 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 						null, FrameType.GOAL, true, false, false)
 				.addCriterion("get_upgrade", InventoryChangeTrigger.TriggerInstance.hasItems(RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get()))
 				.save(consumer, "ratlantis:rat_upgrade_mount_biplane");
+
+		Advancement dummy = new Advancement(new ResourceLocation(RatsMod.MODID, "root"), null, null, AdvancementRewards.EMPTY, Maps.newHashMap(), new String[0][0], false);
+
+		Advancement.Builder.advancement().parent(dummy).display(
+						RatsItemRegistry.PARTY_HAT.get(),
+						Component.translatable("advancement.rats.all_hats.title"),
+						Component.translatable("advancement.rats.all_hats.desc"),
+						null, FrameType.CHALLENGE, true, true, false)
+				.addCriterion("has_chef_toque", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.CHEF_TOQUE.get()))
+				.addCriterion("has_piper_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PIPER_HAT.get()))
+				.addCriterion("has_archeologist_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.ARCHEOLOGIST_HAT.get()))
+				.addCriterion("has_farmer_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.FARMER_HAT.get()))
+				.addCriterion("has_fisherman_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.FISHERMAN_HAT.get()))
+				.addCriterion("has_fez", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_FEZ.get()))
+				.addCriterion("has_top_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.TOP_HAT.get()))
+				.addCriterion("has_santa_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.SANTA_HAT.get()))
+				.addCriterion("has_halo", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.HALO_HAT.get()))
+				.addCriterion("has_party_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PARTY_HAT.get()))
+				.addCriterion("has_crown", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_KING_CROWN.get()))
+				.addCriterion("has_plague_doctor_mask", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PLAGUE_DOCTOR_MASK.get()))
+				.addCriterion("has_black_death_mask", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.BLACK_DEATH_MASK.get()))
+				.addCriterion("has_exterminator_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.EXTERMINATOR_HAT.get()))
+
+				.addCriterion("has_pirat_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PIRAT_HAT.get()))
+				.addCriterion("has_ghost_pirat_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatlantisItemRegistry.GHOST_PIRAT_HAT.get()))
+				.addCriterion("has_aviator_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatlantisItemRegistry.AVIATOR_HAT.get()))
+				.addCriterion("has_officer_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatlantisItemRegistry.MILITARY_HAT.get()))
+				.save(consumer, "rats:all_hats");
 	}
 }

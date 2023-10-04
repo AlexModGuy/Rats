@@ -1,0 +1,38 @@
+{
+  "parent": "rats:rat_upgrade_basic",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_pickpocket"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.rat_upgrade_pickpocket.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "rats:rat_upgrade_pickpocket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.rat_upgrade_pickpocket.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

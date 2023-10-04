@@ -57,6 +57,10 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addAdvancement("ratbow_essence", "In Stunning Technicolor!", "Craft a Ratbow Essence, which can be used to dye a rat a constant shifting rainbow");
 		this.addAdvancement("nether_cheese", "Spicy Pepper Jack", "Obtain nether cheese from a demon rat in the nether");
 		this.addAdvancement("rat_upgrade_demon", "I Seen This Before...", "Craft a Rat Upgrade: Demon, a well rounded nether-proof rat upgrade");
+		this.addAdvancement("rat_upgrade_idol", "False Prophet", "Craft a Rat Upgrade: Idol, an upgrade that enamors piglins");
+		this.addAdvancement("rat_upgrade_pickpocket", "Talk of the Town", "Craft a Rat Upgrade: Pickpocket, turning your rat into a sneaky village thief");
+		this.addAdvancement("rat_upgrade_sculked", "One with the Souls", "Craft a Rat Upgrade: Sculked, making your rat one with the lost souls of the sculk");
+		this.addAdvancement("all_hats", "Grand Hat Collector", "Collect every hat the mod has to offer!");
 
 		//Blocks
 		this.addBlockWithDesc(RatsBlockRegistry.AUTO_CURDLER, "Curdling Station", "Automatic cheese production", "§o\"Milk goes in, cheese comes out\"");
@@ -443,7 +447,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add("item.rats.ratlantis_armor.desc2", "Effect stacks for all pieces of armor.");
 		this.add("item.rats.ratlantis_disabled.desc0", "Ratlantis content is disabled in this world.");
 		this.add("item.rats.ratlantis_disabled.desc1", "None of the items, blocks, or entities from ratlantis can be obtained legitimately in survival.");
-		this.add("item.rats.ratlantis_disabled.desc2", "f you would like to have Ratlantis related content in your world make sure to enable the builtin datapack on world creation or turn the 'ratlantisEnabledByDefault' config option to true.");
+		this.add("item.rats.ratlantis_disabled.desc2", "If you would like to have Ratlantis related content in your world make sure to enable the builtin datapack on world creation or turn the 'ratlantisEnabledByDefault' config option to true.");
 
 		//Misc
 		this.addEffect(RatsEffectRegistry.PLAGUE, "Plague");

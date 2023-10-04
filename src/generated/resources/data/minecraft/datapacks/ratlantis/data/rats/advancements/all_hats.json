@@ -1,0 +1,293 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "has_archeologist_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:archeologist_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_aviator_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:aviator_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_black_death_mask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:black_death_mask"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_chef_toque": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:chef_toque"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_crown": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_king_crown"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_exterminator_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:exterminator_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_farmer_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:farmer_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_fez": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_fez"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_fisherman_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:fisherman_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ghost_pirat_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:ghost_pirat_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_halo": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:halo_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_officer_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:military_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_party_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:party_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_piper_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:piper_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_pirat_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:pirat_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_plague_doctor_mask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:plague_doctor_mask"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_santa_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:santa_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_top_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:top_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.rats.all_hats.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "rats:party_hat"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.all_hats.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_chef_toque"
+    ],
+    [
+      "has_piper_hat"
+    ],
+    [
+      "has_archeologist_hat"
+    ],
+    [
+      "has_farmer_hat"
+    ],
+    [
+      "has_fisherman_hat"
+    ],
+    [
+      "has_fez"
+    ],
+    [
+      "has_top_hat"
+    ],
+    [
+      "has_santa_hat"
+    ],
+    [
+      "has_halo"
+    ],
+    [
+      "has_party_hat"
+    ],
+    [
+      "has_crown"
+    ],
+    [
+      "has_plague_doctor_mask"
+    ],
+    [
+      "has_black_death_mask"
+    ],
+    [
+      "has_exterminator_hat"
+    ],
+    [
+      "has_pirat_hat"
+    ],
+    [
+      "has_ghost_pirat_hat"
+    ],
+    [
+      "has_aviator_hat"
+    ],
+    [
+      "has_officer_hat"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

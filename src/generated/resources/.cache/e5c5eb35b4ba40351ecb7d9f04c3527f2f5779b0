@@ -1,4 +1,5 @@
-// 1.20.1	2023-09-27T21:56:04.2311799	Advancements
+// 1.20.1	2023-10-04T09:21:22.8427837	Advancements
+5a1513e563c268f4124fc1eb9c3a05a97e0763fc data/rats/advancements/all_hats.json
 7b775b484b71404ca6580ad32affa19ec549bcdd data/rats/advancements/ball_of_filth.json
 c415052b441dfb31542a0a9c81ab8fd0d2165945 data/rats/advancements/black_death.json
 5e545bf2d30d4ffad54eabad244cb30890750250 data/rats/advancements/cheese.json
@@ -26,7 +27,10 @@ ac8f1dcdcd3c1dd77811ef1b5e5a50f2cc4ca030 data/rats/advancements/rat_upgrade_craf
 99cc91744cfdb636acd31a2c6437ec642ff0e312 data/rats/advancements/rat_upgrade_demon.json
 6712c90cc45ccf5fbe985e2b68572cb7a2453674 data/rats/advancements/rat_upgrade_flight.json
 c13ea6f827704b4bc5ce3670477b5be941cbebfd data/rats/advancements/rat_upgrade_god.json
+956ae06dfa1fb7ef6a792217826ffc7cfbf1c3da data/rats/advancements/rat_upgrade_idol.json
+4f10416d2ba6403d154fe2350391714b61efb6e8 data/rats/advancements/rat_upgrade_pickpocket.json
 012ab14b88ab2c0af9ae7fbfcd587db904d4686d data/rats/advancements/rat_upgrade_platter.json
+ed7d97f4c2a463e645201437275ebca0971c5224 data/rats/advancements/rat_upgrade_sculked.json
 7eb2eaa46433091db97a898352293d4762187d76 data/rats/advancements/rat_upgrade_strength.json
 b34b46b83716f1165eeb66e38c7ace2c7104a050 data/rats/advancements/rat_upgrade_warrior.json
 78cd9072162111b145768475fa9cb690c1ca1c78 data/rats/advancements/root.json

@@ -239,7 +239,6 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						Component.translatable("advancement.rats.ratbow_essence.title"),
 						Component.translatable("advancement.rats.ratbow_essence.desc"),
 						null, FrameType.TASK, true, false, false)
-				//TODO maybe we need custom criteria for this?
 				.addCriterion("use_essence", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item().of(RatsItemRegistry.RATBOW_ESSENCE.get()), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(RatsEntityRegistry.TAMED_RAT.get()).build())))
 				.save(consumer, "rats:ratbow_essence");
 
@@ -316,5 +315,50 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 				.addCriterion("eat_byaldi", ConsumeItemTrigger.TriggerInstance.usedItem(RatsItemRegistry.CONFIT_BYALDI.get()))
 				.addCriterion("eat_knishes", ConsumeItemTrigger.TriggerInstance.usedItem(RatsItemRegistry.POTATO_KNISHES.get()))
 				.save(consumer, "rats:rat_cooking");
+
+		Advancement.Builder.advancement().parent(basic).display(
+						RatsItemRegistry.RAT_UPGRADE_SCULKED.get(),
+						Component.translatable("advancement.rats.rat_upgrade_sculked.title"),
+						Component.translatable("advancement.rats.rat_upgrade_sculked.desc"),
+						null, FrameType.GOAL, true, false, false)
+				.addCriterion("get_upgrade", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_UPGRADE_SCULKED.get()))
+				.save(consumer, "rats:rat_upgrade_sculked");
+
+		Advancement.Builder.advancement().parent(basic).display(
+						RatsItemRegistry.RAT_UPGRADE_IDOL.get(),
+						Component.translatable("advancement.rats.rat_upgrade_idol.title"),
+						Component.translatable("advancement.rats.rat_upgrade_idol.desc"),
+						null, FrameType.GOAL, true, false, false)
+				.addCriterion("get_upgrade", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_UPGRADE_IDOL.get()))
+				.save(consumer, "rats:rat_upgrade_idol");
+
+		Advancement.Builder.advancement().parent(basic).display(
+						RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get(),
+						Component.translatable("advancement.rats.rat_upgrade_pickpocket.title"),
+						Component.translatable("advancement.rats.rat_upgrade_pickpocket.desc"),
+						null, FrameType.GOAL, true, false, false)
+				.addCriterion("get_upgrade", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_UPGRADE_PICKPOCKET.get()))
+				.save(consumer, "rats:rat_upgrade_pickpocket");
+
+		Advancement.Builder.advancement().parent(root).display(
+						RatsItemRegistry.PARTY_HAT.get(),
+						Component.translatable("advancement.rats.all_hats.title"),
+						Component.translatable("advancement.rats.all_hats.desc"),
+						null, FrameType.CHALLENGE, true, true, false)
+				.addCriterion("has_chef_toque", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.CHEF_TOQUE.get()))
+				.addCriterion("has_piper_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PIPER_HAT.get()))
+				.addCriterion("has_archeologist_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.ARCHEOLOGIST_HAT.get()))
+				.addCriterion("has_farmer_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.FARMER_HAT.get()))
+				.addCriterion("has_fisherman_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.FISHERMAN_HAT.get()))
+				.addCriterion("has_fez", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_FEZ.get()))
+				.addCriterion("has_top_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.TOP_HAT.get()))
+				.addCriterion("has_santa_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.SANTA_HAT.get()))
+				.addCriterion("has_halo", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.HALO_HAT.get()))
+				.addCriterion("has_party_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PARTY_HAT.get()))
+				.addCriterion("has_crown", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.RAT_KING_CROWN.get()))
+				.addCriterion("has_plague_doctor_mask", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.PLAGUE_DOCTOR_MASK.get()))
+				.addCriterion("has_black_death_mask", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.BLACK_DEATH_MASK.get()))
+				.addCriterion("has_exterminator_hat", InventoryChangeTrigger.TriggerInstance.hasItems(RatsItemRegistry.EXTERMINATOR_HAT.get()))
+				.save(consumer, "rats:all_hats");
 	}
 }

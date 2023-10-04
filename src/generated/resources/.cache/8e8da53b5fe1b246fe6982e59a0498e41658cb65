@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-27T21:56:04.2241952	ratlantis/Advancements
+// 1.20.1	2023-10-04T09:21:22.8392658	ratlantis/Advancements
 f5904bcebd2dbf41d83c96597dce84c8dd0aedf8 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/defeat_dutchrat.json
 db921de21c58992f71474f9433f31ef1c3206b01 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/defeat_rat_baron.json
 6afc45e1cdce91771b43929004a12b33d95c83c7 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/feral_ratlantean.json
@@ -24,3 +24,4 @@ b81b0f6cfa22d4b5f437b1ec225cc729913cdb25 data/minecraft/datapacks/ratlantis/data
 599cb7e85ee0b7c03d5859634ac07bcb774afe88 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/token.json
 a78ae0f64269016ec8113f92badfd5797b962cb4 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/upgrade_combiner.json
 ebad46ec3fb8a0e5305f058ccee00c15646799a1 data/minecraft/datapacks/ratlantis/data/ratlantis/advancements/vial_of_sentience.json
+6632493548fcbbaa71c611025b69e95bcce1cf1c data/minecraft/datapacks/ratlantis/data/rats/advancements/all_hats.json
