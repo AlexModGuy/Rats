@@ -183,7 +183,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		}
 		this.addItem(RatsItemRegistry.RAT_KING_CROWN, "Rat King's Crown");
 		this.addItem(RatsItemRegistry.RAT_NUGGET, "Rat §o\"Nugget\"");
-		this.addItemWithDesc(RatsItemRegistry.RAT_NUGGET_ORE, "Rat §o\"Nugget\"", "§oRight click to find out what's inside...");
+		this.addItemWithDesc(RatsItemRegistry.RAT_NUGGET_ORE, "Rat §o\"Nugget\"", "Right click to find out what's inside...");
 		this.addItemWithDesc(RatsItemRegistry.RAT_PAPERS, "Rat Papers", "Used to transfer rats between owners", "Right click on rat to bind", "Right click on other player to give bounded rat to them");
 		this.addItem(RatsItemRegistry.RAT_PAW, "Rat Paw");
 		this.addItem(RatsItemRegistry.RAT_PELT, "Rat Pelt");
@@ -431,6 +431,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.RAT_SACK_CONTAINED_RATS, "Contains %s/%s rat(s)");
 		this.add(RatsLangConstants.RAT_SACK_RELEASED_RATS, "Released %s Rat(s) from sack");
 		this.add(RatsLangConstants.RAT_SACK_TOO_FULL, "Rat Sack can't hold any more rats!");
+		this.add(RatsLangConstants.ORE_NUGGET_CONTAINS, "Contained Resource: %s");
 
 		this.add(RatsLangConstants.RAT_UPGRADE_REGENS, "Extremely fast health regeneration");
 		this.add(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, "+%s Rat %s");

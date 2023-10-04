@@ -1,18 +1,27 @@
 package com.github.alexthe666.rats.registry;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.client.events.ModClientEvents;
+import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -145,7 +154,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "black_death_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_cloud_spawn_egg"))));
 				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_beast_spawn_egg"))));
-				output.accept(RatsItemRegistry.RAT_NUGGET.get());
+				registerOreNuggets(output);
 			}).build());
 
 	public static final RegistryObject<CreativeModeTab> UPGRADES = TABS.register("rats_upgrades", () -> CreativeModeTab.builder()
@@ -356,6 +365,31 @@ public class RatsCreativeTabRegistry {
 	private static void registerColoredItems(CreativeModeTab.Output output, String itemType) {
 		for (DyeColor color : DyeColor.values()) {
 			output.accept(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, itemType + "_" + color.getName())));
+		}
+	}
+
+	private static void registerOreNuggets(CreativeModeTab.Output output) {
+		output.accept(RatsItemRegistry.RAT_NUGGET.get());
+		List<ItemStack> uniqueOres = new ArrayList<>();
+		Level level = null;
+		if (EffectiveSide.get().isServer()) {
+			if (ServerLifecycleHooks.getCurrentServer() != null) {
+				level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+			}
+		} else {
+			level = ModClientEvents.getClientLevel();
+		}
+		if (level != null) {
+			for (Item item : ForgeRegistries.ITEMS.tags().getTag(Tags.Items.ORES)) {
+				ItemStack oreDrop = OreRatNuggetItem.getIngot(level, new ItemStack(item));
+				if (!uniqueOres.contains(oreDrop) && !oreDrop.isEmpty()) {
+					uniqueOres.add(oreDrop);
+				}
+			}
+			uniqueOres.sort(Comparator.comparing(o -> o.getDisplayName().getString()));
+			for (ItemStack ore : uniqueOres) {
+				output.accept(OreRatNuggetItem.saveResourceToNugget(level, ore, false));
+			}
 		}
 	}
 
