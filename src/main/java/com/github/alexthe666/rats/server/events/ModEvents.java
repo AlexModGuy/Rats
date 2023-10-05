@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.events;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
+import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import com.github.alexthe666.rats.server.entity.misc.RatProtector;
 import com.github.alexthe666.rats.server.entity.misc.Ratfish;
@@ -43,6 +44,7 @@ public class ModEvents {
 		event.put(RatlantisEntityRegistry.FERAL_RATLANTEAN.get(), FeralRatlantean.createAttributes().build());
 		event.put(RatlantisEntityRegistry.NEO_RATLANTEAN.get(), NeoRatlantean.createAttributes().build());
 		event.put(RatlantisEntityRegistry.PIRAT.get(), Pirat.createAttributes().build());
+		event.put(RatlantisEntityRegistry.PIRAT_BOAT.get(), PiratBoat.createAttributes().build());
 		event.put(RatlantisEntityRegistry.GHOST_PIRAT.get(), GhostPirat.createAttributes().build());
 		event.put(RatlantisEntityRegistry.DUTCHRAT.get(), Dutchrat.createAttributes().build());
 		event.put(RatlantisEntityRegistry.RATFISH.get(), Ratfish.createAttributes().build());

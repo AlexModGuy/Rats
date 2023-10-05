@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.ai.goal.PiratWanderGoal;
+import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.PiratNavigation;
 import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
@@ -30,6 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,17 +49,10 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 
 	public Pirat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
-		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 		Arrays.fill(this.armorDropChances, 0.1F);
 		Arrays.fill(this.handDropChances, 0.1F);
-		this.moveControl = new MoveControl(this);
-		this.navigation = new WaterBoundPathNavigation(this, this.level());
+		this.navigation = new PiratNavigation(this, this.level());
 		this.setCombatTask();
-	}
-
-	public static boolean checkPiratSpawnRules(EntityType<Pirat> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		boolean flag = accessor.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.SPAWNER || accessor.getFluidState(pos.below()).is(FluidTags.WATER));
-		return random.nextInt(150) == 0 && flag;
 	}
 
 	@Override
@@ -67,7 +63,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false, entity -> entity != null && !entity.getType().is(RatlantisEntityTags.RATLANTEAN) && !entity.isAlliedTo(Pirat.this) && (!(entity instanceof Player player) || !player.isCreative())));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
 		this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
@@ -76,7 +72,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 				.add(Attributes.MAX_HEALTH, 30.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.25D)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 16.0D);
+				.add(Attributes.FOLLOW_RANGE, 32.0D);
 	}
 
 	public void setCombatTask() {
@@ -97,6 +93,15 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		if (this.attackCooldown > 0) {
 			this.attackCooldown--;
 		}
+
+		if (!this.isPassenger() && this.navigation instanceof PiratNavigation) {
+			this.navigation = new GroundPathNavigation(this, this.level());
+		}
+	}
+
+	@Override
+	public double getMyRidingOffset() {
+		return 0.3D;
 	}
 
 	@Override
@@ -134,9 +139,19 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 
 	@Override
 	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason) {
-		BlockPos pos = this.blockPosition();
-		BlockState state = this.level().getBlockState(pos.below());
-		return this.level().getDifficulty() != Difficulty.PEACEFUL && state.is(Blocks.WATER) && this.getRandom().nextFloat() < 0.1F;
+		return true;
+	}
+
+	@Override
+	public boolean checkSpawnObstruction(LevelReader reader) {
+		return reader.isUnobstructed(this);
+	}
+
+	public static boolean checkPiratSpawnRules(EntityType<Pirat> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		boolean flag = accessor.getDifficulty() != Difficulty.PEACEFUL;
+		boolean blockIsWater = accessor.getBlockState(pos).is(Blocks.WATER);
+		boolean blockAboveIsAir = accessor.getBlockState(pos.above()).isAir();
+		return random.nextInt(150) == 0 && flag && blockIsWater && blockAboveIsAir;
 	}
 
 	@Override
@@ -175,7 +190,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 			this.setYRot(f % 360);
 			this.yBodyRot = getYRot();
 			if (this.getVehicle() != null && this.getVehicle() instanceof PiratBoat) {
-				((PiratBoat) this.getVehicle()).shoot(this);
+				((PiratBoat) this.getVehicle()).shoot(target, this);
 			}
 			this.attackCooldown = 70;
 		}

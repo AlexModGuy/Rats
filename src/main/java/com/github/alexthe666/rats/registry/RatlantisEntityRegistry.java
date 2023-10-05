@@ -31,8 +31,8 @@ public class RatlantisEntityRegistry {
 	public static final RegistryObject<EntityType<LaserBeam>> LASER_BEAM = registerEntityNoEgg("laser_beam", EntityType.Builder.<LaserBeam>of(LaserBeam::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<LaserPortal>> LASER_PORTAL = registerEntityNoEgg("laser_portal", EntityType.Builder.<LaserPortal>of(LaserPortal::new, MobCategory.MISC).sized(0.95F, 0.95F));
 	public static final RegistryObject<EntityType<VialOfSentience>> VIAL_OF_SENTIENCE = registerEntityNoEgg("vial_of_sentience", EntityType.Builder.<VialOfSentience>of(VialOfSentience::new, MobCategory.MISC).sized(0.25F, 0.25F));
-	public static final RegistryObject<EntityType<PiratBoat>> PIRAT_BOAT = registerEntityNoEgg("pirat_boat", EntityType.Builder.of(PiratBoat::new, MobCategory.MISC).sized(1.75F, 0.8F));
-	public static final RegistryObject<EntityType<Pirat>> PIRAT = registerEntity("pirat", EntityType.Builder.of(Pirat::new, MobCategory.MONSTER).sized(0.49F, 0.49F), 0X30333E, 0XAF363A);
+	public static final RegistryObject<EntityType<PiratBoat>> PIRAT_BOAT = registerEntityNoEgg("pirat_boat", EntityType.Builder.of(PiratBoat::new, MobCategory.MONSTER).sized(1.75F, 0.8F));
+	public static final RegistryObject<EntityType<Pirat>> PIRAT = registerEntity("pirat", EntityType.Builder.of(Pirat::new, MobCategory.MONSTER).sized(0.5F, 0.9F), 0X30333E, 0XAF363A);
 	public static final RegistryObject<EntityType<CheeseCannonball>> CHEESE_CANNONBALL = registerEntityNoEgg("cheese_cannonball", EntityType.Builder.<CheeseCannonball>of(CheeseCannonball::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<GhostPirat>> GHOST_PIRAT = registerEntity("ghost_pirat", EntityType.Builder.of(GhostPirat::new, MobCategory.MONSTER).sized(1.0F, 0.75F), 0X54AA55, 0X7BD77D);
 	public static final RegistryObject<EntityType<Dutchrat>> DUTCHRAT = registerEntity("dutchrat", EntityType.Builder.of(Dutchrat::new, MobCategory.MONSTER).sized(2.0F, 3.0F).fireImmune(), 0XBBF9BB, 0XD0E2B5);

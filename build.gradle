@@ -104,6 +104,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:4681833")
 
     runtimeOnly fg.deobf("curse.maven:spark-361579:4738952")
+	runtimeOnly fg.deobf("curse.maven:debug-utils-783008:4644077")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
