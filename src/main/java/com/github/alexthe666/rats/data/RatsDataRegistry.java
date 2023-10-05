@@ -28,6 +28,10 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.net.URI;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -62,6 +66,10 @@ public class RatsDataRegistry {
 		generator.addProvider(event.includeServer(), new RatsLootTables(output));
 		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output));
 		generator.addProvider(event.includeServer(), new RatsRecipes(output));
+
+		Path mainPath = Paths.get("src/main/resources").toAbsolutePath();
+		generator.addProvider(event.includeServer(), new RatsStructureUpdater(new PackOutput(mainPath), helper));
+
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),

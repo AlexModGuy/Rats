@@ -86,6 +86,19 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 										.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))))
 		);
 
+		this.add(RatlantisEntityRegistry.PIRAT_BOAT.get(),
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1.0F))
+								.add(LootItem.lootTableItem(Items.SPRUCE_PLANKS)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1.0F))
+								.add(LootItem.lootTableItem(RatlantisItemRegistry.CHEESE_CANNONBALL.get()))
+								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))
+		);
+
 		this.add(RatlantisEntityRegistry.RAT_BARON.get(), LootTable.lootTable());
 
 		this.add(RatlantisEntityRegistry.RAT_BARON_PLANE.get(),
