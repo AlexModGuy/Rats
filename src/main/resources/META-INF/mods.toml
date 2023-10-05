@@ -5,7 +5,7 @@ license = "GNU LESSER GENERAL PUBLIC LICENSE"
 
 [[mods]]
 modId = "rats"
-version = "${file.jarVersion}}"
+version = "${file.jarVersion}"
 displayName = "Rats"
 itemIcon = "rats:cheese"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/rats"
