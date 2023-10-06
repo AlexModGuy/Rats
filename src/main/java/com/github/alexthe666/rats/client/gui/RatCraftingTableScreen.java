@@ -51,23 +51,47 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		this.renderBackground(graphics);
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		this.renderTooltip(graphics, mouseX, mouseY);
+
+		RenderSystem.disableDepthTest();
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 3; ++j) {
+				int xPos = 36 + i * 18;
+				int yPos = 22 + j * 18;
+				graphics.pose().pushPose();
+				graphics.pose().translate(this.leftPos, this.topPos, 399.0D);
+				graphics.fill(xPos, yPos, xPos + 16, yPos + 16, 0x9f8b8b8b);
+				graphics.pose().popPose();
+			}
+		}
+		RenderSystem.enableDepthTest();
+
+		Optional<CraftingRecipe> recipe = this.table.getCraftingTable().getGuideRecipe();
+		if (recipe.isPresent() && !this.table.getSlot(0).hasItem()) {
+			graphics.renderItem(recipe.get().getResultItem(Minecraft.getInstance().level.registryAccess()), this.leftPos + 130, this.topPos + 40);
+			RenderSystem.disableDepthTest();
+			graphics.pose().pushPose();
+			graphics.pose().translate(this.leftPos, this.topPos, 399.0D);
+			graphics.fill(130, 40, 146, 56, 0x9f8b8b8b);
+			graphics.pose().popPose();
+			RenderSystem.enableDepthTest();
+		}
 	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
 		this.renderBackground(graphics);
-		int i = (this.width - this.imageWidth) / 2;
-		int j = (this.height - this.imageHeight) / 2;
-		graphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
+		int topPos = (this.width - this.imageWidth) / 2;
+		int leftPos = (this.height - this.imageHeight) / 2;
+		graphics.blit(TEXTURE, topPos, leftPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
-		graphics.blit(TEXTURE, i + 96, j + 40, 0, 211, l, 16);
+		graphics.blit(TEXTURE, topPos + 96, leftPos + 40, 0, 211, l, 16);
 		if (this.table.getCraftingTable().hasRat()) {
-			graphics.blit(TEXTURE, i + 8, j + 20, 176, 0, 21, 21);
+			graphics.blit(TEXTURE, topPos + 8, leftPos + 20, 176, 0, 21, 21);
 		} else {
-			graphics.blit(TEXTURE, i + 7, j + 40, 198, 0, 21, 21);
+			graphics.blit(TEXTURE, topPos + 7, leftPos + 40, 198, 0, 21, 21);
 		}
 		if (this.table.getCraftingTable().getRecipeUsed() == null) {
-			graphics.blit(TEXTURE, i + 95, j + 38, 220, 0, 21, 21);
+			graphics.blit(TEXTURE, topPos + 95, leftPos + 38, 220, 0, 21, 21);
 		}
 	}
 
@@ -80,23 +104,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		graphics.drawString(this.font, Component.translatable(RatsLangConstants.CRAFTING_INPUT), 8, this.imageHeight - 125, 4210752, false);
 		int screenW = (this.width - 248) / 2;
 		int screenH = (this.height - 166) / 2;
-		Optional<CraftingRecipe> recipe = this.table.getCraftingTable().getGuideRecipe();
-		if (recipe.isPresent() && !this.table.getSlot(0).hasItem()) {
-			graphics.renderItem(recipe.get().getResultItem(Minecraft.getInstance().level.registryAccess()), 130, 40);
-			RenderSystem.disableDepthTest();
-			graphics.fill(130, 40, 146, 56, 0x9f8b8b8b);
-			RenderSystem.enableDepthTest();
-		}
-
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				RenderSystem.disableDepthTest();
-				int xPos = 36 + i * 18;
-				int yPos = 22 + j * 18;
-				graphics.fill(xPos, yPos, xPos + 16, yPos + 16, 0x9f8b8b8b);
-				RenderSystem.enableDepthTest();
-			}
-		}
 
 		if (!this.table.getCraftingTable().hasRat()) {
 			if (this.isHovering(6, 34, 25, 29, mouseX, mouseY)) {
