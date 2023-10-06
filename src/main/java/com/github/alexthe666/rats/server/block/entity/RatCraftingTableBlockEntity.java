@@ -242,6 +242,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		super.load(tag);
 		this.bufferHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Buffer")));
 		this.matrixHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Matrix")));
+		this.resultHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Result")));
 		if (tag.contains("CustomName", 8)) {
 			this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
 		}
@@ -254,6 +255,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		super.saveAdditional(tag);
 		this.bufferHandler.ifPresent(h -> tag.put("Buffer", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
 		this.matrixHandler.ifPresent(h -> tag.put("Matrix", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
+		this.resultHandler.ifPresent(h -> tag.put("Result", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
 		if (this.hasCustomName()) {
 			tag.putString("CustomName", Component.Serializer.toJson(this.customName));
 		}
