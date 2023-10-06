@@ -93,22 +93,28 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatCraftingTableBlockEntity te) {
 		te.hasRat = false;
+		boolean speedy = false;
 
 		for (TamedRat rat : level.getEntitiesOfClass(TamedRat.class, new AABB(pos.getX(), (double) pos.getY() + 1, pos.getZ(), (double) pos.getX() + 1, (double) pos.getY() + 2, (double) pos.getZ() + 1))) {
 			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_CRAFTING.get())) {
 				te.hasRat = true;
+				if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_SPEED.get())) {
+					speedy = true;
+				}
 			}
 		}
+
+		int totalCookTime = speedy ? te.totalCookTime / 2 : te.totalCookTime;
 
 		if (!level.isClientSide()) {
 			te.prevCookTime = te.cookTime;
 
-			if (te.getRecipeUsed() != null && te.hasRat && te.cookTime < te.totalCookTime) {
+			if (te.getRecipeUsed() != null && te.hasRat && te.cookTime < totalCookTime) {
 				te.cookTime++;
 			} else {
-				te.cookTime = Mth.clamp(te.cookTime - 2, 0, te.totalCookTime);
+				te.cookTime = Mth.clamp(te.cookTime - 2, 0, totalCookTime);
 			}
-			if (te.cookTime == te.totalCookTime) {
+			if (te.cookTime == totalCookTime) {
 				te.cookTime = 0;
 				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(te.matrixWrapper.resolve().orElseThrow(), level.registryAccess())).orElse(ItemStack.EMPTY);
 				te.resultHandler.ifPresent(h -> h.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + h.getStackInSlot(0).getCount())));
