@@ -22,8 +22,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -65,15 +65,27 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	protected Optional<CraftingRecipe> guideRecipe = Optional.empty();
 	protected Optional<CraftingRecipe> recipeUsed = Optional.empty();
 	protected List<CraftingRecipe> possibleRecipes = List.of();
-	public final int totalCookTime = 200;
+	public int totalCookTime = 200;
 	private int selectedRecipeIndex = 0;
-	protected final DataSlot cookSlot = new DataSlot() {
-		public int get() {
-			return RatCraftingTableBlockEntity.this.cookTime;
+	private final ContainerData dataAccess = new ContainerData() {
+		public int get(int index) {
+			return switch (index) {
+				case 0 -> RatCraftingTableBlockEntity.this.cookTime;
+				case 1 -> RatCraftingTableBlockEntity.this.totalCookTime;
+				default -> 0;
+			};
 		}
 
-		public void set(int value) {
-			RatCraftingTableBlockEntity.this.cookTime = value;
+		public void set(int index, int value) {
+			switch (index) {
+				case 0 -> RatCraftingTableBlockEntity.this.cookTime = value;
+				case 1 -> RatCraftingTableBlockEntity.this.totalCookTime = value;
+			}
+
+		}
+
+		public int getCount() {
+			return 2;
 		}
 	};
 
@@ -93,28 +105,26 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatCraftingTableBlockEntity te) {
 		te.hasRat = false;
-		boolean speedy = false;
+		te.totalCookTime = 200;
 
 		for (TamedRat rat : level.getEntitiesOfClass(TamedRat.class, new AABB(pos.getX(), (double) pos.getY() + 1, pos.getZ(), (double) pos.getX() + 1, (double) pos.getY() + 2, (double) pos.getZ() + 1))) {
 			if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_CRAFTING.get())) {
 				te.hasRat = true;
 				if (RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_SPEED.get())) {
-					speedy = true;
+					te.totalCookTime = 100;
 				}
 			}
 		}
 
-		int totalCookTime = speedy ? te.totalCookTime / 2 : te.totalCookTime;
-
 		if (!level.isClientSide()) {
 			te.prevCookTime = te.cookTime;
 
-			if (te.getRecipeUsed() != null && te.hasRat && te.cookTime < totalCookTime) {
+			if (te.getRecipeUsed() != null && te.hasRat && te.cookTime < te.totalCookTime) {
 				te.cookTime++;
 			} else {
-				te.cookTime = Mth.clamp(te.cookTime - 2, 0, totalCookTime);
+				te.cookTime = Mth.clamp(te.cookTime - 2, 0, te.totalCookTime);
 			}
-			if (te.cookTime == totalCookTime) {
+			if (te.cookTime >= te.totalCookTime) {
 				te.cookTime = 0;
 				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(te.matrixWrapper.resolve().orElseThrow(), level.registryAccess())).orElse(ItemStack.EMPTY);
 				te.resultHandler.ifPresent(h -> h.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + h.getStackInSlot(0).getCount())));
@@ -268,7 +278,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-		return new RatCraftingTableMenu(id, inventory, this, this.cookSlot);
+		return new RatCraftingTableMenu(id, inventory, this, this.dataAccess);
 	}
 
 	@Override

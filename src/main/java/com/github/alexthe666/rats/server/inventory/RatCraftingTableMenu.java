@@ -17,9 +17,9 @@ import java.util.Objects;
 public class RatCraftingTableMenu extends AbstractContainerMenu {
 
 	private final RatCraftingTableBlockEntity table;
-	private final DataSlot data;
+	private final ContainerData data;
 
-	public RatCraftingTableMenu(int id, Inventory playerInventory, RatCraftingTableBlockEntity table, DataSlot data) {
+	public RatCraftingTableMenu(int id, Inventory playerInventory, RatCraftingTableBlockEntity table, ContainerData data) {
 		super(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), id);
 		this.table = table;
 		this.data = data;
@@ -48,11 +48,11 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 		for (int k = 0; k < 9; ++k) {
 			this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 187));
 		}
-		this.addDataSlot(data);
+		this.addDataSlots(data);
 	}
 
 	public RatCraftingTableMenu(int i, Inventory playerInventory, FriendlyByteBuf buf) {
-		this(i, playerInventory, (RatCraftingTableBlockEntity) Objects.requireNonNull(Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getBlockEntity(buf.readBlockPos()) : null), DataSlot.standalone());
+		this(i, playerInventory, (RatCraftingTableBlockEntity) Objects.requireNonNull(Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getBlockEntity(buf.readBlockPos()) : null), new SimpleContainerData(2));
 	}
 
 	public boolean stillValid(Player player) {
@@ -64,8 +64,8 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 	}
 
 	public int getCookProgressionScaled() {
-		int i = this.data.get();
-		int j = 200;
+		int i = this.data.get(0);
+		int j = this.data.get(1);
 		return i != 0 ? i * 23 / j : 0;
 	}
 
