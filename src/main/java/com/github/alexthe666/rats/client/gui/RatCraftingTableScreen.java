@@ -10,18 +10,27 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 
 import java.util.Optional;
 
-public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> {
+public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> implements RecipeUpdateListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
+	private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
 	private final Inventory playerInventory;
 	private final RatCraftingTableMenu table;
+
+	private final RatCraftingRecipeBookComponent recipeBook = new RatCraftingRecipeBookComponent();
+	private boolean widthTooNarrow;
 
 	public RatCraftingTableScreen(RatCraftingTableMenu container, Inventory inv, Component name) {
 		super(container, inv, name);
@@ -33,24 +42,48 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 	@Override
 	protected void init() {
 		super.init();
+		this.widthTooNarrow = this.width < 379;
+		this.recipeBook.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.menu);
+		this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
+
 		this.renderables.clear();
 		int i = (this.width - 248) / 2;
 		int j = (this.height - 166) / 2;
-		this.addRenderableWidget(new CycleResultButton(i + 135, j + 38, false, button -> {
+		this.addRenderableWidget(new ImageButton(this.leftPos + 128, this.topPos + 65, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, button -> {
+			this.recipeBook.toggleVisibility();
+			this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
+			this.init();
+		}));
+		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 58, false, button -> {
 			this.table.incrementRecipeIndex(false);
 			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), false));
 		}));
-		this.addRenderableWidget(new CycleResultButton(i + 135, j + 5, true, button -> {
+		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 28, true, button -> {
 			this.table.incrementRecipeIndex(true);
 			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), true));
 		}));
+		this.addWidget(this.recipeBook);
+	}
+
+	@Override
+	protected void containerTick() {
+		super.containerTick();
+		this.recipeBook.tick();
 	}
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(graphics);
-		super.render(graphics, mouseX, mouseY, partialTicks);
+		if (this.recipeBook.isVisible() && this.widthTooNarrow) {
+			this.renderBg(graphics, partialTicks, mouseX, mouseY);
+			this.recipeBook.render(graphics, mouseX, mouseY, partialTicks);
+		} else {
+			this.recipeBook.render(graphics, mouseX, mouseY, partialTicks);
+			super.render(graphics, mouseX, mouseY, partialTicks);
+			//this.recipeBook.renderGhostRecipe(graphics, this.leftPos, this.topPos, true, partialTicks);
+		}
 		this.renderTooltip(graphics, mouseX, mouseY);
+		this.recipeBook.renderTooltip(graphics, this.leftPos, this.topPos, mouseX, mouseY);
 
 		RenderSystem.disableDepthTest();
 		for (int i = 0; i < 3; ++i) {
@@ -80,18 +113,16 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
 		this.renderBackground(graphics);
-		int topPos = (this.width - this.imageWidth) / 2;
-		int leftPos = (this.height - this.imageHeight) / 2;
-		graphics.blit(TEXTURE, topPos, leftPos, 0, 0, this.imageWidth, this.imageHeight);
+		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
-		graphics.blit(TEXTURE, topPos + 96, leftPos + 40, 0, 211, l, 16);
+		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 211, l, 16);
 		if (this.table.getCraftingTable().hasRat()) {
-			graphics.blit(TEXTURE, topPos + 8, leftPos + 20, 176, 0, 21, 21);
+			graphics.blit(TEXTURE, this.leftPos + 8, this.topPos + 20, 176, 0, 21, 21);
 		} else {
-			graphics.blit(TEXTURE, topPos + 7, leftPos + 40, 198, 0, 21, 21);
+			graphics.blit(TEXTURE, this.leftPos + 7, this.topPos + 40, 198, 0, 21, 21);
 		}
 		if (this.table.getCraftingTable().getRecipeUsed() == null) {
-			graphics.blit(TEXTURE, topPos + 95, leftPos + 38, 220, 0, 21, 21);
+			graphics.blit(TEXTURE, this.leftPos + 95, this.topPos + 38, 220, 0, 21, 21);
 		}
 	}
 
@@ -115,6 +146,43 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	public boolean shouldRenderButtons() {
 		return this.table.getCraftingTable().getPossibleRecipes().size() > 1;
+	}
+
+	@Override
+	protected boolean isHovering(int slotX, int slotY, int width, int height, double mouseX, double mouseY) {
+		return (!this.widthTooNarrow || !this.recipeBook.isVisible()) && super.isHovering(slotX, slotY, width, height, mouseX, mouseY);
+	}
+
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (this.recipeBook.mouseClicked(mouseX, mouseY, button)) {
+			this.setFocused(this.recipeBook);
+			return true;
+		} else {
+			return this.widthTooNarrow && this.recipeBook.isVisible() || super.mouseClicked(mouseX, mouseY, button);
+		}
+	}
+
+	@Override
+	protected boolean hasClickedOutside(double mouseX, double mouseY, int leftPos, int topPos, int button) {
+		boolean flag = mouseX < (double)leftPos || mouseY < (double)topPos || mouseX >= (double)(leftPos + this.imageWidth) || mouseY >= (double)(topPos + this.imageHeight);
+		return this.recipeBook.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, button) && flag;
+	}
+
+	@Override
+	protected void slotClicked(Slot slot, int slotIndex, int button, ClickType type) {
+		super.slotClicked(slot, slotIndex, button, type);
+		this.recipeBook.slotClicked(slot);
+	}
+
+	@Override
+	public void recipesUpdated() {
+		this.recipeBook.recipesUpdated();
+	}
+
+	@Override
+	public RecipeBookComponent getRecipeBookComponent() {
+		return this.recipeBook;
 	}
 
 	private static class CycleResultButton extends Button {
