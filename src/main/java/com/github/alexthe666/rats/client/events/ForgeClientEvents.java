@@ -207,7 +207,12 @@ public class ForgeClientEvents {
 
 		gui.lastHealth = health;
 		int healthLast = gui.displayHealth;
-		gui.random.setSeed(gui.getGuiTicks() * 312871);
+		if (RatsMod.HEART_OVERLAY_MOD_INSTALLED) {
+			//heart overlays cast to long, so have to do the same in this case
+			gui.random.setSeed(gui.getGuiTicks() * 312871L);
+		} else {
+			gui.random.setSeed(gui.getGuiTicks() * 312871);
+		}
 
 		AttributeInstance attrMaxHealth = player.getAttribute(Attributes.MAX_HEALTH);
 		float healthMax = Math.max((float) attrMaxHealth.getValue(), Math.max(healthLast, health));
@@ -221,14 +226,16 @@ public class ForgeClientEvents {
 
 		int regen = -1;
 		if (player.hasEffect(MobEffects.REGENERATION)) {
-			regen = gui.getGuiTicks() % Mth.ceil(healthMax + 5.0F);
+			regen = gui.getGuiTicks() % (RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 25 : Mth.ceil(healthMax + 5.0F));
 		}
 
 		int healthAmount = Mth.ceil((double) healthMax / 2.0D);
 
-		for (int currentHeart = healthAmount + absorption - 1; currentHeart >= 0; --currentHeart) {
+		for (int currentHeart = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? Math.min(9, healthAmount + absorption - 1) : healthAmount + absorption - 1; currentHeart >= 0; currentHeart--) {
+			int heartYPos = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 18 : 0;
+			int emptyHeartYPos = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 27 : 9;
 			int x = left + currentHeart % 10 * 8;
-			int y = top - currentHeart / 10 * rowHeight;
+			int y = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? top : top - currentHeart / 10 * rowHeight;
 			if (health + absorption <= 4) {
 				y += gui.random.nextInt(2);
 			}
@@ -237,27 +244,31 @@ public class ForgeClientEvents {
 				y -= 2;
 			}
 
-			drawTexturedModalRect(graphics, x, y, 0, 9);
+			if (!RatsMod.HEART_OVERLAY_MOD_INSTALLED) {
+				drawTexturedModalRect(graphics, x, y, 0, emptyHeartYPos);
+			}
 			int fullHealth = currentHeart * 2;
-			if (currentHeart >= healthAmount) {
+			//absorption hearts
+			if (!RatsMod.HEART_OVERLAY_MOD_INSTALLED && currentHeart >= healthAmount) {
 				int k2 = fullHealth - health * 2;
 				if (k2 < absorption) {
 					boolean halfHeart = k2 + 1 == absorption;
-					drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
+					drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
 				}
 			}
 
+			//blinking hearts
 			if (highlight && fullHealth < healthLast) {
 				boolean halfHeart = fullHealth + 1 == healthLast;
-				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
+				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
 			}
 
+			//normal hearts
 			if (fullHealth < health) {
 				boolean halfHeart = fullHealth + 1 == health;
-				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, 0);
+				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
 			}
 		}
-
 		RenderSystem.disableBlend();
 		Minecraft.getInstance().getProfiler().endTick();
 	}
@@ -265,7 +276,6 @@ public class ForgeClientEvents {
 	private static void drawTexturedModalRect(GuiGraphics graphics, int x, int y, int textureX, int textureY) {
 		graphics.blit(PLAGUE_HEART_TEXTURE, x, y, textureX, textureY, 9, 9);
 	}
-
 
 	@SubscribeEvent
 	public static void onFogColors(ViewportEvent.ComputeFogColor event) {

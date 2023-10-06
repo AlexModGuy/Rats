@@ -105,6 +105,7 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:spark-361579:4738952")
 	runtimeOnly fg.deobf("curse.maven:debug-utils-783008:4644077")
+	runtimeOnly fg.deobf("curse.maven:armorpoints-396094:4613606")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
