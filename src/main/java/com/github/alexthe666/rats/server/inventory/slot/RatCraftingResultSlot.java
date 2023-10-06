@@ -29,10 +29,18 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 
 	@Override
 	public ItemStack remove(int amount) {
-		ItemStack stack = getItem();
+		ItemStack stack = this.getItem();
 		this.amountCrafted += stack.getCount();
 		this.table.resultHandler.ifPresent(h -> h.setStackInSlot(0, ItemStack.EMPTY));
 		return stack;
+	}
+
+	@Override
+	public void setChanged() {
+		this.table.updateHelper();
+		this.table.updateRecipe();
+		this.table.setChanged();
+		super.setChanged();
 	}
 
 	@Override
@@ -43,7 +51,7 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	@Override
 	protected void onQuickCraft(ItemStack stack, int amount) {
 		this.amountCrafted += amount;
-		checkTakeAchievements(stack);
+		this.checkTakeAchievements(stack);
 	}
 
 	@Override
@@ -75,7 +83,7 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 
 	@Override
 	public void onTake(Player player, ItemStack stack) {
-		checkTakeAchievements(stack);
+		this.checkTakeAchievements(stack);
 		ForgeHooks.setCraftingPlayer(player);
 		this.table.consumeIngredients(player);
 		this.table.updateRecipe();
