@@ -49,6 +49,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 	private static final EntityDataAccessor<Integer> SEARCH_RADIUS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<List<GlobalPos>> PATROL_NODES = SynchedEntityData.defineId(InventoryRat.class, RatsDataSerializerRegistry.GLOBAL_POS_LIST.get());
+	private static final EntityDataAccessor<Byte> VISIBILITY_FLAGS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.BYTE);
 
 	private RatContainer inventory;
 	private LazyOptional<?> itemHandler = null;
@@ -67,6 +68,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 		this.getEntityData().define(HOME_POS, Optional.empty());
 		this.getEntityData().define(SEARCH_RADIUS, RatConfig.defaultRatRadius);
 		this.getEntityData().define(PATROL_NODES, new ArrayList<>());
+		this.getEntityData().define(VISIBILITY_FLAGS, (byte) 0);
 	}
 
 	@Override
@@ -83,6 +85,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			}
 		}
 		tag.put("Items", listtag);
+		tag.putByte("InvisibleSlots", this.getEntityData().get(VISIBILITY_FLAGS));
 
 		this.getHomePoint().flatMap(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error)).ifPresent(tag1 -> tag.put("HomePos", tag1));
 
@@ -108,6 +111,8 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 				this.getInventory().setItem(j, ItemStack.of(compoundtag));
 			}
 		}
+
+		this.getEntityData().set(VISIBILITY_FLAGS, tag.getByte("InvisibleSlots"));
 		if (tag.contains("HomePos")) {
 			this.setHomePoint(GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("HomePos")).resultOrPartial(RatsMod.LOGGER::error).orElse(null));
 		}
@@ -333,5 +338,26 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	@Override
 	public void containerChanged(Container container) {
 
+	}
+
+	public boolean isSlotVisible(EquipmentSlot slot) {
+		return (this.getEntityData().get(VISIBILITY_FLAGS) & this.getByteValueForSlot(slot)) == 0;
+	}
+
+	public void setSlotVisibility(EquipmentSlot slot, boolean visible) {
+		if (visible) {
+			this.getEntityData().set(VISIBILITY_FLAGS, (byte) (this.getEntityData().get(VISIBILITY_FLAGS) & ~this.getByteValueForSlot(slot)));
+		} else {
+			this.getEntityData().set(VISIBILITY_FLAGS, (byte) (this.getEntityData().get(VISIBILITY_FLAGS) | this.getByteValueForSlot(slot)));
+		}
+	}
+
+	private int getByteValueForSlot(EquipmentSlot slot) {
+		return switch (slot) {
+			case FEET -> 1;
+			case LEGS -> 2;
+			case CHEST -> 4;
+			default -> 0;
+		};
 	}
 }

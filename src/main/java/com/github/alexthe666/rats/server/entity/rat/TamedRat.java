@@ -208,7 +208,7 @@ public class TamedRat extends InventoryRat {
 		AtomicReference<Goal> newPickup = new AtomicReference<>(new RatPickupGoal(this, RatPickupGoal.PickupType.INVENTORY));
 		AtomicReference<Goal> newAttack = new AtomicReference<>(new RatMeleeAttackGoal(this, 1.45D, true));
 
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof ChangesAIUpgrade, stack ->
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof ChangesAIUpgrade, (stack, slot) ->
 				((ChangesAIUpgrade) stack.getItem()).addNewWorkGoals(this).forEach(goal -> {
 					if (!(goal instanceof RatWorkGoal workGoal)) {
 						throw new IllegalArgumentException("Rat Goals must implement the interface RatWorkGoal! Goal" + goal.getClass().getName() + "doesnt do this!");
@@ -332,7 +332,7 @@ public class TamedRat extends InventoryRat {
 		if (flag) {
 			this.doEnchantDamageEffects(this, entity);
 			this.getMainHandItem().hurtAndBreak(1, this, rat -> rat.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, stack -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
+			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, (stack, slot) -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
 		}
 		return flag;
 	}
@@ -477,10 +477,10 @@ public class TamedRat extends InventoryRat {
 			this.startRiding(entity, true);
 		}
 
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof TickRatUpgrade, stack -> ((TickRatUpgrade) stack.getItem()).tick(this));
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof TickRatUpgrade, (stack, slot) -> ((TickRatUpgrade) stack.getItem()).tick(this));
 
 		if (RatConfig.upgradeRegenRate > 0) {
-			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, stack -> {
+			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, (stack, slot) -> {
 				if (((StatBoostingUpgrade) stack.getItem()).regeneratesHealth() && this.getHealth() < this.getMaxHealth() && this.tickCount % RatConfig.upgradeRegenRate == 0) {
 					this.heal(1.0F);
 				}
@@ -1259,7 +1259,7 @@ public class TamedRat extends InventoryRat {
 			this.attributeChanges.clear();
 		}
 
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, stack ->
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof StatBoostingUpgrade, (stack, slot) ->
 				((StatBoostingUpgrade) stack.getItem()).getAttributeBoosts().forEach((attribute, aDouble) -> this.tryIncreaseStat(stack.getHoverName().getString(), attribute, aDouble)));
 
 		if (this.getHeldRF() > this.getRFTransferRate()) {
@@ -1282,7 +1282,7 @@ public class TamedRat extends InventoryRat {
 			return true;
 		}
 		AtomicBoolean upgradePrevented = new AtomicBoolean(false);
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof DamageImmunityUpgrade, stack -> {
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof DamageImmunityUpgrade, (stack, slot) -> {
 			if (((DamageImmunityUpgrade) stack.getItem()).isImmuneToDamageSource(this, source)) {
 				upgradePrevented.set(true);
 			}
@@ -1322,7 +1322,7 @@ public class TamedRat extends InventoryRat {
 
 	public int getRFTransferRate() {
 		AtomicInteger energy = new AtomicInteger();
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof EnergyRatUpgradeItem, stack ->
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof EnergyRatUpgradeItem, (stack, slot) ->
 				energy.set(((EnergyRatUpgradeItem) stack.getItem()).getRFTransferRate()));
 
 		return energy.get();
@@ -1330,7 +1330,7 @@ public class TamedRat extends InventoryRat {
 
 	public int getMBTransferRate() {
 		AtomicInteger fluid = new AtomicInteger();
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof BucketRatUpgradeItem, stack ->
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof BucketRatUpgradeItem, (stack, slot) ->
 				fluid.set(((BucketRatUpgradeItem) stack.getItem()).getMbTransferRate()));
 
 		return fluid.get();
@@ -1353,7 +1353,7 @@ public class TamedRat extends InventoryRat {
 	@Nullable
 	private EntityType<?> getMountEntityType() {
 		AtomicReference<EntityType<?>> type = new AtomicReference<>(null);
-		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof MountRatUpgradeItem, stack -> type.set(((MountRatUpgradeItem<?>) stack.getItem()).getEntityType()));
+		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof MountRatUpgradeItem, (stack, slot) -> type.set(((MountRatUpgradeItem<?>) stack.getItem()).getEntityType()));
 		return type.get();
 	}
 

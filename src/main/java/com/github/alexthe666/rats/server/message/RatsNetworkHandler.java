@@ -25,6 +25,7 @@ public class RatsNetworkHandler {
 		CHANNEL.registerMessage(id++, ManageRatStaffPacket.class, ManageRatStaffPacket::encode, ManageRatStaffPacket::decode, ManageRatStaffPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, OpenRatScreenPacket.class, OpenRatScreenPacket::encode, OpenRatScreenPacket::decode, OpenRatScreenPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, RatCommandPacket.class, RatCommandPacket::encode, RatCommandPacket::decode, RatCommandPacket.Handler::handle);
+		CHANNEL.registerMessage(id++, RatUpgradeVisibilityPacket.class, RatUpgradeVisibilityPacket::encode, RatUpgradeVisibilityPacket::decode, RatUpgradeVisibilityPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, SetDancingRatPacket.class, SetDancingRatPacket::encode, SetDancingRatPacket::decode, SetDancingRatPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, SyncArmSwingPacket.class, SyncArmSwingPacket::encode, SyncArmSwingPacket::decode, SyncArmSwingPacket.Handler::handle);
 		CHANNEL.registerMessage(id++, SyncPlaguePacket.class, SyncPlaguePacket::encode, SyncPlaguePacket::decode, SyncPlaguePacket.Handler::handle);

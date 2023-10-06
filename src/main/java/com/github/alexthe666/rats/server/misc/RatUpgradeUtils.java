@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -51,12 +52,12 @@ public class RatUpgradeUtils {
 		}
 	}
 
-	public static void forEachUpgrade(TamedRat rat, Predicate<Item> upgrade, Consumer<ItemStack> function) {
+	public static void forEachUpgrade(TamedRat rat, Predicate<Item> upgrade, BiConsumer<ItemStack, EquipmentSlot> function) {
 		for (EquipmentSlot slot : UPGRADE_SLOTS) {
 			ItemStack stack = rat.getItemBySlot(slot);
 			if (!stack.isEmpty()) {
 				if (upgrade.test(stack.getItem())) {
-					function.accept(stack);
+					function.accept(stack, slot);
 				}
 				if (stack.getItem() instanceof CombinedUpgrade combined) {
 					CompoundTag tag = stack.getTag();
@@ -65,7 +66,7 @@ public class RatUpgradeUtils {
 						ContainerHelper.loadAllItems(tag, upgradeList);
 						for (ItemStack selectedUpgrade : upgradeList) {
 							if (upgrade.test(selectedUpgrade.getItem())) {
-								function.accept(selectedUpgrade);
+								function.accept(selectedUpgrade, slot);
 							}
 						}
 					}

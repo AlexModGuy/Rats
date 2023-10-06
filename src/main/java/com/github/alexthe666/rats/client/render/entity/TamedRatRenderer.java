@@ -54,7 +54,11 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 		} else {
 			AtomicReference<String> upgradeTex = new AtomicReference<>("");
 
-			RatUpgradeUtils.forEachUpgrade(entity, item -> item instanceof ChangesTextureUpgrade, stack -> upgradeTex.set(((ChangesTextureUpgrade) stack.getItem()).getTexture().toString()));
+			RatUpgradeUtils.forEachUpgrade(entity, item -> item instanceof ChangesTextureUpgrade, (stack, slot) -> {
+				if (entity.isSlotVisible(slot)) {
+					upgradeTex.set(((ChangesTextureUpgrade) stack.getItem()).getTexture().toString());
+				}
+			});
 
 			if (!upgradeTex.get().equals("")) {
 				return new ResourceLocation(upgradeTex.get());

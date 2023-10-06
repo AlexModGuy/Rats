@@ -115,10 +115,12 @@ public class RatHeldItemLayer<T extends AbstractRat, M extends AbstractRatModel<
 					stack.popPose();
 					stack.popPose();
 				} else {
-					RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, stack1 -> {
-						stack.pushPose();
-						((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, model, stack, buffer, light, ageInTicks);
-						stack.popPose();
+					RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof HoldsItemUpgrade, (stack1, slot) -> {
+						if (rat.isSlotVisible(slot)) {
+							stack.pushPose();
+							((HoldsItemUpgrade) stack1.getItem()).renderHeldItem(rat, model, stack, buffer, light, ageInTicks);
+							stack.popPose();
+						}
 					});
 				}
 			}
