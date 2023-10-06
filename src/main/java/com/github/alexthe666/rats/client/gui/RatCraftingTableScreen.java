@@ -58,7 +58,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 				int xPos = 36 + i * 18;
 				int yPos = 22 + j * 18;
 				graphics.pose().pushPose();
-				graphics.pose().translate(this.leftPos, this.topPos, 399.0D);
+				graphics.pose().translate(this.leftPos, this.topPos, 300.0D);
 				graphics.fill(xPos, yPos, xPos + 16, yPos + 16, 0x9f8b8b8b);
 				graphics.pose().popPose();
 			}
@@ -70,7 +70,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 			graphics.renderItem(recipe.get().getResultItem(Minecraft.getInstance().level.registryAccess()), this.leftPos + 130, this.topPos + 40);
 			RenderSystem.disableDepthTest();
 			graphics.pose().pushPose();
-			graphics.pose().translate(this.leftPos, this.topPos, 399.0D);
+			graphics.pose().translate(this.leftPos, this.topPos, 300.0D);
 			graphics.fill(130, 40, 146, 56, 0x9f8b8b8b);
 			graphics.pose().popPose();
 			RenderSystem.enableDepthTest();
