@@ -41,6 +41,23 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, AbstractRatModel
 				this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
+			if (rat.isDyed()) {
+				VertexConsumer consumer;
+				if (rat.getDyeColor() == 100) {
+					RenderType type = RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(rat.getSpecialDye());
+					consumer = buffer.getBuffer(type != null ? type : RatsRenderType.getRainbowGlint());
+					this.getParentModel().renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(rat, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+					if (!RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get())) {
+						VertexConsumer consumer1 = buffer.getBuffer(TEXTURE_DYED_NOT);
+						this.getParentModel().renderToBuffer(stack, consumer1, light, LivingEntityRenderer.getOverlayCoords(rat, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+					}
+				} else {
+					consumer = buffer.getBuffer(TEXTURE_DYED);
+					float[] color = RatColorUtil.getDyeRgb(DyeColor.byId(rat.getDyeColor()));
+					this.getParentModel().renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(rat, 0), color[0], color[1], color[2], 1.0F);
+				}
+			}
+
 			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof ChangesOverlayUpgrade, (upgrade, slot) -> {
 				if (rat.isSlotVisible(slot)) {
 					RenderType overlay = ((ChangesOverlayUpgrade) upgrade.getItem()).getOverlayTexture(rat, partialTicks);
@@ -51,21 +68,6 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, AbstractRatModel
 					}
 				}
 			});
-
-			if (rat.isDyed()) {
-				VertexConsumer consumer;
-				if (rat.getDyeColor() == 100) {
-					RenderType type = RatsRenderType.GlintType.getRenderTypeBasedOnKeyword(rat.getSpecialDye());
-					consumer = buffer.getBuffer(type != null ? type : RatsRenderType.getRainbowGlint());
-					this.getParentModel().renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(rat, 0), 1.0F, 1.0F, 1.0F, 1.0F);
-					VertexConsumer consumer1 = buffer.getBuffer(TEXTURE_DYED_NOT);
-					this.getParentModel().renderToBuffer(stack, consumer1, light, LivingEntityRenderer.getOverlayCoords(rat, 0), 1.0F, 1.0F, 1.0F, 1.0F);
-				} else {
-					consumer = buffer.getBuffer(TEXTURE_DYED);
-					float[] color = RatColorUtil.getDyeRgb(DyeColor.byId(rat.getDyeColor()));
-					this.getParentModel().renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(rat, 0), color[0], color[1], color[2], 1.0F);
-				}
-			}
 
 			if (rat.hasToga()) {
 				VertexConsumer consumer = buffer.getBuffer(TOGA_TEX);
