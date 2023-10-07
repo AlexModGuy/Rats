@@ -77,6 +77,11 @@ public class PiratBoat extends Mob {
 		return true;
 	}
 
+	@Override
+	protected boolean shouldDespawnInPeaceful() {
+		return true;
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 60.0D)
