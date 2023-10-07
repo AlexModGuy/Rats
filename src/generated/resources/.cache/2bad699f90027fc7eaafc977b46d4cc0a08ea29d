@@ -1,9 +1,9 @@
-// 1.20.1	2023-06-20T18:40:46.8418412	ratlantis/Tags for minecraft:entity_type mod id rats
+// 1.20.1	2023-10-06T20:41:05.7266024	ratlantis/Tags for minecraft:entity_type mod id rats
 96f44c2fd46e121d826a0441a9eff9fecbf381f0 data/minecraft/datapacks/ratlantis/data/forge/tags/entity_types/bosses.json
 2ee5111e217b9ebe1af0fc3ed1aeaaac61c674d0 data/minecraft/datapacks/ratlantis/data/minecraft/tags/entity_types/arrows.json
 5f308535972923e114d867e479b69998cf09acc8 data/minecraft/datapacks/ratlantis/data/minecraft/tags/entity_types/fall_damage_immune.json
 43a92133b36df50f96b7d0d40f6ecf3688e960d4 data/minecraft/datapacks/ratlantis/data/minecraft/tags/entity_types/freeze_immune_entity_types.json
 ee0857642ad00633cb959ef20eefa559c3d45b65 data/minecraft/datapacks/ratlantis/data/minecraft/tags/entity_types/impact_projectiles.json
-43ad03be376b1f719d32965fc52d6f05d3c8be48 data/minecraft/datapacks/ratlantis/data/rats/tags/entity_types/ratlantean.json
+5455df14cf2b61dabc8c030c2a582ee55a301508 data/minecraft/datapacks/ratlantis/data/rats/tags/entity_types/ratlantean.json
 a7ac5cf9ef64adf49e4ad1ca4867024c42040bd4 data/minecraft/datapacks/ratlantis/data/rats/tags/entity_types/rats.json
 6081a0d185d2713161d514f044f96141f9f153d1 data/minecraft/datapacks/ratlantis/data/rats/tags/entity_types/rat_mounts.json

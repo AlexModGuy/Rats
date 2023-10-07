@@ -35,7 +35,7 @@ public class RatlantisEntityTags extends EntityTypeTagsProvider {
 				RatlantisEntityRegistry.GHOST_PIRAT.get(), RatlantisEntityRegistry.RATLANTEAN_AUTOMATON.get(),
 				RatlantisEntityRegistry.RATFISH.get(), RatlantisEntityRegistry.RATLANTEAN_SPIRIT.get(),
 				RatlantisEntityRegistry.NEO_RATLANTEAN.get(), RatlantisEntityRegistry.DUTCHRAT.get(),
-				RatlantisEntityRegistry.RAT_BARON.get(), RatlantisEntityRegistry.RAT_BARON_PLANE.get(),
+				RatlantisEntityRegistry.RAT_BARON.get(), RatlantisEntityRegistry.RAT_BARON_PLANE.get(), RatlantisEntityRegistry.PIRAT_BOAT.get(),
 				RatlantisEntityRegistry.PIRAT.get(), RatsEntityRegistry.RAT.get(), RatsEntityRegistry.RAT_KING.get(),
 				EntityType.PARROT, EntityType.PANDA, EntityType.PUFFERFISH, EntityType.DOLPHIN);
 
