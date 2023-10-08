@@ -128,7 +128,9 @@ public class RatArrow extends AbstractArrow {
 				return;
 			}
 
-			this.spawnRat(entity, entity.blockPosition());
+			if (!this.level().isClientSide()) {
+				this.spawnRat(entity, entity.blockPosition());
+			}
 
 			if (entity instanceof LivingEntity livingentity) {
 				if (!this.level().isClientSide() && this.getPierceLevel() <= 0) {
@@ -189,9 +191,9 @@ public class RatArrow extends AbstractArrow {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		this.spawnRat(null, result.getBlockPos().relative(result.getDirection()));
 		if (this.inGround) {
 			if (!this.level().isClientSide()) {
+				this.spawnRat(null, result.getBlockPos().relative(result.getDirection()));
 				this.spawnAtLocation(this.getPickupItem(), 0.0F);
 			}
 			this.discard();
