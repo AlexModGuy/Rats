@@ -228,9 +228,15 @@ public class ForgeEvents {
 		if (event.getLevel().isClientSide()) {
 			if (RatsMod.MOB_CACHE.isEmpty()) {
 				List<Pair<String, Component>> unsortedCache = new ArrayList<>();
-				ForgeRegistries.ENTITY_TYPES.getEntries().stream().filter(entry -> entry.getValue().create((Level) event.getLevel()) instanceof Mob || entry.getValue() == EntityType.PLAYER).forEach(entry ->
-						unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription())));
-
+				ForgeRegistries.ENTITY_TYPES.getEntries().forEach(entry -> {
+					try {
+						if (entry.getValue().create((Level) event.getLevel()) instanceof Mob || entry.getValue() == EntityType.PLAYER) {
+							unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription()));
+						}
+					} catch (NullPointerException e) {
+						RatsMod.LOGGER.error("Couldnt cache an instance of the mob {}", entry.getKey().location(), e);
+					}
+				});
 				RatsMod.MOB_CACHE.addAll(unsortedCache.stream().sorted(Comparator.comparing(o -> o.getSecond().getString())).toList());
 				RatsMod.LOGGER.debug("Cached {} mob ids for later use.", RatsMod.MOB_CACHE.size());
 			}
