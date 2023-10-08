@@ -454,6 +454,15 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('S', Items.SHEARS).unlockedBy("has_shears", has(Items.SHEARS))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/shears_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_BOTTLER.get())
+				.pattern("SBS")
+				.pattern("BUB")
+				.pattern("SBS")
+				.define('B', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.define('S', Items.GLASS_BOTTLE).unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/bottler_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_ARISTOCRAT.get())
 				.pattern("STS")
 				.pattern("GUG")

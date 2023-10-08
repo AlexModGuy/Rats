@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-23T23:03:17.5947287	Recipes
+// 1.20.1	2023-10-07T19:34:18.7123245	Recipes
 ebaaaf0902a3fcf612166371cab9d27b42bbbc1f data/rats/advancements/recipes/building_blocks/auto_curdler.json
 987bd89935ed98bb9364bd497e27180b979b7fc4 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
 a5dd1a2bb72dc214a29362949d0dde182ac23a42 data/rats/advancements/recipes/building_blocks/block_of_cheese.json
@@ -148,6 +148,7 @@ f28434eeb90acbc31886ba6471f0c6627f86cf35 data/rats/advancements/recipes/misc/upg
 a9e64d22aecc4d8c3794cb51fb9260d03b396a8a data/rats/advancements/recipes/misc/upgrades/bee_upgrade.json
 7a432c6f4707fcc8b4b3033a64956c1929fd4c09 data/rats/advancements/recipes/misc/upgrades/big_bucket_upgrade.json
 af0fbeede8c03ee1320f28b4b87e41aee48a7b90 data/rats/advancements/recipes/misc/upgrades/blacklist_upgrade.json
+f51087094be8846890485a8f5c593bff2e6eb326 data/rats/advancements/recipes/misc/upgrades/bottler_upgrade.json
 3e99daa79ba8691ef0913c3e49f23f28934bd179 data/rats/advancements/recipes/misc/upgrades/bow_upgrade.json
 5a670c29f53e8261d822b411b002e84d9e971917 data/rats/advancements/recipes/misc/upgrades/breeder_upgrade.json
 09dc8a31e91520c589846637c305f3cbc1a086ef data/rats/advancements/recipes/misc/upgrades/bucket_upgrade.json
@@ -366,6 +367,7 @@ ebc36063fb6c9c475c8f12286e416791e30fbeb8 data/rats/recipes/upgrades/basic_upgrad
 e3b1572f4d771fb2297a6e9d2d0d5b2fe215f961 data/rats/recipes/upgrades/bee_upgrade.json
 3cbe539706216b2c0130a1a524abcb25238d7b25 data/rats/recipes/upgrades/big_bucket_upgrade.json
 ea29ecd34b3cece4a2ec464e5652b2b921555f7c data/rats/recipes/upgrades/blacklist_upgrade.json
+d1d62e66316a5be7c6b828bcbb5a8a37eec1947e data/rats/recipes/upgrades/bottler_upgrade.json
 4ef9af5ff322e9efc1f0e2938d3c97df9f4f5de8 data/rats/recipes/upgrades/bow_upgrade.json
 21cda7e24c9be05d0ea69f70e70628bec06f9a18 data/rats/recipes/upgrades/breeder_upgrade.json
 eedbb73be400665c048757611bce7994fe175f4c data/rats/recipes/upgrades/bucket_upgrade.json

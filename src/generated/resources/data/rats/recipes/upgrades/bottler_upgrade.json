@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:string"
+    },
+    "S": {
+      "item": "minecraft:glass_bottle"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "BUB",
+    "SBS"
+  ],
+  "result": {
+    "item": "rats:rat_upgrade_bottler"
+  },
+  "show_notification": true
+}
