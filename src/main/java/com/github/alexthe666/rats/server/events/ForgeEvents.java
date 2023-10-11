@@ -282,7 +282,7 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void spawnStriderJockeys(MobSpawnEvent.FinalizeSpawn event) {
-		if (event.getDifficulty().getDifficulty() != Difficulty.PEACEFUL) {
+		if (event.getDifficulty().getDifficulty() != Difficulty.PEACEFUL && (event.getSpawnType() == MobSpawnType.CHUNK_GENERATION || event.getSpawnType() == MobSpawnType.NATURAL)) {
 			if (event.getEntity() instanceof Strider strider && event.getEntity().getType() == EntityType.STRIDER) {
 				if (!strider.isBaby() && !strider.isSaddled() && strider.getPassengers().isEmpty() && strider.getRandom().nextFloat() < 0.1F) {
 					DemonRat demonRat = RatsEntityRegistry.DEMON_RAT.get().create(event.getLevel().getLevel());
