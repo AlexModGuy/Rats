@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrad
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTextureUpgrade, GlowingEyesUpgrade, TickRatUpgrade {
@@ -26,7 +27,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 	}
 
 	@Override
-	public RenderType getEyeTexture() {
+	public RenderType getEyeTexture(ItemStack stack) {
 		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/ender.png"));
 	}
 

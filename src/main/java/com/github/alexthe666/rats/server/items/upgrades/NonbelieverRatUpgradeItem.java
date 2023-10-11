@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.items.upgrades.interfaces.GlowingEyesUp
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -19,12 +20,12 @@ public class NonbelieverRatUpgradeItem extends StatBoostingRatUpgradeItem implem
 	}
 
 	@Override
-	public @Nullable RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
-		return RatConfig.ratNonbelieverGlint ? RatsRenderType.getGreenGlint() : null;
+	public @Nullable RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
+		return RatsRenderType.getGreenGlint();
 	}
 
 	@Override
-	public RenderType getEyeTexture() {
+	public RenderType getEyeTexture(ItemStack stack) {
 		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/nonbeliever.png"));
 	}
 }

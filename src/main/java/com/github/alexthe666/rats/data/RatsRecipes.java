@@ -25,6 +25,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		super.buildRecipes(consumer);
+		SpecialRecipeBuilder.special(RatsRecipeRegistry.SWITCH_DEMON.get()).save(consumer, "demon_swap_recipe");
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")

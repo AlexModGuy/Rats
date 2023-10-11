@@ -27,7 +27,7 @@ public class TamedRatEyesLayer extends RatEyesLayer<TamedRat, AbstractRatModel<T
 			AtomicReference<RenderType> tex = new AtomicReference<>(EYES);
 			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof GlowingEyesUpgrade, (stack1, slot) -> {
 				if (rat.isSlotVisible(slot)) {
-					tex.set(((GlowingEyesUpgrade) stack1.getItem()).getEyeTexture());
+					tex.set(((GlowingEyesUpgrade) stack1.getItem()).getEyeTexture(stack1));
 				} else {
 					skip.set(true);
 				}

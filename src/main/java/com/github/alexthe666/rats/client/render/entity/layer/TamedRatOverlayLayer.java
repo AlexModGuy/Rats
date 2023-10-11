@@ -60,7 +60,7 @@ public class TamedRatOverlayLayer extends RenderLayer<TamedRat, AbstractRatModel
 
 			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof ChangesOverlayUpgrade, (upgrade, slot) -> {
 				if (rat.isSlotVisible(slot)) {
-					RenderType overlay = ((ChangesOverlayUpgrade) upgrade.getItem()).getOverlayTexture(rat, partialTicks);
+					RenderType overlay = ((ChangesOverlayUpgrade) upgrade.getItem()).getOverlayTexture(upgrade, rat, partialTicks);
 					if (overlay != null) {
 						VertexConsumer consumer = buffer.getBuffer(overlay);
 						this.getParentModel().setupAnim(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

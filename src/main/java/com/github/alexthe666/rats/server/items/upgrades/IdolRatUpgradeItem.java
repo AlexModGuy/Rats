@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesOverla
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class IdolRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTextureUpgrade, ChangesOverlayUpgrade {
@@ -15,7 +16,7 @@ public class IdolRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTex
 	}
 
 	@Override
-	public @Nullable RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
+	public @Nullable RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
 		return RatsRenderType.getGoldGlint();
 	}
 

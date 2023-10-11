@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class SculkedRatUpgradeItem extends BaseRatUpgradeItem implements StatBoo
 	}
 
 	@Override
-	public RenderType getEyeTexture() {
+	public RenderType getEyeTexture(ItemStack stack) {
 		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/sculked.png"));
 	}
 

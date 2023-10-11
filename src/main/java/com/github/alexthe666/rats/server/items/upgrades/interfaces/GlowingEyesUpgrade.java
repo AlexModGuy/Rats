@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.items.upgrades.interfaces;
 
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.item.ItemStack;
 
 public interface GlowingEyesUpgrade {
 
@@ -11,5 +12,5 @@ public interface GlowingEyesUpgrade {
 	 *
 	 * @return an eye RenderType to render on your rat
 	 */
-	RenderType getEyeTexture();
+	RenderType getEyeTexture(ItemStack stack);
 }

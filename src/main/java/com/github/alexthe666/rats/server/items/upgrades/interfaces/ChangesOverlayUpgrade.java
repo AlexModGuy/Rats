@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.items.upgrades.interfaces;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public interface ChangesOverlayUpgrade {
@@ -16,5 +17,5 @@ public interface ChangesOverlayUpgrade {
 	 * @return an overlay RenderType to render on your rat
 	 */
 	@Nullable
-	RenderType getOverlayTexture(TamedRat rat, float partialTicks);
+	RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks);
 }

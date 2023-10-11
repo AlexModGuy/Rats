@@ -198,7 +198,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.fullbrightSingleTex(RatsItemRegistry.RAT_UPGRADE_CREATIVE);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_CROSSBOW);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DAMAGE_PROTECTION);
-		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DEMON);
+		ModelFile soul = this.generated("rat_upgrade_soul_demon", false, itemPrefix("rat_upgrade_soul_demon"));
+		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DEMON).override().predicate(new ResourceLocation(RatsMod.MODID, "soul"), 1).model(soul).end();
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DISENCHANTER);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DJ);
 		this.singleTex(RatsItemRegistry.RAT_UPGRADE_DRAGON);

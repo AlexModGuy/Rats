@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class RatinatorRatUpgradeItem extends StatBoostingRatUpgradeItem implemen
 	}
 
 	@Override
-	public RenderType getOverlayTexture(TamedRat rat, float partialTicks) {
+	public RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
 		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/ratinator.png"));
 	}
 
@@ -53,7 +54,7 @@ public class RatinatorRatUpgradeItem extends StatBoostingRatUpgradeItem implemen
 	}
 
 	@Override
-	public RenderType getEyeTexture() {
+	public RenderType getEyeTexture(ItemStack stack) {
 		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/ratinator.png"));
 	}
 }

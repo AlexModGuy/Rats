@@ -21,6 +21,7 @@ import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.entity.RatTubeBlockEntity;
 import com.github.alexthe666.rats.server.entity.misc.PiratWoodBoat;
 import com.github.alexthe666.rats.server.items.*;
+import com.github.alexthe666.rats.server.items.upgrades.DemonRatUpgradeItem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -115,6 +116,7 @@ public class ModClientEvents {
 				return 0;
 			});
 
+			ItemProperties.register(RatsItemRegistry.RAT_UPGRADE_DEMON.get(), new ResourceLocation(RatsMod.MODID, "soul"), (stack, level, living, i) -> DemonRatUpgradeItem.isSoulVersion(stack) ? 1 : 0);
 		});
 
 		MenuScreens.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
