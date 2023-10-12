@@ -30,6 +30,7 @@ public class RatVariantRegistry {
 	public static final RegistryObject<RatVariant> YELLOW_HOODED = RAT_VARIANTS.register("yellow_hooded", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/breeding_variants/yellow_hooded.png")).setBreedingExclusive()));
 	public static final RegistryObject<RatVariant> SIAMESE = RAT_VARIANTS.register("siamese", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/breeding_variants/siamese.png")).setBreedingExclusive()));
 	public static final RegistryObject<RatVariant> WHITE = RAT_VARIANTS.register("white", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/breeding_variants/white.png")).setBreedingExclusive()));
+	public static final RegistryObject<RatVariant> HAIRLESS = RAT_VARIANTS.register("hairless", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/breeding_variants/hairless.png")).setBreedingExclusive()));
 
 	public static final RegistryObject<RatVariant> BUGRAAK = RAT_VARIANTS.register("bugraak", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/bugraak.png")).setNamingExclusive("bugraak")));
 	public static final RegistryObject<RatVariant> DINO = RAT_VARIANTS.register("dino", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/dino.png")).setNamingExclusive("dino")));
@@ -42,5 +43,6 @@ public class RatVariantRegistry {
 	public static final RegistryObject<RatVariant> SHARVA = RAT_VARIANTS.register("sharva", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/sharva.png")).setNamingExclusive("sharva")));
 	public static final RegistryObject<RatVariant> SHIZUKA = RAT_VARIANTS.register("shizuka", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/shizuka.png")).setNamingExclusive("shizuka")));
 	public static final RegistryObject<RatVariant> SKRAT = RAT_VARIANTS.register("skrat", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/skrat.png")).setNamingExclusive("skrat")));
+	public static final RegistryObject<RatVariant> ULTRAKILL = RAT_VARIANTS.register("ultrakill", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/ultrakill.png")).setNamingExclusive("ultrakill")));
 	public static final RegistryObject<RatVariant> ZURA = RAT_VARIANTS.register("zura", () -> new RatVariant(new RatVariant.Properties(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/zura.png")).setNamingExclusive("zura")));
 }
