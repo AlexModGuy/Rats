@@ -177,7 +177,7 @@ public class TamedRat extends InventoryRat {
 		this.goalSelector.addGoal(0, new RatFloatGoal(this));
 		this.goalSelector.addGoal(1, this.attackGoal);
 		this.goalSelector.addGoal(2, new RatFollowOwnerGoal(this, 1.25D, 10.0F, 3.0F));
-		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.25D));
+		this.goalSelector.addGoal(2, new RatStayCloseToHomeGoal(this, 1.1D));
 		this.goalSelector.addGoal(3, this.harvestGoal);
 		this.goalSelector.addGoal(4, this.depositGoal);
 		this.goalSelector.addGoal(5, this.pickupGoal);
