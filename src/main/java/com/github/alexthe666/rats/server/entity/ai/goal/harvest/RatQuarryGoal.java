@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +44,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!super.canUse() || this.rat.getDepositPos().isEmpty() || !this.rat.getDepositPos().get().dimension().equals(this.rat.level().dimension()) || !this.rat.level().getBlockState(this.rat.getDepositPos().get().pos()).is(RatsBlockRegistry.RAT_QUARRY.get()) || !this.checkTheBasics(true, true)) {
+		if (!super.canUse() || this.rat.getDepositPos().isEmpty() || !this.rat.getDepositPos().get().dimension().equals(this.rat.level().dimension()) || !this.rat.level().getBlockState(this.rat.getDepositPos().get().pos()).is(RatsBlockRegistry.RAT_QUARRY.get()) || !this.checkTheBasics(false, false)) {
 			return false;
 		}
 
@@ -170,7 +171,9 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 								this.rat.playSound(SoundEvents.ITEM_PICKUP, 1, 1F);
 								this.breakingTime = 0;
 								this.previousBreakProgress = -1;
-								this.rat.level().destroyBlock(this.getTargetBlock(), true);
+								BlockState state = this.rat.level().getBlockState(this.getTargetBlock());
+								this.holdItemHarvestedIfPossible(this.rat, Block.getDrops(state, (ServerLevel) this.rat.level(), this.getTargetBlock(), null, this.rat, this.rat.getMainHandItem()));
+								this.rat.level().destroyBlock(this.getTargetBlock(), false);
 								this.stop();
 							}
 							this.prevMiningState = block;

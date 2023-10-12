@@ -122,7 +122,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	}
 
 	public void spawnFishingLoot() {
-		this.fishingCooldown = 250 + this.rat.getRandom().nextInt(750);
+		this.fishingCooldown = 750 + this.rat.getRandom().nextInt(250);
 		double luck = 0.1D;
 		LootParams.Builder builder = new LootParams.Builder((ServerLevel) this.rat.level()).withLuck((float) luck);
 		LootContextParamSet.Builder paramBuilder = new LootContextParamSet.Builder();
@@ -136,12 +136,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 		ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (!event.isCanceled()) {
-			for (ItemStack itemstack : result) {
-				ItemEntity item = new ItemEntity(this.rat.level(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), itemstack);
-				item.setExtendedLifetime();
-				item.setNoPickUpDelay();
-				this.rat.level().addFreshEntity(item);
-			}
+			this.holdItemHarvestedIfPossible(this.rat, result);
 		}
 	}
 }

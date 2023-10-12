@@ -132,6 +132,21 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 		this.targetEntity = entity;
 	}
 
+	public void holdItemHarvestedIfPossible(TamedRat rat, List<ItemStack> items) {
+		for (ItemStack stack : items) {
+			if (rat.getMainHandItem().isEmpty() && rat.canRatPickupItem(stack)) {
+				rat.setItemInHand(InteractionHand.MAIN_HAND, stack);
+			} else if (ItemStack.isSameItem(rat.getMainHandItem(), stack) && stack.getCount() + rat.getMainHandItem().getCount() <= 64) {
+				rat.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(rat.getMainHandItem().getItem(), rat.getMainHandItem().getCount() + stack.getCount()));
+			} else {
+				ItemEntity item = new ItemEntity(this.rat.level(), this.rat.getX(), this.rat.getY(), this.rat.getZ(), stack);
+				item.setExtendedLifetime();
+				item.setNoPickUpDelay();
+				this.rat.level().addFreshEntity(item);
+			}
+		}
+	}
+
 	@Override
 	public TaskType getRatTaskType() {
 		return TaskType.HARVEST;
