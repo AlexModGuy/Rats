@@ -70,6 +70,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -318,32 +320,26 @@ public class ForgeEvents {
 		Player player = event.getEntity();
 		Level level = player.level();
 		if (RatsMod.RATLANTIS_DATAPACK_ENABLED && level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
-			event.setCanceled(true);
+			event.getDrops().clear();
 			LootParams.Builder builder = (new LootParams.Builder((ServerLevel) level))
 					.withParameter(LootContextParams.ORIGIN, hook.position())
-					//TODO this is a horrible assumption but it works for now I guess
-					.withParameter(LootContextParams.TOOL, player.getMainHandItem())
+					.withParameter(LootContextParams.TOOL, checkHandsForRod(player))
 					.withParameter(LootContextParams.KILLER_ENTITY, player)
 					.withParameter(LootContextParams.THIS_ENTITY, hook)
 					.withLuck((float) hook.luck + player.getLuck());
 			LootTable loottable = level.getServer().getLootData().getLootTable(RatsLootRegistry.RATLANTIS_FISH);
 			List<ItemStack> list = loottable.getRandomItems(builder.create(LootContextParamSets.FISHING));
-
-			for (ItemStack itemstack : list) {
-				ItemEntity itementity = new ItemEntity(level, hook.getX(), hook.getY(), hook.getZ(), itemstack);
-				double d0 = player.getX() - hook.getX();
-				double d1 = player.getY() - hook.getY();
-				double d2 = player.getZ() - hook.getZ();
-				itementity.setDeltaMovement(d0 * 0.1D, d1 * 0.1D + Math.sqrt(Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2)) * 0.08D, d2 * 0.1D);
-				level.addFreshEntity(itementity);
-				if (!(player instanceof FakePlayer)) {
-					level.addFreshEntity(new ExperienceOrb(level, player.getX(), player.getY() + 0.5D, player.getZ() + 0.5D, player.getRandom().nextInt(6) + 1));
-					if (itemstack.is(ItemTags.FISHES)) {
-						player.awardStat(Stats.FISH_CAUGHT, 1);
-					}
-				}
-			}
+			event.getDrops().addAll(list);
 		}
+	}
+
+	private static ItemStack checkHandsForRod(Player player) {
+		if (player.getMainHandItem().canPerformAction(ToolActions.FISHING_ROD_CAST)) {
+			return player.getMainHandItem();
+		} else if (player.getOffhandItem().canPerformAction(ToolActions.FISHING_ROD_CAST)) {
+			return player.getOffhandItem();
+		}
+		return ItemStack.EMPTY;
 	}
 
 	@SubscribeEvent
