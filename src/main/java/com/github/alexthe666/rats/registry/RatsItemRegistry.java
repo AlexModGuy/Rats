@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.registry;
 
-import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBannerPatternTags;
@@ -186,10 +185,10 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_POISON = ITEMS.register("rat_upgrade_poison", () -> new PoisonRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_DAMAGE_PROTECTION = ITEMS.register("rat_upgrade_damage_protection", () -> new ProtectionRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_ORE_DOUBLING = ITEMS.register("rat_upgrade_ore_doubling", () -> new OreDoublingRatUpgradeItem(new Item.Properties()));
-	public static final RegistryObject<Item> RAT_UPGRADE_BASIC_ENERGY = ITEMS.register("rat_upgrade_basic_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 0, RatConfig.ratRFTransferBasic));
-	public static final RegistryObject<Item> RAT_UPGRADE_ADVANCED_ENERGY = ITEMS.register("rat_upgrade_advanced_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 1, RatConfig.ratRFTransferAdvanced));
-	public static final RegistryObject<Item> RAT_UPGRADE_ELITE_ENERGY = ITEMS.register("rat_upgrade_elite_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 2, RatConfig.ratRFTransferElite));
-	public static final RegistryObject<Item> RAT_UPGRADE_EXTREME_ENERGY = ITEMS.register("rat_upgrade_extreme_energy", () -> new EnergyRatUpgradeItem(new Item.Properties().fireResistant(), 3, RatConfig.ratRFTransferExtreme));
+	public static final RegistryObject<Item> RAT_UPGRADE_BASIC_ENERGY = ITEMS.register("rat_upgrade_basic_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 0, RatConfig.ratRFTransferBasic, RatConfig.ratChargeBasic));
+	public static final RegistryObject<Item> RAT_UPGRADE_ADVANCED_ENERGY = ITEMS.register("rat_upgrade_advanced_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 1, RatConfig.ratRFTransferAdvanced, RatConfig.ratChargeAdvanced));
+	public static final RegistryObject<Item> RAT_UPGRADE_ELITE_ENERGY = ITEMS.register("rat_upgrade_elite_energy", () -> new EnergyRatUpgradeItem(new Item.Properties(), 2, RatConfig.ratRFTransferElite, RatConfig.ratChargeElite));
+	public static final RegistryObject<Item> RAT_UPGRADE_EXTREME_ENERGY = ITEMS.register("rat_upgrade_extreme_energy", () -> new EnergyRatUpgradeItem(new Item.Properties().fireResistant(), 3, RatConfig.ratRFTransferExtreme, RatConfig.ratChargeExtreme));
 	public static final RegistryObject<Item> RAT_UPGRADE_BOTTLER = ITEMS.register("rat_upgrade_bottler", () -> new BottlerRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BUCKET = ITEMS.register("rat_upgrade_bucket", () -> new BucketRatUpgradeItem(new Item.Properties(), 0, 2, FluidType.BUCKET_VOLUME));
 	public static final RegistryObject<Item> RAT_UPGRADE_BIG_BUCKET = ITEMS.register("rat_upgrade_big_bucket", () -> new BucketRatUpgradeItem(new Item.Properties(), 2, 2, FluidType.BUCKET_VOLUME * 5));

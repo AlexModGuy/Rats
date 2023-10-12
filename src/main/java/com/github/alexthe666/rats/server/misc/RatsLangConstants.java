@@ -76,6 +76,7 @@ public class RatsLangConstants {
 	public static final String RAT_UPGRADE_ENERGY_DESC0 = "item.rats.rat_upgrade.energy_desc0";
 	public static final String RAT_UPGRADE_ENERGY_DESC1 = "item.rats.rat_upgrade.energy_desc1";
 	public static final String RAT_UPGRADE_ENERGY_TRANSFER = "item.rats.rat_upgrade.energy_transfer_rate";
+	public static final String RAT_UPGRADE_ENERGY_CHARGE = "item.rats.rat_upgrade.energy_charge_rate";
 	public static final String MOB_FILTER_BLACKLIST = "item.rats.rat_upgrade_mob_filter.blacklist";
 	public static final String MOB_FILTER_MODE = "item.rats.rat_upgrade_mob_filter.mode";
 	public static final String MOB_FILTER_SELECTED_MOBS = "item.rats.rat_upgrade_mob_filter.selected_mobs";

@@ -439,7 +439,8 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.MOUNT_RESPAWN_TIMER, "Cooldown on mount respawning when slain");
 		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_DESC0, "Rat will transfer energy instead of items");
 		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_DESC1, "Works with RF and RE");
-		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_TRANSFER, "Max transfer rate: %s kRF");
+		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_TRANSFER, "Max transfer rate: %s RF");
+		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_CHARGE, "Item charge per tick: %s RF");
 		this.add(RatsLangConstants.MOB_FILTER_BLACKLIST, "Blacklist");
 		this.add(RatsLangConstants.MOB_FILTER_MODE, "Mode: %s");
 		this.add(RatsLangConstants.MOB_FILTER_SELECTED_MOBS, "Selected Mobs:");

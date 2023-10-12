@@ -44,10 +44,15 @@ public class RatConfig {
 	public static boolean ratsSpawnWithSantaHats = false;
 	public static boolean ratsSpawnWithPartyHats = false;
 
+	public static boolean ratsChargeHeldItems = true;
 	public static int ratRFTransferBasic = 1000;
+	public static int ratChargeBasic = 10;
 	public static int ratRFTransferAdvanced = 5000;
+	public static int ratChargeAdvanced = 50;
 	public static int ratRFTransferElite = 10000;
+	public static int ratChargeElite = 100;
 	public static int ratRFTransferExtreme = 100000;
+	public static int ratChargeExtreme = 500;
 	public static int upgradeRegenRate = 30;
 	public static double warriorHealthUpgrade = 40.0D;
 	public static double warriorDamageUpgrade = 5.0D;
@@ -154,11 +159,16 @@ public class RatConfig {
 			ratsSpawnWithSantaHats = ConfigHolder.SERVER.ratsSpawnWithSantaHats.get();
 			ratsSpawnWithPartyHats = ConfigHolder.SERVER.ratsSpawnWithPartyHats.get();
 
+			ratsChargeHeldItems = ConfigHolder.SERVER.ratsChargeHeldItems.get();
 			upgradeRegenRate = ConfigHolder.SERVER.upgradeRegenRate.get();
 			ratRFTransferBasic = ConfigHolder.SERVER.ratRFTransferBasic.get();
+			ratChargeBasic = ConfigHolder.SERVER.ratChargeBasic.get();
 			ratRFTransferAdvanced = ConfigHolder.SERVER.ratRFTransferAdvanced.get();
+			ratChargeAdvanced = ConfigHolder.SERVER.ratChargeAdvanced.get();
 			ratRFTransferElite = ConfigHolder.SERVER.ratRFTransferElite.get();
+			ratChargeElite = ConfigHolder.SERVER.ratChargeElite.get();
 			ratRFTransferExtreme = ConfigHolder.SERVER.ratRFTransferExtreme.get();
+			ratChargeExtreme = ConfigHolder.SERVER.ratChargeExtreme.get();
 			warriorHealthUpgrade = ConfigHolder.SERVER.warriorHealthUpgrade.get();
 			warriorArmorUpgrade = ConfigHolder.SERVER.warriorArmorUpgrade.get();
 			warriorDamageUpgrade = ConfigHolder.SERVER.warriorDamageUpgrade.get();

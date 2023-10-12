@@ -36,10 +36,15 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue ratsSpawnWithSantaHats;
 	public final ForgeConfigSpec.BooleanValue ratsSpawnWithPartyHats;
 
+	public final ForgeConfigSpec.BooleanValue ratsChargeHeldItems;
 	public final ForgeConfigSpec.IntValue ratRFTransferBasic;
+	public final ForgeConfigSpec.IntValue ratChargeBasic;
 	public final ForgeConfigSpec.IntValue ratRFTransferAdvanced;
+	public final ForgeConfigSpec.IntValue ratChargeAdvanced;
 	public final ForgeConfigSpec.IntValue ratRFTransferElite;
+	public final ForgeConfigSpec.IntValue ratChargeElite;
 	public final ForgeConfigSpec.IntValue ratRFTransferExtreme;
+	public final ForgeConfigSpec.IntValue ratChargeExtreme;
 	public final ForgeConfigSpec.IntValue upgradeRegenRate;
 	public final ForgeConfigSpec.DoubleValue warriorHealthUpgrade;
 	public final ForgeConfigSpec.DoubleValue warriorDamageUpgrade;
@@ -176,10 +181,15 @@ public class ServerConfig {
 		this.ratsBreakBlockOnHarvest = buildBoolean(builder, "Rats Break Crops on Harvest", true, "True if tamed rats will destroy crops when they harvest them");
 
 		builder.pop().push("Rat Upgrades");
+		this.ratsChargeHeldItems = buildBoolean(builder, "Rats Charge Held Items", true, "If true, rats will recharge items held in their main hand when they have an energy upgrade.");
 		this.ratRFTransferBasic = buildInt(builder, "Rat RF Transfer Rate Basic", 1000, 1, Integer.MAX_VALUE, "How much RF a rat with a basic energy transfer upgrade can transport at a time.");
+		this.ratChargeBasic = buildInt(builder, "Rat Item Charge Rate Basic", 10, 1, Integer.MAX_VALUE, "How much RF per tick a rat can charge their held item with a basic energy transfer upgrade.");
 		this.ratRFTransferAdvanced = buildInt(builder, "Rat RF Transfer Rate Advanced", 5000, 1, Integer.MAX_VALUE, "How much RF a rat with an advanced energy transfer upgrade can transport at a time.");
+		this.ratChargeAdvanced = buildInt(builder, "Rat Item Charge Rate Advanced", 50, 1, Integer.MAX_VALUE, "How much RF per tick a rat can charge their held item with an advanced energy transfer upgrade.");
 		this.ratRFTransferElite = buildInt(builder, "Rat RF Transfer Rate Elite", 10000, 1, Integer.MAX_VALUE, "How much RF a rat with an elite energy transfer upgrade can transport at a time.");
+		this.ratChargeElite = buildInt(builder, "Rat Item Charge Rate Elite", 100, 1, Integer.MAX_VALUE, "How much RF per tick a rat can charge their held item with an elite energy transfer upgrade.");
 		this.ratRFTransferExtreme = buildInt(builder, "Rat RF Transfer Rate Extreme", 100000, 1, Integer.MAX_VALUE, "How much RF a rat with an extreme energy transfer upgrade can transport at a time.");
+		this.ratChargeExtreme = buildInt(builder, "Rat Item Charge Rate Extreme", 500, 1, Integer.MAX_VALUE, "How much RF per tick a rat can charge their held item with an extreme energy transfer upgrade.");
 		this.ratVoodooDistance = buildDouble(builder, "Voodoo Doll Rat distance", 32.0D, 0.0D, Double.MAX_VALUE, "How far away from players the Rat Upgrade: Voodoo Doll is effective.");
 		this.warriorHealthUpgrade = buildDouble(builder, "Warrior Health Upgrade", 40.0D, 0.0D, 1024.0D, "Sets a Rat's max health to this value when they have the Warrior Upgrade.");
 		this.warriorArmorUpgrade = buildDouble(builder, "Warrior Armor Upgrade", 2.0D, 0.0D, 30.0D, "Sets a Rat's Armor to this value when they have the Warrior Upgrade.");
