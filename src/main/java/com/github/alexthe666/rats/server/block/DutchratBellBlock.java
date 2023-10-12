@@ -1,7 +1,9 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.block.entity.DutchratBellBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -96,7 +98,7 @@ public class DutchratBellBlock extends BellBlock implements CustomItemRarity {
 
 	private void playRingSound(Level level, BlockPos pos, boolean alreadySummoning) {
 		if (!alreadySummoning) {
-			if (level.isDay() || level.getCurrentDifficultyAt(pos).getDifficulty() == Difficulty.PEACEFUL) {
+			if (level.isDay() || level.getCurrentDifficultyAt(pos).getDifficulty() == Difficulty.PEACEFUL || (RatConfig.summonDutchratOnlyInRatlantis && !level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY))) {
 				level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 2.0F, 1.0F);
 			} else {
 				level.playSound(null, pos, RatsSoundRegistry.DUTCHRAT_BELL.get(), SoundSource.BLOCKS, 2.0F, 1.0F);

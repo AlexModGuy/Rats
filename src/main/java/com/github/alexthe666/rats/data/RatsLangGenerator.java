@@ -469,6 +469,11 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add("rats.direction.south", "south");
 		this.add("rats.direction.up", "top");
 		this.add("rats.direction.west", "west");
+		this.add(RatsLangConstants.DUTCHRAT_SPAWNS_AT_NIGHT, "The Flying Dutchrat can only manifest at night");
+		this.add(RatsLangConstants.AUTOMATON_RATLANTIS_ONLY, "This machine cannot properly function in this world");
+		this.add(RatsLangConstants.DUTCHRAT_RATLANTIS_ONLY, "The Flying Dutchrat is unable to manifest in this world");
+		this.add(RatsLangConstants.BARON_RATLANTIS_ONLY, "The siren is unable to bring forth anyone from this world");
+		this.add(RatsLangConstants.NEO_RATLANTIS_ONLY, "The vial had no effect on this beast here");
 		this.add(RatsLangConstants.RATS_PACK, "Rats default resources");
 		this.add(RatsLangConstants.RATLANTIS_PACK, "Enables Ratlantis and all Ratlantis related features");
 		this.add("trim_material.rats.gem_of_ratlantis", "Gem of Ratlantis Material");

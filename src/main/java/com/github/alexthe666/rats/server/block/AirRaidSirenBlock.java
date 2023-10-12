@@ -1,9 +1,13 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatBaron;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -27,6 +31,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -54,7 +59,7 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		return this.spawnTheBaron(level, pos) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return this.spawnTheBaron(level, pos) ? InteractionResult.sidedSuccess(level.isClientSide()) : InteractionResult.PASS;
 	}
 
 	@Override
@@ -66,9 +71,16 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 	}
 
 	private boolean spawnTheBaron(Level level, BlockPos pos) {
-		if (!level.isClientSide() && level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
+		if (level.isClientSide()) return true;
+		if (level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
 			level.playSound(null, pos, RatsSoundRegistry.AIR_RAID_SIREN.get(), SoundSource.BLOCKS, 1, 1);
 
+			if (RatConfig.summonBaronOnlyInRatlantis && !level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+				for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
+					player.displayClientMessage(Component.translatable(RatsLangConstants.BARON_RATLANTIS_ONLY), true);
+				}
+				return true;
+			}
 			LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
 			assert bolt != null;
 			bolt.setPos(Vec3.atCenterOf(pos));

@@ -73,10 +73,12 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue ratKingConstantRatSpawns;
 	public final ForgeConfigSpec.IntValue ratKingMaxRatSpawns;
 
+	public final ForgeConfigSpec.BooleanValue summonAutomatonOnlyInRatlantis;
 	public final ForgeConfigSpec.IntValue automatonShootChance;
 	public final ForgeConfigSpec.IntValue automatonMeleeDistance;
 	public final ForgeConfigSpec.IntValue automatonRangedDistance;
 
+	public final ForgeConfigSpec.BooleanValue summonNeoOnlyInRatlantis;
 	public final ForgeConfigSpec.BooleanValue neoratlanteanSummonLaserPortals;
 	public final ForgeConfigSpec.IntValue neoratlanteanLaserAttackCooldown;
 	public final ForgeConfigSpec.BooleanValue neoratlanteanSummonFakeLightning;
@@ -86,12 +88,15 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue neoratlanteanAddHarmfulEffects;
 	public final ForgeConfigSpec.IntValue neoratlanteanEffectAttackCooldown;
 
+	public final ForgeConfigSpec.BooleanValue summonDutchratOnlyInRatlantis;
 	public final ForgeConfigSpec.IntValue dutchratSwordThrowChance;
 	public final ForgeConfigSpec.IntValue dutchratRestrictionRadius;
 
+	public final ForgeConfigSpec.BooleanValue summonBaronOnlyInRatlantis;
 	public final ForgeConfigSpec.IntValue ratBaronYFlight;
 	public final ForgeConfigSpec.IntValue ratBaronShootFrequency;
 	public final ForgeConfigSpec.DoubleValue ratBaronBulletDamage;
+
 
 	public ServerConfig(final ForgeConfigSpec.Builder builder) {
 		builder.push("Ratlantis");
@@ -133,11 +138,13 @@ public class ServerConfig {
 		this.ratKingMaxRatSpawns = buildInt(builder, "Rat King Max Rats", 10, 0, 100, "Defines the amount of Rats the Rat King can have at its command at a time.");
 
 		builder.pop().push("Ratlantean Automaton");
+		this.summonAutomatonOnlyInRatlantis = buildBoolean(builder, "Summon Ratlantean Automaton only in Ratlantis", false, "If true, the Ratlantean Automaton will only be summonable in Ratlantis. Building it in any other dimension will have no effect.");
 		this.automatonShootChance = buildInt(builder, "Ratlantean Automaton Shooting Chance", 2, 0, Integer.MAX_VALUE, "How often the Ratlantean Automaton will shoot a laser. It will shoot a laser every 1 in X attacks, X being the number defined.");
 		this.automatonMeleeDistance = buildInt(builder, "Ratlantean Automaton Melee Attack Distance", 7, 0, Integer.MAX_VALUE, "The distance the Ratlantean Automaton can hit you with its saw.");
 		this.automatonRangedDistance = buildInt(builder, "Ratlantean Automaton Ranged Attack Distance", 10, 0, Integer.MAX_VALUE, "The distance the Ratlantean Automaton can hit you with its laser.");
 
 		builder.pop().push("Neo-Ratlantean");
+		this.summonNeoOnlyInRatlantis = buildBoolean(builder, "Summon Neo-Ratlantean only in Ratlantis", false, "If true, the Neo-Ratlantean will only be summonable in Ratlantis. Throwing the vial in any other dimension will have no effect.");
 		this.neoratlanteanSummonLaserPortals = buildBoolean(builder, "Neo-Ratlantean Laser Portals", true, "If true, the Neo-Ratlantean will utilize Laser Portals in its fight that shoot lasers at you.");
 		this.neoratlanteanLaserAttackCooldown = buildInt(builder, "Neo-Ratlantean Attack Cooldown after Laser Portals", 100, 0, Integer.MAX_VALUE, "The time it will take the Neo-Ratlantean to perform another attack after using the Laser Portal attack. Time is in ticks.");
 		this.neoratlanteanSummonFakeLightning = buildBoolean(builder, "Neo-Ratlantean Fake Lightning", true, "If true, the Neo-Ratlantean will occasionally summon lightning bolts nearby. The lightning is completely harmless.");
@@ -148,10 +155,12 @@ public class ServerConfig {
 		this.neoratlanteanEffectAttackCooldown = buildInt(builder, "Neo-Ratlantean Attack Cooldown after Effects", 100, 0, Integer.MAX_VALUE, "The time it will take the Neo-Ratlantean to perform another attack after using the Mob Effect attack. Time is in ticks.");
 
 		builder.pop().push("Flying Dutchrat");
+		this.summonDutchratOnlyInRatlantis = buildBoolean(builder, "Summon Flying Dutchrat only in Ratlantis", false, "If true, the Flying Dutchrat will only be summonable in Ratlantis. Ringing the bell in any other dimension will have no effect.");
 		this.dutchratRestrictionRadius = buildInt(builder, "Flying Dutchrat Restriction Radius", 20, 0, 64, "How many blocks away the dutchrat can fly away from its home point, which is the spot where the bell was when summoned.");
 		this.dutchratSwordThrowChance = buildInt(builder, "Flying Dutchrat Sword Throw Chance", 5, 0, Integer.MAX_VALUE, "How often the Flying Dutchrat will throw a sword. It will throw a sword every 1 in X attacks, X being the number defined.");
 
 		builder.pop().push("Rat Baron");
+		this.summonBaronOnlyInRatlantis = buildBoolean(builder, "Summon Automaton only in Ratlantis", false, "If true, the Rat Baron will only be summonable in Ratlantis. Activating the siren in any other dimension will have no effect.");
 		this.ratBaronYFlight = buildInt(builder, "Rat Baron Y Hover Height", 20, 0, 100, "The height above the ground the rat baron plane will hover around. A random amount of blocks between 0 and 10 will be added to the number provided at random points to keep things interesting.");
 		this.ratBaronShootFrequency = buildInt(builder, "Rat Baron Shot Frequency", 2, 1, Integer.MAX_VALUE, "How often the Rat Baron Plane will fire a bullet. It will fire a bullet every X ticks, X being the number defined.");
 		this.ratBaronBulletDamage = buildDouble(builder, "Rat Baron Bullet Damage", 0.5D, 0.0D, Double.MAX_VALUE, "The amount of damage each bullet fired from the Rat Baron plane does. Setting to 0 will make the bullets purely visual.");

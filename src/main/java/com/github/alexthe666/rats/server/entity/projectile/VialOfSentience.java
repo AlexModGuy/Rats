@@ -1,13 +1,18 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.monster.FeralRatlantean;
 import com.github.alexthe666.rats.server.entity.monster.boss.NeoRatlantean;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,12 +43,18 @@ public class VialOfSentience extends ThrowableItemProjectile {
 						double d0 = this.distanceToSqr(living);
 						if (d0 < 16.0D) {
 							if (living instanceof FeralRatlantean) {
-								NeoRatlantean ratlantean = new NeoRatlantean(RatlantisEntityRegistry.NEO_RATLANTEAN.get(), this.level());
-								ratlantean.setColorVariant(((FeralRatlantean) living).getColorVariant());
-								ratlantean.copyPosition(living);
-								living.discard();
-								if (!this.level().isClientSide()) {
-									this.level().addFreshEntity(ratlantean);
+								if (RatConfig.summonBaronOnlyInRatlantis && !this.level().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+									if (this.getOwner() instanceof Player player) {
+										player.displayClientMessage(Component.translatable(RatsLangConstants.NEO_RATLANTIS_ONLY), true);
+									}
+								} else {
+									NeoRatlantean ratlantean = new NeoRatlantean(RatlantisEntityRegistry.NEO_RATLANTEAN.get(), this.level());
+									ratlantean.setColorVariant(((FeralRatlantean) living).getColorVariant());
+									ratlantean.copyPosition(living);
+									living.discard();
+									if (!this.level().isClientSide()) {
+										this.level().addFreshEntity(ratlantean);
+									}
 								}
 							} else {
 								living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 600, 4));

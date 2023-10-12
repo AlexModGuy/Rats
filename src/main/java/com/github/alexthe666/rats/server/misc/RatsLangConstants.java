@@ -46,6 +46,11 @@ public class RatsLangConstants {
 	public static final String RAT_STAFF_RESET_RADIUS = "item.rats.radius_staff.reset_radius";
 	public static final String RAT_STAFF_SET_RADIUS = "item.rats.radius_staff.set_radius";
 
+	public static final String AUTOMATON_RATLANTIS_ONLY = "entity.rats.ratlantean_automaton.ratlantis";
+	public static final String NEO_RATLANTIS_ONLY = "entity.rats.neo_ratlantean.ratlantis";
+	public static final String DUTCHRAT_RATLANTIS_ONLY = "entity.rats.dutchrat.ratlantis";
+	public static final String BARON_RATLANTIS_ONLY = "entity.rats.rat_baron.ratlantis";
+
 	public static final String DUTCHRAT_SPAWNS_AT_NIGHT = "entity.rats.dutchrat.daytime";
 
 	public static final String RAT_CURRENT_COMMAND = "entity.rats.rat.current_command";

@@ -1,19 +1,24 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatlanteanAutomatonHeadBlockEntity;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatlanteanAutomaton;
+import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -32,6 +37,7 @@ import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -100,6 +106,12 @@ public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements Wea
 
 	public static void trySpawnGolem(Level level, BlockPos pos) {
 		if (level.getCurrentDifficultyAt(pos).getDifficulty() == Difficulty.PEACEFUL) return;
+		if (RatConfig.summonAutomatonOnlyInRatlantis && !level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+			for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
+				player.displayClientMessage(Component.translatable(RatsLangConstants.AUTOMATON_RATLANTIS_ONLY), true);
+			}
+			return;
+		}
 		BlockPattern.BlockPatternMatch matcher = getGolemPattern().find(level, pos);
 
 		if (matcher != null) {

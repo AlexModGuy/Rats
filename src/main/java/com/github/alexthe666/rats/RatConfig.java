@@ -81,10 +81,12 @@ public class RatConfig {
 	public static boolean ratKingConstantRatSpawns = true;
 	public static int ratKingMaxRatSpawns = 10;
 
+	public static boolean summonAutomatonOnlyInRatlantis = false;
 	public static int automatonShootChance = 2;
 	public static int automatonMeleeDistance = 7;
 	public static int automatonRangedDistance = 10;
 
+	public static boolean summonNeoOnlyInRatlantis = false;
 	public static boolean neoratlanteanSummonLaserPortals = true;
 	public static int neoratlanteanLaserAttackCooldown = 100;
 	public static boolean neoratlanteanSummonFakeLightning = true;
@@ -94,9 +96,11 @@ public class RatConfig {
 	public static boolean neoratlanteanAddHarmfulEffects = true;
 	public static int neoratlanteanEffectAttackCooldown = 100;
 
+	public static boolean summonDutchratOnlyInRatlantis = false;
 	public static int dutchratSwordThrowChance = 5;
 	public static int dutchratRestrictionRadius = 20;
 
+	public static boolean summonBaronOnlyInRatlantis = false;
 	public static int ratBaronYFlight = 20;
 	public static int ratBaronShootFrequency = 2;
 	public static double ratBaronBulletDamage = 0.5D;
@@ -186,10 +190,12 @@ public class RatConfig {
 			ratKingConstantRatSpawns = ConfigHolder.SERVER.ratKingConstantRatSpawns.get();
 			ratKingMaxRatSpawns = ConfigHolder.SERVER.ratKingMaxRatSpawns.get();
 
+			summonAutomatonOnlyInRatlantis = ConfigHolder.SERVER.summonAutomatonOnlyInRatlantis.get();
 			automatonShootChance = ConfigHolder.SERVER.automatonShootChance.get();
 			automatonMeleeDistance = ConfigHolder.SERVER.automatonMeleeDistance.get();
 			automatonRangedDistance = ConfigHolder.SERVER.automatonRangedDistance.get();
 
+			summonNeoOnlyInRatlantis = ConfigHolder.SERVER.summonNeoOnlyInRatlantis.get();
 			neoratlanteanSummonLaserPortals = ConfigHolder.SERVER.neoratlanteanSummonLaserPortals.get();
 			neoratlanteanLaserAttackCooldown = ConfigHolder.SERVER.neoratlanteanLaserAttackCooldown.get();
 			neoratlanteanSummonFakeLightning = ConfigHolder.SERVER.neoratlanteanSummonFakeLightning.get();
@@ -199,9 +205,11 @@ public class RatConfig {
 			neoratlanteanAddHarmfulEffects = ConfigHolder.SERVER.neoratlanteanAddHarmfulEffects.get();
 			neoratlanteanEffectAttackCooldown = ConfigHolder.SERVER.neoratlanteanEffectAttackCooldown.get();
 
+			summonDutchratOnlyInRatlantis= ConfigHolder.SERVER.summonDutchratOnlyInRatlantis.get();
 			dutchratSwordThrowChance = ConfigHolder.SERVER.dutchratSwordThrowChance.get();
 			dutchratRestrictionRadius = ConfigHolder.SERVER.dutchratRestrictionRadius.get();
 
+			summonBaronOnlyInRatlantis = ConfigHolder.SERVER.summonBaronOnlyInRatlantis.get();
 			ratBaronYFlight = ConfigHolder.SERVER.ratBaronYFlight.get();
 			ratBaronBulletDamage = ConfigHolder.SERVER.ratBaronBulletDamage.get();
 			ratBaronShootFrequency = ConfigHolder.SERVER.ratBaronShootFrequency.get();

@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
@@ -63,9 +64,12 @@ public class DutchratBellBlockEntity extends BlockEntity {
 
 		if (te.ticks >= 5 && te.ticksToExplode == -1) {
 			if (!level.isClientSide()) {
-				if (level.isDay()) {
-					AABB bb = new AABB(pos.getX() - 10, pos.getY() - 10, pos.getZ() - 10, pos.getX() + 10, pos.getY() + 10, pos.getZ() + 10);
-					for (Player players : level.getEntitiesOfClass(Player.class, bb)) {
+				if (RatConfig.summonDutchratOnlyInRatlantis && !level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+					for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
+						player.displayClientMessage(Component.translatable(RatsLangConstants.DUTCHRAT_RATLANTIS_ONLY), true);
+					}
+				} else if (level.isDay()) {
+					for (Player players : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
 						players.displayClientMessage(Component.translatable(RatsLangConstants.DUTCHRAT_SPAWNS_AT_NIGHT), true);
 					}
 				} else if (level.getCurrentDifficultyAt(pos).getDifficulty() != Difficulty.PEACEFUL) {
