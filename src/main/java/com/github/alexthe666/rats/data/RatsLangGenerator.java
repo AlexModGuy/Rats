@@ -262,6 +262,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_PLATTER, "Rat Upgrade: Platter", "§bRat will transfer entire stacks of items at a time");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_POISON, "Rat Upgrade: Poison Resistance", "Rat will not take damage from:", " -Poison", " -Magic", " -Wither");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_QUARRY, "Rat Upgrade: Quarry", "Rats digs a quarry when set to 'Harvest' command", "Set rat to deposit in Rat Quarry block");
+		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_REMEDY, "Rat Upgrade: Natural Remedy", "Rat is able to heal itself over time");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_REPLANTER, "Rat Upgrade: Replanter", "Rat does not destroy crops when harvesting them");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_SCULKED, "Rat Upgrade: Sculked", "Rat gains sculk-like appearance", "Rats will emit no vibrations when performing tasks and cannot be detected by Wardens");
 		this.addItemWithDesc(RatsItemRegistry.RAT_UPGRADE_SHEARS, "Rat Upgrade: Shears", "Rat will shear sheep, mooshrooms, etc. when set to 'Harvest' command", "Rats will collect honeycomb from nearby bee nests and hives");
@@ -433,7 +434,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.RAT_SACK_TOO_FULL, "Rat Sack can't hold any more rats!");
 		this.add(RatsLangConstants.ORE_NUGGET_CONTAINS, "Contained Resource: %s");
 
-		this.add(RatsLangConstants.RAT_UPGRADE_REGENS, "Extremely fast health regeneration");
+		this.add(RatsLangConstants.RAT_UPGRADE_REGENS, "Regenerates Health");
 		this.add(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, "+%s Rat %s");
 		this.add(RatsLangConstants.MOUNT_RESPAWN_TIMER, "Cooldown on mount respawning when slain");
 		this.add(RatsLangConstants.RAT_UPGRADE_ENERGY_DESC0, "Rat will transfer energy instead of items");

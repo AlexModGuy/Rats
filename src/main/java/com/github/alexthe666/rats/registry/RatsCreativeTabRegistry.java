@@ -165,6 +165,7 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_UPGRADE_BASIC.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_SPEED.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_HEALTH.get());
+				output.accept(RatsItemRegistry.RAT_UPGRADE_REMEDY.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_ARMOR.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_STRENGTH.get());
 				output.accept(RatsItemRegistry.RAT_UPGRADE_WARRIOR.get());

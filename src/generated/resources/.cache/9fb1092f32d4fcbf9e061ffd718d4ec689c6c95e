@@ -1,4 +1,4 @@
-// 1.20.1	2023-10-11T16:02:59.2535861	Recipes
+// 1.20.1	2023-10-11T21:44:52.9951527	Recipes
 e18db1fd4bef7b393a3588180ad43df199386024 data/minecraft/recipes/demon_swap_recipe.json
 ebaaaf0902a3fcf612166371cab9d27b42bbbc1f data/rats/advancements/recipes/building_blocks/auto_curdler.json
 987bd89935ed98bb9364bd497e27180b979b7fc4 data/rats/advancements/recipes/building_blocks/block_of_blue_cheese.json
@@ -187,6 +187,7 @@ e98d412e8dff421ba150292c9beb910cb67fc726 data/rats/advancements/recipes/misc/upg
 6d67e2c3ada041f98afd77e9560feb23a55854b9 data/rats/advancements/recipes/misc/upgrades/platter_upgrade.json
 f7b9e9d8eaf648188dad9c415e457804363e5997 data/rats/advancements/recipes/misc/upgrades/poison_upgrade.json
 016878b782fccfb156598f87b0aa3914c1c4e96c data/rats/advancements/recipes/misc/upgrades/quarry_upgrade.json
+a7b3de3981ea283f70ad4e505aa43dd677824364 data/rats/advancements/recipes/misc/upgrades/remedy_upgrade.json
 6afaa97e54d562da3c5c93fb7914604187582dc8 data/rats/advancements/recipes/misc/upgrades/replanter_upgrade.json
 2e34bcc1b0afe3f0b99a8dde3e59e572bacdae0e data/rats/advancements/recipes/misc/upgrades/sculked_upgrade.json
 a9c55345e1c3509be60494d7948e2ba81501ea04 data/rats/advancements/recipes/misc/upgrades/shears_upgrade.json
@@ -406,6 +407,7 @@ fc89b610827780d5ea8291ad648c16e9da6b3807 data/rats/recipes/upgrades/placer_upgra
 c7014e889c43ea39abf80b63ca5c2dce739d2377 data/rats/recipes/upgrades/platter_upgrade.json
 16512966dfab9942d92748ee202b3bb5a908a49c data/rats/recipes/upgrades/poison_upgrade.json
 68d3d967e6fab79b1e2fcec28ba3958b5f13c6b2 data/rats/recipes/upgrades/quarry_upgrade.json
+0fc02881e098e91eb8d0471c1ed6c9b54d1e640b data/rats/recipes/upgrades/remedy_upgrade.json
 0757ac78d79018299605c514fda5333d10468238 data/rats/recipes/upgrades/replanter_upgrade.json
 a3062471c962f420500352f6a6b9cf58d5e7170e data/rats/recipes/upgrades/sculked_upgrade.json
 f37b53f2d8071cc2471684efa6deee21f798a55b data/rats/recipes/upgrades/shears_upgrade.json

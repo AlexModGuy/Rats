@@ -1,4 +1,4 @@
-// 1.20.1	2023-10-11T15:54:54.5972371	Item Models: rats
+// 1.20.1	2023-10-11T21:44:52.9901663	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -363,6 +363,7 @@ a0e0ef9893182a3c821656161f844be68a7dc37e assets/rats/models/item/rat_upgrade_pic
 b2ee8c900c02277acb963c3ed94891c506951aaf assets/rats/models/item/rat_upgrade_psychic.json
 f39a6f0c045ae6bcd307e0a9e65567786d58ecbb assets/rats/models/item/rat_upgrade_quarry.json
 efc65d3b9266d479025aa98aa8616712ceb18949 assets/rats/models/item/rat_upgrade_ratinator.json
+ee689d822951ec29642c0b639e426c311d05ea07 assets/rats/models/item/rat_upgrade_remedy.json
 943f344f4da24fb1f811694d2c4c0eaa4d9704cb assets/rats/models/item/rat_upgrade_replanter.json
 09be8ff24618d90886bdf9cdce67c419c4bacc17 assets/rats/models/item/rat_upgrade_sculked.json
 8306e020e5138616daae09a7eab350a3878de223 assets/rats/models/item/rat_upgrade_shears.json

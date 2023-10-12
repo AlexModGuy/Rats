@@ -638,6 +638,16 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/support_upgrade"));
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_REMEDY.get())
+				.pattern("WGW")
+				.pattern("GUG")
+				.pattern("BGB")
+				.define('W', Items.NETHER_WART).unlockedBy("has_wart", has(Items.NETHER_WART))
+				.define('G', Items.GLISTERING_MELON_SLICE).unlockedBy("has_melon", has(Items.GLISTERING_MELON_SLICE))
+				.define('B', Items.GLASS_BOTTLE).unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
+				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
+				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/remedy_upgrade"));
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_CARRAT.get())
 				.pattern("GCG")
 				.pattern("CUC")
