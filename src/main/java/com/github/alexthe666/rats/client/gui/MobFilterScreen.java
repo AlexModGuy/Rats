@@ -69,7 +69,7 @@ public class MobFilterScreen extends Screen {
 
 	public MobFilterScreen(ItemStack stack) {
 		super(Component.translatable(RatsLangConstants.MOB_FILTER));
-		this.allMobs = RatsMod.MOB_CACHE;
+		this.allMobs = RatsMod.getCachedMobList(Minecraft.getInstance().level);
 		this.stack = stack;
 		this.isWhitelist = MobFilterUpgradeItem.isWhitelist(stack);
 		this.selectedMobs = MobFilterUpgradeItem.getSelectedMobs(stack);

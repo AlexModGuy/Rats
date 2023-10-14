@@ -19,7 +19,6 @@ import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.world.PlagueDoctorSpawner;
 import com.google.common.collect.Multimap;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,16 +26,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -47,7 +41,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Strider;
@@ -62,17 +55,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
@@ -87,11 +76,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -220,28 +207,11 @@ public class ForgeEvents {
 	}
 
 	@SubscribeEvent
-	public static void addPlagueDoctorSpawningAndCacheMobs(LevelEvent.Load event) {
+	public static void addPlagueDoctorSpawning(LevelEvent.Load event) {
 		if (event.getLevel() instanceof ServerLevel server && server.dimension().equals(Level.OVERWORLD)) {
 			List<CustomSpawner> spawners = new ArrayList<>(server.customSpawners);
 			spawners.add(new PlagueDoctorSpawner(server));
 			server.customSpawners = spawners;
-		}
-
-		if (event.getLevel().isClientSide()) {
-			if (RatsMod.MOB_CACHE.isEmpty()) {
-				List<Pair<String, Component>> unsortedCache = new ArrayList<>();
-				ForgeRegistries.ENTITY_TYPES.getEntries().forEach(entry -> {
-					try {
-						if (entry.getValue().create((Level) event.getLevel()) instanceof Mob || entry.getValue() == EntityType.PLAYER) {
-							unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription()));
-						}
-					} catch (NullPointerException e) {
-						RatsMod.LOGGER.error("Couldnt cache an instance of the mob {}", entry.getKey().location(), e);
-					}
-				});
-				RatsMod.MOB_CACHE.addAll(unsortedCache.stream().sorted(Comparator.comparing(o -> o.getSecond().getString())).toList());
-				RatsMod.LOGGER.debug("Cached {} mob ids for later use.", RatsMod.MOB_CACHE.size());
-			}
 		}
 	}
 

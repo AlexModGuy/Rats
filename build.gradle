@@ -47,6 +47,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'fml.earlyprogresswindow', 'false'
             property 'mixin.env.disableRefMap', 'true'
+			arg '-mixin.config=citadel.mixins.json'
+			arg '-mixin.config=rats.mixins.json'
 
             mods {
                 "${mod_id}" {

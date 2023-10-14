@@ -20,6 +20,8 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.behavior.GiveGiftToHero;
 import net.minecraft.world.entity.raid.Raid;
@@ -27,6 +29,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -49,11 +52,15 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Mod(RatsMod.MODID)
 public class RatsMod {
@@ -73,7 +80,7 @@ public class RatsMod {
 	public static boolean RATLANTIS_DATAPACK_ENABLED = false;
 	public static boolean HEART_OVERLAY_MOD_INSTALLED;
 	public static final List<Item> RATLANTIS_ITEMS = new ArrayList<>();
-	public static final List<Pair<String, Component>> MOB_CACHE = new ArrayList<>();
+	private static final List<Pair<String, Component>> MOB_CACHE = new ArrayList<>();
 
 	public RatsMod() {
 		ICEANDFIRE_LOADED = ModList.get().isLoaded("iceandfire");
@@ -235,5 +242,24 @@ public class RatsMod {
 		listOfPieceEntries.add(new Pair<>(piece, weight));
 		pool.rawTemplates = listOfPieceEntries;
 		LOGGER.debug("Rats: Successfully added {} to village pool {}", nbtPieceRL, poolRL.toString());
+	}
+
+	public static List<Pair<String, Component>> getCachedMobList(@Nullable Level level) {
+		if (level != null && MOB_CACHE.isEmpty()) {
+			List<Pair<String, Component>> unsortedCache = new ArrayList<>();
+			for (var entry : ForgeRegistries.ENTITY_TYPES.getEntries()) {
+				try {
+					Entity entity = entry.getValue().create(level);
+					if (entry.getValue() == EntityType.PLAYER || entity instanceof Mob) {
+						unsortedCache.add(Pair.of(entry.getKey().location().toString(), entry.getValue().getDescription()));
+					}
+				} catch (NullPointerException e) {
+					RatsMod.LOGGER.error("Couldnt cache an instance of the mob {}", entry.getKey().location(), e);
+				}
+			}
+			MOB_CACHE.addAll(unsortedCache.stream().sorted(Comparator.comparing(o -> o.getSecond().getString())).toList());
+			LOGGER.debug("Cached {} mob ids for later use.", MOB_CACHE.size());
+		}
+		return MOB_CACHE;
 	}
 }
