@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
+import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
@@ -51,6 +52,16 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 		return this.getTargetBlock() != null && this.canRatHoldTargetedBlock(this.rat.level(), this.getTargetBlock());
 	}
 
+	@Override
+	public boolean isReadyToFire() {
+		if (this.nextStartTick > 0) {
+			this.nextStartTick--;
+			return false;
+		}
+		this.nextStartTick = this.adjustedTickDelay(RatConfig.ratHarvestDelay / 2);
+		return true;
+	}
+
 	private void resetTarget() {
 		List<BlockPos> allBlocks = new ArrayList<>();
 		GlobalPos quarryPos = this.rat.getDepositPos().orElse(null);
@@ -58,7 +69,7 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 			int RADIUS = quarry.getRadius();
 			for (BlockPos pos : BlockPos.betweenClosedStream(quarryPos.pos().offset(-RADIUS, -1, -RADIUS), quarryPos.pos().offset(RADIUS, -quarryPos.pos().getY() - 1, RADIUS)).map(BlockPos::immutable).toList()) {
 				if ((!this.rat.level().isEmptyBlock(pos) && this.doesListContainBlock(this.rat.level(), pos)) || this.rat.level().getFluidState(pos).isSource()) {
-					if (this.canMineBlock(pos)) {
+					if (this.canMineBlock(pos) || this.rat.level().getFluidState(pos).isSource()) {
 						allBlocks.add(pos);
 					}
 				}
@@ -81,13 +92,13 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 		if (this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return true;
 		BlockState state = level.getBlockState(pos);
 		LootParams.Builder loot = new LootParams.Builder((ServerLevel) level).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, this.rat.position()).withLuck(1.0F);
-		List<ItemStack> drops = state.getBlock().getDrops(state, loot);
+		List<ItemStack> drops = state.getDrops(loot);
 		return drops.stream().map(ItemStack::getItem).toList().contains(this.rat.getItemInHand(InteractionHand.MAIN_HAND).getItem());
 	}
 
 	@Override
 	public boolean canContinueToUse() {
-		return this.checkTheBasics(false, true) && this.getTargetBlock() != null;
+		return this.checkTheBasics(false, true) && this.getTargetBlock() != null && !this.rat.level().getBlockState(this.getTargetBlock()).isAir();
 	}
 
 	public void stop() {
@@ -105,68 +116,59 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 				this.rat.getJumpControl().jump();
 			}
 
+			if (this.rat.isInWater() && this.rat.level().getBlockState(this.rat.blockPosition().above()).isAir()) {
+				this.setTargetBlock(this.rat.blockPosition());
+				this.rat.level().setBlockAndUpdate(this.rat.blockPosition().above(), Blocks.SPONGE.defaultBlockState());
+				this.rat.getJumpControl().jump();
+			}
+
 			this.rat.getNavigation().moveTo(rayPos.getX(), rayPos.getY(), rayPos.getZ(), 1.0F);
 
 			double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX() + 0.5D, this.getTargetBlock().getY() + 0.5D, this.getTargetBlock().getZ() + 0.5D);
 			if (!this.rat.getMoveControl().hasWanted() && (this.rat.onGround() || this.rat.isInWater() || this.rat.isInLava() || this.rat.isRidingSpecialMount())) {
 				BlockState block = this.rat.level().getBlockState(this.getTargetBlock());
 				SoundType soundType = block.getBlock().getSoundType(block, this.rat.level(), this.getTargetBlock(), null);
-				if (this.buildStairs) {
-					if (distance < this.rat.getRatHarvestDistance(0.0D)) {
-						this.rat.level().setBlockAndUpdate(this.getTargetBlock(), RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
-						this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
-						this.prevMiningState = block;
-						this.stop();
-					}
-				} else {
-					if (!block.isAir()) {
-						if (distance < this.rat.getRatHarvestDistance(0.0D)) {
-							this.rat.getNavigation().stop();
-							if (block.getFluidState().isSource()) {
-								BlockState replace = Blocks.COBBLESTONE.defaultBlockState();
-								if (block.getFluidState().is(FluidTags.LAVA)) {
-									replace = Blocks.OBSIDIAN.defaultBlockState();
-								}
-								this.rat.level().setBlockAndUpdate(this.getTargetBlock(), replace);
-								this.rat.setPos(this.rat.getX(), this.rat.getY() + 1F, this.rat.getZ());
-								this.rat.heal(2.0F);
-								this.stop();
-							}
+
+				if (!block.isAir()) {
+					if (distance < this.rat.getRatHarvestDistance(5.0D)) {
+						this.rat.getNavigation().stop();
+
+						this.rat.level().broadcastEntityEvent(this.rat, (byte) 85);
+						this.rat.crafting = true;
+						if (block == prevMiningState) {
 							this.rat.level().broadcastEntityEvent(this.rat, (byte) 85);
 							this.rat.crafting = true;
-							if (block == prevMiningState) {
-								this.rat.level().broadcastEntityEvent(this.rat, (byte) 85);
-								this.rat.crafting = true;
-							} else {
-								this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
-								this.rat.crafting = false;
-							}
-							if (distance < this.rat.getRatHarvestDistance(-2.0D)) {
-								this.rat.setDeltaMovement(Vec3.ZERO);
-							}
-							this.breakingTime++;
-							int hardness = (int) (block.getDestroySpeed(this.rat.level(), this.getTargetBlock()) * 10);
-							int i = (int) ((float) this.breakingTime / hardness * 10.0F);
-							if (this.breakingTime % 5 == 0) {
-								this.rat.playSound(soundType.getHitSound(), soundType.getVolume() + 1, soundType.getPitch());
-							}
-							if (i != this.previousBreakProgress) {
-								this.rat.level().destroyBlockProgress(this.rat.getId(), this.getTargetBlock(), i);
-								this.previousBreakProgress = i;
-							}
-							if (this.breakingTime >= hardness) {
-								this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
-								this.rat.playSound(soundType.getBreakSound(), soundType.getVolume(), soundType.getPitch());
-								this.rat.playSound(SoundEvents.ITEM_PICKUP, 1, 1F);
-								this.breakingTime = 0;
-								this.previousBreakProgress = -1;
-								BlockState state = this.rat.level().getBlockState(this.getTargetBlock());
-								this.holdItemHarvestedIfPossible(this.rat, Block.getDrops(state, (ServerLevel) this.rat.level(), this.getTargetBlock(), null, this.rat, this.rat.getMainHandItem()));
-								this.rat.level().destroyBlock(this.getTargetBlock(), false);
-								this.stop();
-							}
-							this.prevMiningState = block;
+						} else {
+							this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
+							this.rat.crafting = false;
 						}
+						if (distance < this.rat.getRatHarvestDistance(-2.0D)) {
+							this.rat.setDeltaMovement(Vec3.ZERO);
+						}
+						this.breakingTime++;
+						int hardness = (int) (block.getDestroySpeed(this.rat.level(), this.getTargetBlock()) * 10);
+						int i = (int) ((float) this.breakingTime / hardness * 10.0F);
+						if (this.breakingTime % 5 == 0) {
+							this.rat.playSound(soundType.getHitSound(), soundType.getVolume() + 1, soundType.getPitch());
+						}
+						if (i != this.previousBreakProgress) {
+							this.rat.level().destroyBlockProgress(this.rat.getId(), this.getTargetBlock(), i);
+							this.previousBreakProgress = i;
+						}
+						if (this.breakingTime >= hardness) {
+							this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
+							this.rat.playSound(soundType.getBreakSound(), soundType.getVolume(), soundType.getPitch());
+							this.rat.playSound(SoundEvents.ITEM_PICKUP, 1, 1F);
+							this.breakingTime = 0;
+							this.previousBreakProgress = -1;
+							BlockState state = this.rat.level().getBlockState(this.getTargetBlock());
+							if (!state.is(Blocks.SPONGE) && !state.is(Blocks.WET_SPONGE)) {
+								this.holdItemHarvestedIfPossible(this.rat, Block.getDrops(state, (ServerLevel) this.rat.level(), this.getTargetBlock(), null, this.rat, this.rat.getMainHandItem()));
+							}
+							this.rat.level().destroyBlock(this.getTargetBlock(), false);
+							this.stop();
+						}
+						this.prevMiningState = block;
 					}
 				}
 			}

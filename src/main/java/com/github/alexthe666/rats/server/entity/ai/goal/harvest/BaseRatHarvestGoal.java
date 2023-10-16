@@ -47,6 +47,10 @@ public abstract class BaseRatHarvestGoal extends Goal implements RatWorkGoal {
 
 	@Override
 	public boolean canUse() {
+		return this.isReadyToFire();
+	}
+
+	public boolean isReadyToFire() {
 		if (this.nextStartTick > 0) {
 			this.nextStartTick--;
 			return false;
