@@ -47,8 +47,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
 
 		this.renderables.clear();
-		int i = (this.width - 248) / 2;
-		int j = (this.height - 166) / 2;
 		this.addRenderableWidget(new ImageButton(this.leftPos + 128, this.topPos + 65, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, button -> {
 			this.recipeBook.toggleVisibility();
 			this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
@@ -80,7 +78,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		} else {
 			this.recipeBook.render(graphics, mouseX, mouseY, partialTicks);
 			super.render(graphics, mouseX, mouseY, partialTicks);
-			//this.recipeBook.renderGhostRecipe(graphics, this.leftPos, this.topPos, true, partialTicks);
 		}
 		this.renderTooltip(graphics, mouseX, mouseY);
 		this.recipeBook.renderTooltip(graphics, this.leftPos, this.topPos, mouseX, mouseY);
@@ -115,7 +112,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		this.renderBackground(graphics);
 		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
-		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 211, l, 16);
+		graphics.blit(TEXTURE, this.leftPos + 96, this.topPos + 39, 0, 211, l, 16);
 		if (this.table.getCraftingTable().hasRat()) {
 			graphics.blit(TEXTURE, this.leftPos + 8, this.topPos + 20, 176, 0, 21, 21);
 		} else {

@@ -177,7 +177,7 @@ public class ServerConfig {
 		this.ratsContaminateFood = buildBoolean(builder, "Rats Contaminate Food", true, "True if wild rats contaminate food when they steal from chests");
 		this.ratsDigBlocks = buildBoolean(builder, "Rats Dig Holes", true, "True if rats can dig holes");
 		this.plagueSpread = buildBoolean(builder, "Other Mobs can spread Plague", true, "True if infected mobs with plague can spread it by interacting or attacking.");
-		this.ratStrengthThreshold = buildDouble(builder, "Rat Dig Strength", 4F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
+		this.ratStrengthThreshold = buildDouble(builder, "Rat Dig Strength", 6F, 0F, 1000000F, "The max block hardness that rats are allowed to dig through. (Dirt = 0.5F, Cobblestone = 2.0F, Obsidian = 50.0F)");
 		this.ratsBreakBlockOnHarvest = buildBoolean(builder, "Rats Break Crops on Harvest", true, "True if tamed rats will destroy crops when they harvest them");
 
 		builder.pop().push("Rat Upgrades");

@@ -31,7 +31,7 @@ public class RatConfig {
 	public static int zombieVillageGarbageHeapWeight = 5;
 	public static boolean ratsBreakBlockOnHarvest = true;
 	public static boolean plagueSpread = true;
-	public static float ratStrengthThreshold = 4.0F;
+	public static float ratStrengthThreshold = 6.0F;
 	public static int ratFluteDistance = 2;
 	public static int ratCageCramming = 4;
 	public static int ratBreedingCooldown = 24000;
