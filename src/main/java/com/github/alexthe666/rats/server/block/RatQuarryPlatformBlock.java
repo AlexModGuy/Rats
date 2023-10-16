@@ -36,11 +36,11 @@ public class RatQuarryPlatformBlock extends Block {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		if (context instanceof EntityCollisionContext eContext) {
-			if (eContext.getEntity() != null && !eContext.getEntity().isCrouching()) {
-				return SHAPE;
+			if (eContext.getEntity() != null) {
+				return eContext.getEntity().isCrouching() ? Shapes.empty() : SHAPE;
 			}
 		}
-		return Shapes.empty();
+		return Shapes.block();
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class RatsBlockRegistry {
 	public static final RegistryObject<Block> RAT_CAGE_WHEEL = BLOCKS.register("rat_cage_wheel", () -> new RatCageWheelBlock(Block.Properties.copy(RAT_CAGE.get())));
 	public static final RegistryObject<Block> FISH_BARREL = register("fish_barrel", () -> new Block(BlockBehaviour.Properties.of().strength(2.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> RAT_CRAFTING_TABLE = register("rat_crafting_table", () -> new RatCraftingTableBlock(Block.Properties.of().sound(SoundType.SLIME_BLOCK).strength(2.0F, 0.0F)));
-	public static final RegistryObject<Block> AUTO_CURDLER = register("auto_curdler", () -> new AutoCurdlerBlock(Block.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(2.0F, 0.0F)));
+	public static final RegistryObject<Block> AUTO_CURDLER = register("auto_curdler", () -> new AutoCurdlerBlock(Block.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().strength(2.0F, 0.0F)));
 	public static final RegistryObject<Block> RAT_TRAP = register("rat_trap", () -> new RatTrapBlock(Block.Properties.of().sound(SoundType.WOOD).noCollission().strength(1.0F, 0.0F)));
 	public static final RegistryObject<Block> RAT_TUBE_COLOR = BLOCKS.register("rat_tube", () -> new RatTubeBlock(Block.Properties.of().sound(SoundType.WOOD).strength(0.9F, 0.0F)));
 	public static final RegistryObject<Block> RAT_UPGRADE_BLOCK = register("rat_upgrade_block", () -> new RatUpgradeBlock(BlockBehaviour.Properties.of().sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
@@ -48,13 +48,13 @@ public class RatsBlockRegistry {
 	public static final RegistryObject<Block> BLOCK_OF_BLUE_CHEESE = register("block_of_blue_cheese", () -> new Block(Block.Properties.of().strength(0.6F, 0.0F).sound(SoundType.SLIME_BLOCK)));
 	public static final RegistryObject<Block> BLOCK_OF_NETHER_CHEESE = register("block_of_nether_cheese", () -> new Block(Block.Properties.of().strength(0.6F, 0.0F).sound(SoundType.SLIME_BLOCK)));
 	public static final RegistryObject<Block> PIED_WOOL = register("pied_wool", () -> new Block(Block.Properties.of().strength(1.0F, 0.0F).sound(SoundType.WOOL)));
-	public static final RegistryObject<Block> UPGRADE_COMBINER = register("upgrade_combiner", () -> new UpgradeCombinerBlock(Block.Properties.of().sound(SoundType.WOOD).requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(5.0F, 0.0F).lightLevel(value -> 4)));
-	public static final RegistryObject<Block> UPGRADE_SEPARATOR = register("upgrade_separator", () -> new UpgradeSeparatorBlock(Block.Properties.of().sound(SoundType.WOOD).requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(5.0F, 0.0F).lightLevel(value -> 4)));
-	public static final RegistryObject<Block> MANHOLE = register("manhole", () -> new TrapDoorBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).requiresCorrectToolForDrops().strength(10.0F).sound(SoundType.ANVIL).noOcclusion().dynamicShape(), BlockSetType.IRON));
-	public static final RegistryObject<Block> TRASH_CAN = register("trash_can", () -> new TrashCanBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(2.0F, 0.0F)));
-	public static final RegistryObject<Block> RAT_ATTRACTOR = register("rat_attractor", () -> new RatAttractorBlock(Block.Properties.of().sound(SoundType.LANTERN).requiresCorrectToolForDrops().noOcclusion().dynamicShape().randomTicks().strength(1.0F, 0.0F)));
+	public static final RegistryObject<Block> UPGRADE_COMBINER = register("upgrade_combiner", () -> new UpgradeCombinerBlock(Block.Properties.of().sound(SoundType.WOOD).requiresCorrectToolForDrops().noOcclusion().strength(5.0F, 0.0F).lightLevel(value -> 4)));
+	public static final RegistryObject<Block> UPGRADE_SEPARATOR = register("upgrade_separator", () -> new UpgradeSeparatorBlock(Block.Properties.of().sound(SoundType.WOOD).requiresCorrectToolForDrops().noOcclusion().strength(5.0F, 0.0F).lightLevel(value -> 4)));
+	public static final RegistryObject<Block> MANHOLE = register("manhole", () -> new TrapDoorBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).requiresCorrectToolForDrops().strength(10.0F).sound(SoundType.ANVIL).noOcclusion(), BlockSetType.IRON));
+	public static final RegistryObject<Block> TRASH_CAN = register("trash_can", () -> new TrashCanBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().strength(2.0F, 0.0F)));
+	public static final RegistryObject<Block> RAT_ATTRACTOR = register("rat_attractor", () -> new RatAttractorBlock(Block.Properties.of().sound(SoundType.LANTERN).requiresCorrectToolForDrops().noOcclusion().randomTicks().strength(1.0F, 0.0F)));
 	public static final RegistryObject<Block> RAT_QUARRY = register("rat_quarry", () -> new RatQuarryBlock(Block.Properties.of().sound(SoundType.SLIME_BLOCK).strength(2.0F, 0.0F)));
-	public static final RegistryObject<Block> RAT_QUARRY_PLATFORM = register("rat_quarry_platform", () -> new RatQuarryPlatformBlock(Block.Properties.of().sound(SoundType.SLIME_BLOCK).noOcclusion().dynamicShape().strength(1.0F, 0.0F)));
+	public static final RegistryObject<Block> RAT_QUARRY_PLATFORM = register("rat_quarry_platform", () -> new RatQuarryPlatformBlock(Block.Properties.of().sound(SoundType.SLIME_BLOCK).noOcclusion().strength(1.0F, 0.0F)));
 
 	public static RegistryObject<Block> register(String name, Supplier<Block> blockSupplier) {
 		RegistryObject<Block> ret = BLOCKS.register(name, blockSupplier);
