@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.items.upgrades;
 
 import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.rats.RatsMod;
+import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.PostAttackUpgrade;
@@ -24,9 +25,7 @@ public class BeeRatUpgradeItem extends BaseFlightRatUpgradeItem implements Chang
 
 	@Override
 	public ItemStack getWing() {
-		ItemStack wing = new ItemStack(Citadel.ICON_ITEM.get());
-		wing.setTag(Util.make(new CompoundTag(), tag -> tag.putString("IconLocation", "rats:textures/item/bee_wing.png")));
-		return wing;
+		return new ItemStack(RatsItemRegistry.FEATHERY_WING.get());
 	}
 
 	@Override
