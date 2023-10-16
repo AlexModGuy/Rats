@@ -120,29 +120,28 @@ public class ForgeClientEvents {
 		if (RatConfig.synesthesiaShader) {
 			if (event.getEntity() == Minecraft.getInstance().player) {
 				GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-				MobEffectInstance active = event.getEntity().getEffect(RatsEffectRegistry.SYNESTHESIA.get());
-				boolean synesthesia = active != null;
+				boolean active = event.getEntity().hasEffect(RatsEffectRegistry.SYNESTHESIA.get());
 				try {
-					if (synesthesia && renderer.currentEffect() == null) {
+					if (active && renderer.currentEffect() == null) {
 						renderer.loadEffect(SYNESTHESIA);
 					}
-					if (!synesthesia && renderer.currentEffect() != null && SYNESTHESIA.toString().equals(Objects.requireNonNull(renderer.currentEffect()).getName())) {
+					if (!active && renderer.currentEffect() != null && SYNESTHESIA.toString().equals(Objects.requireNonNull(renderer.currentEffect()).getName())) {
 						renderer.shutdownEffect();
 					}
 				} catch (Exception e) {
 					RatsMod.LOGGER.warn("Game tried to crash when applying shader");
 				}
 
-				if (prevSynesthesiaProgress == 2 && synesthesia) {
+				if (prevSynesthesiaProgress == 2 && active) {
 					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_BEGIN.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
-				if (prevSynesthesiaProgress == 38 && !synesthesia) {
+				if (prevSynesthesiaProgress == 38 && !active) {
 					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_END.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
 				prevSynesthesiaProgress = synesthesiaProgress;
-				if (synesthesia && synesthesiaProgress < MAX_SYNESTESIA) {
+				if (active && synesthesiaProgress < MAX_SYNESTESIA) {
 					synesthesiaProgress += 2F;
-				} else if (!synesthesia && synesthesiaProgress > 0.0F) {
+				} else if (!active && synesthesiaProgress > 0.0F) {
 					synesthesiaProgress -= 2F;
 				}
 			}
