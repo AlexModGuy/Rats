@@ -338,7 +338,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addSubtitle(RatsSoundRegistry.RAT_TELEPORT, "Rat teleports");
 		this.addSubtitle(RatsSoundRegistry.RAT_TRANSFER, "Rat changes owner");
 		this.addSubtitle(RatsSoundRegistry.RAT_BEAST_GROWL, "Rat Beast growls");
-		this.addSubtitle(RatsSoundRegistry.RAT_FLUTE, "Rat Flute blows");
+		this.add("subtitles.rats.item.rat_flute", "Rat Flute blows");
 		this.addSubtitle(RatsSoundRegistry.RAT_KING_SHOOT, "Rat King throws rat");
 		this.addSubtitle(RatsSoundRegistry.RAT_KING_SUMMON, "Rat gets dirty");
 		this.addSubtitle(RatsSoundRegistry.RAT_NET_THROW, "Rapture Net thrown");
