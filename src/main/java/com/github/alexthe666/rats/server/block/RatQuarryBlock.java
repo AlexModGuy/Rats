@@ -33,13 +33,6 @@ public class RatQuarryBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean p_60570_) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof RatQuarryBlockEntity quarry) {
-			quarry.placeStairsInEmptySpotsWherePossible();
-		}
-	}
-
-	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity tileentity = level.getBlockEntity(pos);
 		if (tileentity instanceof RatQuarryBlockEntity quarry) {

@@ -34,7 +34,6 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 	private int breakingTime;
 	private int previousBreakProgress;
 	private BlockState prevMiningState = null;
-	private boolean buildStairs = false;
 
 	public RatQuarryGoal(TamedRat rat) {
 		super(rat);
@@ -67,11 +66,6 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 			if (!allBlocks.isEmpty()) {
 				allBlocks.sort(new QuarryBlockSorter(this.rat));
 				this.setTargetBlock(allBlocks.get(allBlocks.size() - 1));
-				BlockPos stairs = quarry.getNextPosForStairs();
-				if (stairs.getY() >= this.getTargetBlock().getY() && this.rat.level().getBlockState(stairs).isAir()) {
-					this.buildStairs = true;
-					this.setTargetBlock(stairs);
-				}
 			}
 		}
 
@@ -99,17 +93,12 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 	public void stop() {
 		super.stop();
 		this.rat.crafting = false;
-		this.buildStairs = false;
 	}
 
 	@Override
 	public void tick() {
 		if (this.getTargetBlock() != null) {
 			BlockPos rayPos = this.getOffsetFromTarget(this.rat.level(), this.getTargetBlock());
-			if (!this.buildStairs && this.rat.level().getFluidState(this.getTargetBlock()).isEmpty() && this.rat.level().isEmptyBlock(this.getTargetBlock())) {
-				this.stop();
-				return;
-			}
 			if (this.rat.isInLava() && this.rat.level().getBlockState(this.rat.blockPosition().above()).isAir()) {
 				this.rat.level().setBlockAndUpdate(this.rat.blockPosition().above(), Blocks.WATER.defaultBlockState());
 				this.rat.heal(15.0F);

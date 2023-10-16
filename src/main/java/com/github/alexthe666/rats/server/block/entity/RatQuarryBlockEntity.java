@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,6 +39,7 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 	private static final int[] STACKS = IntStream.range(0, 64).toArray();
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
 	private NonNullList<ItemStack> inventory = NonNullList.withSize(64, ItemStack.EMPTY);
+	private int tick;
 
 	public RatQuarryBlockEntity(BlockPos pos, BlockState state) {
 		super(RatsBlockEntityRegistry.RAT_QUARRY.get(), pos, state);
@@ -133,18 +136,15 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatQuarryBlockEntity te) {
-		BlockPos checkingPos = pos.below();
-		for (int i = 0; i < te.getRadius(); i++) {
-			if (level.isEmptyBlock(checkingPos)) {
-				level.setBlockAndUpdate(checkingPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
+		if (!level.isClientSide()) {
+			te.tick++;
+			if (te.tick % 20 == 0) {
+				BlockPos nextStairPos = te.getNextPosForStairs(level);
+				if (level.isEmptyBlock(nextStairPos) || level.getBlockState(nextStairPos).canBeReplaced()) {
+					level.setBlockAndUpdate(nextStairPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
+					level.playSound(null, nextStairPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
+				}
 			}
-			checkingPos = checkingPos.relative(Direction.NORTH);
-		}
-		for (int i = 0; i <= te.getRadius(); i++) {
-			if (level.isEmptyBlock(checkingPos)) {
-				level.setBlockAndUpdate(checkingPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
-			}
-			checkingPos = checkingPos.relative(Direction.WEST);
 		}
 	}
 
@@ -207,14 +207,29 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 		return 2;
 	}
 
-	public BlockPos getNextPosForStairs() {
+	public BlockPos getNextPosForStairs(Level level) {
 		int yLevel = this.getBlockPos().getY() - 1;
-		BlockPos stairPos = this.getBlockPos().offset(-getRadius(), -1, -getRadius());
+		BlockPos stairPos = this.getBlockPos().offset(-this.getRadius(), -1, -this.getRadius());
 		int passedLevels = 0;
 		while (yLevel > this.getLevel().getMinBuildHeight() + 1) {
+			if (yLevel == this.getBlockPos().getY() - 1) {
+				BlockPos checkingPos = this.getBlockPos().below();
+				for (int i = 0; i < this.getRadius(); i++) {
+					if (level.isEmptyBlock(checkingPos)) {
+						return checkingPos;
+					}
+					checkingPos = checkingPos.relative(Direction.NORTH);
+				}
+				for (int i = 0; i <= this.getRadius(); i++) {
+					if (level.isEmptyBlock(checkingPos)) {
+						return checkingPos;
+					}
+					checkingPos = checkingPos.relative(Direction.WEST);
+				}
+			}
 			boolean atLevel = false;
-			for (BlockPos pos : BlockPos.betweenClosedStream(new BlockPos(this.getBlockPos().getX() - getRadius(), yLevel, this.getBlockPos().getZ() - getRadius()), new BlockPos(this.getBlockPos().getX() + getRadius(), yLevel, this.getBlockPos().getZ() + getRadius())).map(BlockPos::immutable).toList()) {
-				if (this.getLevel().getBlockState(pos).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) || this.getLevel().getBlockState(pos).is(RatsBlockTags.QUARRY_IGNORABLES)) {
+			for (BlockPos pos : BlockPos.betweenClosedStream(new BlockPos(this.getBlockPos().getX() - this.getRadius(), yLevel, this.getBlockPos().getZ() - this.getRadius()), new BlockPos(this.getBlockPos().getX() + this.getRadius(), yLevel, this.getBlockPos().getZ() + this.getRadius())).map(BlockPos::immutable).toList()) {
+				if (level.getBlockState(pos).is(RatsBlockRegistry.RAT_QUARRY_PLATFORM.get()) || level.getBlockState(pos).is(RatsBlockTags.QUARRY_IGNORABLES)) {
 					atLevel = true;
 					break;
 				}
@@ -234,26 +249,5 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 			stairPos = stairPos.relative(buildDir);
 		}
 		return stairPos;
-	}
-
-	public void placeStairsInEmptySpotsWherePossible() {
-		int yLevel = this.getBlockPos().getY() - 1;
-		BlockPos stairPos;
-		int passedLevels = 0;
-		while (yLevel > this.getLevel().getMinBuildHeight() + 1) {
-			stairPos = new BlockPos(this.getBlockPos().getX(), yLevel, this.getBlockPos().getZ());
-			Direction buildDir = Direction.SOUTH;
-			for (int i = 0; i < passedLevels; i++) {
-				if (i > 0 && i % (this.getRadius() * 2) == 0) {
-					buildDir = buildDir.getCounterClockWise();
-				}
-				stairPos = stairPos.relative(buildDir);
-			}
-			if (this.getLevel().isEmptyBlock(stairPos) || this.getLevel().getBlockState(stairPos).canBeReplaced()) {
-				this.getLevel().setBlockAndUpdate(stairPos, RatsBlockRegistry.RAT_QUARRY_PLATFORM.get().defaultBlockState());
-			}
-			passedLevels++;
-			yLevel--;
-		}
 	}
 }
