@@ -90,7 +90,7 @@ public class ForgeClientEvents {
 				} else {
 					renderProg = -(float) Math.sin(prog / MAX_SYNESTESIA * Math.PI) * 40.0F;
 				}
-				event.setFOV(event.getFOV() + renderProg);
+				event.setFOV(event.getFOV() + (float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, renderProg));
 			}
 		}
 	}
@@ -102,7 +102,7 @@ public class ForgeClientEvents {
 			if (player.getUseItem().is(RatlantisItemRegistry.RATLANTIS_BOW.get())) {
 				float f = player.getTicksUsingItem() / 10.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFovModifier(event.getFovModifier() * (1.0F - f * 0.15F));
+				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
 	}
