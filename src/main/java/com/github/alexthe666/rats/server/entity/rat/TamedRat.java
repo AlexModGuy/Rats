@@ -4,6 +4,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.events.ForgeClientEvents;
+import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.server.block.RatCageBlock;
 import com.github.alexthe666.rats.server.block.RatTubeBlock;
@@ -854,6 +855,19 @@ public class TamedRat extends InventoryRat {
 					this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.CARROT)), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 				}
 				return InteractionResult.SUCCESS;
+			}
+		}
+		if (this.isBaby()) {
+			if (itemstack.is(RatsItemTags.CHEESE_ITEMS)) {
+				if (!player.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
+				this.ageUp(getSpeedUpSecondsWhenFeeding(-this.getAge()), true);
+				return InteractionResult.sidedSuccess(this.level().isClientSide());
+			}
+			if (itemstack.is(RatsItemRegistry.CREATIVE_CHEESE.get())) {
+				this.ageUp(-(this.getAge() / 20), true);
+				return InteractionResult.sidedSuccess(this.level().isClientSide());
 			}
 		}
 		if (!this.isBaby() && this.isOwnedBy(player)) {
