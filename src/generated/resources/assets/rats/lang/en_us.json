@@ -868,6 +868,7 @@
   "item.rats.ratbot_barrel": "Ratbot Barrel",
   "item.rats.ratbow_essence": "Ratbow Essence",
   "item.rats.ratbow_essence.desc": "Dyes rats to a \"Rainbow\" color",
+  "item.rats.ratbow_essence.flag": "Dyes rats to look like the %s pride flag",
   "item.rats.ratfish": "Ratfish",
   "item.rats.ratfish_bucket": "Bucket of Ratfish",
   "item.rats.ratfish_spawn_egg": "Ratfish Spawn Egg",

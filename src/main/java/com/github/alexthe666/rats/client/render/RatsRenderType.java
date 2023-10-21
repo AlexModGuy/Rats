@@ -23,6 +23,7 @@ public class RatsRenderType extends RenderType {
 
 	protected static final RenderStateShard.TexturingStateShard RAINBOW_GLINT_TEXTURING = new RenderStateShard.TexturingStateShard("rainbow_glint_texturing", RatsRenderType::setupRainbowRendering, RenderSystem::resetTextureMatrix);
 	private static final RenderType ACE_GLINT = create("ace_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/special_dyes/ace_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
+	private static final RenderType AGENDER_GLINT = create("agender_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/special_dyes/agender_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
 	private static final RenderType ARO_GLINT = create("aro_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/special_dyes/aro_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
 	private static final RenderType BI_GLINT = create("bi_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/special_dyes/bi_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
 	private static final RenderType ENBY_GLINT = create("enby_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation(RatsMod.MODID, "textures/misc/special_dyes/enby_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
@@ -90,15 +91,16 @@ public class RatsRenderType extends RenderType {
 	}
 
 	public enum GlintType {
+		AGENDER(AGENDER_GLINT, true, "agender"),
 		AROMANTIC(ARO_GLINT, true, "aromantic", "aro"),
 		ASEXUAL(ACE_GLINT, true, "asexual", "ace"),
 		BISEXUAL(BI_GLINT, true, "bisexual", "bi"),
 		GAY(GAY_GLINT, true, "gay", "mlm"),
 		GENDERFLUID(GENDERFLUID_GLINT, true, "genderfluid", "fluid"),
-		NONBINARY(ENBY_GLINT, true, "non-binary", "nonbinary", "enby"),
+		NONBINARY(ENBY_GLINT, true, "non-binary", "nonbinary", "enby", "nb"),
 		LESBIAN(LESBIAN_GLINT, true, "lesbian", "wlw"),
 		PANSEXUAL(PAN_GLINT, true, "pansexual", "pan"),
-		TRANSGENDER(TRANS_GLINT, true, "transgender", "trans"),
+		TRANSGENDER(TRANS_GLINT, true, "transgender", "trans", "tratsgender"),
 
 		PISS(PISS_GLINT, false, "piss"),
 		UNPLEASANT(UNPLEASANT_GLINT, false, "unpleasant");

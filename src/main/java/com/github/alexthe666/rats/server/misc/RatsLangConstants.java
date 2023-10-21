@@ -82,6 +82,7 @@ public class RatsLangConstants {
 	public static final String MOB_FILTER_SELECTED_MOBS = "item.rats.rat_upgrade_mob_filter.selected_mobs";
 	public static final String MOB_FILTER_WHITELIST = "item.rats.rat_upgrade_mob_filter.whitelist";
 	public static final String ORE_NUGGET_CONTAINS = "item.rats.ore_nugget.contains";
+	public static final String RATBOW_ESSENCE_FLAG = "item.rats.ratbow_essence.flag";
 
 	public static final String AND_MORE = "rats.and_more";
 	public static final String RATS_PACK = "pack.rats.rats";

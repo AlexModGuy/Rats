@@ -433,6 +433,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.add(RatsLangConstants.RAT_SACK_RELEASED_RATS, "Released %s Rat(s) from sack");
 		this.add(RatsLangConstants.RAT_SACK_TOO_FULL, "Rat Sack can't hold any more rats!");
 		this.add(RatsLangConstants.ORE_NUGGET_CONTAINS, "Contained Resource: %s");
+		this.add(RatsLangConstants.RATBOW_ESSENCE_FLAG, "Dyes rats to look like the %s pride flag");
 
 		this.add(RatsLangConstants.RAT_UPGRADE_REGENS, "Regenerates Health");
 		this.add(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, "+%s Rat %s");

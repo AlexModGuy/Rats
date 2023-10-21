@@ -1,4 +1,4 @@
-// 1.20.1	2023-10-11T21:44:52.9901663	Item Models: rats
+// 1.20.1	2023-10-20T21:01:17.7388735	Item Models: rats
 fabc9f25b9c1a1a1b6c853019e67b5e36fdbc17b assets/rats/models/item/air_raid_siren.json
 4b129f11d7fad36c31954e9bb25a384fc1157f6f assets/rats/models/item/ancient_sawblade.json
 1f1c90df6c85529dc7d6ec5b28edd74f1b1722f9 assets/rats/models/item/arcane_technology.json
@@ -140,8 +140,9 @@ c4a169a16ad59f2ace70ac3759c67f858c21164d assets/rats/models/item/purified_garbag
 65416e54aa7949b7af49978d591dd7248bab1098 assets/rats/models/item/purifying_liquid.json
 fa87296eea641a88663ea4db4f9cfb604d406907 assets/rats/models/item/radius_stick.json
 69eb45a70206e752b185cd23de1b2f8417c91a82 assets/rats/models/item/ratbot_barrel.json
-c694989594284398a46449d7e089db1d285e6c49 assets/rats/models/item/ratbow_essence.json
+58c9ec6d12dd8bb8ec9b4e69ee517cc327af62eb assets/rats/models/item/ratbow_essence.json
 3bfab8c8b2b279c6ad0fb769717c6aa51870f67e assets/rats/models/item/ratbow_essence_ace.json
+80197ee59438ad6e6b15a0b87fb7e38867c86e45 assets/rats/models/item/ratbow_essence_agender.json
 9c209e43ce937fd00d11c0c61db72818178a0af8 assets/rats/models/item/ratbow_essence_aro.json
 75556df2213985e054570113e2a8b1aab821f6f7 assets/rats/models/item/ratbow_essence_bi.json
 e0d20134495d0c078793363dd06cb50c8116d1a4 assets/rats/models/item/ratbow_essence_enby.json

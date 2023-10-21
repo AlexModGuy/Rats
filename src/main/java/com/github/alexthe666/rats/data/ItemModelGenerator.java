@@ -143,15 +143,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		this.singleTex(RatsItemRegistry.RAT_WHISTLE);
 		ResourceLocation special = new ResourceLocation(RatsMod.MODID, "special");
 		this.fullbrightSingleTex(RatsItemRegistry.RATBOW_ESSENCE)
-				.override().predicate(special, 1).model(this.generated("ratbow_essence_aro", true, this.itemPrefix("ratbow_essence_aro"))).end()
-				.override().predicate(special, 2).model(this.generated("ratbow_essence_ace", true, this.itemPrefix("ratbow_essence_ace"))).end()
-				.override().predicate(special, 3).model(this.generated("ratbow_essence_bi", true, this.itemPrefix("ratbow_essence_bi"))).end()
-				.override().predicate(special, 4).model(this.generated("ratbow_essence_gay", true, this.itemPrefix("ratbow_essence_gay"))).end()
-				.override().predicate(special, 5).model(this.generated("ratbow_essence_genderfluid", true, this.itemPrefix("ratbow_essence_genderfluid"))).end()
-				.override().predicate(special, 6).model(this.generated("ratbow_essence_enby", true, this.itemPrefix("ratbow_essence_enby"))).end()
-				.override().predicate(special, 7).model(this.generated("ratbow_essence_lesbian", true, this.itemPrefix("ratbow_essence_lesbian"))).end()
-				.override().predicate(special, 8).model(this.generated("ratbow_essence_pan", true, this.itemPrefix("ratbow_essence_pan"))).end()
-				.override().predicate(special, 9).model(this.generated("ratbow_essence_trans", true, this.itemPrefix("ratbow_essence_trans"))).end();
+				.override().predicate(special, 1).model(this.generated("ratbow_essence_agender", true, this.itemPrefix("ratbow_essence_agender"))).end()
+				.override().predicate(special, 2).model(this.generated("ratbow_essence_aro", true, this.itemPrefix("ratbow_essence_aro"))).end()
+				.override().predicate(special, 3).model(this.generated("ratbow_essence_ace", true, this.itemPrefix("ratbow_essence_ace"))).end()
+				.override().predicate(special, 4).model(this.generated("ratbow_essence_bi", true, this.itemPrefix("ratbow_essence_bi"))).end()
+				.override().predicate(special, 5).model(this.generated("ratbow_essence_gay", true, this.itemPrefix("ratbow_essence_gay"))).end()
+				.override().predicate(special, 6).model(this.generated("ratbow_essence_genderfluid", true, this.itemPrefix("ratbow_essence_genderfluid"))).end()
+				.override().predicate(special, 7).model(this.generated("ratbow_essence_enby", true, this.itemPrefix("ratbow_essence_enby"))).end()
+				.override().predicate(special, 8).model(this.generated("ratbow_essence_lesbian", true, this.itemPrefix("ratbow_essence_lesbian"))).end()
+				.override().predicate(special, 9).model(this.generated("ratbow_essence_pan", true, this.itemPrefix("ratbow_essence_pan"))).end()
+				.override().predicate(special, 10).model(this.generated("ratbow_essence_trans", true, this.itemPrefix("ratbow_essence_trans"))).end();
 		this.singleTex(RatsItemRegistry.RAW_PLASTIC);
 		this.singleTex(RatsItemRegistry.RAW_RAT);
 		this.singleTex(RatsItemRegistry.SANTA_HAT);

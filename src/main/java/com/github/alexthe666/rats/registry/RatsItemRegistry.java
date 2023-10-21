@@ -101,7 +101,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> FILTH_CORRUPTION = ITEMS.register("filth_corruption", () -> new LoreTagItem(new Item.Properties().rarity(Rarity.RARE), 1));
 	public static final RegistryObject<Item> TANGLED_RAT_TAILS = ITEMS.register("tangled_rat_tails", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> CHARGED_CREEPER_CHUNK = ITEMS.register("charged_creeper_chunk", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> RATBOW_ESSENCE = ITEMS.register("ratbow_essence", () -> new LoreTagItem(new Item.Properties(), 1));
+	public static final RegistryObject<Item> RATBOW_ESSENCE = ITEMS.register("ratbow_essence", () -> new RatbowEssenceItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_PAPERS = ITEMS.register("rat_papers", () -> new RatPapersItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item>[] RAT_HAMMOCKS = new RegistryObject[16];
 	public static final RegistryObject<Item>[] RAT_TUBES = new RegistryObject[16];

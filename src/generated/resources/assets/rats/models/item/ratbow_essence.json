@@ -11,57 +11,63 @@
   "loader": "forge:item_layers",
   "overrides": [
     {
-      "model": "rats:item/ratbow_essence_aro",
+      "model": "rats:item/ratbow_essence_agender",
       "predicate": {
         "rats:special": 1.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_ace",
+      "model": "rats:item/ratbow_essence_aro",
       "predicate": {
         "rats:special": 2.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_bi",
+      "model": "rats:item/ratbow_essence_ace",
       "predicate": {
         "rats:special": 3.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_gay",
+      "model": "rats:item/ratbow_essence_bi",
       "predicate": {
         "rats:special": 4.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_genderfluid",
+      "model": "rats:item/ratbow_essence_gay",
       "predicate": {
         "rats:special": 5.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_enby",
+      "model": "rats:item/ratbow_essence_genderfluid",
       "predicate": {
         "rats:special": 6.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_lesbian",
+      "model": "rats:item/ratbow_essence_enby",
       "predicate": {
         "rats:special": 7.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_pan",
+      "model": "rats:item/ratbow_essence_lesbian",
       "predicate": {
         "rats:special": 8.0
       }
     },
     {
-      "model": "rats:item/ratbow_essence_trans",
+      "model": "rats:item/ratbow_essence_pan",
       "predicate": {
         "rats:special": 9.0
+      }
+    },
+    {
+      "model": "rats:item/ratbow_essence_trans",
+      "predicate": {
+        "rats:special": 10.0
       }
     }
   ],
