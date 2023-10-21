@@ -255,7 +255,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 //				.define('P', Items.IRON_PICKAXE).unlockedBy("has_pickaxe", has(Items.IRON_PICKAXE))
 //				.define('C', ItemTags.COALS).unlockedBy("has_coal", has(ItemTags.COALS))
 //				.define('U', RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()))
-//				.define('I', ItemTags.IRON_ORES).unlockedBy("has_ore", has(ItemTags.IRON_ORES))
+//				.define('I', Tags.Items.RAW_MATERIALS_IRON).unlockedBy("has_ore", has(Tags.Items.RAW_MATERIALS_IRON))
 //				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/miner_ore_upgrade"));
 //
 //		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_MINER.get())
