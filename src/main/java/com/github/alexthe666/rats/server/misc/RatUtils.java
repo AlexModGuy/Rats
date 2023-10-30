@@ -268,6 +268,10 @@ public class RatUtils {
 		rat.addAdditionalSaveData(tag);
 		newRat.setToga(rat.hasToga());
 		newRat.moveTo(rat.blockPosition(), rat.getYRot(), rat.getXRot());
+		if (rat.getLeashHolder() != null) {
+			newRat.setLeashedTo(rat.getLeashHolder(), true);
+			rat.setLeashedTo(null, true);
+		}
 		ForgeEventFactory.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
 		newRat.readAdditionalSaveData(tag);
 		newRat.setColorVariant(rat.getColorVariant());
