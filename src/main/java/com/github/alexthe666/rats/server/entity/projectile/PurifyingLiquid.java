@@ -44,6 +44,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 
 	@Override
 	protected void defineSynchedData() {
+		super.defineSynchedData();
 		this.getEntityData().define(NETHER, false);
 	}
 
