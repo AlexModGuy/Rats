@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.entity.ai.navigation.navigation;
 
 import com.github.alexthe666.rats.server.entity.ai.navigation.evaluator.RatNodeEvaluator;
+import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
@@ -16,7 +17,6 @@ public class RatNavigation extends GroundPathNavigation {
 		this.nodeEvaluator = new RatNodeEvaluator();
 		this.nodeEvaluator.setCanPassDoors(true);
 		this.nodeEvaluator.setCanOpenDoors(true);
-		this.nodeEvaluator.setCanWalkOverFences(true);
 		this.nodeEvaluator.setCanFloat(true);
 		return new PathFinder(this.nodeEvaluator, nodes);
 	}
