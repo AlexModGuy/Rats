@@ -34,6 +34,8 @@ public class RatlantisBiomeTags extends BiomeTagsProvider {
 		this.tag(BiomeTags.HAS_SHIPWRECK).add(RatlantisBiomeRegistry.RATLANTIS);
 		this.tag(BiomeTags.HAS_JUNGLE_TEMPLE).add(RatlantisBiomeRegistry.RATLANTIS);
 
+		this.tag(BiomeTags.PRODUCES_CORALS_FROM_BONEMEAL).add(RatlantisBiomeRegistry.RATLANTIS);
+		this.tag(BiomeTags.SNOW_GOLEM_MELTS).add(RatlantisBiomeRegistry.RATLANTIS);
 		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(RatlantisBiomeRegistry.RATLANTIS);
 		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
 		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).add(RatlantisBiomeRegistry.RATLANTIS);
