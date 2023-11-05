@@ -19,6 +19,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -29,8 +30,8 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 	public float prevPlanePitch;
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(RatBiplaneMount.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Float> PLANE_PITCH = SynchedEntityData.defineId(RatBiplaneMount.class, EntityDataSerializers.FLOAT);
-	public PlaneRotationUtil roll_buffer;
-	public PlaneRotationUtil pitch_buffer;
+	public PlaneRotationUtil rollBuffer;
+	public PlaneRotationUtil pitchBuffer;
 	@Nullable
 	private Vec3 flightTarget;
 	private int soundLoopCounter = 0;
@@ -42,9 +43,17 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		this.riderXZ = -0.35F;
 		this.moveControl = new PlaneMoveControl<>(this);
 		if (this.level().isClientSide()) {
-			this.roll_buffer = new PlaneRotationUtil();
-			this.pitch_buffer = new PlaneRotationUtil();
+			this.rollBuffer = new PlaneRotationUtil();
+			this.pitchBuffer = new PlaneRotationUtil();
 		}
+	}
+
+	@Override
+	protected void updateControlFlags() {
+		this.goalSelector.setControlFlag(Goal.Flag.MOVE, true);
+		this.goalSelector.setControlFlag(Goal.Flag.JUMP, true);
+		this.goalSelector.setControlFlag(Goal.Flag.LOOK, true);
+		this.goalSelector.setControlFlag(Goal.Flag.TARGET, false);
 	}
 
 	@Override
@@ -155,8 +164,8 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		}
 		if (this.level().isClientSide()) {
 			if (!this.onGround()) {
-				this.roll_buffer.calculateChainFlapBuffer(40, 20, 0.5F, 0.5F, this);
-				this.pitch_buffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
+				this.rollBuffer.calculateChainFlapBuffer(40, 20, 0.5F, 0.5F, this);
+				this.pitchBuffer.calculateChainWaveBuffer(40, 10, 0.5F, 0.5F, this);
 			}
 		}
 		if (!this.onGround()) {
@@ -206,6 +215,11 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 	@Override
 	public Item getUpgradeItem() {
 		return RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get();
+	}
+
+	@Override
+	public boolean shouldTeleportWhenFarAway() {
+		return false;
 	}
 
 	@Override

@@ -9,11 +9,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -37,6 +36,16 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 	@Override
 	protected boolean shouldPassengersInheritMalus() {
 		return true;
+	}
+
+	@Override
+	protected void updateControlFlags() {
+		boolean flag = this.getRat() == null;
+		boolean flag1 = !(this.getVehicle() instanceof Boat);
+		this.goalSelector.setControlFlag(Goal.Flag.MOVE, flag);
+		this.goalSelector.setControlFlag(Goal.Flag.JUMP, flag && flag1);
+		this.goalSelector.setControlFlag(Goal.Flag.LOOK, flag);
+		this.goalSelector.setControlFlag(Goal.Flag.TARGET, flag);
 	}
 
 	@Override
@@ -109,7 +118,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 		} else {
 			if (rat != null) {
 				this.setTarget(rat.getTarget());
-				rat.getLookControl().setLookAt(this.getLookControl().getWantedX(), this.getLookControl().getWantedY(), this.getLookControl().getWantedZ());
+				this.getLookControl().setLookAt(rat.getLookControl().getWantedX(), rat.getLookControl().getWantedY(), rat.getLookControl().getWantedZ());
 				rat.setYRot(this.getYRot());
 				rat.yRotO = this.getYRot();
 				rat.setYHeadRot(this.getYRot());

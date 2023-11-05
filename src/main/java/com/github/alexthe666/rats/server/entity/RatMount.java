@@ -5,4 +5,8 @@ import net.minecraft.world.item.Item;
 public interface RatMount {
 
 	Item getUpgradeItem();
+
+	default boolean shouldTeleportWhenFarAway() {
+		return true;
+	}
 }

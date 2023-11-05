@@ -389,7 +389,7 @@ public class RatsCreativeTabRegistry {
 			}
 			uniqueOres.sort(Comparator.comparing(o -> o.getDisplayName().getString()));
 			for (ItemStack ore : uniqueOres) {
-				output.accept(OreRatNuggetItem.saveResourceToNugget(level, ore, false));
+				output.accept(OreRatNuggetItem.saveResourceToNugget(ore));
 			}
 		}
 	}

@@ -190,8 +190,8 @@ public class BiplaneModel<T extends Mob & Plane> extends AdvancedEntityModel<T> 
 			this.body1.rotateAngleX = (float) Math.toRadians(f7);
 		}
 		if (!t.onGround() && t instanceof RatBiplaneMount plane) {
-			plane.roll_buffer.applyChainFlapBuffer(this.body1);
-			plane.pitch_buffer.applyChainWaveBuffer(this.body1);
+			plane.rollBuffer.applyChainFlapBuffer(this.body1);
+			plane.pitchBuffer.applyChainWaveBuffer(this.body1);
 			float f7 = plane.prevPlanePitch + (plane.getPlanePitch() - plane.prevPlanePitch) * v3;
 			this.body1.rotateAngleX = (float) Math.toRadians(f7);
 		}
