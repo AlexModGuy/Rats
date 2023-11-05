@@ -82,7 +82,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(3, new PiperStrifeGoal(this, 1.0D, 15.0F));
+		this.goalSelector.addGoal(2, new PiperStrifeGoal(this, 1.0D, 15.0F));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.6D));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Mob.class, 8.0F));
