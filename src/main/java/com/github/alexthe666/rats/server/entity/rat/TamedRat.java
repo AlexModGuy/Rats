@@ -49,6 +49,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
@@ -71,6 +72,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -706,14 +708,23 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public void onItemEaten() {
 		ItemStack handCopy = this.getMainHandItem().copy();
-		this.getMainHandItem().shrink(1);
-		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(handCopy)) {
-			ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(this.level(), handCopy, true).copyWithCount(2);
-			if (RatConfig.ratFartNoises) {
-				this.playSound(RatsSoundRegistry.RAT_POOP.get(), 0.5F + this.getRandom().nextFloat() * 0.5F, 1.0F + this.getRandom().nextFloat() * 0.5F);
+		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(this.level(), handCopy)) {
+			ItemStack attemptedSmelt = handCopy.copy();
+			Container container = new SimpleContainer(attemptedSmelt);
+			SmeltingRecipe recipe = this.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, container, this.level()).orElse(null);
+			if (recipe != null && !recipe.getResultItem(this.level().registryAccess()).isEmpty()) {
+				attemptedSmelt = recipe.getResultItem(this.level().registryAccess()).copy();
 			}
-			if (!this.level().isClientSide()) {
-				this.spawnAtLocation(nugget, 0.0F);
+
+			if (!attemptedSmelt.is(handCopy.getItem())) {
+				ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(attemptedSmelt).copyWithCount(2);
+				if (RatConfig.ratFartNoises) {
+					this.playSound(RatsSoundRegistry.RAT_POOP.get(), 0.5F + this.getRandom().nextFloat() * 0.5F, 1.0F + this.getRandom().nextFloat() * 0.5F);
+				}
+				if (!this.level().isClientSide()) {
+					this.spawnAtLocation(nugget, 0.0F);
+				}
+				this.getMainHandItem().shrink(1);
 			}
 		} else if (this.getRandom().nextFloat() <= 0.05F) {
 			ItemStack nugget = new ItemStack(RatsItemRegistry.RAT_NUGGET.get());
@@ -723,6 +734,8 @@ public class TamedRat extends InventoryRat {
 			if (!this.level().isClientSide()) {
 				this.spawnAtLocation(nugget, 0.0F);
 			}
+		} else {
+			this.getMainHandItem().shrink(1);
 		}
 	}
 
@@ -772,8 +785,8 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean tryDepositItemInContainers(ItemStack burntItem) {
-		if (level().getBlockEntity(this.blockPosition()) != null) {
-			BlockEntity te = level().getBlockEntity(this.blockPosition());
+		if (this.level().getBlockEntity(this.blockPosition()) != null) {
+			BlockEntity te = this.level().getBlockEntity(this.blockPosition());
 			if (te != null) {
 				LazyOptional<IItemHandler> handler = te.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
 				if (handler.resolve().isPresent()) {
@@ -1365,7 +1378,7 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Nullable
-	private EntityType<?> getMountEntityType() {
+	public EntityType<?> getMountEntityType() {
 		AtomicReference<EntityType<?>> type = new AtomicReference<>(null);
 		RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof MountRatUpgradeItem, (stack, slot) -> type.set(((MountRatUpgradeItem<?>) stack.getItem()).getEntityType()));
 		return type.get();

@@ -65,14 +65,7 @@ public class OreRatNuggetItem extends Item {
 		return ItemStack.EMPTY;
 	}
 
-	public static ItemStack saveResourceToNugget(Level level, ItemStack resource, boolean smeltOreFirst) {
-		if (smeltOreFirst) {
-			Container container = new SimpleContainer(resource.copy());
-			SmeltingRecipe recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, container, level).orElse(null);
-			if (recipe != null && !recipe.getResultItem(level.registryAccess()).isEmpty()) {
-				resource = recipe.getResultItem(level.registryAccess()).copy();
-			}
-		}
+	public static ItemStack saveResourceToNugget(ItemStack resource) {
 		ItemStack stack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE.get());
 		CompoundTag nuggetTag = new CompoundTag();
 		CompoundTag oreTag = new CompoundTag();
