@@ -125,7 +125,7 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
-		this.setSoulVariant(accessor.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY));
+		this.setSoulVariant(accessor.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY) || accessor.getRandom().nextInt(100) == 0);
 		return data;
 	}
 
