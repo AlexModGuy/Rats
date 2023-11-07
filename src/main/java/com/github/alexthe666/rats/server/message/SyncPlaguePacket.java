@@ -10,56 +10,42 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncPlaguePacket {
+public record SyncPlaguePacket(int entityId, byte effectId, byte amplifier, int duration, byte flags) {
 	private static final int FLAG_AMBIENT = 1;
 	private static final int FLAG_VISIBLE = 2;
 	private static final int FLAG_SHOW_ICON = 4;
-	private final int entityId;
-	private final byte effectId;
-	private final byte effectAmplifier;
-	private final int effectDurationTicks;
-	private final byte flags;
 
-	public SyncPlaguePacket(int mobId, MobEffectInstance mobEffectInstance) {
-		this.entityId = mobId;
-		this.effectId = (byte) (MobEffect.getId(mobEffectInstance.getEffect()) & 255);
-		this.effectAmplifier = (byte) (mobEffectInstance.getAmplifier() & 255);
-		this.effectDurationTicks = Math.min(mobEffectInstance.getDuration(), 32767);
+	public SyncPlaguePacket(int id, MobEffectInstance effect) {
+		this(id, (byte) (MobEffect.getId(effect.getEffect()) & 255), (byte) (effect.getAmplifier() & 255), Math.min(effect.getDuration(), 32767), getFlags(effect));
+	}
 
+	private static byte getFlags(MobEffectInstance mobEffectInstance) {
 		byte flags = 0;
 		if (mobEffectInstance.isAmbient()) {
-			flags = (byte) (flags | FLAG_AMBIENT);
+			flags = (byte)(flags | FLAG_AMBIENT);
 		}
 
 		if (mobEffectInstance.isVisible()) {
-			flags = (byte) (flags | FLAG_VISIBLE);
+			flags = (byte)(flags | FLAG_VISIBLE);
 		}
 
 		if (mobEffectInstance.showIcon()) {
-			flags = (byte) (flags | FLAG_SHOW_ICON);
+			flags = (byte)(flags | FLAG_SHOW_ICON);
 		}
 
-		this.flags = flags;
-	}
-
-	private SyncPlaguePacket(int entityId, byte effectId, byte effectAmplifier, int effectDurationTicks, byte flags) {
-		this.entityId = entityId;
-		this.effectId = effectId;
-		this.effectAmplifier = effectAmplifier;
-		this.effectDurationTicks = effectDurationTicks;
-		this.flags = flags;
+		return flags;
 	}
 
 	public boolean isEffectVisible() {
-		return (this.flags & 2) == 2;
+		return (this.flags() & 2) == 2;
 	}
 
 	public boolean isEffectAmbient() {
-		return (this.flags & 1) == 1;
+		return (this.flags() & 1) == 1;
 	}
 
 	public boolean effectShowsIcon() {
-		return (this.flags & 4) == 4;
+		return (this.flags() & 4) == 4;
 	}
 
 	public static SyncPlaguePacket decode(FriendlyByteBuf buf) {
@@ -67,11 +53,11 @@ public class SyncPlaguePacket {
 	}
 
 	public static void encode(SyncPlaguePacket packet, FriendlyByteBuf buf) {
-		buf.writeVarInt(packet.entityId);
-		buf.writeByte(packet.effectId);
-		buf.writeByte(packet.effectAmplifier);
-		buf.writeVarInt(packet.effectDurationTicks);
-		buf.writeByte(packet.flags);
+		buf.writeVarInt(packet.entityId());
+		buf.writeByte(packet.effectId());
+		buf.writeByte(packet.amplifier());
+		buf.writeVarInt(packet.duration());
+		buf.writeByte(packet.flags());
 	}
 
 	public static class Handler {
@@ -84,12 +70,16 @@ public class SyncPlaguePacket {
 						return;
 					}
 
-					Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId);
+					Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
 					if (entity instanceof LivingEntity living) {
-						MobEffect mobeffect = MobEffect.byId(packet.effectId & 0xFF);
+						MobEffect mobeffect = MobEffect.byId(packet.effectId() & 0xFF);
 						if (mobeffect != null) {
-							MobEffectInstance mobeffectinstance = new MobEffectInstance(mobeffect, packet.effectDurationTicks, packet.effectAmplifier, packet.isEffectAmbient(), packet.isEffectVisible(), packet.effectShowsIcon());
-							living.forceAddEffect(mobeffectinstance, null);
+							if (packet.duration() == 0) {
+								living.removeEffect(mobeffect);
+							} else {
+								MobEffectInstance mobeffectinstance = new MobEffectInstance(mobeffect, packet.duration(), packet.amplifier(), packet.isEffectAmbient(), packet.isEffectVisible(), packet.effectShowsIcon());
+								living.forceAddEffect(mobeffectinstance, null);
+							}
 						}
 					}
 				}

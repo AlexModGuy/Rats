@@ -111,8 +111,8 @@ public class ForgeEvents {
 				}
 			}
 		}
-		if (event.getTarget() instanceof LivingEntity living) {
-			maybeAddAndSyncPlague(event.getEntity(), living, 6000, 0);
+		if (event.getTarget() instanceof LivingEntity living && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
 		}
 	}
 
@@ -181,15 +181,15 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void checkIfPlagueCanApplyToMob(MobEffectEvent.Applicable event) {
-		if (event.getEffectInstance().getEffect() == RatsEffectRegistry.PLAGUE.get() && event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE)) {
+		if (event.getEffectInstance().getEffect() == RatsEffectRegistry.PLAGUE.get() && (!RatConfig.plagueSpread || event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE))) {
 			event.setResult(Event.Result.DENY);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onHitEntity(LivingAttackEvent event) {
-		if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
-			maybeAddAndSyncPlague(living, event.getEntity(), 6000, 0);
+		if (event.getSource().getDirectEntity() instanceof LivingEntity living && living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
 		}
 		int protectors = getProtectorCount(event.getEntity());
 		if (protectors > 0) {
@@ -434,19 +434,6 @@ public class ForgeEvents {
 				}
 			} else {
 				event.getEntity().displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_NO_RAT).withStyle(ChatFormatting.RED), true);
-			}
-		}
-	}
-
-	public static void maybeAddAndSyncPlague(@Nullable LivingEntity attacker, LivingEntity victim, int duration, int amplifier) {
-		if (RatConfig.plagueSpread && !victim.level().isClientSide()) {
-			if (attacker == null || attacker.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
-				MobEffectInstance plague = new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), duration, amplifier);
-				if (!victim.hasEffect(RatsEffectRegistry.PLAGUE.get()) && victim.canBeAffected(plague)) {
-					victim.addEffect(plague);
-					victim.playSound(RatsSoundRegistry.PLAGUE_SPREAD.get(), 1.0F, 1.0F);
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> victim), new SyncPlaguePacket(victim.getId(), plague));
-				}
 			}
 		}
 	}

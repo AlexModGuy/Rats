@@ -1,9 +1,11 @@
 package com.github.alexthe666.rats.server.entity.projectile;
 
+import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -62,7 +64,7 @@ public class PlagueShot extends ArrowlikeProjectile {
 		super.onHitEntity(result);
 		if (result.getEntity() instanceof LivingEntity living) {
 			if (this.getOwner() == null || !living.is(this.getOwner())) {
-				ForgeEvents.maybeAddAndSyncPlague(null, living, 1200, 0);
+				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 1200));
 			}
 		}
 	}

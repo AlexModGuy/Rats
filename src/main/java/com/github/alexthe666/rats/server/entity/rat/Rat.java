@@ -28,6 +28,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -392,7 +393,7 @@ public class Rat extends DiggingRat {
 		if (flag && this.hasPlague()) {
 			this.doEnchantDamageEffects(this, entity);
 			if (entity instanceof LivingEntity living && this.rollForPlague(living)) {
-				ForgeEvents.maybeAddAndSyncPlague(this, living, 6000, 0);
+				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
 			}
 		}
 		return flag;
@@ -404,7 +405,7 @@ public class Rat extends DiggingRat {
 			if (entity instanceof Rat rat && !rat.hasPlague()) {
 				rat.setPlagued(true);
 			} else if (entity instanceof LivingEntity living && this.rollForPlague(living)) {
-				ForgeEvents.maybeAddAndSyncPlague(null, living, 6000, 0);
+				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
 			}
 		}
 		super.doPush(entity);

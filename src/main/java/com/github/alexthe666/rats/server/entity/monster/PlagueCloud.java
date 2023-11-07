@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.entity.monster;
 
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.data.tags.RatsEntityTags;
+import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
@@ -16,6 +17,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -133,7 +135,7 @@ public class PlagueCloud extends Monster {
 	public boolean doHurtTarget(Entity entity) {
 		boolean flag = super.doHurtTarget(entity);
 		if (flag && entity instanceof LivingEntity living) {
-			ForgeEvents.maybeAddAndSyncPlague(null, living, 600, 0);
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 600));
 		}
 		return flag;
 	}

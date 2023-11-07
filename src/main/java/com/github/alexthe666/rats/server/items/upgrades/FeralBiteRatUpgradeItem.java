@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades;
 
+import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
@@ -18,7 +19,7 @@ public class FeralBiteRatUpgradeItem extends BaseRatUpgradeItem implements PostA
 	@Override
 	public void afterHit(TamedRat rat, LivingEntity target) {
 		target.hurt(rat.damageSources().mobAttack(rat), 5.0F);
-		ForgeEvents.maybeAddAndSyncPlague(null, target, 600, 0);
+		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 600));
 		target.addEffect(new MobEffectInstance(MobEffects.POISON, 600));
 	}
 
