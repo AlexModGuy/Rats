@@ -78,13 +78,11 @@ public class RatsMod {
 
 	public static boolean ICEANDFIRE_LOADED;
 	public static boolean RATLANTIS_DATAPACK_ENABLED = false;
-	public static boolean HEART_OVERLAY_MOD_INSTALLED;
 	public static final List<Item> RATLANTIS_ITEMS = new ArrayList<>();
 	private static final List<Pair<String, Component>> MOB_CACHE = new ArrayList<>();
 
 	public RatsMod() {
 		ICEANDFIRE_LOADED = ModList.get().isLoaded("iceandfire");
-		HEART_OVERLAY_MOD_INSTALLED = ModList.get().isLoaded("mantle") || ModList.get().isLoaded("armorpointspp") || ModList.get().isLoaded("colorfulhearts");
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
 		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);

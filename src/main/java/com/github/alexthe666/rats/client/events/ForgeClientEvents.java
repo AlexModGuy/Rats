@@ -36,7 +36,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -206,7 +205,7 @@ public class ForgeClientEvents {
 
 		gui.lastHealth = health;
 		int healthLast = gui.displayHealth;
-		if (RatsMod.HEART_OVERLAY_MOD_INSTALLED) {
+		if (RatConfig.singleRowPlagueHearts) {
 			//heart overlays cast to long, so have to do the same in this case
 			gui.random.setSeed(gui.getGuiTicks() * 312871L);
 		} else {
@@ -225,16 +224,16 @@ public class ForgeClientEvents {
 
 		int regen = -1;
 		if (player.hasEffect(MobEffects.REGENERATION)) {
-			regen = gui.getGuiTicks() % (RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 25 : Mth.ceil(healthMax + 5.0F));
+			regen = gui.getGuiTicks() % (RatConfig.singleRowPlagueHearts ? 25 : Mth.ceil(healthMax + 5.0F));
 		}
 
 		int healthAmount = Mth.ceil((double) healthMax / 2.0D);
 
-		for (int currentHeart = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? Math.min(9, healthAmount + absorption - 1) : healthAmount + absorption - 1; currentHeart >= 0; currentHeart--) {
-			int heartYPos = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 18 : 0;
-			int emptyHeartYPos = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? 27 : 9;
+		for (int currentHeart = RatConfig.singleRowPlagueHearts ? Math.min(9, healthAmount + absorption - 1) : healthAmount + absorption - 1; currentHeart >= 0; currentHeart--) {
+			int heartYPos = RatConfig.singleRowPlagueHearts ? 18 : 0;
+			int emptyHeartYPos = RatConfig.singleRowPlagueHearts ? 27 : 9;
 			int x = left + currentHeart % 10 * 8;
-			int y = RatsMod.HEART_OVERLAY_MOD_INSTALLED ? top : top - currentHeart / 10 * rowHeight;
+			int y = RatConfig.singleRowPlagueHearts ? top : top - currentHeart / 10 * rowHeight;
 			if (health + absorption <= 4) {
 				y += gui.random.nextInt(2);
 			}
@@ -243,37 +242,33 @@ public class ForgeClientEvents {
 				y -= 2;
 			}
 
-			if (!RatsMod.HEART_OVERLAY_MOD_INSTALLED) {
-				drawTexturedModalRect(graphics, x, y, 0, emptyHeartYPos);
+			if (!RatConfig.singleRowPlagueHearts) {
+				graphics.blit(PLAGUE_HEART_TEXTURE, x, y, 0, emptyHeartYPos, 9, 9);
 			}
 			int fullHealth = currentHeart * 2;
 			//absorption hearts
-			if (!RatsMod.HEART_OVERLAY_MOD_INSTALLED && currentHeart >= healthAmount) {
+			if (!RatConfig.singleRowPlagueHearts && currentHeart >= healthAmount) {
 				int k2 = fullHealth - health * 2;
 				if (k2 < absorption) {
 					boolean halfHeart = k2 + 1 == absorption;
-					drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
+					graphics.blit(PLAGUE_HEART_TEXTURE, x, y, halfHeart ? 9 : 0, heartYPos, 9, 9);
 				}
 			}
 
 			//blinking hearts
 			if (highlight && fullHealth < healthLast) {
 				boolean halfHeart = fullHealth + 1 == healthLast;
-				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
+				graphics.blit(PLAGUE_HEART_TEXTURE, x, y, halfHeart ? 9 : 0, heartYPos, 9, 9);
 			}
 
 			//normal hearts
 			if (fullHealth < health) {
 				boolean halfHeart = fullHealth + 1 == health;
-				drawTexturedModalRect(graphics, x, y, halfHeart ? 9 : 0, heartYPos);
+				graphics.blit(PLAGUE_HEART_TEXTURE, x, y, halfHeart ? 9 : 0, heartYPos, 9, 9);
 			}
 		}
 		RenderSystem.disableBlend();
 		Minecraft.getInstance().getProfiler().endTick();
-	}
-
-	private static void drawTexturedModalRect(GuiGraphics graphics, int x, int y, int textureX, int textureY) {
-		graphics.blit(PLAGUE_HEART_TEXTURE, x, y, textureX, textureY, 9, 9);
 	}
 
 	@SubscribeEvent
