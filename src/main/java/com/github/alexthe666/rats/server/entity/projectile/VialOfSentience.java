@@ -43,7 +43,7 @@ public class VialOfSentience extends ThrowableItemProjectile {
 						double d0 = this.distanceToSqr(living);
 						if (d0 < 16.0D) {
 							if (living instanceof FeralRatlantean) {
-								if (RatConfig.summonBaronOnlyInRatlantis && !this.level().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
+								if (RatConfig.summonNeoOnlyInRatlantis && !this.level().dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)) {
 									if (this.getOwner() instanceof Player player) {
 										player.displayClientMessage(Component.translatable(RatsLangConstants.NEO_RATLANTIS_ONLY), true);
 									}
