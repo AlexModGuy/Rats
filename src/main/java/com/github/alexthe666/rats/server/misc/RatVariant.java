@@ -11,25 +11,19 @@ import java.util.Optional;
 public class RatVariant {
 
 	private final ResourceLocation texture;
-	private final String name;
 	private final boolean breedingExclusive;
 
 	public RatVariant(RatVariant.Properties properties) {
-		this(properties.texture, properties.name, properties.breedingExclusive);
+		this(properties.texture, properties.breedingExclusive);
 	}
 
-	private RatVariant(ResourceLocation texture, String name, boolean breedingExclusive) {
+	private RatVariant(ResourceLocation texture, boolean breedingExclusive) {
 		this.texture = texture;
-		this.name = name;
 		this.breedingExclusive = breedingExclusive;
 	}
 
 	public ResourceLocation getTexture() {
 		return this.texture;
-	}
-
-	public String getName() {
-		return this.name;
 	}
 
 	public boolean isBreedingExclusive() {
@@ -38,34 +32,21 @@ public class RatVariant {
 
 	public static class Properties {
 		private final ResourceLocation texture;
-		private String name = "";
 		private boolean breedingExclusive = false;
 
 		public Properties(ResourceLocation texture) {
 			this.texture = texture;
 		}
 
-		public RatVariant.Properties setNamingExclusive(String name) {
-			this.name = name;
-			return this;
-		}
-
 		public RatVariant.Properties setBreedingExclusive() {
 			this.breedingExclusive = true;
 			return this;
-		}
-
-		public static RatVariant.Properties copyFrom(RatVariant rat) {
-			RatVariant.Properties props = new RatVariant.Properties(rat.getTexture());
-			props.name = rat.name;
-			props.breedingExclusive = rat.breedingExclusive;
-			return props;
 		}
 	}
 
 	public static RatVariant getRandomVariant(RandomSource random, boolean fromBreeding) {
 		List<RatVariant> validVariants = new ArrayList<>(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValues().stream().toList());
-		validVariants.removeIf(variant -> (!fromBreeding && variant.isBreedingExclusive()) || !variant.getName().isEmpty());
+		validVariants.removeIf(variant -> fromBreeding != variant.isBreedingExclusive());
 		return validVariants.toArray(RatVariant[]::new)[random.nextInt(validVariants.size())];
 	}
 
