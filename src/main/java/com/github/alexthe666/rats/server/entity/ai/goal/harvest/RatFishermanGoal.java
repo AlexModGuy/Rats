@@ -7,15 +7,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -29,7 +31,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	private final TamedRat rat;
 	private boolean hasReachedWater = false;
 	private boolean playedThrownSound = false;
-	private int fishingCooldown = 700;
+	private int fishingCooldown = 70;
 
 	public RatFishermanGoal(TamedRat rat) {
 		super(rat);
@@ -54,9 +56,11 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	@Override
 	public void stop() {
 		super.stop();
+		this.playedThrownSound = false;
 		this.rat.crafting = false;
+		this.rat.level().broadcastEntityEvent(this.rat, (byte) 86);
 		this.hasReachedWater = false;
-		this.fishingCooldown = 750 + this.rat.getRandom().nextInt(250);
+		this.fishingCooldown = 70 + this.rat.getRandom().nextInt(20);
 	}
 
 	@Override
@@ -122,17 +126,20 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 	}
 
 	public void spawnFishingLoot() {
-		this.fishingCooldown = 750 + this.rat.getRandom().nextInt(250);
-		double luck = 0.1D;
-		LootParams.Builder builder = new LootParams.Builder((ServerLevel) this.rat.level()).withLuck((float) luck);
-		LootContextParamSet.Builder paramBuilder = new LootContextParamSet.Builder();
-		List<ItemStack> result = this.rat.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING).getRandomItems(builder.create(paramBuilder.build()));
-
+		float luck = 0.1F;
 		FakePlayer player = FakePlayerFactory.getMinecraft((ServerLevel) this.rat.level());
 		player.setPos(this.rat.position());
 
 		FishingHook hook = new FishingHook(player, this.rat.level(), this.rat.getRandom().nextInt(4), 0);
 		hook.setPos(this.rat.position());
+		LootParams params = (new LootParams.Builder((ServerLevel)this.rat.level()))
+				.withParameter(LootContextParams.ORIGIN, this.rat.position())
+				.withParameter(LootContextParams.TOOL, EnchantmentHelper.enchantItem(this.rat.getRandom(), new ItemStack(Items.FISHING_ROD), 100, true))
+				.withParameter(LootContextParams.THIS_ENTITY, hook)
+				.withParameter(LootContextParams.KILLER_ENTITY, player)
+				.withLuck(luck + hook.luck)
+				.create(LootContextParamSets.FISHING);
+		List<ItemStack> result = this.rat.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params);
 		ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (!event.isCanceled()) {
