@@ -3,6 +3,7 @@ package com.github.alexthe666.rats;
 public class RatConfig {
 	//CLIENT
 	public static boolean plagueHearts = true;
+	public static boolean singleRowPlagueHearts = false;
 	public static boolean funnyFluteSound = true;
 	public static boolean synesthesiaShader = true;
 	public static boolean ratFartNoises = true;
@@ -113,6 +114,7 @@ public class RatConfig {
 	public static void bakeClient() {
 		try {
 			plagueHearts = ConfigHolder.CLIENT.plagueHearts.get();
+			singleRowPlagueHearts = ConfigHolder.CLIENT.singleRowPlagueOverlay.get();
 			synesthesiaShader = ConfigHolder.CLIENT.synesthesiaShader.get();
 			funnyFluteSound = ConfigHolder.CLIENT.funnyFluteSound.get();
 			ratFartNoises = ConfigHolder.CLIENT.ratFartNoises.get();

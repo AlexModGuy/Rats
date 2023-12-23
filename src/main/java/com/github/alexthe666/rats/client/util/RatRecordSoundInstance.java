@@ -12,8 +12,8 @@ import net.minecraft.world.item.RecordItem;
 
 public class RatRecordSoundInstance extends AbstractTickableSoundInstance {
 
-	private TamedRat rat;
-	private RecordItem record;
+	private final TamedRat rat;
+	private final RecordItem record;
 
 	public RatRecordSoundInstance(TamedRat rat, RecordItem record) {
 		super(record.getSound(), SoundSource.AMBIENT, RandomSource.create());

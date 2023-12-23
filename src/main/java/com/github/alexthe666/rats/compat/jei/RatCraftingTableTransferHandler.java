@@ -43,9 +43,6 @@ public class RatCraftingTableTransferHandler implements IRecipeTransferHandler<R
 			//start at 1 so we dont add anything to the output
 			int index = 1;
 			for (IRecipeSlotView view : recipeSlots.getSlotViews(RecipeIngredientRole.INPUT)) {
-				//Creating a mutable list
-				List<ItemStack> stacks = view.getItemStacks().collect(Collectors.toCollection(ArrayList::new));
-
 				//moving the displayed stack to first
 				Optional<ItemStack> displayStack = view.getDisplayedItemStack();
 				container.getSlot(index).set(displayStack.orElse(ItemStack.EMPTY));
