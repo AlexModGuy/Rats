@@ -313,6 +313,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean isHoldingFood() {
+		if (!this.getCommand().allowsEating && !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get())) return false;
 		return !this.getMainHandItem().isEmpty() && RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.isRatHoldingFood(this), RatUtils.isRatFood(this.getMainHandItem()));
 	}
 
@@ -698,11 +699,6 @@ public class TamedRat extends InventoryRat {
 
 	public void setMountCooldown(int cooldown) {
 		this.getEntityData().set(MOUNT_RESPAWN_COOLDOWN, cooldown);
-	}
-
-	@Override
-	public boolean isEating() {
-		return super.isEating() && this.getCommand().allowsEating;
 	}
 
 	@Override
