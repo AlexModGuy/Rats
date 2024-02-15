@@ -85,7 +85,6 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	public void onTake(Player player, ItemStack stack) {
 		this.checkTakeAchievements(stack);
 		ForgeHooks.setCraftingPlayer(player);
-		this.table.consumeIngredients(player);
 		this.table.updateRecipe();
 		ForgeHooks.setCraftingPlayer(null);
 	}
