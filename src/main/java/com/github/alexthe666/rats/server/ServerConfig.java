@@ -64,6 +64,7 @@ public class ServerConfig {
 	public final ForgeConfigSpec.DoubleValue nonbelieverDamageUpgrade;
 	public final ForgeConfigSpec.DoubleValue nonbelieverArmorUpgrade;
 	public final ForgeConfigSpec.BooleanValue ratPsychicThrowsBlocks;
+	public final ForgeConfigSpec.DoubleValue carratDamagePerBite;
 
 	public final ForgeConfigSpec.BooleanValue blackDeathLightning;
 	public final ForgeConfigSpec.BooleanValue bdConstantRatSpawns;
@@ -209,6 +210,7 @@ public class ServerConfig {
 		this.nonbelieverDamageUpgrade = buildDouble(builder, "Nonbeliever Damage Upgrade", 40.0D, 0.0D, 2048.0D, "Sets a Rat's attack damage to this value when they have the Nonbeliever Upgrade.");
 		this.upgradeRegenRate = buildInt(builder, "Upgrade Regeneration Rate", 30, 0, Integer.MAX_VALUE, "Rats that have an upgrade that regenerates health will regen half a heart every X ticks, X being the number defined here. Set to 0 to disable health regeneration.");
 		this.ratPsychicThrowsBlocks = buildBoolean(builder, "Psychic Throws Blocks", false, "If true, Rats that have the Psychic upgrade will pick up blocks and throw them towards enemies.");
+		this.carratDamagePerBite = buildDouble(builder, "Damage per Carrat Upgrade bite", 0.0D, 0.0D, Double.MAX_VALUE, "How much damage a rat should take when eaten while having the Carrat Upgrade.");
 
 		builder.pop().push("Misc Rat Adjustments");
 		this.ratSackCapacity = buildInt(builder, "Rat Sack Capacity", 16, 1, 64, "Defines the amount of rats you can store in a sack at one time.");

@@ -73,6 +73,7 @@ public class RatConfig {
 	public static double nonbelieverDamageUpgrade = 40.0D;
 	public static double nonbelieverArmorUpgrade = 20.0D;
 	public static boolean ratPsychicThrowsBlocks = false;
+	public static double carratDamagePerBite = 0.0D;
 
 	public static boolean blackDeathLightning = true;
 	public static boolean bdConstantRatSpawns = true;
@@ -188,6 +189,7 @@ public class RatConfig {
 			nonbelieverHealthUpgrade = ConfigHolder.SERVER.nonbelieverHealthUpgrade.get();
 			nonbelieverArmorUpgrade = ConfigHolder.SERVER.nonbelieverArmorUpgrade.get();
 			nonbelieverDamageUpgrade = ConfigHolder.SERVER.nonbelieverDamageUpgrade.get();
+			carratDamagePerBite = ConfigHolder.SERVER.carratDamagePerBite.get();
 
 			blackDeathLightning = ConfigHolder.SERVER.blackDeathLightning.get();
 			bdConstantRatSpawns = ConfigHolder.SERVER.bdConstantRatSpawns.get();

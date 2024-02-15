@@ -863,6 +863,9 @@ public class TamedRat extends InventoryRat {
 					double d2 = this.getRandom().nextGaussian() * 0.02D;
 					this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.CARROT)), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight() * 2.0F) - (double) this.getBbHeight(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
 				}
+				if (RatConfig.carratDamagePerBite > 0.0D) {
+					this.hurt(this.damageSources().playerAttack(player), (float) RatConfig.carratDamagePerBite);
+				}
 				return InteractionResult.SUCCESS;
 			}
 		}
