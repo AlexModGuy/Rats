@@ -821,7 +821,7 @@
   "item.rats.rat_upgrade_sculked.desc0": "老鼠获得怖人的幽匿外观",
   "item.rats.rat_upgrade_sculked.desc1": "老鼠在执行任务时不会发出任何动静，连监守者都无法察觉它们",
   "item.rats.rat_upgrade_shears": "老鼠升级：剪刀",
-  "item.rats.rat_upgrade_shears.desc0": "当设置为“采收”命令时，老鼠会给羊、蘑菇牛等使用剪刀",
+  "item.rats.rat_upgrade_shears.desc0": "当设置为“采收”命令时，老鼠会给羊、哞菇等使用剪刀",
   "item.rats.rat_upgrade_shears.desc1": "若附近有蜂巢时老鼠便会收集蜜脾",
   "item.rats.rat_upgrade_speed": "老鼠升级：速度",
   "item.rats.rat_upgrade_strength": "老鼠升级：力量",
