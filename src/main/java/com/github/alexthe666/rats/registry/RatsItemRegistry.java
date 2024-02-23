@@ -123,7 +123,7 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> CONFIT_BYALDI = ITEMS.register("confit_byaldi", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA.get(), 2400), 1.0F).alwaysEat().build())));
 	public static final RegistryObject<Item> POTATO_PANCAKE = ITEMS.register("potato_pancake", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.5F).alwaysEat().build())));
 	public static final RegistryObject<Item> LITTLE_BLACK_SQUASH_BALLS = ITEMS.register("little_black_squash_balls", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> LITTLE_BLACK_WORM = ITEMS.register("little_black_worm", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> LITTLE_BLACK_WORM = ITEMS.register("little_black_worm", () -> new LoreTagItem(new Item.Properties(), 1));
 	public static final RegistryObject<Item> CENTIPEDE = ITEMS.register("centipede", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> POTATO_KNISHES = ITEMS.register("potato_knishes", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationMod(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA.get(), 2400), 1.0F).alwaysEat().build())));
 	public static final RegistryObject<Item> TINY_COIN = ITEMS.register("tiny_coin", () -> new Item(new Item.Properties()));

@@ -126,7 +126,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItem(RatsItemRegistry.ASSORTED_VEGETABLES, "Assorted Vegetables");
 		this.addItemWithDesc(RatsItemRegistry.BLACK_DEATH_MASK, "Black Death Mask", "Plague Rats will no longer target you when worn");
 		this.addItem(RatsItemRegistry.BLUE_CHEESE, "Blue Cheese");
-		this.addItemWithJEIDesc(RatsItemRegistry.CENTIPEDE, "Centipede", "Right click a Little Black Worm onto some coarse dirt to turn it into a Centipede.");
+		this.addItem(RatsItemRegistry.CENTIPEDE, "Centipede");
 		this.addItem(RatsItemRegistry.CHARGED_CREEPER_CHUNK, "Charged Creeper Chunk");
 		this.addItemWithJEIDesc(RatsItemRegistry.CHEESE, "Cheese", "Used to tame rats. Throw cheese on the ground and let the wild rat eat it to tame one.");
 		this.addItemWithBothDescs(RatsItemRegistry.CHEESE_STICK, "Cheese Staff", "Used to set rat deposit and pickup inventories and rat home points. Right click on a rat with it to bind, then right click on a block or container (chest, furnace, machine, etc) for more item transport related options.", "Use on a rat to bind it", "Interact with a block to allow the rat to deposit or pick up items in it");
@@ -149,7 +149,7 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addItem(RatsItemRegistry.HALO_HAT, "Golden Halo");
 		this.addItem(RatsItemRegistry.HERB_BUNDLE, "Bundle of Sweet-Smelling Herbs");
 		this.addItem(RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS, "Little Black Squash Balls");
-		this.addItem(RatsItemRegistry.LITTLE_BLACK_WORM, "Little Black Worm");
+		this.addItemWithDesc(RatsItemRegistry.LITTLE_BLACK_WORM, "Little Black Worm", "Right click onto coarse dirt to turn into a centipede");
 		this.addMusicDisc(RatsItemRegistry.MUSIC_DISC_LIVING_MICE, "C418 - Living Mice");
 		this.addMusicDisc(RatsItemRegistry.MUSIC_DISC_MICE_ON_VENUS, "C418 - Mice on Venus");
 		this.addItem(RatsItemRegistry.NETHER_CHEESE, "Nether Cheese");
