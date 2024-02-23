@@ -82,8 +82,8 @@ public class RatArrow extends AbstractArrow {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
-		float f = (float)this.getDeltaMovement().length();
-		int i = Mth.ceil(Mth.clamp((double)f * this.getBaseDamage(), 0.0D, (double)Integer.MAX_VALUE));
+		float f = (float) this.getDeltaMovement().length();
+		int i = Mth.ceil(Mth.clamp((double) f * this.getBaseDamage(), 0.0D, (double) Integer.MAX_VALUE));
 		if (this.getPierceLevel() > 0) {
 			if (this.piercingIgnoreEntityIds == null) {
 				this.piercingIgnoreEntityIds = new IntOpenHashSet(5);
@@ -103,7 +103,7 @@ public class RatArrow extends AbstractArrow {
 
 		if (this.isCritArrow()) {
 			long j = this.random.nextInt(i / 2 + 2);
-			i = (int)Math.min(j + (long)i, 2147483647L);
+			i = (int) Math.min(j + (long) i, 2147483647L);
 		}
 
 		Entity entity1 = this.getOwner();
@@ -113,7 +113,7 @@ public class RatArrow extends AbstractArrow {
 		} else {
 			damagesource = this.damageSources().arrow(this, entity1);
 			if (entity1 instanceof LivingEntity) {
-				((LivingEntity)entity1).setLastHurtMob(entity);
+				((LivingEntity) entity1).setLastHurtMob(entity);
 			}
 		}
 
@@ -123,7 +123,7 @@ public class RatArrow extends AbstractArrow {
 			entity.setSecondsOnFire(5);
 		}
 
-		if (entity.hurt(damagesource, (float)i)) {
+		if (entity.hurt(damagesource, (float) i)) {
 			if (flag) {
 				return;
 			}
@@ -139,7 +139,7 @@ public class RatArrow extends AbstractArrow {
 
 				if (this.getKnockback() > 0) {
 					double d0 = Math.max(0.0D, 1.0D - livingentity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-					Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.getKnockback() * 0.6D * d0);
+					Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) this.getKnockback() * 0.6D * d0);
 					if (vec3.lengthSqr() > 0.0D) {
 						livingentity.push(vec3.x, 0.1D, vec3.z);
 					}

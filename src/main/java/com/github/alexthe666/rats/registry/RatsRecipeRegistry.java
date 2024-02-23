@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.server.recipes.ChefRecipe;
 import com.github.alexthe666.rats.server.recipes.DemonRatSwitchRecipe;
 import com.github.alexthe666.rats.server.recipes.RatsRecipeSerializer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.BannerDuplicateRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;

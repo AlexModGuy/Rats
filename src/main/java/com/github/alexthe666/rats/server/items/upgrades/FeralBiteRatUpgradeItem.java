@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.items.upgrades;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.PostAttackUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
 import net.minecraft.util.Mth;

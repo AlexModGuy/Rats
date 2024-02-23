@@ -66,7 +66,7 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 		if (this.rat.getVehicle() instanceof RatMount mount && mount.shouldTeleportWhenFarAway()) {
 			BlockPos blockpos = this.owner.blockPosition();
 
-			for(int i = 0; i < 10; ++i) {
+			for (int i = 0; i < 10; ++i) {
 				int j = this.randomIntInclusive(-3, 3);
 				int k = this.randomIntInclusive(-1, 1);
 				int l = this.randomIntInclusive(-3, 3);
@@ -80,12 +80,12 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 	}
 
 	private boolean attemptTeleportEntity(Entity mount, int x, int y, int z) {
-		if (Math.abs((double)x - this.owner.getX()) < 2.0D && Math.abs((double)z - this.owner.getZ()) < 2.0D) {
+		if (Math.abs((double) x - this.owner.getX()) < 2.0D && Math.abs((double) z - this.owner.getZ()) < 2.0D) {
 			return false;
 		} else if (!this.canTeleportTo(new BlockPos(x, y, z))) {
 			return false;
 		} else {
-			mount.moveTo((double)x + 0.5D, y, (double)z + 0.5D, this.rat.getYRot(), this.rat.getXRot());
+			mount.moveTo((double) x + 0.5D, y, (double) z + 0.5D, this.rat.getYRot(), this.rat.getXRot());
 			if (mount instanceof Mob mob) mob.getNavigation().stop();
 			this.rat.getNavigation().stop();
 			return true;

@@ -2,8 +2,8 @@ package com.github.alexthe666.rats.registry.worldgen;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
-import com.github.alexthe666.rats.server.world.ThickBranchingTrunkPlacer;
 import com.github.alexthe666.rats.server.world.RatlantisRuinConfiguration;
+import com.github.alexthe666.rats.server.world.ThickBranchingTrunkPlacer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;

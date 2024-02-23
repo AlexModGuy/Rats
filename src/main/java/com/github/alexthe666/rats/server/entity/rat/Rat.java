@@ -9,7 +9,6 @@ import com.github.alexthe666.rats.server.entity.ai.goal.WildRatAvoidPlayerGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatDefendPlagueDoctorGoal;
 import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
-import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatsDateFetcher;
 import net.minecraft.core.BlockPos;

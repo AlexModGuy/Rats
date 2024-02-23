@@ -166,7 +166,11 @@ public class RatsItemRegistry {
 	public static final RegistryObject<Item> RAT_UPGRADE_WHITELIST = ITEMS.register("rat_upgrade_whitelist", () -> new RatListUpgradeItem(new Item.Properties().stacksTo(1), 0, 3));
 	public static final RegistryObject<Item> RAT_UPGRADE_MOB_FILTER = ITEMS.register("rat_upgrade_mob_filter", () -> new MobFilterUpgradeItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> RAT_UPGRADE_REPLANTER = ITEMS.register("rat_upgrade_replanter", () -> new BaseRatUpgradeItem(new Item.Properties(), 0, 1));
-	public static final RegistryObject<Item> RAT_UPGRADE_FLIGHT = ITEMS.register("rat_upgrade_flight", () -> new BaseFlightRatUpgradeItem(new Item.Properties(), 0, 3) { public ItemStack getWing() { return RatsItemRegistry.FEATHERY_WING.get().getDefaultInstance(); }});
+	public static final RegistryObject<Item> RAT_UPGRADE_FLIGHT = ITEMS.register("rat_upgrade_flight", () -> new BaseFlightRatUpgradeItem(new Item.Properties(), 0, 3) {
+		public ItemStack getWing() {
+			return RatsItemRegistry.FEATHERY_WING.get().getDefaultInstance();
+		}
+	});
 	public static final RegistryObject<Item> RAT_UPGRADE_DRAGON = ITEMS.register("rat_upgrade_dragon", () -> new DragonRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_BEE = ITEMS.register("rat_upgrade_bee", () -> new BeeRatUpgradeItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAT_UPGRADE_AQUATIC = ITEMS.register("rat_upgrade_aquatic", () -> new AquaticRatUpgradeItem(new Item.Properties()));

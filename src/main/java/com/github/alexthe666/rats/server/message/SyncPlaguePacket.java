@@ -22,15 +22,15 @@ public record SyncPlaguePacket(int entityId, byte effectId, byte amplifier, int 
 	private static byte getFlags(MobEffectInstance mobEffectInstance) {
 		byte flags = 0;
 		if (mobEffectInstance.isAmbient()) {
-			flags = (byte)(flags | FLAG_AMBIENT);
+			flags = (byte) (flags | FLAG_AMBIENT);
 		}
 
 		if (mobEffectInstance.isVisible()) {
-			flags = (byte)(flags | FLAG_VISIBLE);
+			flags = (byte) (flags | FLAG_VISIBLE);
 		}
 
 		if (mobEffectInstance.showIcon()) {
-			flags = (byte)(flags | FLAG_SHOW_ICON);
+			flags = (byte) (flags | FLAG_SHOW_ICON);
 		}
 
 		return flags;

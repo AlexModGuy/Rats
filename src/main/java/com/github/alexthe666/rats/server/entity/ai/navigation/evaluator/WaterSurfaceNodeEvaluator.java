@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
@@ -49,7 +48,7 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 		int i = 0;
 		Map<Direction, Node> map = Maps.newEnumMap(Direction.class);
 
-		for(Direction direction : Direction.values()) {
+		for (Direction direction : Direction.values()) {
 			Node node = this.findAcceptedNode(currentNode.x + direction.getStepX(), currentNode.y + direction.getStepY(), currentNode.z + direction.getStepZ());
 			map.put(direction, node);
 			if (this.isNodeValid(node)) {
@@ -57,7 +56,7 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 			}
 		}
 
-		for(Direction direction1 : Direction.Plane.HORIZONTAL) {
+		for (Direction direction1 : Direction.Plane.HORIZONTAL) {
 			Direction direction2 = direction1.getClockWise();
 			Node node1 = this.findAcceptedNode(currentNode.x + direction1.getStepX() + direction2.getStepX(), currentNode.y, currentNode.z + direction1.getStepZ() + direction2.getStepZ());
 			if (this.isDiagonalNodeValid(node1, map.get(direction1), map.get(direction2))) {
@@ -108,9 +107,9 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 	public BlockPathTypes getBlockPathType(BlockGetter getter, int x, int y, int z, Mob mob) {
 		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-		for(int i = x; i < x + this.entityWidth; ++i) {
-			for(int j = y; j < y + this.entityHeight; ++j) {
-				for(int k = z; k < z + this.entityDepth; ++k) {
+		for (int i = x; i < x + this.entityWidth; ++i) {
+			for (int j = y; j < y + this.entityHeight; ++j) {
+				for (int k = z; k < z + this.entityDepth; ++k) {
 					FluidState fluidstate = getter.getFluidState(mutablePos.set(i, j, k));
 					BlockState blockstate = getter.getBlockState(mutablePos.set(i, j, k));
 					if (fluidstate.isEmpty() && blockstate.isPathfindable(getter, mutablePos.below(), PathComputationType.WATER) && blockstate.isAir()) {

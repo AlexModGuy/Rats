@@ -66,7 +66,8 @@ public class RatsLangGenerator extends LanguageProvider {
 		this.addBlockWithDesc(RatsBlockRegistry.AUTO_CURDLER, "Curdling Station", "Automatic cheese production", "§o\"Milk goes in, cheese comes out\"");
 		this.addBlock(RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE, "Block of Blue Cheese");
 		this.addBlock(RatsBlockRegistry.BLOCK_OF_CHEESE, "Block of Cheese");
-		this.addBlock(RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE, "Block of Nether Cheese");this.addBlock(RatsBlockRegistry.BLUE_CHEESE_CAULDRON, "Cauldron of Blue Cheese");
+		this.addBlock(RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE, "Block of Nether Cheese");
+		this.addBlock(RatsBlockRegistry.BLUE_CHEESE_CAULDRON, "Cauldron of Blue Cheese");
 		this.addBlock(RatsBlockRegistry.CHEESE_CAULDRON, "Cauldron of Cheese");
 		this.addBlockWithDesc(RatsBlockRegistry.COMPRESSED_GARBAGE, "Compressed Garbage", "Spawns double the amount of Rats than normal Garbage Piles");
 		this.addBlockWithDesc(RatsBlockRegistry.CURSED_GARBAGE, "Diseased Garbage", "Spawn Plague Rats on block");
@@ -749,7 +750,7 @@ public class RatsLangGenerator extends LanguageProvider {
 	}
 
 	public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
-		String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
+		String[] splitSoundName = sound.getId().getPath().split("\\.", 3);
 		this.add("subtitles.rats." + splitSoundName[0] + "." + splitSoundName[2], name);
 	}
 }

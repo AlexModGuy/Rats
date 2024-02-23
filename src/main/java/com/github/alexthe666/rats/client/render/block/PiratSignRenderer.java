@@ -28,7 +28,7 @@ public class PiratSignRenderer extends SignRenderer {
 	}
 
 	void renderSignModel(PoseStack stack, int light, int overlay, Model model, VertexConsumer consumer) {
-		SignModel sign = (SignModel)model;
+		SignModel sign = (SignModel) model;
 		sign.root.render(stack, consumer, light, overlay);
 	}
 }

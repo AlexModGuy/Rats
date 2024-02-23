@@ -72,10 +72,26 @@ public class RatlantisBlockRegistry {
 	public static final RegistryObject<Block> PIRAT_SAPLING = register("pirat_sapling", () -> new SaplingBlock(new PiratTreeGrower(), Block.Properties.of().pushReaction(PushReaction.DESTROY).ignitedByLava().mapColor(MapColor.TERRACOTTA_GREEN).randomTicks().instabreak().lightLevel(value -> 3).noCollission().noOcclusion().sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> POTTED_PIRAT_SAPLING = BLOCKS.register("potted_pirat_sapling", () -> new FlowerPotBlock(PIRAT_SAPLING.get(), Block.Properties.copy(Blocks.FLOWER_POT).lightLevel(value -> 3)));
 	public static final RegistryObject<Block> PIRAT_LEAVES = register("pirat_leaves", () -> new LeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN).lightLevel(value -> 3).sound(SoundType.AZALEA_LEAVES)));
-	public static final RegistryObject<Block> PIRAT_LOG = register("pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_BROWN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
-	public static final RegistryObject<Block> STRIPPED_PIRAT_LOG = register("stripped_pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
-	public static final RegistryObject<Block> PIRAT_WOOD = register("pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
-	public static final RegistryObject<Block> STRIPPED_PIRAT_WOOD = register("stripped_pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) { public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) { return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction); }});
+	public static final RegistryObject<Block> PIRAT_LOG = register("pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_BROWN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) {
+		public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) {
+			return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction);
+		}
+	});
+	public static final RegistryObject<Block> STRIPPED_PIRAT_LOG = register("stripped_pirat_log", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) {
+		public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) {
+			return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction);
+		}
+	});
+	public static final RegistryObject<Block> PIRAT_WOOD = register("pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) {
+		public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) {
+			return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction);
+		}
+	});
+	public static final RegistryObject<Block> STRIPPED_PIRAT_WOOD = register("stripped_pirat_wood", () -> new RotatedPillarBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F).sound(SoundType.WOOD)) {
+		public boolean skipRendering(BlockState state, BlockState sideState, Direction direction) {
+			return sideState.is(RatlantisBlockTags.PIRAT_LOGS) || super.skipRendering(state, sideState, direction);
+		}
+	});
 	public static final RegistryObject<Block> PIRAT_PLANKS = register("pirat_planks", () -> new HalfTransparentBlock(Block.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_GREEN).lightLevel(value -> 3).noOcclusion().strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> PIRAT_PRESSURE_PLATE = register("pirat_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()).noOcclusion(), RatsMod.PIRAT_WOOD_SET));
 	public static final RegistryObject<Block> PIRAT_TRAPDOOR = register("pirat_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(PIRAT_PLANKS.get()), RatsMod.PIRAT_WOOD_SET));

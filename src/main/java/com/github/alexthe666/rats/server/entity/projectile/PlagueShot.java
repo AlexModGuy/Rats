@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.entity.projectile;
 
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
-import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;

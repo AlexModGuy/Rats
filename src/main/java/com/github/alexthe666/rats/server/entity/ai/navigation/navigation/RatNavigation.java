@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.navigation.navigation;
 
 import com.github.alexthe666.rats.server.entity.ai.navigation.evaluator.RatNodeEvaluator;
-import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;

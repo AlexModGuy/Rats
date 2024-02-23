@@ -32,7 +32,8 @@ public class RatBottlerGoal extends BaseRatHarvestGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!super.canUse() || !this.checkTheBasics(false, false) || !this.rat.getMainHandItem().is(Items.GLASS_BOTTLE)) return false;
+		if (!super.canUse() || !this.checkTheBasics(false, false) || !this.rat.getMainHandItem().is(Items.GLASS_BOTTLE))
+			return false;
 		this.resetTarget();
 		return this.getTargetBlock() != null;
 	}

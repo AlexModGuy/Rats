@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;

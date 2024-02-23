@@ -8,7 +8,10 @@ import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -19,8 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class ItemModelGenerator extends ItemModelProvider {

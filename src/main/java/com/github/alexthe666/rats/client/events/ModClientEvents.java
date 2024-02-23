@@ -128,7 +128,7 @@ public class ModClientEvents {
 
 	@SubscribeEvent
 	public static void registerRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-		for(PiratWoodBoat.Type boatType : PiratWoodBoat.Type.values()) {
+		for (PiratWoodBoat.Type boatType : PiratWoodBoat.Type.values()) {
 			event.registerLayerDefinition(PiratWoodBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
 			event.registerLayerDefinition(PiratWoodBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
 		}

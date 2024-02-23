@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.data.tags;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsBannerPatternRegistry;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BannerPatternTagsProvider;

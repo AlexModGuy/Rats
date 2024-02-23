@@ -4,7 +4,6 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
-import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

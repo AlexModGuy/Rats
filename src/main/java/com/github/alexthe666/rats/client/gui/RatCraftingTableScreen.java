@@ -162,7 +162,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	protected boolean hasClickedOutside(double mouseX, double mouseY, int leftPos, int topPos, int button) {
-		boolean flag = mouseX < (double)leftPos || mouseY < (double)topPos || mouseX >= (double)(leftPos + this.imageWidth) || mouseY >= (double)(topPos + this.imageHeight);
+		boolean flag = mouseX < (double) leftPos || mouseY < (double) topPos || mouseX >= (double) (leftPos + this.imageWidth) || mouseY >= (double) (topPos + this.imageHeight);
 		return this.recipeBook.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, button) && flag;
 	}
 

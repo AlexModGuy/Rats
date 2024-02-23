@@ -219,7 +219,7 @@ public class RatConfig {
 			neoratlanteanAddHarmfulEffects = ConfigHolder.SERVER.neoratlanteanAddHarmfulEffects.get();
 			neoratlanteanEffectAttackCooldown = ConfigHolder.SERVER.neoratlanteanEffectAttackCooldown.get();
 
-			summonDutchratOnlyInRatlantis= ConfigHolder.SERVER.summonDutchratOnlyInRatlantis.get();
+			summonDutchratOnlyInRatlantis = ConfigHolder.SERVER.summonDutchratOnlyInRatlantis.get();
 			dutchratSwordThrowChance = ConfigHolder.SERVER.dutchratSwordThrowChance.get();
 			dutchratRestrictionRadius = ConfigHolder.SERVER.dutchratRestrictionRadius.get();
 

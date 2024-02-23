@@ -11,7 +11,6 @@ import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.RatSummoner;
 import com.github.alexthe666.rats.server.entity.ai.goal.RatFleePositionGoal;
-import com.github.alexthe666.rats.server.entity.ai.goal.WildRatTargetFoodGoal;
 import com.github.alexthe666.rats.server.entity.ai.navigation.control.RatMoveControl;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;

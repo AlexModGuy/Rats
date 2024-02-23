@@ -42,10 +42,10 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 	}
 
 	public static List<String> getSelectedMobs(ItemStack stack) {
-		if(stack.getTag() == null) return new ArrayList<>();
+		if (stack.getTag() == null) return new ArrayList<>();
 		List<String> mobs = new ArrayList<>();
 		ListTag tag = stack.getTag().getList("Mobs", Tag.TAG_STRING);
-		for(int i = 0; i < tag.size(); ++i) {
+		for (int i = 0; i < tag.size(); ++i) {
 			String s = tag.getString(i);
 			mobs.add(s);
 		}

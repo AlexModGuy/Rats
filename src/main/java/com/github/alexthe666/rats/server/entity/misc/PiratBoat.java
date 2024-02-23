@@ -211,7 +211,7 @@ public class PiratBoat extends Mob {
 		double d1 = target.getY() - cannonball.getY();
 		double d2 = target.getZ() - extraZ;
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		cannonball.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.1F, 1.0F);
+		cannonball.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.1F, 1.0F);
 		this.playSound(RatsSoundRegistry.PIRAT_SHOOT.get(), 3.0F, 2.3F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level().addFreshEntity(cannonball);
 		this.setFiring(true);
@@ -248,12 +248,12 @@ public class PiratBoat extends Mob {
 		boolean flag = false;
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(int k1 = i; k1 < j; ++k1) {
-			for(int l1 = k; l1 < l; ++l1) {
-				for(int i2 = i1; i2 < j1; ++i2) {
+		for (int k1 = i; k1 < j; ++k1) {
+			for (int l1 = k; l1 < l; ++l1) {
+				for (int i2 = i1; i2 < j1; ++i2) {
 					blockpos$mutableblockpos.set(k1, l1, i2);
 					FluidState fluidstate = this.level().getFluidState(blockpos$mutableblockpos);
-					if (fluidstate.is(Fluids.WATER) && d0 < (double)((float)blockpos$mutableblockpos.getY() + fluidstate.getHeight(this.level(), blockpos$mutableblockpos))) {
+					if (fluidstate.is(Fluids.WATER) && d0 < (double) ((float) blockpos$mutableblockpos.getY() + fluidstate.getHeight(this.level(), blockpos$mutableblockpos))) {
 						if (!fluidstate.isSource()) {
 							return Boat.Status.UNDER_FLOWING_WATER;
 						}
@@ -279,15 +279,15 @@ public class PiratBoat extends Mob {
 		this.waterLevel = -Double.MAX_VALUE;
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(int k1 = i; k1 < j; ++k1) {
-			for(int l1 = k; l1 < l; ++l1) {
-				for(int i2 = i1; i2 < j1; ++i2) {
+		for (int k1 = i; k1 < j; ++k1) {
+			for (int l1 = k; l1 < l; ++l1) {
+				for (int i2 = i1; i2 < j1; ++i2) {
 					blockpos$mutableblockpos.set(k1, l1, i2);
 					FluidState fluidstate = this.level().getFluidState(blockpos$mutableblockpos);
 					if (fluidstate.is(Fluids.WATER)) {
-						float f = (float)l1 + fluidstate.getHeight(this.level(), blockpos$mutableblockpos);
+						float f = (float) l1 + fluidstate.getHeight(this.level(), blockpos$mutableblockpos);
 						this.waterLevel = Math.max(f, this.waterLevel);
-						flag |= aabb.minY < (double)f;
+						flag |= aabb.minY < (double) f;
 					}
 				}
 			}
@@ -297,18 +297,18 @@ public class PiratBoat extends Mob {
 	}
 
 	public void floatBoat() {
-		double d1 = this.isNoGravity() ? 0.0D : (double)-0.04F;
+		double d1 = this.isNoGravity() ? 0.0D : (double) -0.04F;
 		double d2 = 0.0D;
 		float invFriction = 0.05F;
 		if (this.oldStatus == Boat.Status.IN_AIR && this.status != Boat.Status.IN_AIR && this.status != Boat.Status.ON_LAND) {
 			this.waterLevel = this.getY(1.0D);
-			this.setPos(this.getX(), (double)(this.getWaterLevelAbove() - this.getBbHeight()) + 0.101D, this.getZ());
+			this.setPos(this.getX(), (double) (this.getWaterLevelAbove() - this.getBbHeight()) + 0.101D, this.getZ());
 			this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D));
 			this.lastYd = 0.0D;
 			this.status = Boat.Status.IN_WATER;
 		} else {
 			if (this.status == Boat.Status.IN_WATER || this.status == Boat.Status.UNDER_WATER) {
-				d2 = (this.waterLevel - this.getY()) / (double)this.getBbHeight();
+				d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
 				invFriction = 0.9F;
 			} else if (this.status == Boat.Status.UNDER_FLOWING_WATER) {
 				d1 = -7.0E-4D;
@@ -342,11 +342,11 @@ public class PiratBoat extends Mob {
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 		label39:
-		for(int k1 = k; k1 < l; ++k1) {
+		for (int k1 = k; k1 < l; ++k1) {
 			float f = 0.0F;
 
-			for(int l1 = i; l1 < j; ++l1) {
-				for(int i2 = i1; i2 < j1; ++i2) {
+			for (int l1 = i; l1 < j; ++l1) {
+				for (int i2 = i1; i2 < j1; ++i2) {
 					blockpos$mutableblockpos.set(l1, k1, i2);
 					FluidState fluidstate = this.level().getFluidState(blockpos$mutableblockpos);
 					if (fluidstate.is(Fluids.WATER)) {
@@ -360,11 +360,11 @@ public class PiratBoat extends Mob {
 			}
 
 			if (f < 1.0F) {
-				return (float)blockpos$mutableblockpos.getY() + f;
+				return (float) blockpos$mutableblockpos.getY() + f;
 			}
 		}
 
-		return (float)(l + 1);
+		return (float) (l + 1);
 	}
 
 	public float getGroundFriction() {
@@ -381,11 +381,11 @@ public class PiratBoat extends Mob {
 		int k1 = 0;
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(int l1 = i; l1 < j; ++l1) {
-			for(int i2 = i1; i2 < j1; ++i2) {
+		for (int l1 = i; l1 < j; ++l1) {
+			for (int i2 = i1; i2 < j1; ++i2) {
 				int j2 = (l1 != i && l1 != j - 1 ? 0 : 1) + (i2 != i1 && i2 != j1 - 1 ? 0 : 1);
 				if (j2 != 2) {
-					for(int k2 = k; k2 < l; ++k2) {
+					for (int k2 = k; k2 < l; ++k2) {
 						if (j2 <= 0 || k2 != k && k2 != l - 1) {
 							blockpos$mutableblockpos.set(l1, k2, i2);
 							BlockState blockstate = this.level().getBlockState(blockpos$mutableblockpos);
@@ -399,7 +399,7 @@ public class PiratBoat extends Mob {
 			}
 		}
 
-		return f / (float)k1;
+		return f / (float) k1;
 	}
 
 	private static class BoatMoveControl extends MoveControl {
@@ -417,16 +417,16 @@ public class PiratBoat extends Mob {
 				double d1 = this.wantedY - this.boat.getY();
 				double d2 = this.wantedZ - this.boat.getZ();
 				double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-				if (d3 < (double)1.0E-5F) {
+				if (d3 < (double) 1.0E-5F) {
 					this.mob.setSpeed(0.0F);
 				} else {
 					d1 /= d3;
-					float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+					float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
 					this.boat.setYRot(this.rotlerp(this.boat.getYRot(), f, 90.0F));
 					this.boat.yBodyRot = this.boat.getYRot();
 					float f1 = 0.5F;
 					this.boat.setSpeed(Mth.lerp(0.125F, this.boat.getSpeed(), f1));
-					this.boat.setDeltaMovement(this.boat.getDeltaMovement().add(0.0D, (double)this.boat.getSpeed() * d1 * 0.1D, 0.0D));
+					this.boat.setDeltaMovement(this.boat.getDeltaMovement().add(0.0D, (double) this.boat.getSpeed() * d1 * 0.1D, 0.0D));
 				}
 			} else {
 				this.boat.setSpeed(0.0F);

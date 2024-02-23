@@ -3,24 +3,19 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.entity.PiratBoatModel;
 import com.github.alexthe666.rats.client.render.entity.layer.PiratBoatSailLayer;
 import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Objects;
 
 public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>> extends MobRenderer<T, M> {
@@ -47,7 +42,7 @@ public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>>
 		stack.mulPose(Axis.YP.rotationDegrees(90.0F));
 		this.getModel().prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
 		this.getModel().setupAnim(entity, 0.0F, 0.0F, entity.tickCount + partialTicks, 0.0F, 0.0F);
-		float f = (float)entity.hurtTime - partialTicks;
+		float f = (float) entity.hurtTime - partialTicks;
 		float f1 = Mth.abs(entity.getHealth() - entity.getMaxHealth()) - partialTicks;
 
 		if (f > 0.0F) {

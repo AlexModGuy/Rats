@@ -740,7 +740,7 @@ public class RatlantisRecipes extends RecipeProvider {
 
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_SLAB.get(), 2, "cracked_marbled_cheese_brick_to_slab");
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED_STAIRS.get(), "cracked_marbled_cheese_brick_to_stairs");
-		
+
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_SLAB.get(), 2, "mossy_marbled_cheese_brick_to_slab");
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get()), RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get(), "mossy_marbled_cheese_brick_to_stairs");
 
