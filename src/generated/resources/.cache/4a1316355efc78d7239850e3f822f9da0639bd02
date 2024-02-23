@@ -1,9 +1,6 @@
-// 1.20.1	2023-06-20T18:40:46.8428349	Tags for minecraft:item mod id rats
+// 1.20.1	2024-02-23T09:23:14.3836333	Tags for minecraft:item mod id rats
 e219bec1b519c84c23f34b8a5fafa1e550d97a2e data/forge/tags/items/armors/helmets.json
-7127c83d822a7ae1b6a7fab613b9d09df70dca01 data/forge/tags/items/cheeses.json
-ef009e37bee6b5e71102a5503bc932bcd3984ec7 data/forge/tags/items/cheeses/blue.json
-fe6f96049bac78610039ce4aad407442f9af744c data/forge/tags/items/cheeses/nether.json
-c14c95f23ca3689a6a71fc43aefed8df18ee67f0 data/forge/tags/items/cheeses/normal.json
+c14c95f23ca3689a6a71fc43aefed8df18ee67f0 data/forge/tags/items/cheese.json
 441ba640a55a82f8d5ba068d7b83f6b52107a1c9 data/forge/tags/items/crafting_tables.json
 48b140e23bc057ed22451ba2a39ef0bafc3184e0 data/forge/tags/items/plastics.json
 7c4d9a1829286b02c42cec7f32ea92e74649874b data/forge/tags/items/storage_blocks/blue_cheese.json

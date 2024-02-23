@@ -23,10 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class RatsItemTags extends ItemTagsProvider {
 
-	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(new ResourceLocation("forge", "cheeses"));
-	public static final TagKey<Item> NORMAL_CHEESE = ItemTags.create(new ResourceLocation("forge", "cheeses/normal"));
-	public static final TagKey<Item> BLUE_CHEESE = ItemTags.create(new ResourceLocation("forge", "cheeses/blue"));
-	public static final TagKey<Item> NETHER_CHEESE = ItemTags.create(new ResourceLocation("forge", "cheeses/nether"));
+	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(new ResourceLocation("forge", "cheese"));
 
 	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(new ResourceLocation("forge", "crafting_tables"));
 	public static final TagKey<Item> VEGETABLES = ItemTags.create(new ResourceLocation("forge", "vegetables"));
@@ -48,10 +45,7 @@ public class RatsItemTags extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(CHEESE_ITEMS).addTag(NORMAL_CHEESE).addTag(BLUE_CHEESE).addTag(NETHER_CHEESE);
-		this.tag(NORMAL_CHEESE).add(RatsItemRegistry.CHEESE.get());
-		this.tag(BLUE_CHEESE).add(RatsItemRegistry.BLUE_CHEESE.get());
-		this.tag(NETHER_CHEESE).add(RatsItemRegistry.NETHER_CHEESE.get());
+		this.tag(CHEESE_ITEMS).add(RatsItemRegistry.CHEESE.get());
 		this.tag(VEGETABLES).add(Items.CARROT, Items.POTATO, Items.BEETROOT);
 		this.tag(PLASTICS).add(RatsItemRegistry.RAW_PLASTIC.get());
 

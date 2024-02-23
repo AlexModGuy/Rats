@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "forge:cheeses/nether"
+      "item": "rats:nether_cheese"
     },
     "O": {
       "item": "minecraft:crying_obsidian"

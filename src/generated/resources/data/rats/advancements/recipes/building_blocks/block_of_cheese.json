@@ -5,7 +5,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:cheeses/normal"
+            "items": [
+              "rats:cheese"
+            ]
           }
         ]
       },

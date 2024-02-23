@@ -29,7 +29,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemRegistry.CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.CHEESE.get()))
 				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE.get())
@@ -41,13 +41,13 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")
-				.define('C', RatsItemTags.BLUE_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.BLUE_CHEESE))
+				.define('C', RatsItemRegistry.BLUE_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.BLUE_CHEESE.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "blue_cheese_compressed"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")
-				.define('C', RatsItemTags.NETHER_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NETHER_CHEESE))
+				.define('C', RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "nether_cheese_compressed"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.RAT_CAGE.get())
@@ -219,7 +219,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern(" C")
 				.pattern("S ")
 				.define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatsItemRegistry.RADIUS_STICK.get())
@@ -233,14 +233,14 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern(" C")
 				.pattern("S ")
 				.define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
-				.define('C', RatsItemTags.NETHER_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NETHER_CHEESE))
+				.define('C', RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatsItemRegistry.RAT_WHISTLE.get())
 				.pattern("ICI")
 				.pattern(" II")
 				.define('I', Tags.Items.INGOTS_IRON).unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatsItemRegistry.RAT_FLUTE.get())
@@ -331,7 +331,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatsItemRegistry.CRIMSON_FLUID.get())
 				.requires(RatsItemRegistry.GOLDEN_RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.GOLDEN_RAT_SKULL.get()))
-				.requires(RatsItemTags.NETHER_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NETHER_CHEESE))
+				.requires(RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
 				.requires(Items.GLASS_BOTTLE).unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
 				.requires(Items.CRIMSON_FUNGUS).unlockedBy("has_fungus", has(Items.CRIMSON_FUNGUS))
 				.save(consumer);

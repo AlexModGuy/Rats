@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:cheeses/normal"
+            "tag": "forge:cheese"
           }
         ]
       },

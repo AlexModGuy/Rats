@@ -29,7 +29,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.pattern("CCC")
 				.pattern("C C")
 				.pattern("CCC")
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/basic_upgrade"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get())
@@ -61,7 +61,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('I', Tags.Items.INGOTS_IRON).unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.define('P', Items.HEAVY_WEIGHTED_PRESSURE_PLATE).unlockedBy("has_plate", has(Items.HEAVY_WEIGHTED_PRESSURE_PLATE))
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/platter_upgrade"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_HEALTH.get())
@@ -109,7 +109,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.define('O', Items.CRYING_OBSIDIAN).unlockedBy("has_obsidian", has(Items.CRYING_OBSIDIAN))
 				.define('S', Items.SOUL_SAND).unlockedBy("has_sand", has(Items.SOUL_SAND))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
-				.define('C', RatsItemTags.NETHER_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NETHER_CHEESE))
+				.define('C', RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/demon_upgrade"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_STRENGTH.get())
@@ -157,7 +157,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.pattern("PCP")
 				.pattern("STA")
 				.pattern("PUP")
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.define('T', Items.CRAFTING_TABLE).unlockedBy("has_table", has(Items.CRAFTING_TABLE))
 				.define('P', ItemTags.PLANKS).unlockedBy("has_planks", has(ItemTags.PLANKS))
@@ -193,7 +193,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.pattern("LCL")
 				.pattern("WUW")
 				.pattern("LCL")
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.define('W', RatsItemRegistry.FEATHERY_WING.get()).unlockedBy("has_wing", has(RatsItemRegistry.FEATHERY_WING.get()))
 				.define('L', Tags.Items.GEMS_LAPIS).unlockedBy("has_lapis", has(Tags.Items.GEMS_LAPIS))
@@ -683,7 +683,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.pattern("CCC")
 				.pattern("CSC")
 				.pattern("CCC")
-				.define('C', RatsItemTags.NORMAL_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NORMAL_CHEESE))
+				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.define('S', Items.SADDLE).unlockedBy("has_saddle", has(Items.SADDLE))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/basic_mount_upgrade"));
 
@@ -714,7 +714,7 @@ public class RatsUpgradeRecipes extends RecipeProvider {
 				.pattern("TUT")
 				.pattern("WCW")
 				.define('W', Items.WARPED_FUNGUS).unlockedBy("has_fungus", has(Items.WARPED_FUNGUS))
-				.define('C', RatsItemTags.NETHER_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.NETHER_CHEESE))
+				.define('C', RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
 				.define('T', Items.GHAST_TEAR).unlockedBy("has_tear", has(Items.GHAST_TEAR))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/strider_mount_upgrade"));

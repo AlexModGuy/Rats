@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "C": {
-      "tag": "forge:cheeses/normal"
+      "tag": "forge:cheese"
     },
     "I": {
       "tag": "forge:ingots/iron"

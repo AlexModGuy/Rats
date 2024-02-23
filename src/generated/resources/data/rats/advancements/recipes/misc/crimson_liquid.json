@@ -17,7 +17,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:cheeses/nether"
+            "items": [
+              "rats:nether_cheese"
+            ]
           }
         ]
       },

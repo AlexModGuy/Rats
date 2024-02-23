@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "C": {
-      "tag": "forge:cheeses/blue"
+      "item": "rats:blue_cheese"
     }
   },
   "pattern": [
