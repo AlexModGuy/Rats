@@ -25,12 +25,8 @@ public record UpdateMobFilterPacket(ItemStack stack, boolean whitelist, List<Str
 		public static void handle(UpdateMobFilterPacket packet, Supplier<NetworkEvent.Context> context) {
 			context.get().setPacketHandled(true);
 			context.get().enqueueWork(() -> {
-				Player player = context.get().getSender();
-
-				if (player != null) {
-					MobFilterUpgradeItem.setWhitelist(packet.stack(), packet.whitelist());
-					MobFilterUpgradeItem.setMobs(packet.stack(), packet.mobs());
-				}
+				MobFilterUpgradeItem.setWhitelist(packet.stack(), packet.whitelist());
+				MobFilterUpgradeItem.setMobs(packet.stack(), packet.mobs());
 			});
 		}
 	}

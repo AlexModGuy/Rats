@@ -322,10 +322,8 @@ public class MobFilterScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		super.onClose();
-		MobFilterUpgradeItem.setWhitelist(this.stack, this.isWhitelist);
-		MobFilterUpgradeItem.setMobs(this.stack, this.selectedMobs);
 		RatsNetworkHandler.CHANNEL.sendToServer(new UpdateMobFilterPacket(this.stack, this.isWhitelist, this.selectedMobs));
+		super.onClose();
 	}
 
 	@Override

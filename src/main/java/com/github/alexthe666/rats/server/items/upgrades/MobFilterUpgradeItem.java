@@ -3,11 +3,13 @@ package com.github.alexthe666.rats.server.items.upgrades;
 import com.github.alexthe666.rats.client.events.ModClientEvents;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -55,7 +57,9 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 	public static void setMobs(ItemStack stack, List<String> mobs) {
 		ListTag tag = new ListTag();
 		for (String mob : mobs) {
-			tag.add(StringTag.valueOf(mob));
+			if (BuiltInRegistries.ENTITY_TYPE.containsKey(new ResourceLocation(mob))) {
+				tag.add(StringTag.valueOf(mob));
+			}
 		}
 		stack.getOrCreateTag().put("Mobs", tag);
 	}
