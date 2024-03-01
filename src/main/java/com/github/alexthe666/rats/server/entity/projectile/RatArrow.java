@@ -54,28 +54,30 @@ public class RatArrow extends AbstractArrow {
 	}
 
 	private void spawnRat(@Nullable Entity entity, BlockPos pos) {
-		TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level());
-		CompoundTag ratTag = new CompoundTag();
-		if (this.stack.getTag() != null && !this.stack.getTag().getCompound("Rat").isEmpty()) {
-			ratTag = this.stack.getTag().getCompound("Rat");
-		}
-		rat.readAdditionalSaveData(ratTag);
-		if (!ratTag.getString("CustomName").isEmpty()) {
-			rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
-		}
-		if (ratTag.isEmpty()) {
-			ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
-			if (this.getOwner() instanceof Player player) {
-				rat.tame(player);
+		if (this.pickup == Pickup.ALLOWED) {
+			TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level());
+			CompoundTag ratTag = new CompoundTag();
+			if (this.stack.getTag() != null && !this.stack.getTag().getCompound("Rat").isEmpty()) {
+				ratTag = this.stack.getTag().getCompound("Rat");
 			}
-		}
-		rat.setCommand(RatCommand.WANDER);
-		rat.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-		if (!this.level().isClientSide()) {
-			this.level().addFreshEntity(rat);
-		}
-		if (entity instanceof LivingEntity living && !rat.isAlliedTo(entity)) {
-			rat.setTarget(living);
+			rat.readAdditionalSaveData(ratTag);
+			if (!ratTag.getString("CustomName").isEmpty()) {
+				rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+			}
+			if (ratTag.isEmpty()) {
+				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+				if (this.getOwner() instanceof Player player) {
+					rat.tame(player);
+				}
+			}
+			rat.setCommand(RatCommand.WANDER);
+			rat.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+			if (!this.level().isClientSide()) {
+				this.level().addFreshEntity(rat);
+			}
+			if (entity instanceof LivingEntity living && !rat.isAlliedTo(entity)) {
+				rat.setTarget(living);
+			}
 		}
 	}
 
