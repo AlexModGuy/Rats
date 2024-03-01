@@ -25,11 +25,11 @@ public class RatFlightMoveControl extends RatMoveControl {
 				this.rat.setDeltaMovement(this.rat.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
 				if (this.rat.getTarget() == null) {
 					Vec3 vector3d1 = this.rat.getDeltaMovement();
-					this.rat.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+					this.rat.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
 				} else {
 					double d2 = this.rat.getTarget().getX() - this.rat.getX();
 					double d1 = this.rat.getTarget().getZ() - this.rat.getZ();
-					this.rat.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+					this.rat.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
 				}
 				this.rat.yBodyRot = this.rat.getYRot();
 			}

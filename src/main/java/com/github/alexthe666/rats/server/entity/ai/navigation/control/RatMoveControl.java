@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class RatMoveControl extends MoveControl {
 
-	private final AbstractRat rat;
+	protected final AbstractRat rat;
 
 	public RatMoveControl(AbstractRat rat) {
 		super(rat);

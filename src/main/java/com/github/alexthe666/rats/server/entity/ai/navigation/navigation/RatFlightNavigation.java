@@ -19,12 +19,12 @@ public class RatFlightNavigation extends GroundPathNavigation {
 	}
 
 	public boolean moveTo(double x, double y, double z, double speed) {
-		this.rat.getMoveControl().setWantedPosition(x, y + 3.0F, z, speed);
+		this.rat.getMoveControl().setWantedPosition(x, y, z, speed);
 		return true;
 	}
 
 	public boolean moveTo(Entity entity, double speed) {
-		this.rat.getMoveControl().setWantedPosition(entity.getX(), entity.getY() + 3.0F, entity.getZ(), speed);
+		this.rat.getMoveControl().setWantedPosition(entity.getX(), entity.getY(), entity.getZ(), speed);
 		return true;
 	}
 }
