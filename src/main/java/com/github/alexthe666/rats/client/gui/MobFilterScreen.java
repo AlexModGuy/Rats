@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +51,7 @@ public class MobFilterScreen extends Screen {
 	protected int topPos;
 
 	//stuff from the itemstack
-	private final ItemStack stack;
+	private final InteractionHand hand;
 	private boolean isWhitelist;
 	private final List<String> selectedMobs;
 
@@ -67,12 +68,12 @@ public class MobFilterScreen extends Screen {
 	private boolean scrolling;
 	private final Set<TagKey<EntityType<?>>> visibleTags = new HashSet<>();
 
-	public MobFilterScreen(ItemStack stack) {
+	public MobFilterScreen(InteractionHand hand) {
 		super(Component.translatable(RatsLangConstants.MOB_FILTER));
 		this.allMobs = RatsMod.getCachedMobList(Minecraft.getInstance().level);
-		this.stack = stack;
-		this.isWhitelist = MobFilterUpgradeItem.isWhitelist(stack);
-		this.selectedMobs = MobFilterUpgradeItem.getSelectedMobs(stack);
+		this.hand = hand;
+		this.isWhitelist = MobFilterUpgradeItem.isWhitelist(Minecraft.getInstance().player.getItemInHand(hand));
+		this.selectedMobs = MobFilterUpgradeItem.getSelectedMobs(Minecraft.getInstance().player.getItemInHand(hand));
 	}
 
 	@Override
@@ -322,7 +323,7 @@ public class MobFilterScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		RatsNetworkHandler.CHANNEL.sendToServer(new UpdateMobFilterPacket(this.stack, this.isWhitelist, this.selectedMobs));
+		RatsNetworkHandler.CHANNEL.sendToServer(new UpdateMobFilterPacket(this.hand, this.isWhitelist, this.selectedMobs));
 		super.onClose();
 	}
 

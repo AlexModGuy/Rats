@@ -29,7 +29,7 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (level.isClientSide() && player.getItemInHand(hand).is(this)) {
-			ModClientEvents.openMobFilterScreen(player.getItemInHand(hand));
+			ModClientEvents.openMobFilterScreen(hand);
 			return InteractionResultHolder.success(player.getItemInHand(hand));
 		}
 		return super.use(level, player, hand);

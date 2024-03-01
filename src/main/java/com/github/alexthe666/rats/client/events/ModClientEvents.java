@@ -39,6 +39,7 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -79,8 +80,8 @@ public class ModClientEvents {
 		return Minecraft.getInstance().level;
 	}
 
-	public static void openMobFilterScreen(ItemStack upgrade) {
-		Minecraft.getInstance().setScreen(new MobFilterScreen(upgrade));
+	public static void openMobFilterScreen(InteractionHand hand) {
+		Minecraft.getInstance().setScreen(new MobFilterScreen(hand));
 	}
 
 	@SubscribeEvent
