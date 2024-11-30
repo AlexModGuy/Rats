@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.server.block.entity.AutoCurdlerBlockEntity;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
@@ -84,7 +85,7 @@ public class AutoCurdlerBlock extends BaseEntityBlock {
 					FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 					IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).resolve().get();
 					FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-					if (drain.getAmount() > 0 || stack.is(Items.MILK_BUCKET)) {
+					if (drain.getAmount() > 0 || stack.is(RatsItemTags.MILK_BUCKETS)) {
 						if (te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
 							int amount = te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
 							level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -95,7 +96,7 @@ public class AutoCurdlerBlock extends BaseEntityBlock {
 								if (stack != container) {
 									stack.shrink(1);
 									player.getInventory().add(container);
-								} else if (stack.is(Items.MILK_BUCKET)) {
+								} else if (stack.is(RatsItemTags.MILK_BUCKETS)) {
 									stack.shrink(1);
 									player.getInventory().add(new ItemStack(Items.BUCKET));
 								}

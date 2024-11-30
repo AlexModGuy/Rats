@@ -25,6 +25,8 @@ public class RatsItemTags extends ItemTagsProvider {
 
 	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(new ResourceLocation("forge", "cheese"));
 
+	public static final TagKey<Item> MILK_BUCKETS = ItemTags.create(new ResourceLocation("forge", "milk"));
+
 	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(new ResourceLocation("forge", "crafting_tables"));
 	public static final TagKey<Item> VEGETABLES = ItemTags.create(new ResourceLocation("forge", "vegetables"));
 	public static final TagKey<Item> PLASTICS = ItemTags.create(new ResourceLocation("forge", "plastics"));

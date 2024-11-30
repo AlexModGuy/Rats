@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block.entity;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
@@ -25,11 +26,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,7 +49,7 @@ import java.util.Optional;
 public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, MenuProvider {
 	private static final int[] SLOTS_TOP = new int[]{0};
 	private static final int[] SLOTS_BOTTOM = new int[]{1};
-	private final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> fluidStack.getFluid().isSame(ForgeMod.MILK.get()));
+	private final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> isMilkFluid(fluidStack));
 	final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
 	private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> this.tank);
 	private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
@@ -85,11 +84,11 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	}
 
 	public static boolean isMilk(ItemStack stack) {
-		if (stack.is(Items.MILK_BUCKET)) {
+		if (stack.is(RatsItemTags.MILK_BUCKETS)) {
 			return true;
 		}
 		Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-		return fluidStack.isPresent() && fluidStack.get().getFluid().isSame(ForgeMod.MILK.get());
+		return fluidStack.isPresent() && isMilkFluid(fluidStack.get());
 	}
 
 	@Override
@@ -165,7 +164,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	}
 
 	public boolean hasEnoughMilk() {
-		return this.tank.getFluidAmount() >= FluidType.BUCKET_VOLUME && this.isMilkFluid(this.tank.getFluid());
+		return this.tank.getFluidAmount() >= FluidType.BUCKET_VOLUME && isMilkFluid(this.tank.getFluid());
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, AutoCurdlerBlockEntity te) {
@@ -271,7 +270,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 		}
 	}
 
-	private boolean isMilkFluid(FluidStack fluid) {
+	private static boolean isMilkFluid(FluidStack fluid) {
 		return fluid.getTranslationKey().contains("milk") || fluid.getTranslationKey().contains("Milk");
 	}
 
