@@ -172,6 +172,7 @@ public class Rat extends DiggingRat {
 	public LivingEntity getOwner() {
 		try {
 			UUID uuid = this.getOwnerUUID();
+			if (uuid == null) return null;
 			if (this.level() instanceof ServerLevel server) {
 				Entity entity = server.getEntity(uuid);
 				if (entity instanceof LivingEntity living) {
