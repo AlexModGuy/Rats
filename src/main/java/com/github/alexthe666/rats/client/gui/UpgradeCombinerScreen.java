@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombinerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/upgrade_combiner.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/upgrade_combiner.png");
 	private final Inventory playerInventory;
 	private final UpgradeCombinerMenu combiner;
 
@@ -26,14 +26,12 @@ public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombin
 
 	@Override
 	public void render(GuiGraphics stack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(stack);
 		super.render(stack, mouseX, mouseY, partialTicks);
 		this.renderTooltip(stack, mouseX, mouseY);
 	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
@@ -67,3 +65,9 @@ public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombin
 		}
 	}
 }
+
+
+
+
+
+

@@ -4,17 +4,17 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.EmptyModel;
 import com.github.alexthe666.rats.client.render.entity.layer.RatKingLayer;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class RatKingRenderer extends MobRenderer<RatKing, EmptyModel<RatKing>> {
 
-	private static final ResourceLocation TEXTURE_1 = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/black.png");
+	private static final ResourceLocation TEXTURE_1 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/black.png");
 
 	public RatKingRenderer(EntityRendererProvider.Context context) {
 		super(context, new EmptyModel<>(), 1.0F);
@@ -27,7 +27,7 @@ public class RatKingRenderer extends MobRenderer<RatKing, EmptyModel<RatKing>> {
 	}
 
 	@Override
-	protected void setupRotations(RatKing king, PoseStack stack, float ageInTicks, float yRot, float partialTicks) {
+	protected void setupRotations(RatKing king, PoseStack stack, float ageInTicks, float yRot, float partialTicks, float scale) {
 		if (king.hasCustomName()) {
 			String s = ChatFormatting.stripFormatting(king.getName().getString());
 			if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {
@@ -42,3 +42,10 @@ public class RatKingRenderer extends MobRenderer<RatKing, EmptyModel<RatKing>> {
 		return TEXTURE_1;
 	}
 }
+
+
+
+
+
+
+

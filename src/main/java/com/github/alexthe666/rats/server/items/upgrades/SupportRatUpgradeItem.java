@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,9 +14,11 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.Vec3;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class SupportRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpgrade, HoldsItemUpgrade {
 
@@ -32,15 +32,15 @@ public class SupportRatUpgradeItem extends BaseRatUpgradeItem implements TickRat
 		if (rat.tickCount % 300 == 0) {
 			if (rat.getOwner() instanceof Player player && EntitySelector.LIVING_ENTITY_STILL_ALIVE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).test(player)) {
 				if (player.getHealth() < player.getMaxHealth()) {
-					potionToThrow = PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), rat.getRandom().nextBoolean() ? Potions.STRONG_HEALING : Potions.HEALING);
+					potionToThrow = PotionContents.createItemStack(Items.SPLASH_POTION, rat.getRandom().nextBoolean() ? Potions.STRONG_HEALING : Potions.HEALING);
 				} else {
 					potionToThrow = switch (rat.getRandom().nextInt(20)) {
-						case 0 -> PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.STRENGTH);
-						case 3 -> PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.REGENERATION);
-						case 9 -> PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.LONG_SWIFTNESS);
+						case 0 -> PotionContents.createItemStack(Items.SPLASH_POTION, Potions.STRENGTH);
+						case 3 -> PotionContents.createItemStack(Items.SPLASH_POTION, Potions.REGENERATION);
+						case 9 -> PotionContents.createItemStack(Items.SPLASH_POTION, Potions.LONG_SWIFTNESS);
 						case 11 ->
-								PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.STRONG_STRENGTH);
-						case 17 -> PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.LONG_SWIFTNESS);
+								PotionContents.createItemStack(Items.LINGERING_POTION, Potions.STRONG_STRENGTH);
+						case 17 -> PotionContents.createItemStack(Items.LINGERING_POTION, Potions.LONG_SWIFTNESS);
 						default -> null;
 					};
 				}
@@ -74,9 +74,9 @@ public class SupportRatUpgradeItem extends BaseRatUpgradeItem implements TickRat
 		stack.mulPose(Axis.YP.rotationDegrees(90));
 		stack.mulPose(Axis.ZP.rotationDegrees(-90));
 		stack.translate(0.0F, -0.1F, 0.275F);
-		context.getItemRenderer().renderStatic(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.HEALING), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
+		context.getItemRenderer().renderStatic(PotionContents.createItemStack(Items.SPLASH_POTION, Potions.HEALING), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
 		stack.translate(0.35F, 0.1F, 0.0F);
-		context.getItemRenderer().renderStatic(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.SLOW_FALLING), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
+		context.getItemRenderer().renderStatic(PotionContents.createItemStack(Items.SPLASH_POTION, Potions.SLOW_FALLING), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
 		stack.popPose();
 		stack.pushPose();
 		stack.scale(0.5F, 0.5F, 0.5F);
@@ -84,9 +84,9 @@ public class SupportRatUpgradeItem extends BaseRatUpgradeItem implements TickRat
 		stack.mulPose(Axis.YP.rotationDegrees(90));
 		stack.mulPose(Axis.ZP.rotationDegrees(-90));
 		stack.translate(0.0F, -0.1F, -0.4F);
-		context.getItemRenderer().renderStatic(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.SWIFTNESS), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
+		context.getItemRenderer().renderStatic(PotionContents.createItemStack(Items.SPLASH_POTION, Potions.SWIFTNESS), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
 		stack.translate(0.35F, 0.1F, 0.0F);
-		context.getItemRenderer().renderStatic(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.LUCK), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
+		context.getItemRenderer().renderStatic(PotionContents.createItemStack(Items.SPLASH_POTION, Potions.LUCK), ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, stack, buffer, rat.level(), rat.getId());
 		stack.popPose();
 	}
 
@@ -95,3 +95,10 @@ public class SupportRatUpgradeItem extends BaseRatUpgradeItem implements TickRat
 		return true;
 	}
 }
+
+
+
+
+
+
+

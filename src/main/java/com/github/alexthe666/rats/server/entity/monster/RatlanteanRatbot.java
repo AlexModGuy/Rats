@@ -154,3 +154,10 @@ public class RatlanteanRatbot extends Monster implements IAnimatedEntity {
 		return !world.getBlockState(pos.below()).is(RatlantisBlockTags.PIRAT_ONLY_BLOCKS);
 	}
 }
+
+
+
+
+
+
+

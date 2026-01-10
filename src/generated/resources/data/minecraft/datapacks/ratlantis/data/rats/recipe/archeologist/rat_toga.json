@@ -1,0 +1,10 @@
+{
+  "type": "rats:archeologist",
+  "ingredient": {
+    "item": "minecraft:leather_chestplate"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:rat_toga"
+  }
+}

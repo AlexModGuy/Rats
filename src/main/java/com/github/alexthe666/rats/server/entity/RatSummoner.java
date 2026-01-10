@@ -16,3 +16,10 @@ public interface RatSummoner {
 		return 5;
 	}
 }
+
+
+
+
+
+
+

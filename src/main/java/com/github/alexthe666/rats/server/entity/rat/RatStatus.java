@@ -18,3 +18,10 @@ public enum RatStatus {
 		return this != EATING || !rat.isHoldingFood();
 	}
 }
+
+
+
+
+
+
+

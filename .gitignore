@@ -1,25 +1,58 @@
-# eclipse
-bin
+# Eclipse
+bin/
 *.launch
-.settings
-.metadata
+.settings/
+.metadata/
 .classpath
 .project
 
-# idea
-out
+# IntelliJ IDEA
+out/
 *.ipr
 *.iws
 *.iml
-.idea
+.idea/
 
-# gradle
-build
-.gradle
+# Gradle
+build/
+.gradle/
+gradle.properties.local
 
-# other
-eclipse
-run
+# VS Code
+.vscode/
 
-/run-data/
+# Minecraft run directories
+run/
+run-data/
+runs/
+logs/
+
+# Data generation cache
+src/generated/resources/.cache/
+
+# NeoForge/Forge MDK
+forge*changelog.txt
+*.log
+
+# Backup and temporary files
+*.bak
+*.tmp
+*.temp
+*~
+
+# Compile logs
+compile*.txt
+runClient*.txt
+debug_log.txt
+
+# Migration scripts (temporary)
+fix_*.py
+add_*.py
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets
 secrets.properties

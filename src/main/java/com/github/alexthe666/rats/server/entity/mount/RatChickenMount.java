@@ -26,20 +26,22 @@ public class RatChickenMount extends RatMountBase {
 
 	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
 		this.riderY = 0.55F;
 		this.riderXZ = 0.1F;
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return this.isBaby() ? dimensions.height * 0.85F : dimensions.height * 0.92F;
+	protected EntityDimensions getDefaultDimensions(Pose pose) {
+		EntityDimensions dimensions = super.getDefaultDimensions(pose);
+		float eyeHeight = this.isBaby() ? dimensions.height() * 0.85F : dimensions.height() * 0.92F;
+		return dimensions.withEyeHeight(eyeHeight);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 4.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
+				.add(Attributes.MOVEMENT_SPEED, 0.3D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	public boolean doHurtTarget(Entity entity) {
@@ -92,3 +94,10 @@ public class RatChickenMount extends RatMountBase {
 		this.progressRotation(lowerTail, rat.sitProgress, -0.1F, 0.0F, 0.0F, 20.0F);
 	}
 }
+
+
+
+
+
+
+

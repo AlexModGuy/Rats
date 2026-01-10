@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
 import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,9 +18,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class RatListUpgradeItem extends BaseRatUpgradeItem {
 		ItemStack stack = player.getItemInHand(hand);
 		if (!player.isShiftKeyDown()) {
 			if (!level.isClientSide()) {
-				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+				player.openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player1) {
 						return new RatUpgradeMenu(id, new RatUpgradeContainer(stack), player1.getInventory(), stack);
@@ -51,22 +51,31 @@ public class RatListUpgradeItem extends BaseRatUpgradeItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		CompoundTag tag = stack.getTag();
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
 
-		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
-			int i = 0;
-			for (ItemStack itemstack : nonnulllist) {
-				if (!itemstack.isEmpty()) {
-					if (i <= 4) {
-						++i;
-						tooltip.add(Component.literal(String.format("%s", itemstack.getDisplayName().getString())));
+		if (customData != null) {
+			CompoundTag tag = customData.copyTag();
+			if (tag.contains("Items", 9)) {
+				NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+				ContainerHelper.loadAllItems(tag, nonnulllist, context.registries());
+				int i = 0;
+				for (ItemStack itemstack : nonnulllist) {
+					if (!itemstack.isEmpty()) {
+						if (i <= 4) {
+							++i;
+							tooltip.add(Component.literal(String.format("%s", itemstack.getDisplayName().getString())));
+						}
 					}
 				}
 			}
 		}
 	}
 }
+
+
+
+
+
+

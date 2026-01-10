@@ -10,13 +10,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			return false;
 		}
 
-		return ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
+		return EventHooks.canEntityGrief(this.rat.level(), this.rat) && super.canUse();
 	}
 
 	@Override
@@ -53,8 +52,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			BlockState block = this.rat.level().getBlockState(cropsPos);
 			double distance = this.rat.distanceToSqr(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
 			if (distance < 3.5F) {
-				LootParams.Builder loot = new LootParams.Builder((ServerLevel) this.rat.level()).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, this.rat.position()).withLuck(1.0F);
-				List<ItemStack> drops = block.getBlock().getDrops(block, loot);
+				List<ItemStack> drops = Block.getDrops(block, (ServerLevel) this.rat.level(), cropsPos, null);
 				if (drops.isEmpty()) {
 					this.stop();
 					return;
@@ -93,3 +91,10 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 		return false;
 	}
 }
+
+
+
+
+
+
+

@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.render;
 
 import com.github.alexthe666.rats.server.block.entity.RatHoleBlockEntity;
 import com.github.alexthe666.rats.server.items.RatsBlockItem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class RatsBEWLR extends BlockEntityWithoutLevelRenderer {
 
@@ -32,3 +32,9 @@ public class RatsBEWLR extends BlockEntityWithoutLevelRenderer {
 		}
 	}
 }
+
+
+
+
+
+

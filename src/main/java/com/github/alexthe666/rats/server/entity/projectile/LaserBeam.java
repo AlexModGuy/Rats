@@ -31,11 +31,11 @@ public class LaserBeam extends ArrowlikeProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(R, 0.66F);
-		this.getEntityData().define(G, 0.97F);
-		this.getEntityData().define(B, 0.97F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(R, 0.66F);
+		builder.define(G, 0.97F);
+		builder.define(B, 0.97F);
 	}
 
 	public float[] getRGB() {
@@ -84,3 +84,10 @@ public class LaserBeam extends ArrowlikeProjectile {
 		return true;
 	}
 }
+
+
+
+
+
+
+

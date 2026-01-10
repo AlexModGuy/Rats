@@ -6,7 +6,9 @@ import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
 import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,9 +22,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -32,15 +33,28 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		super(properties, 1, 1);
 	}
 
+	/**
+	 * Check if an upgrade can be combined without registry access.
+	 * This is a simplified version that doesn't check for conflicts with already-combined upgrades.
+	 */
 	public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
 		if (stack.getItem() instanceof CombinedUpgrade) return false;
-		CompoundTag tag = combiner.getTag();
-		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
-			for (ItemStack contained : nonnulllist) {
-				if (!(stack.getItem() instanceof BaseRatUpgradeItem) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained, stack)) {
-					return false;
+		if (!(stack.getItem() instanceof BaseRatUpgradeItem)) return false;
+		return combiner.is(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get()) || combiner.is(RatsItemRegistry.RAT_UPGRADE_COMBINED.get()) || combiner.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get());
+	}
+
+	public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack, HolderLookup.Provider registries) {
+		if (stack.getItem() instanceof CombinedUpgrade) return false;
+		CustomData customData = combiner.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag tag = customData.copyTag();
+			if (tag.contains("Items", 9)) {
+				NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
+				ContainerHelper.loadAllItems(tag, nonnulllist, registries);
+				for (ItemStack contained : nonnulllist) {
+					if (!(stack.getItem() instanceof BaseRatUpgradeItem) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained, stack)) {
+						return false;
+					}
 				}
 			}
 		}
@@ -48,12 +62,12 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		if (stack.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get())) {
 			tooltip.add(Component.translatable("item.rats.rat_upgrade_combined.desc").withStyle(ChatFormatting.GRAY));
 		}
-		this.addTooltip(stack, tooltip);
+		this.addTooltip(stack, tooltip, context.registries());
 	}
 
 	@Override
@@ -61,14 +75,12 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		if (stack.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get())) {
 			return true;
 		}
-		CompoundTag tag = stack.getTag();
-		boolean flag = false;
-		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
-			flag = !nonnulllist.isEmpty();
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag tag = customData.copyTag();
+			return tag.contains("Items", 9);
 		}
-		return flag;
+		return false;
 	}
 
 	@Override
@@ -80,7 +92,7 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 			ItemStack stack = player.getItemInHand(hand);
 			if (!player.isShiftKeyDown()) {
 				if (!level.isClientSide()) {
-					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+					player.openMenu(new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player1) {
 							return new RatUpgradeMenu(id, new RatUpgradeContainer(stack), player.getInventory(), stack);
@@ -105,3 +117,9 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		return 27;
 	}
 }
+
+
+
+
+
+

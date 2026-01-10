@@ -23,7 +23,7 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 		if (this.rarity != 0 && this.rarity != 4) {
 			return Rarity.values()[this.rarity];
 		}
-		return super.getRarity(stack);
+		return Rarity.COMMON;
 	}
 
 	public boolean isFoil(ItemStack stack) {
@@ -57,3 +57,10 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 	}
 
 }
+
+
+
+
+
+
+

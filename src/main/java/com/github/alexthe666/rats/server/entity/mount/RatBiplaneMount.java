@@ -38,7 +38,6 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 
 	public RatBiplaneMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
 		this.riderY = 1.35F;
 		this.riderXZ = -0.35F;
 		this.moveControl = new PlaneMoveControl<>(this);
@@ -73,10 +72,10 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(FIRING, false);
-		this.getEntityData().define(PLANE_PITCH, 0F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(FIRING, false);
+		builder.define(PLANE_PITCH, 0F);
 	}
 
 	public boolean removeWhenFarAway(double dist) {
@@ -104,7 +103,8 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 				.add(Attributes.MAX_HEALTH, 300.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.25D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.FOLLOW_RANGE, 32.0D);
+				.add(Attributes.FOLLOW_RANGE, 32.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	public void tick() {
@@ -237,3 +237,10 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 		this.progressRotation(lowerTail, rat.sitProgress, -0.2F, 0.0F, 0.0F, 20.0F);
 	}
 }
+
+
+
+
+
+
+

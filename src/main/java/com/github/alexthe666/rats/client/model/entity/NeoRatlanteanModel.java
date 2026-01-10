@@ -305,3 +305,10 @@ public class NeoRatlanteanModel<T extends NeoRatlantean> extends AdvancedEntityM
 				this.rightFoot);
 	}
 }
+
+
+
+
+
+
+

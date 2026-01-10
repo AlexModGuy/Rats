@@ -96,3 +96,10 @@ public class JuryRiggedRatUpgradeMenu extends AbstractContainerMenu {
 		super.clicked(slot, action, type, player);
 	}
 }
+
+
+
+
+
+
+

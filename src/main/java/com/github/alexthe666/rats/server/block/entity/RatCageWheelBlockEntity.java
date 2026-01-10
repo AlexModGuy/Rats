@@ -9,6 +9,7 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -16,14 +17,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.EnergyStorage;
-import org.jetbrains.annotations.NotNull;
+import com.github.alexthe666.rats.compat.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.EnergyStorage;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.Nullable;
 
 public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 
@@ -50,21 +49,21 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
 		compound.putInt("UseTicks", this.useTicks);
-		compound.put("Energy", this.energyStorage.serializeNBT());
+		compound.put("Energy", this.energyStorage.serializeNBT(provider));
 
 		compound.putInt("DismountCooldown", this.dismountCooldown);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, provider);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
 		this.useTicks = compound.getInt("UseTicks");
 		this.dismountCooldown = compound.getInt("DismountCooldown");
 		if (compound.contains("Energy")) {
-			this.energyStorage.deserializeNBT(compound.get("Energy"));
+			this.energyStorage.deserializeNBT(provider, compound.get("Energy"));
 		}
 	}
 
@@ -135,14 +134,13 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 			BlockEntity blockEntity = level.getBlockEntity(pos.relative(facing));
 			if (blockEntity == null)
 				continue;
-			blockEntity.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).ifPresent(handler -> {
-				if (handler.canReceive()) {
-					int received = handler.receiveEnergy(Math.min(capacity.get(), 10), false);
-					capacity.addAndGet(-received);
-					this.energyStorage.extractEnergy(received, false);
-					this.setChanged();
-				}
-			});
+			var handler = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(facing), facing.getOpposite());
+			if (handler != null && handler.canReceive()) {
+				int received = handler.receiveEnergy(Math.min(capacity.get(), 10), false);
+				capacity.addAndGet(-received);
+				this.energyStorage.extractEnergy(received, false);
+				this.setChanged();
+			}
 		}
 	}
 
@@ -152,9 +150,14 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 		this.energyCap.invalidate();
 	}
 
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		return capability == ForgeCapabilities.ENERGY ? this.energyCap.cast() : super.getCapability(capability, facing);
+	public EnergyStorage getEnergyStorage() {
+		return this.energyCap.orElse(null);
 	}
 }
+
+
+
+
+
+
+

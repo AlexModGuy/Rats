@@ -50,3 +50,10 @@ public class RatAttractorBlockEntity extends BlockEntity {
 		}
 	}
 }
+
+
+
+
+
+
+

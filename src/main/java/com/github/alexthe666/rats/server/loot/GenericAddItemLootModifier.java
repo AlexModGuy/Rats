@@ -1,15 +1,17 @@
 package com.github.alexthe666.rats.server.loot;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ import java.util.Map;
 
 public class GenericAddItemLootModifier extends LootModifier {
 
-	public static final Codec<GenericAddItemLootModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).and(
+	public static final MapCodec<GenericAddItemLootModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).and(
 					inst.group(
-							Codec.unboundedMap(ForgeRegistries.ITEMS.getCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
+							Codec.unboundedMap(BuiltInRegistries.ITEM.byNameCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
 							Codec.BOOL.fieldOf("replacePool").orElse(false).forGetter(m -> m.makeNewPool)))
 			.apply(inst, GenericAddItemLootModifier::new));
 
@@ -64,7 +66,14 @@ public class GenericAddItemLootModifier extends LootModifier {
 	}
 
 	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
+	public MapCodec<? extends IGlobalLootModifier> codec() {
 		return CODEC;
 	}
 }
+
+
+
+
+
+
+

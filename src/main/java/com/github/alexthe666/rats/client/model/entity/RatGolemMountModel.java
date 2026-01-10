@@ -53,7 +53,7 @@ public class RatGolemMountModel<T extends RatGolemMount> extends AdvancedEntityM
 		this.rightLeg.rotateAngleY = 0.0F;
 		int i = entity.getAttackTimer();
 		if (i > 0) {
-			float partialTicks = Minecraft.getInstance().getPartialTick();
+			float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 			this.leftArm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float) i - partialTicks, 10.0F);
 			this.rightArm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float) i - partialTicks, 10.0F);
 		} else {
@@ -82,3 +82,10 @@ public class RatGolemMountModel<T extends RatGolemMount> extends AdvancedEntityM
 		return ImmutableList.of(chest, waist, dome, leftArm, leftLeg, rightArm, rightLeg);
 	}
 }
+
+
+
+
+
+
+

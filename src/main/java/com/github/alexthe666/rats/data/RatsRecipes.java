@@ -5,6 +5,10 @@ import com.github.alexthe666.rats.data.tags.RatsItemTags;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsRecipeRegistry;
+import com.github.alexthe666.rats.server.recipes.ChefRecipe;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -13,21 +17,22 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public class RatsRecipes extends RatsUpgradeRecipes {
-	public RatsRecipes(PackOutput output) {
-		super(output);
+	public RatsRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+		super(output, registries);
 	}
 
 	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(RecipeOutput consumer) {
 		super.buildRecipes(consumer);
-		SpecialRecipeBuilder.special(RatsRecipeRegistry.SWITCH_DEMON.get()).save(consumer, "demon_swap_recipe");
+		// In 1.21.1, SpecialRecipeBuilder.special takes Function<CraftingBookCategory, Recipe<?>>
+		SpecialRecipeBuilder.special(category -> new com.github.alexthe666.rats.server.recipes.DemonRatSwitchRecipe(category))
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "demon_swap_recipe"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")
@@ -44,13 +49,13 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("CC")
 				.pattern("CC")
 				.define('C', RatsItemRegistry.BLUE_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.BLUE_CHEESE.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "blue_cheese_compressed"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "blue_cheese_compressed"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE.get())
 				.pattern("CC")
 				.pattern("CC")
 				.define('C', RatsItemRegistry.NETHER_CHEESE.get()).unlockedBy("has_cheese", has(RatsItemRegistry.NETHER_CHEESE.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "nether_cheese_compressed"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "nether_cheese_compressed"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.RAT_CAGE.get())
 				.pattern("BBB")
@@ -82,7 +87,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("CHC")
 				.pattern("CUC")
 				.define('C', RatsItemTags.STORAGE_BLOCKS_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.STORAGE_BLOCKS_CHEESE))
-				.define('G', Tags.Items.GLASS_COLORLESS).unlockedBy("has_glass", has(Tags.Items.GLASS_COLORLESS))
+				.define('G', Items.GLASS).unlockedBy("has_glass", has(Items.GLASS))
 				.define('H', Items.HOPPER).unlockedBy("has_hopper", has(Items.HOPPER))
 				.define('U', Items.CAULDRON).unlockedBy("has_cauldron", has(Items.CAULDRON))
 				.save(consumer);
@@ -152,7 +157,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("CQ")
 				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
 				.define('Q', Tags.Items.GEMS_QUARTZ).unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "marbled_cheese_raw_alt"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "marbled_cheese_raw_alt"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatsBlockRegistry.JACK_O_RATERN.get())
 				.pattern("P")
@@ -215,7 +220,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("PP")
 				.pattern("PP")
 				.define('P', RatsItemRegistry.RAT_PELT.get()).unlockedBy("has_pelt", has(RatsItemRegistry.RAT_PELT.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "rat_pelt_to_leather"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_pelt_to_leather"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatsItemRegistry.CHEESE_STICK.get())
 				.pattern(" C")
@@ -268,7 +273,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("WW")
 				.pattern("SS")
 				.define('W', Items.WHITE_WOOL).unlockedBy("has_wool", has(Items.WHITE_WOOL))
-				.define('S', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+				.define('S', Items.STRING).unlockedBy("has_string", has(Items.STRING))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, RatsItemRegistry.PIPER_HAT.get())
@@ -297,7 +302,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("LCL")
 				.pattern("LLL")
 				.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
-				.define('L', Tags.Items.LEATHER).unlockedBy("has_leather", has(Tags.Items.LEATHER))
+				.define('L', Items.LEATHER).unlockedBy("has_leather", has(Items.LEATHER))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, RatsItemRegistry.RAT_CAPTURE_NET.get())
@@ -321,7 +326,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("LLR")
 				.pattern("  L")
 				.define('R', Tags.Items.RODS_BLAZE).unlockedBy("has_rod", has(Tags.Items.RODS_BLAZE))
-				.define('L', Tags.Items.LEATHER).unlockedBy("has_leather", has(Tags.Items.LEATHER))
+				.define('L', Items.LEATHER).unlockedBy("has_leather", has(Items.LEATHER))
 				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatsItemRegistry.PURIFYING_LIQUID.get())
@@ -340,7 +345,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatsItemRegistry.PLAGUE_ESSENCE.get(), 5)
 				.requires(RatsItemRegistry.PLAGUE_SCYTHE.get()).unlockedBy("has_scythe", has(RatsItemRegistry.PLAGUE_SCYTHE.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "scythe_to_essence"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "scythe_to_essence"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.PLAGUE_DOCTORATE.get())
 				.pattern(" E ")
@@ -367,7 +372,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.BONE_MEAL)
 				.requires(RatsItemRegistry.RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.RAT_SKULL.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "skull_to_bonemeal"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "skull_to_bonemeal"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.GOLDEN_RAT_SKULL.get())
 				.pattern("GGG")
@@ -426,7 +431,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern(" S ")
 				.pattern("RLR")
 				.pattern(" R ")
-				.define('S', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+				.define('S', Items.STRING).unlockedBy("has_string", has(Items.STRING))
 				.define('L', Items.REDSTONE_LAMP).unlockedBy("has_lamp", has(Items.REDSTONE_LAMP))
 				.define('R', Tags.Items.DYES_RED).unlockedBy("has_dye", has(Tags.Items.DYES_RED))
 				.save(consumer);
@@ -475,7 +480,7 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.pattern("SHS")
 				.pattern("FFF")
 				.define('F', ItemTags.FISHES).unlockedBy("has_fish", has(ItemTags.FISHES))
-				.define('S', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+				.define('S', Items.STRING).unlockedBy("has_string", has(Items.STRING))
 				.define('H', RatsItemRegistry.FARMER_HAT.get()).unlockedBy("has_hat", has(RatsItemRegistry.FARMER_HAT.get()))
 				.save(consumer);
 
@@ -520,53 +525,53 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 				.save(consumer);
 
 		for (DyeColor color : DyeColor.values()) {
-			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_hammock_" + color.getName()))))
+			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_hammock_" + color.getName()))))
 					.pattern("SCS")
 					.pattern("WWW")
-					.define('S', Tags.Items.STRING).unlockedBy("has_string", has(Tags.Items.STRING))
+					.define('S', Items.STRING).unlockedBy("has_string", has(Items.STRING))
 					.define('C', RatsItemTags.CHEESE_ITEMS).unlockedBy("has_cheese", has(RatsItemTags.CHEESE_ITEMS))
-					.define('W', ForgeRegistries.ITEMS.getValue(new ResourceLocation(color.getName() + "_wool"))).unlockedBy("has_wool", has(ForgeRegistries.ITEMS.getValue(new ResourceLocation(color.getName() + "_wool"))))
-					.save(consumer, new ResourceLocation(RatsMod.MODID, "hammocks/rat_hammock_" + color.getName()));
+					.define('W', BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("minecraft", color.getName() + "_wool"))).unlockedBy("has_wool", has(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("minecraft", color.getName() + "_wool"))))
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hammocks/rat_hammock_" + color.getName()));
 
-			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_hammock_" + color.getName()))))
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_hammock_" + color.getName()))))
 					.requires(RatsItemTags.HAMMOCKS).unlockedBy("has_hammock", has(RatsItemTags.HAMMOCKS))
 					.requires(color.getTag()).unlockedBy("has_dye", has(color.getTag()))
-					.save(consumer, new ResourceLocation(RatsMod.MODID, "hammocks/hammock_dyed_" + color.getName()));
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hammocks/hammock_dyed_" + color.getName()));
 
-			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_igloo_" + color.getName()))))
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_igloo_" + color.getName()))))
 					.requires(RatsItemTags.IGLOOS).unlockedBy("has_igloo", has(RatsItemTags.IGLOOS))
 					.requires(color.getTag()).unlockedBy("has_dye", has(color.getTag()))
-					.save(consumer, new ResourceLocation(RatsMod.MODID, "igloos/rat_igloo_" + color.getName()));
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "igloos/rat_igloo_" + color.getName()));
 
-			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_tube_" + color.getName()))), 8)
+			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_tube_" + color.getName()))), 8)
 					.pattern("TTT")
 					.pattern("TDT")
 					.pattern("TTT")
 					.define('T', RatsItemTags.TUBES).unlockedBy("has_tube", has(RatsItemTags.TUBES))
 					.define('D', color.getTag()).unlockedBy("has_dye", has(color.getTag()))
-					.save(consumer, new ResourceLocation(RatsMod.MODID, "tubes/rat_tube_" + color.getName()));
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "tubes/rat_tube_" + color.getName()));
 		}
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_tube_white"))), 16)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_tube_white"))), 16)
 				.pattern("PPP")
 				.pattern("   ")
 				.pattern("PPP")
 				.define('P', RatsItemRegistry.RAW_PLASTIC.get()).unlockedBy("has_plastic", has(RatsItemRegistry.RAW_PLASTIC.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "tubes/rat_tube_plastic"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "tubes/rat_tube_plastic"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_igloo_white"))))
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_igloo_white"))))
 				.pattern("PPP")
 				.pattern("P P")
 				.define('P', RatsItemRegistry.RAW_PLASTIC.get()).unlockedBy("has_plastic", has(RatsItemRegistry.RAW_PLASTIC.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "igloos/rat_igloo_plastic"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "igloos/rat_igloo_plastic"));
 
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 200).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cooked_rat_smelting"));
-		SimpleCookingRecipeBuilder.smoking(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 100).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cooked_rat_smoking"));
-		SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 600).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cooked_rat_campfire"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 200).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cooked_rat_smelting"));
+		SimpleCookingRecipeBuilder.smoking(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 100).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cooked_rat_smoking"));
+		SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(RatsItemRegistry.RAW_RAT.get()), RecipeCategory.FOOD, RatsItemRegistry.COOKED_RAT.get(), 0.35F, 600).unlockedBy("has_rat", has(RatsItemRegistry.RAW_RAT.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cooked_rat_campfire"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsItemRegistry.PLASTIC_WASTE.get()), RecipeCategory.MISC, RatsItemRegistry.RAW_PLASTIC.get(), 0.1F, 200).unlockedBy("has_plastic", has(RatsItemRegistry.PLASTIC_WASTE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "raw_plastic_smelting"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatsItemRegistry.PLASTIC_WASTE.get()), RecipeCategory.MISC, RatsItemRegistry.RAW_PLASTIC.get(), 0.1F, 100).unlockedBy("has_plastic", has(RatsItemRegistry.PLASTIC_WASTE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "raw_plastic_blasting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsItemRegistry.PLASTIC_WASTE.get()), RecipeCategory.MISC, RatsItemRegistry.RAW_PLASTIC.get(), 0.1F, 200).unlockedBy("has_plastic", has(RatsItemRegistry.PLASTIC_WASTE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "raw_plastic_smelting"));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatsItemRegistry.PLASTIC_WASTE.get()), RecipeCategory.MISC, RatsItemRegistry.RAW_PLASTIC.get(), 0.1F, 100).unlockedBy("has_plastic", has(RatsItemRegistry.PLASTIC_WASTE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "raw_plastic_blasting"));
 
 		this.cooking(RatsItemRegistry.ASSORTED_VEGETABLES.get(), RatsItemRegistry.CONFIT_BYALDI.get(), 1, consumer);
 		this.cooking(RatsItemRegistry.CHEESE.get(), RatsItemRegistry.STRING_CHEESE.get(), 4, consumer);
@@ -574,7 +579,14 @@ public class RatsRecipes extends RatsUpgradeRecipes {
 		this.cooking(Items.COAL, RatsItemRegistry.LITTLE_BLACK_SQUASH_BALLS.get(), 1, consumer);
 	}
 
-	private void cooking(ItemLike input, ItemLike output, int amount, Consumer<FinishedRecipe> consumer) {
-		new SingleItemRecipeBuilder(RecipeCategory.FOOD, RatsRecipeRegistry.CHEF_SERIALIZER.get(), Ingredient.of(input), output, amount).unlockedBy("has_input", has(input)).save(consumer, new ResourceLocation(RatsMod.MODID, "chef/" + ForgeRegistries.ITEMS.getKey(output.asItem()).getPath()));
+	private void cooking(ItemLike input, ItemLike output, int amount, RecipeOutput consumer) {
+		new SingleItemRecipeBuilder(RecipeCategory.FOOD, ChefRecipe::new, Ingredient.of(input), output, amount).unlockedBy("has_input", has(input)).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chef/" + BuiltInRegistries.ITEM.getKey(output.asItem()).getPath()));
 	}
 }
+
+
+
+
+
+
+

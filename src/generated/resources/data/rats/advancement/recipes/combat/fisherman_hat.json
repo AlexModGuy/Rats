@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fish": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:fishes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:farmer_hat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_string": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:string"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:fisherman_hat"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fish",
+      "has_string",
+      "has_hat"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:fisherman_hat"
+    ]
+  }
+}

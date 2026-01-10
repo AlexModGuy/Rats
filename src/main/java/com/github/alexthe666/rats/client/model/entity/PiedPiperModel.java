@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.client.model.entity;
 
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HierarchicalModel;
@@ -12,6 +10,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class PiedPiperModel<T extends PiedPiper> extends HierarchicalModel<T> implements ArmedModel, HeadedModel {
 	private final ModelPart root;
@@ -161,3 +161,10 @@ public class PiedPiperModel<T extends PiedPiper> extends HierarchicalModel<T> im
 	}
 
 }
+
+
+
+
+
+
+

@@ -39,3 +39,9 @@ public class RatMeleeAttackGoal extends MeleeAttackGoal implements RatWorkGoal {
 		return TaskType.ATTACK;
 	}
 }
+
+
+
+
+
+

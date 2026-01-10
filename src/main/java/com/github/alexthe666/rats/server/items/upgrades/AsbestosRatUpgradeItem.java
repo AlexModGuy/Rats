@@ -15,3 +15,10 @@ public class AsbestosRatUpgradeItem extends BaseRatUpgradeItem implements Damage
 		return source.is(DamageTypeTags.IS_FIRE);
 	}
 }
+
+
+
+
+
+
+

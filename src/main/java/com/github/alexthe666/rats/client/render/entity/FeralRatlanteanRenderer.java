@@ -5,18 +5,18 @@ import com.github.alexthe666.rats.client.model.entity.FeralRatlanteanModel;
 import com.github.alexthe666.rats.client.render.entity.layer.BasicOverlayLayer;
 import com.github.alexthe666.rats.client.render.entity.layer.GlowingOverlayLayer;
 import com.github.alexthe666.rats.server.entity.monster.FeralRatlantean;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class FeralRatlanteanRenderer extends MobRenderer<FeralRatlantean, FeralRatlanteanModel<FeralRatlantean>> {
-	private static final ResourceLocation BLUE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_blue.png");
-	private static final ResourceLocation BLACK_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_black.png");
-	private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_brown.png");
-	private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_green.png");
-	private static final ResourceLocation CLOTHES = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_clothes.png");
-	private static final ResourceLocation EYES = new ResourceLocation(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_eyes.png");
+	private static final ResourceLocation BLUE_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_blue.png");
+	private static final ResourceLocation BLACK_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_black.png");
+	private static final ResourceLocation BROWN_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_brown.png");
+	private static final ResourceLocation GREEN_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_green.png");
+	private static final ResourceLocation CLOTHES = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_clothes.png");
+	private static final ResourceLocation EYES = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/beasts/feral_ratlantean_eyes.png");
 
 	public FeralRatlanteanRenderer(EntityRendererProvider.Context context) {
 		super(context, new FeralRatlanteanModel<>(), 0.5F);
@@ -37,3 +37,10 @@ public class FeralRatlanteanRenderer extends MobRenderer<FeralRatlantean, FeralR
 		};
 	}
 }
+
+
+
+
+
+
+

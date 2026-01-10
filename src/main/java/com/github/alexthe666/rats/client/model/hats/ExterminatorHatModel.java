@@ -27,3 +27,10 @@ public class ExterminatorHatModel extends AbstractHatModel {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 }
+
+
+
+
+
+
+

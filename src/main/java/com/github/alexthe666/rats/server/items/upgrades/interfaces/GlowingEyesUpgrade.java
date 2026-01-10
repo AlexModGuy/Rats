@@ -14,3 +14,10 @@ public interface GlowingEyesUpgrade {
 	 */
 	RenderType getEyeTexture(ItemStack stack);
 }
+
+
+
+
+
+
+

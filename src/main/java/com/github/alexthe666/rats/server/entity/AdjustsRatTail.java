@@ -17,3 +17,10 @@ public interface AdjustsRatTail {
 		model.rotateAngleZ += progress * (rotZ - model.defaultRotationZ) / divisor;
 	}
 }
+
+
+
+
+
+
+

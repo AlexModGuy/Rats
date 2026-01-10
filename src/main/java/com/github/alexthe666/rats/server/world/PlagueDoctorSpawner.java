@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
@@ -128,7 +127,7 @@ public class PlagueDoctorSpawner implements CustomSpawner {
 			int k = pos.getZ() + level.getRandom().nextInt(distance * 2) - distance;
 			int l = level.getHeight(Heightmap.Types.WORLD_SURFACE, j, k);
 			BlockPos blockpos1 = new BlockPos(j, l, k);
-			if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, blockpos1, EntityType.WANDERING_TRADER)) {
+			if (SpawnPlacements.isSpawnPositionOk(EntityType.WANDERING_TRADER, level, blockpos1)) {
 				blockpos = blockpos1;
 				break;
 			}
@@ -147,3 +146,10 @@ public class PlagueDoctorSpawner implements CustomSpawner {
 		return true;
 	}
 }
+
+
+
+
+
+
+

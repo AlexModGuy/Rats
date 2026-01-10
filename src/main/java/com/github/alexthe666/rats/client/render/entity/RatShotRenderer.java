@@ -3,9 +3,6 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.server.entity.projectile.RatShot;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,11 +10,15 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.level.LightLayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RatShotRenderer extends EntityRenderer<RatShot> {
 
-	private static final RenderType TEXTURE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
+	private static final RenderType TEXTURE_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
 	private static final StaticRatModel<RatShot> MODEL_STATIC_RAT = new StaticRatModel<>();
 
 	public RatShotRenderer(EntityRendererProvider.Context context) {
@@ -48,11 +49,11 @@ public class RatShotRenderer extends EntityRenderer<RatShot> {
 		float f = (entity.tickCount + partialTicks) * 0.5F;
 		float f1 = 1;
 		MODEL_STATIC_RAT.setupAnim(entity, f, f1, entity.tickCount + partialTicks, 0, 0);
-		MODEL_STATIC_RAT.renderToBuffer(stack, consumer, light, OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)), 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_STATIC_RAT.renderToBuffer(stack, consumer, light, OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)), -1);
 
 		if (brightness < 7) {
 			VertexConsumer iGlowBuffer = buffer.getBuffer(TEXTURE_EYES);
-			MODEL_STATIC_RAT.renderToBuffer(stack, iGlowBuffer, light, OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)), 1.0F, 1.0F, 1.0F, 1.0F);
+			MODEL_STATIC_RAT.renderToBuffer(stack, iGlowBuffer, light, OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)), -1);
 		}
 		stack.popPose();
 
@@ -64,3 +65,10 @@ public class RatShotRenderer extends EntityRenderer<RatShot> {
 		return null;
 	}
 }
+
+
+
+
+
+
+

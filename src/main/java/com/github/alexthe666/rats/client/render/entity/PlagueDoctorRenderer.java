@@ -4,14 +4,14 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.PlagueDoctorModel;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CrossedArmsItemLayer;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class PlagueDoctorRenderer extends MobRenderer<PlagueDoctor, PlagueDoctorModel<PlagueDoctor>> {
-	private static final ResourceLocation DOCTOR = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_doctor.png");
+	private static final ResourceLocation DOCTOR = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/plague_doctor.png");
 
 	public PlagueDoctorRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlagueDoctorModel<>(context.bakeLayer(RatsModelLayers.PLAGUE_DOCTOR)), 0.5F);
@@ -33,3 +33,9 @@ public class PlagueDoctorRenderer extends MobRenderer<PlagueDoctor, PlagueDoctor
 		stack.scale(f, f, f);
 	}
 }
+
+
+
+
+
+

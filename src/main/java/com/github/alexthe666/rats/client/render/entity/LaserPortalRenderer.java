@@ -3,9 +3,6 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.LaserPortalModel;
 import com.github.alexthe666.rats.server.entity.misc.LaserPortal;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,10 +10,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class LaserPortalRenderer extends EntityRenderer<LaserPortal> {
 
-	private static final ResourceLocation PORTAL = new ResourceLocation(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_glow.png");
+	private static final ResourceLocation PORTAL = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/neo_ratlantean/neo_ratlantean_glow.png");
 	private static final LaserPortalModel MODEL_NEO_RATLANTEAN = new LaserPortalModel();
 
 	public LaserPortalRenderer(EntityRendererProvider.Context context) {
@@ -39,7 +39,7 @@ public class LaserPortalRenderer extends EntityRenderer<LaserPortal> {
 		stack.mulPose(Axis.XP.rotationDegrees(90));
 		stack.mulPose(Axis.ZP.rotationDegrees(entity.yRotO + (entity.getYRot() - entity.yRotO) * partialTicks - 90.0F));
 		stack.mulPose(Axis.YP.rotationDegrees((entity.tickCount + partialTicks) * 10));
-		MODEL_NEO_RATLANTEAN.renderToBuffer(stack, consumer, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_NEO_RATLANTEAN.renderToBuffer(stack, consumer, 240, OverlayTexture.NO_OVERLAY, -1);
 		stack.popPose();
 		stack.popPose();
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
@@ -54,3 +54,10 @@ public class LaserPortalRenderer extends EntityRenderer<LaserPortal> {
 		return PORTAL;
 	}
 }
+
+
+
+
+
+
+

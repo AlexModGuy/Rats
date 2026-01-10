@@ -4,20 +4,20 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunBaseModel;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunModel;
 import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun.png");
-	private static final ResourceLocation TEXTURE_FIRING = new ResourceLocation(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun_firing.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun.png");
+	private static final ResourceLocation TEXTURE_FIRING = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rattling_gun/rattling_gun_firing.png");
 	public static final RattlingGunModel<RattlingGun> GUN_MODEL = new RattlingGunModel<>();
 	public static final RattlingGunBaseModel<RattlingGun> GUN_BASE_MODEL = new RattlingGunBaseModel<>();
 
@@ -32,7 +32,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 		stack.pushPose();
 		stack.translate(0, 1.5F, 0);
 		stack.mulPose(Axis.XP.rotationDegrees(180));
-		GUN_BASE_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		GUN_BASE_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 		stack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 		GUN_MODEL.resetToDefaultPose();
 		if (!entity.isFiring()) {
@@ -42,7 +42,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 			GUN_MODEL.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
 		}
 
-		GUN_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		GUN_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 		stack.popPose();
 
 		if (entity.isFiring()) {
@@ -52,7 +52,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 			VertexConsumer ivertexbuilder2 = buffer.getBuffer(RenderType.eyes(TEXTURE_FIRING));
 			stack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 			GUN_MODEL.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
-			GUN_MODEL.renderToBuffer(stack, ivertexbuilder2, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			GUN_MODEL.renderToBuffer(stack, ivertexbuilder2, light, OverlayTexture.NO_OVERLAY, -1);
 			stack.popPose();
 		}
 		stack.popPose();
@@ -62,3 +62,10 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 		return TEXTURE;
 	}
 }
+
+
+
+
+
+
+

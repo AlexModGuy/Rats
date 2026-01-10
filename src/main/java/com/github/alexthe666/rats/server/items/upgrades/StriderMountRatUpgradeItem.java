@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.RatMount;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -14,10 +12,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class StriderMountRatUpgradeItem<T extends Mob & RatMount> extends MountRatUpgradeItem<T> implements HoldsItemUpgrade {
-	public StriderMountRatUpgradeItem(Properties properties, int rarity, int textLength, RegistryObject<EntityType<T>> entityType) {
+	public StriderMountRatUpgradeItem(Properties properties, int rarity, int textLength, DeferredHolder<EntityType<?>, EntityType<T>> entityType) {
 		super(properties, rarity, textLength, entityType);
 	}
 
@@ -37,3 +37,10 @@ public class StriderMountRatUpgradeItem<T extends Mob & RatMount> extends MountR
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

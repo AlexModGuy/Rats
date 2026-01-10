@@ -36,3 +36,10 @@ public class AutoCurdlerModel<T extends Entity> extends AdvancedEntityModel<T> {
 		return ImmutableList.of(this.bottom);
 	}
 }
+
+
+
+
+
+
+

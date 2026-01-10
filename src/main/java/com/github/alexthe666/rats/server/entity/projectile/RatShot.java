@@ -25,15 +25,15 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatShot extends ThrowableProjectile {
 
 	private static final EntityDataAccessor<String> RAT_COLOR = SynchedEntityData.defineId(RatShot.class, EntityDataSerializers.STRING);
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(RAT_COLOR, RatVariant.getVariantId(RatVariant.getRandomVariant(this.random, false)));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(RAT_COLOR, RatVariant.getVariantId(RatVariant.getRandomVariant(this.random, false)));
 	}
 
 	public RatShot(EntityType<? extends ThrowableProjectile> type, Level level) {
@@ -99,14 +99,14 @@ public class RatShot extends ThrowableProjectile {
 					}
 				} else if (thrower instanceof Mob mob) {
 					rat.setTarget(mob.getTarget());
-					rat.setTame(false);
+					rat.setTame(false, false);
 					rat.setOwnerUUID(mob.getUUID());
 				}
 				if (thrower instanceof RatSummoner ratter) {
 					ratter.setRatsSummoned(ratter.getRatsSummoned() + 1);
 				}
 				if (this.level() instanceof ServerLevelAccessor accessor) {
-					ForgeEventFactory.onFinalizeSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
+					EventHooks.finalizeMobSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null);
 				}
 				rat.setColorVariant(this.getColorVariant());
 				if (rat instanceof Rat plagueable) {
@@ -135,3 +135,9 @@ public class RatShot extends ThrowableProjectile {
 		return pos;
 	}
 }
+
+
+
+
+
+

@@ -29,3 +29,10 @@ public class BottlerRatUpgradeItem extends BaseRatUpgradeItem implements Changes
 		return List.of(new RatBottlerGoal(rat));
 	}
 }
+
+
+
+
+
+
+

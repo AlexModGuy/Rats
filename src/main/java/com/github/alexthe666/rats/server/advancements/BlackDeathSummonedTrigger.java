@@ -1,40 +1,43 @@
 package com.github.alexthe666.rats.server.advancements;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import com.github.alexthe666.rats.registry.RatsAdvancementsRegistry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.util.Optional;
 
 public class BlackDeathSummonedTrigger extends SimpleCriterionTrigger<BlackDeathSummonedTrigger.TriggerInstance> {
 
-	static final ResourceLocation ID = new ResourceLocation(RatsMod.MODID, "black_death_summoned");
-
 	@Override
-	protected BlackDeathSummonedTrigger.TriggerInstance createInstance(JsonObject object, ContextAwarePredicate predicate, DeserializationContext context) {
-		return new TriggerInstance(predicate);
+	public Codec<TriggerInstance> codec() {
+		return TriggerInstance.CODEC;
 	}
 
 	public void trigger(ServerPlayer player) {
 		this.trigger(player, instance -> true);
 	}
 
-	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
+	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
+		public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance ->
+			instance.group(
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player)
+			).apply(instance, TriggerInstance::new)
+		);
 
-	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-
-		public TriggerInstance(ContextAwarePredicate predicate) {
-			super(BlackDeathSummonedTrigger.ID, predicate);
-		}
-
-		public static BlackDeathSummonedTrigger.TriggerInstance summoned() {
-			return new BlackDeathSummonedTrigger.TriggerInstance(ContextAwarePredicate.ANY);
+		public static Criterion<TriggerInstance> summoned() {
+			return RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 	}
 }
+
+
+
+
+
+
+

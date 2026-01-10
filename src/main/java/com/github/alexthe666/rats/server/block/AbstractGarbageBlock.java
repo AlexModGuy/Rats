@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -12,10 +13,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 
 	public final MobSpawnType spawnReason;
 	public final double spawnRateModifier;
+
+	@Override
+	protected abstract MapCodec<? extends AbstractGarbageBlock> codec();
 
 	public AbstractGarbageBlock(BlockBehaviour.Properties properties, double spawnRateModifier) {
 		super(properties);
@@ -63,14 +67,14 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 								return;
 							if (RatConfig.ratsSpawnLikeMonsters && !this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random))
 								return;
-							ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
-							this.postInitSpawn(mob, random);
-							level.tryAddFreshEntityWithPassengers(mob);
-						} else {
-							if (mob instanceof PiedPiper && !level.getGameRules().getBoolean(RatsMod.SPAWN_PIPERS))
-								return;
-							if (this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random)) {
-								ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
+						EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null);
+						this.postInitSpawn(mob, random);
+						level.tryAddFreshEntityWithPassengers(mob);
+					} else {
+						if (mob instanceof PiedPiper && !level.getGameRules().getBoolean(RatsMod.SPAWN_PIPERS))
+							return;
+						if (this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random)) {
+							EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null);
 								this.postInitSpawn(mob, random);
 								level.tryAddFreshEntityWithPassengers(mob);
 							}
@@ -94,12 +98,13 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
-
-	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
-		return entityType == this.getEntityToSpawn();
-	}
 }
+
+
+
+
+
+

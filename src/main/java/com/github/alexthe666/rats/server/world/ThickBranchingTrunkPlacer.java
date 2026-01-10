@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -15,6 +14,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.function.Function;
 
 public class ThickBranchingTrunkPlacer extends TrunkPlacer {
 
-	public static final Codec<ThickBranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
+	public static final MapCodec<ThickBranchingTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
 			trunkPlacerParts(instance).and(instance.group(
 					Codec.INT.fieldOf("trunk_width").forGetter(o -> o.trunkWidth),
 					Codec.INT.fieldOf("base_radius").forGetter(o -> o.baseRadius),
@@ -128,3 +129,10 @@ public class ThickBranchingTrunkPlacer extends TrunkPlacer {
 		}
 	}
 }
+
+
+
+
+
+
+

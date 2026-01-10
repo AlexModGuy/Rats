@@ -30,3 +30,10 @@ public class PickpocketRatUpgradeItem extends BaseRatUpgradeItem implements Chan
 		}
 	}
 }
+
+
+
+
+
+
+

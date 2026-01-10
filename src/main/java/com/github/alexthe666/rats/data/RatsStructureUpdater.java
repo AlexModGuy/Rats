@@ -2,28 +2,32 @@ package com.github.alexthe666.rats.data;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.google.common.hash.Hashing;
-import com.mojang.datafixers.DataFixer;
-import com.mojang.datafixers.DataFixerUpper;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.util.datafix.DataFixers;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import com.mojang.datafixers.DataFixer;
+import com.mojang.datafixers.DataFixerUpper;
 
-import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nonnull;
 
 /**
  * Code borrowed from <a href="https://github.com/BluSunrize/ImmersiveEngineering/blob/1.20.1/src/datagen/java/blusunrize/immersiveengineering/data/StructureUpdater.java">Immersive Enginnering</a>
@@ -56,7 +60,7 @@ public class RatsStructureUpdater implements DataProvider {
 	}
 
 	private void process(ResourceLocation loc, Resource resource, CachedOutput cache) throws IOException {
-		CompoundTag inputNBT = NbtIo.readCompressed(resource.open());
+		CompoundTag inputNBT = NbtIo.readCompressed(resource.open(), NbtAccounter.unlimitedHeap());
 		CompoundTag converted = updateNBT(inputNBT);
 		if (!converted.equals(inputNBT)) {
 			Class<? extends DataFixer> fixerClass = DataFixers.getDataFixer().getClass();
@@ -79,7 +83,8 @@ public class RatsStructureUpdater implements DataProvider {
 				DataFixers.getDataFixer(), nbt, nbt.getInt("DataVersion")
 		);
 		StructureTemplate template = new StructureTemplate();
-		template.load(BuiltInRegistries.BLOCK.asLookup(), updatedNBT);
+		HolderGetter<Block> blockGetter = BuiltInRegistries.BLOCK.asLookup();
+		template.load(blockGetter, updatedNBT);
 		return template.save(new CompoundTag());
 	}
 
@@ -89,3 +94,10 @@ public class RatsStructureUpdater implements DataProvider {
 		return "Rats NBT Updater";
 	}
 }
+
+
+
+
+
+
+

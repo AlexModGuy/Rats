@@ -3,8 +3,9 @@ package com.github.alexthe666.rats.data.loot;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsLootRegistry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -14,9 +15,16 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import java.util.function.BiConsumer;
 
 public class RatsGameplayLootTables implements LootTableSubProvider {
+
+	private final HolderLookup.Provider registries;
+
+	public RatsGameplayLootTables(HolderLookup.Provider provider) {
+		this.registries = provider;
+	}
+
 	@Override
-	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-		consumer.accept(RatsLootRegistry.PET_SHOP_HOTV, LootTable.lootTable()
+	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
+		consumer.accept(RatsLootRegistry.PET_SHOP_HOTV_KEY, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(RatsItemRegistry.CHEESE.get()))
@@ -24,7 +32,7 @@ public class RatsGameplayLootTables implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAW_PLASTIC.get()))
 						.add(LootItem.lootTableItem(RatsBlockRegistry.RAT_CAGE.get()))));
 
-		consumer.accept(RatsLootRegistry.CHRISTMAS_GIFTS, LootTable.lootTable()
+		consumer.accept(RatsLootRegistry.CHRISTMAS_GIFTS_KEY, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(Items.COAL).setWeight(20))
@@ -56,3 +64,10 @@ public class RatsGameplayLootTables implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(RatsItemRegistry.ASSORTED_VEGETABLES.get()).setWeight(8))));
 	}
 }
+
+
+
+
+
+
+

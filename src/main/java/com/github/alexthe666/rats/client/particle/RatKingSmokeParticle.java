@@ -29,3 +29,10 @@ public class RatKingSmokeParticle extends SmokeParticle {
 		}
 	}
 }
+
+
+
+
+
+
+

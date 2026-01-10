@@ -5,8 +5,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class RatTubeMoveControl extends RatMoveControl {
 	private final TamedRat rat;
@@ -38,8 +39,9 @@ public class RatTubeMoveControl extends RatMoveControl {
 			float f8 = f3 * f6 + f2 * f5;
 			PathNavigation pathnavigate = this.rat.getNavigation();
 
-			NodeEvaluator nodeprocessor = pathnavigate.getNodeEvaluator();
-			if (nodeprocessor.getBlockPathType(this.rat.level(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != BlockPathTypes.WALKABLE) {
+			// In 1.21.1, use WalkNodeEvaluator.getPathTypeStatic instead of NodeEvaluator.getBlockPathType
+			PathType pathType = WalkNodeEvaluator.getPathTypeStatic(this.rat, new net.minecraft.core.BlockPos(Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)));
+			if (pathType != PathType.WALKABLE) {
 				this.strafeForwards = 1.0F;
 				this.strafeRight = 0.0F;
 				f1 = f;
@@ -76,3 +78,10 @@ public class RatTubeMoveControl extends RatMoveControl {
 		}
 	}
 }
+
+
+
+
+
+
+

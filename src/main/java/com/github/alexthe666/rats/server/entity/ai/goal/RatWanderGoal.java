@@ -53,3 +53,10 @@ public class RatWanderGoal extends WaterAvoidingRandomStrollGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

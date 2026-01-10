@@ -1,12 +1,12 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import java.util.Map;
 
@@ -19,3 +19,10 @@ public record RatlantisRuinConfiguration(Map<ResourceLocation, Float> ruins, Res
 							StructureProcessorType.LIST_CODEC.fieldOf("processor").orElse(null).forGetter(config -> config.processor))
 					.apply(instance, RatlantisRuinConfiguration::new));
 }
+
+
+
+
+
+
+

@@ -3,14 +3,14 @@ package com.github.alexthe666.rats.server.items.upgrades;
 import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class PlatterRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade {
 
@@ -40,3 +40,10 @@ public class PlatterRatUpgradeItem extends BaseRatUpgradeItem implements HoldsIt
 		context.getItemRenderer().renderStatic(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, rat.getId());
 	}
 }
+
+
+
+
+
+
+

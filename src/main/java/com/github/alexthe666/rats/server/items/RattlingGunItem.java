@@ -37,3 +37,10 @@ public class RattlingGunItem extends LoreTagItem {
 		return InteractionResult.FAIL;
 	}
 }
+
+
+
+
+
+
+

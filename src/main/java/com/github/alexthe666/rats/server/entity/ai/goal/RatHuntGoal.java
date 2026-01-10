@@ -1,16 +1,17 @@
 package com.github.alexthe666.rats.server.entity.ai.goal;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.mojang.datafixers.util.Pair;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class RatHuntGoal extends TargetGoal {
 
@@ -41,7 +42,7 @@ public class RatHuntGoal extends TargetGoal {
 	}
 
 	protected void findTarget() {
-		this.target = this.rat.level().getNearestEntity(this.rat.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), entity -> (!(entity instanceof OwnableEntity ownable) || ownable.getOwner() != this.rat.getOwner()) && entity != this.rat.getOwner() && this.targetsList.getFirst() == this.targetsList.getSecond().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())), TargetingConditions.DEFAULT, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
+		this.target = this.rat.level().getNearestEntity(this.rat.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), entity -> (!(entity instanceof OwnableEntity ownable) || ownable.getOwner() != this.rat.getOwner()) && entity != this.rat.getOwner() && this.targetsList.getFirst() == this.targetsList.getSecond().contains(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString())), TargetingConditions.DEFAULT, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
 	}
 
 	@Override
@@ -50,3 +51,10 @@ public class RatHuntGoal extends TargetGoal {
 		super.start();
 	}
 }
+
+
+
+
+
+
+

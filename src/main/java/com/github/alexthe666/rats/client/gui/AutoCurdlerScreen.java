@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.AutoCurdlerMenu;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,16 +15,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import org.joml.Matrix4f;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/auto_curdler.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/auto_curdler.png");
 	private final AutoCurdlerMenu curdler;
 
 	public AutoCurdlerScreen(AutoCurdlerMenu container, Inventory inv, Component name) {
@@ -49,8 +49,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 		float uDif = uMax - uMin;
 		float vDif = vMax - vMin;
 		RenderSystem.enableBlend();
-		BufferBuilder vertexBuffer = Tesselator.getInstance().getBuilder();
-		vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		BufferBuilder vertexBuffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 		Matrix4f matrix4f = stack.last().pose();
 		for (int xTile = 0; xTile <= xTileCount; xTile++) {
 			int width = (xTile == xTileCount) ? xRemainder : 16;
@@ -71,26 +70,24 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 				int maskTop = 16 - height;
 				float vLocalDif = vDif * maskTop / 16;
 
-				vertexBuffer.vertex(matrix4f, x, y + 16, 0).uv(uMin + uLocalDif, vMax).endVertex();
-				vertexBuffer.vertex(matrix4f, shiftedX, y + 16, 0).uv(uMax, vMax).endVertex();
-				vertexBuffer.vertex(matrix4f, shiftedX, y + maskTop, 0).uv(uMax, vMin + vLocalDif).endVertex();
-				vertexBuffer.vertex(matrix4f, x, y + maskTop, 0).uv(uMin + uLocalDif, vMin + vLocalDif).endVertex();
+				vertexBuffer.addVertex(matrix4f, x, y + 16, 0).setUv(uMin + uLocalDif, vMax);
+				vertexBuffer.addVertex(matrix4f, shiftedX, y + 16, 0).setUv(uMax, vMax);
+				vertexBuffer.addVertex(matrix4f, shiftedX, y + maskTop, 0).setUv(uMax, vMin + vLocalDif);
+				vertexBuffer.addVertex(matrix4f, x, y + maskTop, 0).setUv(uMin + uLocalDif, vMin + vLocalDif);
 			}
 		}
-		BufferUploader.drawWithShader(vertexBuffer.end());
+		BufferUploader.drawWithShader(vertexBuffer.buildOrThrow());
 		RenderSystem.disableBlend();
 	}
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		this.renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int x, int y) {
-		this.renderBackground(graphics);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 
@@ -100,7 +97,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 		int tankWidth = 24;
 		int tankHeight = 63;
 		int amount = Math.round((this.curdler.getFluidAmount() / (float) this.curdler.getTankCapacity()) * (tankHeight - 4));
-		renderFluidStack(graphics.pose(), i + 29, j + 73, tankWidth, amount, ForgeMod.MILK.get());
+		renderFluidStack(graphics.pose(), i + 29, j + 73, tankWidth, amount, NeoForgeMod.MILK.get());
 		graphics.blit(TEXTURE, i + 29, j + 12, 0, 166, tankWidth, tankHeight);
 	}
 
@@ -110,10 +107,16 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 		int screenH = (this.height - this.imageHeight) / 2;
 
 		if (this.isHovering(29, 15, 24, 58, mouseX, mouseY)) {
-			String fluidName = new FluidStack(ForgeMod.MILK.get(), this.curdler.getTankCapacity()).getDisplayName().getString();
+			String fluidName = new FluidStack(NeoForgeMod.MILK.get(), this.curdler.getTankCapacity()).getDisplayName().getString();
 			String fluidSize = this.curdler.getFluidAmount() + " " + Component.translatable(RatsLangConstants.CURDLER_MB).getString();
 			List<Component> list = Arrays.asList(Component.literal(fluidName).withStyle(ChatFormatting.BLUE), Component.literal(fluidSize).withStyle(ChatFormatting.GRAY));
 			graphics.renderTooltip(this.font, Lists.transform(list, Component::getVisualOrderText), mouseX - screenW, mouseY - screenH);
 		}
 	}
 }
+
+
+
+
+
+

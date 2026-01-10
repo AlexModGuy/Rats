@@ -92,6 +92,12 @@
         "maxCount": 2,
         "minCount": 1,
         "weight": 14
+      },
+      {
+        "type": "rats:rat",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
       }
     ],
     "misc": [],
@@ -119,14 +125,6 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
-      }
-    ],
-    "rats": [
-      {
-        "type": "rats:rat",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
       }
     ],
     "underground_water_creature": [],

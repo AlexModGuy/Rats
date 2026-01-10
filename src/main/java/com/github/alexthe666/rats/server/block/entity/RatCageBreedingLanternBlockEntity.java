@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -37,14 +38,14 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.saveAdditional(compound, registries);
 		compound.putInt("BreedingCooldown", this.breedingCooldown);
-		super.saveAdditional(compound);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		this.breedingCooldown = compound.getInt("BreedingCooldown");
 	}
 
@@ -99,3 +100,10 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 		}
 	}
 }
+
+
+
+
+
+
+

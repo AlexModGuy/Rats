@@ -2,9 +2,13 @@ package com.github.alexthe666.rats.server.entity.misc;
 
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +33,7 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 
 	private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
 	@Nullable
-	private ResourceLocation lootTable;
+	private ResourceKey<LootTable> lootTable;
 	private long lootTableSeed;
 
 	public PiratWoodChestBoat(EntityType<? extends PiratWoodBoat> type, Level level) {
@@ -57,13 +61,13 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		this.addChestVehicleSaveData(tag);
+		this.addChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.readChestVehicleSaveData(tag);
+		this.readChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
@@ -174,13 +178,13 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 
 	@Nullable
 	@Override
-	public ResourceLocation getLootTable() {
+	public ResourceKey<LootTable> getLootTable() {
 		return this.lootTable;
 	}
 
 	@Override
-	public void setLootTable(@Nullable ResourceLocation location) {
-		this.lootTable = location;
+	public void setLootTable(@Nullable ResourceKey<LootTable> lootTable) {
+		this.lootTable = lootTable;
 	}
 
 	@Override
@@ -203,3 +207,10 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 		this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 	}
 }
+
+
+
+
+
+
+

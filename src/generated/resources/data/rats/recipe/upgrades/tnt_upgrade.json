@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "c:gunpowders"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "GTG",
+    "TUT",
+    "GTG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_tnt"
+  }
+}

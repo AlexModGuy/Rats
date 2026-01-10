@@ -39,3 +39,10 @@ public class PlacerRatUpgradeItem extends BaseRatUpgradeItem implements ChangesA
 		return source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL);
 	}
 }
+
+
+
+
+
+
+

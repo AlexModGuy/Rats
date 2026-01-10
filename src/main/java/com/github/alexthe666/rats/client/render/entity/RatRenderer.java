@@ -13,3 +13,10 @@ public class RatRenderer extends AbstractRatRenderer<Rat, RatModel<Rat>> {
 		this.addLayer(new RatEyesLayer<>(this));
 	}
 }
+
+
+
+
+
+
+

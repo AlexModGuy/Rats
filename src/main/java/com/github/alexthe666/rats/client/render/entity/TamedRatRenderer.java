@@ -12,8 +12,6 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -26,7 +24,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.neoforged.neoforge.client.ClientHooks;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import org.joml.Matrix4f;
 
 import java.util.Locale;
@@ -37,25 +37,25 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 
 	private static final RatModel<TamedRat> RAT_MODEL = new RatModel<>();
 	private static final PinkieModel<TamedRat> PINKIE_MODEL = new PinkieModel<>();
-	private static final ResourceLocation PINKIE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/baby.png");
+	private static final ResourceLocation PINKIE_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/baby.png");
 	private static final String[] FISHING_PROGRESS = new String[] {".", "..", "..."};
 
 	private static final ImmutableMap<String, ResourceLocation> SPECIAL_SKINS = ImmutableMap.<String, ResourceLocation>builder()
-		.put("brick", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/brick.png"))
-		.put("bugraak", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/bugraak.png"))
-		.put("dino", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/dino.png"))
-		.put("friar", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/friar.png"))
-		.put("gizmo", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/gizmo.png"))
-		.put("julian", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/julian.png"))
-		.put("lil_cheese", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/lil_cheese.png"))
-		.put("ratatla", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/ratatla.png"))
-		.put("riddler", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/riddler.png"))
-		.put("sharva", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/sharva.png"))
-		.put("shizuka", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/shizuka.png"))
-		.put("skrat", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/skrat.png"))
-		.put("splinter", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/splinter.png"))
-		.put("ultrakill", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/ultrakill.png"))
-		.put("zura", new ResourceLocation(RatsMod.MODID, "textures/entity/rat/patreon_skins/zura.png"))
+		.put("brick", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/brick.png"))
+		.put("bugraak", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/bugraak.png"))
+		.put("dino", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/dino.png"))
+		.put("friar", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/friar.png"))
+		.put("gizmo", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/gizmo.png"))
+		.put("julian", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/julian.png"))
+		.put("lil_cheese", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/lil_cheese.png"))
+		.put("ratatla", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/ratatla.png"))
+		.put("riddler", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/riddler.png"))
+		.put("sharva", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/sharva.png"))
+		.put("shizuka", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/shizuka.png"))
+		.put("skrat", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/skrat.png"))
+		.put("splinter", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/splinter.png"))
+		.put("ultrakill", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/ultrakill.png"))
+		.put("zura", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/patreon_skins/zura.png"))
 		.build();
 
 	public TamedRatRenderer(EntityRendererProvider.Context context) {
@@ -103,8 +103,8 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 
 	protected void renderAdditionalInfo(TamedRat entity, PoseStack stack, MultiBufferSource source, int light) {
 		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
-		if (ForgeHooksClient.isNameplateInRenderDistance(entity, d0)) {
-			float f = entity.getNameTagOffsetY();
+		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
+			float f = entity.getBbHeight() + 0.5F;
 			stack.pushPose();
 			stack.translate(0.0F, f, 0.0F);
 			stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -142,7 +142,7 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 			});
 
 			if (upgradeTex.get() != null) {
-				return new ResourceLocation(upgradeTex.get());
+				return ResourceLocation.parse(upgradeTex.get());
 			}
 
 			if (entity.hasCustomName()) {
@@ -156,3 +156,10 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 		}
 	}
 }
+
+
+
+
+
+
+

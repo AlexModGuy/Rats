@@ -1,11 +1,11 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -24,22 +25,27 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
-
-import java.util.Map;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class CheeseCauldronBlock extends AbstractCauldronBlock {
 
-	private final RegistryObject<Block> drop;
+	public static final MapCodec<CheeseCauldronBlock> CODEC = simpleCodec(p -> new CheeseCauldronBlock(p, null, null));
 
-	public CheeseCauldronBlock(BlockBehaviour.Properties properties, RegistryObject<Block> dropBlock, Map<Item, CauldronInteraction> interaction) {
+	@Override
+	protected MapCodec<? extends AbstractCauldronBlock> codec() {
+		return CODEC;
+	}
+
+	private final DeferredHolder<Block, Block> drop;
+
+	public CheeseCauldronBlock(BlockBehaviour.Properties properties, DeferredHolder<Block, Block> dropBlock, CauldronInteraction.InteractionMap interaction) {
 		super(properties, interaction);
 		this.drop = dropBlock;
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (super.useWithoutItem(state, level, pos, player, hit) == InteractionResult.PASS) {
 			level.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
 			level.playSound(null, pos, RatsSoundRegistry.CHEESE_CAULDRON_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -71,7 +77,14 @@ public class CheeseCauldronBlock extends AbstractCauldronBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return new ItemStack(Items.CAULDRON);
 	}
 }
+
+
+
+
+
+
+

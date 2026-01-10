@@ -15,3 +15,10 @@ public class TNTSurvivorRatUpgradeItem extends TNTRatUpgradeItem implements Dama
 		return source.is(DamageTypeTags.IS_EXPLOSION) || source.is(DamageTypeTags.IS_FALL);
 	}
 }
+
+
+
+
+
+
+

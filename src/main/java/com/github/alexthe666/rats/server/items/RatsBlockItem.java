@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
 
@@ -25,13 +25,13 @@ public class RatsBlockItem extends BlockItem {
 	}
 
 	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
+	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, net.minecraft.world.entity.LivingEntity entity) {
 		return this.getBlock() instanceof WearableOnHead && EquipmentSlot.HEAD == armorType;
 	}
 
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return this.getBlock() instanceof CustomItemRarity rarity ? rarity.getRarity() : super.getRarity(stack);
+	// Rarity is now handled via DataComponents, not an overridable method
+	public Rarity getBlockRarity() {
+		return this.getBlock() instanceof CustomItemRarity rarity ? rarity.getRarity() : Rarity.COMMON;
 	}
 
 	@Override
@@ -52,3 +52,10 @@ public class RatsBlockItem extends BlockItem {
 		});
 	}
 }
+
+
+
+
+
+
+

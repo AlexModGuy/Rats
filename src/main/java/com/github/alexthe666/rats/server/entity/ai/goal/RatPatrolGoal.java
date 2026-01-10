@@ -43,3 +43,10 @@ public class RatPatrolGoal extends Goal {
 
 	}
 }
+
+
+
+
+
+
+

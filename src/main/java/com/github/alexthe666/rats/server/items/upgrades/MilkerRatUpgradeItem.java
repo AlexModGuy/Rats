@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.ai.goal.harvest.RatMilkCowGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.List;
 
@@ -20,3 +20,10 @@ public class MilkerRatUpgradeItem extends BucketRatUpgradeItem implements Change
 		return List.of(new RatPickupGoal(rat, RatPickupGoal.PickupType.FLUID), new RatDepositGoal(rat, RatDepositGoal.DepositType.FLUID), new RatMilkCowGoal(rat));
 	}
 }
+
+
+
+
+
+
+

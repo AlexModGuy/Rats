@@ -25,3 +25,10 @@ public class RatFezModel extends AbstractHatModel {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 }
+
+
+
+
+
+
+

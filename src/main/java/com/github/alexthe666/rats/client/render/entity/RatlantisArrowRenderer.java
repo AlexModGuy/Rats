@@ -3,20 +3,18 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.projectile.RatlantisArrow;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RatlantisArrowRenderer extends ArrowRenderer<RatlantisArrow> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantis_arrow.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantis_arrow.png");
 
 	public RatlantisArrowRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -38,23 +36,22 @@ public class RatlantisArrowRenderer extends ArrowRenderer<RatlantisArrow> {
 		stack.translate(-4.0D, 0.0D, 0.0D);
 		VertexConsumer vertexBuilder = buffer.getBuffer(RatsRenderType.getYellowGlint());
 		PoseStack.Pose pose = stack.last();
-		Matrix4f matrix4f = pose.pose();
-		Matrix3f matrix3f = pose.normal();
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, 1);
 
 		for (int j = 0; j < 4; ++j) {
 			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-			this.vertex(matrix4f, matrix3f, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, 1);
+			pose = stack.last();
+			this.vertex(pose, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, 1);
 		}
 
 		stack.popPose();
@@ -66,3 +63,10 @@ public class RatlantisArrowRenderer extends ArrowRenderer<RatlantisArrow> {
 		return TEXTURE;
 	}
 }
+
+
+
+
+
+
+

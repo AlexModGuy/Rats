@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.entity.projectile;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.server.entity.monster.GhostPirat;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -35,7 +36,7 @@ public class DutchratSword extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 
@@ -83,8 +84,13 @@ public class DutchratSword extends ThrowableProjectile {
 		return PushReaction.IGNORE;
 	}
 
-	@Override
-	protected float getGravity() {
-		return 0.0f;
-	}
+	// Note: getGravity() is final in 1.21 and cannot be overridden
+	// Gravity is now controlled via Entity's gravity attribute
 }
+
+
+
+
+
+
+

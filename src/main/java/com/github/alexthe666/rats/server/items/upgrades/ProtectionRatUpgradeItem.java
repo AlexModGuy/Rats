@@ -16,3 +16,10 @@ public class ProtectionRatUpgradeItem extends BaseRatUpgradeItem implements Dama
 		return source.is(DamageTypeTags.WITCH_RESISTANT_TO) || source.is(DamageTypes.WITHER) || source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.DROWN);
 	}
 }
+
+
+
+
+
+
+

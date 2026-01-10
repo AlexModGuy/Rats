@@ -29,3 +29,10 @@ public class EmptyModel<T extends Entity> extends AdvancedEntityModel<T> {
 
 	}
 }
+
+
+
+
+
+
+

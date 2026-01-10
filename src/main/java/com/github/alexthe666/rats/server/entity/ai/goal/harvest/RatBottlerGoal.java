@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
@@ -67,7 +67,7 @@ public class RatBottlerGoal extends BaseRatHarvestGoal {
 					this.stop();
 				} else if (block.is(Blocks.WATER_CAULDRON)) {
 					LayeredCauldronBlock.lowerFillLevel(block, this.rat.level(), pos);
-					this.giveOrDropItem(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER));
+					this.giveOrDropItem(PotionContents.createItemStack(Items.POTION, Potions.WATER));
 					this.rat.level().playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 					this.stop();
 				}
@@ -98,20 +98,12 @@ public class RatBottlerGoal extends BaseRatHarvestGoal {
 
 	public void releaseBeesAndResetHoneyLevel(Level level, BlockState state, BlockPos pos, BeehiveBlockEntity.BeeReleaseStatus status) {
 		level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
+		// TODO: In 1.21.1, BeehiveBlockEntity.releaseAllOccupants() is private
+		// Bees will remain in hive but honey level is reset - consider alternative approach
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof BeehiveBlockEntity beehive) {
-			List<Entity> list = beehive.releaseAllOccupants(state, status);
-			for (Entity entity : list) {
-				if (entity instanceof Bee bee) {
-					if (this.rat.position().distanceToSqr(entity.position()) <= 16.0D) {
-						if (!beehive.isSedated()) {
-							bee.setTarget(this.rat);
-						} else {
-							bee.setStayOutOfHiveCountdown(400);
-						}
-					}
-				}
-			}
+			// Cannot release bees - releaseAllOccupants is private in 1.21.1
+			// Bees inside will eventually leave on their own
 		}
 	}
 
@@ -142,3 +134,10 @@ public class RatBottlerGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

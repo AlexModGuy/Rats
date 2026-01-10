@@ -231,3 +231,10 @@ public class RatlanteanSpirit extends Monster implements IAnimatedEntity {
 		return type == MobSpawnType.SPAWNER || accessor.getBlockState(blockpos).isValidSpawn(accessor, blockpos, entity) && random.nextInt(5) == 0;
 	}
 }
+
+
+
+
+
+
+

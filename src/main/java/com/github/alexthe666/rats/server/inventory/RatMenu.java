@@ -5,7 +5,6 @@ import com.github.alexthe666.rats.registry.RatsMenuRegistry;
 import com.github.alexthe666.rats.registry.RatsUpgradeConflictRegistry;
 import com.github.alexthe666.rats.server.inventory.container.RatContainer;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -17,13 +16,14 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BannerItem;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.datafixers.util.Pair;
 
 public class RatMenu extends AbstractContainerMenu {
 	private final Container ratInventory;
-	private static final ResourceLocation EMPTY_HELMET_SLOT = new ResourceLocation(RatsMod.MODID, "item/empty_rat_helmet_slot");
-	private static final ResourceLocation EMPTY_BANNER_SLOT = new ResourceLocation(RatsMod.MODID, "item/empty_rat_banner_slot");
-	private static final ResourceLocation EMPTY_ITEM_SLOT = new ResourceLocation(RatsMod.MODID, "item/empty_rat_item_slot");
-	private static final ResourceLocation EMPTY_UPGRADE_SLOT = new ResourceLocation(RatsMod.MODID, "item/empty_rat_upgrade_slot");
+	private static final ResourceLocation EMPTY_HELMET_SLOT = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "item/empty_rat_helmet_slot");
+	private static final ResourceLocation EMPTY_BANNER_SLOT = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "item/empty_rat_banner_slot");
+	private static final ResourceLocation EMPTY_ITEM_SLOT = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "item/empty_rat_item_slot");
+	private static final ResourceLocation EMPTY_UPGRADE_SLOT = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "item/empty_rat_upgrade_slot");
 
 	public RatMenu(int id, Container ratInventory, Inventory playerInventory) {
 		super(RatsMenuRegistry.RAT_CONTAINER.get(), id);
@@ -167,3 +167,10 @@ public class RatMenu extends AbstractContainerMenu {
 		}
 	}
 }
+
+
+
+
+
+
+

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class RatProtector extends AbstractRat {
@@ -22,7 +23,7 @@ public class RatProtector extends AbstractRat {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	protected int getBaseExperienceReward() {
 		return 0;
 	}
 
@@ -88,4 +89,16 @@ public class RatProtector extends AbstractRat {
 	public boolean isTame() {
 		return true;
 	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
 }
+
+
+
+
+
+
+

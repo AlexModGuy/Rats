@@ -18,21 +18,17 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.portal.PortalInfo;
-import net.minecraft.world.level.portal.PortalShape;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.function.Function;
 
-public class RatlantisTeleporter implements ITeleporter {
+public class RatlantisTeleporter {
 
 	protected final ServerLevel level;
 
@@ -96,34 +92,27 @@ public class RatlantisTeleporter implements ITeleporter {
 		}
 	}
 
-	@Override
-	public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel level, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-		boolean ratlantis = level.dimension() == RatlantisDimensionRegistry.DIMENSION_KEY;
+	@Nullable
+	public DimensionTransition createDimensionTransition(Entity entity, ServerLevel destLevel) {
+		boolean ratlantis = destLevel.dimension() == RatlantisDimensionRegistry.DIMENSION_KEY;
 		if (entity.level().dimension() != RatlantisDimensionRegistry.DIMENSION_KEY && !ratlantis) {
 			return null;
 		} else {
-			WorldBorder border = level.getWorldBorder();
+			WorldBorder border = destLevel.getWorldBorder();
 			double minX = Math.max(-2.9999872E7D, border.getMinX() + 16.0D);
 			double minZ = Math.max(-2.9999872E7D, border.getMinZ() + 16.0D);
 			double maxX = Math.min(2.9999872E7D, border.getMaxX() - 16.0D);
 			double maxZ = Math.min(2.9999872E7D, border.getMaxZ() - 16.0D);
-			double coordinateDifference = DimensionType.getTeleportationScale(entity.level().dimensionType(), level.dimensionType());
+			double coordinateDifference = DimensionType.getTeleportationScale(entity.level().dimensionType(), destLevel.dimensionType());
 			BlockPos blockpos = BlockPos.containing(Mth.clamp(entity.getX() * coordinateDifference, minX, maxX), entity.getY(), Mth.clamp(entity.getZ() * coordinateDifference, minZ, maxZ));
-			return this.getOrMakePortal(blockpos).map((result) -> {
-				BlockState state = entity.level().getBlockState(entity.portalEntrancePos);
-				Direction.Axis axis;
-				Vec3 vector3d;
-				if (state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
-					axis = state.getValue(BlockStateProperties.HORIZONTAL_AXIS);
-					BlockUtil.FoundRectangle rectangle = BlockUtil.getLargestRectangleAround(entity.portalEntrancePos, axis, 21, Direction.Axis.Y, 21, (pos) -> entity.level().getBlockState(pos) == state);
-					vector3d = PortalShape.getRelativePosition(rectangle, axis, entity.position(), entity.getDimensions(entity.getPose()));
-				} else {
-					axis = Direction.Axis.X;
-					vector3d = new Vec3(0.5D, 0.0D, 0.0D);
-				}
-
-				return PortalShape.createPortalInfo(level, result, axis, vector3d, entity, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
-			}).orElse(null);
+			Optional<BlockUtil.FoundRectangle> portalResult = this.getOrMakePortal(blockpos);
+			
+			if (portalResult.isPresent()) {
+				BlockUtil.FoundRectangle result = portalResult.get();
+				Vec3 targetPos = new Vec3(result.minCorner.getX() + 0.5, result.minCorner.getY(), result.minCorner.getZ() + 0.5);
+				return new DimensionTransition(destLevel, targetPos, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
+			}
+			return null;
 		}
 	}
 
@@ -135,9 +124,11 @@ public class RatlantisTeleporter implements ITeleporter {
 			return this.makePortal(pos);
 		}
 	}
-
-	@Override
-	public boolean playTeleportSound(ServerPlayer player, ServerLevel sourceWorld, ServerLevel destWorld) {
-		return false;
-	}
 }
+
+
+
+
+
+
+

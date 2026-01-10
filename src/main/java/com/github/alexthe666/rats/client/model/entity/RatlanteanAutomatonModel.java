@@ -8,10 +8,10 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatlanteanAutomaton;
 import com.github.alexthe666.rats.server.entity.mount.RatAutomatonMount;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class RatlanteanAutomatonModel<T extends Mob & IAnimatedEntity> extends AdvancedEntityModel<T> {
 	public final AdvancedModelBox body;
@@ -171,8 +171,8 @@ public class RatlanteanAutomatonModel<T extends Mob & IAnimatedEntity> extends A
 		this.animator.endKeyframe();
 	}
 
-	public void renderHead(PoseStack stack, VertexConsumer buffer, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.headBase.render(stack, buffer, light, overlay, red, green, blue, alpha);
+	public void renderHead(PoseStack stack, VertexConsumer buffer, int light, int overlay, int color) {
+		this.headBase.render(stack, buffer, light, overlay, color);
 	}
 
 	public void setTERotationAngles(float tickCount) {
@@ -270,3 +270,10 @@ public class RatlanteanAutomatonModel<T extends Mob & IAnimatedEntity> extends A
 		this.animator.rotate(renderer, (float) Math.toRadians(degX) - renderer.defaultRotationX, (float) Math.toRadians(degY) - renderer.defaultRotationY, (float) Math.toRadians(degZ) - renderer.defaultRotationZ);
 	}
 }
+
+
+
+
+
+
+

@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -88,9 +89,10 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 		return super.isInvulnerableTo(source);
 	}
 
+	// In 1.21, getPassengersRidingOffset is replaced with getPassengerAttachmentPoint
 	@Override
-	public double getPassengersRidingOffset() {
-		return this.riderY;
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
+		return new Vec3(0.0, this.riderY, 0.0);
 	}
 
 	@Override
@@ -101,7 +103,7 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 			float angle = (0.01745329251F * this.yBodyRot);
 			double extraX = radius * Mth.sin((float) (Math.PI + angle));
 			double extraZ = radius * Mth.cos(angle);
-			double extraY = this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset();
+			double extraY = this.getY() + this.riderY + passenger.getPassengerRidingPosition(this).y;
 			callback.accept(passenger, this.getX() + extraX, extraY, this.getZ() + extraZ);
 			if (passenger instanceof LivingEntity living) {
 				living.yBodyRot = living.yBodyRotO = this.getYRot();
@@ -174,3 +176,10 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 		return this.getRat() != null ? this.getRat().getPickedResult(target) : super.getPickedResult(target);
 	}
 }
+
+
+
+
+
+
+

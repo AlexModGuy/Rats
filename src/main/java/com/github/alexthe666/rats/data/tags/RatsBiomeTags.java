@@ -9,16 +9,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RatsBiomeTags extends BiomeTagsProvider {
 
-	public static final TagKey<Biome> RAT_SPAWN_BIOMES = create(new ResourceLocation(RatsMod.MODID, "rat_spawn_biomes"));
-	public static final TagKey<Biome> PIPER_SPAWN_BIOMES = create(new ResourceLocation(RatsMod.MODID, "piper_spawn_biomes"));
-	public static final TagKey<Biome> DEMON_RAT_SPAWN_BIOMES = create(new ResourceLocation(RatsMod.MODID, "demon_rat_spawn_biomes"));
+	public static final TagKey<Biome> RAT_SPAWN_BIOMES = create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_biomes"));
+	public static final TagKey<Biome> PIPER_SPAWN_BIOMES = create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "piper_spawn_biomes"));
+	public static final TagKey<Biome> DEMON_RAT_SPAWN_BIOMES = create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "demon_rat_spawn_biomes"));
 
 	public RatsBiomeTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);
@@ -51,3 +51,10 @@ public class RatsBiomeTags extends BiomeTagsProvider {
 		return TagKey.create(Registries.BIOME, name);
 	}
 }
+
+
+
+
+
+
+

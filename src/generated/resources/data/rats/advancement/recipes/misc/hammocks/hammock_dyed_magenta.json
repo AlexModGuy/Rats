@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:dyes/magenta"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_hammock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#rats:hammocks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:hammocks/hammock_dyed_magenta"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_hammock",
+      "has_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:hammocks/hammock_dyed_magenta"
+    ]
+  }
+}

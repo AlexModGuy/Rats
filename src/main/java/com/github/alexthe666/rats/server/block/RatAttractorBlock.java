@@ -1,12 +1,14 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.server.block.entity.RatAttractorBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -31,6 +33,13 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class RatAttractorBlock extends BaseEntityBlock {
+	public static final MapCodec<RatAttractorBlock> CODEC = simpleCodec(RatAttractorBlock::new);
+
+	@Override
+	protected MapCodec<? extends RatAttractorBlock> codec() {
+		return CODEC;
+	}
+
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty CONNECTED_UP = BooleanProperty.create("up");
 	private static final VoxelShape AABB = Block.box(4, 0, 4, 12, 8, 12);
@@ -53,7 +62,7 @@ public class RatAttractorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.rats.rat_attractor.desc").withStyle(ChatFormatting.GRAY));
 	}
 
@@ -63,7 +72,7 @@ public class RatAttractorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isClientSide()) {
 			this.updateState(state, level, pos);
 		}
@@ -104,7 +113,14 @@ public class RatAttractorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }
+
+
+
+
+
+
+

@@ -48,3 +48,10 @@ public class PinkieModel<T extends TamedRat> extends AbstractRatModel<T> {
 		this.body.translateRotate(stack);
 	}
 }
+
+
+
+
+
+
+

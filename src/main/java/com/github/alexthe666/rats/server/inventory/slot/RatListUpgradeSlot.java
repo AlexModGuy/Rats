@@ -22,3 +22,10 @@ public class RatListUpgradeSlot extends GhostItemSlot {
 		return this.upgrade.getItem() instanceof RatListUpgradeItem || (stack.getItem() instanceof CombinedUpgrade && !stack.is(this.upgrade.getItem()) && CombinedRatUpgradeItem.canCombineWithUpgrade(this.upgrade, stack));
 	}
 }
+
+
+
+
+
+
+

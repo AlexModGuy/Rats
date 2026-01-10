@@ -1,22 +1,27 @@
 package com.github.alexthe666.rats.server.world;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisConfiguredFeatureRegistry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.grower.AbstractMegaTreeGrower;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.grower.TreeGrower;
 
-public class PiratTreeGrower extends AbstractMegaTreeGrower {
-	@Nullable
-	@Override
-	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean bees) {
-		return RatlantisConfiguredFeatureRegistry.GHOST_PIRAT_TREE;
-	}
+import java.util.Optional;
 
-	@Nullable
-	@Override
-	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredMegaFeature(RandomSource random) {
-		return RatlantisConfiguredFeatureRegistry.LARGE_GHOST_PIRAT_TREE;
-	}
+public class PiratTreeGrower {
+	public static final TreeGrower PIRAT_TREE_GROWER = new TreeGrower(
+		RatsMod.MODID + ":pirat",
+		0.1F, // mega tree chance
+		Optional.of(RatlantisConfiguredFeatureRegistry.LARGE_GHOST_PIRAT_TREE),
+		Optional.empty(),
+		Optional.of(RatlantisConfiguredFeatureRegistry.GHOST_PIRAT_TREE),
+		Optional.empty(),
+		Optional.empty(),
+		Optional.empty()
+	);
 }
+
+
+
+
+
+
+

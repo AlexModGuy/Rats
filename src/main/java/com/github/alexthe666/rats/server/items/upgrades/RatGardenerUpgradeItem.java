@@ -17,3 +17,10 @@ public class RatGardenerUpgradeItem extends BaseRatUpgradeItem implements Change
 		return List.of(new RatGardenerGoal(rat));
 	}
 }
+
+
+
+
+
+
+

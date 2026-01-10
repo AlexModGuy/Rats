@@ -6,8 +6,6 @@ import com.github.alexthe666.rats.server.entity.ai.goal.RatPickupGoal;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,8 +14,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import java.util.List;
 
@@ -65,3 +65,10 @@ public class BucketRatUpgradeItem extends BaseRatUpgradeItem implements HoldsIte
 		return List.of(new RatPickupGoal(rat, RatPickupGoal.PickupType.FLUID), new RatDepositGoal(rat, RatDepositGoal.DepositType.FLUID));
 	}
 }
+
+
+
+
+
+
+

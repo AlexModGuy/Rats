@@ -12,6 +12,9 @@ import com.github.alexthe666.rats.server.misc.PlagueDoctorTrades;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -40,10 +43,11 @@ import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -54,18 +58,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 
 	private static final EntityDataAccessor<Boolean> WILL_DESPAWN = SynchedEntityData.defineId(PlagueDoctor.class, EntityDataSerializers.BOOLEAN);
-	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && (entity.hasEffect(RatsEffectRegistry.PLAGUE.get()) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION) || (entity instanceof Rat rat && rat.hasPlague()));
+	private static final Predicate<LivingEntity> PLAGUE_PREDICATE = entity -> entity != null && (entity.hasEffect(RatsEffectRegistry.PLAGUE) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION) || (entity instanceof Rat rat && rat.hasPlague()));
 
 	private BlockPos wanderTarget;
 	private int despawnDelay;
@@ -82,7 +84,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
+		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionContents.createItemStack(Items.POTION, Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
 		this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), RatsSoundRegistry.PLAGUE_DOCTOR_REAPPEAR.get(), doctor -> this.level().isDay() && doctor.isInvisible()));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 1.1D, 1.35D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 1.1D, 1.35D));
@@ -113,9 +115,9 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(WILL_DESPAWN, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(WILL_DESPAWN, false);
 	}
 
 	public boolean willDespawn() {
@@ -158,8 +160,13 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			}
 
 			if (this.munchCounter == 10 && stack.getFoodProperties(this) != null) {
-				this.heal(Objects.requireNonNull(stack.getFoodProperties(this)).getNutrition());
-				this.addEatEffect(stack, this.level(), this);
+				FoodProperties foodProps = stack.getFoodProperties(this);
+				this.heal(foodProps.nutrition());
+				for (FoodProperties.PossibleEffect effect : foodProps.effects()) {
+					if (this.random.nextFloat() < effect.probability()) {
+						this.addEffect(effect.effect());
+					}
+				}
 				stack.shrink(1);
 				this.munchCounter = 0;
 				this.eating = false;
@@ -215,15 +222,14 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		if (!stack.isEmpty() && !this.level().isClientSide()) {
 			ItemEntity itementity = new ItemEntity(this.level(), this.getX() + this.getLookAngle().x(), this.getY() + 1.0D, this.getZ() + this.getLookAngle().z(), stack);
 			itementity.setPickUpDelay(40);
-			itementity.setThrower(this.getUUID());
+			itementity.setThrower(this);
 			this.level().addFreshEntity(itementity);
 		}
 	}
 
 	public boolean canHoldItem(ItemStack stack) {
-		Item item = stack.getItem();
 		ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
-		return itemstack.isEmpty() || (item.isEdible() && !itemstack.getItem().isEdible());
+		return itemstack.isEmpty() || (stack.has(DataComponents.FOOD) && !itemstack.has(DataComponents.FOOD));
 	}
 
 	@Override
@@ -273,7 +279,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		this.restockedToday = compound.getBoolean("RestockedToday");
 
 		if (compound.contains("WanderTarget")) {
-			this.wanderTarget = NbtUtils.readBlockPos(compound.getCompound("WanderTarget"));
+			this.wanderTarget = NbtUtils.readBlockPos(compound, "WanderTarget").orElse(null);
 		}
 
 		this.setAge(Math.max(0, this.getAge()));
@@ -340,7 +346,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (this.isAlive() && level.getCurrentDifficultyAt(this.blockPosition()).getDifficulty() != Difficulty.PEACEFUL) {
 				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), level);
 				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				ForgeEventFactory.onFinalizeSpawn(death, level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				EventHooks.finalizeMobSpawn(death, level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
 				death.setNoAi(this.isNoAi());
 				if (!this.getMainHandItem().isEmpty()) {
 					this.spawnAtLocation(this.getMainHandItem());
@@ -350,7 +356,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				}
 				level.addFreshEntity(death);
 				for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(death.blockPosition()).inflate(16.0D))) {
-					RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger(player);
+					RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger(player);
 				}
 				this.discard();
 			}
@@ -470,7 +476,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (!this.isBaby() && !this.level().isClientSide()) {
 				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.level());
 				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				ForgeEventFactory.onFinalizeSpawn(death, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+				EventHooks.finalizeMobSpawn(death, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null);
 				if (this.hasCustomName()) {
 					death.setCustomName(this.getCustomName());
 				}
@@ -478,7 +484,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 					this.spawnAtLocation(this.getMainHandItem());
 				}
 				this.level().addFreshEntity(death);
-				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
+				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger((ServerPlayer) player);
 				this.level().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
 				this.discard();
 				if (!player.isCreative()) {
@@ -486,7 +492,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				}
 				return InteractionResult.SUCCESS;
 			}
-		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&
+		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&
 				this.isAlive() && !this.isTrading() && !this.isBaby()) {
 			if (hand == InteractionHand.MAIN_HAND) {
 				player.awardStat(Stats.TALKED_TO_VILLAGER);
@@ -505,3 +511,10 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		return super.mobInteract(player, hand);
 	}
 }
+
+
+
+
+
+
+

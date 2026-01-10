@@ -10,3 +10,10 @@ public class RatsRecipeTypes {
 	public static final RecipeType<CauldronInfoHolder> CAULDRON = RecipeType.create(RatsMod.MODID, "cauldron", CauldronInfoHolder.class);
 	public static final RecipeType<ChefRecipe> CHEF = RecipeType.create(RatsMod.MODID, "chef", ChefRecipe.class);
 }
+
+
+
+
+
+
+

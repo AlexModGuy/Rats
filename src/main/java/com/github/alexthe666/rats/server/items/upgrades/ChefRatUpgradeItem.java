@@ -64,9 +64,10 @@ public class ChefRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpg
 			return specialChefRecipe.copy();
 		}
 
-		Optional<SmeltingRecipe> optional = rat.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), rat.level());
-		if (optional.isPresent()) {
-			ItemStack itemstack = optional.get().getResultItem(rat.level().registryAccess());
+		var recipeInput = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
+		var recipeHolder = rat.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, recipeInput, rat.level()).orElse(null);
+		if (recipeHolder != null) {
+			ItemStack itemstack = recipeHolder.value().getResultItem(rat.level().registryAccess());
 			if (!itemstack.isEmpty()) {
 				ItemStack itemstack1 = itemstack.copy();
 				itemstack1.setCount(stack.getCount() * itemstack.getCount());
@@ -76,3 +77,10 @@ public class ChefRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpg
 		return ItemStack.EMPTY;
 	}
 }
+
+
+
+
+
+
+

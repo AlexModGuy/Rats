@@ -50,7 +50,7 @@ public class RatTargetItemsGoal extends Goal {
 				Path toPath = this.rat.getNavigation().createPath(item, 1);
 				if (toPath != null && toPath.canReach()) {
 					if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-						if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get()) && !ItemStack.isSameItemSameTags(item.getItem(), this.rat.getItemInHand(InteractionHand.MAIN_HAND)))
+						if (RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get()) && !ItemStack.isSameItemSameComponents(item.getItem(), this.rat.getItemInHand(InteractionHand.MAIN_HAND)))
 							continue;
 					}
 					this.targetItem = item;
@@ -122,3 +122,9 @@ public class RatTargetItemsGoal extends Goal {
 		}
 	}
 }
+
+
+
+
+
+

@@ -3,15 +3,15 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatFishModel;
 import com.github.alexthe666.rats.server.entity.misc.Ratfish;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class RatfishRenderer extends MobRenderer<Ratfish, RatFishModel<Ratfish>> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratfish.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratfish.png");
 
 	public RatfishRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatFishModel<>(0), 0.3F);
@@ -22,8 +22,9 @@ public class RatfishRenderer extends MobRenderer<Ratfish, RatFishModel<Ratfish>>
 		return TEXTURE;
 	}
 
-	protected void setupRotations(Ratfish entityLiving, PoseStack stack, float ageInTicks, float yRot, float partialTicks) {
-		super.setupRotations(entityLiving, stack, ageInTicks, yRot, partialTicks);
+	@Override
+	protected void setupRotations(Ratfish entityLiving, PoseStack stack, float ageInTicks, float yRot, float partialTicks, float scale) {
+		super.setupRotations(entityLiving, stack, ageInTicks, yRot, partialTicks, scale);
 		float f = 1.0F;
 		float f1 = 1.0F;
 		if (!entityLiving.isInWater()) {
@@ -40,3 +41,10 @@ public class RatfishRenderer extends MobRenderer<Ratfish, RatFishModel<Ratfish>>
 		}
 	}
 }
+
+
+
+
+
+
+

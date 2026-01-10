@@ -50,3 +50,10 @@ public class RatStayCloseToHomeGoal extends Goal {
 		this.rat.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 	}
 }
+
+
+
+
+
+
+

@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.PiratCannonModel;
 import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,11 +12,13 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> extends RenderLayer<T, M> {
 	public static final PiratCannonModel<?> MODEL_PIRAT_CANNON = new PiratCannonModel<>();
-	public static final ResourceLocation TEXTURE_PIRATE_CANNON = new ResourceLocation(RatsMod.MODID, "textures/entity/pirat/pirat_cannon.png");
-	public static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = new ResourceLocation(RatsMod.MODID, "textures/entity/pirat/pirat_cannon_fire.png");
+	public static final ResourceLocation TEXTURE_PIRATE_CANNON = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/pirat/pirat_cannon.png");
+	public static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/pirat/pirat_cannon_fire.png");
 
 	public PiratBoatSailLayer(RenderLayerParent<T, M> parent) {
 		super(parent);
@@ -39,7 +39,7 @@ public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> e
 		stack.mulPose(Axis.YN.rotationDegrees(90));
 		stack.translate(0, 0.1F, -0.6F);
 		stack.scale(0.75F, 0.75F, 0.75F);
-		MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON)), light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON)), light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), -1);
 		stack.popPose();
 
 		if (entity.isFiring()) {
@@ -47,9 +47,16 @@ public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> e
 			stack.mulPose(Axis.YN.rotationDegrees(90));
 			stack.translate(0, 0.1F, -0.6F);
 			stack.scale(0.75F, 0.75F, 0.75F);
-			MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON_FIRE)), 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON_FIRE)), 240, OverlayTexture.NO_OVERLAY, -1);
 			stack.popPose();
 		}
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

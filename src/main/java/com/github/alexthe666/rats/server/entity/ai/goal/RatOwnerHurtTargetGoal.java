@@ -46,3 +46,9 @@ public class RatOwnerHurtTargetGoal extends TargetGoal {
 		super.start();
 	}
 }
+
+
+
+
+
+

@@ -2,7 +2,9 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -13,9 +15,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedGarbageBlock extends AbstractGarbageBlock {
+	public static final MapCodec<PurifiedGarbageBlock> CODEC = simpleCodec(PurifiedGarbageBlock::new);
 
 	public PurifiedGarbageBlock(BlockBehaviour.Properties properties) {
 		super(properties, 1.0D);
+	}
+
+	@Override
+	protected MapCodec<? extends AbstractGarbageBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -27,11 +35,11 @@ public class PurifiedGarbageBlock extends AbstractGarbageBlock {
 				double d0 = (double) pos.getX() + (double) random.nextFloat();
 				double d1 = (double) pos.getY() + 1.05D;
 				double d2 = (double) pos.getZ() + (double) random.nextFloat();
-				double r = 0.74D;
-				double g = 0.87D;
-				double b = 0.88D;
+				float r = 0.74F;
+				float g = 0.87F;
+				float b = 0.88F;
 
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, r, g, random.nextGaussian() * 0.05D + b);
+				level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, r, g, b), d0, d1, d2, 0, 0, 0);
 			}
 		}
 	}
@@ -51,3 +59,10 @@ public class PurifiedGarbageBlock extends AbstractGarbageBlock {
 		return 0x8DB0B2;
 	}
 }
+
+
+
+
+
+
+

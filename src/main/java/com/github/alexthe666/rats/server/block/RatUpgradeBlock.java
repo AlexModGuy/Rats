@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +15,13 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 @SuppressWarnings("deprecation")
 public class RatUpgradeBlock extends DirectionalBlock {
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
+
+	public static final MapCodec<RatUpgradeBlock> CODEC = simpleCodec(RatUpgradeBlock::new);
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
+	}
 
 	public RatUpgradeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -41,3 +49,10 @@ public class RatUpgradeBlock extends DirectionalBlock {
 		builder.add(FACING);
 	}
 }
+
+
+
+
+
+
+

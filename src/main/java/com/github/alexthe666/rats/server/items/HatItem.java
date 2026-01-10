@@ -7,12 +7,12 @@ import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.monster.GhostPirat;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -22,8 +22,10 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,13 +36,14 @@ public class HatItem extends ArmorItem {
 
 	private final int loreLines;
 
-	public HatItem(Item.Properties properties, ArmorMaterial material, int loreLines) {
+	// In 1.21.1, ArmorItem takes Holder<ArmorMaterial> instead of ArmorMaterial
+	public HatItem(Item.Properties properties, Holder<ArmorMaterial> material, int loreLines) {
 		super(material, Type.HELMET, properties);
 		this.loreLines = loreLines;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.is(RatsItemRegistry.BLACK_DEATH_MASK.get())) {
 			tooltip.add(Component.translatable("item.rats.plague_doctor_mask.desc").withStyle(ChatFormatting.GRAY));
 		}
@@ -144,13 +147,13 @@ public class HatItem extends ArmorItem {
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		String item = ForgeRegistries.ITEMS.getKey(this).getPath();
+	public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+		String item = BuiltInRegistries.ITEM.getKey(this).getPath();
 		if (!item.equals("air")) {
-			return new ResourceLocation(RatsMod.MODID, "textures/model/hat/" + item + ".png").toString();
+			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/model/hat/" + item + ".png");
 		}
 		//hehe
-		return "textures/particle/flea_0.png";
+		return ResourceLocation.withDefaultNamespace("textures/particle/flea_0.png");
 	}
 
 	@Override
@@ -158,7 +161,7 @@ public class HatItem extends ArmorItem {
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-				return switch (ForgeRegistries.ITEMS.getKey(HatItem.this).getPath()) {
+				return switch (BuiltInRegistries.ITEM.getKey(HatItem.this).getPath()) {
 					case "chef_toque" ->
 							new ChefToqueModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.CHEF_TOQUE));
 					case "piper_hat" ->
@@ -195,3 +198,10 @@ public class HatItem extends ArmorItem {
 		});
 	}
 }
+
+
+
+
+
+
+

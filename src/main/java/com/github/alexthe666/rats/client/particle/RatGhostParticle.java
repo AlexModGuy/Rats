@@ -39,3 +39,9 @@ public class RatGhostParticle extends TextureSheetParticle {
 		}
 	}
 }
+
+
+
+
+
+

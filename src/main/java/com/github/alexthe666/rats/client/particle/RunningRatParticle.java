@@ -2,9 +2,6 @@ package com.github.alexthe666.rats.client.particle;
 
 import com.github.alexthe666.rats.client.model.entity.StaticRatModel;
 import com.github.alexthe666.rats.server.misc.RatVariant;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -21,6 +18,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +31,8 @@ public class RunningRatParticle extends Particle {
 	private final RenderType renderType = RenderType.entityCutoutNoCull(RatVariant.getRandomVariant(RandomSource.create(), false).getTexture());
 	private final Vec3 headingTo;
 	private int oldAge;
+	// In 1.21, stoppedByCollision is private in Particle - we need our own field
+	private boolean localStoppedByCollision = false;
 
 	public RunningRatParticle(ClientLevel level, double x, double y, double z, double headingToX, double headingToY, double headingToZ) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -55,9 +57,9 @@ public class RunningRatParticle extends Particle {
 		if (!this.onGround) {
 			this.move(0.0D, -0.1D, 0.0D);
 		} else {
-			if (this.stoppedByCollision) {
+			if (this.localStoppedByCollision) {
 				this.move(0.0D, 1.0D, 0.0D);
-				this.stoppedByCollision = false;
+				this.localStoppedByCollision = false;
 			}
 		}
 
@@ -72,7 +74,7 @@ public class RunningRatParticle extends Particle {
 
 	@Override
 	public void move(double p_107246_, double p_107247_, double p_107248_) {
-		if (!this.stoppedByCollision) {
+		if (!this.localStoppedByCollision) {
 			double d0 = p_107246_;
 			double d1 = p_107247_;
 			double d2 = p_107248_;
@@ -89,7 +91,7 @@ public class RunningRatParticle extends Particle {
 			}
 
 			if ((Math.abs(p_107246_) < (double) 1.0E-5F && Math.abs(d0) < (double) 1.0E-5F) || (Math.abs(p_107248_) < (double) 1.0E-5F && Math.abs(d2) < (double) 1.0E-5F)) {
-				this.stoppedByCollision = true;
+				this.localStoppedByCollision = true;
 			}
 
 			this.onGround = d1 != p_107247_ && d1 < 0.0D;
@@ -119,7 +121,7 @@ public class RunningRatParticle extends Particle {
 		MultiBufferSource.BufferSource source = Minecraft.getInstance().renderBuffers().bufferSource();
 		VertexConsumer vertexconsumer = source.getBuffer(this.renderType);
 		this.model.setupAnim(null, Mth.lerp(partialTicks, this.oldAge, this.age) * 0.35F, 1, Mth.lerp(partialTicks, this.oldAge, this.age), partialTicks, 0);
-		this.model.renderToBuffer(posestack, vertexconsumer, this.getLightColor(partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(posestack, vertexconsumer, this.getLightColor(partialTicks), OverlayTexture.NO_OVERLAY, -1);
 		source.endBatch();
 		posestack.popPose();
 	}
@@ -142,3 +144,10 @@ public class RunningRatParticle extends Particle {
 		}
 	}
 }
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "M": {
+      "item": "minecraft:music_disc_cat"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "PMP",
+    "PUP",
+    "PDP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_dj"
+  }
+}

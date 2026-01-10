@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,9 +19,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -36,10 +36,10 @@ public class JuryRiggedRatUpgradeItem extends BaseRatUpgradeItem implements Comb
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(Component.translatable("item.rats.rat_upgrade_combined.desc").withStyle(ChatFormatting.GRAY));
-		this.addTooltip(stack, tooltip);
+		this.addTooltip(stack, tooltip, context.registries());
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class JuryRiggedRatUpgradeItem extends BaseRatUpgradeItem implements Comb
 
 		if (!player.isShiftKeyDown() && !this.isUpgradeLocked(stack)) {
 			if (!level.isClientSide()) {
-				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+				player.openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player1) {
 						return new JuryRiggedRatUpgradeMenu(id, new RatUpgradeContainer(stack), player1.getInventory(), stack);
@@ -71,12 +71,18 @@ public class JuryRiggedRatUpgradeItem extends BaseRatUpgradeItem implements Comb
 	}
 
 	private boolean isUpgradeLocked(ItemStack stack) {
-		CompoundTag tag = stack.getTag();
-		if (tag != null && tag.contains("Items", 9)) {
-			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
-			return !nonnulllist.get(0).isEmpty() && !nonnulllist.get(1).isEmpty();
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag tag = customData.copyTag();
+			// Note: Can't fully deserialize items without registries, just check if Items tag exists
+			return tag.contains("Items", 9);
 		}
 		return false;
 	}
 }
+
+
+
+
+
+

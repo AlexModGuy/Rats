@@ -4,8 +4,6 @@ import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.DamageImmunityUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -14,6 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public abstract class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, DamageImmunityUpgrade {
 
@@ -70,3 +70,10 @@ public abstract class BaseFlightRatUpgradeItem extends BaseRatUpgradeItem implem
 		return source.is(DamageTypeTags.IS_FALL);
 	}
 }
+
+
+
+
+
+
+

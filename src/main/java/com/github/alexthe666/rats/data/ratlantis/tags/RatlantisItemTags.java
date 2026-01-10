@@ -12,25 +12,25 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RatlantisItemTags extends ItemTagsProvider {
 
-	public static final TagKey<Item> ORATCHALCUM_NUGGETS = ItemTags.create(new ResourceLocation("forge", "nuggets/oratchalcum"));
-	public static final TagKey<Item> ORATCHALCUM_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/oratchalcum"));
-	public static final TagKey<Item> RAW_ORATCHALCUM_INGOTS = ItemTags.create(new ResourceLocation("forge", "raw_materials/oratchalcum"));
-	public static final TagKey<Item> RATLANTIS_GEMS = ItemTags.create(new ResourceLocation("forge", "ingots/ratlantis_gem"));
+	public static final TagKey<Item> ORATCHALCUM_NUGGETS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "nuggets/oratchalcum"));
+	public static final TagKey<Item> ORATCHALCUM_INGOTS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/oratchalcum"));
+	public static final TagKey<Item> RAW_ORATCHALCUM_INGOTS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "raw_materials/oratchalcum"));
+	public static final TagKey<Item> RATLANTIS_GEMS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/ratlantis_gem"));
 
-	public static final TagKey<Item> PIRAT_LOGS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "pirat_logs"));
-	public static final TagKey<Item> STORAGE_BLOCKS_ORATCHALCUM = ItemTags.create(new ResourceLocation("forge", "storage_blocks/oratchalcum"));
+	public static final TagKey<Item> PIRAT_LOGS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_logs"));
+	public static final TagKey<Item> STORAGE_BLOCKS_ORATCHALCUM = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/oratchalcum"));
 
-	public static final TagKey<Item> ORES_CHEESE = ItemTags.create(new ResourceLocation("forge", "ores/cheese"));
-	public static final TagKey<Item> ORES_GEM_OF_RATLANTIS = ItemTags.create(new ResourceLocation("forge", "ores/gem_of_ratlantis"));
-	public static final TagKey<Item> ORES_ORATCHALCUM = ItemTags.create(new ResourceLocation("forge", "ores/oratchalcum"));
+	public static final TagKey<Item> ORES_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/cheese"));
+	public static final TagKey<Item> ORES_GEM_OF_RATLANTIS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/gem_of_ratlantis"));
+	public static final TagKey<Item> ORES_ORATCHALCUM = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/oratchalcum"));
 
 	public RatlantisItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tags, @Nullable ExistingFileHelper helper) {
 		super(output, provider, tags, RatsMod.MODID, helper);
@@ -69,15 +69,14 @@ public class RatlantisItemTags extends ItemTagsProvider {
 		this.tag(Tags.Items.GEMS).addTag(RATLANTIS_GEMS);
 		this.tag(Tags.Items.ORES).addTag(ORES_ORATCHALCUM).addTag(ORES_GEM_OF_RATLANTIS).addTag(ORES_CHEESE);
 
-		this.tag(Tags.Items.HEADS).add(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem());
-		this.tag(Tags.Items.ARMORS_HELMETS).add(
+		this.tag(ItemTags.HEAD_ARMOR).add(
 				RatlantisItemRegistry.RATLANTIS_HELMET.get(), RatlantisItemRegistry.AVIATOR_HAT.get(),
 				RatlantisItemRegistry.MILITARY_HAT.get(), RatlantisItemRegistry.GHOST_PIRAT_HAT.get());
-		this.tag(Tags.Items.ARMORS_CHESTPLATES).add(RatlantisItemRegistry.RATLANTIS_CHESTPLATE.get());
-		this.tag(Tags.Items.ARMORS_LEGGINGS).add(RatlantisItemRegistry.RATLANTIS_LEGGINGS.get());
-		this.tag(Tags.Items.ARMORS_BOOTS).add(RatlantisItemRegistry.RATLANTIS_BOOTS.get());
+		this.tag(ItemTags.CHEST_ARMOR).add(RatlantisItemRegistry.RATLANTIS_CHESTPLATE.get());
+		this.tag(ItemTags.LEG_ARMOR).add(RatlantisItemRegistry.RATLANTIS_LEGGINGS.get());
+		this.tag(ItemTags.FOOT_ARMOR).add(RatlantisItemRegistry.RATLANTIS_BOOTS.get());
 
-		this.tag(Tags.Items.TOOLS_BOWS).add(RatlantisItemRegistry.RATLANTIS_BOW.get());
+		this.tag(ItemTags.BOW_ENCHANTABLE).add(RatlantisItemRegistry.RATLANTIS_BOW.get());
 
 		this.tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(RatlantisItemRegistry.RATLANTIS_PICKAXE.get());
 		this.tag(ItemTags.AXES).add(RatlantisItemRegistry.RATLANTIS_AXE.get());
@@ -102,3 +101,10 @@ public class RatlantisItemTags extends ItemTagsProvider {
 		this.tag(ItemTags.FISHES).add(RatlantisItemRegistry.RATFISH.get());
 	}
 }
+
+
+
+
+
+
+

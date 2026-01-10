@@ -19,3 +19,10 @@ public interface ChangesTextureUpgrade {
 	 */
 	boolean makesEyesGlowByDefault();
 }
+
+
+
+
+
+
+

@@ -55,3 +55,10 @@ public class RatWhistleItem extends LoreTagItem {
 		return InteractionResultHolder.success(stack);
 	}
 }
+
+
+
+
+
+
+

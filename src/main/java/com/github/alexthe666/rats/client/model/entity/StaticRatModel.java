@@ -6,8 +6,8 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.github.alexthe666.rats.server.entity.projectile.RatShot;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class StaticRatModel<T extends Entity> extends AbstractRatModel<T> {
 	public final AdvancedModelBox body1;
@@ -263,3 +263,10 @@ public class StaticRatModel<T extends Entity> extends AbstractRatModel<T> {
 		this.body2.translateRotate(stack);
 	}
 }
+
+
+
+
+
+
+

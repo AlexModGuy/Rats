@@ -4,32 +4,33 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.events.ModClientEvents;
 import com.github.alexthe666.rats.server.items.OreRatNuggetItem;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = RatsMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class RatsCreativeTabRegistry {
 
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RatsMod.MODID);
 
-	public static final RegistryObject<CreativeModeTab> RATS = TABS.register("rats", () -> CreativeModeTab.builder()
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> RATS = TABS.register("rats", () -> CreativeModeTab.builder()
 			.title(Component.translatable(RatsLangConstants.RATS_TAB))
 			.icon(() -> new ItemStack(RatsItemRegistry.CHEESE.get()))
 			.displayItems((parameters, output) -> {
@@ -145,18 +146,18 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_BANNER_PATTERN.get());
 				output.accept(RatsItemRegistry.CHEESE_BANNER_PATTERN.get());
 				output.accept(RatsItemRegistry.RAC_BANNER_PATTERN.get());
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "demon_rat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_king_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "pied_piper_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_doctor_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "black_death_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_cloud_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "plague_beast_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "demon_rat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_king_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pied_piper_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "black_death_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_cloud_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_beast_spawn_egg"))));
 				registerOreNuggets(output);
 			}).build());
 
-	public static final RegistryObject<CreativeModeTab> UPGRADES = TABS.register("rats_upgrades", () -> CreativeModeTab.builder()
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> UPGRADES = TABS.register("rats_upgrades", () -> CreativeModeTab.builder()
 			.title(Component.translatable(RatsLangConstants.RAT_UPGRADE_TAB))
 			.icon(() -> new ItemStack(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
 			.displayItems((parameters, output) -> {
@@ -244,7 +245,7 @@ public class RatsCreativeTabRegistry {
 			}).build());
 
 
-	public static final RegistryObject<CreativeModeTab> RATLANTIS = TABS.register("ratlantis", () -> CreativeModeTab.builder()
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> RATLANTIS = TABS.register("ratlantis", () -> CreativeModeTab.builder()
 			.title(Component.translatable(RatsLangConstants.RATLANTIS_TAB))
 			.icon(() -> new ItemStack(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get()))
 			.displayItems((parameters, output) -> {
@@ -347,21 +348,21 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatlantisItemRegistry.PIRAT_BOAT.get());
 				output.accept(RatlantisItemRegistry.PIRAT_CHEST_BOAT.get());
 
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "feral_ratlantean_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ratlantean_spirit_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "pirat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ghost_pirat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ratfish_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ratlantean_ratbot_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "ratlantean_automaton_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "neo_ratlantean_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "dutchrat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_baron_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "feral_ratlantean_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_spirit_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ghost_pirat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratfish_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_ratbot_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_automaton_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "neo_ratlantean_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "dutchrat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_baron_spawn_egg"))));
 			}).build());
 
 	private static void registerColoredItems(CreativeModeTab.Output output, String itemType) {
 		for (DyeColor color : DyeColor.values()) {
-			var item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, itemType + "_" + color.getName()));
+			var item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, itemType + "_" + color.getName()));
 			if (item != null && item != Items.AIR) {
 				output.accept(item);
 			}
@@ -380,15 +381,18 @@ public class RatsCreativeTabRegistry {
 			level = ModClientEvents.getClientLevel();
 		}
 		if (level != null) {
-			for (Item item : ForgeRegistries.ITEMS.tags().getTag(Tags.Items.ORES)) {
-				ItemStack oreDrop = OreRatNuggetItem.getIngot(level, new ItemStack(item));
-				if (!uniqueOres.contains(oreDrop) && !oreDrop.isEmpty()) {
-					uniqueOres.add(oreDrop);
-				}
-			}
+			final Level finalLevel = level;
+			BuiltInRegistries.ITEM.stream()
+					.filter(item -> item.builtInRegistryHolder().is(Tags.Items.ORES))
+					.forEach(item -> {
+						ItemStack oreDrop = OreRatNuggetItem.getIngot(finalLevel, new ItemStack(item));
+						if (!uniqueOres.contains(oreDrop) && !oreDrop.isEmpty()) {
+							uniqueOres.add(oreDrop);
+						}
+					});
 			uniqueOres.sort(Comparator.comparing(o -> o.getDisplayName().getString()));
 			for (ItemStack ore : uniqueOres) {
-				output.accept(OreRatNuggetItem.saveResourceToNugget(ore));
+				output.accept(OreRatNuggetItem.saveResourceToNugget(ore, finalLevel.registryAccess()));
 			}
 		}
 	}
@@ -402,3 +406,10 @@ public class RatsCreativeTabRegistry {
 		}
 	}
 }
+
+
+
+
+
+
+

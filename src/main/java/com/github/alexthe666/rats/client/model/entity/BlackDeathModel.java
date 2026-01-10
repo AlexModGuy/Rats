@@ -114,3 +114,9 @@ public class BlackDeathModel<T extends BlackDeath> extends HumanoidModel<T> {
 		return Iterables.concat(super.bodyParts(), ImmutableList.of(this.arms));
 	}
 }
+
+
+
+
+
+

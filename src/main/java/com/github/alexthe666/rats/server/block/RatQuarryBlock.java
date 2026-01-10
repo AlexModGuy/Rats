@@ -1,14 +1,15 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -27,6 +28,12 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class RatQuarryBlock extends BaseEntityBlock {
+	public static final MapCodec<RatQuarryBlock> CODEC = simpleCodec(RatQuarryBlock::new);
+
+	@Override
+	protected MapCodec<? extends RatQuarryBlock> codec() {
+		return CODEC;
+	}
 
 	public RatQuarryBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -60,7 +67,7 @@ public class RatQuarryBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!player.isCrouching()) {
 			if (level.isClientSide()) {
 				return InteractionResult.SUCCESS;
@@ -70,12 +77,19 @@ public class RatQuarryBlock extends BaseEntityBlock {
 			}
 
 		}
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		tooltip.add(Component.translatable("block.rats.rat_quarry.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_quarry.desc1").withStyle(ChatFormatting.GRAY));
 	}
 }
+
+
+
+
+
+
+

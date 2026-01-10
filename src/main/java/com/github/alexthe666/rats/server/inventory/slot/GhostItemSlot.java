@@ -33,3 +33,10 @@ public class GhostItemSlot extends Slot {
 		super.set(stack);
 	}
 }
+
+
+
+
+
+
+

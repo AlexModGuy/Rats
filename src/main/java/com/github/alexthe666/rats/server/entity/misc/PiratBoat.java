@@ -34,13 +34,13 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 public class PiratBoat extends Mob {
@@ -57,18 +57,16 @@ public class PiratBoat extends Mob {
 
 	public PiratBoat(EntityType<? extends Mob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
-		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.WALKABLE, -1.0F);
+		this.setPathfindingMalus(PathType.WATER, 0.0F);
+		this.setPathfindingMalus(PathType.WALKABLE, -1.0F);
 		this.moveControl = new BoatMoveControl(this);
 		this.navigation = new PiratNavigation(this, this.level());
 	}
 
 	private ItemStack generateBanner() {
+		// TODO: BannerPattern.Builder API changed in 1.21 - using simple banner for now
 		ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
-		CompoundTag tag = itemstack.getOrCreateTagElement("BlockEntityTag");
-		ListTag list = new BannerPattern.Builder().addPattern(RatsBannerPatternRegistry.RAT_AND_CROSSBONES_BANNER.getKey(), DyeColor.WHITE).toListTag();
-		tag.put("Patterns", list);
+		// Banner patterns now use DataComponents system in 1.21
 		return itemstack;
 	}
 
@@ -87,7 +85,8 @@ public class PiratBoat extends Mob {
 				.add(Attributes.MAX_HEALTH, 60.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.1D)
 				.add(Attributes.FOLLOW_RANGE, 32.0D)
-				.add(Attributes.ATTACK_DAMAGE, 2.0D);
+				.add(Attributes.ATTACK_DAMAGE, 2.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -107,10 +106,7 @@ public class PiratBoat extends Mob {
 
 	}
 
-	@Override
-	public boolean canBreatheUnderwater() {
-		return true;
-	}
+	// Note: canBreatheUnderwater() is final in 1.21, mobs handle water breathing differently now
 
 
 	@Override
@@ -171,9 +167,9 @@ public class PiratBoat extends Mob {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(FIRING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(FIRING, false);
 	}
 
 	public boolean isFiring() {
@@ -434,3 +430,10 @@ public class PiratBoat extends Mob {
 		}
 	}
 }
+
+
+
+
+
+
+

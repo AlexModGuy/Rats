@@ -1,0 +1,35 @@
+{
+  "parent": "ratlantis:pirat",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:rat_upgrade_buccaneer"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.ratlantis.rat_upgrade_buccaneer.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "rats:rat_upgrade_buccaneer"
+    },
+    "title": {
+      "translate": "advancement.ratlantis.rat_upgrade_buccaneer.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

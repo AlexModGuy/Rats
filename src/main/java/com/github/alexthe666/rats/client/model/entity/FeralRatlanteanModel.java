@@ -571,3 +571,10 @@ public class FeralRatlanteanModel<T extends Mob & IAnimatedEntity> extends Advan
 				this.tail4);
 	}
 }
+
+
+
+
+
+
+

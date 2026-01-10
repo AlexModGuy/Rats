@@ -16,3 +16,10 @@ public class PiratSignBlockEntity extends SignBlockEntity {
 		return RatlantisBlockEntityRegistry.PIRAT_SIGN.get();
 	}
 }
+
+
+
+
+
+
+

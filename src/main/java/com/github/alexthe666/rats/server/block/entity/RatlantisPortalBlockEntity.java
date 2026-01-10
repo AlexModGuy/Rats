@@ -18,3 +18,9 @@ public class RatlantisPortalBlockEntity extends TheEndPortalBlockEntity {
 		return this.getLevel() == null || Block.shouldRenderFace(this.getBlockState(), this.getLevel(), this.getBlockPos(), direction, this.getBlockPos().relative(direction));
 	}
 }
+
+
+
+
+
+

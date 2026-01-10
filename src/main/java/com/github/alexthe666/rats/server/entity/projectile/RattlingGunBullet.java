@@ -50,3 +50,10 @@ public class RattlingGunBullet extends ArrowlikeProjectile {
 		return false;
 	}
 }
+
+
+
+
+
+
+

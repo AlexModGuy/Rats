@@ -176,3 +176,10 @@ public class RatBeastMountModel<T extends RatBeastMount> extends FeralRatlantean
 		this.animator.resetKeyframe(9);
 	}
 }
+
+
+
+
+
+
+

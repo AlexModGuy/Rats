@@ -6,10 +6,10 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.world.entity.HumanoidArm;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class FlyingDutchratModel<T extends Dutchrat> extends AdvancedEntityModel<T> implements ArmedModel {
 	public final AdvancedModelBox body1;
@@ -375,3 +375,10 @@ public class FlyingDutchratModel<T extends Dutchrat> extends AdvancedEntityModel
 		stack.translate(0.1F, -0.45F, 0);
 	}
 }
+
+
+
+
+
+
+

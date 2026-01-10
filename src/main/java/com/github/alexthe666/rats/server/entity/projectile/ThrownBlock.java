@@ -46,8 +46,8 @@ public class ThrownBlock extends Entity {
 		this.shootingEntity = entityNeoRatlantean;
 	}
 
-	protected void defineSynchedData() {
-		this.getEntityData().define(CARRIED_BLOCK, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(CARRIED_BLOCK, Optional.empty());
 	}
 
 	public void setHeldBlockState(@Nullable BlockState state) {
@@ -141,7 +141,7 @@ public class ThrownBlock extends Entity {
 					BlockEntity tileentity = this.level().getBlockEntity(blockpos1);
 
 					if (tileentity != null) {
-						CompoundTag CompoundTag = tileentity.saveWithoutMetadata();
+						CompoundTag CompoundTag = tileentity.saveWithoutMetadata(this.level().registryAccess());
 
 						for (String s : this.tileEntityData.getAllKeys()) {
 							Tag nbtbase = this.tileEntityData.get(s);
@@ -238,3 +238,9 @@ public class ThrownBlock extends Entity {
 		}
 	}
 }
+
+
+
+
+
+

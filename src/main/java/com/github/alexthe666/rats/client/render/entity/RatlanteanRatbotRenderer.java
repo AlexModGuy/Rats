@@ -4,14 +4,14 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanRatbotModel;
 import com.github.alexthe666.rats.client.render.entity.layer.RatbotEyesLayer;
 import com.github.alexthe666.rats.server.entity.monster.RatlanteanRatbot;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class RatlanteanRatbotRenderer extends MobRenderer<RatlanteanRatbot, RatlanteanRatbotModel<RatlanteanRatbot>> {
-	private static final ResourceLocation RATBOT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot.png");
+	private static final ResourceLocation RATBOT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot.png");
 
 	public RatlanteanRatbotRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatlanteanRatbotModel<>(0.0F), 0.5F);
@@ -33,3 +33,9 @@ public class RatlanteanRatbotRenderer extends MobRenderer<RatlanteanRatbot, Ratl
 		}
 	}
 }
+
+
+
+
+
+

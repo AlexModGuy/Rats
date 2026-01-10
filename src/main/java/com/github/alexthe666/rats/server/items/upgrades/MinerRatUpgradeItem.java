@@ -6,8 +6,6 @@ import com.github.alexthe666.rats.server.items.RatListUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesAIUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.DamageImmunityUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,6 +16,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import java.util.List;
 
@@ -52,3 +52,10 @@ public class MinerRatUpgradeItem extends RatListUpgradeItem implements HoldsItem
 		return source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypeTags.IS_FIRE);
 	}
 }
+
+
+
+
+
+
+

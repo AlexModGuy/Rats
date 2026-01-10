@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.RatArrow;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -27,14 +29,15 @@ public class RatArrowItem extends ArrowItem {
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
 		CompoundTag ratTag = new CompoundTag();
-		if (stack.getTag() != null) {
-			ratTag = stack.getTag().getCompound("Rat");
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			ratTag = customData.copyTag().getCompound("Rat");
 		}
 		TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), context.getLevel());
 		BlockPos offset = context.getClickedPos().relative(context.getClickedFace());
 		rat.readAdditionalSaveData(ratTag);
 		if (!ratTag.getString("CustomName").isEmpty()) {
-			rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+			rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName"), context.getLevel().registryAccess()));
 		}
 		rat.moveTo(offset.getX() + 0.5D, offset.getY(), offset.getZ() + 0.5D, 0, 0);
 		if (!context.getLevel().isClientSide()) {
@@ -47,12 +50,19 @@ public class RatArrowItem extends ArrowItem {
 	}
 
 	@Override
-	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter) {
+	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, @org.jetbrains.annotations.Nullable ItemStack weapon) {
 		return new RatArrow(RatsEntityRegistry.RAT_ARROW.get(), level, shooter, stack);
 	}
 
 	@Override
-	public boolean isInfinite(ItemStack stack, ItemStack bow, Player player) {
+	public boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.world.entity.LivingEntity shooter) {
 		return false;
 	}
 }
+
+
+
+
+
+
+

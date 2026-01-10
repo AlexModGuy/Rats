@@ -20,3 +20,10 @@ public class RatNavigation extends GroundPathNavigation {
 		return new PathFinder(this.nodeEvaluator, nodes);
 	}
 }
+
+
+
+
+
+
+

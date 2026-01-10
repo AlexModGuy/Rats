@@ -4,6 +4,11 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.github.alexthe666.rats.server.recipes.ChefRecipe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -13,15 +18,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 
-	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/jei/chef_rat_jei.png");
+	protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/jei/chef_rat_jei.png");
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable arrow;
@@ -64,3 +64,10 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 		this.arrow.draw(graphics, 71, 49);
 	}
 }
+
+
+
+
+
+
+

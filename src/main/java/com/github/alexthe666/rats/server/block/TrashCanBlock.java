@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
@@ -11,13 +12,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.*;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,7 +45,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,6 +52,12 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHolder {
+	public static final MapCodec<TrashCanBlock> CODEC = simpleCodec(TrashCanBlock::new);
+
+	@Override
+	protected MapCodec<? extends TrashCanBlock> codec() {
+		return CODEC;
+	}
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 7);
@@ -92,10 +105,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(hand);
-		BlockEntity te = level.getBlockEntity(pos);
-
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!player.isCrouching()) {
 			if (state.getValue(OPEN)) {
 				if (state.getValue(LEVEL) == 7) {
@@ -106,11 +116,11 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 					}
 					level.setBlockAndUpdate(pos, state.setValue(LEVEL, 0));
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-					return InteractionResult.sidedSuccess(level.isClientSide());
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				} else if (state.getValue(LEVEL) < 7 && stack.getItem() instanceof BlockItem bi) {
-					if (Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(RatsBlockTags.TRASH_CAN_BLACKLIST).contains(bi.getBlock())) {
+					if (bi.getBlock().builtInRegistryHolder().is(RatsBlockTags.TRASH_CAN_BLACKLIST)) {
 						player.displayClientMessage(Component.literal("This block can't be used here.").withStyle(ChatFormatting.RED), true);
-						return InteractionResult.CONSUME;
+						return ItemInteractionResult.CONSUME;
 					}
 					if (!player.isCreative()) {
 						stack.shrink(1);
@@ -122,23 +132,24 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 								0.0D, 0.0D, 0.0D);
 					}
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-					return InteractionResult.SUCCESS;
+					return ItemInteractionResult.SUCCESS;
 				}
 			}
 		}
-		if (player.isCrouching() || stack.isEmpty()) {
-			if (te instanceof TrashCanBlockEntity trashCan) {
-				if (trashCan.lidProgress == 0.0F || trashCan.lidProgress == 20.0F) {
-					level.playSound(player, pos, RatsSoundRegistry.TRASH_CAN.get(), SoundSource.BLOCKS, 0.5F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
 
-					level.setBlockAndUpdate(pos, state.setValue(OPEN, !state.getValue(OPEN)));
-					return InteractionResult.SUCCESS;
-				}
-				return InteractionResult.PASS;
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		BlockEntity te = level.getBlockEntity(pos);
+		if (te instanceof TrashCanBlockEntity trashCan) {
+			if (trashCan.lidProgress == 0.0F || trashCan.lidProgress == 20.0F) {
+				level.playSound(player, pos, RatsSoundRegistry.TRASH_CAN.get(), SoundSource.BLOCKS, 0.5F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+				level.setBlockAndUpdate(pos, state.setValue(OPEN, !state.getValue(OPEN)));
+				return InteractionResult.SUCCESS;
 			}
+			return InteractionResult.PASS;
 		}
-
-
 		return InteractionResult.PASS;
 	}
 
@@ -168,7 +179,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.rats.trash_can.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.trash_can.desc1").withStyle(ChatFormatting.GRAY));
 	}
@@ -179,7 +190,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 
@@ -290,3 +301,10 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 		}
 	}
 }
+
+
+
+
+
+
+

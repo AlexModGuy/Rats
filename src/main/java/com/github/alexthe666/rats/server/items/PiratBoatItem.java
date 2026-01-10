@@ -80,3 +80,10 @@ public class PiratBoatItem extends Item {
 		return this.chest ? new PiratWoodChestBoat(level, result.getLocation().x(), result.getLocation().y(), result.getLocation().z()) : new PiratWoodBoat(level, result.getLocation().x(), result.getLocation().y(), result.getLocation().z());
 	}
 }
+
+
+
+
+
+
+

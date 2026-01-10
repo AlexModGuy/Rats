@@ -20,9 +20,9 @@ public class RatlanteanFlame extends Fireball {
 		super(type, level);
 	}
 
+	// In 1.21.1, Fireball constructor uses Vec3 for movement instead of separate doubles
 	public RatlanteanFlame(Level level, LivingEntity shooter, double accelX, double accelY, double accelZ) {
-		super(RatlantisEntityRegistry.RATLANTEAN_FLAME.get(), shooter.getX(), shooter.getY() + shooter.getBbHeight() * 0.5D, shooter.getZ(), accelX, accelY, accelZ, level);
-		this.setOwner(shooter);
+		super(RatlantisEntityRegistry.RATLANTEAN_FLAME.get(), shooter, new Vec3(accelX, accelY, accelZ), level);
 	}
 
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
@@ -67,12 +67,10 @@ public class RatlanteanFlame extends Fireball {
 	protected void onHitEntity(EntityHitResult result) {
 		if (this.getOwner() != null) {
 			if (!result.getEntity().fireImmune()) {
-				result.getEntity().setSecondsOnFire(10);
+				result.getEntity().igniteForSeconds(10);
 			}
-			boolean flag = result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 2.0F);
-			if (flag) {
-				this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
-			}
+			// 1.21.1: doEnchantDamageEffects() removed - enchant damage effects are now handled automatically by the damage system
+			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 2.0F);
 		}
 	}
 
@@ -86,3 +84,10 @@ public class RatlanteanFlame extends Fireball {
 		return new ItemStack(RatlantisItemRegistry.RATLANTEAN_FLAME.get());
 	}
 }
+
+
+
+
+
+
+

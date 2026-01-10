@@ -67,3 +67,10 @@ public class RatWheelModel<T extends Entity> extends AdvancedEntityModel<T> {
 		box.rotateAngleZ = z;
 	}
 }
+
+
+
+
+
+
+

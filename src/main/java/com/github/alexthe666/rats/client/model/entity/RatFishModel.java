@@ -130,3 +130,10 @@ public class RatFishModel<T extends Ratfish> extends AdvancedEntityModel<T> {
 				this.finTop);
 	}
 }
+
+
+
+
+
+
+

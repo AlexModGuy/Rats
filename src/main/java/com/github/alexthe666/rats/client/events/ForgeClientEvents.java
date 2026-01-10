@@ -13,9 +13,6 @@ import com.github.alexthe666.rats.server.capability.SelectedRatCapability;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -49,40 +46,50 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
 import org.joml.Matrix4f;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
 public class ForgeClientEvents {
 
-	public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/plague_hearts.png");
-	private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_radius.png");
-	private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/quarry_radius.png");
-	private static final ResourceLocation HOME_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_home.png");
-	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_deposit.png");
-	private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_pickup.png");
-	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = new ResourceLocation("rats:textures/misc/rat_patrol.png");
-	private static final ResourceLocation SYNESTHESIA = new ResourceLocation(RatsMod.MODID, "shaders/post/synesthesia.json");
+	public static final ResourceLocation PLAGUE_HEART_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/plague_hearts.png");
+	private static final ResourceLocation RADIUS_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_radius.png");
+	private static final ResourceLocation QUARRY_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/quarry_radius.png");
+	private static final ResourceLocation HOME_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_home.png");
+	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_deposit.png");
+	private static final ResourceLocation RAT_PICKUP_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_pickup.png");
+	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_patrol.png");
+	private static final ResourceLocation SYNESTHESIA = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "shaders/post/synesthesia.json");
 	private static float synesthesiaProgress = 0;
 	private static float prevSynesthesiaProgress = 0;
 	private static final float MAX_SYNESTESIA = 40;
 	private static final StaticRatModel<LivingEntity> RAT_MODEL = new StaticRatModel<>();
 
+	// Health overlay tracking fields (replacing private Gui fields)
+	private static long lastHealthTime = 0;
+	private static long healthBlinkTime = 0;
+	private static int lastHealth = 0;
+	private static int displayHealth = 0;
+	private static final net.minecraft.util.RandomSource HEALTH_RANDOM = net.minecraft.util.RandomSource.create();
+
 	@SubscribeEvent
 	public static void adjustSynesthesiaFOV(ViewportEvent.ComputeFov event) {
 		if (RatConfig.synesthesiaShader) {
 			if (prevSynesthesiaProgress > 0) {
-				float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * Minecraft.getInstance().getPartialTick());
+				float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
 				float renderProg;
 				if (prevSynesthesiaProgress <= synesthesiaProgress) {
 					renderProg = (float) Math.sin(prog / MAX_SYNESTESIA * Math.PI) * 40.0F;
@@ -115,11 +122,12 @@ public class ForgeClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
+	public static void onLivingUpdate(EntityTickEvent.Post event) {
 		if (RatConfig.synesthesiaShader) {
 			if (event.getEntity() == Minecraft.getInstance().player) {
+				LocalPlayer player = Minecraft.getInstance().player;
 				GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-				boolean active = event.getEntity().hasEffect(RatsEffectRegistry.SYNESTHESIA.get());
+				boolean active = player.hasEffect(RatsEffectRegistry.SYNESTHESIA);
 				try {
 					if (active && renderer.currentEffect() == null) {
 						renderer.loadEffect(SYNESTHESIA);
@@ -132,10 +140,10 @@ public class ForgeClientEvents {
 				}
 
 				if (prevSynesthesiaProgress == 2 && active) {
-					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_BEGIN.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
+					player.level().playLocalSound(player.blockPosition(), RatsSoundRegistry.POTION_EFFECT_BEGIN.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
 				if (prevSynesthesiaProgress == 38 && !active) {
-					event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), RatsSoundRegistry.POTION_EFFECT_END.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
+					player.level().playLocalSound(player.blockPosition(), RatsSoundRegistry.POTION_EFFECT_END.get(), SoundSource.NEUTRAL, 16.0F, 1.0F, false);
 				}
 				prevSynesthesiaProgress = synesthesiaProgress;
 				if (active && synesthesiaProgress < MAX_SYNESTESIA) {
@@ -174,10 +182,11 @@ public class ForgeClientEvents {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public static void onRenderOverlay(RenderGuiOverlayEvent.Post event) {
+	public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || player.isCreative() || player.isSpectator()) return;
-		if (event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type() || event.isCanceled() || !player.hasEffect(RatsEffectRegistry.PLAGUE.get()) || !RatConfig.plagueHearts) {
+		// Check layer name and hasEffect with Holder
+		if (!event.getName().equals(VanillaGuiLayers.PLAYER_HEALTH) || !player.hasEffect(RatsEffectRegistry.PLAGUE) || !RatConfig.plagueHearts) {
 			return;
 		}
 		GuiGraphics graphics = event.getGuiGraphics();
@@ -187,29 +196,30 @@ public class ForgeClientEvents {
 		RenderSystem.enableBlend();
 		int health = Mth.ceil(player.getHealth());
 		Gui gui = Minecraft.getInstance().gui;
-		boolean highlight = gui.healthBlinkTime > (long) gui.getGuiTicks() && (gui.healthBlinkTime - (long) gui.getGuiTicks()) / 3L % 2L == 1L;
+		// Use static tracking fields instead of private Gui fields
+		boolean highlight = healthBlinkTime > (long) gui.getGuiTicks() && (healthBlinkTime - (long) gui.getGuiTicks()) / 3L % 2L == 1L;
 
 		long j = Util.getMillis();
-		if (health < gui.lastHealth && player.invulnerableTime > 0) {
-			gui.lastHealthTime = j;
-			gui.healthBlinkTime = gui.getGuiTicks() + 20;
-		} else if (health > gui.lastHealth && player.invulnerableTime > 0) {
-			gui.lastHealthTime = j;
-			gui.healthBlinkTime = gui.getGuiTicks() + 10;
+		if (health < lastHealth && player.invulnerableTime > 0) {
+			lastHealthTime = j;
+			healthBlinkTime = gui.getGuiTicks() + 20;
+		} else if (health > lastHealth && player.invulnerableTime > 0) {
+			lastHealthTime = j;
+			healthBlinkTime = gui.getGuiTicks() + 10;
 		}
 
-		if (j - gui.lastHealthTime > 1000L) {
-			gui.displayHealth = health;
-			gui.lastHealthTime = j;
+		if (j - lastHealthTime > 1000L) {
+			displayHealth = health;
+			lastHealthTime = j;
 		}
 
-		gui.lastHealth = health;
-		int healthLast = gui.displayHealth;
+		lastHealth = health;
+		int healthLast = displayHealth;
 		if (RatConfig.singleRowPlagueHearts) {
 			//heart overlays cast to long, so have to do the same in this case
-			gui.random.setSeed(gui.getGuiTicks() * 312871L);
+			HEALTH_RANDOM.setSeed(gui.getGuiTicks() * 312871L);
 		} else {
-			gui.random.setSeed(gui.getGuiTicks() * 312871);
+			HEALTH_RANDOM.setSeed(gui.getGuiTicks() * 312871);
 		}
 
 		AttributeInstance attrMaxHealth = player.getAttribute(Attributes.MAX_HEALTH);
@@ -235,7 +245,7 @@ public class ForgeClientEvents {
 			int x = left + currentHeart % 10 * 8;
 			int y = RatConfig.singleRowPlagueHearts ? top : top - currentHeart / 10 * rowHeight;
 			if (health + absorption <= 4) {
-				y += gui.random.nextInt(2);
+				y += HEALTH_RANDOM.nextInt(2);
 			}
 
 			if (currentHeart < healthAmount && currentHeart == regen) {
@@ -308,7 +318,7 @@ public class ForgeClientEvents {
 				float f = (event.getEntity().tickCount + event.getPartialTick()) * 0.5F;
 				float f1 = 1;
 				RAT_MODEL.setupAnim(event.getEntity(), f, f1, event.getEntity().tickCount + event.getPartialTick(), event.getPartialTick(), 0);
-				RAT_MODEL.renderToBuffer(event.getPoseStack(), textureBuilder, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				RAT_MODEL.renderToBuffer(event.getPoseStack(), textureBuilder, event.getPackedLight(), OverlayTexture.NO_OVERLAY, -1);
 				stack.popPose();
 				stack.popPose();
 			}
@@ -318,14 +328,15 @@ public class ForgeClientEvents {
 	@SubscribeEvent
 	public static void onRenderWorld(RenderLevelStageEvent event) {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-			if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().isPresent()) {
-				TamedRat rat = Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().get().getSelectedRat();
+			var cap = Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT) : null;
+			if (cap != null) {
+				TamedRat rat = cap.getSelectedRat();
 				if (rat == null) return;
 				ItemStack heldItem = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
 				Tesselator tessellator = Tesselator.getInstance();
-				BufferBuilder buffer = tessellator.getBuilder();
 				PoseStack stack = event.getPoseStack();
-				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick() + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
+				float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+				float bob = 1.5F + 0.3F * (Mth.sin((partialTick + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
 				final Vec3 viewPosition = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
 				double px = viewPosition.x;
 				double py = viewPosition.y;
@@ -334,17 +345,17 @@ public class ForgeClientEvents {
 					float finalBob = bob;
 					rat.getDepositPos().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, tessellator);
 						}
 					});
 					rat.getPickupPos().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, tessellator);
 						}
 					});
 					rat.getHomePoint().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, tessellator);
 						}
 					});
 					if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
@@ -365,7 +376,7 @@ public class ForgeClientEvents {
 					AABB aabb = new AABB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
 					RatsIconRenderUtil.renderBox(RADIUS_TEXTURE, viewPosition, renderCenter, aabb, stack);
 				} else if (heldItem.is(RatsItemRegistry.PATROL_STICK.get())) {
-					bob = 1.5F + 0.05F * (Mth.sin((event.getPartialTick() + (float) Minecraft.getInstance().player.tickCount) * 0.1F) + 1.0F);
+					bob = 1.5F + 0.05F * (Mth.sin((partialTick + (float) Minecraft.getInstance().player.tickCount) * 0.1F) + 1.0F);
 
 					for (int i = 0; i < rat.getPatrolNodes().size(); ++i) {
 						GlobalPos node = rat.getPatrolNodes().get(i);
@@ -389,16 +400,16 @@ public class ForgeClientEvents {
 							float pdx = (float) (node.pos().getX() - prev.pos().getX());
 							float pdy = (float) (node.pos().getY() - prev.pos().getY());
 							float pdz = (float) (node.pos().getZ() - prev.pos().getZ());
-							buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+							BufferBuilder lineBuffer = tessellator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 							Matrix4f matrix4f = stack.last().pose();
-							buffer.vertex(matrix4f, pdx, pdy, pdz).color(r, g, b, 1.0F).endVertex();
-							buffer.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color(r, g, b, 1.0F).endVertex();
-							tessellator.end();
+							lineBuffer.addVertex(matrix4f, pdx, pdy, pdz).setColor(r, g, b, 1.0F);
+							lineBuffer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(r, g, b, 1.0F);
+							BufferUploader.drawWithShader(lineBuffer.buildOrThrow());
 							stack.popPose();
 						}
 
 						if (node.dimension().equals(Minecraft.getInstance().player.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(RAT_PATROL_NODE_TEXTURE, viewPosition, node.pos(), bob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(RAT_PATROL_NODE_TEXTURE, viewPosition, node.pos(), bob, stack, tessellator);
 						}
 					}
 				}
@@ -410,10 +421,17 @@ public class ForgeClientEvents {
 		if (Minecraft.getInstance().player != null) {
 			LocalPlayer player = Minecraft.getInstance().player;
 			if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof RatStaffItem || player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof RatStaffItem) {
-				LazyOptional<SelectedRatCapability> cap = player.getCapability(RatsCapabilityRegistry.SELECTED_RAT);
-				return cap.resolve().isPresent() && Objects.equals(cap.resolve().get().getSelectedRat(), rat);
+				var cap = player.getCapability(RatsCapabilityRegistry.SELECTED_RAT);
+				return cap != null && Objects.equals(cap.getSelectedRat(), rat);
 			}
 		}
 		return false;
 	}
 }
+
+
+
+
+
+
+

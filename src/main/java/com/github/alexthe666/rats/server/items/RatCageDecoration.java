@@ -6,3 +6,10 @@ public interface RatCageDecoration {
 
 	Direction getSupportedFace(Direction inputDir);
 }
+
+
+
+
+
+
+

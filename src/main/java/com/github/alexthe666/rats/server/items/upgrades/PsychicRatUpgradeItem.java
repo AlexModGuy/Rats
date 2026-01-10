@@ -11,10 +11,7 @@ import com.github.alexthe666.rats.server.entity.projectile.ThrownBlock;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncThrownBlockPacket;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -24,7 +21,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +89,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 					if (!rat.level().isClientSide()) {
 						rat.level().addFreshEntity(thrownBlock);
 					}
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
+					PacketDistributor.sendToAllPlayers(new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
 				} else {
 					rat.rangedAttackCooldown += 5;
 				}
@@ -105,3 +104,10 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 		}
 	}
 }
+
+
+
+
+
+
+

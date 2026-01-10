@@ -5,7 +5,10 @@ import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -17,9 +20,16 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.function.BiConsumer;
 
 public class RatlantisChestLootTables implements LootTableSubProvider {
+
+	private final HolderLookup.Provider registries;
+
+	public RatlantisChestLootTables(HolderLookup.Provider provider) {
+		this.registries = provider;
+	}
+
 	@Override
-	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/dutchrat_ship"), LootTable.lootTable().withPool(LootPool.lootPool()
+	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
+		consumer.accept(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/dutchrat_ship")), LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(UniformGenerator.between(3.0F, 10.0F))
 				.setBonusRolls(UniformGenerator.between(0.0F, 2.0F))
 				.add(LootItem.lootTableItem(RatlantisItemRegistry.ORATCHALCUM_NUGGET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F))))
@@ -53,3 +63,10 @@ public class RatlantisChestLootTables implements LootTableSubProvider {
 		));
 	}
 }
+
+
+
+
+
+
+

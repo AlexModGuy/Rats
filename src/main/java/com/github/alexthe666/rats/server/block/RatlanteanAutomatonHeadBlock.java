@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.RatConfig;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
@@ -47,6 +48,13 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
 public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements WearableOnHead, CustomItemRarity {
+
+	public static final MapCodec<RatlanteanAutomatonHeadBlock> CODEC = simpleCodec(RatlanteanAutomatonHeadBlock::new);
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
@@ -187,7 +195,14 @@ public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements Wea
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }
+
+
+
+
+
+
+

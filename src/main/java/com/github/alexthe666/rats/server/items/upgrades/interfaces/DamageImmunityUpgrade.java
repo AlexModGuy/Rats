@@ -14,3 +14,10 @@ public interface DamageImmunityUpgrade {
 	 */
 	boolean isImmuneToDamageSource(TamedRat rat, DamageSource source);
 }
+
+
+
+
+
+
+

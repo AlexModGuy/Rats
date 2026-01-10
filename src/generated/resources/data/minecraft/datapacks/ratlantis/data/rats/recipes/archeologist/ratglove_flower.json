@@ -1,8 +1,0 @@
-{
-  "type": "rats:archeologist",
-  "count": 1,
-  "ingredient": {
-    "item": "minecraft:blue_orchid"
-  },
-  "result": "rats:ratglove_flower"
-}

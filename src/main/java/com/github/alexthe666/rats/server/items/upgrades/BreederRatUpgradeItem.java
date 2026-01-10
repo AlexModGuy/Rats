@@ -29,3 +29,10 @@ public class BreederRatUpgradeItem extends BaseRatUpgradeItem implements Changes
 		return List.of(new RatBreedAnimalsGoal(rat));
 	}
 }
+
+
+
+
+
+
+

@@ -46,3 +46,10 @@ public class WildRatDefendPlagueDoctorGoal extends TargetGoal {
 		super.start();
 	}
 }
+
+
+
+
+
+
+

@@ -16,6 +16,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,19 +41,19 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 	}
 
 	@Override
-	public Map<Attribute, Double> getAttributeBoosts() {
+	public Map<Holder<Attribute>, Double> getAttributeBoosts() {
 		return Map.of(Attributes.MAX_HEALTH, RatConfig.dragonHealthUpgrade, Attributes.ARMOR, RatConfig.dragonArmorUpgrade, Attributes.ATTACK_DAMAGE, RatConfig.dragonDamageUpgrade);
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		this.getAttributeBoosts().forEach((attribute, aDouble) -> tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA)));
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
+		this.getAttributeBoosts().forEach((attribute, aDouble) -> tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, aDouble.toString(), Component.translatable(attribute.value().getDescriptionId())).withStyle(ChatFormatting.AQUA)));
 	}
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/dragon.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/dragon.png");
 	}
 
 	@Override
@@ -92,6 +93,13 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 
 	@Override
 	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/dragon.png"));
+		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/dragon.png"));
 	}
 }
+
+
+
+
+
+
+

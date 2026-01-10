@@ -4,6 +4,9 @@ import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import net.minecraft.advancements.critereon.EntityFlagsPredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
@@ -12,21 +15,25 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.stream.Stream;
 
 public class RatlantisEntityLootTables extends EntityLootSubProvider {
-	protected RatlantisEntityLootTables() {
-		super(FeatureFlags.REGISTRY.allFlags());
+
+	private final HolderLookup.Provider registries;
+
+	protected RatlantisEntityLootTables(HolderLookup.Provider provider) {
+		super(FeatureFlags.REGISTRY.allFlags(), FeatureFlags.REGISTRY.allFlags(), provider);
+		this.registries = provider;
 	}
 
 	@Override
@@ -40,23 +47,23 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 2.0F))))));
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 2.0F))))));
 
 		this.add(RatlantisEntityRegistry.FERAL_RATLANTEAN.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(2.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.FERAL_RAT_CLAW.get())
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.RAT_TOGA.get()))
 								.add(LootItem.lootTableItem(RatsItemRegistry.RAT_PELT.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get()))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
-								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05F, 0.05F))));
+								.when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.05F, 0.05F))));
 
 		this.add(RatlantisEntityRegistry.GHOST_PIRAT.get(),
 				LootTable.lootTable()
@@ -64,7 +71,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
 
 		this.add(RatlantisEntityRegistry.NEO_RATLANTEAN.get(),
 				LootTable.lootTable()
@@ -78,12 +85,12 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatsItemRegistry.RAT_PELT.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatsItemRegistry.RAW_RAT.get()))
 								.apply(SmeltItemFunction.smelted()
-										.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))))
+										.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true))))))
 		);
 
 		this.add(RatlantisEntityRegistry.PIRAT_BOAT.get(),
@@ -92,7 +99,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(Items.SPRUCE_PLANKS)
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.CHEESE_CANNONBALL.get()))
@@ -111,7 +118,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.ORATCHALCUM_NUGGET.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 32.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 6.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 6.0F)))))
 		);
 
 		this.add(RatlantisEntityRegistry.RATFISH.get(),
@@ -129,7 +136,7 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get())
-										.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.5F, 0.25F))))
+										.when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.5F, 0.25F))))
 		);
 
 		this.add(RatlantisEntityRegistry.RATLANTEAN_RATBOT.get(),
@@ -138,21 +145,21 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(2.0F))
 								.add(LootItem.lootTableItem(Items.IRON_INGOT)
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.ORATCHALCUM_NUGGET.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.RATBOT_BARREL.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))
 								.add(LootItem.lootTableItem(Items.REDSTONE)
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get()))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
-								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05F, 0.05F)))
+								.when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.05F, 0.05F)))
 		);
 
 		this.add(RatlantisEntityRegistry.RATLANTEAN_SPIRIT.get(),
@@ -161,18 +168,18 @@ public class RatlantisEntityLootTables extends EntityLootSubProvider {
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisItemRegistry.RATLANTEAN_FLAME.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+										.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
 								.add(LootItem.lootTableItem(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get()))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
-								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05F, 0.05F)))
+								.when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.05F, 0.05F)))
 		);
 
 	}
 
 	@Override
 	protected Stream<EntityType<?>> getKnownEntityTypes() {
-		return RatlantisEntityRegistry.ENTITIES.getEntries().stream().map(RegistryObject::get);
+		return RatlantisEntityRegistry.ENTITIES.getEntries().stream().map(DeferredHolder::get);
 	}
 }

@@ -100,3 +100,10 @@ public class RatbotStrifeGoal extends Goal {
 		}
 	}
 }
+
+
+
+
+
+
+

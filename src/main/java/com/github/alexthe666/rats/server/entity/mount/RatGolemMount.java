@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -36,7 +38,7 @@ public class RatGolemMount extends RatMountBase {
 
 	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
+		// Note: setMaxUpStep removed in 1.21, use Attributes.STEP_HEIGHT instead
 		this.riderY = 1.95F;
 		this.riderXZ = -0.1F;
 	}
@@ -46,7 +48,8 @@ public class RatGolemMount extends RatMountBase {
 				.add(Attributes.MAX_HEALTH, 100.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	public void aiStep() {
@@ -102,10 +105,11 @@ public class RatGolemMount extends RatMountBase {
 	public boolean doHurtTarget(Entity entity) {
 		this.attackTimer = 10;
 		this.level().broadcastEntityEvent(this, (byte) 4);
-		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) (7 + this.getRandom().nextInt(15)));
-		if (flag) {
+		DamageSource damageSource = this.damageSources().mobAttack(this);
+		boolean flag = entity.hurt(damageSource, (float) (7 + this.getRandom().nextInt(15)));
+		if (flag && this.level() instanceof ServerLevel serverLevel) {
 			entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.4F, 0.0D));
-			this.doEnchantDamageEffects(this, entity);
+			EnchantmentHelper.doPostAttackEffects(serverLevel, entity, damageSource);
 		}
 
 		this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
@@ -172,3 +176,10 @@ public class RatGolemMount extends RatMountBase {
 		}
 	}
 }
+
+
+
+
+
+
+

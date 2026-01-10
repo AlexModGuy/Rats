@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.server.block.RatTrapBlock;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -61,31 +62,31 @@ public class RatTrapBlockEntity extends BlockEntity {
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
+		return ClientboundBlockEntityDataPacket.create(this, (be, provider) -> be.getUpdateTag(provider));
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		this.handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider) {
+		this.handleUpdateTag(packet.getTag(), provider);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+		return this.saveWithId(provider);
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		ContainerHelper.saveAllItems(compound, this.baitStack);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		ContainerHelper.saveAllItems(compound, this.baitStack, provider);
 		compound.putFloat("ShutProgress", this.shutProgress);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, provider);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
 		this.baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(compound, this.baitStack);
+		ContainerHelper.loadAllItems(compound, this.baitStack, provider);
 		this.shutProgress = compound.getFloat("ShutProgress");
 	}
 
@@ -101,3 +102,10 @@ public class RatTrapBlockEntity extends BlockEntity {
 		this.baitStack.set(0, stack);
 	}
 }
+
+
+
+
+
+
+

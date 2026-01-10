@@ -4,20 +4,20 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanAutomatonModel;
 import com.github.alexthe666.rats.server.block.RatlanteanAutomatonHeadBlock;
 import com.github.alexthe666.rats.server.block.entity.RatlanteanAutomatonHeadBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RatlanteanAutomatonHeadRenderer implements BlockEntityRenderer<RatlanteanAutomatonHeadBlockEntity> {
 	private static final RatlanteanAutomatonModel<?> AUTOMATON_MODEL = new RatlanteanAutomatonModel<>(false);
-	private static final RenderType GOLEM_TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton.png"));
-	private static final RenderType GLOW_TEXTURE = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton_glow.png"));
+	private static final RenderType GOLEM_TEXTURE = RenderType.entityCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton.png"));
+	private static final RenderType GLOW_TEXTURE = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_automaton/ratlantean_automaton_glow.png"));
 
 	public RatlanteanAutomatonHeadRenderer(BlockEntityRendererProvider.Context context) {
 	}
@@ -42,9 +42,16 @@ public class RatlanteanAutomatonHeadRenderer implements BlockEntityRenderer<Ratl
 		stack.mulPose(Axis.YP.rotationDegrees(rotation));
 		VertexConsumer consumer = buffer.getBuffer(GOLEM_TEXTURE);
 		AUTOMATON_MODEL.setTERotationAngles(tickCount);
-		AUTOMATON_MODEL.renderHead(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		AUTOMATON_MODEL.renderHead(stack, consumer, light, overlay, 0xFFFFFFFF);
 		VertexConsumer ivertexbuilder2 = buffer.getBuffer(GLOW_TEXTURE);
-		AUTOMATON_MODEL.renderHead(stack, ivertexbuilder2, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		AUTOMATON_MODEL.renderHead(stack, ivertexbuilder2, light, overlay, 0xFFFFFFFF);
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

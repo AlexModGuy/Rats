@@ -48,3 +48,10 @@ public class RatFleePositionGoal extends Goal {
 		this.rat.setFleePos(null);
 	}
 }
+
+
+
+
+
+
+

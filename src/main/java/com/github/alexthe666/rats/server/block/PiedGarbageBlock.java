@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -9,9 +10,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PiedGarbageBlock extends AbstractGarbageBlock {
+	public static final MapCodec<PiedGarbageBlock> CODEC = simpleCodec(PiedGarbageBlock::new);
 
 	public PiedGarbageBlock(BlockBehaviour.Properties properties) {
 		super(properties, 1.0D);
+	}
+
+	@Override
+	protected MapCodec<? extends AbstractGarbageBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -24,3 +31,10 @@ public class PiedGarbageBlock extends AbstractGarbageBlock {
 		return 0x4B4035;
 	}
 }
+
+
+
+
+
+
+

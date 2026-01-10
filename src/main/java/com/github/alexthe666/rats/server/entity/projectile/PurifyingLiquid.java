@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
 
@@ -43,9 +43,9 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(NETHER, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(NETHER, false);
 	}
 
 	@Override
@@ -63,9 +63,9 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 									Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.level());
 									rat.copyPosition(living);
 									if (!this.level().isClientSide()) {
-										ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+										EventHooks.finalizeMobSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
 									}
-									rat.setTame(false);
+									rat.setTame(false, true);
 									rat.setOwnerUUID(null);
 									this.level().addFreshEntity(rat);
 									living.discard();
@@ -74,15 +74,16 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 								if (living instanceof Rat rat && rat.hasPlague()) {
 									rat.setPlagued(false);
 								}
-								if (living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
-									living.removeEffect(RatsEffectRegistry.PLAGUE.get());
+								if (living.hasEffect(RatsEffectRegistry.PLAGUE)) {
+									living.removeEffect(RatsEffectRegistry.PLAGUE);
 								}
 								if (living.getType().is(RatsEntityTags.PLAGUE_LEGION)) {
 									living.hurt(this.damageSources().magic(), 10);
 								}
-								if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {
-									zomb.startConverting(this.getOwner() != null ? this.getOwner().getUUID() : null, 200);
-								}
+								// TODO: ZombieVillager.startConverting is private in 1.21.1 - needs accessor mixin or alternative approach
+								// if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {
+								// 	zomb.startConverting(this.getOwner() != null ? this.getOwner().getUUID() : null, 200);
+								// }
 							}
 						}
 					}
@@ -107,3 +108,10 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 		}
 	}
 }
+
+
+
+
+
+
+

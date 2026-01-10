@@ -26,3 +26,10 @@ public class ChefToqueModel extends AbstractHatModel {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 }
+
+
+
+
+
+
+

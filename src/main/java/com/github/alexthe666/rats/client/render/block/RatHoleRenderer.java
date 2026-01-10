@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.client.render.block;
 
 import com.github.alexthe666.rats.server.block.RatHoleBlock;
 import com.github.alexthe666.rats.server.block.entity.RatHoleBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +14,9 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -58,37 +58,37 @@ public class RatHoleRenderer implements BlockEntityRenderer<RatHoleBlockEntity> 
 		float maxVY = (float) Math.min(sprite.getV1(), f3 + avgY * Math.abs(sprite.getV1() - sprite.getV0()));
 		float maxVZ = (float) Math.min(sprite.getV1(), f3 + avgZ * Math.abs(sprite.getV1() - sprite.getV0()));
 		Matrix4f matrix4f = stack.last().pose();
-		Matrix3f matrix3f = stack.last().normal();
+		PoseStack.Pose pose = stack.last();
 		//back
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUX, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f1, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f1, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUX, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUX, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f1, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f1, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUX, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
 		//front
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f1, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUX, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUX, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f1, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f1, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUX, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUX, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f1, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
 		//tops
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f1, maxVZ).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUX, maxVZ).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUX, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f1, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f1, maxVZ).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUX, maxVZ).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUX, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f1, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, -1.0F, 0.0F);
 
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f1, maxVZ).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUX, maxVZ).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUX, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f1, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f1, maxVZ).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUX, maxVZ).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUX, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f1, f3).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
 		//sides
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUZ, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(maxUZ, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f2, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(f2, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUZ, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, -1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(maxUZ, f3).setOverlay(overlay).setLight(light).setNormal(pose, -1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f2, f3).setOverlay(overlay).setLight(light).setNormal(pose, -1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(f2, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, -1.0F, 0.0F, 0.0F);
 
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUZ, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(255, 255, 255, 255).uv(maxUZ, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f2, f3).overlayCoords(overlay).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(255, 255, 255, 255).uv(f2, maxVY).overlayCoords(overlay).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUZ, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setColor(255, 255, 255, 255).setUv(maxUZ, f3).setOverlay(overlay).setLight(light).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f2, f3).setOverlay(overlay).setLight(light).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setColor(255, 255, 255, 255).setUv(f2, maxVY).setOverlay(overlay).setLight(light).setNormal(pose, 1.0F, 0.0F, 0.0F);
 		stack.popPose();
 	}
 
@@ -132,3 +132,10 @@ public class RatHoleRenderer implements BlockEntityRenderer<RatHoleBlockEntity> 
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

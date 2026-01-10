@@ -56,3 +56,10 @@ public abstract class BlackDeathAbstractSummonGoal extends Goal {
 
 	public abstract boolean hasSummonedEnough();
 }
+
+
+
+
+
+
+

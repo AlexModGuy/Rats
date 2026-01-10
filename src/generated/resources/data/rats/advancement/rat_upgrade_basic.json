@@ -1,0 +1,34 @@
+{
+  "parent": "rats:tame_rat",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:rat_upgrade_basic"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.rat_upgrade_basic.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "rats:rat_upgrade_basic"
+    },
+    "title": {
+      "translate": "advancement.rats.rat_upgrade_basic.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

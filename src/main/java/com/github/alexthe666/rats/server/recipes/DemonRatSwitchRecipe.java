@@ -3,25 +3,26 @@ package com.github.alexthe666.rats.server.recipes;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsRecipeRegistry;
 import com.github.alexthe666.rats.server.items.upgrades.DemonRatUpgradeItem;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class DemonRatSwitchRecipe extends CustomRecipe {
-	public DemonRatSwitchRecipe(ResourceLocation location, CraftingBookCategory category) {
-		super(location, category);
+	// In 1.21.1, CustomRecipe constructor only takes CraftingBookCategory
+	public DemonRatSwitchRecipe(CraftingBookCategory category) {
+		super(category);
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		ItemStack upgrade = null;
-		for (int i = 0; i < container.getContainerSize(); ++i) {
-			ItemStack stack = container.getItem(i);
+		for (int i = 0; i < input.size(); ++i) {
+			ItemStack stack = input.getItem(i);
 			if (!stack.isEmpty()) {
 				if (upgrade != null) {
 					return false;
@@ -38,9 +39,9 @@ public class DemonRatSwitchRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
-		for (int i = 0; i < container.getContainerSize(); ++i) {
-			ItemStack stack = container.getItem(i);
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+		for (int i = 0; i < input.size(); ++i) {
+			ItemStack stack = input.getItem(i);
 			if (!stack.isEmpty() && stack.is(RatsItemRegistry.RAT_UPGRADE_DEMON.get())) {
 				return DemonRatUpgradeItem.getDemonUpgrade(!DemonRatUpgradeItem.isSoulVersion(stack));
 			}
@@ -58,3 +59,10 @@ public class DemonRatSwitchRecipe extends CustomRecipe {
 		return RatsRecipeRegistry.SWITCH_DEMON.get();
 	}
 }
+
+
+
+
+
+
+

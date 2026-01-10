@@ -117,3 +117,10 @@ public class DutchratBellBlock extends BellBlock implements CustomItemRarity {
 		return createTickerHelper(type, RatlantisBlockEntityRegistry.DUTCHRAT_BELL.get(), DutchratBellBlockEntity::tick);
 	}
 }
+
+
+
+
+
+
+

@@ -19,3 +19,10 @@ public interface ChangesOverlayUpgrade {
 	@Nullable
 	RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks);
 }
+
+
+
+
+
+
+

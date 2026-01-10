@@ -2,7 +2,9 @@ package com.github.alexthe666.rats.server.entity.projectile;
 
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
@@ -44,8 +46,8 @@ public class PlagueShot extends ArrowlikeProjectile {
 			if (this.random.nextBoolean()) {
 				this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 0.5D, z, d0, d1, d2);
 			} else {
-				this.level().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 0.5D, z, d0, d1, d2);
-
+				int color = FastColor.ARGB32.colorFromFloat(1.0F, (float) d0, (float) d1, (float) d2);
+				this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, color), x, y + 0.5D, z, 0, 0, 0);
 			}
 		}
 		super.tick();
@@ -63,7 +65,7 @@ public class PlagueShot extends ArrowlikeProjectile {
 		super.onHitEntity(result);
 		if (result.getEntity() instanceof LivingEntity living) {
 			if (this.getOwner() == null || !living.is(this.getOwner())) {
-				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 1200));
+				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 1200));
 			}
 		}
 	}
@@ -78,3 +80,10 @@ public class PlagueShot extends ArrowlikeProjectile {
 		return false;
 	}
 }
+
+
+
+
+
+
+

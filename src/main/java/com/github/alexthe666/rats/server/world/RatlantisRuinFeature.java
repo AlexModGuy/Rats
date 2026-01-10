@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import com.mojang.serialization.Codec;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +58,14 @@ public class RatlantisRuinFeature extends Feature<RatlantisRuinConfiguration> {
 		if (!level.getBlockState(blockpos2.below()).isSolidRender(level, blockpos2)) return false;
 
 		structureplacesettings.clearProcessors();
-		config.processor().get().list().forEach(structureplacesettings::addProcessor);
+		config.processor().value().list().forEach(structureplacesettings::addProcessor);
 		return structuretemplate.placeInWorld(level, blockpos2, blockpos2, structureplacesettings, random, 20);
 	}
 }
+
+
+
+
+
+
+

@@ -23,7 +23,6 @@ import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.items.upgrades.*;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.*;
 import com.github.alexthe666.rats.server.message.ManageRatStaffPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -37,6 +36,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
@@ -45,6 +47,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -85,17 +88,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import com.github.alexthe666.rats.compat.LazyOptional;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -153,7 +155,7 @@ public class TamedRat extends InventoryRat {
 	public int randomEffectCooldown = 0;
 	private int updateNavigationCooldown;
 	public boolean isCurrentlyWorking;
-	private final Multimap<Attribute, AttributeModifier> attributeChanges = HashMultimap.create();
+	private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> attributeChanges = HashMultimap.create();
 
 	public TamedRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
@@ -194,16 +196,17 @@ public class TamedRat extends InventoryRat {
 		this.goalSelector.addGoal(6, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(7, new RatWanderGoal(this, 1.25D));
 		this.goalSelector.addGoal(7, new RatPatrolGoal(this));
+		final TamedRat self = this;
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F) {
 			@Override
 			public boolean canUse() {
-				return ((TamedRat) this.mob).sleepProgress <= 0.0F && super.canUse();
+				return self.sleepProgress <= 0.0F && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this) {
 			@Override
 			public boolean canUse() {
-				return ((TamedRat) this.mob).sleepProgress <= 0.0F && super.canUse();
+				return self.sleepProgress <= 0.0F && super.canUse();
 			}
 		});
 		this.targetSelector.addGoal(0, new RatTargetItemsGoal(this));
@@ -272,22 +275,22 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TOGA, false);
-		this.getEntityData().define(DANCING, false);
-		this.getEntityData().define(DANCE_MOVES, 0);
-		this.getEntityData().define(HELD_RF, 0);
-		this.getEntityData().define(RESPAWN_COUNTDOWN, 0);
-		this.getEntityData().define(VISUAL_FLAG, false);
-		this.getEntityData().define(DYED, false);
-		this.getEntityData().define(FLYING, false);
-		this.getEntityData().define(DYE_COLOR, (byte) 0);
-		this.getEntityData().define(DEPOSIT_POS, Optional.empty());
-		this.getEntityData().define(PICKUP_POS, Optional.empty());
-		this.getEntityData().define(IS_IN_WHEEL, false);
-		this.getEntityData().define(SPECIAL_DYE, "rainbow");
-		this.getEntityData().define(MOUNT_RESPAWN_COOLDOWN, 20);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TOGA, false);
+		builder.define(DANCING, false);
+		builder.define(DANCE_MOVES, 0);
+		builder.define(HELD_RF, 0);
+		builder.define(RESPAWN_COUNTDOWN, 0);
+		builder.define(VISUAL_FLAG, false);
+		builder.define(DYED, false);
+		builder.define(FLYING, false);
+		builder.define(DYE_COLOR, (byte) 0);
+		builder.define(DEPOSIT_POS, Optional.empty());
+		builder.define(PICKUP_POS, Optional.empty());
+		builder.define(IS_IN_WHEEL, false);
+		builder.define(SPECIAL_DYE, "rainbow");
+		builder.define(MOUNT_RESPAWN_COOLDOWN, 20);
 	}
 
 	public void switchNavigator(int type) {
@@ -326,6 +329,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
+	public boolean isFood(ItemStack stack) {
+		return RatUtils.isRatFood(stack);
+	}
+
+	@Override
 	public boolean isVisuallySitting() {
 		return super.isVisuallySitting() || this.isDancing();
 	}
@@ -342,8 +350,7 @@ public class TamedRat extends InventoryRat {
 		}
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag) {
-			this.doEnchantDamageEffects(this, entity);
-			this.getMainHandItem().hurtAndBreak(1, this, rat -> rat.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+			this.getMainHandItem().hurtAndBreak(1, this, EquipmentSlot.MAINHAND);
 			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, (stack, slot) -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
 		}
 		return flag;
@@ -379,7 +386,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean canDrownInFluidType(FluidType type) {
-		return type == ForgeMod.WATER_TYPE.get() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
+		return type == NeoForgeMod.WATER_TYPE.value() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
 	}
 
 	@Override
@@ -403,10 +410,8 @@ public class TamedRat extends InventoryRat {
 		this.getDepositPos().flatMap(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error)).ifPresent(tag1 -> tag.put("DepositPos", tag1));
 		this.getPickupPos().flatMap(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error)).ifPresent(tag1 -> tag.put("PickupPos", tag1));
 		tag.putInt("RandomEffectCooldown", this.randomEffectCooldown);
-		if (this.transportingFluid != null) {
-			CompoundTag fluidTag = new CompoundTag();
-			this.transportingFluid.writeToNBT(fluidTag);
-			tag.put("TransportingFluid", fluidTag);
+		if (this.transportingFluid != null && !this.transportingFluid.isEmpty()) {
+			tag.put("TransportingFluid", this.transportingFluid.save(this.level().registryAccess()));
 		}
 	}
 
@@ -442,10 +447,7 @@ public class TamedRat extends InventoryRat {
 			this.pickupFacing = Direction.values()[tag.getInt("PickupFacing")];
 		}
 		if (tag.contains("TransportingFluid")) {
-			CompoundTag fluidTag = tag.getCompound("TransportingFluid");
-			if (!fluidTag.isEmpty()) {
-				this.transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
-			}
+			this.transportingFluid = FluidStack.parse(this.level().registryAccess(), tag.get("TransportingFluid")).orElse(FluidStack.EMPTY);
 		}
 	}
 
@@ -484,7 +486,7 @@ public class TamedRat extends InventoryRat {
 			Entity entity = this.getMountEntityType().create(this.level());
 			entity.copyPosition(this);
 			if (entity instanceof Mob mob && this.level() instanceof ServerLevelAccessor accessor) {
-				ForgeEventFactory.onFinalizeSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+				EventHooks.finalizeMobSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 			}
 			this.level().addFreshEntity(entity);
 
@@ -596,7 +598,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(ForgeSpawnEggItem.fromEntityType(RatsEntityRegistry.RAT.get()));
+		return new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg")));
 	}
 
 	public void setFlying(boolean flying) {
@@ -717,14 +719,14 @@ public class TamedRat extends InventoryRat {
 		ItemStack handCopy = this.getMainHandItem().copy();
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(this.level(), handCopy)) {
 			ItemStack attemptedSmelt = handCopy.copy();
-			Container container = new SimpleContainer(attemptedSmelt);
-			SmeltingRecipe recipe = this.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, container, this.level()).orElse(null);
-			if (recipe != null && !recipe.getResultItem(this.level().registryAccess()).isEmpty()) {
-				attemptedSmelt = recipe.getResultItem(this.level().registryAccess()).copy();
+			var recipeInput = new net.minecraft.world.item.crafting.SingleRecipeInput(attemptedSmelt);
+			var recipeHolder = this.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, recipeInput, this.level()).orElse(null);
+			if (recipeHolder != null && !recipeHolder.value().getResultItem(this.level().registryAccess()).isEmpty()) {
+				attemptedSmelt = recipeHolder.value().getResultItem(this.level().registryAccess()).copy();
 			}
 
 			if (!attemptedSmelt.is(handCopy.getItem())) {
-				ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(attemptedSmelt).copyWithCount(2);
+				ItemStack nugget = OreRatNuggetItem.saveResourceToNugget(attemptedSmelt, this.level().registryAccess()).copyWithCount(2);
 				if (RatConfig.ratFartNoises) {
 					this.playSound(RatsSoundRegistry.RAT_POOP.get(), 0.5F + this.getRandom().nextFloat() * 0.5F, 1.0F + this.getRandom().nextFloat() * 0.5F);
 				}
@@ -764,10 +766,10 @@ public class TamedRat extends InventoryRat {
 		baby.setAge(-24000);
 		baby.setCommand(RatCommand.SIT);
 		if (mother.isTame()) {
-			baby.setTame(true);
+			baby.setTame(true, true);
 			baby.setOwnerUUID(mother.getOwnerUUID());
 		} else if (father.isTame()) {
-			baby.setTame(true);
+			baby.setTame(true, true);
 			baby.setOwnerUUID(father.getOwnerUUID());
 		}
 		this.level().addFreshEntity(baby);
@@ -779,9 +781,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public ItemStack getResultForRecipe(RecipeType<? extends SingleItemRecipe> recipe, ItemStack stack) {
-		Optional<? extends SingleItemRecipe> optional = this.level().getRecipeManager().getRecipeFor(recipe, new SimpleContainer(stack), this.level());
+		var recipeInput = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
+		var optional = this.level().getRecipeManager().getRecipeFor((RecipeType) recipe, recipeInput, this.level());
 		if (optional.isPresent()) {
-			ItemStack itemstack = optional.get().getResultItem(this.level().registryAccess());
+			var holder = (net.minecraft.world.item.crafting.RecipeHolder<?>) optional.get();
+			ItemStack itemstack = holder.value().getResultItem(this.level().registryAccess());
 			if (!itemstack.isEmpty()) {
 				ItemStack itemstack1 = itemstack.copy();
 				itemstack1.setCount(stack.getCount() * itemstack.getCount());
@@ -795,10 +799,10 @@ public class TamedRat extends InventoryRat {
 		if (this.level().getBlockEntity(this.blockPosition()) != null) {
 			BlockEntity te = this.level().getBlockEntity(this.blockPosition());
 			if (te != null) {
-				LazyOptional<IItemHandler> handler = te.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
-				if (handler.resolve().isPresent()) {
-					if (ItemHandlerHelper.insertItem(handler.resolve().get(), burntItem, true).isEmpty()) {
-						ItemHandlerHelper.insertItem(handler.resolve().get(), burntItem, false);
+				IItemHandler handler = this.level().getCapability(Capabilities.ItemHandler.BLOCK, te.getBlockPos(), Direction.UP);
+				if (handler != null) {
+					if (ItemHandlerHelper.insertItem(handler, burntItem, true).isEmpty()) {
+						ItemHandlerHelper.insertItem(handler, burntItem, false);
 						return true;
 					}
 				}
@@ -822,11 +826,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected void dropCustomDeathLoot(DamageSource source, int looting, boolean playerKill) {
+	protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource source, boolean wasRecentlyHit) {
 		if (this.hasToga()) {
 			this.spawnAtLocation(new ItemStack(RatlantisItemRegistry.RAT_TOGA.get()), 0.0F);
 		}
-		super.dropCustomDeathLoot(source, looting, playerKill);
+		super.dropCustomDeathLoot(serverLevel, source, wasRecentlyHit);
 	}
 
 	public void spawnAngelCopy() {
@@ -861,7 +865,7 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (this.getRespawnCountdown() > 0 || itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_spawn_egg")))) {
+		if (this.getRespawnCountdown() > 0 || itemstack.is(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg")))) {
 			return InteractionResult.PASS;
 		}
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_CARRAT.get())) {
@@ -917,7 +921,7 @@ public class TamedRat extends InventoryRat {
 					}
 				}
 				this.setToga(!this.hasToga());
-				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
+				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC.value(), 1F, 1.5F);
 				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
@@ -940,17 +944,20 @@ public class TamedRat extends InventoryRat {
 					player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_SACK_TOO_FULL).withStyle(ChatFormatting.RED), true);
 					return InteractionResult.PASS;
 				} else {
-					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInSack(itemstack) + 1);
-					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
+					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInSack(itemstack) + 1, this.level().registryAccess());
+					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), 1, 1);
 					this.discard();
 					player.swing(hand);
 					return InteractionResult.SUCCESS;
 				}
 			} else if (itemstack.getItem() instanceof RatStaffItem) {
-				player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat(this));
+				var cap = player.getCapability(RatsCapabilityRegistry.SELECTED_RAT);
+				if (cap != null) {
+					cap.setSelectedRat(this);
+				}
 				player.swing(hand);
 				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
+					PacketDistributor.sendToPlayer(sp, new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
 				}
 				player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_BIND, this.getName()), true);
 				return InteractionResult.SUCCESS;
@@ -961,10 +968,10 @@ public class TamedRat extends InventoryRat {
 				CompoundTag ratTag = new CompoundTag();
 				this.addAdditionalSaveData(ratTag);
 				if (this.hasCustomName()) {
-					ratTag.putString("CustomName", Component.Serializer.toJson(this.getCustomName()));
+					ratTag.putString("CustomName", Component.Serializer.toJson(this.getCustomName(), this.level().registryAccess()));
 				}
 				tag.put("Rat", ratTag);
-				arrow.setTag(tag);
+				arrow.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
 				if (itemstack.isEmpty()) {
 					player.setItemInHand(hand, arrow);
 				} else if (!player.getInventory().add(arrow)) {
@@ -1022,12 +1029,12 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	public void setTame(boolean tamed) {
+	public void setTame(boolean tamed, boolean applyTamingSideEffects) {
 		if (tamed) {
 			Arrays.fill(this.armorDropChances, 1.1F);
 			Arrays.fill(this.handDropChances, 1.1F);
 		}
-		super.setTame(tamed);
+		super.setTame(tamed, applyTamingSideEffects);
 	}
 
 	@Override
@@ -1094,7 +1101,7 @@ public class TamedRat extends InventoryRat {
 			return RatsSoundRegistry.RAT_SANTA.get();
 		}
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_idle"));
+			SoundEvent possibleDragonSound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_idle"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1104,7 +1111,7 @@ public class TamedRat extends InventoryRat {
 
 	protected SoundEvent getDeathSound() {
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_death"));
+			SoundEvent possibleDragonSound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_death"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1114,7 +1121,7 @@ public class TamedRat extends InventoryRat {
 
 	protected SoundEvent getHurtSound(DamageSource source) {
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_hurt"));
+			SoundEvent possibleDragonSound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_hurt"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1137,11 +1144,11 @@ public class TamedRat extends InventoryRat {
 		if ((RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()) || RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()))) {
 			CompoundTag tag;
 			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())) {
-				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()).getTag();
+				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()).getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
 			} else {
-				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()).getTag();
+				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()).getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
 			}
-			String ourItemID = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack.getItem())).toString();
+			String ourItemID = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(stack.getItem())).toString();
 			if (tag != null && tag.contains("Items", 9)) {
 				ListTag list = tag.getList("Items", 10);
 				if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())) {
@@ -1167,18 +1174,8 @@ public class TamedRat extends InventoryRat {
 		return true;
 	}
 
-	@Override
-	public MobType getMobType() {
-		if (this.getInventory() != null) {
-			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDEAD.get())) {
-				return MobType.UNDEAD;
-			}
-			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get())) {
-				return MobType.WATER;
-			}
-		}
-		return super.getMobType();
-	}
+	// Note: getMobType() was removed in Minecraft 1.21.
+	// Upgrade-based type checking (UNDEAD, AQUATIC) should now use EntityTypeTags if needed.
 
 	@Override
 	public boolean isPushable() {
@@ -1307,8 +1304,9 @@ public class TamedRat extends InventoryRat {
 		this.setNoGravity(RatUpgradeUtils.hasUpgrade(this, RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL.get()) || this.isFlying());
 	}
 
-	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
-		AttributeModifier modifier = new AttributeModifier(itemName + " " + Component.translatable(stat.getDescriptionId()).getString() + " Modifier", value, AttributeModifier.Operation.ADDITION);
+	public void tryIncreaseStat(String itemName, net.minecraft.core.Holder<Attribute> stat, double value) {
+		String modifierName = itemName.toLowerCase().replace(" ", "_") + "_" + stat.getKey().location().getPath() + "_modifier";
+		AttributeModifier modifier = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, modifierName), value, AttributeModifier.Operation.ADD_VALUE);
 		Objects.requireNonNull(this.getAttribute(stat)).addTransientModifier(modifier);
 		this.attributeChanges.put(stat, modifier);
 	}
@@ -1345,7 +1343,7 @@ public class TamedRat extends InventoryRat {
 		this.setDancing(partying);
 		this.jukeboxPos = pos;
 		if (this.level().isClientSide()) {
-			RatsNetworkHandler.CHANNEL.sendToServer(new SetDancingRatPacket(this.getId(), partying, pos.asLong(), moves));
+			PacketDistributor.sendToServer(new SetDancingRatPacket(this.getId(), partying, pos.asLong(), moves));
 		}
 	}
 
@@ -1467,3 +1465,10 @@ public class TamedRat extends InventoryRat {
 		return RatUpgradeUtils.forEachUpgradeBool(this, (stack) -> stack.canFly(this), false);
 	}
 }
+
+
+
+
+
+
+

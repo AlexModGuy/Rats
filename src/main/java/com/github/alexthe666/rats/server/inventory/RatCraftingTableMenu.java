@@ -7,18 +7,21 @@ import com.github.alexthe666.rats.server.inventory.container.TableItemHandlers;
 import com.github.alexthe666.rats.server.inventory.slot.ImprovedSlotItemHandler;
 import com.github.alexthe666.rats.server.inventory.slot.RatCraftingResultSlot;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.Objects;
 
-public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
+public class RatCraftingTableMenu extends RecipeBookMenu<CraftingInput, CraftingRecipe> {
 
 	private final RatCraftingTableBlockEntity table;
 	private final ContainerData data;
@@ -55,7 +58,7 @@ public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
 		this.addDataSlots(data);
 	}
 
-	public RatCraftingTableMenu(int i, Inventory playerInventory, FriendlyByteBuf buf) {
+	public RatCraftingTableMenu(int i, Inventory playerInventory, RegistryFriendlyByteBuf buf) {
 		this(i, playerInventory, (RatCraftingTableBlockEntity) Objects.requireNonNull(Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getBlockEntity(buf.readBlockPos()) : null), new SimpleContainerData(2));
 	}
 
@@ -161,7 +164,7 @@ public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
 	}
 
 	@Override
-	public boolean recipeMatches(Recipe<? super Container> recipe) {
+	public boolean recipeMatches(RecipeHolder<CraftingRecipe> recipe) {
 		return true;
 	}
 
@@ -195,3 +198,10 @@ public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
 		return false;
 	}
 }
+
+
+
+
+
+
+

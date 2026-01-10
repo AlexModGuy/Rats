@@ -8,13 +8,13 @@ import com.github.alexthe666.rats.server.entity.projectile.CheeseCannonball;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, TickRatUpgrade {
 	public BuccaneerRatUpgradeItem(Properties properties) {
@@ -30,9 +30,9 @@ public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements Holds
 		stack.scale(0.5F, 0.5F, 0.5F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PiratBoatSailLayer.TEXTURE_PIRATE_CANNON));
 		VertexConsumer fireConsumer = buffer.getBuffer(RenderType.eyes(PiratBoatSailLayer.TEXTURE_PIRATE_CANNON_FIRE));
-		PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 		if (rat.getVisualFlag()) {
-			PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, fireConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, fireConsumer, light, OverlayTexture.NO_OVERLAY, -1);
 		}
 		stack.popPose();
 		stack.popPose();
@@ -68,3 +68,10 @@ public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements Holds
 		}
 	}
 }
+
+
+
+
+
+
+

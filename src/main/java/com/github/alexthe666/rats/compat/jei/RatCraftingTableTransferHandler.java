@@ -2,15 +2,15 @@ package com.github.alexthe666.rats.compat.jei;
 
 import com.github.alexthe666.rats.registry.RatsMenuRegistry;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -49,3 +49,10 @@ public class RatCraftingTableTransferHandler implements IRecipeTransferHandler<R
 		return null;
 	}
 }
+
+
+
+
+
+
+

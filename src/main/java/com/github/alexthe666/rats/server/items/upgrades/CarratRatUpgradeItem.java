@@ -5,8 +5,6 @@ import com.github.alexthe666.rats.client.model.entity.RatModel;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -14,6 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class CarratRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTextureUpgrade, HoldsItemUpgrade {
 	public CarratRatUpgradeItem(Properties properties) {
@@ -22,7 +22,7 @@ public class CarratRatUpgradeItem extends BaseRatUpgradeItem implements ChangesT
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/carrat.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/carrat.png");
 	}
 
 	@Override
@@ -48,3 +48,10 @@ public class CarratRatUpgradeItem extends BaseRatUpgradeItem implements ChangesT
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

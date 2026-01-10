@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.client.render.block;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.block.entity.DutchratBellBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,11 +12,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class DutchratBellRenderer implements BlockEntityRenderer<DutchratBellBlockEntity> {
 
 	private final ModelPart bellBody;
-	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/dutchrat_bell.png"));
+	private static final RenderType TEXTURE = RatsRenderType.getGlowingTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/dutchrat_bell.png"));
 
 	public DutchratBellRenderer(BlockEntityRendererProvider.Context context) {
 		this.bellBody = context.bakeLayer(ModelLayers.BELL).getChild("bell_body");
@@ -44,6 +44,14 @@ public class DutchratBellRenderer implements BlockEntityRenderer<DutchratBellBlo
 		this.bellBody.xRot = f1;
 		this.bellBody.zRot = f2;
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
-		this.bellBody.render(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 0.5F);
+		// In 1.21, render uses int color instead of 4 floats. Using white color with 50% alpha.
+		int color = 0x80FFFFFF; // 0xAARRGGBB format, 0x80 = 50% alpha
+		this.bellBody.render(stack, consumer, light, overlay, color);
 	}
 }
+
+
+
+
+
+

@@ -34,3 +34,10 @@ public class VialOfSentienceItem extends LoreTagItem {
 		return InteractionResultHolder.success(itemstack);
 	}
 }
+
+
+
+
+
+
+

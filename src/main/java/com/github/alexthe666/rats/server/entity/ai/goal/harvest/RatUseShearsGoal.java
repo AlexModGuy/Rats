@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.IForgeShearable;
+import net.neoforged.neoforge.common.IShearable;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
 	private final TamedRat rat;
-	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IForgeShearable && ((IForgeShearable) entity).isShearable(SHEAR_STACK, entity.level(), entity.blockPosition());
+	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IShearable && ((IShearable) entity).isShearable(null, SHEAR_STACK, entity.level(), entity.blockPosition());
 
 	public RatUseShearsGoal(TamedRat rat) {
 		super(rat);
@@ -55,8 +55,8 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 		if (this.getTargetEntity() != null && this.getTargetEntity().isAlive() && this.rat.getMainHandItem().isEmpty()) {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
 			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
-				if (this.getTargetEntity() instanceof IForgeShearable shearable) {
-					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.level(), this.getTargetEntity().blockPosition(), 0);
+				if (this.getTargetEntity() instanceof IShearable shearable) {
+					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.level(), this.getTargetEntity().blockPosition());
 					this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 					for (ItemStack stack : drops) {
 						this.getTargetEntity().spawnAtLocation(stack, 0.0F);
@@ -111,20 +111,12 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 
 	public void releaseBeesAndResetHoneyLevel(Level level, BlockState state, BlockPos pos, BeehiveBlockEntity.BeeReleaseStatus status) {
 		level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
+		// TODO: In 1.21.1, BeehiveBlockEntity.releaseAllOccupants() is private
+		// Bees will remain in hive but honey level is reset - consider alternative approach
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof BeehiveBlockEntity beehive) {
-			List<Entity> list = beehive.releaseAllOccupants(state, status);
-			for (Entity entity : list) {
-				if (entity instanceof Bee bee) {
-					if (this.rat.position().distanceToSqr(entity.position()) <= 16.0D) {
-						if (!beehive.isSedated()) {
-							bee.setTarget(this.rat);
-						} else {
-							bee.setStayOutOfHiveCountdown(400);
-						}
-					}
-				}
-			}
+			// Cannot release bees - releaseAllOccupants is private in 1.21.1
+			// Bees inside will eventually leave on their own
 		}
 	}
 
@@ -156,3 +148,10 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

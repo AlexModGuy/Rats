@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.block.entity;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -27,26 +28,26 @@ public class RatHoleBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		this.handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider registries) {
+		this.handleUpdateTag(packet.getTag(), registries);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithId(registries);
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		ContainerHelper.saveAllItems(tag, this.imitationStack);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.saveAdditional(tag, registries);
+		ContainerHelper.saveAllItems(tag, this.imitationStack, registries);
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.loadAdditional(tag, registries);
 		this.imitationStack = NonNullList.withSize(1, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(tag, this.imitationStack);
+		ContainerHelper.loadAllItems(tag, this.imitationStack, registries);
 	}
 
 	public BlockState getImitatedBlockState() {
@@ -63,3 +64,10 @@ public class RatHoleBlockEntity extends BlockEntity {
 		this.imitationStack.set(0, stack);
 	}
 }
+
+
+
+
+
+
+

@@ -36,3 +36,10 @@ public class BlackDeathSummoningGoal extends Goal {
 
 	}
 }
+
+
+
+
+
+
+

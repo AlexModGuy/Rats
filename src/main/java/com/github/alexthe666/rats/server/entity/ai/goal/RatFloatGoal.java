@@ -19,3 +19,10 @@ public class RatFloatGoal extends FloatGoal {
 	}
 
 }
+
+
+
+
+
+
+

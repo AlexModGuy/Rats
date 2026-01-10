@@ -2,20 +2,20 @@ package com.github.alexthe666.rats.server.world;
 
 import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class CopyInputStateRuleProcessor extends StructureProcessor {
 
-	public static final Codec<CopyInputStateRuleProcessor> CODEC = ProcessorRule.CODEC.listOf().fieldOf("rules").xmap(CopyInputStateRuleProcessor::new, config -> config.rules).codec();
+	public static final MapCodec<CopyInputStateRuleProcessor> CODEC = ProcessorRule.CODEC.listOf().fieldOf("rules").xmap(CopyInputStateRuleProcessor::new, config -> config.rules);
 
 	private final ImmutableList<ProcessorRule> rules;
 
@@ -42,3 +42,10 @@ public class CopyInputStateRuleProcessor extends StructureProcessor {
 		return RatlantisFeatureRegistry.COPY_STATE.get();
 	}
 }
+
+
+
+
+
+
+

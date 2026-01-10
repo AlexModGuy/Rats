@@ -61,3 +61,10 @@ public class RatBreedAnimalsGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

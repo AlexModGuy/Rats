@@ -29,3 +29,10 @@ public class RatCageBreedingLanternBlock extends RatCageDecoratedBlock {
 		return createTickerHelper(type, RatsBlockEntityRegistry.RAT_CAGE_BREEDING_LANTERN.get(), RatCageBreedingLanternBlockEntity::tick);
 	}
 }
+
+
+
+
+
+
+

@@ -20,7 +20,10 @@ public class RatDragonFire extends Fireball {
 	}
 
 	public RatDragonFire(EntityType<? extends Fireball> type, LivingEntity shooter, Level level, double accelX, double accelY, double accelZ) {
-		super(type, shooter, accelX, accelY, accelZ, level);
+		super(type, level);
+		this.setOwner(shooter);
+		this.moveTo(shooter.getX(), shooter.getEyeY(), shooter.getZ(), shooter.getYRot(), shooter.getXRot());
+		this.setDeltaMovement(accelX, accelY, accelZ);
 	}
 
 	@Override
@@ -64,11 +67,8 @@ public class RatDragonFire extends Fireball {
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
 		if (!entity.fireImmune()) {
-			entity.setSecondsOnFire(10);
-			boolean flag = entity.hurt(this.damageSources().fireball(this, this.getOwner()), 5.0F);
-			if (flag && this.getOwner() instanceof LivingEntity living) {
-				this.doEnchantDamageEffects(living, entity);
-			}
+			entity.igniteForSeconds(10);
+			entity.hurt(this.damageSources().fireball(this, this.getOwner()), 5.0F);
 
 			if (!this.level().isClientSide()) {
 				this.discard();
@@ -96,3 +96,10 @@ public class RatDragonFire extends Fireball {
 		return false;
 	}
 }
+
+
+
+
+
+
+

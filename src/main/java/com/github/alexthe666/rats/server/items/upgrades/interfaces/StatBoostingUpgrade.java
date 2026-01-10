@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items.upgrades.interfaces;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 
 import java.util.Map;
@@ -13,7 +14,7 @@ public interface StatBoostingUpgrade {
 	 *
 	 * @return a map of attribute changes to make
 	 */
-	Map<Attribute, Double> getAttributeBoosts();
+	Map<Holder<Attribute>, Double> getAttributeBoosts();
 
 	/**
 	 * Allows the rat to regenerate 1 health every 1.5 seconds if true.
@@ -24,3 +25,10 @@ public interface StatBoostingUpgrade {
 		return false;
 	}
 }
+
+
+
+
+
+
+

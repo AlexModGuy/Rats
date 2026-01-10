@@ -6,3 +6,10 @@ public interface CustomItemRarity {
 
 	Rarity getRarity();
 }
+
+
+
+
+
+
+

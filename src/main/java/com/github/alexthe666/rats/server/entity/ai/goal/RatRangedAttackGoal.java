@@ -144,3 +144,10 @@ public class RatRangedAttackGoal extends Goal implements RatWorkGoal {
 		return TaskType.ATTACK;
 	}
 }
+
+
+
+
+
+
+

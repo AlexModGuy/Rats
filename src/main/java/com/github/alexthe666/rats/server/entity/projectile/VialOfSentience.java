@@ -79,3 +79,10 @@ public class VialOfSentience extends ThrowableItemProjectile {
 		return new ItemStack(RatlantisItemRegistry.VIAL_OF_SENTIENCE.get());
 	}
 }
+
+
+
+
+
+
+

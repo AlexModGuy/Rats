@@ -4,10 +4,9 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatlantisEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import com.mojang.datafixers.util.Pair;
 
 public class RatlantisBiomeRegistry {
 
@@ -30,10 +30,10 @@ public class RatlantisBiomeRegistry {
 	public static final ResourceKey<Biome> RATLANTIS = makeKey("ratlantis");
 
 	private static ResourceKey<Biome> makeKey(String name) {
-		return ResourceKey.create(Registries.BIOME, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
-	public static void bootstrap(BootstapContext<Biome> context) {
+	public static void bootstrap(BootstrapContext<Biome> context) {
 		HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
 		HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
 
@@ -114,3 +114,10 @@ public class RatlantisBiomeRegistry {
 		)));
 	}
 }
+
+
+
+
+
+
+

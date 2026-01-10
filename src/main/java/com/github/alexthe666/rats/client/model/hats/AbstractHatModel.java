@@ -49,3 +49,10 @@ public class AbstractHatModel extends HumanoidModel<LivingEntity> {
 		}
 	}
 }
+
+
+
+
+
+
+

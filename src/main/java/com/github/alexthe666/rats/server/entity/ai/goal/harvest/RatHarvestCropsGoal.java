@@ -128,3 +128,10 @@ public class RatHarvestCropsGoal extends BaseRatHarvestGoal {
 		return (state.is(Blocks.SWEET_BERRY_BUSH) && state.getValue(SweetBerryBushBlock.AGE) > 1) || CaveVines.hasGlowBerries(state);
 	}
 }
+
+
+
+
+
+
+

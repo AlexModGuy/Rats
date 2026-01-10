@@ -28,7 +28,7 @@ public class PiratNavigation extends PathNavigation {
 
 	@Override
 	protected boolean canUpdatePath() {
-		return this.isInLiquid();
+		return this.mob.isInLiquid();
 	}
 
 	@Override
@@ -50,3 +50,10 @@ public class PiratNavigation extends PathNavigation {
 
 	}
 }
+
+
+
+
+
+
+

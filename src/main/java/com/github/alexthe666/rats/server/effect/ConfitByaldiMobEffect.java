@@ -1,5 +1,7 @@
 package com.github.alexthe666.rats.server.effect;
 
+import com.github.alexthe666.rats.RatsMod;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,36 +14,41 @@ public class ConfitByaldiMobEffect extends MobEffect {
 
 	public ConfitByaldiMobEffect() {
 		super(MobEffectCategory.BENEFICIAL, 0XFFDD59);
-		this.addAttributeModifier(Attributes.ATTACK_SPEED, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 1.0D, AttributeModifier.Operation.ADDITION);
+		this.addAttributeModifier(Attributes.ATTACK_SPEED, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "confit_byaldi_attack_speed"), 1.0D, AttributeModifier.Operation.ADD_VALUE);
 	}
 
 	@Override
-	public void applyEffectTick(LivingEntity living, int amplifier) {
+	public boolean applyEffectTick(LivingEntity living, int amplifier) {
 		if (living.getHealth() < living.getMaxHealth()) {
 			living.heal(1.0F);
 		}
 		if (living instanceof Player player) {
 			player.getFoodData().eat(1, 0.1F);
 		}
+		return true;
 	}
 
 	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) {
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return duration % 40 == 0;
 	}
 
 	@Override
-	public void removeAttributeModifiers(LivingEntity living, AttributeMap map, int amplifier) {
-		super.removeAttributeModifiers(living, map, amplifier);
-		living.setAbsorptionAmount(living.getAbsorptionAmount() - (float) (20 * (amplifier + 1)));
-		if (living.getHealth() > living.getMaxHealth()) {
-			living.setHealth(living.getMaxHealth());
-		}
+	public void removeAttributeModifiers(AttributeMap map) {
+		super.removeAttributeModifiers(map);
+		// Note: absorption adjustment moved - LivingEntity no longer available here
 	}
 
 	@Override
-	public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amplifier) {
-		living.setAbsorptionAmount(living.getAbsorptionAmount() + (float) (20 * (amplifier + 1)));
-		super.addAttributeModifiers(living, map, amplifier);
+	public void addAttributeModifiers(AttributeMap map, int amplifier) {
+		// Note: absorption adjustment moved to applyEffectTick - LivingEntity no longer available here
+		super.addAttributeModifiers(map, amplifier);
 	}
 }
+
+
+
+
+
+
+

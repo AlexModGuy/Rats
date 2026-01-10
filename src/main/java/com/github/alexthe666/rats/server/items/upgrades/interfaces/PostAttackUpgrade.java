@@ -14,3 +14,10 @@ public interface PostAttackUpgrade {
 	 */
 	void afterHit(TamedRat rat, LivingEntity target);
 }
+
+
+
+
+
+
+

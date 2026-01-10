@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.registry.RatlantisBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class RatlantisTokenBlockEntity extends BlockEntity {
 
@@ -23,18 +25,21 @@ public class RatlantisTokenBlockEntity extends BlockEntity {
 		super(RatlantisBlockEntityRegistry.TOKEN.get(), pos, state);
 	}
 
-	public void saveAdditional(CompoundTag compound) {
+	@Override
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
 		compound.putInt("TicksExisted", tickCount);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, provider);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	@Override
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
 		tickCount = compound.getInt("TicksExisted");
 	}
 
 	public AABB getRenderBoundingBox() {
-		return new AABB(this.getBlockPos().offset(-3, -4, -3), this.getBlockPos().offset(3, 4, 3));
+		BlockPos pos = this.getBlockPos();
+		return new AABB(Vec3.atLowerCornerOf(pos.offset(-3, -4, -3)), Vec3.atLowerCornerOf(pos.offset(3, 4, 3)));
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatlantisTokenBlockEntity te) {
@@ -76,3 +81,10 @@ public class RatlantisTokenBlockEntity extends BlockEntity {
 
 	}
 }
+
+
+
+
+
+
+

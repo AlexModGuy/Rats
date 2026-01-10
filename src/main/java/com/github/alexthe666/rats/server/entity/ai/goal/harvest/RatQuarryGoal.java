@@ -206,3 +206,10 @@ public class RatQuarryGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

@@ -1,10 +1,12 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.server.block.entity.UpgradeSeparatorBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -26,6 +28,13 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class UpgradeSeparatorBlock extends BaseEntityBlock {
+	public static final MapCodec<UpgradeSeparatorBlock> CODEC = simpleCodec(UpgradeSeparatorBlock::new);
+
+	@Override
+	protected MapCodec<? extends UpgradeSeparatorBlock> codec() {
+		return CODEC;
+	}
+
 	protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
 	public UpgradeSeparatorBlock(BlockBehaviour.Properties properties) {
@@ -43,7 +52,7 @@ public class UpgradeSeparatorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.rats.upgrade_separator.desc").withStyle(ChatFormatting.GRAY));
 	}
 
@@ -60,7 +69,14 @@ public class UpgradeSeparatorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }
+
+
+
+
+
+
+

@@ -64,3 +64,10 @@ public class PiratCannonModel<T extends Entity> extends AdvancedEntityModel<T> {
 		return ImmutableList.of(this.base, this.middle, this.backCannon, this.frontCannon, this.midCannon, this.whick);
 	}
 }
+
+
+
+
+
+
+

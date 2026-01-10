@@ -17,3 +17,10 @@ public class RatMoveControl extends MoveControl {
 		return super.hasWanted() && this.rat.canMove();
 	}
 }
+
+
+
+
+
+
+

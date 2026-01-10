@@ -18,3 +18,10 @@ public class RatlanteanAutomatonHeadBlockEntity extends BlockEntity {
 		te.tickCount++;
 	}
 }
+
+
+
+
+
+
+

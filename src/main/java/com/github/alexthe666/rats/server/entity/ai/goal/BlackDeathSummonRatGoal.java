@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class BlackDeathSummonRatGoal extends BlackDeathAbstractSummonGoal {
 	public BlackDeathSummonRatGoal(BlackDeath death) {
@@ -23,7 +23,7 @@ public class BlackDeathSummonRatGoal extends BlackDeathAbstractSummonGoal {
 		this.death.level().broadcastEntityEvent(this.death, (byte) 82);
 
 		Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.death.level());
-		ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+		EventHooks.finalizeMobSpawn(rat, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 		rat.copyPosition(this.death);
 		rat.setPlagued(true);
 		this.death.level().addFreshEntity(rat);
@@ -39,3 +39,10 @@ public class BlackDeathSummonRatGoal extends BlackDeathAbstractSummonGoal {
 		return this.death.getRatsSummoned() >= RatConfig.bdMaxRatSpawns;
 	}
 }
+
+
+
+
+
+
+

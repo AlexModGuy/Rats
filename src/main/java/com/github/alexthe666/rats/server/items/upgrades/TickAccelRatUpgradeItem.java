@@ -18,3 +18,10 @@ public class TickAccelRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 		}
 	}
 }
+
+
+
+
+
+
+

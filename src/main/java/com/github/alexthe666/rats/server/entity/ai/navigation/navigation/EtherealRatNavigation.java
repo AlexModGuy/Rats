@@ -38,3 +38,10 @@ public class EtherealRatNavigation extends FlyingPathNavigation {
 		return this.moveTo(this.createPath(BlockPos.containing(x, y, z), 0), speed);
 	}
 }
+
+
+
+
+
+
+

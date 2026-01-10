@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.misc;
 
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -70,3 +71,10 @@ public class RatsDateFetcher {
 		return date.getMonth() == Month.JANUARY && date.getDayOfMonth() == 28;
 	}
 }
+
+
+
+
+
+
+

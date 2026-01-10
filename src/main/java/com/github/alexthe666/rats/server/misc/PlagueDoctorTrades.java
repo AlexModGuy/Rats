@@ -3,15 +3,15 @@ package com.github.alexthe666.rats.server.misc;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.google.common.collect.ImmutableMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Items;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class PlagueDoctorTrades extends VillagerTrades {
 	public static final Int2ObjectMap<VillagerTrades.ItemListing[]> PLAGUE_DOCTOR_TRADES;
-	public static final VillagerTrades.ItemListing COMBINER_TRADE = new ItemsAndEmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_GOD.get(), 1, 40, RatsBlockRegistry.UPGRADE_COMBINER.get().asItem(), 1, 1, 30);
-	public static final VillagerTrades.ItemListing SEPARATOR_TRADE = new ItemsAndEmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get(), 1, 4, RatsBlockRegistry.UPGRADE_SEPARATOR.get().asItem(), 1, 1, 30);
+	public static final VillagerTrades.ItemListing COMBINER_TRADE = new ItemsAndEmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_GOD.get(), 1, 40, RatsBlockRegistry.UPGRADE_COMBINER.get().asItem(), 1, 1, 30, 0.05F);
+	public static final VillagerTrades.ItemListing SEPARATOR_TRADE = new ItemsAndEmeraldsToItems(RatsItemRegistry.RAT_UPGRADE_JURY_RIGGED.get(), 1, 4, RatsBlockRegistry.UPGRADE_SEPARATOR.get().asItem(), 1, 1, 30, 0.05F);
 	public static final VillagerTrades.ItemListing UPGRADE_COMBINED_TRADE = new ItemsForEmeralds(RatsItemRegistry.RAT_UPGRADE_COMBINED.get(), 6, 1, 1);
 
 	static {
@@ -26,7 +26,7 @@ public class PlagueDoctorTrades extends VillagerTrades {
 						new EmeraldForItems(Items.POISONOUS_POTATO, 2, 12, 2),
 						new EmeraldForItems(RatsItemRegistry.CONTAMINATED_FOOD.get(), 5, 12, 2),
 						new ItemsForEmeralds(RatsItemRegistry.COOKED_RAT.get(), 1, 5, 1),
-						new ItemsAndEmeraldsToItems(Items.POPPY, 5, 1, RatsItemRegistry.HERB_BUNDLE.get(), 3, 12, 2),
+						new ItemsAndEmeraldsToItems(Items.POPPY, 5, 1, RatsItemRegistry.HERB_BUNDLE.get(), 3, 12, 2, 0.05F),
 						new ItemsForEmeralds(RatsItemRegistry.TREACLE.get(), 1, 2, 1),
 						new ItemsForEmeralds(RatsBlockRegistry.GARBAGE_PILE.get().asItem(), 1, 4, 3),
 						new ItemsForEmeralds(RatsBlockRegistry.CURSED_GARBAGE.get().asItem(), 1, 2, 3),
@@ -53,3 +53,10 @@ public class PlagueDoctorTrades extends VillagerTrades {
 		return new Int2ObjectOpenHashMap<>(map);
 	}
 }
+
+
+
+
+
+
+

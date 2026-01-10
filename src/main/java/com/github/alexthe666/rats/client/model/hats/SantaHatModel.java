@@ -52,3 +52,10 @@ public class SantaHatModel extends AbstractHatModel {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 }
+
+
+
+
+
+
+

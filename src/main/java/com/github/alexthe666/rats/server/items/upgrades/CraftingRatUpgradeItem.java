@@ -6,8 +6,6 @@ import com.github.alexthe666.rats.server.block.entity.RatCraftingTableBlockEntit
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,7 +16,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsItemUpgrade, TickRatUpgrade {
 
@@ -60,8 +62,9 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 				if (table.getCookTime() > 0) {
 					rat.crafting = true;
 					rat.level().broadcastEntityEvent(rat, (byte) 85);
-					if (table.getRecipeUsed() != null) {
-						ItemStack stack = table.getRecipeUsed().getResultItem(rat.level().registryAccess());
+					if (table.getRecipeUsed().isPresent()) {
+						RecipeHolder<CraftingRecipe> recipeHolder = table.getRecipeUsed().get();
+						ItemStack stack = recipeHolder.value().getResultItem(rat.level().registryAccess());
 						if (stack.isEmpty()) {
 							((ServerLevel) rat.level()).sendParticles(ParticleTypes.SMOKE, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
 						} else {
@@ -86,3 +89,10 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 		}
 	}
 }
+
+
+
+
+
+
+

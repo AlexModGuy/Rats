@@ -2,18 +2,25 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class GarbageBlock extends AbstractGarbageBlock {
+	public static final MapCodec<GarbageBlock> CODEC = simpleCodec(props -> new GarbageBlock(props, 1.0D));
+
 	public GarbageBlock(Properties properties, double spawnRateModifier) {
 		super(properties, spawnRateModifier);
+	}
+
+	@Override
+	protected MapCodec<? extends AbstractGarbageBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -33,12 +40,14 @@ public final class GarbageBlock extends AbstractGarbageBlock {
 	}
 
 	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
-		return entityType == RatsEntityRegistry.RAT.get();
-	}
-
-	@Override
 	public int getDustColor(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 0X79695B;
 	}
 }
+
+
+
+
+
+
+

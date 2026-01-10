@@ -6,6 +6,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 public class SalivaParticle extends TextureSheetParticle {
 
+	// In 1.21, stoppedByCollision is private in Particle - we need our own field
+	private boolean localStoppedByCollision = false;
+
 	public SalivaParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
 		this.setSize(0.01F, 0.01F);
@@ -19,7 +22,7 @@ public class SalivaParticle extends TextureSheetParticle {
 		this.zo = this.z;
 		if (!this.removed) {
 			this.yd -= this.gravity;
-			if (this.lifetime-- <= 0 || this.stoppedByCollision) {
+			if (this.lifetime-- <= 0 || this.localStoppedByCollision) {
 				this.remove();
 			}
 			this.move(this.xd, this.yd, this.zd);
@@ -28,6 +31,15 @@ public class SalivaParticle extends TextureSheetParticle {
 				this.yd *= 0.98F;
 				this.zd *= 0.98F;
 			}
+		}
+	}
+
+	@Override
+	public void move(double x, double y, double z) {
+		super.move(x, y, z);
+		// Check for collision based on movement difference
+		if (Math.abs(y) >= 1.0E-5F && Math.abs(this.yd) < 1.0E-5F) {
+			this.localStoppedByCollision = true;
 		}
 	}
 
@@ -45,3 +57,9 @@ public class SalivaParticle extends TextureSheetParticle {
 		}
 	}
 }
+
+
+
+
+
+

@@ -3,14 +3,13 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.message.CycleRatRecipePacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
@@ -20,12 +19,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import java.util.Optional;
 
 public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> implements RecipeUpdateListener {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
-	private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
+	private static final ResourceLocation RECIPE_BUTTON_LOCATION = ResourceLocation.withDefaultNamespace("textures/gui/recipe_button.png");
 	private final Inventory playerInventory;
 	private final RatCraftingTableMenu table;
 
@@ -47,18 +49,18 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
 
 		this.renderables.clear();
-		this.addRenderableWidget(new ImageButton(this.leftPos + 128, this.topPos + 65, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, button -> {
+		this.addRenderableWidget(new ImageButton(this.leftPos + 128, this.topPos + 65, 20, 18, RecipeBookComponent.RECIPE_BUTTON_SPRITES, button -> {
 			this.recipeBook.toggleVisibility();
 			this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth);
 			this.init();
 		}));
 		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 58, false, button -> {
 			this.table.incrementRecipeIndex(false);
-			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), false));
+			PacketDistributor.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), false));
 		}));
 		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 28, true, button -> {
 			this.table.incrementRecipeIndex(true);
-			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), true));
+			PacketDistributor.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), true));
 		}));
 		this.addWidget(this.recipeBook);
 	}
@@ -71,7 +73,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
 		if (this.recipeBook.isVisible() && this.widthTooNarrow) {
 			this.renderBg(graphics, partialTicks, mouseX, mouseY);
 			this.recipeBook.render(graphics, mouseX, mouseY, partialTicks);
@@ -95,9 +96,9 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		}
 		RenderSystem.enableDepthTest();
 
-		Optional<CraftingRecipe> recipe = this.table.getCraftingTable().getGuideRecipe();
+		Optional<RecipeHolder<CraftingRecipe>> recipe = this.table.getCraftingTable().getGuideRecipe();
 		if (recipe.isPresent() && !this.table.getSlot(0).hasItem()) {
-			graphics.renderItem(recipe.get().getResultItem(Minecraft.getInstance().level.registryAccess()), this.leftPos + 130, this.topPos + 40);
+			graphics.renderItem(recipe.get().value().getResultItem(Minecraft.getInstance().level.registryAccess()), this.leftPos + 130, this.topPos + 40);
 			RenderSystem.disableDepthTest();
 			graphics.pose().pushPose();
 			graphics.pose().translate(this.leftPos, this.topPos, 300.0D);
@@ -109,7 +110,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics);
 		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
 		graphics.blit(TEXTURE, this.leftPos + 96, this.topPos + 39, 0, 211, l, 16);
@@ -118,7 +118,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		} else {
 			graphics.blit(TEXTURE, this.leftPos + 7, this.topPos + 40, 198, 0, 21, 21);
 		}
-		if (this.table.getCraftingTable().getRecipeUsed() == null) {
+		if (!this.table.getCraftingTable().hasRecipeUsed()) {
 			graphics.blit(TEXTURE, this.leftPos + 95, this.topPos + 38, 220, 0, 21, 21);
 		}
 	}
@@ -209,3 +209,10 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		}
 	}
 }
+
+
+
+
+
+
+

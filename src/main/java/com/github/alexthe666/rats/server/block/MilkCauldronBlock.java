@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.registry.RatsCauldronRegistry;
 import com.github.alexthe666.rats.server.block.entity.MilkCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,6 +22,13 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class MilkCauldronBlock extends AbstractCauldronBlock implements EntityBlock {
+
+	public static final MapCodec<MilkCauldronBlock> CODEC = simpleCodec(MilkCauldronBlock::new);
+
+	@Override
+	protected MapCodec<? extends AbstractCauldronBlock> codec() {
+		return CODEC;
+	}
 
 	public MilkCauldronBlock(BlockBehaviour.Properties properties) {
 		super(properties, RatsCauldronRegistry.MILK);
@@ -36,7 +45,7 @@ public class MilkCauldronBlock extends AbstractCauldronBlock implements EntityBl
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return new ItemStack(Items.CAULDRON);
 	}
 
@@ -58,3 +67,10 @@ public class MilkCauldronBlock extends AbstractCauldronBlock implements EntityBl
 		return createTickerHelper(type, RatsBlockEntityRegistry.MILK_CAULDRON.get(), MilkCauldronBlockEntity::tick);
 	}
 }
+
+
+
+
+
+
+

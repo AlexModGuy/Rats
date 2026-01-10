@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,3 +82,10 @@ public class NuggetColorRegister {
 		}
 	}
 }
+
+
+
+
+
+
+

@@ -6,6 +6,7 @@ import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.ContainerHelper;
@@ -13,10 +14,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class UpgradeSeparatorBlockEntity extends BlockEntity {
 	public float ratRotation;
@@ -36,11 +39,11 @@ public class UpgradeSeparatorBlockEntity extends BlockEntity {
 		for (ItemEntity itemEntity : level.getEntitiesOfClass(ItemEntity.class, new AABB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
 			ItemStack item = itemEntity.getItem();
 			if (item.getItem() instanceof CombinedRatUpgradeItem) {
-				CompoundTag CompoundNBT1 = item.getTag();
+				CompoundTag customTag = item.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 				int spawnedItem = 0;
-				if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
+				if (customTag.contains("Items", 9)) {
 					NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-					ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
+					ContainerHelper.loadAllItems(customTag, nonnulllist, level.registryAccess());
 					for (ItemStack itemstack : nonnulllist) {
 						if (!itemstack.isEmpty()) {
 							ItemEntity splitEntity = new ItemEntity(level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), itemstack.copy());
@@ -72,6 +75,14 @@ public class UpgradeSeparatorBlockEntity extends BlockEntity {
 	}
 
 	public AABB getRenderBoundingBox() {
-		return new AABB(this.getBlockPos(), this.getBlockPos().offset(1, 2, 1));
+		BlockPos pos = this.getBlockPos();
+		return new AABB(Vec3.atLowerCornerOf(pos), Vec3.atLowerCornerOf(pos.offset(1, 2, 1)));
 	}
 }
+
+
+
+
+
+
+

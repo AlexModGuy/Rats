@@ -52,10 +52,10 @@ public class RatKing extends Monster implements RatSummoner {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(RAT_COLORS, "000000000000000");
-		this.getEntityData().define(SUMMONED_RATS, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(RAT_COLORS, "000000000000000");
+		builder.define(SUMMONED_RATS, 0);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -119,7 +119,7 @@ public class RatKing extends Monster implements RatSummoner {
 
 	@Override
 	public void die(DamageSource source) {
-		if (net.minecraftforge.common.ForgeHooks.onLivingDeath(this, source)) return;
+		if (net.neoforged.neoforge.common.CommonHooks.onLivingDeath(this, source)) return;
 		if (!this.isRemoved() && !this.dead) {
 			Entity entity = source.getEntity();
 			LivingEntity livingentity = this.getKillCredit();
@@ -149,26 +149,18 @@ public class RatKing extends Monster implements RatSummoner {
 		if (this.deathTime >= 100 && !this.level().isClientSide() && !this.isRemoved()) {
 			this.level().broadcastEntityEvent(this, (byte) 60);
 			this.remove(Entity.RemovalReason.KILLED);
-			if (this.getLastDamageSource() != null) {
-				this.dropAllDeathLoot(this.getLastDamageSource());
-			} else {
-				this.dropAllDeathLoot(this.damageSources().generic());
+			if (this.level() instanceof ServerLevel serverLevel) {
+				if (this.getLastDamageSource() != null) {
+					this.dropAllDeathLoot(serverLevel, this.getLastDamageSource());
+				} else {
+					this.dropAllDeathLoot(serverLevel, this.damageSources().generic());
+				}
 			}
 		}
 	}
 
-	//add a death check, so we can properly store the last damage source during our long death animation
-	@Nullable
-	@Override
-	public DamageSource getLastDamageSource() {
-		if (!this.isDeadOrDying()) {
-			if (this.level().getGameTime() - this.lastDamageStamp > 40L) {
-				this.lastDamageSource = null;
-			}
-		}
-
-		return this.lastDamageSource;
-	}
+	// Note: getLastDamageSource override removed - lastDamageStamp and lastDamageSource are private in 1.21
+	// The base class implementation will be used instead
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -187,8 +179,8 @@ public class RatKing extends Monster implements RatSummoner {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData);
 		for (int i = 0; i < RAT_COUNT; i++) {
 			int color = this.getRandom().nextInt(4);
 			this.setRatColors(i, color);
@@ -244,7 +236,7 @@ public class RatKing extends Monster implements RatSummoner {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
 		return false;
 	}
 
@@ -291,3 +283,10 @@ public class RatKing extends Monster implements RatSummoner {
 		return pos;
 	}
 }
+
+
+
+
+
+
+

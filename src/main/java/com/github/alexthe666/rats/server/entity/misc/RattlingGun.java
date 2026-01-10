@@ -71,8 +71,8 @@ public class RattlingGun extends Entity implements AdjustsRatTail {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(FIRING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(FIRING, false);
 	}
 
 	public boolean isFiring() {
@@ -210,3 +210,10 @@ public class RattlingGun extends Entity implements AdjustsRatTail {
 		this.progressRotation(lowerTail, rat.sitProgress, 0.3F, 0.61086524F, 0.0F, 20.0F);
 	}
 }
+
+
+
+
+
+
+

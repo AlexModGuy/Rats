@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.block;
 
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.server.block.entity.RatHoleBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.DiggingRat;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -31,7 +33,13 @@ import java.util.Objects;
 @SuppressWarnings("deprecation")
 public class RatHoleBlock extends BaseEntityBlock {
 
+	public static final MapCodec<RatHoleBlock> CODEC = simpleCodec(RatHoleBlock::new);
 	public static final BooleanProperty NORTH = BooleanProperty.create("north");
+
+	@Override
+	protected MapCodec<? extends RatHoleBlock> codec() {
+		return CODEC;
+	}
 	public static final BooleanProperty EAST = BooleanProperty.create("east");
 	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
 	public static final BooleanProperty WEST = BooleanProperty.create("west");
@@ -147,10 +155,16 @@ public class RatHoleBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		if (level.getBlockEntity(pos) instanceof RatHoleBlockEntity hole) {
 			return new ItemStack(hole.getImitatedBlockState().getBlock());
 		}
 		return new ItemStack(Blocks.OAK_PLANKS);
 	}
 }
+
+
+
+
+
+

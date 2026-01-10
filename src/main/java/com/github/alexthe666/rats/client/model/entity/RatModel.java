@@ -334,3 +334,10 @@ public class RatModel<T extends AbstractRat> extends StaticRatModel<T> {
 		}
 	}
 }
+
+
+
+
+
+
+

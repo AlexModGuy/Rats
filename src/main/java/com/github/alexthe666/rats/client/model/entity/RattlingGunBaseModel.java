@@ -71,3 +71,10 @@ public class RattlingGunBaseModel<T extends RattlingGun> extends AdvancedEntityM
 		);
 	}
 }
+
+
+
+
+
+
+

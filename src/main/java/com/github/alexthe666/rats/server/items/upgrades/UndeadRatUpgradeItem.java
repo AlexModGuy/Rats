@@ -11,7 +11,7 @@ public class UndeadRatUpgradeItem extends BaseRatUpgradeItem implements ChangesT
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/undead.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/undead.png");
 	}
 
 	@Override
@@ -19,3 +19,10 @@ public class UndeadRatUpgradeItem extends BaseRatUpgradeItem implements ChangesT
 		return false;
 	}
 }
+
+
+
+
+
+
+

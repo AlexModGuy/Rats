@@ -11,19 +11,18 @@ import com.github.alexthe666.rats.server.entity.projectile.RatCaptureNet;
 import com.github.alexthe666.rats.server.entity.projectile.VialOfSentience;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
@@ -32,8 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatsDispenserRegistry {
 
@@ -68,9 +66,9 @@ public class RatsDispenserRegistry {
 
 		DispenserBlock.registerBehavior(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get(), new OptionalDispenseItemBehavior() {
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				Level level = source.getLevel();
-				Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
-				BlockPos blockpos = source.getPos().relative(direction);
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos blockpos = source.pos().relative(direction);
 				if (level.isEmptyBlock(blockpos) && RatlanteanAutomatonHeadBlock.canSpawnGolem(level, blockpos)) {
 					level.setBlock(blockpos, RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().defaultBlockState().setValue(RatlanteanAutomatonHeadBlock.FACING, direction.getAxis() == Direction.Axis.Y ? Direction.NORTH : direction.getOpposite()), 3);
 					level.gameEvent(null, GameEvent.BLOCK_PLACE, blockpos);
@@ -89,9 +87,9 @@ public class RatsDispenserRegistry {
 		DispenserBlock.registerBehavior(RatsItemRegistry.RATBOW_ESSENCE.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 
-				for (TamedRat rat : source.getLevel().getEntitiesOfClass(TamedRat.class, new AABB(blockpos), LivingEntity::isAlive)) {
+				for (TamedRat rat : source.level().getEntitiesOfClass(TamedRat.class, new AABB(blockpos), LivingEntity::isAlive)) {
 					if (rat.applySpecialDyeIfPossible(stack)) {
 						return stack;
 					}
@@ -102,20 +100,20 @@ public class RatsDispenserRegistry {
 			@Override
 			protected void playSound(BlockSource source) {
 				if (this.isSuccess()) {
-					source.getLevel().playSound(null, source.getPos(), RatsSoundRegistry.ESSENCE_APPLIED.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					source.level().playSound(null, source.pos(), RatsSoundRegistry.ESSENCE_APPLIED.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				} else {
 					super.playSound(source);
 				}
 			}
 		});
 
-		for (Item item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
+		for (Item item : BuiltInRegistries.ITEM.stream().filter(item -> item instanceof DyeItem).toList()) {
 			DispenserBlock.registerBehavior(item, new OptionalDispenseItemBehavior() {
 				@Override
 				protected ItemStack execute(BlockSource source, ItemStack stack) {
-					BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+					BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 
-					for (TamedRat rat : source.getLevel().getEntitiesOfClass(TamedRat.class, new AABB(blockpos), LivingEntity::isAlive)) {
+					for (TamedRat rat : source.level().getEntitiesOfClass(TamedRat.class, new AABB(blockpos), LivingEntity::isAlive)) {
 						if (rat.applyNormalDyeIfPossible(stack)) {
 							return stack;
 						}
@@ -126,7 +124,7 @@ public class RatsDispenserRegistry {
 				@Override
 				protected void playSound(BlockSource source) {
 					if (this.isSuccess()) {
-						source.getLevel().playSound(null, source.getPos(), RatsSoundRegistry.ESSENCE_APPLIED.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+						source.level().playSound(null, source.pos(), RatsSoundRegistry.ESSENCE_APPLIED.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					} else {
 						super.playSound(source);
 					}
@@ -134,53 +132,91 @@ public class RatsDispenserRegistry {
 			});
 		}
 
-		DispenserBlock.registerBehavior(RatlantisItemRegistry.CHEESE_CANNONBALL.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(RatlantisItemRegistry.CHEESE_CANNONBALL.get(), new DispenseItemBehavior() {
 			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), level);
+			public ItemStack dispense(BlockSource source, ItemStack stack) {
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos pos = source.pos().relative(direction);
+				CheeseCannonball projectile = new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), level);
+				projectile.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+				projectile.shoot(direction.getStepX(), direction.getStepY() + 0.1, direction.getStepZ(), 1.1F, 6.0F);
+				level.addFreshEntity(projectile);
+				stack.shrink(1);
+				return stack;
 			}
 		});
 
-		DispenserBlock.registerBehavior(RatsItemRegistry.RAT_CAPTURE_NET.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(RatsItemRegistry.RAT_CAPTURE_NET.get(), new DispenseItemBehavior() {
 			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new RatCaptureNet(RatsEntityRegistry.RAT_CAPTURE_NET.get(), level);
+			public ItemStack dispense(BlockSource source, ItemStack stack) {
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos pos = source.pos().relative(direction);
+				RatCaptureNet projectile = new RatCaptureNet(RatsEntityRegistry.RAT_CAPTURE_NET.get(), level);
+				projectile.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+				projectile.shoot(direction.getStepX(), direction.getStepY() + 0.1, direction.getStepZ(), 1.1F, 6.0F);
+				level.addFreshEntity(projectile);
+				stack.shrink(1);
+				return stack;
 			}
 		});
 
-		DispenserBlock.registerBehavior(RatsItemRegistry.PURIFYING_LIQUID.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(RatsItemRegistry.PURIFYING_LIQUID.get(), new DispenseItemBehavior() {
 			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new PurifyingLiquid(level, position.x(), position.y(), position.z(), false);
+			public ItemStack dispense(BlockSource source, ItemStack stack) {
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos pos = source.pos().relative(direction);
+				PurifyingLiquid projectile = new PurifyingLiquid(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, false);
+				projectile.shoot(direction.getStepX(), direction.getStepY() + 0.1, direction.getStepZ(), 1.1F, 6.0F);
+				level.addFreshEntity(projectile);
+				stack.shrink(1);
+				return stack;
 			}
 		});
 
-		DispenserBlock.registerBehavior(RatsItemRegistry.CRIMSON_FLUID.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(RatsItemRegistry.CRIMSON_FLUID.get(), new DispenseItemBehavior() {
 			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new PurifyingLiquid(level, position.x(), position.y(), position.z(), true);
+			public ItemStack dispense(BlockSource source, ItemStack stack) {
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos pos = source.pos().relative(direction);
+				PurifyingLiquid projectile = new PurifyingLiquid(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, true);
+				projectile.shoot(direction.getStepX(), direction.getStepY() + 0.1, direction.getStepZ(), 1.1F, 6.0F);
+				level.addFreshEntity(projectile);
+				stack.shrink(1);
+				return stack;
 			}
 		});
 
-		DispenserBlock.registerBehavior(RatlantisItemRegistry.VIAL_OF_SENTIENCE.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(RatlantisItemRegistry.VIAL_OF_SENTIENCE.get(), new DispenseItemBehavior() {
 			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new VialOfSentience(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), level);
+			public ItemStack dispense(BlockSource source, ItemStack stack) {
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos pos = source.pos().relative(direction);
+				VialOfSentience projectile = new VialOfSentience(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), level);
+				projectile.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+				projectile.shoot(direction.getStepX(), direction.getStepY() + 0.1, direction.getStepZ(), 1.1F, 6.0F);
+				level.addFreshEntity(projectile);
+				stack.shrink(1);
+				return stack;
 			}
 		});
 
 		DispenserBlock.registerBehavior(RatsItemRegistry.PLAGUE_DOCTORATE.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 
-				for (Villager villager : source.getLevel().getEntitiesOfClass(Villager.class, new AABB(blockpos), villager -> villager.isAlive() && !villager.isBaby() && (villager.getVillagerData().getProfession() == VillagerProfession.NITWIT || villager.getVillagerData().getProfession() == VillagerProfession.NONE))) {
-					PlagueDoctor doctor = new PlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR.get(), source.getLevel());
+				for (Villager villager : source.level().getEntitiesOfClass(Villager.class, new AABB(blockpos), villager -> villager.isAlive() && !villager.isBaby() && (villager.getVillagerData().getProfession() == VillagerProfession.NITWIT || villager.getVillagerData().getProfession() == VillagerProfession.NONE))) {
+					PlagueDoctor doctor = new PlagueDoctor(RatsEntityRegistry.PLAGUE_DOCTOR.get(), source.level());
 					doctor.copyPosition(villager);
 					villager.discard();
 					doctor.setWillDespawn(false);
-					ForgeEventFactory.onFinalizeSpawn(doctor, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
-					source.getLevel().addFreshEntity(doctor);
+					EventHooks.finalizeMobSpawn(doctor, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null);
+					source.level().addFreshEntity(doctor);
 					doctor.setNoAi(villager.isNoAi());
 					if (villager.hasCustomName()) {
 						doctor.setCustomName(villager.getCustomName());
@@ -193,7 +229,7 @@ public class RatsDispenserRegistry {
 			@Override
 			protected void playSound(BlockSource source) {
 				if (this.isSuccess()) {
-					source.getLevel().playSound(null, source.getPos(), RatsSoundRegistry.PLAGUE_DOCTOR_SUMMON.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					source.level().playSound(null, source.pos(), RatsSoundRegistry.PLAGUE_DOCTOR_SUMMON.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				} else {
 					super.playSound(source);
 				}
@@ -203,20 +239,20 @@ public class RatsDispenserRegistry {
 		DispenserBlock.registerBehavior(RatsItemRegistry.PLAGUE_TOME.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 
-				for (PlagueDoctor doctor : source.getLevel().getEntitiesOfClass(PlagueDoctor.class, new AABB(blockpos), doctor -> doctor.isAlive() && !doctor.isBaby() && !doctor.willDespawn())) {
-					BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), source.getLevel());
+				for (PlagueDoctor doctor : source.level().getEntitiesOfClass(PlagueDoctor.class, new AABB(blockpos), doctor -> doctor.isAlive() && !doctor.isBaby() && !doctor.willDespawn())) {
+					BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), source.level());
 					death.copyPosition(doctor);
 					doctor.discard();
-					ForgeEventFactory.onFinalizeSpawn(death, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
-					source.getLevel().addFreshEntity(death);
+					EventHooks.finalizeMobSpawn(death, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null);
+					source.level().addFreshEntity(death);
 					death.setNoAi(doctor.isNoAi());
 					if (doctor.hasCustomName()) {
 						death.setCustomName(doctor.getCustomName());
 					}
-					for (ServerPlayer player : source.getLevel().getEntitiesOfClass(ServerPlayer.class, new AABB(blockpos).inflate(16.0F))) {
-						RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger(player);
+					for (ServerPlayer player : source.level().getEntitiesOfClass(ServerPlayer.class, new AABB(blockpos).inflate(16.0F))) {
+						RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger(player);
 					}
 				}
 				return super.execute(source, stack);
@@ -225,7 +261,7 @@ public class RatsDispenserRegistry {
 			@Override
 			protected void playSound(BlockSource source) {
 				if (this.isSuccess()) {
-					source.getLevel().playSound(null, source.getPos(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					source.level().playSound(null, source.pos(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				} else {
 					super.playSound(source);
 				}
@@ -235,9 +271,9 @@ public class RatsDispenserRegistry {
 		DispenserBlock.registerBehavior(RatsItemRegistry.CHEESE.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				Level level = source.getLevel();
-				Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
-				BlockPos blockpos = source.getPos().relative(direction);
+				Level level = source.level();
+				Direction direction = source.state().getValue(DispenserBlock.FACING);
+				BlockPos blockpos = source.pos().relative(direction);
 				if (level.getBlockState(blockpos).is(RatsBlockRegistry.RAT_TRAP.get())) {
 					if (level.getBlockEntity(blockpos) instanceof RatTrapBlockEntity trap && trap.getBait().isEmpty() && !level.getBlockState(blockpos).getValue(RatTrapBlock.SHUT)) {
 						trap.setBaitStack(stack);
@@ -252,3 +288,10 @@ public class RatsDispenserRegistry {
 		});
 	}
 }
+
+
+
+
+
+
+

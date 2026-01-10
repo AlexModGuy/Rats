@@ -73,3 +73,10 @@ public class PiratBoatModel<T extends PiratBoat> extends ListModel<T> {
 		return this.parts;
 	}
 }
+
+
+
+
+
+
+

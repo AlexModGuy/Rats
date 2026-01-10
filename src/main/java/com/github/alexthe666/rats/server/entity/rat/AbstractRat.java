@@ -36,6 +36,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
@@ -46,6 +47,7 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
@@ -53,7 +55,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,9 +88,9 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected AbstractRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
 		this.moveControl = new RatMoveControl(this);
-		this.setPathfindingMalus(BlockPathTypes.FENCE, RatConfig.ratsClimbOverFences ? 0.0F : -1.0F);
-		this.setPathfindingMalus(BlockPathTypes.RAIL, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+		this.setPathfindingMalus(PathType.FENCE, RatConfig.ratsClimbOverFences ? 0.0F : -1.0F);
+		this.setPathfindingMalus(PathType.RAIL, 0.0F);
+		this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
 	}
 
 	@Override
@@ -141,19 +143,18 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 					this.onItemEaten();
 				}
 				int healAmount = 1;
-				if (this.getMainHandItem().getItem().isEdible()) {
-					healAmount = Objects.requireNonNull(this.getMainHandItem().getItem().getFoodProperties(this.getMainHandItem(), this)).getNutrition();
+				FoodProperties foodProps = this.getMainHandItem().getFoodProperties(this);
+				if (foodProps != null) {
+					healAmount = foodProps.nutrition();
 				}
 				this.heal(healAmount);
+				this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 				this.eatingTicks = 0;
+				this.setAnimation(NO_ANIMATION);
 			}
-		}
-
-		if (!this.level().isClientSide()) {
-			if (this.isEating()) {
-				this.setAnimation(ANIMATION_EAT);
-				this.setRatStatus(RatStatus.EATING);
-			}
+		} else if (this.isHoldingFood()) {
+			this.setAnimation(ANIMATION_EAT);
+			this.setRatStatus(RatStatus.EATING);
 		}
 		AnimationHandler.INSTANCE.updateAnimations(this);
 		float sitInc = this.getAnimation() == ANIMATION_IDLE_SCRATCH || this.getAnimation() == ANIMATION_IDLE_SNIFF ? 5.0F : 1.0F;
@@ -218,14 +219,14 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(IS_MALE, false);
-		this.getEntityData().define(SITTING, false);
-		this.getEntityData().define(SLEEPING, false);
-		this.getEntityData().define(COLOR_VARIANT, RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatVariantRegistry.BLUE.get()).toString());
-		this.getEntityData().define(DEAD_IN_TRAP, false);
-		this.getEntityData().define(FLEE_POS, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(IS_MALE, false);
+		builder.define(SITTING, false);
+		builder.define(SLEEPING, false);
+		builder.define(COLOR_VARIANT, RatVariantRegistry.getRegistry().getKey(RatVariantRegistry.BLUE.get()).toString());
+		builder.define(DEAD_IN_TRAP, false);
+		builder.define(FLEE_POS, Optional.empty());
 	}
 
 	@Override
@@ -408,8 +409,8 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setColorVariant(RatVariant.getRandomVariant(this.getRandom(), false));
 		this.setMale(this.getRandom().nextBoolean());
 		return data;
@@ -431,7 +432,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		this.setOrderedToSit(tag.getBoolean("Sitting"));
 		if (tag.contains("ColorVariant", Tag.TAG_INT)) {
 			this.setColorVariant(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant")));
-			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
+			RatsMod.LOGGER.debug("Converted Rat variant for Rat {} from {} to {}.", this.getUUID(), tag.getInt("ColorVariant"), RatVariantRegistry.getRegistry().getKey(RatUtils.convertOldRatVariant(tag.getInt("ColorVariant"))).toString());
 		} else if (tag.contains("ColorVariant", Tag.TAG_STRING)) {
 			this.setColorVariant(RatVariant.getVariant(tag.getString("ColorVariant")));
 		}
@@ -463,10 +464,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		return RatConfig.ratsSpawnLikeMonsters;
 	}
 
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return this.sitProgress > 0.0F && this.sleepProgress <= 0.0F ? super.getStandingEyeHeight(pose, dimensions) : dimensions.height * 0.5F;
-	}
+	// Note: getEyeHeight(Pose) is final in 1.21 and cannot be overridden
 
 	@Override
 	public void remove(RemovalReason reason) {
@@ -567,3 +565,10 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 
 	}
 }
+
+
+
+
+
+
+

@@ -35,3 +35,10 @@ public class RatCageWheelBlock extends RatCageDecoratedBlock {
 		return createTickerHelper(type, RatsBlockEntityRegistry.RAT_CAGE_WHEEL.get(), RatCageWheelBlockEntity::tick);
 	}
 }
+
+
+
+
+
+
+

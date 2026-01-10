@@ -4,9 +4,6 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.EmptyModel;
 import com.github.alexthe666.rats.client.model.entity.RatKingModel;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -14,14 +11,18 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.level.LightLayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
-	private static final RenderType TEXTURE_EYES = RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
-	private static final RenderType TEXTURE_0 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/blue.png"));
-	private static final RenderType TEXTURE_1 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/black.png"));
-	private static final RenderType TEXTURE_2 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/brown.png"));
-	private static final RenderType TEXTURE_3 = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/green.png"));
+	private static final RenderType TEXTURE_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
+	private static final RenderType TEXTURE_0 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/blue.png"));
+	private static final RenderType TEXTURE_1 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/black.png"));
+	private static final RenderType TEXTURE_2 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/brown.png"));
+	private static final RenderType TEXTURE_3 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/green.png"));
 	private static final RatKingModel<RatKing> RAT_MODEL = new RatKingModel<>();
 
 	public RatKingLayer(RenderLayerParent<RatKing, EmptyModel<RatKing>> ratRendererIn) {
@@ -52,10 +53,10 @@ public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
 			stack.scale(0.6F, 0.6F, 0.6F);
 			RAT_MODEL.setIndex(i);
 			RAT_MODEL.setupAnim(king, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			RAT_MODEL.renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			RAT_MODEL.renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), -1);
 			if (brightness < 7) {
 				VertexConsumer eyes = buffer.getBuffer(TEXTURE_EYES);
-				RAT_MODEL.renderToBuffer(stack, eyes, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+				RAT_MODEL.renderToBuffer(stack, eyes, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), -1);
 			}
 
 			stack.popPose();
@@ -72,3 +73,10 @@ public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
 		};
 	}
 }
+
+
+
+
+
+
+

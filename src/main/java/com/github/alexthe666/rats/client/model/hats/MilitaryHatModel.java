@@ -38,3 +38,10 @@ public class MilitaryHatModel extends AbstractHatModel {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 }
+
+
+
+
+
+
+

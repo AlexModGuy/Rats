@@ -1,17 +1,18 @@
 package com.github.alexthe666.rats.client.util;
 
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -28,13 +29,13 @@ public class EntityRenderingUtil {
 	@Nullable
 	public static LivingEntity fetchEntity(@Nullable ResourceLocation entityName, @Nullable Level level) {
 		if (entityName != null && level != null && !IGNORED_ENTITIES.contains(entityName)) {
-			EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(entityName);
+			EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityName);
 			if (type != null) {
 				Entity entity;
 				if (type == EntityType.PLAYER) {
 					entity = Minecraft.getInstance().player;
 				} else {
-					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> ForgeRegistries.ENTITY_TYPES.getValue(t).create(level));
+					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> BuiltInRegistries.ENTITY_TYPE.get(t).create(level));
 				}
 				if (entity instanceof LivingEntity living) {
 					return living;
@@ -67,7 +68,7 @@ public class EntityRenderingUtil {
 
 	public static void drawEntityOnScreen(GuiGraphics graphics, int posX, int posY, int scale, float mouseX, float mouseY, @Nullable LivingEntity entity, boolean rotating) {
 		if (entity != null) {
-			float rotate = (Minecraft.getInstance().getPartialTick() + Minecraft.getInstance().player.tickCount) * 2F;
+			float rotate = (Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false) + Minecraft.getInstance().player.tickCount) * 2F;
 			float f = (float) Math.atan(mouseX / 40.0F);
 			float f1 = (float) Math.atan(mouseY / 40.0F);
 			Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
@@ -86,7 +87,7 @@ public class EntityRenderingUtil {
 			entity.yHeadRotO = entity.getYRot();
 			graphics.pose().pushPose();
 			graphics.pose().translate(posX, posY, 50.0D);
-			graphics.pose().mulPoseMatrix((new Matrix4f()).scaling(scale, scale, -scale));
+			graphics.pose().scale(scale, scale, -scale);
 			graphics.pose().mulPose(quaternion);
 			if (rotating) graphics.pose().mulPose(quaternion2);
 			Lighting.setupForEntityInInventory();
@@ -107,3 +108,10 @@ public class EntityRenderingUtil {
 		}
 	}
 }
+
+
+
+
+
+
+

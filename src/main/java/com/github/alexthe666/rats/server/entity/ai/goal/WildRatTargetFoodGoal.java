@@ -110,3 +110,10 @@ public class WildRatTargetFoodGoal extends Goal {
 		}
 	}
 }
+
+
+
+
+
+
+

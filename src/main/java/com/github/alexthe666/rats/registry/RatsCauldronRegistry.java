@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -14,17 +14,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.Map;
-
 public interface RatsCauldronRegistry extends CauldronInteraction {
 
-	Map<Item, CauldronInteraction> MILK = CauldronInteraction.newInteractionMap();
-	Map<Item, CauldronInteraction> CHEESE = CauldronInteraction.newInteractionMap();
-	Map<Item, CauldronInteraction> BLUE_CHEESE = CauldronInteraction.newInteractionMap();
-	Map<Item, CauldronInteraction> NETHER_CHEESE = CauldronInteraction.newInteractionMap();
+	CauldronInteraction.InteractionMap MILK = CauldronInteraction.newInteractionMap("rats_milk");
+	CauldronInteraction.InteractionMap CHEESE = CauldronInteraction.newInteractionMap("rats_cheese");
+	CauldronInteraction.InteractionMap BLUE_CHEESE = CauldronInteraction.newInteractionMap("rats_blue_cheese");
+	CauldronInteraction.InteractionMap NETHER_CHEESE = CauldronInteraction.newInteractionMap("rats_nether_cheese");
 
 	static void init() {
-		EMPTY.put(Items.MILK_BUCKET, (state, level, pos, player, hand, stack) -> {
+		CauldronInteraction.EMPTY.map().put(Items.MILK_BUCKET, (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.BUCKET)));
@@ -33,10 +31,10 @@ public interface RatsCauldronRegistry extends CauldronInteraction {
 				level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		});
 
-		MILK.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> {
+		MILK.map().put(Items.BUCKET, (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.MILK_BUCKET)));
@@ -45,10 +43,10 @@ public interface RatsCauldronRegistry extends CauldronInteraction {
 				level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		});
 
-		CHEESE.put(Items.SUGAR, (state, level, pos, player, hand, stack) -> {
+		CHEESE.map().put(Items.SUGAR, (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				level.setBlockAndUpdate(pos, RatsBlockRegistry.BLUE_CHEESE_CAULDRON.get().defaultBlockState());
@@ -66,10 +64,10 @@ public interface RatsCauldronRegistry extends CauldronInteraction {
 							0.0D, level.getRandom().nextFloat() * 0.25D + 0.1F, 0.0D);
 				}
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		});
 
-		CHEESE.put(Items.LAVA_BUCKET, (state, level, pos, player, hand, stack) -> {
+		CHEESE.map().put(Items.LAVA_BUCKET, (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				level.setBlockAndUpdate(pos, RatsBlockRegistry.NETHER_CHEESE_CAULDRON.get().defaultBlockState());
@@ -87,7 +85,14 @@ public interface RatsCauldronRegistry extends CauldronInteraction {
 							level.getRandom().nextFloat(), level.getRandom().nextFloat(), level.getRandom().nextFloat());
 				}
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		});
 	}
 }
+
+
+
+
+
+
+

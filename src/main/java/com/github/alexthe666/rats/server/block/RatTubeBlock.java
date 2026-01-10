@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatTubeBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
@@ -9,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -21,6 +21,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -31,7 +32,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -46,6 +47,12 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class RatTubeBlock extends BaseEntityBlock {
+	public static final MapCodec<RatTubeBlock> CODEC = simpleCodec(RatTubeBlock::new);
+
+	@Override
+	protected MapCodec<? extends RatTubeBlock> codec() {
+		return CODEC;
+	}
 
 	public static final BooleanProperty NORTH = BooleanProperty.create("north");
 	public static final BooleanProperty EAST = BooleanProperty.create("east");
@@ -248,8 +255,8 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.isCrouching() || player.getItemInHand(hand).getItem() instanceof BlockItem || player.getItemInHand(hand).getItem() instanceof RatTubeItem) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (player.isCrouching()) {
 			return InteractionResult.PASS;
 		} else {
 			Direction side = hit.getDirection();
@@ -300,16 +307,16 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		BlockEntity tileentity = level.getBlockEntity(pos);
 		if (tileentity instanceof RatTubeBlockEntity && !player.isCreative()) {
 			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getTubeItem(level, pos));
 		}
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter getter, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader getter, BlockPos pos, Player player) {
 		return getTubeItem(getter, pos);
 	}
 
@@ -378,10 +385,17 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
 		if (mob instanceof TamedRat rat) {
-			return rat.isInTube() || rat.isInCage() ? BlockPathTypes.WALKABLE : BlockPathTypes.BLOCKED;
+			return rat.isInTube() || rat.isInCage() ? PathType.WALKABLE : PathType.BLOCKED;
 		}
-		return BlockPathTypes.BLOCKED;
+		return PathType.BLOCKED;
 	}
 }
+
+
+
+
+
+
+

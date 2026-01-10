@@ -5,6 +5,7 @@ import com.github.alexthe666.rats.server.block.RatTubeBlock;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
@@ -46,8 +47,9 @@ public class RatTubeBlockEntity extends BlockEntity {
 		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
 	}
 
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithId(registries);
 	}
 
 	private void updateRat(Rat rat) {
@@ -83,15 +85,15 @@ public class RatTubeBlockEntity extends BlockEntity {
 		return false;
 	}
 
-	public void saveAdditional(CompoundTag compound) {
+	protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.saveAdditional(compound, registries);
 		compound.putBoolean("RatNode", isNode);
 		compound.putInt("OpenSide", opening == null ? -1 : opening.ordinal());
 		compound.putInt("TubeColor", color);
-		super.saveAdditional(compound);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		isNode = compound.getBoolean("RatNode");
 		int i = compound.getInt("OpenSide");
 		if (i == -1) {
@@ -120,3 +122,10 @@ public class RatTubeBlockEntity extends BlockEntity {
 		this.color = colorIn;
 	}
 }
+
+
+
+
+
+
+

@@ -6,6 +6,8 @@ import com.github.alexthe666.rats.server.entity.rat.RatCommand;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,9 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,16 +41,18 @@ public class RatFluteItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		int commandInt = stack.getOrCreateTag().getInt("Command");
+		CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		int commandInt = tag.getInt("Command");
 		RatCommand ratCommand = RatCommand.values()[Mth.clamp(commandInt, 0, RatCommand.values().length - 1)];
 		if (player.isShiftKeyDown()) {
 			commandInt++;
 			if (commandInt > RatCommand.values().length - 1) {
 				commandInt = 0;
 			}
-			stack.getOrCreateTag().putInt("Command", commandInt);
+			final int newCommand = commandInt;
+			stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(t -> t.putInt("Command", newCommand)));
 			ratCommand = RatCommand.values()[Mth.clamp(commandInt, 0, RatCommand.values().length - 1)];
-			level.playSound(player, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.NEUTRAL, 1.0F, 1.25F);
+			level.playSound(player, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.NEUTRAL, 1.0F, 1.25F);
 			player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_FLUTE_COMMAND, Component.translatable(ratCommand.getTranslateName())), true);
 		} else {
 			player.getCooldowns().addCooldown(this, 60);
@@ -73,12 +77,21 @@ public class RatFluteItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.rats.rat_flute.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("item.rats.rat_flute.desc1").withStyle(ChatFormatting.GRAY));
-		if (stack.getTag() != null) {
-			RatCommand ratCommand = RatCommand.values()[Mth.clamp(stack.getTag().getInt("Command"), 0, RatCommand.values().length - 1)];
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag tag = customData.copyTag();
+			RatCommand ratCommand = RatCommand.values()[Mth.clamp(tag.getInt("Command"), 0, RatCommand.values().length - 1)];
 			tooltip.add(Component.translatable(RatsLangConstants.RAT_CURRENT_COMMAND, Component.translatable(ratCommand.getTranslateName())).withStyle(ChatFormatting.GRAY));
 		}
 	}
 }
+
+
+
+
+
+
+

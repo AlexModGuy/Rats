@@ -1,0 +1,38 @@
+{
+  "parent": "rats:black_death",
+  "criteria": {
+    "killed_death": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:black_death"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.rats.defeat_black_death.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "rats:plague_scythe"
+    },
+    "title": {
+      "translate": "advancement.rats.defeat_black_death.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_death"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

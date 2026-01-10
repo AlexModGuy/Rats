@@ -89,3 +89,10 @@ public class RatsLangConstants {
 	public static final String RATLANTIS_PACK = "pack.rats.ratlantis";
 
 }
+
+
+
+
+
+
+

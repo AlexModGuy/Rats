@@ -4,8 +4,12 @@ import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -17,23 +21,28 @@ import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableConditio
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RatlantisBlockLootTables extends BlockLootSubProvider {
-	protected RatlantisBlockLootTables() {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+
+	private final HolderLookup.Provider registries;
+
+	protected RatlantisBlockLootTables(HolderLookup.Provider provider) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+		this.registries = provider;
 	}
 
 	@Override
 	protected void generate() {
+		HolderLookup.RegistryLookup<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+
 		this.dropSelf(RatlantisBlockRegistry.AIR_RAID_SIREN.get());
 		this.dropSelf(RatlantisBlockRegistry.BLACK_MARBLED_CHEESE.get());
 		this.dropSelf(RatlantisBlockRegistry.BRAIN_BLOCK.get());
-		this.add(RatlantisBlockRegistry.CHEESE_ORE.get(), createSilkTouchDispatchTable(RatlantisBlockRegistry.CHEESE_ORE.get(), applyExplosionDecay(RatlantisBlockRegistry.CHEESE_ORE.get(), LootItem.lootTableItem(RatsItemRegistry.CHEESE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
+		this.add(RatlantisBlockRegistry.CHEESE_ORE.get(), createSilkTouchDispatchTable(RatlantisBlockRegistry.CHEESE_ORE.get(), applyExplosionDecay(RatlantisBlockRegistry.CHEESE_ORE.get(), LootItem.lootTableItem(RatsItemRegistry.CHEESE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(enchantmentLookup.getOrThrow(Enchantments.FORTUNE))))));
 		this.dropSelf(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get());
 		this.dropSelf(RatlantisBlockRegistry.COMPRESSED_RAT.get());
 		this.dropSelf(RatlantisBlockRegistry.DUTCHRAT_BELL.get());
@@ -65,11 +74,11 @@ public class RatlantisBlockLootTables extends BlockLootSubProvider {
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_FENCE_GATE.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_HANGING_SIGN.get());
 		this.add(RatlantisBlockRegistry.PIRAT_LEAVES.get(), createSilkTouchOrShearsDispatchTable(RatlantisBlockRegistry.PIRAT_LEAVES.get(), this.applyExplosionCondition(RatlantisBlockRegistry.PIRAT_LEAVES.get(), LootItem.lootTableItem(RatlantisBlockRegistry.PIRAT_SAPLING.get()))
-				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F)))
+				.when(BonusLevelTableCondition.bonusLevelFlatChance(enchantmentLookup.getOrThrow(Enchantments.FORTUNE), 0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F)))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(Tags.Items.SHEARS)).or(HAS_SILK_TOUCH).invert())
+						.when(HAS_SHEARS.or(this.hasSilkTouch()).invert())
 						.add(this.applyExplosionCondition(RatlantisBlockRegistry.PIRAT_LEAVES.get(), LootItem.lootTableItem(RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get()))
-								.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
+								.when(BonusLevelTableCondition.bonusLevelFlatChance(enchantmentLookup.getOrThrow(Enchantments.FORTUNE), 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_LOG.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PLANKS.get());
 		this.dropSelf(RatlantisBlockRegistry.PIRAT_PRESSURE_PLATE.get());
@@ -92,6 +101,6 @@ public class RatlantisBlockLootTables extends BlockLootSubProvider {
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		return RatlantisBlockRegistry.BLOCKS.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
+		return RatlantisBlockRegistry.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toList());
 	}
 }

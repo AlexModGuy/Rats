@@ -11,7 +11,6 @@ import com.github.alexthe666.rats.server.entity.monster.boss.RatBaronPlane;
 import com.github.alexthe666.rats.server.entity.mount.RatBiplaneMount;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.items.HatItem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public abstract class AbstractRatRenderer<T extends AbstractRat, M extends AbstractRatModel<T>> extends MobRenderer<T, M> {
 
@@ -96,3 +96,10 @@ public abstract class AbstractRatRenderer<T extends AbstractRat, M extends Abstr
 		return rat.getColorVariant().getTexture();
 	}
 }
+
+
+
+
+
+
+

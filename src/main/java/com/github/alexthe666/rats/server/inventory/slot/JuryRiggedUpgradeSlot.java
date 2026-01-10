@@ -23,3 +23,10 @@ public class JuryRiggedUpgradeSlot extends Slot {
 		return this.upgrade.getItem() instanceof RatListUpgradeItem || stack.getItem() instanceof BaseRatUpgradeItem && !stack.is(this.upgrade.getItem()) && CombinedRatUpgradeItem.canCombineWithUpgrade(this.upgrade, stack);
 	}
 }
+
+
+
+
+
+
+

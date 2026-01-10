@@ -4,6 +4,7 @@ import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -36,7 +38,7 @@ public class RatTubeItem extends Item {
 		this.color = color;
 	}
 
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc1").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc2").withStyle(ChatFormatting.GRAY));
@@ -45,7 +47,7 @@ public class RatTubeItem extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		InteractionResult actionresulttype = this.tryPlace(new BlockPlaceContext(context));
-		return actionresulttype != InteractionResult.SUCCESS && this.isEdible() ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
+		return actionresulttype;
 	}
 
 	public InteractionResult tryPlace(BlockPlaceContext context) {
@@ -90,8 +92,9 @@ public class RatTubeItem extends Item {
 
 	private BlockState stateWithTag(BlockPos pos, Level level, ItemStack stack, BlockState state) {
 		BlockState blockstate = state;
-		CompoundTag compoundnbt = stack.getTag();
-		if (compoundnbt != null) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag compoundnbt = customData.copyTag();
 			CompoundTag compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
 			StateDefinition<Block, BlockState> statecontainer = state.getBlock().getStateDefinition();
 
@@ -126,22 +129,23 @@ public class RatTubeItem extends Item {
 	public void setBlockEntityTag(Level level, @Nullable Player player, BlockPos pos, ItemStack stack) {
 		MinecraftServer minecraftserver = level.getServer();
 		if (minecraftserver != null) {
-			CompoundTag compoundnbt = stack.getTagElement("BlockEntityTag");
-			if (compoundnbt != null) {
+			CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+			if (customData != null) {
+				CompoundTag compoundnbt = customData.copyTag();
 				BlockEntity tileentity = level.getBlockEntity(pos);
 				if (tileentity != null) {
 					if (!level.isClientSide() && tileentity.onlyOpCanSetNbt() && (player == null || !player.canUseGameMasterBlocks())) {
 						return;
 					}
 
-					CompoundTag compoundnbt1 = tileentity.serializeNBT();
+					CompoundTag compoundnbt1 = tileentity.saveWithoutMetadata(level.registryAccess());
 					CompoundTag compoundnbt2 = compoundnbt1.copy();
 					compoundnbt1.merge(compoundnbt);
 					compoundnbt1.putInt("x", pos.getX());
 					compoundnbt1.putInt("y", pos.getY());
 					compoundnbt1.putInt("z", pos.getZ());
 					if (!compoundnbt1.equals(compoundnbt2)) {
-						tileentity.load(compoundnbt1);
+						tileentity.loadWithComponents(compoundnbt1, level.registryAccess());
 						tileentity.setChanged();
 					}
 				}
@@ -150,3 +154,10 @@ public class RatTubeItem extends Item {
 		}
 	}
 }
+
+
+
+
+
+
+

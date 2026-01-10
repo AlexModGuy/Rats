@@ -1,112 +1,112 @@
 package com.github.alexthe666.rats.server;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ServerConfig {
 
-	public final ForgeConfigSpec.BooleanValue ratlantisEnabledByDefault;
+	public final ModConfigSpec.BooleanValue ratlantisEnabledByDefault;
 
-	public final ForgeConfigSpec.IntValue ratSpawnDecrease;
-	public final ForgeConfigSpec.IntValue piperSpawnDecrease;
-	public final ForgeConfigSpec.BooleanValue ratsSpawnLikeMonsters;
-	public final ForgeConfigSpec.BooleanValue cheesemaking;
-	public final ForgeConfigSpec.IntValue milkCauldronTime;
-	public final ForgeConfigSpec.IntValue ratSackCapacity;
-	public final ForgeConfigSpec.BooleanValue ratsDigBlocks;
-	public final ForgeConfigSpec.BooleanValue ratsBreakCrops;
-	public final ForgeConfigSpec.BooleanValue ratsStealItems;
-	public final ForgeConfigSpec.BooleanValue ratsClimbOverFences;
-	public final ForgeConfigSpec.BooleanValue ratsContaminateFood;
-	public final ForgeConfigSpec.BooleanValue golemsTargetRats;
-	public final ForgeConfigSpec.BooleanValue villagePetShops;
-	public final ForgeConfigSpec.IntValue villagePetShopWeight;
-	public final ForgeConfigSpec.IntValue zombieVillagePetShopWeight;
-	public final ForgeConfigSpec.BooleanValue villageGarbageHeaps;
-	public final ForgeConfigSpec.IntValue villageGarbageHeapWeight;
-	public final ForgeConfigSpec.IntValue zombieVillageGarbageHeapWeight;
-	public final ForgeConfigSpec.BooleanValue ratsBreakBlockOnHarvest;
-	public final ForgeConfigSpec.BooleanValue plagueSpread;
-	public final ForgeConfigSpec.DoubleValue ratStrengthThreshold;
-	public final ForgeConfigSpec.IntValue ratFluteDistance;
-	public final ForgeConfigSpec.IntValue ratCageCramming;
-	public final ForgeConfigSpec.IntValue ratUpdateDelay;
-	public final ForgeConfigSpec.DoubleValue garbageSpawnRate;
-	public final ForgeConfigSpec.IntValue maxRatLitterSize;
-	public final ForgeConfigSpec.IntValue ratBreedingCooldown;
-	public final ForgeConfigSpec.BooleanValue ratsSpawnWithSantaHats;
-	public final ForgeConfigSpec.BooleanValue ratsSpawnWithPartyHats;
-	public final ForgeConfigSpec.IntValue maxRatRadius;
+	public final ModConfigSpec.IntValue ratSpawnDecrease;
+	public final ModConfigSpec.IntValue piperSpawnDecrease;
+	public final ModConfigSpec.BooleanValue ratsSpawnLikeMonsters;
+	public final ModConfigSpec.BooleanValue cheesemaking;
+	public final ModConfigSpec.IntValue milkCauldronTime;
+	public final ModConfigSpec.IntValue ratSackCapacity;
+	public final ModConfigSpec.BooleanValue ratsDigBlocks;
+	public final ModConfigSpec.BooleanValue ratsBreakCrops;
+	public final ModConfigSpec.BooleanValue ratsStealItems;
+	public final ModConfigSpec.BooleanValue ratsClimbOverFences;
+	public final ModConfigSpec.BooleanValue ratsContaminateFood;
+	public final ModConfigSpec.BooleanValue golemsTargetRats;
+	public final ModConfigSpec.BooleanValue villagePetShops;
+	public final ModConfigSpec.IntValue villagePetShopWeight;
+	public final ModConfigSpec.IntValue zombieVillagePetShopWeight;
+	public final ModConfigSpec.BooleanValue villageGarbageHeaps;
+	public final ModConfigSpec.IntValue villageGarbageHeapWeight;
+	public final ModConfigSpec.IntValue zombieVillageGarbageHeapWeight;
+	public final ModConfigSpec.BooleanValue ratsBreakBlockOnHarvest;
+	public final ModConfigSpec.BooleanValue plagueSpread;
+	public final ModConfigSpec.DoubleValue ratStrengthThreshold;
+	public final ModConfigSpec.IntValue ratFluteDistance;
+	public final ModConfigSpec.IntValue ratCageCramming;
+	public final ModConfigSpec.IntValue ratUpdateDelay;
+	public final ModConfigSpec.DoubleValue garbageSpawnRate;
+	public final ModConfigSpec.IntValue maxRatLitterSize;
+	public final ModConfigSpec.IntValue ratBreedingCooldown;
+	public final ModConfigSpec.BooleanValue ratsSpawnWithSantaHats;
+	public final ModConfigSpec.BooleanValue ratsSpawnWithPartyHats;
+	public final ModConfigSpec.IntValue maxRatRadius;
 
-	public final ForgeConfigSpec.IntValue ratArmorMultiplier;
-	public final ForgeConfigSpec.BooleanValue ratsChargeHeldItems;
-	public final ForgeConfigSpec.IntValue ratRFTransferBasic;
-	public final ForgeConfigSpec.IntValue ratChargeBasic;
-	public final ForgeConfigSpec.IntValue ratRFTransferAdvanced;
-	public final ForgeConfigSpec.IntValue ratChargeAdvanced;
-	public final ForgeConfigSpec.IntValue ratRFTransferElite;
-	public final ForgeConfigSpec.IntValue ratChargeElite;
-	public final ForgeConfigSpec.IntValue ratRFTransferExtreme;
-	public final ForgeConfigSpec.IntValue ratChargeExtreme;
-	public final ForgeConfigSpec.IntValue upgradeRegenRate;
-	public final ForgeConfigSpec.DoubleValue warriorHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue warriorDamageUpgrade;
-	public final ForgeConfigSpec.DoubleValue warriorArmorUpgrade;
-	public final ForgeConfigSpec.DoubleValue godHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue godDamageUpgrade;
-	public final ForgeConfigSpec.DoubleValue godArmorUpgrade;
-	public final ForgeConfigSpec.DoubleValue dragonHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue dragonDamageUpgrade;
-	public final ForgeConfigSpec.DoubleValue dragonArmorUpgrade;
-	public final ForgeConfigSpec.DoubleValue demonHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue demonDamageUpgrade;
-	public final ForgeConfigSpec.DoubleValue voodooHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue ratVoodooDistance;
-	public final ForgeConfigSpec.DoubleValue ratinatorArmorUpgrade;
-	public final ForgeConfigSpec.DoubleValue nonbelieverHealthUpgrade;
-	public final ForgeConfigSpec.DoubleValue nonbelieverDamageUpgrade;
-	public final ForgeConfigSpec.DoubleValue nonbelieverArmorUpgrade;
-	public final ForgeConfigSpec.BooleanValue ratPsychicThrowsBlocks;
-	public final ForgeConfigSpec.DoubleValue carratDamagePerBite;
+	public final ModConfigSpec.IntValue ratArmorMultiplier;
+	public final ModConfigSpec.BooleanValue ratsChargeHeldItems;
+	public final ModConfigSpec.IntValue ratRFTransferBasic;
+	public final ModConfigSpec.IntValue ratChargeBasic;
+	public final ModConfigSpec.IntValue ratRFTransferAdvanced;
+	public final ModConfigSpec.IntValue ratChargeAdvanced;
+	public final ModConfigSpec.IntValue ratRFTransferElite;
+	public final ModConfigSpec.IntValue ratChargeElite;
+	public final ModConfigSpec.IntValue ratRFTransferExtreme;
+	public final ModConfigSpec.IntValue ratChargeExtreme;
+	public final ModConfigSpec.IntValue upgradeRegenRate;
+	public final ModConfigSpec.DoubleValue warriorHealthUpgrade;
+	public final ModConfigSpec.DoubleValue warriorDamageUpgrade;
+	public final ModConfigSpec.DoubleValue warriorArmorUpgrade;
+	public final ModConfigSpec.DoubleValue godHealthUpgrade;
+	public final ModConfigSpec.DoubleValue godDamageUpgrade;
+	public final ModConfigSpec.DoubleValue godArmorUpgrade;
+	public final ModConfigSpec.DoubleValue dragonHealthUpgrade;
+	public final ModConfigSpec.DoubleValue dragonDamageUpgrade;
+	public final ModConfigSpec.DoubleValue dragonArmorUpgrade;
+	public final ModConfigSpec.DoubleValue demonHealthUpgrade;
+	public final ModConfigSpec.DoubleValue demonDamageUpgrade;
+	public final ModConfigSpec.DoubleValue voodooHealthUpgrade;
+	public final ModConfigSpec.DoubleValue ratVoodooDistance;
+	public final ModConfigSpec.DoubleValue ratinatorArmorUpgrade;
+	public final ModConfigSpec.DoubleValue nonbelieverHealthUpgrade;
+	public final ModConfigSpec.DoubleValue nonbelieverDamageUpgrade;
+	public final ModConfigSpec.DoubleValue nonbelieverArmorUpgrade;
+	public final ModConfigSpec.BooleanValue ratPsychicThrowsBlocks;
+	public final ModConfigSpec.DoubleValue carratDamagePerBite;
 
-	public final ForgeConfigSpec.BooleanValue blackDeathLightning;
-	public final ForgeConfigSpec.BooleanValue bdConstantRatSpawns;
-	public final ForgeConfigSpec.IntValue bdMaxRatSpawns;
-	public final ForgeConfigSpec.BooleanValue bdConstantCloudSpawns;
-	public final ForgeConfigSpec.IntValue bdMaxCloudSpawns;
-	public final ForgeConfigSpec.BooleanValue bdConstantBeastSpawns;
-	public final ForgeConfigSpec.IntValue bdMaxBeastSpawns;
+	public final ModConfigSpec.BooleanValue blackDeathLightning;
+	public final ModConfigSpec.BooleanValue bdConstantRatSpawns;
+	public final ModConfigSpec.IntValue bdMaxRatSpawns;
+	public final ModConfigSpec.BooleanValue bdConstantCloudSpawns;
+	public final ModConfigSpec.IntValue bdMaxCloudSpawns;
+	public final ModConfigSpec.BooleanValue bdConstantBeastSpawns;
+	public final ModConfigSpec.IntValue bdMaxBeastSpawns;
 
-	public final ForgeConfigSpec.BooleanValue ratKingReabsorbsRats;
-	public final ForgeConfigSpec.DoubleValue ratKingReabsorbHealRate;
-	public final ForgeConfigSpec.BooleanValue ratKingConstantRatSpawns;
-	public final ForgeConfigSpec.IntValue ratKingMaxRatSpawns;
+	public final ModConfigSpec.BooleanValue ratKingReabsorbsRats;
+	public final ModConfigSpec.DoubleValue ratKingReabsorbHealRate;
+	public final ModConfigSpec.BooleanValue ratKingConstantRatSpawns;
+	public final ModConfigSpec.IntValue ratKingMaxRatSpawns;
 
-	public final ForgeConfigSpec.BooleanValue summonAutomatonOnlyInRatlantis;
-	public final ForgeConfigSpec.IntValue automatonShootChance;
-	public final ForgeConfigSpec.IntValue automatonMeleeDistance;
-	public final ForgeConfigSpec.IntValue automatonRangedDistance;
+	public final ModConfigSpec.BooleanValue summonAutomatonOnlyInRatlantis;
+	public final ModConfigSpec.IntValue automatonShootChance;
+	public final ModConfigSpec.IntValue automatonMeleeDistance;
+	public final ModConfigSpec.IntValue automatonRangedDistance;
 
-	public final ForgeConfigSpec.BooleanValue summonNeoOnlyInRatlantis;
-	public final ForgeConfigSpec.BooleanValue neoratlanteanSummonLaserPortals;
-	public final ForgeConfigSpec.IntValue neoratlanteanLaserAttackCooldown;
-	public final ForgeConfigSpec.BooleanValue neoratlanteanSummonFakeLightning;
-	public final ForgeConfigSpec.IntValue neoratlanteanLightningAttackCooldown;
-	public final ForgeConfigSpec.BooleanValue neoratlanteanThrowBlocks;
-	public final ForgeConfigSpec.IntValue neoratlanteanBlockAttackCooldown;
-	public final ForgeConfigSpec.BooleanValue neoratlanteanAddHarmfulEffects;
-	public final ForgeConfigSpec.IntValue neoratlanteanEffectAttackCooldown;
+	public final ModConfigSpec.BooleanValue summonNeoOnlyInRatlantis;
+	public final ModConfigSpec.BooleanValue neoratlanteanSummonLaserPortals;
+	public final ModConfigSpec.IntValue neoratlanteanLaserAttackCooldown;
+	public final ModConfigSpec.BooleanValue neoratlanteanSummonFakeLightning;
+	public final ModConfigSpec.IntValue neoratlanteanLightningAttackCooldown;
+	public final ModConfigSpec.BooleanValue neoratlanteanThrowBlocks;
+	public final ModConfigSpec.IntValue neoratlanteanBlockAttackCooldown;
+	public final ModConfigSpec.BooleanValue neoratlanteanAddHarmfulEffects;
+	public final ModConfigSpec.IntValue neoratlanteanEffectAttackCooldown;
 
-	public final ForgeConfigSpec.BooleanValue summonDutchratOnlyInRatlantis;
-	public final ForgeConfigSpec.IntValue dutchratSwordThrowChance;
-	public final ForgeConfigSpec.IntValue dutchratRestrictionRadius;
+	public final ModConfigSpec.BooleanValue summonDutchratOnlyInRatlantis;
+	public final ModConfigSpec.IntValue dutchratSwordThrowChance;
+	public final ModConfigSpec.IntValue dutchratRestrictionRadius;
 
-	public final ForgeConfigSpec.BooleanValue summonBaronOnlyInRatlantis;
-	public final ForgeConfigSpec.IntValue ratBaronYFlight;
-	public final ForgeConfigSpec.IntValue ratBaronShootFrequency;
-	public final ForgeConfigSpec.DoubleValue ratBaronBulletDamage;
+	public final ModConfigSpec.BooleanValue summonBaronOnlyInRatlantis;
+	public final ModConfigSpec.IntValue ratBaronYFlight;
+	public final ModConfigSpec.IntValue ratBaronShootFrequency;
+	public final ModConfigSpec.DoubleValue ratBaronBulletDamage;
 
 
-	public ServerConfig(final ForgeConfigSpec.Builder builder) {
+	public ServerConfig(final ModConfigSpec.Builder builder) {
 		builder.push("Ratlantis");
 		this.ratlantisEnabledByDefault = buildBoolean(builder, "Ratlantis Datapack Enabled by Default", false, "If true, the ratlantis datapack will automatically be enabled when creating a new world.");
 
@@ -226,15 +226,22 @@ public class ServerConfig {
 		this.ratsSpawnWithPartyHats = buildBoolean(builder, "Rats Spawn with Party Hats", false, "If true, wild rats will rarely spawn wearing a randomly colored party hat. Rats will spawn with Party hats during the New Year's Eve and special dates regardless, this will enable you to find them year round.");
 	}
 
-	private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
+	private static ModConfigSpec.BooleanValue buildBoolean(ModConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
 		return builder.comment(comment).translation(name).define(name, defaultValue);
 	}
 
-	private static ForgeConfigSpec.IntValue buildInt(ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
+	private static ModConfigSpec.IntValue buildInt(ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
 		return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
 	}
 
-	private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment) {
+	private static ModConfigSpec.DoubleValue buildDouble(ModConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment) {
 		return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
 	}
 }
+
+
+
+
+
+
+

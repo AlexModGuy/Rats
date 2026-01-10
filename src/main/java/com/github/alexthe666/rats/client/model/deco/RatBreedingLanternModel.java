@@ -94,3 +94,10 @@ public class RatBreedingLanternModel<T extends Entity> extends AdvancedEntityMod
 		return ImmutableList.of(this.top);
 	}
 }
+
+
+
+
+
+
+

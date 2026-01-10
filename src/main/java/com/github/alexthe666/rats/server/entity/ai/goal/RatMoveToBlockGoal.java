@@ -20,3 +20,9 @@ public abstract class RatMoveToBlockGoal extends MoveToBlockGoal {
 		return reducedTickDelay(RatConfig.ratUpdateDelay + this.mob.getRandom().nextInt(RatConfig.ratUpdateDelay));
 	}
 }
+
+
+
+
+
+

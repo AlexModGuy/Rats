@@ -17,3 +17,10 @@ public interface ChangesAIUpgrade {
 	 */
 	List<Goal> addNewWorkGoals(TamedRat rat);
 }
+
+
+
+
+
+
+

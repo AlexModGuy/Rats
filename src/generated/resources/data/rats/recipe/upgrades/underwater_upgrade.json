@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "minecraft:pufferfish"
+    },
+    "G": {
+      "item": "minecraft:gravel"
+    },
+    "S": {
+      "tag": "c:sands"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "FUF",
+    "SWS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_underwater"
+  }
+}

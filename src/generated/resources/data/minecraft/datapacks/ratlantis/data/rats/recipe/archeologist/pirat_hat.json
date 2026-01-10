@@ -1,0 +1,10 @@
+{
+  "type": "rats:archeologist",
+  "ingredient": {
+    "item": "rats:piper_hat"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:pirat_hat"
+  }
+}

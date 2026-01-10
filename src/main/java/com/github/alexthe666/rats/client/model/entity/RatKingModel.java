@@ -234,3 +234,10 @@ public class RatKingModel<T extends RatKing> extends AdvancedEntityModel<T> {
 		return ImmutableList.of(this.body1, this.body2, this.nose, this.leftEye, this.rightEye, this.head, this.leftArm, this.leftEar, this.leftFoot, this.leftHand, this.leftThigh, this.neck, this.rightArm, this.rightEar, this.rightFoot, this.rightHand, this.rightThigh, this.snout, this.tail1, this.tail1, this.tail2, this.wisker1, this.wisker2);
 	}
 }
+
+
+
+
+
+
+

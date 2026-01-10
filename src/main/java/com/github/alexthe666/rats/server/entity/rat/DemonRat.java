@@ -20,13 +20,14 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 
 public class DemonRat extends AbstractRat implements Enemy {
@@ -36,14 +37,14 @@ public class DemonRat extends AbstractRat implements Enemy {
 	public DemonRat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
 		this.xpReward = 5;
-		this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+		this.setPathfindingMalus(PathType.DANGER_FIRE, 16.0F);
+		this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(SOUL_VARIANT, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(SOUL_VARIANT, false);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.getRandom().nextInt(3) == 0) {
-			entity.setSecondsOnFire(5);
+			entity.igniteForSeconds(5);
 		}
 		return super.doHurtTarget(entity);
 	}
@@ -117,14 +118,10 @@ public class DemonRat extends AbstractRat implements Enemy {
 		return true;
 	}
 
-	@Override
-	public double getMyRidingOffset() {
-		return 0.25D;
-	}
-
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setSoulVariant(accessor.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY) || accessor.getRandom().nextInt(100) == 0);
 		return data;
 	}
@@ -151,4 +148,16 @@ public class DemonRat extends AbstractRat implements Enemy {
 	public boolean isHoldingItemInHands() {
 		return this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WARPED_FUNGUS_ON_A_STICK);
 	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
 }
+
+
+
+
+
+
+

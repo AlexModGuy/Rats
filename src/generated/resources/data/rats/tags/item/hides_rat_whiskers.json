@@ -1,0 +1,15 @@
+{
+  "values": [
+    "minecraft:creeper_head",
+    "minecraft:zombie_head",
+    "minecraft:skeleton_skull",
+    "minecraft:wither_skeleton_skull",
+    "minecraft:player_head",
+    "minecraft:dragon_head",
+    "minecraft:piglin_head",
+    "minecraft:carved_pumpkin",
+    "minecraft:jack_o_lantern",
+    "rats:black_death_mask",
+    "rats:plague_doctor_mask"
+  ]
+}

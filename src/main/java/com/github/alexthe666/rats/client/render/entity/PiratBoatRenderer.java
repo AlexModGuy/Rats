@@ -3,9 +3,6 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.entity.PiratBoatModel;
 import com.github.alexthe666.rats.client.render.entity.layer.PiratBoatSailLayer;
 import com.github.alexthe666.rats.server.entity.misc.PiratBoat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -14,13 +11,17 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 import java.util.Objects;
 
 public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/boat/spruce.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/boat/spruce.png");
 
 	public PiratBoatRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 0.0F);
@@ -55,7 +56,8 @@ public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>>
 		RenderType rendertype = this.getRenderType(entity, flag, flag1, flag2);
 		if (rendertype != null) {
 			VertexConsumer vertexconsumer = buffer.getBuffer(rendertype);
-			this.getModel().renderToBuffer(stack, vertexconsumer, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
+			int color = FastColor.ARGB32.colorFromFloat(flag1 ? 0.15F : 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getModel().renderToBuffer(stack, vertexconsumer, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), color);
 		}
 		VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.waterMask());
 		this.getModel().getWaterPatch().render(stack, vertexconsumer1, light, OverlayTexture.NO_OVERLAY);
@@ -72,3 +74,10 @@ public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>>
 		return TEXTURE;
 	}
 }
+
+
+
+
+
+
+

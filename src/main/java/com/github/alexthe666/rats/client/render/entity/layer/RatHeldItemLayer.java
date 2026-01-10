@@ -8,8 +8,6 @@ import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,6 +19,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class RatHeldItemLayer<T extends AbstractRat, M extends AbstractRatModel<T>> extends RenderLayer<T, M> {
 
@@ -142,3 +142,10 @@ public class RatHeldItemLayer<T extends AbstractRat, M extends AbstractRatModel<
 		}
 	}
 }
+
+
+
+
+
+
+

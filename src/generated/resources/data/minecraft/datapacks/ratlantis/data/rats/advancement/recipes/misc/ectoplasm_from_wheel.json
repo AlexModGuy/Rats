@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:ectoplasm_from_wheel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wheel": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:dutchrat_wheel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wheel"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:ectoplasm_from_wheel"
+    ]
+  }
+}

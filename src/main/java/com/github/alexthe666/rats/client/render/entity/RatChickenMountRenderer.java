@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class RatChickenMountRenderer extends MobRenderer<RatChickenMount, ChickenModel<RatChickenMount>> {
-	private static final ResourceLocation CHICKEN_TEXTURES = new ResourceLocation("textures/entity/chicken.png");
+	private static final ResourceLocation CHICKEN_TEXTURES = ResourceLocation.withDefaultNamespace("textures/entity/chicken.png");
 
 	public RatChickenMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new ChickenModel<>(context.bakeLayer(ModelLayers.CHICKEN)), 0.3F);
@@ -26,3 +26,9 @@ public class RatChickenMountRenderer extends MobRenderer<RatChickenMount, Chicke
 		return (Mth.sin(f) + 1.0F) * f1;
 	}
 }
+
+
+
+
+
+

@@ -12,3 +12,10 @@ public interface RatWorkGoal {
 		HARVEST
 	}
 }
+
+
+
+
+
+
+

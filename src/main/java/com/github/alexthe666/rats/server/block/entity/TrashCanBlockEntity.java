@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.server.block.entity;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.server.block.TrashCanBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -29,15 +30,23 @@ public class TrashCanBlockEntity extends BlockEntity {
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
+		return ClientboundBlockEntityDataPacket.create(this, (be, provider) -> be.getUpdateTag(provider));
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		this.handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider) {
+		this.handleUpdateTag(packet.getTag(), provider);
 	}
 
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+		return this.saveWithId(provider);
 	}
 }
+
+
+
+
+
+
+

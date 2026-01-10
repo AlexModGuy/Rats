@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.block.entity.AutoCurdlerBlockEntity;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
 import com.github.alexthe666.rats.server.message.UpdateRatFluidPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
@@ -21,14 +20,13 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -65,7 +63,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 				if (this.rat.getMainHandItem().getCount() < 64 && !this.getItemsOfTypeAround(this.rat.getMainHandItem()).isEmpty())
 					return false;
 			}
-			if (te.getCapability(ForgeCapabilities.ITEM_HANDLER, this.rat.depositFacing).resolve().isEmpty()) {
+			if (this.rat.level().getCapability(Capabilities.ItemHandler.BLOCK, this.rat.getDepositPos().get().pos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 
@@ -73,14 +71,14 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 			if (this.rat.getRFTransferRate() <= 0 || this.rat.getHeldRF() <= 0) {
 				return false;
 			}
-			if (te.getCapability(ForgeCapabilities.ENERGY, this.rat.depositFacing).resolve().isEmpty()) {
+			if (this.rat.level().getCapability(Capabilities.EnergyStorage.BLOCK, this.rat.getDepositPos().get().pos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 		} else if (this.type == DepositType.FLUID) {
 			if (this.rat.transportingFluid.isEmpty() || this.rat.transportingFluid.getAmount() == 0) {
 				return false;
 			}
-			if (te.getCapability(ForgeCapabilities.FLUID_HANDLER, this.rat.depositFacing).resolve().isEmpty()) {
+			if (this.rat.level().getCapability(Capabilities.FluidHandler.BLOCK, this.rat.getDepositPos().get().pos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 		}
@@ -90,7 +88,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 
 	private List<ItemEntity> getItemsOfTypeAround(ItemStack stack) {
 		return this.rat.level().getEntitiesOfClass(ItemEntity.class, this.rat.getBoundingBox().inflate(this.rat.getRadius()), item -> {
-			if (!ItemStack.isSameItemSameTags(stack, item.getItem())) return false;
+			if (!ItemStack.isSameItemSameComponents(stack, item.getItem())) return false;
 			Path path = this.rat.getNavigation().createPath(item, 1);
 			return path != null && path.canReach();
 		});
@@ -157,12 +155,11 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 
 	private void executeTask(BlockEntity entity) {
 		if (this.type == DepositType.INVENTORY) {
-			LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IItemHandler resolvedHandler = handler.resolve().get();
+			IItemHandler handler = this.rat.level().getCapability(Capabilities.ItemHandler.BLOCK, this.targetBlock, this.rat.depositFacing);
+			if (handler != null) {
 				ItemStack duplicate = this.rat.getItemInHand(InteractionHand.MAIN_HAND).copy();
-				if (!ItemHandlerHelper.insertItem(resolvedHandler, duplicate, true).equals(duplicate)) {
-					ItemStack shrunkenStack = ItemHandlerHelper.insertItem(resolvedHandler, duplicate, false);
+				if (!ItemHandlerHelper.insertItem(handler, duplicate, true).equals(duplicate)) {
+					ItemStack shrunkenStack = ItemHandlerHelper.insertItem(handler, duplicate, false);
 					if (shrunkenStack.isEmpty()) {
 						this.rat.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 					} else {
@@ -171,9 +168,8 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 				}
 			}
 		} else if (this.type == DepositType.ENERGY) {
-			LazyOptional<IEnergyStorage> handler = entity.getCapability(ForgeCapabilities.ENERGY, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IEnergyStorage storage = handler.resolve().get();
+			IEnergyStorage storage = this.rat.level().getCapability(Capabilities.EnergyStorage.BLOCK, this.targetBlock, this.rat.depositFacing);
+			if (storage != null) {
 				int howMuchWeHave = this.rat.getHeldRF();
 				int inputtedEnergy = 0;
 				try {
@@ -189,9 +185,8 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 			}
 		} else if (this.type == DepositType.FLUID) {
 			FluidStack copiedFluid = this.rat.transportingFluid.copy();
-			LazyOptional<IFluidHandler> handler = entity.getCapability(ForgeCapabilities.FLUID_HANDLER, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IFluidHandler fluidHandler = handler.resolve().get();
+			IFluidHandler fluidHandler = this.rat.level().getCapability(Capabilities.FluidHandler.BLOCK, this.targetBlock, this.rat.depositFacing);
+			if (fluidHandler != null) {
 				if (!this.rat.transportingFluid.isEmpty()) {
 					int minusAmount = 0;
 					try {
@@ -223,9 +218,9 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 							this.rat.transportingFluid.setAmount(total);
 						}
 						if (!this.rat.level().isClientSide()) {
-							RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
+							PacketDistributor.sendToAllPlayers(new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
 							if (this.rat.level().getBlockEntity(this.targetBlock) instanceof AutoCurdlerBlockEntity curdler) {
-								RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateCurdlerFluidPacket(this.targetBlock.asLong(), curdler.getTank().getFluid()));
+								PacketDistributor.sendToAllPlayers(new UpdateCurdlerFluidPacket(this.targetBlock.asLong(), curdler.getTank().getFluid()));
 							}
 						}
 						SoundEvent sound = this.rat.transportingFluid.isEmpty() ? SoundEvents.BUCKET_EMPTY : SoundEvents.BUCKET_FILL;
@@ -247,3 +242,10 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 		ENERGY
 	}
 }
+
+
+
+
+
+
+

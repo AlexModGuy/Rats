@@ -8,6 +8,7 @@ import com.github.alexthe666.rats.server.block.RatTubeBlock;
 import com.github.alexthe666.rats.server.entity.rat.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -28,11 +29,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class RatUtils {
 	}
 
 	public static boolean isRatFood(ItemStack stack) {
-		return (stack.getItem().isEdible() || stack.is(Tags.Items.SEEDS) || stack.is(Items.WHEAT)) && !stack.is(RatsItemRegistry.RAW_RAT.get()) && !stack.is(RatsItemRegistry.COOKED_RAT.get());
+		return (stack.has(DataComponents.FOOD) || stack.is(Tags.Items.SEEDS) || stack.is(Items.WHEAT)) && !stack.is(RatsItemRegistry.RAW_RAT.get()) && !stack.is(RatsItemRegistry.COOKED_RAT.get());
 	}
 
 	public static boolean shouldRaidItem(ItemStack stack) {
@@ -177,15 +178,15 @@ public class RatUtils {
 			return false;
 		}
 		float hardness = blockState.getDestroySpeed(level, pos);
-		return hardness >= 0.0F && hardness <= RatConfig.ratStrengthThreshold && ForgeHooks.canEntityDestroy(level, pos, rat);
+		return hardness >= 0.0F && hardness <= RatConfig.ratStrengthThreshold && CommonHooks.canEntityDestroy(level, pos, rat);
 	}
 
 	public static boolean canRatPlaceBlock(Level level, BlockPos pos, DiggingRat rat) {
-		return ForgeEventFactory.getMobGriefingEvent(level, rat) && !ForgeEventFactory.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
+		return net.neoforged.neoforge.event.EventHooks.canEntityGrief(level, rat) && !EventHooks.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
 	}
 
 	public static boolean isBlockProtected(Level level, BlockPos pos, DiggingRat rat) {
-		return !ForgeEventFactory.getMobGriefingEvent(level, rat) || !ForgeEventFactory.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
+		return !net.neoforged.neoforge.event.EventHooks.canEntityGrief(level, rat) || !EventHooks.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
 	}
 
 	public static boolean isOpenRatTube(BlockGetter getter, BlockPos pos) {
@@ -218,7 +219,7 @@ public class RatUtils {
 			for (BlockPos pos : allBlocks) {
 				BlockState block = level.getBlockState(pos);
 				if (block.getBlock() instanceof BonemealableBlock igrowable) {
-					if (igrowable.isValidBonemealTarget(level, pos, block, level.isClientSide()) && level.getRandom().nextInt(3) == 0) {
+					if (igrowable.isValidBonemealTarget(level, pos, block) && level.getRandom().nextInt(3) == 0) {
 						if (!level.isClientSide()) {
 							level.levelEvent(2005, pos, 0);
 							igrowable.performBonemeal((ServerLevel) level, level.getRandom(), pos, block);
@@ -231,7 +232,7 @@ public class RatUtils {
 
 	private static boolean canPlantBeBonemealed(Level level, BlockPos pos, BlockState BlockState) {
 		if (BlockState.getBlock() instanceof BonemealableBlock igrowable && !(BlockState.getBlock() instanceof TallGrassBlock) && !(BlockState.getBlock() instanceof GrassBlock)) {
-			if (igrowable.isValidBonemealTarget(level, pos, BlockState, level.isClientSide())) {
+			if (igrowable.isValidBonemealTarget(level, pos, BlockState)) {
 				if (!level.isClientSide()) {
 					//  igrowable.grow(level, level.rand, target, BlockState);
 					return igrowable.isBonemealSuccess(level, level.getRandom(), pos, BlockState);
@@ -244,10 +245,9 @@ public class RatUtils {
 	@SuppressWarnings("unchecked")
 	public static void accelerateTick(Level level, BlockPos pos, int randomTickInt, int beTickInt) {
 		BlockState blockState = level.getBlockState(pos);
-		Block block = blockState.getBlock();
 		if (!level.isClientSide()) {
-			if (block.isRandomlyTicking(blockState) && randomTickInt == 0) {
-				block.randomTick(blockState, (ServerLevel) level, pos, level.getRandom());
+			if (blockState.isRandomlyTicking() && randomTickInt == 0) {
+				blockState.randomTick((ServerLevel) level, pos, level.getRandom());
 			}
 
 			if (beTickInt == 0) {
@@ -271,7 +271,7 @@ public class RatUtils {
 			newRat.setLeashedTo(rat.getLeashHolder(), true);
 			rat.setLeashedTo(null, true);
 		}
-		ForgeEventFactory.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+		EventHooks.finalizeMobSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null);
 		newRat.readAdditionalSaveData(tag);
 		newRat.setColorVariant(rat.getColorVariant());
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -302,3 +302,10 @@ public class RatUtils {
 		};
 	}
 }
+
+
+
+
+
+
+

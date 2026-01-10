@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
@@ -100,16 +101,16 @@ public class BlackDeath extends Monster implements RatSummoner {
 				return this.mob.getLastHurtByMob() != null && !this.mob.getLastHurtByMob().getType().is(RatsEntityTags.PLAGUE_LEGION) && super.canUse();
 			}
 		});
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> living.getMobType() != MobType.UNDEAD).test(entity)));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> !living.getType().is(EntityTypeTags.UNDEAD)).test(entity)));
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(IS_SUMMONING, false);
-		this.getEntityData().define(MELEE_ATTACKING, false);
-		this.getEntityData().define(RAT_COUNT, 0);
-		this.getEntityData().define(CLOUD_COUNT, 0);
-		this.getEntityData().define(BEAST_COUNT, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(IS_SUMMONING, false);
+		builder.define(MELEE_ATTACKING, false);
+		builder.define(RAT_COUNT, 0);
+		builder.define(CLOUD_COUNT, 0);
+		builder.define(BEAST_COUNT, 0);
 	}
 
 	@Override
@@ -148,7 +149,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 			double dist = 20F;
 			for (Rat rat : this.level().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
 				if (rat.isOwnedBy(this)) {
-					rat.setTame(false);
+					rat.setTame(false, false);
 					rat.setOwnerUUID(null);
 					rat.setFleePos(rat.blockPosition());
 					rat.setTarget(null);
@@ -179,7 +180,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
 		return false;
 	}
 
@@ -318,10 +319,17 @@ public class BlackDeath extends Monster implements RatSummoner {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		SpawnGroupData finalData = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		SpawnGroupData finalData = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 		return finalData;
 	}
 }
+
+
+
+
+
+
+

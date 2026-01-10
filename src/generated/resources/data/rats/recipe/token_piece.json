@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    },
+    {
+      "item": "rats:token_fragment"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:token_piece"
+  }
+}

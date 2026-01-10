@@ -15,8 +15,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -97,7 +99,7 @@ public class RatCageBlock extends Block {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.rats.rat_cage.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_cage.desc1").withStyle(ChatFormatting.GRAY));
 	}
@@ -144,15 +146,15 @@ public class RatCageBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.getItemInHand(hand).getItem() instanceof RatCageDecoration decoration && level.getBlockEntity(pos) == null) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (stack.getItem() instanceof RatCageDecoration decoration && level.getBlockEntity(pos) == null) {
 			Direction limitedFacing = player.getDirection().getOpposite();
 			if (state.getValue(PROPERTY_BY_DIRECTION.get(decoration.getSupportedFace(limitedFacing))) == 0) {
-				if (player.getItemInHand(hand).is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
+				if (stack.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
 					BlockState pre = level.getBlockState(pos);
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get().withPropertiesOf(pre);
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
-				} else if (player.getItemInHand(hand).is(RatsItemRegistry.RAT_WHEEL.get())) {
+				} else if (stack.is(RatsItemRegistry.RAT_WHEEL.get())) {
 					BlockState pre = level.getBlockState(pos);
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_WHEEL.get().withPropertiesOf(pre);
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
@@ -162,12 +164,12 @@ public class RatCageBlock extends Block {
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
 				}
 
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 			}
 		}
 		if (level.getBlockEntity(pos) != null) {
-			ItemStack stack = this.getContainedItem(level, pos);
-			if (!stack.isEmpty() && player.isShiftKeyDown()) {
+			ItemStack containedStack = this.getContainedItem(level, pos);
+			if (!containedStack.isEmpty() && player.isShiftKeyDown()) {
 				BlockState pre = level.getBlockState(pos);
 				BlockState decorated = RatsBlockRegistry.RAT_CAGE.get().defaultBlockState();
 				decorated = decorated.getBlock().withPropertiesOf(pre);
@@ -175,7 +177,12 @@ public class RatCageBlock extends Block {
 				level.setBlockAndUpdate(pos, decorated);
 			}
 		}
-		if (player.getItemInHand(hand).isEmpty() && !player.isShiftKeyDown()) {
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (!player.isShiftKeyDown()) {
 			boolean ridingRats = false;
 			if (!player.getPassengers().isEmpty()) {
 				for (Entity entity : player.getPassengers()) {
@@ -270,3 +277,10 @@ public class RatCageBlock extends Block {
 		return blockstate;
 	}
 }
+
+
+
+
+
+
+

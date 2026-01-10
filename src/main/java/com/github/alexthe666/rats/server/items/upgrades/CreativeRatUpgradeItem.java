@@ -15,3 +15,10 @@ public class CreativeRatUpgradeItem extends BaseRatUpgradeItem implements Damage
 		return source.getEntity() == null || source.getEntity() instanceof LivingEntity living && !rat.isOwnedBy(living);
 	}
 }
+
+
+
+
+
+
+

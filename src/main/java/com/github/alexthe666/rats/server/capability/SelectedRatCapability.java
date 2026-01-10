@@ -1,10 +1,9 @@
 package com.github.alexthe666.rats.server.capability;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateSelectedRatPacket;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class SelectedRatCapability implements SelectedRat {
@@ -37,7 +36,14 @@ public class SelectedRatCapability implements SelectedRat {
 
 	private void sendPacket() {
 		if (!this.host.level().isClientSide()) {
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateSelectedRatPacket(this.host, this));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.host, new UpdateSelectedRatPacket(this.host, this));
 		}
 	}
 }
+
+
+
+
+
+
+

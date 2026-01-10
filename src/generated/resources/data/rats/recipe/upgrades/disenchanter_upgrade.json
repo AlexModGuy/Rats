@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "F": {
+      "tag": "c:stones"
+    },
+    "G": {
+      "item": "minecraft:grindstone"
+    },
+    "S": {
+      "item": "minecraft:stone_slab"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "FUF",
+    "FGF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_disenchanter"
+  }
+}

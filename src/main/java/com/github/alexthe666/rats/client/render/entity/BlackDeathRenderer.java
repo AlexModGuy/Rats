@@ -5,17 +5,17 @@ import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.BlackDeathModel;
 import com.github.alexthe666.rats.client.render.entity.layer.GlowingOverlayLayer;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class BlackDeathRenderer extends MobRenderer<BlackDeath, BlackDeathModel<BlackDeath>> {
 
-	private static final ResourceLocation BLACK_DEATH_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/black_death/black_death.png");
-	private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/black_death/black_death_overlay.png");
+	private static final ResourceLocation BLACK_DEATH_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/black_death/black_death.png");
+	private static final ResourceLocation GLOW_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/black_death/black_death_overlay.png");
 
 	public BlackDeathRenderer(EntityRendererProvider.Context context) {
 		super(context, new BlackDeathModel<>(context.bakeLayer(RatsModelLayers.BLACK_DEATH)), 0.5F);
@@ -33,3 +33,10 @@ public class BlackDeathRenderer extends MobRenderer<BlackDeath, BlackDeathModel<
 		return BLACK_DEATH_TEXTURE;
 	}
 }
+
+
+
+
+
+
+

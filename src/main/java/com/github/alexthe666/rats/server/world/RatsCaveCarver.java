@@ -1,8 +1,8 @@
 package com.github.alexthe666.rats.server.world;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
+import com.mojang.serialization.Codec;
 
 import java.util.Set;
 
@@ -12,3 +12,10 @@ public class RatsCaveCarver extends CaveWorldCarver {
 		this.liquids = Set.of();
 	}
 }
+
+
+
+
+
+
+

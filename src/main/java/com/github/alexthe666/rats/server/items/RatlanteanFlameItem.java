@@ -33,3 +33,10 @@ public class RatlanteanFlameItem extends LoreTagItem {
 		return InteractionResultHolder.success(itemstack);
 	}
 }
+
+
+
+
+
+
+

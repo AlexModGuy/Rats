@@ -16,3 +16,10 @@ public interface EquipmentListenerUpgrade {
 	 */
 	void onItemChanged(TamedRat rat, EquipmentSlot slot, ItemStack oldStack, ItemStack newStack);
 }
+
+
+
+
+
+
+

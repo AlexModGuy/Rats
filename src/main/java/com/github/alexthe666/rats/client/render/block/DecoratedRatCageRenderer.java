@@ -10,16 +10,17 @@ import com.github.alexthe666.rats.server.block.entity.RatCageBreedingLanternBloc
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
 import com.github.alexthe666.rats.server.items.RatHammockItem;
 import com.github.alexthe666.rats.server.items.RatIglooItem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRatCageBlockEntity> {
 	private final RatIglooModel<?> igloo;
@@ -28,12 +29,12 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 	private final RatSeedBowlModel<?> seed_bowl;
 	private static final RatBreedingLanternModel<?> MODEL_RAT_BREEDING_LANTERN = new RatBreedingLanternModel<>();
 	private static final RatWheelModel<?> MODEL_RAT_WHEEL = new RatWheelModel<>();
-	private static final RenderType TEXTURE_RAT_IGLOO = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_igloo.png"));
-	private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_hammock_0.png"));
-	private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_water_bottle.png"));
-	private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_seed_bowl.png"));
-	private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_breeding_lantern.png"));
-	private static final RenderType TEXTURE_RAT_WHEEL = RenderType.entityTranslucent(new ResourceLocation(RatsMod.MODID, "textures/block/rat_wheel.png"));
+	private static final RenderType TEXTURE_RAT_IGLOO = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_igloo.png"));
+	private static final RenderType TEXTURE_RAT_HAMMOCK = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_hammock_0.png"));
+	private static final RenderType TEXTURE_RAT_WATER_BOTTLE = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_water_bottle.png"));
+	private static final RenderType TEXTURE_RAT_SEED_BOWL = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_seed_bowl.png"));
+	private static final RenderType TEXTURE_RAT_BREEDING_LANTERN = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_breeding_lantern.png"));
+	private static final RenderType TEXTURE_RAT_WHEEL = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/rat_wheel.png"));
 
 	public DecoratedRatCageRenderer(BlockEntityRendererProvider.Context context) {
 		this.igloo = new RatIglooModel<>(context.bakeLayer(RatsModelLayers.IGLOO));
@@ -56,23 +57,23 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 		if (containedItem.getItem() instanceof RatIglooItem iglooItem) {
 			DyeColor color = iglooItem.color;
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_IGLOO);
-			this.igloo.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
+			this.igloo.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColor());
 		}
 
 		if (containedItem.getItem() instanceof RatHammockItem hammockItem) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_HAMMOCK);
 			DyeColor color = hammockItem.color;
-			this.hammock.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
+			this.hammock.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColor());
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_WATER_BOTTLE.get())) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_WATER_BOTTLE);
-			this.water_bottle.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.water_bottle.renderToBuffer(stack, consumer, light, overlay);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_SEED_BOWL.get())) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_SEED_BOWL);
-			this.seed_bowl.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.seed_bowl.renderToBuffer(stack, consumer, light, overlay);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_WHEEL.get())) {
@@ -81,15 +82,22 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 				MODEL_RAT_WHEEL.animate((RatCageWheelBlockEntity) entity, partialTicks);
 			}
 
-			MODEL_RAT_WHEEL.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			MODEL_RAT_WHEEL.renderToBuffer(stack, consumer, light, overlay);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get()) && entity instanceof RatCageBreedingLanternBlockEntity lantern) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_BREEDING_LANTERN);
 			float brightness = lantern.getBreedingCooldown() > 0 ? 0.5F : 1.0F;
 			MODEL_RAT_BREEDING_LANTERN.swingChain();
-			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, brightness, brightness, brightness, 1.0F);
+			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, FastColor.ARGB32.colorFromFloat(1.0F, brightness, brightness, brightness));
 		}
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

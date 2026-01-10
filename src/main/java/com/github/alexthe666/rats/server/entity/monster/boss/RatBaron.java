@@ -53,11 +53,6 @@ public class RatBaron extends AbstractRat implements Enemy {
 		});
 	}
 
-	@Override
-	public double getMyRidingOffset() {
-		return 0.45D;
-	}
-
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 300.0D)
@@ -137,8 +132,8 @@ public class RatBaron extends AbstractRat implements Enemy {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setGuaranteedDrop(EquipmentSlot.HEAD);
 		if (type != MobSpawnType.MOB_SUMMONED) {
@@ -157,7 +152,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
 		return false;
 	}
 
@@ -165,4 +160,16 @@ public class RatBaron extends AbstractRat implements Enemy {
 	public boolean isVisuallySitting() {
 		return true;
 	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
 }
+
+
+
+
+
+
+

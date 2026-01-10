@@ -2,8 +2,6 @@ package com.github.alexthe666.rats.client.render.entity;
 
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import com.github.alexthe666.rats.server.entity.projectile.DutchratSword;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -14,6 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 public class DutchratSwordRenderer extends EntityRenderer<DutchratSword> {
 
@@ -41,3 +41,10 @@ public class DutchratSwordRenderer extends EntityRenderer<DutchratSword> {
 		return InventoryMenu.BLOCK_ATLAS;
 	}
 }
+
+
+
+
+
+
+

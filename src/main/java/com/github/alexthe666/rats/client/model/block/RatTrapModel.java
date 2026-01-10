@@ -55,3 +55,10 @@ public class RatTrapModel<T extends Entity> extends AdvancedEntityModel<T> {
 		return ImmutableList.of(this.hingeMain, this.bottom);
 	}
 }
+
+
+
+
+
+
+

@@ -22,3 +22,10 @@ public class ChristmasChestModel extends HierarchicalModel<Entity> {
 		return this.root;
 	}
 }
+
+
+
+
+
+
+

@@ -4,10 +4,10 @@ import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import com.google.common.collect.Maps;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.ContainerHelper;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -48,10 +48,10 @@ public class RatsUpgradeConflictRegistry {
 			return true;
 		Item[] arr = REGISTERED_CONFLICTS.get(newItem.getItem());
 		if (newItem.getItem() instanceof CombinedUpgrade combined) {
-			CompoundTag tag = newItem.getTag();
-			if (tag != null && tag.contains("Items", 9)) {
+			ItemContainerContents contents = newItem.get(DataComponents.CONTAINER);
+			if (contents != null) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-				ContainerHelper.loadAllItems(tag, upgradeList);
+				contents.copyInto(upgradeList);
 				for (ItemStack selectedUpgrade : upgradeList) {
 					if (doesConflict(selectedUpgrade, existingItem)) {
 						return true;
@@ -59,10 +59,10 @@ public class RatsUpgradeConflictRegistry {
 				}
 			}
 		} else if (existingItem.getItem() instanceof CombinedUpgrade combined) {
-			CompoundTag tag = existingItem.getTag();
-			if (tag != null && tag.contains("Items", 9)) {
+			ItemContainerContents contents = existingItem.get(DataComponents.CONTAINER);
+			if (contents != null) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-				ContainerHelper.loadAllItems(tag, upgradeList);
+				contents.copyInto(upgradeList);
 				for (ItemStack selectedUpgrade : upgradeList) {
 					if (doesConflict(selectedUpgrade, newItem)) {
 						return true;
@@ -91,3 +91,10 @@ public class RatsUpgradeConflictRegistry {
 		REGISTERED_CONFLICTS.put(yourUpgrade, conflictingUpgrades);
 	}
 }
+
+
+
+
+
+
+

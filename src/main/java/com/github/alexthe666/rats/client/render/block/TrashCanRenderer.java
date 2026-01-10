@@ -4,18 +4,18 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.block.TrashCanModel;
 import com.github.alexthe666.rats.server.block.TrashCanBlock;
 import com.github.alexthe666.rats.server.block.entity.TrashCanBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class TrashCanRenderer implements BlockEntityRenderer<TrashCanBlockEntity> {
 	private static final TrashCanModel<?> MODEL_TRASH_CAN = new TrashCanModel<>();
-	private static final RenderType TEXTURE = RenderType.entityCutoutNoCull(new ResourceLocation(RatsMod.MODID, "textures/block/trash_can.png"), true);
+	private static final RenderType TEXTURE = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/trash_can.png"), true);
 
 	public TrashCanRenderer(BlockEntityRendererProvider.Context context) {
 	}
@@ -32,7 +32,14 @@ public class TrashCanRenderer implements BlockEntityRenderer<TrashCanBlockEntity
 		stack.mulPose(Axis.YP.rotationDegrees(rotation));
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
 		MODEL_TRASH_CAN.animate(entity);
-		MODEL_TRASH_CAN.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_TRASH_CAN.renderToBuffer(stack, consumer, light, overlay) /* TODO: renderToBuffer signature changed in 1.21 */;
 		stack.popPose();
 	}
 }
+
+
+
+
+
+
+

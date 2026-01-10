@@ -24,3 +24,10 @@ public class AristocratRatUpgradeItem extends BaseRatUpgradeItem implements Tick
 		}
 	}
 }
+
+
+
+
+
+
+

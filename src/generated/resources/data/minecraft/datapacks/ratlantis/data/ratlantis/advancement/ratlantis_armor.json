@@ -1,0 +1,73 @@
+{
+  "parent": "ratlantis:oratchalcum_ingot",
+  "criteria": {
+    "get_boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:ratlantis_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "get_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:ratlantis_chestplate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "get_helm": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:ratlantis_helmet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "get_pants": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:ratlantis_leggings"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.ratlantis.ratlantis_armor.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "rats:ratlantis_helmet"
+    },
+    "title": {
+      "translate": "advancement.ratlantis.ratlantis_armor.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_helm"
+    ],
+    [
+      "get_chest"
+    ],
+    [
+      "get_pants"
+    ],
+    [
+      "get_boots"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

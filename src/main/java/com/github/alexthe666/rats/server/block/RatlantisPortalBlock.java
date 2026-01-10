@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.RatsMod;
+import com.mojang.serialization.MapCodec;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatlantisBlockRegistry;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
@@ -23,11 +24,19 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemRarity {
+
+	public static final MapCodec<RatlantisPortalBlock> CODEC = simpleCodec(RatlantisPortalBlock::new);
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
 
 	public RatlantisPortalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -46,22 +55,22 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (RatsMod.RATLANTIS_DATAPACK_ENABLED) {
-			if (!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
+			if (!entity.isPassenger() && !entity.isVehicle() && entity.canUsePortal(false)) {
 				if (entity.isOnPortalCooldown()) {
 					entity.setPortalCooldown();
 				} else {
-					if (!entity.level().isClientSide() && !pos.equals(entity.portalEntrancePos)) {
-						entity.portalEntrancePos = pos.immutable();
-					}
 					MinecraftServer server = entity.level().getServer();
 					ResourceKey<Level> destination = entity.level().dimension() == RatlantisDimensionRegistry.DIMENSION_KEY ? Level.OVERWORLD : RatlantisDimensionRegistry.DIMENSION_KEY;
 					if (server != null) {
 						ServerLevel dest = server.getLevel(destination);
-						if (dest != null && server.isNetherEnabled() && !entity.isPassenger()) {
+						if (dest != null && !entity.isPassenger()) {
 							entity.level().getProfiler().push("ratlantis_portal");
 							entity.setPortalCooldown();
-							entity.changeDimension(dest, new RatlantisTeleporter(dest));
-							entity.setDeltaMovement(Vec3.ZERO);
+							RatlantisTeleporter teleporter = new RatlantisTeleporter(dest);
+							DimensionTransition transition = teleporter.createDimensionTransition(entity, dest);
+							if (transition != null) {
+								entity.changeDimension(transition);
+							}
 							entity.level().getProfiler().pop();
 						}
 					}
@@ -107,7 +116,14 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }
+
+
+
+
+
+
+

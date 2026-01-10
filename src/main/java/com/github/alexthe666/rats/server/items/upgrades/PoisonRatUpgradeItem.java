@@ -16,3 +16,10 @@ public class PoisonRatUpgradeItem extends BaseRatUpgradeItem implements DamageIm
 		return source.is(DamageTypes.DROWN) || source.is(DamageTypeTags.WITCH_RESISTANT_TO) || source.is(DamageTypes.WITHER);
 	}
 }
+
+
+
+
+
+
+

@@ -25,3 +25,10 @@ public class QuarryRatUpgradeItem extends OreMinerRatUpgradeItem implements Dama
 		return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypeTags.IS_FALL);
 	}
 }
+
+
+
+
+
+
+

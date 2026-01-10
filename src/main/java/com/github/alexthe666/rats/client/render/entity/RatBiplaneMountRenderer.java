@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatBiplaneMountRenderer extends MobRenderer<RatBiplaneMount, BiplaneModel<RatBiplaneMount>> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat/mounts/biplane_mount.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/mounts/biplane_mount.png");
 
 	public RatBiplaneMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new BiplaneModel<>(), 1.65F);
@@ -19,3 +19,10 @@ public class RatBiplaneMountRenderer extends MobRenderer<RatBiplaneMount, Biplan
 		return TEXTURE;
 	}
 }
+
+
+
+
+
+
+

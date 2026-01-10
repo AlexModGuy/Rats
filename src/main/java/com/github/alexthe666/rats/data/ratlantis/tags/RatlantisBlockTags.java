@@ -9,22 +9,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RatlantisBlockTags extends BlockTagsProvider {
-	public static final TagKey<Block> PIRAT_LOGS = BlockTags.create(new ResourceLocation(RatsMod.MODID, "pirat_logs"));
-	public static final TagKey<Block> PIRAT_ONLY_BLOCKS = BlockTags.create(new ResourceLocation(RatsMod.MODID, "pirat_blocks"));
+	public static final TagKey<Block> PIRAT_LOGS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_logs"));
+	public static final TagKey<Block> PIRAT_ONLY_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_blocks"));
 
-	public static final TagKey<Block> STORAGE_BLOCKS_ORATCHALCUM = BlockTags.create(new ResourceLocation("forge", "storage_blocks/oratchalcum"));
+	public static final TagKey<Block> STORAGE_BLOCKS_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/oratchalcum"));
 
-	public static final TagKey<Block> ORES_CHEESE = BlockTags.create(new ResourceLocation("forge", "ores/cheese"));
-	public static final TagKey<Block> ORES_GEM_OF_RATLANTIS = BlockTags.create(new ResourceLocation("forge", "ores/gem_of_ratlantis"));
-	public static final TagKey<Block> ORES_ORATCHALCUM = BlockTags.create(new ResourceLocation("forge", "ores/oratchalcum"));
+	public static final TagKey<Block> ORES_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/cheese"));
+	public static final TagKey<Block> ORES_GEM_OF_RATLANTIS = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/gem_of_ratlantis"));
+	public static final TagKey<Block> ORES_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/oratchalcum"));
 
 	public RatlantisBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);
@@ -131,3 +131,10 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 		this.tag(BlockTags.NEEDS_IRON_TOOL).add(RatlantisBlockRegistry.DUTCHRAT_BELL.get(), RatlantisBlockRegistry.AIR_RAID_SIREN.get(), RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get());
 	}
 }
+
+
+
+
+
+
+

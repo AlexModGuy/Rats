@@ -70,10 +70,10 @@ public class FeralRatlantean extends Monster implements IAnimatedEntity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TOGA, true);
-		this.getEntityData().define(COLOR_VARIANT, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TOGA, true);
+		builder.define(COLOR_VARIANT, 0);
 	}
 
 	@Override
@@ -99,13 +99,8 @@ public class FeralRatlantean extends Monster implements IAnimatedEntity {
 		}
 	}
 
-	@Override
-	public EntityDimensions getDimensions(Pose pose) {
-		if (this.getAnimation() == ANIMATION_SLASH || this.getAnimation() == ANIMATION_SNIFF) {
-			return EntityDimensions.fixed(1.85F, 2.25F);
-		}
-		return super.getDimensions(pose);
-	}
+	// Note: getDimensions(Pose) is final in 1.21 and cannot be overridden
+	// Entity size is now set via EntityType.Builder.sized() method
 
 	public void doExtraEffect(LivingEntity target) {
 	}
@@ -141,8 +136,9 @@ public class FeralRatlantean extends Monster implements IAnimatedEntity {
 	}
 
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setColorVariant(this.getRandom().nextInt(4));
 		this.setToga(true);
 		return data;
@@ -202,3 +198,10 @@ public class FeralRatlantean extends Monster implements IAnimatedEntity {
 		return !world.getBlockState(pos.below()).is(RatlantisBlockTags.PIRAT_ONLY_BLOCKS);
 	}
 }
+
+
+
+
+
+
+

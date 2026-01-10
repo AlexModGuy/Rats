@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ectoplasm": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rats:ghost_pirat_ectoplasm"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rats:pirat_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ectoplasm"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rats:pirat_planks"
+    ]
+  }
+}

@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.server.block.entity;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -25,27 +26,30 @@ public class DecoratedRatCageBlockEntity extends BlockEntity {
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
+		return ClientboundBlockEntityDataPacket.create(this, (be, provider) -> be.getUpdateTag(provider));
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		this.handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider) {
+		this.handleUpdateTag(packet.getTag(), provider);
 	}
 
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+		return this.saveWithId(provider);
 	}
 
-	public void saveAdditional(CompoundTag compound) {
-		ContainerHelper.saveAllItems(compound, this.containedDeco);
-		super.saveAdditional(compound);
+	@Override
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		ContainerHelper.saveAllItems(compound, this.containedDeco, provider);
+		super.saveAdditional(compound, provider);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	@Override
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
 		containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(compound, containedDeco);
+		ContainerHelper.loadAllItems(compound, containedDeco, provider);
 	}
 
 	public ItemStack getContainedItem() {
@@ -59,3 +63,10 @@ public class DecoratedRatCageBlockEntity extends BlockEntity {
 
 
 }
+
+
+
+
+
+
+

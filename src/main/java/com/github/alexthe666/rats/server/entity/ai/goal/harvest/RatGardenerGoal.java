@@ -58,3 +58,10 @@ public class RatGardenerGoal extends BaseRatHarvestGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

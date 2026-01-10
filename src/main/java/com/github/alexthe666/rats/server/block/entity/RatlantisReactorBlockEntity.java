@@ -11,3 +11,10 @@ public class RatlantisReactorBlockEntity extends BlockEntity {
 		super(RatlantisBlockEntityRegistry.RATLANTIS_REACTOR.get(), pos, state);
 	}
 }
+
+
+
+
+
+
+

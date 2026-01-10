@@ -43,3 +43,10 @@ public class GolemBeam extends ArrowlikeProjectile {
 		return true;
 	}
 }
+
+
+
+
+
+
+

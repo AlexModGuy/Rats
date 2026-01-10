@@ -98,3 +98,10 @@ public class RatlanteanSpiritModel<T extends Entity> extends AdvancedEntityModel
 		box.rotateAngleZ = z;
 	}
 }
+
+
+
+
+
+
+

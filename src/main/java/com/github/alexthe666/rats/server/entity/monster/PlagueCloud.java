@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -71,8 +72,8 @@ public class PlagueCloud extends Monster {
 			if (this.getRandom().nextBoolean()) {
 				this.level().addParticle(RatsParticleRegistry.BLACK_DEATH.get(), x, y + 1.5F, z, d0, d1, d2);
 			} else {
-				this.level().addParticle(ParticleTypes.ENTITY_EFFECT, x, y + 1.5F, z, d0, d1, d2);
-
+				// In 1.21, ENTITY_EFFECT requires ColorParticleOption - using dark green for plague
+				this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, 0x4A7023), x, y + 1.5F, z, 0, 0, 0);
 			}
 		}
 		if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof BlackDeath death) {
@@ -115,9 +116,9 @@ public class PlagueCloud extends Monster {
 		return d0 * d0 + d1 * d1 + d2 * d2;
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(OWNER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	protected void registerGoals() {
@@ -134,7 +135,7 @@ public class PlagueCloud extends Monster {
 	public boolean doHurtTarget(Entity entity) {
 		boolean flag = super.doHurtTarget(entity);
 		if (flag && entity instanceof LivingEntity living) {
-			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 600));
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 600));
 		}
 		return flag;
 	}
@@ -304,3 +305,10 @@ public class PlagueCloud extends Monster {
 		return super.isAlliedTo(entity) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION);
 	}
 }
+
+
+
+
+
+
+

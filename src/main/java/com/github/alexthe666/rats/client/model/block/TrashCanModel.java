@@ -68,7 +68,14 @@ public class TrashCanModel<T extends Entity> extends AdvancedEntityModel<T> {
 			this.trash.showModel = true;
 			this.trash.rotationPointY = 24 - (2.5F * trashCan.getBlockState().getValue(TrashCanBlock.LEVEL));
 		}
-		float openProgress = trashCan.prevLidProgress + (trashCan.lidProgress - trashCan.prevLidProgress) * Minecraft.getInstance().getPartialTick();
+		float openProgress = trashCan.prevLidProgress + (trashCan.lidProgress - trashCan.prevLidProgress) * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		this.lid.rotateAngleX += (float) Math.toRadians(-70D * (openProgress / 20F));
 	}
 }
+
+
+
+
+
+
+

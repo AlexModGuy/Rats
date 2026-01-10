@@ -17,9 +17,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 public class RatPathingHelper {
 
@@ -132,3 +132,10 @@ public class RatPathingHelper {
 		return getter.getBlockState(pos).is(RatsBlockRegistry.RAT_HOLE.get()) || (ignoreDiggables && canDigBlock(getter, pos));
 	}
 }
+
+
+
+
+
+
+

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 
@@ -37,7 +37,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 		if (!this.rat.canMove() || this.rat.getOwner() != null || !RatConfig.ratsStealItems) {
 			return false;
 		}
-		return ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
+		return EventHooks.canEntityGrief(this.rat.level(), this.rat) && super.canUse();
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 				if (entity instanceof Container inventory) {
 					try {
 						//first lets check if the container has an ungenerated loot table. If so we don't want rats digging through those
-						if (entity instanceof RandomizableContainerBlockEntity container && container.saveWithFullMetadata().contains(RandomizableContainerBlockEntity.LOOT_TABLE_TAG))
+						if (entity instanceof RandomizableContainerBlockEntity container && container.saveWithFullMetadata(reader.registryAccess()).contains(RandomizableContainerBlockEntity.LOOT_TABLE_TAG))
 							return false;
 						if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
 							return true;
@@ -122,3 +122,10 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 		}
 	}
 }
+
+
+
+
+
+
+

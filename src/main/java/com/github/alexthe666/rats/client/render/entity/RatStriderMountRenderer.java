@@ -3,8 +3,6 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.entity.RatStriderMountModel;
 import com.github.alexthe666.rats.server.entity.mount.RatStriderMount;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,15 +13,17 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class RatStriderMountRenderer extends MobRenderer<RatStriderMount, RatStriderMountModel<RatStriderMount>> {
 
-	private static final ResourceLocation STRIDER_LOCATION = new ResourceLocation("textures/entity/strider/strider.png");
-	private static final ResourceLocation COLD_LOCATION = new ResourceLocation("textures/entity/strider/strider_cold.png");
+	private static final ResourceLocation STRIDER_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/strider/strider.png");
+	private static final ResourceLocation COLD_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/strider/strider_cold.png");
 
 	public RatStriderMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), 0.5F);
-		this.addLayer(new AlwaysSaddledLayer<>(this, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), new ResourceLocation("textures/entity/strider/strider_saddle.png")));
+		this.addLayer(new AlwaysSaddledLayer<>(this, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), ResourceLocation.withDefaultNamespace("textures/entity/strider/strider_saddle.png")));
 	}
 
 	public ResourceLocation getTextureLocation(RatStriderMount mount) {
@@ -49,7 +49,14 @@ public class RatStriderMountRenderer extends MobRenderer<RatStriderMount, RatStr
 			this.model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 			this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			VertexConsumer vertexconsumer = source.getBuffer(RenderType.entityCutoutNoCull(this.textureLocation));
-			this.model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, -1);
 		}
 	}
 }
+
+
+
+
+
+
+

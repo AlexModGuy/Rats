@@ -43,3 +43,10 @@ public class PlagueDoctorMaskModel extends AbstractHatModel {
 
 
 }
+
+
+
+
+
+
+

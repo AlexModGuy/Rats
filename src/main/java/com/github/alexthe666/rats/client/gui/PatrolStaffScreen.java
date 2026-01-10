@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatTagPacket;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class PatrolStaffScreen extends Screen {
 			this.addRenderableWidget(Button.builder(addText, button -> {
 				this.nodes.add(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
 				this.rat.getPatrolNodes().add(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
-				RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
+				PacketDistributor.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
 				Minecraft.getInstance().setScreen(null);
 				this.init();
 			}).bounds(i - maxLength / 2, j + 60, maxLength, 20).build());
@@ -61,7 +61,7 @@ public class PatrolStaffScreen extends Screen {
 			this.addRenderableWidget(Button.builder(removeText, button -> {
 				this.nodes.remove(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
 				this.rat.getPatrolNodes().remove(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
-				RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
+				PacketDistributor.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
 				Minecraft.getInstance().setScreen(null);
 				this.init();
 			}).bounds(i - maxLength / 2, j + 60, maxLength, 20).build());
@@ -71,7 +71,7 @@ public class PatrolStaffScreen extends Screen {
 			this.addRenderableWidget(Button.builder(removeAllText, button -> {
 				this.nodes.clear();
 				this.rat.getPatrolNodes().clear();
-				RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
+				PacketDistributor.sendToServer(new SyncRatTagPacket(this.rat.getId(), this.nodes));
 				Minecraft.getInstance().setScreen(null);
 				this.init();
 			}).bounds(i - maxLength / 2, j + 110, maxLength, 20).build());
@@ -81,7 +81,6 @@ public class PatrolStaffScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics graphics, int x, int y, float partialTicks) {
-		this.renderBackground(graphics);
 		super.render(graphics, x, y, partialTicks);
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
@@ -96,3 +95,10 @@ public class PatrolStaffScreen extends Screen {
 		return false;
 	}
 }
+
+
+
+
+
+
+

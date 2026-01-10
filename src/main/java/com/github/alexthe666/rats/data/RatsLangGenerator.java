@@ -9,8 +9,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.function.Supplier;
@@ -744,13 +744,20 @@ public class RatsLangGenerator extends LanguageProvider {
 		}
 	}
 
-	public void addEntityAndEgg(RegistryObject<? extends EntityType<?>> entity, String name) {
+	public void addEntityAndEgg(DeferredHolder<EntityType<?>, ? extends EntityType<?>> entity, String name) {
 		this.addEntityType(entity, name);
 		this.add("item.rats." + entity.getId().getPath() + "_spawn_egg", name + " Spawn Egg");
 	}
 
-	public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
+	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String name) {
 		String[] splitSoundName = sound.getId().getPath().split("\\.", 3);
 		this.add("subtitles.rats." + splitSoundName[0] + "." + splitSoundName[2], name);
 	}
 }
+
+
+
+
+
+
+

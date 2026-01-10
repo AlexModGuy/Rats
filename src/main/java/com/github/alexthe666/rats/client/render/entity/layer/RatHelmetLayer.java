@@ -6,10 +6,6 @@ import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.HatItem;
-import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -21,22 +17,23 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
+import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>> extends RenderLayer<T, M> {
 	private final HumanoidModel<?> ratArmorModel;
 	private final TextureAtlas armorTrimAtlas;
-	private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
 
 	public RatHelmetLayer(RenderLayerParent<T, M> parent, HumanoidModel<?> armorModel) {
 		super(parent);
@@ -61,7 +58,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 					this.ratArmorModel.setAllVisible(false);
 					this.ratArmorModel.head.visible = true;
 					this.ratArmorModel.hat.visible = true;
-					Model model = ForgeHooksClient.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.ratArmorModel);
+					Model model = ClientHooks.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.ratArmorModel);
 					//Rats: do some extra transforms based on which model is being used and what item is rendering.
 					this.getParentModel().translateToHead(stack);
 					if (rat.isBaby()) {
@@ -73,18 +70,22 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 					if (itemstack.getItem() instanceof HatItem hat) {
 						hat.transformOnHead(rat, stack);
 					}
-					if (armoritem instanceof DyeableArmorItem dyeable) {
-						int i = dyeable.getColor(itemstack);
-						float f = (float) (i >> 16 & 255) / 255.0F;
-						float f1 = (float) (i >> 8 & 255) / 255.0F;
-						float f2 = (float) (i & 255) / 255.0F;
-						this.renderModel(stack, buffer, light, model, f, f1, f2, getArmorResource(rat, itemstack, EquipmentSlot.HEAD, null));
-						this.renderModel(stack, buffer, light, model, 1.0F, 1.0F, 1.0F, getArmorResource(rat, itemstack, EquipmentSlot.HEAD, "overlay"));
-					} else {
-						this.renderModel(stack, buffer, light, model, 1.0F, 1.0F, 1.0F, getArmorResource(rat, itemstack, EquipmentSlot.HEAD, null));
+					// Render armor layers using new 1.21.1 layer-based system
+					ArmorMaterial armormaterial = armoritem.getMaterial().value();
+					IClientItemExtensions extensions = IClientItemExtensions.of(itemstack);
+					int fallbackColor = extensions.getDefaultDyeColor(itemstack);
+					for (int layerIdx = 0; layerIdx < armormaterial.layers().size(); layerIdx++) {
+						ArmorMaterial.Layer layer = armormaterial.layers().get(layerIdx);
+						int color = extensions.getArmorLayerTintColor(itemstack, rat, layer, layerIdx, fallbackColor);
+						if (color != 0) {
+							ResourceLocation texture = ClientHooks.getArmorTexture(rat, itemstack, layer, false, EquipmentSlot.HEAD);
+							this.renderModel(stack, buffer, light, model, color, texture);
+						}
 					}
-					ArmorTrim.getTrim(rat.level().registryAccess(), itemstack).ifPresent(trim ->
-							this.renderTrim(armoritem.getMaterial(), stack, buffer, light, trim, model));
+					ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);
+					if (armortrim != null) {
+						this.renderTrim(armoritem.getMaterial(), stack, buffer, light, armortrim, model);
+					}
 					if (itemstack.hasFoil()) {
 						this.renderGlint(stack, buffer, light, model);
 					}
@@ -105,7 +106,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 							stack.scale(0.4F, 0.4F, 0.4F);
 							stack.translate(0.0D, 0.25D, 0.0D);
 						}
-					} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+					} else if (itemstack.is(ItemTags.SKULLS) && BuiltInRegistries.ITEM.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
 						stack.mulPose(Axis.YP.rotationDegrees(180));
 						stack.translate(0.0D, 0.55D, -0.0D);
 						stack.scale(2.0F, 2.0F, 2.0F);
@@ -138,41 +139,21 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 		}
 	}
 
-	private void renderModel(PoseStack stack, MultiBufferSource buffer, int light, Model model, float red, float green, float blue, ResourceLocation armorResource) {
+	private void renderModel(PoseStack stack, MultiBufferSource buffer, int light, Model model, int color, ResourceLocation armorResource) {
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.armorCutoutNoCull(armorResource));
-		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, color);
 	}
 
-	private void renderTrim(ArmorMaterial material, PoseStack stack, MultiBufferSource buffer, int light, ArmorTrim trim, Model model) {
+	private void renderTrim(Holder<ArmorMaterial> material, PoseStack stack, MultiBufferSource buffer, int light, ArmorTrim trim, Model model) {
 		TextureAtlasSprite textureatlassprite = this.armorTrimAtlas.getSprite(trim.outerTexture(material));
-		VertexConsumer vertexconsumer = textureatlassprite.wrap(buffer.getBuffer(Sheets.armorTrimsSheet()));
-		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer vertexconsumer = textureatlassprite.wrap(buffer.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
+		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, -1);
 	}
 
 	private void renderGlint(PoseStack stack, MultiBufferSource buffer, int light, Model model) {
-		model.renderToBuffer(stack, buffer.getBuffer(RenderType.armorEntityGlint()), light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	//copy of HumanoidArmorLayer.getArmorResource, a method provided by forge
-	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
-		ArmorItem item = (ArmorItem) stack.getItem();
-		String texture = item.getMaterial().getName();
-		String domain = "minecraft";
-		int idx = texture.indexOf(':');
-		if (idx != -1) {
-			domain = texture.substring(0, idx);
-			texture = texture.substring(idx + 1);
-		}
-		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
-
-		s1 = ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
-		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
-
-		if (resourcelocation == null) {
-			resourcelocation = new ResourceLocation(s1);
-			ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
-		}
-
-		return resourcelocation;
+		model.renderToBuffer(stack, buffer.getBuffer(RenderType.armorEntityGlint()), light, OverlayTexture.NO_OVERLAY, -1);
 	}
 }
+
+
+

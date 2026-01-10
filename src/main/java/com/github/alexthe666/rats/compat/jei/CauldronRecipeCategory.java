@@ -4,6 +4,12 @@ import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -14,12 +20,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolder> {
 	public static final int WIDTH = 170;
@@ -29,7 +29,7 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 	private final IDrawable arrowIcon;
 
 	public CauldronRecipeCategory(IGuiHelper helper) {
-		ResourceLocation location = new ResourceLocation(RatsMod.MODID, "textures/gui/jei/cauldron_jei.png");
+		ResourceLocation location = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/jei/cauldron_jei.png");
 		this.background = helper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
 		this.arrowIcon = helper.drawableBuilder(location, 170, 0, 24, 16)
 				.buildAnimated(RatConfig.milkCauldronTime, IDrawableAnimated.StartDirection.LEFT, false);
@@ -73,3 +73,10 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 		}
 	}
 }
+
+
+
+
+
+
+

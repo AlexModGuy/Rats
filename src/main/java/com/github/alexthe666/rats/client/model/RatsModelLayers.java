@@ -38,11 +38,18 @@ public class RatsModelLayers {
 	public static final ModelLayerLocation RATLANTIS_ARMOR_OUTER = register("ratlantis_armor", "outer");
 
 	private static ModelLayerLocation register(String name, String type) {
-		return new ModelLayerLocation(new ResourceLocation(RatsMod.MODID, name), type);
+		return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name), type);
 	}
 
 	private static ModelLayerLocation register(String name) {
-		return new ModelLayerLocation(new ResourceLocation(RatsMod.MODID, name), "main");
+		return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name), "main");
 	}
 
 }
+
+
+
+
+
+
+

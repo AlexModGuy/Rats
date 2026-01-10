@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.message.RatCommandPacket;
 import com.github.alexthe666.rats.server.message.RatUpgradeVisibilityPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
@@ -18,13 +17,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RatScreen extends AbstractContainerScreen<RatMenu> {
-	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_inventory.png");
-	private static final ResourceLocation TEXTURE_BACKDROP = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_inventory_backdrop.png");
+	protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_inventory.png");
+	private static final ResourceLocation TEXTURE_BACKDROP = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_inventory_backdrop.png");
 	private int currentDisplayCommand = 0;
 	private final TamedRat rat;
 
@@ -37,7 +37,6 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		this.renderTooltip(graphics, mouseX, mouseY);
 	}
@@ -59,27 +58,27 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 			}));
 			this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
 				this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
+				PacketDistributor.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
 			}));
 			this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
 				this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
+				PacketDistributor.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
 			}));
 
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 15, this.rat.isSlotVisible(EquipmentSlot.CHEST), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 33, this.rat.isSlotVisible(EquipmentSlot.LEGS), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 51, this.rat.isSlotVisible(EquipmentSlot.FEET), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 
 		}
@@ -87,7 +86,6 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics);
 		int k = (this.width - this.imageWidth) / 2;
 		int l = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE_BACKDROP, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -140,3 +138,10 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 		}
 	}
 }
+
+
+
+
+
+
+

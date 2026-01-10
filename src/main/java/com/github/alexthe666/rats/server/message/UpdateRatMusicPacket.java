@@ -1,43 +1,59 @@
 package com.github.alexthe666.rats.server.message;
 
+import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.util.RatRecordSoundInstance;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.RecordItem;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.JukeboxPlayable;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+public record UpdateRatMusicPacket(int id, ItemStack recordStack) implements CustomPacketPayload {
 
-public record UpdateRatMusicPacket(int id, RecordItem record) {
+	public static final Type<UpdateRatMusicPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "update_rat_music"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateRatMusicPacket> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, UpdateRatMusicPacket::id,
+			ItemStack.OPTIONAL_STREAM_CODEC, UpdateRatMusicPacket::recordStack,
+			UpdateRatMusicPacket::new
+	);
 
-	public static UpdateRatMusicPacket decode(FriendlyByteBuf buf) {
-		return new UpdateRatMusicPacket(buf.readInt(), (RecordItem) buf.readRegistryIdUnsafe(ForgeRegistries.ITEMS));
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public static void encode(UpdateRatMusicPacket packet, FriendlyByteBuf buf) {
-		buf.writeInt(packet.id());
-		buf.writeRegistryIdUnsafe(ForgeRegistries.ITEMS, packet.record());
-	}
-
-	public static class Handler {
-		@SuppressWarnings("Convert2Lambda")
-		public static void handle(UpdateRatMusicPacket packet, Supplier<NetworkEvent.Context> context) {
-			context.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					if (Minecraft.getInstance().level != null) {
-						Entity entity = Minecraft.getInstance().level.getEntity(packet.id());
-						if (entity instanceof TamedRat rat) {
-							Minecraft.getInstance().getSoundManager().queueTickingSound(new RatRecordSoundInstance(rat, packet.record()));
-							Minecraft.getInstance().gui.setNowPlaying(packet.record().getDisplayName());
+	@SuppressWarnings("Convert2Lambda")
+	public static void handle(UpdateRatMusicPacket packet, IPayloadContext context) {
+		context.enqueueWork(new Runnable() {
+			@Override
+			public void run() {
+				if (Minecraft.getInstance().level != null) {
+					Entity entity = Minecraft.getInstance().level.getEntity(packet.id());
+					if (entity instanceof TamedRat rat) {
+						Minecraft.getInstance().getSoundManager().queueTickingSound(new RatRecordSoundInstance(rat, packet.recordStack()));
+						JukeboxPlayable playable = packet.recordStack().get(DataComponents.JUKEBOX_PLAYABLE);
+						if (playable != null) {
+							playable.song().unwrap(Minecraft.getInstance().level.registryAccess()).ifPresent(holder -> 
+								Minecraft.getInstance().gui.setNowPlaying(holder.value().description())
+							);
 						}
 					}
 				}
-			});
-			context.get().setPacketHandled(true);
-		}
+			}
+		});
 	}
 }
+
+
+
+
+
+
+

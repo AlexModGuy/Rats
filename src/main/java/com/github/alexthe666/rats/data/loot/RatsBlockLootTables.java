@@ -2,9 +2,12 @@ package com.github.alexthe666.rats.data.loot;
 
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -15,15 +18,18 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RatsBlockLootTables extends BlockLootSubProvider {
 
-	protected RatsBlockLootTables() {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+	private final HolderLookup.Provider registries;
+
+	protected RatsBlockLootTables(HolderLookup.Provider provider) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+		this.registries = provider;
 	}
 
 	@Override
@@ -40,7 +46,8 @@ public class RatsBlockLootTables extends BlockLootSubProvider {
 		this.dropSelf(RatsBlockRegistry.CURSED_GARBAGE.get());
 		this.dropSelf(RatsBlockRegistry.DYE_SPONGE.get());
 		this.dropSelf(RatsBlockRegistry.FISH_BARREL.get());
-		this.add(RatsBlockRegistry.GARBAGE_PILE.get(), createSilkTouchDispatchTable(RatsBlockRegistry.GARBAGE_PILE.get(), applyExplosionCondition(RatsBlockRegistry.GARBAGE_PILE.get(), LootItem.lootTableItem(RatsItemRegistry.PLASTIC_WASTE.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F))).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.1F, 0.14285715F, 0.25F, 1.0F)).otherwise(LootItem.lootTableItem(RatsBlockRegistry.GARBAGE_PILE.get())))));
+		HolderLookup.RegistryLookup<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		this.add(RatsBlockRegistry.GARBAGE_PILE.get(), createSilkTouchDispatchTable(RatsBlockRegistry.GARBAGE_PILE.get(), applyExplosionCondition(RatsBlockRegistry.GARBAGE_PILE.get(), LootItem.lootTableItem(RatsItemRegistry.PLASTIC_WASTE.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F))).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantmentLookup.getOrThrow(Enchantments.FORTUNE), 0.1F, 0.14285715F, 0.25F, 1.0F)).otherwise(LootItem.lootTableItem(RatsBlockRegistry.GARBAGE_PILE.get())))));
 		this.dropSelf(RatsBlockRegistry.JACK_O_RATERN.get());
 		this.dropSelf(RatsBlockRegistry.MANHOLE.get());
 		this.dropSelf(RatsBlockRegistry.MARBLED_CHEESE_RAW.get());
@@ -77,6 +84,13 @@ public class RatsBlockLootTables extends BlockLootSubProvider {
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		return RatsBlockRegistry.BLOCKS.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
+		return RatsBlockRegistry.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toList());
 	}
 }
+
+
+
+
+
+
+

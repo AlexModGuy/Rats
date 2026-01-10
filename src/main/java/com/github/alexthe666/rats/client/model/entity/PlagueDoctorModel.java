@@ -42,3 +42,10 @@ public class PlagueDoctorModel<T extends AbstractVillager> extends VillagerModel
 		return LayerDefinition.create(mesh, 64, 64);
 	}
 }
+
+
+
+
+
+
+

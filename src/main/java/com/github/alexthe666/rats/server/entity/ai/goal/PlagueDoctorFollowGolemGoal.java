@@ -77,3 +77,9 @@ public class PlagueDoctorFollowGolemGoal extends Goal {
 		}
 	}
 }
+
+
+
+
+
+

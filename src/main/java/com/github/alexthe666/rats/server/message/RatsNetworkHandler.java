@@ -1,41 +1,46 @@
 package com.github.alexthe666.rats.server.message;
 
 import com.github.alexthe666.rats.RatsMod;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+@EventBusSubscriber(modid = RatsMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class RatsNetworkHandler {
 
-	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(RatsMod.MODID, "channel"),
-			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-	);
+	@SubscribeEvent
+	public static void register(RegisterPayloadHandlersEvent event) {
+		PayloadRegistrar registrar = event.registrar(RatsMod.MODID);
 
-	@SuppressWarnings("UnusedAssignment")
-	public static void init() {
-		int id = 0;
-		CHANNEL.registerMessage(id++, ChangeRatlantisStatusPacket.class, ChangeRatlantisStatusPacket::encode, ChangeRatlantisStatusPacket::decode, ChangeRatlantisStatusPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, ClearRatRecipePacket.class, ClearRatRecipePacket::encode, ClearRatRecipePacket::decode, ClearRatRecipePacket.Handler::handle);
-		CHANNEL.registerMessage(id++, CycleRatRecipePacket.class, CycleRatRecipePacket::encode, CycleRatRecipePacket::decode, CycleRatRecipePacket.Handler::handle);
-		CHANNEL.registerMessage(id++, DismountRatPacket.class, DismountRatPacket::encode, DismountRatPacket::decode, DismountRatPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, ManageRatStaffPacket.class, ManageRatStaffPacket::encode, ManageRatStaffPacket::decode, ManageRatStaffPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, OpenRatScreenPacket.class, OpenRatScreenPacket::encode, OpenRatScreenPacket::decode, OpenRatScreenPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, RatCommandPacket.class, RatCommandPacket::encode, RatCommandPacket::decode, RatCommandPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, RatUpgradeVisibilityPacket.class, RatUpgradeVisibilityPacket::encode, RatUpgradeVisibilityPacket::decode, RatUpgradeVisibilityPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SetDancingRatPacket.class, SetDancingRatPacket::encode, SetDancingRatPacket::decode, SetDancingRatPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SyncArmSwingPacket.class, SyncArmSwingPacket::encode, SyncArmSwingPacket::decode, SyncArmSwingPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SyncPlaguePacket.class, SyncPlaguePacket::encode, SyncPlaguePacket::decode, SyncPlaguePacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SyncRatStaffPacket.class, SyncRatStaffPacket::encode, SyncRatStaffPacket::decode, SyncRatStaffPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SyncRatTagPacket.class, SyncRatTagPacket::encode, SyncRatTagPacket::decode, SyncRatTagPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, SyncThrownBlockPacket.class, SyncThrownBlockPacket::encode, SyncThrownBlockPacket::decode, SyncThrownBlockPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, UpdateCurdlerFluidPacket.class, UpdateCurdlerFluidPacket::encode, UpdateCurdlerFluidPacket::decode, UpdateCurdlerFluidPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, UpdateMobFilterPacket.class, UpdateMobFilterPacket::encode, UpdateMobFilterPacket::decode, UpdateMobFilterPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, UpdateRatFluidPacket.class, UpdateRatFluidPacket::encode, UpdateRatFluidPacket::decode, UpdateRatFluidPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, UpdateRatMusicPacket.class, UpdateRatMusicPacket::encode, UpdateRatMusicPacket::decode, UpdateRatMusicPacket.Handler::handle);
-		CHANNEL.registerMessage(id++, UpdateSelectedRatPacket.class, UpdateSelectedRatPacket::encode, UpdateSelectedRatPacket::decode, UpdateSelectedRatPacket.Handler::handle);
+		// Server -> Client packets
+		registrar.playToClient(ChangeRatlantisStatusPacket.TYPE, ChangeRatlantisStatusPacket.STREAM_CODEC, ChangeRatlantisStatusPacket::handle);
+		registrar.playToClient(ManageRatStaffPacket.TYPE, ManageRatStaffPacket.STREAM_CODEC, ManageRatStaffPacket::handle);
+		registrar.playToClient(OpenRatScreenPacket.TYPE, OpenRatScreenPacket.STREAM_CODEC, OpenRatScreenPacket::handle);
+		registrar.playToClient(SyncPlaguePacket.TYPE, SyncPlaguePacket.STREAM_CODEC, SyncPlaguePacket::handle);
+		registrar.playToClient(SyncThrownBlockPacket.TYPE, SyncThrownBlockPacket.STREAM_CODEC, SyncThrownBlockPacket::handle);
+		registrar.playToClient(UpdateCurdlerFluidPacket.TYPE, UpdateCurdlerFluidPacket.STREAM_CODEC, UpdateCurdlerFluidPacket::handle);
+		registrar.playToClient(UpdateRatFluidPacket.TYPE, UpdateRatFluidPacket.STREAM_CODEC, UpdateRatFluidPacket::handle);
+		registrar.playToClient(UpdateRatMusicPacket.TYPE, UpdateRatMusicPacket.STREAM_CODEC, UpdateRatMusicPacket::handle);
+		registrar.playToClient(UpdateSelectedRatPacket.TYPE, UpdateSelectedRatPacket.STREAM_CODEC, UpdateSelectedRatPacket::handle);
+
+		// Client -> Server packets
+		registrar.playToServer(ClearRatRecipePacket.TYPE, ClearRatRecipePacket.STREAM_CODEC, ClearRatRecipePacket::handle);
+		registrar.playToServer(CycleRatRecipePacket.TYPE, CycleRatRecipePacket.STREAM_CODEC, CycleRatRecipePacket::handle);
+		registrar.playToServer(DismountRatPacket.TYPE, DismountRatPacket.STREAM_CODEC, DismountRatPacket::handle);
+		registrar.playToServer(RatCommandPacket.TYPE, RatCommandPacket.STREAM_CODEC, RatCommandPacket::handle);
+		registrar.playToServer(RatUpgradeVisibilityPacket.TYPE, RatUpgradeVisibilityPacket.STREAM_CODEC, RatUpgradeVisibilityPacket::handle);
+		registrar.playToServer(SetDancingRatPacket.TYPE, SetDancingRatPacket.STREAM_CODEC, SetDancingRatPacket::handle);
+		registrar.playToServer(SyncArmSwingPacket.TYPE, SyncArmSwingPacket.STREAM_CODEC, SyncArmSwingPacket::handle);
+		registrar.playToServer(SyncRatStaffPacket.TYPE, SyncRatStaffPacket.STREAM_CODEC, SyncRatStaffPacket::handle);
+		registrar.playToServer(SyncRatTagPacket.TYPE, SyncRatTagPacket.STREAM_CODEC, SyncRatTagPacket::handle);
+		registrar.playToServer(UpdateMobFilterPacket.TYPE, UpdateMobFilterPacket.STREAM_CODEC, UpdateMobFilterPacket::handle);
 	}
 }
+
+
+
+
+
+
+

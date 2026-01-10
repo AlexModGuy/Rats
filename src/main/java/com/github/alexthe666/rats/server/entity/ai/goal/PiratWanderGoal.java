@@ -58,3 +58,10 @@ public class PiratWanderGoal extends Goal {
 		this.rat.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
 	}
 }
+
+
+
+
+
+
+

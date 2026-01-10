@@ -1,19 +1,19 @@
 package com.github.alexthe666.rats.client;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {
 
-	public final ForgeConfigSpec.BooleanValue plagueHearts;
-	public final ForgeConfigSpec.BooleanValue singleRowPlagueOverlay;
-	public final ForgeConfigSpec.BooleanValue synesthesiaShader;
-	public final ForgeConfigSpec.BooleanValue funnyFluteSound;
-	public final ForgeConfigSpec.BooleanValue ratFartNoises;
-	public final ForgeConfigSpec.BooleanValue ratGodGlint;
-	public final ForgeConfigSpec.BooleanValue ratAngelGlint;
+	public final ModConfigSpec.BooleanValue plagueHearts;
+	public final ModConfigSpec.BooleanValue singleRowPlagueOverlay;
+	public final ModConfigSpec.BooleanValue synesthesiaShader;
+	public final ModConfigSpec.BooleanValue funnyFluteSound;
+	public final ModConfigSpec.BooleanValue ratFartNoises;
+	public final ModConfigSpec.BooleanValue ratGodGlint;
+	public final ModConfigSpec.BooleanValue ratAngelGlint;
 
 
-	public ClientConfig(final ForgeConfigSpec.Builder builder) {
+	public ClientConfig(final ModConfigSpec.Builder builder) {
 		builder.push("general");
 		this.plagueHearts = buildBoolean(builder, "Plague Heart Overlay", true, "True if player UI has plague hearts render when the effect is active.");
 		this.singleRowPlagueOverlay = buildBoolean(builder, "Single Row Plague Heart Overlay", false, "If true, the plague heart overlay will render as a single row of hearts instead of multiple. Turn this on if you have a mod like Mantle or Armor Points ++ installed.");
@@ -24,7 +24,14 @@ public class ClientConfig {
 		this.ratAngelGlint = buildBoolean(builder, "Rat Angel Upgrade Glint", true, "If true, rats that have the rat upgrade: angel will display with a white overlay when respawning.");
 	}
 
-	private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
+	private static ModConfigSpec.BooleanValue buildBoolean(ModConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
 		return builder.comment(comment).translation(name).define(name, defaultValue);
 	}
 }
+
+
+
+
+
+
+

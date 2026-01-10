@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class RatDecorationItem extends Item implements RatCageDecoration {
 
@@ -33,10 +33,17 @@ public class RatDecorationItem extends Item implements RatCageDecoration {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(RatsLangConstants.CAGE_DECORATION).withStyle(ChatFormatting.GRAY));
 		if (this == RatsItemRegistry.RAT_WHEEL.get()) {
 			tooltip.add(Component.translatable("item.rats.rat_wheel.desc").withStyle(ChatFormatting.GRAY));
 		}
 	}
 }
+
+
+
+
+
+
+

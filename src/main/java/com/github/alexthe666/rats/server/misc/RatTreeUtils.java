@@ -1,14 +1,17 @@
 package com.github.alexthe666.rats.server.misc;
 
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +24,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -95,12 +99,14 @@ public class RatTreeUtils {
 	@Nullable
 	public static Block getSaplingFromLeaves(ServerLevel level, Block leaves) {
 		try {
-			LootTable loot = level.getServer().getLootData().getLootTable(leaves.getLootTable());
-			LootParams.Builder context = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe()).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
+			ResourceKey<LootTable> lootTableKey = leaves.getLootTable();
+			if (lootTableKey == null) return null;
+			LootTable loot = level.getServer().reloadableRegistries().getLootTable(lootTableKey);
+			LootParams.Builder context = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe(level)).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
-					if (ForgeRegistries.ITEMS.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
+					if (stack.is(ItemTags.SAPLINGS) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
 						return Block.byItem(stack.getItem());
 					}
 				}
@@ -111,9 +117,10 @@ public class RatTreeUtils {
 		return null;
 	}
 
-	private static ItemStack createMaxHoe() {
+	private static ItemStack createMaxHoe(ServerLevel level) {
 		ItemStack hoe = new ItemStack(Items.NETHERITE_HOE);
-		hoe.enchant(Enchantments.BLOCK_FORTUNE, Byte.MAX_VALUE);
+		Holder<Enchantment> fortune = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+		hoe.enchant(fortune, Byte.MAX_VALUE);
 		return hoe;
 	}
 
@@ -255,3 +262,10 @@ public class RatTreeUtils {
 		}
 	}
 }
+
+
+
+
+
+
+

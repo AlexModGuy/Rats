@@ -104,3 +104,10 @@ public class AutoCurdlerMenu extends AbstractContainerMenu {
 		return itemstack;
 	}
 }
+
+
+
+
+
+
+

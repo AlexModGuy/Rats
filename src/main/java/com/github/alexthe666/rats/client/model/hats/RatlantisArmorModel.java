@@ -46,3 +46,10 @@ public class RatlantisArmorModel extends AbstractHatModel {
 		AnimationUtils.bobModelPart(this.rightEar, ageInTicks, -1.0F);
 	}
 }
+
+
+
+
+
+
+

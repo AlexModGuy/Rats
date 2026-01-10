@@ -23,19 +23,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = RatsMod.MODID)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = RatsMod.MODID)
 public class RatsDataRegistry {
 
 	@SubscribeEvent
@@ -51,7 +49,12 @@ public class RatsDataRegistry {
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new RatsLangGenerator(output));
 
-		generator.addProvider(event.includeServer(), new RatsBannerPatternTags(output, provider, helper));
+		// BannerPatternGenerator must be added before BannerPatternTags to register patterns into the lookup
+		BannerPatternGenerator bannerPatternGenerator = new BannerPatternGenerator(output, provider);
+		generator.addProvider(event.includeServer(), bannerPatternGenerator);
+		// Use the updated lookup provider that includes our banner patterns
+		CompletableFuture<HolderLookup.Provider> bannerProvider = bannerPatternGenerator.getRegistryProvider();
+		generator.addProvider(event.includeServer(), new RatsBannerPatternTags(output, bannerProvider, helper));
 		generator.addProvider(event.includeServer(), new RatsBiomeTags(output, provider, helper));
 		RatsBlockTags tags = new RatsBlockTags(output, provider, helper);
 		generator.addProvider(event.includeServer(), tags);
@@ -61,17 +64,16 @@ public class RatsDataRegistry {
 
 		generator.addProvider(event.includeServer(), new RatsAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeServer(), new BiomeModifierGenerator(output, provider));
-		generator.addProvider(event.includeServer(), new RatsLootTables(output));
-		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output));
-		generator.addProvider(event.includeServer(), new RatsRecipes(output));
+		generator.addProvider(event.includeServer(), new RatsLootTables(output, provider));
+		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output, provider));
+		generator.addProvider(event.includeServer(), new RatsRecipes(output, provider));
 
 		Path mainPath = Paths.get("src/main/resources").toAbsolutePath();
 		generator.addProvider(event.includeServer(), new RatsStructureUpdater(new PackOutput(mainPath), helper));
 
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATS_PACK),
-				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES))));
 
 		DataGenerator.PackGenerator ratlantisPack = generator.getBuiltinDatapack(event.includeServer(), "ratlantis");
 
@@ -80,20 +82,26 @@ public class RatsDataRegistry {
 		TagsProvider<Block> ratlantisBlockTags = ratlantisPack.addProvider(ratOutput -> new RatlantisBlockTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisEntityTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisItemTags(ratOutput, provider, ratlantisBlockTags.contentsGetter(), helper));
-		ratlantisPack.addProvider(RatlantisLootTables::new);
-		ratlantisPack.addProvider(RatlantisRecipes::new);
+		ratlantisPack.addProvider(ratOutput -> new RatlantisLootTables(ratOutput, provider));
+		ratlantisPack.addProvider(ratOutput -> new RatlantisRecipes(ratOutput, provider));
 		ratlantisPack.addProvider(ratOutput -> new PackMetadataGenerator(ratOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATLANTIS_PACK),
-				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES))));
 	}
 
 	private static void addArmorTrims(ExistingFileHelper existingFileHelper) {
 		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
-			existingFileHelper.trackGenerated(new ResourceLocation("boots_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("chestplate_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("helmet_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("leggings_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.fromNamespaceAndPath("minecraft", "boots_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.fromNamespaceAndPath("minecraft", "chestplate_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.fromNamespaceAndPath("minecraft", "helmet_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.fromNamespaceAndPath("minecraft", "leggings_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
 		}
 	}
 }
+
+
+
+
+
+
+

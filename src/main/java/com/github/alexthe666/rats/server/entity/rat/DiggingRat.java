@@ -10,6 +10,7 @@ import com.github.alexthe666.rats.server.entity.ai.goal.RatRaidCropsGoal;
 import com.github.alexthe666.rats.server.misc.RatPathingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.level.ClipContext;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class DiggingRat extends AbstractRat {
@@ -43,7 +44,7 @@ public abstract class DiggingRat extends AbstractRat {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.canDigThroughBlocks() && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (this.canDigThroughBlocks() && this.level() instanceof ServerLevel serverLevel && EventHooks.canEntityGrief(serverLevel, this)) {
 			if (this.getOwner() == null && this.getNavigation().isDone() && this.digCooldown-- <= 0 && RatConfig.ratsDigBlocks) {
 				this.findDigTarget();
 				this.digTarget();
@@ -158,3 +159,10 @@ public abstract class DiggingRat extends AbstractRat {
 		return this.diggingPos == null && super.shouldPlayIdleAnimations();
 	}
 }
+
+
+
+
+
+
+

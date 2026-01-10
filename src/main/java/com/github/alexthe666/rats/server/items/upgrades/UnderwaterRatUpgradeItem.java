@@ -16,3 +16,10 @@ public class UnderwaterRatUpgradeItem extends BaseRatUpgradeItem implements Dama
 		return source.is(DamageTypeTags.WITCH_RESISTANT_TO) || source.is(DamageTypes.DROWN);
 	}
 }
+
+
+
+
+
+
+

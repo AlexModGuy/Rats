@@ -48,3 +48,10 @@ public class DutchratSmokeParticle extends TextureSheetParticle {
 		}
 	}
 }
+
+
+
+
+
+
+

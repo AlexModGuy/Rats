@@ -22,7 +22,7 @@ public class UpgradeVisibilityButton extends Button {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			int i = 30;
 			int j = 166;
@@ -33,3 +33,10 @@ public class UpgradeVisibilityButton extends Button {
 		}
 	}
 }
+
+
+
+
+
+
+

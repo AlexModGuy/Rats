@@ -41,7 +41,7 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 					if (capturedRat >= RatConfig.ratSackCapacity) break;
 					if (this.getOwner() instanceof LivingEntity owner && (rat.isOwnedBy(owner) || this.getOwner() instanceof Player player && player.isCreative())) {
 						capturedRat++;
-						RatSackItem.packRatIntoSack(sack, rat, capturedRat);
+						RatSackItem.packRatIntoSack(sack, rat, capturedRat, this.level().registryAccess());
 						this.level().broadcastEntityEvent(rat, (byte) 86);
 						rat.discard();
 					}
@@ -67,3 +67,10 @@ public class RatCaptureNet extends ThrowableItemProjectile {
 		return new ItemStack(RatsItemRegistry.RAT_CAPTURE_NET.get());
 	}
 }
+
+
+
+
+
+
+

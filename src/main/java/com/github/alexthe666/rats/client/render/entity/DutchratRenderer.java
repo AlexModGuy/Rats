@@ -5,8 +5,6 @@ import com.github.alexthe666.rats.client.model.entity.FlyingDutchratModel;
 import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.client.render.entity.layer.DutchratHelmetLayer;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,10 +15,12 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<Dutchrat>> {
 
-	private static final ResourceLocation DUTCHRAT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat.png");
+	private static final ResourceLocation DUTCHRAT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/dutchrat/dutchrat.png");
 
 	public DutchratRenderer(EntityRendererProvider.Context context) {
 		super(context, new FlyingDutchratModel<>(), 0.5F);
@@ -40,8 +40,8 @@ public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<
 	}
 
 	public static class DutchratGlowLayer<T extends Dutchrat, M extends FlyingDutchratModel<T>> extends RenderLayer<T, M> {
-		private static final ResourceLocation GLOW_1 = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_1.png");
-		private static final ResourceLocation GLOW_2 = new ResourceLocation(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_2.png");
+		private static final ResourceLocation GLOW_1 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_1.png");
+		private static final ResourceLocation GLOW_2 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/dutchrat/dutchrat_glow_2.png");
 
 		public DutchratGlowLayer(RenderLayerParent<T, M> parent) {
 			super(parent);
@@ -51,8 +51,15 @@ public class DutchratRenderer extends MobRenderer<Dutchrat, FlyingDutchratModel<
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			VertexConsumer glow1 = buffer.getBuffer(RatsRenderType.getGlowingTranslucent(GLOW_1));
 			VertexConsumer glow2 = buffer.getBuffer(RatsRenderType.getGlowingTranslucent(GLOW_2));
-			this.getParentModel().renderToBuffer(stack, glow1, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			this.getParentModel().renderToBuffer(stack, glow2, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+			this.getParentModel().renderToBuffer(stack, glow1, light, OverlayTexture.NO_OVERLAY, -1);
+			this.getParentModel().renderToBuffer(stack, glow2, light, OverlayTexture.NO_OVERLAY, 0x80FFFFFF);
 		}
 	}
 }
+
+
+
+
+
+
+

@@ -5,7 +5,9 @@ import com.github.alexthe666.rats.data.tags.RatsEntityTags;
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.server.entity.monster.boss.BlackDeath;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.FastColor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -61,10 +63,11 @@ public class PlagueBeast extends FeralRatlantean {
 	@Override
 	public void tick() {
 		super.tick();
-		double d0 = 0D;
-		double d1 = this.getRandom().nextGaussian() * 0.05D + 0.5D;
-		double d2 = 0D;
-		this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d0, d1, d2);
+		float d0 = 0F;
+		float d1 = (float) (this.getRandom().nextGaussian() * 0.05D + 0.5D);
+		float d2 = 0F;
+		int color = FastColor.ARGB32.colorFromFloat(1.0F, d0, d1, d2);
+		this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, color), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), 0, 0, 0);
 		if (this.getOwnerId() != null && this.getOwner() != null && this.getOwner() instanceof BlackDeath death) {
 			if (death.getTarget() != null && death.getTarget().isAlive()) {
 				this.setTarget(death.getTarget());
@@ -98,13 +101,13 @@ public class PlagueBeast extends FeralRatlantean {
 
 	@Override
 	public void doExtraEffect(LivingEntity target) {
-		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 1200));
+		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 1200));
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(OWNER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Override
@@ -176,3 +179,10 @@ public class PlagueBeast extends FeralRatlantean {
 		return super.isAlliedTo(entity) || entity.getType().is(RatsEntityTags.PLAGUE_LEGION);
 	}
 }
+
+
+
+
+
+
+
