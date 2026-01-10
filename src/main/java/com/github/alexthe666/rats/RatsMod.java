@@ -20,6 +20,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.behavior.GiveGiftToHero;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
@@ -173,11 +175,13 @@ public class RatsMod {
 			RatsCauldronRegistry.init();
 			RatsDispenserRegistry.init();
 
-			// TODO: Raid.RaiderType.create() doesn't exist in 1.21.1 - requires mixin or alternative approach
-			// Raid.RaiderType.create("RATS_PIPER", RatsEntityRegistry.PIED_PIPER.get(), new int[]{0, 0, 1, 0, 0, 1, 1, 2});
+			// Note: Raid.RaiderType.create() doesn't exist in 1.21.1
+			// The Pied Piper no longer participates in raids as a raider type
+			// Alternative: Could use events to handle raid spawning if needed
 			
-			// TODO: GiveGiftToHero.GIFTS is private in 1.21.1 - requires access transformer
-			// GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
+			// GiveGiftToHero.GIFTS - now accessible via access transformer
+			// In 1.21.1, GIFTS map uses ResourceKey<LootTable> instead of ResourceLocation
+			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV_KEY);
 
 			CauldronInteraction.WATER.map().put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);
 
@@ -196,10 +200,10 @@ public class RatsMod {
 			ComposterBlock.COMPOSTABLES.put(RatsItemRegistry.CONFIT_BYALDI.get(), 1.0F);
 			ComposterBlock.COMPOSTABLES.put(RatsItemRegistry.POTATO_KNISHES.get(), 1.0F);
 
-			// TODO: AxeItem.STRIPPABLES is protected in 1.21.1 - requires access transformer
-			// AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-			// AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_LOG.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
-			// AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_WOOD.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());
+			// AxeItem.STRIPPABLES - now accessible via access transformer
+			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
+			AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_LOG.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_LOG.get());
+			AxeItem.STRIPPABLES.put(RatlantisBlockRegistry.PIRAT_WOOD.get(), RatlantisBlockRegistry.STRIPPED_PIRAT_WOOD.get());
 		});
 		//wooooo caches ftw
 		if (RATLANTIS_ITEMS.isEmpty()) {
@@ -245,8 +249,7 @@ public class RatsMod {
 	//code take from TelepathicGrunt's gist: https://gist.github.com/TelepathicGrunt/4fdbc445ebcbcbeb43ac748f4b18f342
 	//1.18.2 version used, and modified, so it works in 1.19.4
 	//additions: a StructureProcessorList parameter to allow us to add a processor. (original code always used an empty processor, but some houses actually use processors)
-	// TODO: In 1.21.1, StructureTemplatePool.templates and rawTemplates are private
-	// This method requires access transformers or a different approach (e.g., using template pool JSON files)
+	// StructureTemplatePool.templates and rawTemplates are now accessible via access transformer
 	private void addBuildingToPool(Registry<StructureTemplatePool> templatePoolRegistry, Registry<StructureProcessorList> processorListRegistry, ResourceLocation poolRL, String nbtPieceRL, int weight, ResourceKey<StructureProcessorList> processor) {
 		Holder<StructureProcessorList> emptyProcessorList = processorListRegistry.getHolderOrThrow(processor);
 
@@ -255,12 +258,6 @@ public class RatsMod {
 
 		SinglePoolElement piece = SinglePoolElement.legacy(nbtPieceRL, emptyProcessorList).apply(StructureTemplatePool.Projection.RIGID);
 
-		// TODO: pool.templates and pool.rawTemplates are private - requires access transformer
-		// For now, village structures need to be added via data-driven JSON files instead
-		// Or add to accesstransformer.cfg:
-		// public net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool templates
-		// public net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool rawTemplates
-		/*
 		for (int i = 0; i < weight; i++) {
 			pool.templates.add(piece);
 		}
@@ -268,8 +265,7 @@ public class RatsMod {
 		List<Pair<StructurePoolElement, Integer>> listOfPieceEntries = new ArrayList<>(pool.rawTemplates);
 		listOfPieceEntries.add(new Pair<>(piece, weight));
 		pool.rawTemplates = listOfPieceEntries;
-		*/
-		LOGGER.debug("Rats: Village pool injection disabled - use JSON template pools instead. Would add {} to {}", nbtPieceRL, poolRL.toString());
+		LOGGER.debug("Rats: Successfully added {} to village pool {}", nbtPieceRL, poolRL.toString());
 	}
 
 	public static List<Pair<String, Component>> getCachedMobList(@Nullable Level level) {

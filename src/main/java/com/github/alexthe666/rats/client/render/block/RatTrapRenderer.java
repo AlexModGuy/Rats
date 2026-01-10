@@ -40,7 +40,7 @@ public class RatTrapRenderer implements BlockEntityRenderer<RatTrapBlockEntity> 
 		stack.mulPose(Axis.YP.rotationDegrees(rotation));
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
 		MODEL_RAT_TRAP.animateHinge(shutProgress);
-		MODEL_RAT_TRAP.renderToBuffer(stack, consumer, light, overlay) /* TODO: renderToBuffer signature changed in 1.21 */;
+		MODEL_RAT_TRAP.renderToBuffer(stack, consumer, light, overlay, -1);
 		if (!bait.isEmpty()) {
 			stack.scale(0.4F, 0.4F, 0.4F);
 			stack.translate(0, 3.4F, -0.5F);

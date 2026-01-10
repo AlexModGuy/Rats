@@ -54,6 +54,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -120,16 +121,15 @@ public class ModClientEvents {
 			ItemProperties.register(RatsItemRegistry.RAT_UPGRADE_DEMON.get(), ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "soul"), (stack, level, living, i) -> DemonRatUpgradeItem.isSoulVersion(stack) ? 1 : 0);
 		});
 
-		// TODO: MenuScreens.register is now private - use RegisterMenuScreensEvent
-// /* TODO: MenuScreens.register is private in 1.21 - use RegisterMenuScreensEvent */ MenuScreens.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
-		// TODO: MenuScreens.register is now private - use RegisterMenuScreensEvent
-// /* TODO: MenuScreens.register is private in 1.21 - use RegisterMenuScreensEvent */ MenuScreens.register(RatsMenuRegistry.RAT_UPGRADE_CONTAINER.get(), RatUpgradeScreen::new);
-		// TODO: MenuScreens.register is now private - use RegisterMenuScreensEvent
-// /* TODO: MenuScreens.register is private in 1.21 - use RegisterMenuScreensEvent */ MenuScreens.register(RatsMenuRegistry.RAT_UPGRADE_JR_CONTAINER.get(), JuryRiggedRatUpgradeScreen::new);
-		// TODO: MenuScreens.register is now private - use RegisterMenuScreensEvent
-// /* TODO: MenuScreens.register is private in 1.21 - use RegisterMenuScreensEvent */ MenuScreens.register(RatsMenuRegistry.UPGRADE_COMBINER_CONTAINER.get(), UpgradeCombinerScreen::new);
-		// TODO: MenuScreens.register is now private - use RegisterMenuScreensEvent
-// /* TODO: MenuScreens.register is private in 1.21 - use RegisterMenuScreensEvent */ MenuScreens.register(RatsMenuRegistry.AUTO_CURDLER_CONTAINER.get(), AutoCurdlerScreen::new);
+	}
+
+	@SubscribeEvent
+	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+		event.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
+		event.register(RatsMenuRegistry.RAT_UPGRADE_CONTAINER.get(), RatUpgradeScreen::new);
+		event.register(RatsMenuRegistry.RAT_UPGRADE_JR_CONTAINER.get(), JuryRiggedRatUpgradeScreen::new);
+		event.register(RatsMenuRegistry.UPGRADE_COMBINER_CONTAINER.get(), UpgradeCombinerScreen::new);
+		event.register(RatsMenuRegistry.AUTO_CURDLER_CONTAINER.get(), AutoCurdlerScreen::new);
 	}
 
 	@SubscribeEvent

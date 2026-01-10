@@ -7,6 +7,7 @@ import com.github.alexthe666.rats.server.entity.ai.navigation.navigation.PiratNa
 import com.github.alexthe666.rats.server.entity.monster.Pirat;
 import com.github.alexthe666.rats.server.entity.projectile.CheeseCannonball;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -45,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PiratBoat extends Mob {
 	private static final EntityDataAccessor<Boolean> FIRING = SynchedEntityData.defineId(PiratBoat.class, EntityDataSerializers.BOOLEAN);
-	public final ItemStack banner = this.generateBanner();
+	private ItemStack banner = null;
 	private final float[] paddlePositions = new float[2];
 	private boolean prevFire;
 	private int fireCooldown = 0;
@@ -63,10 +65,21 @@ public class PiratBoat extends Mob {
 		this.navigation = new PiratNavigation(this, this.level());
 	}
 
+	public ItemStack getBanner() {
+		if (this.banner == null) {
+			this.banner = this.generateBanner();
+		}
+		return this.banner;
+	}
+
 	private ItemStack generateBanner() {
-		// TODO: BannerPattern.Builder API changed in 1.21 - using simple banner for now
+		// 1.21 uses BannerPatternLayers with DataComponents instead of NBT tags
 		ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
-		// Banner patterns now use DataComponents system in 1.21
+		BannerPatternLayers bannerPatternLayers = new BannerPatternLayers.Builder()
+				.addIfRegistered(this.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.BANNER_PATTERN), 
+						RatsBannerPatternRegistry.RAT_AND_CROSSBONES_BANNER, DyeColor.WHITE)
+				.build();
+		itemstack.set(DataComponents.BANNER_PATTERNS, bannerPatternLayers);
 		return itemstack;
 	}
 

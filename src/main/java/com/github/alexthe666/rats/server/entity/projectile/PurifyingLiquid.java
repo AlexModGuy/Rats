@@ -80,10 +80,10 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 								if (living.getType().is(RatsEntityTags.PLAGUE_LEGION)) {
 									living.hurt(this.damageSources().magic(), 10);
 								}
-								// TODO: ZombieVillager.startConverting is private in 1.21.1 - needs accessor mixin or alternative approach
-								// if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {
-								// 	zomb.startConverting(this.getOwner() != null ? this.getOwner().getUUID() : null, 200);
-								// }
+								// ZombieVillager.startConverting is now accessible via access transformer
+								if (living instanceof ZombieVillager zomb && !zomb.isConverting()) {
+									zomb.startConverting(this.getOwner() != null ? this.getOwner().getUUID() : null, 200);
+								}
 							}
 						}
 					}

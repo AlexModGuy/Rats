@@ -31,7 +31,7 @@ public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> e
 		stack.mulPose(Axis.YP.rotationDegrees(90));
 		stack.translate(0F, -0.8F, -0.9F);
 		stack.scale(4F, 4F, 4F);
-		Minecraft.getInstance().getItemRenderer().renderStatic(entity.banner, ItemDisplayContext.GROUND, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), stack, buffer, null, 0);
+		Minecraft.getInstance().getItemRenderer().renderStatic(entity.getBanner(), ItemDisplayContext.GROUND, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), stack, buffer, null, 0);
 		stack.popPose();
 
 		stack.pushPose();

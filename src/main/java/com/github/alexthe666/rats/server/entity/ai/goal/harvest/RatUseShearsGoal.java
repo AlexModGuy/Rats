@@ -111,12 +111,21 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 
 	public void releaseBeesAndResetHoneyLevel(Level level, BlockState state, BlockPos pos, BeehiveBlockEntity.BeeReleaseStatus status) {
 		level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
-		// TODO: In 1.21.1, BeehiveBlockEntity.releaseAllOccupants() is private
-		// Bees will remain in hive but honey level is reset - consider alternative approach
+		// BeehiveBlockEntity.releaseAllOccupants is now accessible via access transformer
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof BeehiveBlockEntity beehive) {
-			// Cannot release bees - releaseAllOccupants is private in 1.21.1
-			// Bees inside will eventually leave on their own
+			List<Entity> list = beehive.releaseAllOccupants(state, status);
+			for (Entity entity : list) {
+				if (entity instanceof Bee bee) {
+					if (this.rat.position().distanceToSqr(entity.position()) <= 16.0D) {
+						if (!beehive.isSedated()) {
+							bee.setTarget(this.rat);
+						} else {
+							bee.setStayOutOfHiveCountdown(400);
+						}
+					}
+				}
+			}
 		}
 	}
 

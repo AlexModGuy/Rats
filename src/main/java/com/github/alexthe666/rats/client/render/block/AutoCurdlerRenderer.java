@@ -95,7 +95,7 @@ public class AutoCurdlerRenderer implements BlockEntityRenderer<AutoCurdlerBlock
 			renderMilk(buffer, stack, entity.getTank().getFluid(), light, overlay);
 		}
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
-		MODEL_AUTO_CURDLER.renderToBuffer(stack, consumer, light, overlay) /* TODO: renderToBuffer signature changed in 1.21 */;
+		MODEL_AUTO_CURDLER.renderToBuffer(stack, consumer, light, overlay, -1);
 		stack.popPose();
 		stack.popPose();
 	}
