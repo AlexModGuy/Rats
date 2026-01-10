@@ -92,8 +92,8 @@ public class DragonRatUpgradeItem extends BaseFlightRatUpgradeItem implements St
 	}
 
 	@Override
-	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/dragon.png"));
+	public ResourceLocation getEyeTexture(ItemStack stack) {
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/dragon.png");
 	}
 }
 

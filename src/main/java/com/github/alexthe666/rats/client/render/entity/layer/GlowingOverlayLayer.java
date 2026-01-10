@@ -1,6 +1,7 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.RatlanteanAutomatonModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.registry.RatlantisItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -18,16 +19,16 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 public class GlowingOverlayLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
-	private final RenderType renderType;
+	private final ResourceLocation texture;
 
 	public GlowingOverlayLayer(RenderLayerParent<T, M> parent, ResourceLocation texture) {
 		super(parent);
-		this.renderType = RenderType.eyes(texture);
+		this.texture = texture;
 	}
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		VertexConsumer consumer = buffer.getBuffer(this.renderType);
+		VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(this.texture));
 		this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 
 		if (this.getParentModel() instanceof RatlanteanAutomatonModel<?> automaton) {

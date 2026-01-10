@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.render.entity;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunBaseModel;
 import com.github.alexthe666.rats.client.model.entity.RattlingGunModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.misc.RattlingGun;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -49,7 +50,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 			stack.pushPose();
 			stack.translate(0, 1.6F, 0);
 			stack.mulPose(Axis.XP.rotationDegrees(180));
-			VertexConsumer ivertexbuilder2 = buffer.getBuffer(RenderType.eyes(TEXTURE_FIRING));
+			VertexConsumer ivertexbuilder2 = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(TEXTURE_FIRING));
 			stack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 			GUN_MODEL.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
 			GUN_MODEL.renderToBuffer(stack, ivertexbuilder2, light, OverlayTexture.NO_OVERLAY, -1);

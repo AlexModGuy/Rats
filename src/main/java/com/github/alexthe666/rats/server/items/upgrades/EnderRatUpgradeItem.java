@@ -27,8 +27,8 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 	}
 
 	@Override
-	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/ender.png"));
+	public ResourceLocation getEyeTexture(ItemStack stack) {
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/ender.png");
 	}
 
 	@Override

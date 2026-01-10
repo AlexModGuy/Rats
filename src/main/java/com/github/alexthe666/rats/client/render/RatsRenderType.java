@@ -7,6 +7,7 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -20,6 +21,15 @@ public class RatsRenderType extends RenderType {
 
 	protected static final RenderStateShard.ShaderStateShard RENDERTYPE_RATLANTIS_PORTAL_SHADER = new RenderStateShard.ShaderStateShard(ModClientEvents::getRendertypeRatlantisPortalShader);
 	private static final RenderType RATLANTIS_PORTAL = create("ratlantis_portal", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_RATLANTIS_PORTAL_SHADER).setTextureState(RenderStateShard.MultiTextureStateShard.builder().add(RatlantisPortalRenderer.PORTAL_BG, false, false).add(RatlantisPortalRenderer.PORTAL_FG, false, false).build()).createCompositeState(false));
+
+	// Custom transparency for eyes that works with Citadel models
+	protected static final RenderStateShard.TransparencyStateShard EYES_ALPHA_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("eyes_alpha_transparency", () -> {
+		RenderSystem.enableBlend();
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+	}, () -> {
+		RenderSystem.disableBlend();
+		RenderSystem.defaultBlendFunc();
+	});
 
 	protected static final RenderStateShard.TexturingStateShard RAINBOW_GLINT_TEXTURING = new RenderStateShard.TexturingStateShard("rainbow_glint_texturing", RatsRenderType::setupRainbowRendering, RenderSystem::resetTextureMatrix);
 	private static final RenderType ACE_GLINT = create("ace_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_GLINT_TRANSLUCENT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/special_dyes/ace_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
@@ -72,12 +82,50 @@ public class RatsRenderType extends RenderType {
 
 	public static RenderType getGlowingTranslucent(ResourceLocation location) {
 		RenderStateShard.TextureStateShard texture = new RenderStateShard.TextureStateShard(location, false, true);
-		return create("glowing_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false,
+		return create("glowing_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
 				RenderType.CompositeState.builder().setTextureState(texture)
 						.setShaderState(RenderStateShard.RENDERTYPE_ENERGY_SWIRL_SHADER)
 						.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+						.setLightmapState(LIGHTMAP)
+						.setOverlayState(OVERLAY)
+						.setCullState(NO_CULL)
 						.setOutputState(TRANSLUCENT_TARGET)
 						.setWriteMaskState(COLOR_DEPTH_WRITE)
+						.createCompositeState(true)
+		);
+	}
+
+	/**
+	 * A RenderType compatible with Citadel models that need LIGHTMAP and OVERLAY states.
+	 * Standard RenderType.eyes() doesn't include these, causing crashes with Citadel's AdvancedModelBox.
+	 */
+	public static RenderType getEyesAlphaEnabled(ResourceLocation location) {
+		RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder()
+				.setShaderState(RENDERTYPE_EYES_SHADER)
+				.setTextureState(new RenderStateShard.TextureStateShard(location, false, false))
+				.setTransparencyState(EYES_ALPHA_TRANSPARENCY)
+				.setCullState(NO_CULL)
+				.setLightmapState(LIGHTMAP)
+				.setOverlayState(OVERLAY)
+				.setDepthTestState(EQUAL_DEPTH_TEST)
+				.createCompositeState(true);
+		return create("eyes_alpha", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, rendertype$compositestate);
+	}
+
+	/**
+	 * A translucent emissive RenderType compatible with Citadel models.
+	 */
+	public static RenderType getTranslucentEmissive(ResourceLocation location) {
+		RenderStateShard.TextureStateShard texture = new RenderStateShard.TextureStateShard(location, false, false);
+		return create("translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+				RenderType.CompositeState.builder()
+						.setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+						.setTextureState(texture)
+						.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+						.setCullState(NO_CULL)
+						.setLightmapState(LIGHTMAP)
+						.setOverlayState(OVERLAY)
+						.setWriteMaskState(COLOR_WRITE)
 						.createCompositeState(true)
 		);
 	}

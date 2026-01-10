@@ -3,6 +3,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.EmptyModel;
 import com.github.alexthe666.rats.client.model.entity.RatKingModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.monster.boss.RatKing;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -18,7 +19,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
-	private static final RenderType TEXTURE_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
+	private static final ResourceLocation TEXTURE_EYES = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png");
 	private static final RenderType TEXTURE_0 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/blue.png"));
 	private static final RenderType TEXTURE_1 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/black.png"));
 	private static final RenderType TEXTURE_2 = RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/brown.png"));
@@ -55,7 +56,7 @@ public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
 			RAT_MODEL.setupAnim(king, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			RAT_MODEL.renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), -1);
 			if (brightness < 7) {
-				VertexConsumer eyes = buffer.getBuffer(TEXTURE_EYES);
+				VertexConsumer eyes = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(TEXTURE_EYES));
 				RAT_MODEL.renderToBuffer(stack, eyes, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), -1);
 			}
 

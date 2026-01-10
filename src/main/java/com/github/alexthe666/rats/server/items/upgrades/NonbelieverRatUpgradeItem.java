@@ -25,8 +25,8 @@ public class NonbelieverRatUpgradeItem extends StatBoostingRatUpgradeItem implem
 	}
 
 	@Override
-	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/nonbeliever.png"));
+	public ResourceLocation getEyeTexture(ItemStack stack) {
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/nonbeliever.png");
 	}
 }
 

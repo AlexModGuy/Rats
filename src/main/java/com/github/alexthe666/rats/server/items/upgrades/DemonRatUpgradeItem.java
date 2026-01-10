@@ -38,11 +38,11 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 	}
 
 	@Override
-	public RenderType getEyeTexture(ItemStack stack) {
+	public ResourceLocation getEyeTexture(ItemStack stack) {
 		if (isSoulVersion(stack)) {
-			return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat_eye.png"));
+			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat_eye.png");
 		}
-		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png"));
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png");
 	}
 
 	@Override

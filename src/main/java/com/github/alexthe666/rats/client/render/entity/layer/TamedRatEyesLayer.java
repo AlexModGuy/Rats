@@ -1,14 +1,15 @@
 package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.ChangesTextureUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.GlowingEyesUpgrade;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -24,7 +25,7 @@ public class TamedRatEyesLayer extends RatEyesLayer<TamedRat, AbstractRatModel<T
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, TamedRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (RatUpgradeUtils.forEachUpgradeBool(rat, item -> item instanceof GlowingEyesUpgrade, false)) {
 			AtomicBoolean skip = new AtomicBoolean(false);
-			AtomicReference<RenderType> tex = new AtomicReference<>(EYES);
+			AtomicReference<ResourceLocation> tex = new AtomicReference<>(EYES_TEXTURE);
 			RatUpgradeUtils.forEachUpgrade(rat, item -> item instanceof GlowingEyesUpgrade, (stack1, slot) -> {
 				if (rat.isSlotVisible(slot)) {
 					tex.set(((GlowingEyesUpgrade) stack1.getItem()).getEyeTexture(stack1));
@@ -35,7 +36,7 @@ public class TamedRatEyesLayer extends RatEyesLayer<TamedRat, AbstractRatModel<T
 
 			if (!skip.get()) {
 				if (tex.get() != null || RatUpgradeUtils.forEachUpgradeBool(rat, upgrade -> upgrade instanceof ChangesTextureUpgrade eyeTex && eyeTex.makesEyesGlowByDefault(), false)) {
-					VertexConsumer consumer = buffer.getBuffer(tex.get());
+					VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(tex.get()));
 					this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 				}
 			}

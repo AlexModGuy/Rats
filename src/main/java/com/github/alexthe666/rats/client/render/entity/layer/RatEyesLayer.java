@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.AbstractRatModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.rat.AbstractRat;
 import com.github.alexthe666.rats.server.entity.rat.Rat;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,8 +17,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class RatEyesLayer<T extends AbstractRat, M extends AbstractRatModel<T>> extends RenderLayer<T, M> {
-	protected static final RenderType EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png"));
-	protected static final RenderType PLAGUE_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/plague.png"));
+	protected static final ResourceLocation EYES_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/glow.png");
+	protected static final ResourceLocation PLAGUE_EYES_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/plague.png");
 
 	public RatEyesLayer(RenderLayerParent<T, M> parent) {
 		super(parent);
@@ -37,10 +38,10 @@ public class RatEyesLayer<T extends AbstractRat, M extends AbstractRatModel<T>> 
 			brightness = Math.max(i, j);
 		}
 		if (rat instanceof Rat plagueable && plagueable.hasPlague()) {
-			VertexConsumer consumer = buffer.getBuffer(PLAGUE_EYES);
+			VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(PLAGUE_EYES_TEXTURE));
 			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 		} else if (brightness < 7) {
-			VertexConsumer consumer = buffer.getBuffer(EYES);
+			VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(EYES_TEXTURE));
 			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 		}
 	}

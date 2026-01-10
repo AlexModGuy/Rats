@@ -2,6 +2,7 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.entity.RatlanteanRatbotModel;
+import com.github.alexthe666.rats.client.render.RatsRenderType;
 import com.github.alexthe666.rats.server.entity.monster.RatlanteanRatbot;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,10 +14,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class RatbotEyesLayer extends RenderLayer<RatlanteanRatbot, RatlanteanRatbotModel<RatlanteanRatbot>> {
-	private static final RenderType TEXTURE_EYES_0 = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_0.png"));
-	private static final RenderType TEXTURE_EYES_1 = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_1.png"));
-	private static final RenderType TEXTURE_EYES_2 = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_2.png"));
-	private static final RenderType TEXTURE_EYES_3 = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_3.png"));
+	private static final ResourceLocation TEXTURE_EYES_0 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_0.png");
+	private static final ResourceLocation TEXTURE_EYES_1 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_1.png");
+	private static final ResourceLocation TEXTURE_EYES_2 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_2.png");
+	private static final ResourceLocation TEXTURE_EYES_3 = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_ratbot/ratlantean_ratbot_eyes_3.png");
 
 	public RatbotEyesLayer(RenderLayerParent<RatlanteanRatbot, RatlanteanRatbotModel<RatlanteanRatbot>> parent) {
 		super(parent);
@@ -24,11 +25,11 @@ public class RatbotEyesLayer extends RenderLayer<RatlanteanRatbot, RatlanteanRat
 
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, RatlanteanRatbot entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		VertexConsumer consumer = buffer.getBuffer(this.getTextureForTick(entity.tickCount * 3));
+		VertexConsumer consumer = buffer.getBuffer(RatsRenderType.getEyesAlphaEnabled(this.getTextureForTick(entity.tickCount * 3)));
 		this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, -1);
 	}
 
-	private RenderType getTextureForTick(int tickCount) {
+	private ResourceLocation getTextureForTick(int tickCount) {
 		int tickCap = tickCount % 40;
 		if (tickCap > 19) {
 			tickCap = tickCap - 20;
