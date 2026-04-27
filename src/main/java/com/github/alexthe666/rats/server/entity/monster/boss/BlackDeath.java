@@ -42,6 +42,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class BlackDeath extends Monster implements RatSummoner {
 
@@ -103,13 +104,13 @@ public class BlackDeath extends Monster implements RatSummoner {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> living.getMobType() != MobType.UNDEAD).test(entity)));
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(IS_SUMMONING, false);
-		this.getEntityData().define(MELEE_ATTACKING, false);
-		this.getEntityData().define(RAT_COUNT, 0);
-		this.getEntityData().define(CLOUD_COUNT, 0);
-		this.getEntityData().define(BEAST_COUNT, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(IS_SUMMONING, false);
+		builder.define(MELEE_ATTACKING, false);
+		builder.define(RAT_COUNT, 0);
+		builder.define(CLOUD_COUNT, 0);
+		builder.define(BEAST_COUNT, 0);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.HolderLookup;
 
 public class DecoratedRatCageBlockEntity extends BlockEntity {
 	private NonNullList<ItemStack> containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
@@ -37,15 +38,15 @@ public class DecoratedRatCageBlockEntity extends BlockEntity {
 		return this.saveWithId();
 	}
 
-	public void saveAdditional(CompoundTag compound) {
-		ContainerHelper.saveAllItems(compound, this.containedDeco);
-		super.saveAdditional(compound);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		ContainerHelper.saveAllItems(compound, this.containedDeco, registries);
+		super.saveAdditional(compound, registries);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		containedDeco = NonNullList.withSize(1, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(compound, containedDeco);
+		ContainerHelper.loadAllItems(compound, containedDeco, registries);
 	}
 
 	public ItemStack getContainedItem() {

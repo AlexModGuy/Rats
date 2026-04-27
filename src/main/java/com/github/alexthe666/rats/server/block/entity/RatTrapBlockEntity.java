@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.core.HolderLookup;
 
 public class RatTrapBlockEntity extends BlockEntity {
 
@@ -75,17 +76,17 @@ public class RatTrapBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		ContainerHelper.saveAllItems(compound, this.baitStack);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		ContainerHelper.saveAllItems(compound, this.baitStack, registries);
 		compound.putFloat("ShutProgress", this.shutProgress);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, registries);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		this.baitStack = NonNullList.withSize(1, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(compound, this.baitStack);
+		ContainerHelper.loadAllItems(compound, this.baitStack, registries);
 		this.shutProgress = compound.getFloat("ShutProgress");
 	}
 

@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.core.HolderLookup;
 
 public class RatlantisTokenBlockEntity extends BlockEntity {
 
@@ -23,13 +24,13 @@ public class RatlantisTokenBlockEntity extends BlockEntity {
 		super(RatlantisBlockEntityRegistry.TOKEN.get(), pos, state);
 	}
 
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		compound.putInt("TicksExisted", tickCount);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, registries);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		tickCount = compound.getInt("TicksExisted");
 	}
 

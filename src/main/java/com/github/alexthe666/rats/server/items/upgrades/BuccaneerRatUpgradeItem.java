@@ -30,9 +30,9 @@ public class BuccaneerRatUpgradeItem extends BaseRatUpgradeItem implements Holds
 		stack.scale(0.5F, 0.5F, 0.5F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PiratBoatSailLayer.TEXTURE_PIRATE_CANNON));
 		VertexConsumer fireConsumer = buffer.getBuffer(RenderType.eyes(PiratBoatSailLayer.TEXTURE_PIRATE_CANNON_FIRE));
-		PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		if (rat.getVisualFlag()) {
-			PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, fireConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			PiratBoatSailLayer.MODEL_PIRAT_CANNON.renderToBuffer(stack, fireConsumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		}
 		stack.popPose();
 		stack.popPose();

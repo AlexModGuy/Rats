@@ -119,7 +119,7 @@ public class RunningRatParticle extends Particle {
 		MultiBufferSource.BufferSource source = Minecraft.getInstance().renderBuffers().bufferSource();
 		VertexConsumer vertexconsumer = source.getBuffer(this.renderType);
 		this.model.setupAnim(null, Mth.lerp(partialTicks, this.oldAge, this.age) * 0.35F, 1, Mth.lerp(partialTicks, this.oldAge, this.age), partialTicks, 0);
-		this.model.renderToBuffer(posestack, vertexconsumer, this.getLightColor(partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(posestack, vertexconsumer, this.getLightColor(partialTicks), OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		source.endBatch();
 		posestack.popPose();
 	}

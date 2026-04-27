@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class PlagueCloud extends Monster {
 
@@ -115,9 +116,9 @@ public class PlagueCloud extends Monster {
 		return d0 * d0 + d1 * d1 + d2 * d2;
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(OWNER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	protected void registerGoals() {
@@ -134,7 +135,7 @@ public class PlagueCloud extends Monster {
 	public boolean doHurtTarget(Entity entity) {
 		boolean flag = super.doHurtTarget(entity);
 		if (flag && entity instanceof LivingEntity living) {
-			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 600));
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 600));
 		}
 		return flag;
 	}

@@ -52,10 +52,10 @@ public class RatKingLayer extends RenderLayer<RatKing, EmptyModel<RatKing>> {
 			stack.scale(0.6F, 0.6F, 0.6F);
 			RAT_MODEL.setIndex(i);
 			RAT_MODEL.setupAnim(king, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			RAT_MODEL.renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			RAT_MODEL.renderToBuffer(stack, consumer, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 0xFFFFFFFF);
 			if (brightness < 7) {
 				VertexConsumer eyes = buffer.getBuffer(TEXTURE_EYES);
-				RAT_MODEL.renderToBuffer(stack, eyes, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+				RAT_MODEL.renderToBuffer(stack, eyes, light, LivingEntityRenderer.getOverlayCoords(king, 0.0F), 0xFFFFFFFF);
 			}
 
 			stack.popPose();

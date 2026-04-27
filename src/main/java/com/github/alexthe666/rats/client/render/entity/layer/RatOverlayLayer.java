@@ -25,11 +25,11 @@ public class RatOverlayLayer extends RenderLayer<Rat, RatModel<Rat>> {
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, Rat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (rat.hasPlague()) {
 			VertexConsumer consumer = buffer.getBuffer(PLAGUE_TEX);
-			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		}
 		if (rat.hasToga()) {
 			VertexConsumer consumer = buffer.getBuffer(TOGA_TEX);
-			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		}
 	}
 }

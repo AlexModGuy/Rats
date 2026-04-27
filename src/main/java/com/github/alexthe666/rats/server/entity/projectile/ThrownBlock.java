@@ -27,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class ThrownBlock extends Entity {
 	public LivingEntity shootingEntity;
@@ -46,8 +47,8 @@ public class ThrownBlock extends Entity {
 		this.shootingEntity = entityNeoRatlantean;
 	}
 
-	protected void defineSynchedData() {
-		this.getEntityData().define(CARRIED_BLOCK, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(CARRIED_BLOCK, Optional.empty());
 	}
 
 	public void setHeldBlockState(@Nullable BlockState state) {

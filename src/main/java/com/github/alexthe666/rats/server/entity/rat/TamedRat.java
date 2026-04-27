@@ -105,6 +105,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class TamedRat extends InventoryRat {
 
@@ -272,22 +273,22 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TOGA, false);
-		this.getEntityData().define(DANCING, false);
-		this.getEntityData().define(DANCE_MOVES, 0);
-		this.getEntityData().define(HELD_RF, 0);
-		this.getEntityData().define(RESPAWN_COUNTDOWN, 0);
-		this.getEntityData().define(VISUAL_FLAG, false);
-		this.getEntityData().define(DYED, false);
-		this.getEntityData().define(FLYING, false);
-		this.getEntityData().define(DYE_COLOR, (byte) 0);
-		this.getEntityData().define(DEPOSIT_POS, Optional.empty());
-		this.getEntityData().define(PICKUP_POS, Optional.empty());
-		this.getEntityData().define(IS_IN_WHEEL, false);
-		this.getEntityData().define(SPECIAL_DYE, "rainbow");
-		this.getEntityData().define(MOUNT_RESPAWN_COOLDOWN, 20);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TOGA, false);
+		builder.define(DANCING, false);
+		builder.define(DANCE_MOVES, 0);
+		builder.define(HELD_RF, 0);
+		builder.define(RESPAWN_COUNTDOWN, 0);
+		builder.define(VISUAL_FLAG, false);
+		builder.define(DYED, false);
+		builder.define(FLYING, false);
+		builder.define(DYE_COLOR, (byte) 0);
+		builder.define(DEPOSIT_POS, Optional.empty());
+		builder.define(PICKUP_POS, Optional.empty());
+		builder.define(IS_IN_WHEEL, false);
+		builder.define(SPECIAL_DYE, "rainbow");
+		builder.define(MOUNT_RESPAWN_COOLDOWN, 20);
 	}
 
 	public void switchNavigator(int type) {

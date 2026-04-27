@@ -18,7 +18,7 @@ public class FeralBiteRatUpgradeItem extends BaseRatUpgradeItem implements PostA
 	@Override
 	public void afterHit(TamedRat rat, LivingEntity target) {
 		target.hurt(rat.damageSources().mobAttack(rat), 5.0F);
-		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 600));
+		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 600));
 		target.addEffect(new MobEffectInstance(MobEffects.POISON, 600));
 	}
 

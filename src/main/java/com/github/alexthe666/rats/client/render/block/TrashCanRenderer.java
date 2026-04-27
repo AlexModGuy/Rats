@@ -32,7 +32,7 @@ public class TrashCanRenderer implements BlockEntityRenderer<TrashCanBlockEntity
 		stack.mulPose(Axis.YP.rotationDegrees(rotation));
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
 		MODEL_TRASH_CAN.animate(entity);
-		MODEL_TRASH_CAN.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_TRASH_CAN.renderToBuffer(stack, consumer, light, overlay, 0xFFFFFFFF);
 		stack.popPose();
 	}
 }

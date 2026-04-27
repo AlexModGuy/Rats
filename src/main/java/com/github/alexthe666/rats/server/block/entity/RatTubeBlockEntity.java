@@ -16,6 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Objects;
+import net.minecraft.core.HolderLookup;
 
 public class RatTubeBlockEntity extends BlockEntity {
 
@@ -83,15 +84,15 @@ public class RatTubeBlockEntity extends BlockEntity {
 		return false;
 	}
 
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		compound.putBoolean("RatNode", isNode);
 		compound.putInt("OpenSide", opening == null ? -1 : opening.ordinal());
 		compound.putInt("TubeColor", color);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, registries);
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		isNode = compound.getBoolean("RatNode");
 		int i = compound.getInt("OpenSide");
 		if (i == -1) {

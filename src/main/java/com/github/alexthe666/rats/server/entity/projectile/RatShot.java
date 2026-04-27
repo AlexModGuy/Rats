@@ -26,14 +26,15 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class RatShot extends ThrowableProjectile {
 
 	private static final EntityDataAccessor<String> RAT_COLOR = SynchedEntityData.defineId(RatShot.class, EntityDataSerializers.STRING);
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(RAT_COLOR, RatVariant.getVariantId(RatVariant.getRandomVariant(this.random, false)));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(RAT_COLOR, RatVariant.getVariantId(RatVariant.getRandomVariant(this.random, false)));
 	}
 
 	public RatShot(EntityType<? extends ThrowableProjectile> type, Level level) {

@@ -38,10 +38,10 @@ public class RatEyesLayer<T extends AbstractRat, M extends AbstractRatModel<T>> 
 		}
 		if (rat instanceof Rat plagueable && plagueable.hasPlague()) {
 			VertexConsumer consumer = buffer.getBuffer(PLAGUE_EYES);
-			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		} else if (brightness < 7) {
 			VertexConsumer consumer = buffer.getBuffer(EYES);
-			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		}
 	}
 }

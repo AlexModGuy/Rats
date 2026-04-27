@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class PiratWoodBoat extends Boat {
 
@@ -49,9 +50,9 @@ public class PiratWoodBoat extends Boat {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BOAT_TYPE, Type.PIRAT.ordinal());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BOAT_TYPE, Type.PIRAT.ordinal());
 	}
 
 	@Override

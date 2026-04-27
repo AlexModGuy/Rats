@@ -36,7 +36,7 @@ public class RatProtectorRenderer extends AbstractRatRenderer<RatProtector, RatM
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, RatProtector rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			VertexConsumer vertexBuilder = buffer.getBuffer(RatsRenderType.getYellowGlint());
 			this.getParentModel().setupAnim(rat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 0xFF808080);
 
 		}
 	}

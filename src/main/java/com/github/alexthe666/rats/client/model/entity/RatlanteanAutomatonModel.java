@@ -172,7 +172,7 @@ public class RatlanteanAutomatonModel<T extends Mob & IAnimatedEntity> extends A
 	}
 
 	public void renderHead(PoseStack stack, VertexConsumer buffer, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.headBase.render(stack, buffer, light, overlay, red, green, blue, alpha);
+		this.headBase.render(stack, buffer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(alpha, red, green, blue));
 	}
 
 	public void setTERotationAngles(float tickCount) {

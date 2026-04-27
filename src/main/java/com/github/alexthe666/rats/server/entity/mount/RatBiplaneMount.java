@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class RatBiplaneMount extends RatMountBase implements Plane {
 
@@ -73,10 +74,10 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(FIRING, false);
-		this.getEntityData().define(PLANE_PITCH, 0F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(FIRING, false);
+		builder.define(PLANE_PITCH, 0F);
 	}
 
 	public boolean removeWhenFarAway(double dist) {

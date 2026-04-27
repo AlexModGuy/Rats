@@ -41,7 +41,7 @@ public class UpgradeCombinerRenderer implements BlockEntityRenderer<UpgradeCombi
 		stack.mulPose(Axis.ZP.rotationDegrees(180));
 		stack.scale(1.5F, 1.5F, 1.5F);
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
-		MODEL_SPIRIT.renderToBuffer(stack, consumer, 244, overlay, 1.0F, 1.0F, 1.0F, 0.5F);
+		MODEL_SPIRIT.renderToBuffer(stack, consumer, 244, overlay, 0x80FFFFFF);
 		stack.popPose();
 	}
 }

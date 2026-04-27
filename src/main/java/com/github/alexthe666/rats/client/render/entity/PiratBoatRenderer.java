@@ -55,7 +55,7 @@ public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>>
 		RenderType rendertype = this.getRenderType(entity, flag, flag1, flag2);
 		if (rendertype != null) {
 			VertexConsumer vertexconsumer = buffer.getBuffer(rendertype);
-			this.getModel().renderToBuffer(stack, vertexconsumer, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
+			this.getModel().renderToBuffer(stack, vertexconsumer, light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), net.minecraft.util.FastColor.ARGB32.colorFromFloat(flag1 ? 0.15F : 1.0F, 1.0F, 1.0F, 1.0F));
 		}
 		VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.waterMask());
 		this.getModel().getWaterPatch().render(stack, vertexconsumer1, light, OverlayTexture.NO_OVERLAY);

@@ -26,9 +26,9 @@ public class PlagueHealerItem extends Item {
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
-		if (living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+		if (living.hasEffect(RatsEffectRegistry.PLAGUE)) {
 			if (level.getRandom().nextDouble() <= this.healChance) {
-				living.removeEffect(RatsEffectRegistry.PLAGUE.get());
+				living.removeEffect(RatsEffectRegistry.PLAGUE);
 			}
 		}
 		if (stack.is(RatsItemRegistry.PLAGUE_STEW.get())) {

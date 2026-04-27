@@ -25,7 +25,7 @@ public class RatbotEyesLayer extends RenderLayer<RatlanteanRatbot, RatlanteanRat
 	@Override
 	public void render(PoseStack stack, MultiBufferSource buffer, int light, RatlanteanRatbot entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		VertexConsumer consumer = buffer.getBuffer(this.getTextureForTick(entity.tickCount * 3));
-		this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.getParentModel().renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	private RenderType getTextureForTick(int tickCount) {

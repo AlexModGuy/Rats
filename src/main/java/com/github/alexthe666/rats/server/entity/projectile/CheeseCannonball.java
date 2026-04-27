@@ -13,6 +13,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class CheeseCannonball extends ThrowableProjectile implements ItemSupplier {
 
@@ -25,7 +26,7 @@ public class CheeseCannonball extends ThrowableProjectile implements ItemSupplie
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 

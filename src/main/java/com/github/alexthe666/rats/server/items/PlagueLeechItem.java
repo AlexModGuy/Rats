@@ -16,11 +16,11 @@ public class PlagueLeechItem extends PlagueHealerItem {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		if (!player.isCreative() && player.hasEffect(RatsEffectRegistry.PLAGUE.get()) && player.invulnerableTime <= 0) {
+		if (!player.isCreative() && player.hasEffect(RatsEffectRegistry.PLAGUE) && player.invulnerableTime <= 0) {
 			player.getItemInHand(hand).shrink(1);
 			player.hurt(level.damageSources().cactus(), 2);
 			if (level.getRandom().nextDouble() <= 0.5F) {
-				player.removeEffect(RatsEffectRegistry.PLAGUE.get());
+				player.removeEffect(RatsEffectRegistry.PLAGUE);
 			}
 			return InteractionResultHolder.consume(player.getItemInHand(hand));
 		}

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class NeoRatlantean extends Monster {
 
@@ -98,9 +99,9 @@ public class NeoRatlantean extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(COLOR_VARIANT, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(COLOR_VARIANT, 0);
 	}
 
 	public int getColorVariant() {

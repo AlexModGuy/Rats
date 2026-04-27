@@ -28,6 +28,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class DemonRat extends AbstractRat implements Enemy {
 
@@ -41,9 +42,9 @@ public class DemonRat extends AbstractRat implements Enemy {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(SOUL_VARIANT, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(SOUL_VARIANT, false);
 	}
 
 	@Override

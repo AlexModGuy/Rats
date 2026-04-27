@@ -44,7 +44,7 @@ public class DemonRatRenderer extends AbstractRatRenderer<DemonRat, RatModel<Dem
 		@Override
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, DemonRat rat, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.eyes(rat.isSoulVariant() ? SOUL_EYE_TEXTURE : BASE_EYE_TEXTURE));
-			this.getParentModel().renderToBuffer(stack, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		}
 	}
 }

@@ -44,6 +44,6 @@ public class DutchratBellRenderer implements BlockEntityRenderer<DutchratBellBlo
 		this.bellBody.xRot = f1;
 		this.bellBody.zRot = f2;
 		VertexConsumer consumer = buffer.getBuffer(TEXTURE);
-		this.bellBody.render(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 0.5F);
+		this.bellBody.render(stack, consumer, light, overlay, 0x80FFFFFF);
 	}
 }

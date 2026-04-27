@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class RatKing extends Monster implements RatSummoner {
 	public static final int RAT_COUNT = 15;
@@ -52,10 +53,10 @@ public class RatKing extends Monster implements RatSummoner {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(RAT_COLORS, "000000000000000");
-		this.getEntityData().define(SUMMONED_RATS, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(RAT_COLORS, "000000000000000");
+		builder.define(SUMMONED_RATS, 0);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

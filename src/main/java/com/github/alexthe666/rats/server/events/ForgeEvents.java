@@ -114,8 +114,8 @@ public class ForgeEvents {
 				}
 			}
 		}
-		if (event.getTarget() instanceof LivingEntity living && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
-			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
+		if (event.getTarget() instanceof LivingEntity living && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE)) {
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 6000));
 		}
 	}
 
@@ -191,8 +191,8 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void onHitEntity(LivingAttackEvent event) {
-		if (event.getSource().getDirectEntity() instanceof LivingEntity living && living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
-			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 6000));
+		if (event.getSource().getDirectEntity() instanceof LivingEntity living && living.hasEffect(RatsEffectRegistry.PLAGUE)) {
+			living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 6000));
 		}
 		int protectors = getProtectorCount(event.getEntity());
 		if (protectors > 0) {
@@ -393,14 +393,14 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void onLivingHeal(LivingHealEvent event) {
-		if (event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+		if (event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE)) {
 			event.setCanceled(true);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
-		if (event.getEntity().level().isClientSide() && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE.get())) {
+		if (event.getEntity().level().isClientSide() && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE)) {
 			RandomSource rand = event.getEntity().getRandom();
 			if (rand.nextInt(4) == 0) {
 				int entitySize = 1;

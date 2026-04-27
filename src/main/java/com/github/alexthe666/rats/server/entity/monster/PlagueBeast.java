@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class PlagueBeast extends FeralRatlantean {
 
@@ -98,13 +99,13 @@ public class PlagueBeast extends FeralRatlantean {
 
 	@Override
 	public void doExtraEffect(LivingEntity target) {
-		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 1200));
+		target.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 1200));
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(OWNER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Override

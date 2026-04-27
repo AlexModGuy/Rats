@@ -43,6 +43,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class Dutchrat extends Monster implements IAnimatedEntity {
 
@@ -107,10 +108,10 @@ public class Dutchrat extends Monster implements IAnimatedEntity {
 
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(THROWN_SWORD, false);
-		this.getEntityData().define(BELL_SPAWN_TICKS, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(THROWN_SWORD, false);
+		builder.define(BELL_SPAWN_TICKS, 0);
 	}
 
 	public void setThrownSword(boolean sword) {

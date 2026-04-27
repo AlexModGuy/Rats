@@ -32,7 +32,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 		stack.pushPose();
 		stack.translate(0, 1.5F, 0);
 		stack.mulPose(Axis.XP.rotationDegrees(180));
-		GUN_BASE_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		GUN_BASE_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		stack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 		GUN_MODEL.resetToDefaultPose();
 		if (!entity.isFiring()) {
@@ -42,7 +42,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 			GUN_MODEL.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
 		}
 
-		GUN_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		GUN_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		stack.popPose();
 
 		if (entity.isFiring()) {
@@ -52,7 +52,7 @@ public class RattlingGunRenderer extends EntityRenderer<RattlingGun> {
 			VertexConsumer ivertexbuilder2 = buffer.getBuffer(RenderType.eyes(TEXTURE_FIRING));
 			stack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 			GUN_MODEL.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
-			GUN_MODEL.renderToBuffer(stack, ivertexbuilder2, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			GUN_MODEL.renderToBuffer(stack, ivertexbuilder2, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 			stack.popPose();
 		}
 		stack.popPose();

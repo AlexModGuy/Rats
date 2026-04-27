@@ -22,6 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public abstract class ArrowlikeProjectile extends Projectile {
 	@Nullable
@@ -70,7 +71,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 

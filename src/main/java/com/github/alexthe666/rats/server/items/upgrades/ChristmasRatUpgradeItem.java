@@ -85,7 +85,7 @@ public class ChristmasRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 		stack.translate(-0.025F, -0.2F, -0.05F);
 		stack.scale(0.35F, 0.35F, 0.35F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.parse("textures/entity/chest/christmas.png")));
-		RatHeldItemLayer.CHRISTMAS_CHEST_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		RatHeldItemLayer.CHRISTMAS_CHEST_MODEL.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		stack.popPose();
 		stack.popPose();
 	}

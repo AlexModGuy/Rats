@@ -59,6 +59,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public abstract class AbstractRat extends TamableAnimal implements IAnimatedEntity {
 
@@ -218,14 +219,14 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(IS_MALE, false);
-		this.getEntityData().define(SITTING, false);
-		this.getEntityData().define(SLEEPING, false);
-		this.getEntityData().define(COLOR_VARIANT, RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatVariantRegistry.BLUE.get()).toString());
-		this.getEntityData().define(DEAD_IN_TRAP, false);
-		this.getEntityData().define(FLEE_POS, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(IS_MALE, false);
+		builder.define(SITTING, false);
+		builder.define(SLEEPING, false);
+		builder.define(COLOR_VARIANT, RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getKey(RatVariantRegistry.BLUE.get()).toString());
+		builder.define(DEAD_IN_TRAP, false);
+		builder.define(FLEE_POS, Optional.empty());
 	}
 
 	@Override

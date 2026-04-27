@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public abstract class InventoryRat extends DiggingRat implements ContainerListener {
 
@@ -61,14 +62,14 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(COMMAND, 0);
-		this.getEntityData().define(RADIUS_CENTER, Optional.empty());
-		this.getEntityData().define(HOME_POS, Optional.empty());
-		this.getEntityData().define(SEARCH_RADIUS, RatConfig.defaultRatRadius);
-		this.getEntityData().define(PATROL_NODES, new ArrayList<>());
-		this.getEntityData().define(VISIBILITY_FLAGS, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(COMMAND, 0);
+		builder.define(RADIUS_CENTER, Optional.empty());
+		builder.define(HOME_POS, Optional.empty());
+		builder.define(SEARCH_RADIUS, RatConfig.defaultRatRadius);
+		builder.define(PATROL_NODES, new ArrayList<>());
+		builder.define(VISIBILITY_FLAGS, (byte) 0);
 	}
 
 	@Override

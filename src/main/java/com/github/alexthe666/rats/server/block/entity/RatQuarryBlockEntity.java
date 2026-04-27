@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
+import net.minecraft.core.HolderLookup;
 
 public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 	private static final int[] STACKS = IntStream.range(0, 64).toArray();
@@ -127,15 +128,15 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 		}
 	}
 
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(compound, this.inventory);
+		ContainerHelper.loadAllItems(compound, this.inventory, registries);
 	}
 
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
-		ContainerHelper.saveAllItems(compound, this.inventory);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.saveAdditional(compound, registries);
+		ContainerHelper.saveAllItems(compound, this.inventory, registries);
 	}
 
 	@Override

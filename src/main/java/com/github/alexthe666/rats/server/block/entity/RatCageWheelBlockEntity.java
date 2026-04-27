@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.minecraft.core.HolderLookup;
 
 public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 
@@ -50,17 +51,17 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		compound.putInt("UseTicks", this.useTicks);
 		compound.put("Energy", this.energyStorage.serializeNBT());
 
 		compound.putInt("DismountCooldown", this.dismountCooldown);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, registries);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		this.useTicks = compound.getInt("UseTicks");
 		this.dismountCooldown = compound.getInt("DismountCooldown");
 		if (compound.contains("Energy")) {

@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class PurifyingLiquid extends ThrowableItemProjectile {
 
@@ -43,9 +44,9 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(NETHER, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(NETHER, false);
 	}
 
 	@Override
@@ -74,8 +75,8 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 								if (living instanceof Rat rat && rat.hasPlague()) {
 									rat.setPlagued(false);
 								}
-								if (living.hasEffect(RatsEffectRegistry.PLAGUE.get())) {
-									living.removeEffect(RatsEffectRegistry.PLAGUE.get());
+								if (living.hasEffect(RatsEffectRegistry.PLAGUE)) {
+									living.removeEffect(RatsEffectRegistry.PLAGUE);
 								}
 								if (living.getType().is(RatsEntityTags.PLAGUE_LEGION)) {
 									living.hurt(this.damageSources().magic(), 10);

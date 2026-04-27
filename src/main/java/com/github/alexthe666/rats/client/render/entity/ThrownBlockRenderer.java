@@ -48,7 +48,7 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 		stack.translate(0F, -0.5F, 0F);
 		stack.mulPose(Axis.YP.rotationDegrees(yaw - 180));
 		VertexConsumer consumer = buffer.getBuffer(RenderType.energySwirl(LIGHTNING_TEXTURE, f * 0.01F, f * 0.01F));
-		this.cube.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.cube.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		stack.popPose();
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 

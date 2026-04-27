@@ -63,7 +63,7 @@ public class PlagueShot extends ArrowlikeProjectile {
 		super.onHitEntity(result);
 		if (result.getEntity() instanceof LivingEntity living) {
 			if (this.getOwner() == null || !living.is(this.getOwner())) {
-				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 1200));
+				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 1200));
 			}
 		}
 	}

@@ -38,7 +38,7 @@ public class PlagueMobEffect extends MobEffect {
 
 	@Override
 	public void addAttributeModifiers(LivingEntity entity, AttributeMap attributes, int amplifier) {
-		MobEffectInstance effect = entity.getEffect(RatsEffectRegistry.PLAGUE.get());
+		MobEffectInstance effect = entity.getEffect(RatsEffectRegistry.PLAGUE);
 		if (!entity.isRemoved() && effect != null && entity.level() instanceof ServerLevel) {
 			entity.playSound(RatsSoundRegistry.PLAGUE_SPREAD.get(), 1.0F, 1.0F);
 			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncPlaguePacket(entity.getId(), effect));
@@ -49,7 +49,7 @@ public class PlagueMobEffect extends MobEffect {
 	@Override
 	public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributes, int amplifier) {
 		if (!entity.isRemoved() && entity.level() instanceof ServerLevel) {
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncPlaguePacket(entity.getId(), new MobEffectInstance(RatsEffectRegistry.PLAGUE.get(), 0)));
+			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncPlaguePacket(entity.getId(), new MobEffectInstance(RatsEffectRegistry.PLAGUE, 0)));
 		}
 		super.removeAttributeModifiers(entity, attributes, amplifier);
 	}

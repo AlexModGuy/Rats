@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.common.NeoForgeMod;
 
 import java.util.UUID;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class RatStriderMount extends RatMountBase {
 
@@ -55,9 +56,9 @@ public class RatStriderMount extends RatMountBase {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_SUFFOCATING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_SUFFOCATING, false);
 	}
 
 	public void setSuffocating(boolean suffocating) {

@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.Predicate;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 public class LaserPortal extends Entity {
 	public static final Predicate<Entity> MONSTER_NOT_RAT = entity -> !(entity instanceof AbstractRat) && entity instanceof Enemy;
@@ -159,7 +160,7 @@ public class LaserPortal extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 }

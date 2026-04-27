@@ -56,23 +56,23 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 		if (containedItem.getItem() instanceof RatIglooItem iglooItem) {
 			DyeColor color = iglooItem.color;
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_IGLOO);
-			this.igloo.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
+			this.igloo.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2]));
 		}
 
 		if (containedItem.getItem() instanceof RatHammockItem hammockItem) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_HAMMOCK);
 			DyeColor color = hammockItem.color;
-			this.hammock.renderToBuffer(stack, consumer, light, overlay, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2], 1.0F);
+			this.hammock.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2]));
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_WATER_BOTTLE.get())) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_WATER_BOTTLE);
-			this.water_bottle.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.water_bottle.renderToBuffer(stack, consumer, light, overlay, 0xFFFFFFFF);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_SEED_BOWL.get())) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_SEED_BOWL);
-			this.seed_bowl.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.seed_bowl.renderToBuffer(stack, consumer, light, overlay, 0xFFFFFFFF);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_WHEEL.get())) {
@@ -81,14 +81,14 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 				MODEL_RAT_WHEEL.animate((RatCageWheelBlockEntity) entity, partialTicks);
 			}
 
-			MODEL_RAT_WHEEL.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			MODEL_RAT_WHEEL.renderToBuffer(stack, consumer, light, overlay, 0xFFFFFFFF);
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get()) && entity instanceof RatCageBreedingLanternBlockEntity lantern) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_BREEDING_LANTERN);
 			float brightness = lantern.getBreedingCooldown() > 0 ? 0.5F : 1.0F;
 			MODEL_RAT_BREEDING_LANTERN.swingChain();
-			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, brightness, brightness, brightness, 1.0F);
+			MODEL_RAT_BREEDING_LANTERN.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, brightness, brightness, brightness));
 		}
 		stack.popPose();
 	}

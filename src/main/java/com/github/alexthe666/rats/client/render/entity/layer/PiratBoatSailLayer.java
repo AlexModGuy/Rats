@@ -39,7 +39,7 @@ public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> e
 		stack.mulPose(Axis.YN.rotationDegrees(90));
 		stack.translate(0, 0.1F, -0.6F);
 		stack.scale(0.75F, 0.75F, 0.75F);
-		MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON)), light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON)), light, OverlayTexture.pack(entity.deathTime > 0 ? entity.deathTime + 1 : 0, false), 0xFFFFFFFF);
 		stack.popPose();
 
 		if (entity.isFiring()) {
@@ -47,7 +47,7 @@ public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> e
 			stack.mulPose(Axis.YN.rotationDegrees(90));
 			stack.translate(0, 0.1F, -0.6F);
 			stack.scale(0.75F, 0.75F, 0.75F);
-			MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON_FIRE)), 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			MODEL_PIRAT_CANNON.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_PIRATE_CANNON_FIRE)), 240, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 			stack.popPose();
 		}
 		stack.popPose();

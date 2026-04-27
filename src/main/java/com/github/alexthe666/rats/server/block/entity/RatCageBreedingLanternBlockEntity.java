@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.HolderLookup;
 
 public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEntity {
 
@@ -37,14 +38,14 @@ public class RatCageBreedingLanternBlockEntity extends DecoratedRatCageBlockEnti
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		compound.putInt("BreedingCooldown", this.breedingCooldown);
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, registries);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		super.loadAdditional(compound, registries);
 		this.breedingCooldown = compound.getInt("BreedingCooldown");
 	}
 
