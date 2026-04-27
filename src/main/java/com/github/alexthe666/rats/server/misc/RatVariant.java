@@ -57,7 +57,7 @@ public class RatVariant {
 	}
 
 	public static RatVariant getVariant(String id) {
-		return Optional.ofNullable(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValue(new ResourceLocation(id))).orElse(RatVariantRegistry.BLUE.get());
+		return Optional.ofNullable(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValue(ResourceLocation.parse(id))).orElse(RatVariantRegistry.BLUE.get());
 	}
 
 	public static String getVariantId(RatVariant variant) {

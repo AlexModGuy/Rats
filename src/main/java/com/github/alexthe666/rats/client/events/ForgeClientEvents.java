@@ -49,30 +49,31 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = RatsMod.MODID, value = Dist.CLIENT)
 public class ForgeClientEvents {
 
-	public static final ResourceLocation PLAGUE_HEART_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/plague_hearts.png");
-	private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_radius.png");
-	private static final ResourceLocation QUARRY_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/quarry_radius.png");
-	private static final ResourceLocation HOME_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_home.png");
-	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_deposit.png");
-	private static final ResourceLocation RAT_PICKUP_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/misc/rat_pickup.png");
-	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = new ResourceLocation("rats:textures/misc/rat_patrol.png");
-	private static final ResourceLocation SYNESTHESIA = new ResourceLocation(RatsMod.MODID, "shaders/post/synesthesia.json");
+	public static final ResourceLocation PLAGUE_HEART_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/plague_hearts.png");
+	private static final ResourceLocation RADIUS_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_radius.png");
+	private static final ResourceLocation QUARRY_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/quarry_radius.png");
+	private static final ResourceLocation HOME_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_home.png");
+	private static final ResourceLocation RAT_DEPOSIT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_deposit.png");
+	private static final ResourceLocation RAT_PICKUP_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/misc/rat_pickup.png");
+	private static final ResourceLocation RAT_PATROL_NODE_TEXTURE = ResourceLocation.parse("rats:textures/misc/rat_patrol.png");
+	private static final ResourceLocation SYNESTHESIA = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "shaders/post/synesthesia.json");
 	private static float synesthesiaProgress = 0;
 	private static float prevSynesthesiaProgress = 0;
 	private static final float MAX_SYNESTESIA = 40;
@@ -174,10 +175,10 @@ public class ForgeClientEvents {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public static void onRenderOverlay(RenderGuiOverlayEvent.Post event) {
+	public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || player.isCreative() || player.isSpectator()) return;
-		if (event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type() || event.isCanceled() || !player.hasEffect(RatsEffectRegistry.PLAGUE.get()) || !RatConfig.plagueHearts) {
+		if (event.getOverlay() != VanillaGuiLayers.PLAYER_HEALTH.type() || event.isCanceled() || !player.hasEffect(RatsEffectRegistry.PLAGUE.get()) || !RatConfig.plagueHearts) {
 			return;
 		}
 		GuiGraphics graphics = event.getGuiGraphics();

@@ -7,9 +7,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class GenericAddItemLootModifier extends LootModifier {
 
 	public static final Codec<GenericAddItemLootModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).and(
 					inst.group(
-							Codec.unboundedMap(ForgeRegistries.ITEMS.getCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
+							Codec.unboundedMap(NeoForgeRegistries.ITEMS.getCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
 							Codec.BOOL.fieldOf("replacePool").orElse(false).forGetter(m -> m.makeNewPool)))
 			.apply(inst, GenericAddItemLootModifier::new));
 

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class DiggingRat extends AbstractRat {
@@ -43,7 +43,7 @@ public abstract class DiggingRat extends AbstractRat {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.canDigThroughBlocks() && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (this.canDigThroughBlocks() && EventHooks.getMobGriefingEvent(this.level(), this)) {
 			if (this.getOwner() == null && this.getNavigation().isDone() && this.digCooldown-- <= 0 && RatConfig.ratsDigBlocks) {
 				this.findDigTarget();
 				this.digTarget();

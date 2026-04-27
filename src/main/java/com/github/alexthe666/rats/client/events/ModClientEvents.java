@@ -47,15 +47,16 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ import java.util.Objects;
 
 //the mod event class mostly stores registry event things, such as registering renderers, item and block colors, shaders, and layer definitions.
 //for Forge events, use ForgeClientEvents
-@Mod.EventBusSubscriber(modid = RatsMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = RatsMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
 
 	private static ShaderInstance rendertypeRatlantisPortalShader;
@@ -86,7 +87,7 @@ public class ModClientEvents {
 	@SubscribeEvent
 	public static void setupShaders(RegisterShadersEvent event) throws IOException {
 		ResourceProvider provider = event.getResourceProvider();
-		event.registerShader(new ShaderInstance(provider, new ResourceLocation(RatsMod.MODID, "rendertype_ratlantis_portal"), DefaultVertexFormat.POSITION_COLOR), instance -> rendertypeRatlantisPortalShader = instance);
+		event.registerShader(new ShaderInstance(provider, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rendertype_ratlantis_portal"), DefaultVertexFormat.POSITION_COLOR), instance -> rendertypeRatlantisPortalShader = instance);
 	}
 
 	public static ShaderInstance getRendertypeRatlantisPortalShader() {
@@ -96,9 +97,9 @@ public class ModClientEvents {
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			ItemProperties.register(RatsItemRegistry.RAT_SACK.get(), new ResourceLocation("rat_count"), (stack, level, entity, i) -> Math.min(3, RatSackItem.getRatsInSack(stack)));
+			ItemProperties.register(RatsItemRegistry.RAT_SACK.get(), ResourceLocation.parse("rat_count"), (stack, level, entity, i) -> Math.min(3, RatSackItem.getRatsInSack(stack)));
 
-			ItemProperties.register(RatlantisItemRegistry.RATLANTIS_BOW.get(), new ResourceLocation("pull"), (stack, level, living, i) -> {
+			ItemProperties.register(RatlantisItemRegistry.RATLANTIS_BOW.get(), ResourceLocation.parse("pull"), (stack, level, living, i) -> {
 				if (living == null) {
 					return 0.0F;
 				} else {
@@ -106,9 +107,9 @@ public class ModClientEvents {
 				}
 			});
 
-			ItemProperties.register(RatlantisItemRegistry.RATLANTIS_BOW.get(), new ResourceLocation("pulling"), (stack, level, living, i) -> living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
+			ItemProperties.register(RatlantisItemRegistry.RATLANTIS_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, living, i) -> living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(RatsItemRegistry.RATBOW_ESSENCE.get(), new ResourceLocation(RatsMod.MODID, "special"), (stack, level, entity, i) -> {
+			ItemProperties.register(RatsItemRegistry.RATBOW_ESSENCE.get(), ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "special"), (stack, level, entity, i) -> {
 				if (stack.hasCustomHoverName()) {
 					RatsRenderType.GlintType type = RatsRenderType.GlintType.getGlintBasedOnKeyword(stack.getHoverName().getString());
 					return type != null && type.changesItemTexture() ? type.ordinal() + 1 : 0;
@@ -116,7 +117,7 @@ public class ModClientEvents {
 				return 0;
 			});
 
-			ItemProperties.register(RatsItemRegistry.RAT_UPGRADE_DEMON.get(), new ResourceLocation(RatsMod.MODID, "soul"), (stack, level, living, i) -> DemonRatUpgradeItem.isSoulVersion(stack) ? 1 : 0);
+			ItemProperties.register(RatsItemRegistry.RAT_UPGRADE_DEMON.get(), ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "soul"), (stack, level, living, i) -> DemonRatUpgradeItem.isSoulVersion(stack) ? 1 : 0);
 		});
 
 		MenuScreens.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
@@ -271,13 +272,13 @@ public class ModClientEvents {
 	public static void onItemColors(RegisterColorHandlersEvent.Item event) {
 		event.register((stack, tint) -> FoliageColor.get(0.5D, 1.0D), RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.get().asItem());
 
-		for (RegistryObject<Item> item : RatsItemRegistry.RAT_TUBES) {
+		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_TUBES) {
 			event.register((stack, tint) -> ((RatTubeItem) item.get()).color.getFireworkColor(), item.get());
 		}
-		for (RegistryObject<Item> item : RatsItemRegistry.RAT_IGLOOS) {
+		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_IGLOOS) {
 			event.register((stack, tint) -> ((RatIglooItem) item.get()).color.getFireworkColor(), item.get());
 		}
-		for (RegistryObject<Item> item : RatsItemRegistry.RAT_HAMMOCKS) {
+		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_HAMMOCKS) {
 			event.register((stack, tint) -> ((RatHammockItem) item.get()).color.getFireworkColor(), item.get());
 		}
 		event.register((stack, tint) -> {

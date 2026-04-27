@@ -36,7 +36,7 @@ public class RatlantisConfiguredFeatureRegistry {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> ORATCHALCUM_ORE = registerKey("oratchalcum_ore");
 
 	public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	public static final TreeConfiguration GHOST_PIRAT_TREE_CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
@@ -67,6 +67,6 @@ public class RatlantisConfiguredFeatureRegistry {
 	}
 
 	private static ResourceLocation ruinLocation(String name) {
-		return new ResourceLocation(RatsMod.MODID, name);
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name);
 	}
 }

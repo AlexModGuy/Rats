@@ -26,9 +26,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -61,7 +61,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 					this.ratArmorModel.setAllVisible(false);
 					this.ratArmorModel.head.visible = true;
 					this.ratArmorModel.hat.visible = true;
-					Model model = ForgeHooksClient.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.ratArmorModel);
+					Model model = ClientHooks.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.ratArmorModel);
 					//Rats: do some extra transforms based on which model is being used and what item is rendering.
 					this.getParentModel().translateToHead(stack);
 					if (rat.isBaby()) {
@@ -105,7 +105,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 							stack.scale(0.4F, 0.4F, 0.4F);
 							stack.translate(0.0D, 0.25D, 0.0D);
 						}
-					} else if (itemstack.is(Tags.Items.HEADS) && ForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+					} else if (itemstack.is(Tags.Items.HEADS) && NeoForgeRegistries.ITEMS.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
 						stack.mulPose(Axis.YP.rotationDegrees(180));
 						stack.translate(0.0D, 0.55D, -0.0D);
 						stack.scale(2.0F, 2.0F, 2.0F);
@@ -165,11 +165,11 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 		}
 		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
 
-		s1 = ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
+		s1 = ClientHooks.getArmorTexture(entity, stack, s1, slot, type);
 		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
 		if (resourcelocation == null) {
-			resourcelocation = new ResourceLocation(s1);
+			resourcelocation = ResourceLocation.parse(s1);
 			ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
 		}
 

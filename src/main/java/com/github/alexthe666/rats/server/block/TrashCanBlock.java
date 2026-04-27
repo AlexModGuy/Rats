@@ -37,7 +37,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -108,7 +108,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				} else if (state.getValue(LEVEL) < 7 && stack.getItem() instanceof BlockItem bi) {
-					if (Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(RatsBlockTags.TRASH_CAN_BLACKLIST).contains(bi.getBlock())) {
+					if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(RatsBlockTags.TRASH_CAN_BLACKLIST).contains(bi.getBlock())) {
 						player.displayClientMessage(Component.literal("This block can't be used here.").withStyle(ChatFormatting.RED), true);
 						return InteractionResult.CONSUME;
 					}

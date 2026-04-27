@@ -34,13 +34,13 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 public class PiratBoat extends Mob {
@@ -58,8 +58,8 @@ public class PiratBoat extends Mob {
 	public PiratBoat(EntityType<? extends Mob> type, Level level) {
 		super(type, level);
 		this.setMaxUpStep(1.0F);
-		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.WALKABLE, -1.0F);
+		this.setPathfindingMalus(PathType.WATER, 0.0F);
+		this.setPathfindingMalus(PathType.WALKABLE, -1.0F);
 		this.moveControl = new BoatMoveControl(this);
 		this.navigation = new PiratNavigation(this, this.level());
 	}

@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class RatTreeUtils {
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
-					if (ForgeRegistries.ITEMS.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
+					if (NeoForgeRegistries.ITEMS.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
 						return Block.byItem(stack.getItem());
 					}
 				}

@@ -23,10 +23,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = RatsMod.MODID)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = RatsMod.MODID)
 public class RatsDataRegistry {
 
 	@SubscribeEvent
@@ -90,10 +91,10 @@ public class RatsDataRegistry {
 
 	private static void addArmorTrims(ExistingFileHelper existingFileHelper) {
 		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
-			existingFileHelper.trackGenerated(new ResourceLocation("boots_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("chestplate_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("helmet_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
-			existingFileHelper.trackGenerated(new ResourceLocation("leggings_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.parse("boots_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.parse("chestplate_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.parse("helmet_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(ResourceLocation.parse("leggings_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
 		}
 	}
 }

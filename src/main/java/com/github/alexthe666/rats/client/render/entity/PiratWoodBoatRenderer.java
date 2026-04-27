@@ -30,7 +30,7 @@ public class PiratWoodBoatRenderer extends EntityRenderer<PiratWoodBoat> {
 	public PiratWoodBoatRenderer(EntityRendererProvider.Context context, boolean chest) {
 		super(context);
 		this.shadowRadius = 0.8F;
-		this.boatResources = Stream.of(PiratWoodBoat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type -> Pair.of(new ResourceLocation(RatsMod.MODID, getTextureLocation(type, chest)), this.createBoatModel(context, type, chest))));
+		this.boatResources = Stream.of(PiratWoodBoat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type -> Pair.of(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, getTextureLocation(type, chest)), this.createBoatModel(context, type, chest))));
 	}
 
 	private BoatModel createBoatModel(EntityRendererProvider.Context context, PiratWoodBoat.Type type, boolean chest) {
@@ -40,7 +40,7 @@ public class PiratWoodBoatRenderer extends EntityRenderer<PiratWoodBoat> {
 	}
 
 	private static ModelLayerLocation createLocation(String path) {
-		return new ModelLayerLocation(new ResourceLocation(RatsMod.MODID, path), "main");
+		return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, path), "main");
 	}
 
 	public static ModelLayerLocation createBoatModelName(PiratWoodBoat.Type type) {

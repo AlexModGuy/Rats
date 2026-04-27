@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 	private final Rat rat;
@@ -38,7 +38,7 @@ public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 				return false;
 			} else {
-				return (this.nextStartTick > 0 || ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat)) && super.canUse();
+				return (this.nextStartTick > 0 || EventHooks.getMobGriefingEvent(this.rat.level(), this.rat)) && super.canUse();
 			}
 		} else {
 			return false;

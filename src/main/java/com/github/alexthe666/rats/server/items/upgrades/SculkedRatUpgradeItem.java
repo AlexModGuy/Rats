@@ -19,7 +19,7 @@ public class SculkedRatUpgradeItem extends BaseRatUpgradeItem implements StatBoo
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/sculked.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/sculked.png");
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class SculkedRatUpgradeItem extends BaseRatUpgradeItem implements StatBoo
 
 	@Override
 	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/sculked.png"));
+		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/sculked.png"));
 	}
 
 	@Override

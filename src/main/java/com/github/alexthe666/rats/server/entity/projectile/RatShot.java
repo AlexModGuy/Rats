@@ -25,7 +25,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatShot extends ThrowableProjectile {
 
@@ -106,7 +106,7 @@ public class RatShot extends ThrowableProjectile {
 					ratter.setRatsSummoned(ratter.getRatsSummoned() + 1);
 				}
 				if (this.level() instanceof ServerLevelAccessor accessor) {
-					ForgeEventFactory.onFinalizeSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
+					EventHooks.onFinalizeSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
 				}
 				rat.setColorVariant(this.getColorVariant());
 				if (rat instanceof Rat plagueable) {

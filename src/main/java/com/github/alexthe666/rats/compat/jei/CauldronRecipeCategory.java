@@ -29,7 +29,7 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 	private final IDrawable arrowIcon;
 
 	public CauldronRecipeCategory(IGuiHelper helper) {
-		ResourceLocation location = new ResourceLocation(RatsMod.MODID, "textures/gui/jei/cauldron_jei.png");
+		ResourceLocation location = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/jei/cauldron_jei.png");
 		this.background = helper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
 		this.arrowIcon = helper.drawableBuilder(location, 170, 0, 24, 16)
 				.buildAnimated(RatConfig.milkCauldronTime, IDrawableAnimated.StartDirection.LEFT, false);

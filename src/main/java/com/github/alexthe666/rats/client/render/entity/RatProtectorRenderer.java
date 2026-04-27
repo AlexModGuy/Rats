@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatProtectorRenderer extends AbstractRatRenderer<RatProtector, RatModel<RatProtector>> {
 
-	public static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat_protector.png");
+	public static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat_protector.png");
 
 	public RatProtectorRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatModel<>());

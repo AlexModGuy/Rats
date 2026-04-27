@@ -24,15 +24,15 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Map;
 
 public class CheeseCauldronBlock extends AbstractCauldronBlock {
 
-	private final RegistryObject<Block> drop;
+	private final DeferredHolder<Block, Block> drop;
 
-	public CheeseCauldronBlock(BlockBehaviour.Properties properties, RegistryObject<Block> dropBlock, Map<Item, CauldronInteraction> interaction) {
+	public CheeseCauldronBlock(BlockBehaviour.Properties properties, DeferredHolder<Block, Block> dropBlock, Map<Item, CauldronInteraction> interaction) {
 		super(properties, interaction);
 		this.drop = dropBlock;
 	}

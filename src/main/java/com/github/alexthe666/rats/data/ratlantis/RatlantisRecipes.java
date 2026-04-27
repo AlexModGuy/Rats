@@ -12,8 +12,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -91,7 +91,7 @@ public class RatlantisRecipes extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 9)
 				.requires(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get()).unlockedBy("has_block", has(RatlantisBlockRegistry.ORATCHALCUM_BLOCK.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "oratchalcum_ingots_from_block"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "oratchalcum_ingots_from_block"));
 
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_NUGGET.get(), 9)
@@ -213,17 +213,17 @@ public class RatlantisRecipes extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get(), 4)
 				.requires(RatlantisItemRegistry.GHOST_PIRAT_HAT.get()).unlockedBy("has_hat", has(RatlantisItemRegistry.GHOST_PIRAT_HAT.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "ectoplasm_from_hat"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ectoplasm_from_hat"));
 
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get(), 4)
 				.requires(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()).unlockedBy("has_cutlass", has(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "ectoplasm_from_cutlass"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ectoplasm_from_cutlass"));
 
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.GHOST_PIRAT_ECTOPLASM.get(), 10)
 				.requires(RatlantisItemRegistry.DUTCHRAT_WHEEL.get()).unlockedBy("has_wheel", has(RatlantisItemRegistry.DUTCHRAT_WHEEL.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "ectoplasm_from_wheel"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ectoplasm_from_wheel"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get())
@@ -443,7 +443,7 @@ public class RatlantisRecipes extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_PLANKS.get(), 4)
 				.requires(RatlantisItemTags.PIRAT_LOGS).unlockedBy("has_log", has(RatlantisItemTags.PIRAT_LOGS))
 				.group("planks")
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "pirat_planks_from_log"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_planks_from_log"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.PIRAT_WOOD.get(), 3)
@@ -578,7 +578,7 @@ public class RatlantisRecipes extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get(), 4)
 				.requires(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get()).unlockedBy("has_block", has(RatlantisBlockRegistry.RATLANTIS_UPGRADE_BLOCK.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/basic_ratlantis_upgrade_from_block"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/basic_ratlantis_upgrade_from_block"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatsItemRegistry.RAT_UPGRADE_COMBINED.get())
 				.pattern("CGC")
@@ -587,7 +587,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('C', RatlantisItemRegistry.FERAL_RAT_CLAW.get()).unlockedBy("has_claw", has(RatlantisItemRegistry.FERAL_RAT_CLAW.get()))
 				.define('G', RatlantisItemTags.RATLANTIS_GEMS).unlockedBy("has_gem", has(RatlantisItemTags.RATLANTIS_GEMS))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/combined_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/combined_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_ARCHEOLOGIST.get())
@@ -601,7 +601,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('T', RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get()).unlockedBy("has_token", has(RatlantisBlockRegistry.CHUNKY_CHEESE_TOKEN.get()))
 				.define('S', Items.IRON_SHOVEL).unlockedBy("has_shovel", has(Items.IRON_SHOVEL))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/archeologist_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/archeologist_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_AUTOMATON_MOUNT.get())
@@ -613,7 +613,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('C', RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE.get()).unlockedBy("has_core", has(RatlantisBlockRegistry.MARBLED_CHEESE_GOLEM_CORE.get()))
 				.define('A', RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()).unlockedBy("has_technology", has(RatlantisItemRegistry.ARCANE_TECHNOLOGY.get()))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/automaton_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/automaton_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get())
@@ -625,7 +625,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('B', RatlantisItemRegistry.RATBOT_BARREL.get()).unlockedBy("has_barrel", has(RatlantisItemRegistry.RATBOT_BARREL.get()))
 				.define('W', RatlantisItemRegistry.BIPLANE_WING.get()).unlockedBy("has_wing", has(RatlantisItemRegistry.BIPLANE_WING.get()))
 				.define('U', RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_BASIC_MOUNT.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/biplane_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/biplane_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get())
@@ -634,7 +634,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.pattern("GMG")
 				.define('G', RatlantisItemTags.RATLANTIS_GEMS).unlockedBy("has_gem", has(RatlantisItemTags.RATLANTIS_GEMS))
 				.define('M', RatsItemTags.MARBLED_CHEESE).unlockedBy("has_cheese", has(RatsItemTags.MARBLED_CHEESE))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/basic_ratlantean_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/basic_ratlantean_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_FERAL_BITE.get())
@@ -645,7 +645,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('R', Items.ROTTEN_FLESH).unlockedBy("has_flesh", has(Items.ROTTEN_FLESH))
 				.define('S', Items.SPIDER_EYE).unlockedBy("has_eye", has(Items.SPIDER_EYE))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/feral_bite_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/feral_bite_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_BUCCANEER.get())
@@ -656,7 +656,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('H', RatsItemRegistry.PIRAT_HAT.get()).unlockedBy("has_hat", has(RatsItemRegistry.PIRAT_HAT.get()))
 				.define('S', RatlantisItemRegistry.PIRAT_CUTLASS.get()).unlockedBy("has_eye", has(RatlantisItemRegistry.PIRAT_CUTLASS.get()))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/buccaneer_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/buccaneer_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_RATINATOR.get())
@@ -668,7 +668,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('B', RatlantisItemRegistry.RATBOT_BARREL.get()).unlockedBy("has_barrel", has(RatlantisItemRegistry.RATBOT_BARREL.get()))
 				.define('C', RatlantisItemRegistry.CHARGED_RATBOT_BARREL.get()).unlockedBy("has_charged_barrel", has(RatlantisItemRegistry.CHARGED_RATBOT_BARREL.get()))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/ratinator_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/ratinator_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_PSYCHIC.get())
@@ -681,7 +681,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('B', RatlantisItemRegistry.PSIONIC_RAT_BRAIN.get()).unlockedBy("has_brain", has(RatlantisItemRegistry.PSIONIC_RAT_BRAIN.get()))
 				.define('P', Tags.Items.GEMS_PRISMARINE).unlockedBy("has_crystals", has(Tags.Items.GEMS_PRISMARINE))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/psychic_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/psychic_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL.get())
@@ -693,7 +693,7 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('C', RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()).unlockedBy("has_cutlass", has(RatlantisItemRegistry.GHOST_PIRAT_CUTLASS.get()))
 				.define('M', Items.PHANTOM_MEMBRANE).unlockedBy("has_membrane", has(Items.PHANTOM_MEMBRANE))
 				.define('U', RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()).unlockedBy("has_upgrade", has(RatlantisItemRegistry.RAT_UPGRADE_BASIC_RATLANTEAN.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/ethereal_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/ethereal_upgrade"));
 
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RatlantisItemRegistry.RAT_UPGRADE_NONBELIEVER.get())
@@ -706,22 +706,22 @@ public class RatlantisRecipes extends RecipeProvider {
 				.define('I', RatlantisItemRegistry.IDOL_OF_RATLANTIS.get()).unlockedBy("has_idol", has(RatlantisItemRegistry.IDOL_OF_RATLANTIS.get()))
 				.define('C', RatsItemRegistry.CORRUPT_RAT_SKULL.get()).unlockedBy("has_skull", has(RatsItemRegistry.CORRUPT_RAT_SKULL.get()))
 				.define('G', RatsItemRegistry.RAT_UPGRADE_GOD.get()).unlockedBy("has_upgrade", has(RatsItemRegistry.RAT_UPGRADE_GOD.get()))
-				.save(consumer, new ResourceLocation(RatsMod.MODID, "upgrades/nonbeliever_upgrade"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "upgrades/nonbeliever_upgrade"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsBlockRegistry.MARBLED_CHEESE_RAW.get()), RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE.get(), 0.1F, 200).unlockedBy("has_cheese", has(RatsBlockRegistry.MARBLED_CHEESE_RAW.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "marble_cheese_smelting"));
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE.get()), RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get(), 0.1F, 200).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cracked_marble_cheese_smelting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatsBlockRegistry.MARBLED_CHEESE_RAW.get()), RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE.get(), 0.1F, 200).unlockedBy("has_cheese", has(RatsBlockRegistry.MARBLED_CHEESE_RAW.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "marble_cheese_smelting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE.get()), RecipeCategory.BUILDING_BLOCKS, RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get(), 0.1F, 200).unlockedBy("has_cheese", has(RatlantisBlockRegistry.MARBLED_CHEESE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cracked_marble_cheese_smelting"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.CHEESE_ORE.get()), RecipeCategory.MISC, RatsItemRegistry.CHEESE.get(), 0.25F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.CHEESE_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cheese_ore_smelting"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.CHEESE_ORE.get()), RecipeCategory.MISC, RatsItemRegistry.CHEESE.get(), 0.25F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.CHEESE_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "cheese_ore_blasting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.CHEESE_ORE.get()), RecipeCategory.MISC, RatsItemRegistry.CHEESE.get(), 0.25F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.CHEESE_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cheese_ore_smelting"));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.CHEESE_ORE.get()), RecipeCategory.MISC, RatsItemRegistry.CHEESE.get(), 0.25F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.CHEESE_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cheese_ore_blasting"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.GEM_OF_RATLANTIS.get(), 0.5F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "ratlantean_gem_smelting"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.GEM_OF_RATLANTIS.get(), 0.5F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "ratlantean_gem_blasting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.GEM_OF_RATLANTIS.get(), 0.5F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_gem_smelting"));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.GEM_OF_RATLANTIS.get(), 0.5F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.RATLANTEAN_GEM_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_gem_blasting"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.ORATCHALCUM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.ORATCHALCUM_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "oratchalcum_ore_smelting"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.ORATCHALCUM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.ORATCHALCUM_ORE.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "oratchalcum_ore_blasting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisBlockRegistry.ORATCHALCUM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 200).unlockedBy("has_ore", has(RatlantisBlockRegistry.ORATCHALCUM_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "oratchalcum_ore_smelting"));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisBlockRegistry.ORATCHALCUM_ORE.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 100).unlockedBy("has_ore", has(RatlantisBlockRegistry.ORATCHALCUM_ORE.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "oratchalcum_ore_blasting"));
 
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisItemRegistry.RAW_ORATCHALCUM.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 200).unlockedBy("has_ore", has(RatlantisItemRegistry.RAW_ORATCHALCUM.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "raw_oratchalcum_smelting"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisItemRegistry.RAW_ORATCHALCUM.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 100).unlockedBy("has_ore", has(RatlantisItemRegistry.RAW_ORATCHALCUM.get())).save(consumer, new ResourceLocation(RatsMod.MODID, "raw_oratchalcum_blasting"));
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(RatlantisItemRegistry.RAW_ORATCHALCUM.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 200).unlockedBy("has_ore", has(RatlantisItemRegistry.RAW_ORATCHALCUM.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "raw_oratchalcum_smelting"));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(RatlantisItemRegistry.RAW_ORATCHALCUM.get()), RecipeCategory.MISC, RatlantisItemRegistry.ORATCHALCUM_INGOT.get(), 1.0F, 100).unlockedBy("has_ore", has(RatlantisItemRegistry.RAW_ORATCHALCUM.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "raw_oratchalcum_blasting"));
 
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE.get()), RatlantisBlockRegistry.BLACK_MARBLED_CHEESE.get(), "marbled_cheese_to_black");
 		this.ratlantisStonecuttingRecipe(consumer, Ingredient.of(RatlantisBlockRegistry.MARBLED_CHEESE.get()), RatlantisBlockRegistry.MARBLED_CHEESE_SLAB.get(), 2, "marbled_cheese_to_slab");
@@ -761,7 +761,7 @@ public class RatlantisRecipes extends RecipeProvider {
 	}
 
 	private void archeology(ItemLike input, ItemLike output, Consumer<FinishedRecipe> consumer) {
-		new SingleItemRecipeBuilder(RecipeCategory.MISC, RatsRecipeRegistry.ARCHEOLOGIST_SERIALIZER.get(), Ingredient.of(input), output, 1).unlockedBy("has_input", has(input)).save(consumer, new ResourceLocation(RatsMod.MODID, "archeologist/" + ForgeRegistries.ITEMS.getKey(output.asItem()).getPath()));
+		new SingleItemRecipeBuilder(RecipeCategory.MISC, RatsRecipeRegistry.ARCHEOLOGIST_SERIALIZER.get(), Ingredient.of(input), output, 1).unlockedBy("has_input", has(input)).save(consumer, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "archeologist/" + NeoForgeRegistries.ITEMS.getKey(output.asItem()).getPath()));
 	}
 
 	private void ratlantisStonecuttingRecipe(Consumer<FinishedRecipe> recipe, Ingredient input, ItemLike output, String name) {
@@ -769,6 +769,6 @@ public class RatlantisRecipes extends RecipeProvider {
 	}
 
 	private void ratlantisStonecuttingRecipe(Consumer<FinishedRecipe> recipe, Ingredient input, ItemLike output, int count, String name) {
-		SingleItemRecipeBuilder.stonecutting(input, RecipeCategory.BUILDING_BLOCKS, output, count).unlockedBy("has_input", has(Arrays.stream(input.getItems()).toList().get(0).getItem())).save(recipe, new ResourceLocation(RatsMod.MODID, "stonecutting/" + name));
+		SingleItemRecipeBuilder.stonecutting(input, RecipeCategory.BUILDING_BLOCKS, output, count).unlockedBy("has_input", has(Arrays.stream(input.getItems()).toList().get(0).getItem())).save(recipe, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "stonecutting/" + name));
 	}
 }

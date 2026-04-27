@@ -29,7 +29,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public class RatArrow extends AbstractArrow {
 				rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
 			}
 			if (ratTag.isEmpty()) {
-				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+				EventHooks.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
 				if (this.getOwner() instanceof Player player) {
 					rat.tame(player);
 				}

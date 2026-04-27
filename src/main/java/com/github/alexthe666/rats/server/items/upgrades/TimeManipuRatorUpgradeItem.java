@@ -19,7 +19,7 @@ public class TimeManipuRatorUpgradeItem extends BaseRatUpgradeItem implements Ti
 	@Override
 	public @Nullable RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
 		float f = (float) rat.tickCount + partialTicks;
-		return RenderType.energySwirl(new ResourceLocation(RatsMod.MODID, "textures/entity/psychic.png"), f * 0.01F, f * 0.01F);
+		return RenderType.energySwirl(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/psychic.png"), f * 0.01F, f * 0.01F);
 	}
 
 	@Override

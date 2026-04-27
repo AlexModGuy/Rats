@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -58,6 +58,6 @@ public class RatsEntityTags extends EntityTypeTagsProvider {
 	}
 
 	public static TagKey<EntityType<?>> create(String name) {
-		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(RatsMod.MODID, name));
+		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 }

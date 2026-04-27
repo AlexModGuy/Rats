@@ -85,17 +85,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -379,7 +379,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean canDrownInFluidType(FluidType type) {
-		return type == ForgeMod.WATER_TYPE.get() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
+		return type == NeoForgeMod.WATER_TYPE.get() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
 	}
 
 	@Override
@@ -484,7 +484,7 @@ public class TamedRat extends InventoryRat {
 			Entity entity = this.getMountEntityType().create(this.level());
 			entity.copyPosition(this);
 			if (entity instanceof Mob mob && this.level() instanceof ServerLevelAccessor accessor) {
-				ForgeEventFactory.onFinalizeSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+				EventHooks.onFinalizeSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 			}
 			this.level().addFreshEntity(entity);
 
@@ -596,7 +596,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(ForgeSpawnEggItem.fromEntityType(RatsEntityRegistry.RAT.get()));
+		return new ItemStack(DeferredSpawnEggItem.fromEntityType(RatsEntityRegistry.RAT.get()));
 	}
 
 	public void setFlying(boolean flying) {
@@ -861,7 +861,7 @@ public class TamedRat extends InventoryRat {
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (this.getRespawnCountdown() > 0 || itemstack.is(ForgeRegistries.ITEMS.getValue(new ResourceLocation(RatsMod.MODID, "rat_spawn_egg")))) {
+		if (this.getRespawnCountdown() > 0 || itemstack.is(NeoForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg")))) {
 			return InteractionResult.PASS;
 		}
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_CARRAT.get())) {
@@ -1094,7 +1094,7 @@ public class TamedRat extends InventoryRat {
 			return RatsSoundRegistry.RAT_SANTA.get();
 		}
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_idle"));
+			SoundEvent possibleDragonSound = NeoForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_idle"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1104,7 +1104,7 @@ public class TamedRat extends InventoryRat {
 
 	protected SoundEvent getDeathSound() {
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_death"));
+			SoundEvent possibleDragonSound = NeoForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_death"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1114,7 +1114,7 @@ public class TamedRat extends InventoryRat {
 
 	protected SoundEvent getHurtSound(DamageSource source) {
 		if (RatsMod.ICEANDFIRE_LOADED && RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_DRAGON.get())) {
-			SoundEvent possibleDragonSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("iceandfire", "firedragon_child_hurt"));
+			SoundEvent possibleDragonSound = NeoForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("iceandfire", "firedragon_child_hurt"));
 			if (possibleDragonSound != null) {
 				return possibleDragonSound;
 			}
@@ -1141,7 +1141,7 @@ public class TamedRat extends InventoryRat {
 			} else {
 				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()).getTag();
 			}
-			String ourItemID = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack.getItem())).toString();
+			String ourItemID = Objects.requireNonNull(NeoForgeRegistries.ITEMS.getKey(stack.getItem())).toString();
 			if (tag != null && tag.contains("Items", 9)) {
 				ListTag list = tag.getList("Items", 10);
 				if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())) {

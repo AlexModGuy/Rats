@@ -64,8 +64,8 @@ public class RatlantisStructureRegistry {
 	public static void bootstrapPools(BootstapContext<StructureTemplatePool> context) {
 		Holder<StructureTemplatePool> emptyPool = context.lookup(Registries.TEMPLATE_POOL).getOrThrow(Pools.EMPTY);
 
-		context.register(BARON_RUNWAY_START, new StructureTemplatePool(emptyPool, ImmutableList.of(Pair.of(StructurePoolElement.single(new ResourceLocation(RatsMod.MODID, "baron_runway").toString()), 1)), StructureTemplatePool.Projection.TERRAIN_MATCHING));
-		context.register(DUTCHRAT_SHIP_START, new StructureTemplatePool(emptyPool, ImmutableList.of(Pair.of(StructurePoolElement.single(new ResourceLocation(RatsMod.MODID, "dutchrat_ship").toString()), 1)), StructureTemplatePool.Projection.RIGID));
+		context.register(BARON_RUNWAY_START, new StructureTemplatePool(emptyPool, ImmutableList.of(Pair.of(StructurePoolElement.single(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "baron_runway").toString()), 1)), StructureTemplatePool.Projection.TERRAIN_MATCHING));
+		context.register(DUTCHRAT_SHIP_START, new StructureTemplatePool(emptyPool, ImmutableList.of(Pair.of(StructurePoolElement.single(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "dutchrat_ship").toString()), 1)), StructureTemplatePool.Projection.RIGID));
 	}
 
 	public static void bootstrapSets(BootstapContext<StructureSet> context) {
@@ -129,18 +129,18 @@ public class RatlantisStructureRegistry {
 	}
 
 	private static ResourceKey<Structure> registerStructureKey(String name) {
-		return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	private static ResourceKey<StructureTemplatePool> registerPoolKey(String name) {
-		return ResourceKey.create(Registries.TEMPLATE_POOL, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	private static ResourceKey<StructureSet> registerSetKey(String name) {
-		return ResourceKey.create(Registries.STRUCTURE_SET, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	private static ResourceKey<StructureProcessorList> registerProcessorKey(String name) {
-		return ResourceKey.create(Registries.PROCESSOR_LIST, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 }

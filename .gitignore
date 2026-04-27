@@ -23,3 +23,6 @@ run
 
 /run-data/
 secrets.properties
+
+# local build/iteration logs
+.build.log

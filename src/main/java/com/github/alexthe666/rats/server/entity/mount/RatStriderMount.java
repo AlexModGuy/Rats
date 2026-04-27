@@ -30,9 +30,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.neoforge.common.NeoForgeMod;
 
 import java.util.UUID;
 
@@ -44,10 +44,10 @@ public class RatStriderMount extends RatMountBase {
 
 	public RatStriderMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-		this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+		this.setPathfindingMalus(PathType.WATER, -1.0F);
+		this.setPathfindingMalus(PathType.LAVA, 0.0F);
+		this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
+		this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -118,7 +118,7 @@ public class RatStriderMount extends RatMountBase {
 		if (!this.isNoAi()) {
 			BlockState blockstate = this.level().getBlockState(this.blockPosition());
 			BlockState blockstate1 = this.getBlockStateOn();
-			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidTypeHeight(ForgeMod.LAVA_TYPE.get()) > 0.0D;
+			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidTypeHeight(NeoForgeMod.LAVA_TYPE.get()) > 0.0D;
 
 			this.setSuffocating(!flag);
 		}
@@ -195,8 +195,8 @@ public class RatStriderMount extends RatMountBase {
 			super(strider, level);
 		}
 
-		protected boolean hasValidPathType(BlockPathTypes types) {
-			return types == BlockPathTypes.LAVA || types == BlockPathTypes.DAMAGE_FIRE || types == BlockPathTypes.DANGER_FIRE || super.hasValidPathType(types);
+		protected boolean hasValidPathType(PathType types) {
+			return types == PathType.LAVA || types == PathType.DAMAGE_FIRE || types == PathType.DANGER_FIRE || super.hasValidPathType(types);
 		}
 
 		public boolean isStableDestination(BlockPos pos) {

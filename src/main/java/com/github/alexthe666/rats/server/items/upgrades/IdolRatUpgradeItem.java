@@ -22,7 +22,7 @@ public class IdolRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTex
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/idol.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/idol.png");
 	}
 
 	@Override

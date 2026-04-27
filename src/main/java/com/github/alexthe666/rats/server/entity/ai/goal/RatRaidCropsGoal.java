@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			return false;
 		}
 
-		return ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
+		return EventHooks.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
 	}
 
 	@Override

@@ -22,9 +22,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 
 public class TamedRatOverlayLayer extends RenderLayer<TamedRat, AbstractRatModel<TamedRat>> {
-	private static final RenderType TEXTURE_DYED_NOT = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/undyed_part.png"));
-	private static final RenderType TEXTURE_DYED = RenderType.entityNoOutline(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/dyed_part.png"));
-	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/toga.png"));
+	private static final RenderType TEXTURE_DYED_NOT = RenderType.entitySmoothCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/undyed_part.png"));
+	private static final RenderType TEXTURE_DYED = RenderType.entityNoOutline(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/dyed_part.png"));
+	private static final RenderType TOGA_TEX = RenderType.entitySmoothCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/toga.png"));
 
 	public TamedRatOverlayLayer(RenderLayerParent<TamedRat, AbstractRatModel<TamedRat>> parent) {
 		super(parent);

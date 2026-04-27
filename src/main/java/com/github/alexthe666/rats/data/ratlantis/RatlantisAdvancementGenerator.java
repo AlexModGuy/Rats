@@ -10,19 +10,19 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.data.advancements.AdvancementProvider;
 
 import java.util.function.Consumer;
 
-public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.AdvancementGenerator {
+public class RatlantisAdvancementGenerator implements AdvancementProvider.AdvancementGenerator {
 	@Override
 	public void generate(HolderLookup.Provider provider, Consumer<Advancement> consumer, ExistingFileHelper helper) {
 		this.registerRatlantisAdvancements(consumer);
 	}
 
 	private void registerRatlantisAdvancements(Consumer<Advancement> consumer) {
-		Advancement.Builder.advancement().parent(Advancement.Builder.advancement().build(new ResourceLocation("rats:rat_upgrade_god"))).display(
+		Advancement.Builder.advancement().parent(Advancement.Builder.advancement().build(ResourceLocation.parse("rats:rat_upgrade_god"))).display(
 						RatlantisItemRegistry.RAT_UPGRADE_NONBELIEVER.get(),
 						Component.translatable("advancement.ratlantis.rat_upgrade_nonbeliever.title"),
 						Component.translatable("advancement.ratlantis.rat_upgrade_nonbeliever.desc"),
@@ -34,7 +34,7 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 						RatsBlockRegistry.MARBLED_CHEESE_RAW.get(),
 						Component.translatable("advancement.ratlantis.root.title"),
 						Component.translatable("advancement.ratlantis.root.desc"),
-						new ResourceLocation(RatsMod.MODID, "textures/block/marbled_cheese.png"),
+						ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/marbled_cheese.png"),
 						FrameType.TASK, false, false, false)
 				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.ANY))
 				.save(consumer, "ratlantis:root");
@@ -60,7 +60,7 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 						Component.translatable("advancement.ratlantis.ratlantis.title"),
 						Component.translatable("advancement.ratlantis.ratlantis.desc"),
 						null, FrameType.GOAL, true, false, false)
-				.addCriterion("visit_ratlantis", ChangeDimensionTrigger.TriggerInstance.changedDimensionTo(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(RatsMod.MODID, "ratlantis"))))
+				.addCriterion("visit_ratlantis", ChangeDimensionTrigger.TriggerInstance.changedDimensionTo(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantis"))))
 				.save(consumer, "ratlantis:ratlantis");
 
 		Advancement pirat = Advancement.Builder.advancement().parent(portal).display(
@@ -248,7 +248,7 @@ public class RatlantisAdvancementGenerator implements ForgeAdvancementProvider.A
 				.addCriterion("get_upgrade", InventoryChangeTrigger.TriggerInstance.hasItems(RatlantisItemRegistry.RAT_UPGRADE_BIPLANE_MOUNT.get()))
 				.save(consumer, "ratlantis:rat_upgrade_mount_biplane");
 
-		Advancement dummy = new Advancement(new ResourceLocation(RatsMod.MODID, "root"), null, null, AdvancementRewards.EMPTY, Maps.newHashMap(), new String[0][0], false);
+		Advancement dummy = new Advancement(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "root"), null, null, AdvancementRewards.EMPTY, Maps.newHashMap(), new String[0][0], false);
 
 		Advancement.Builder.advancement().parent(dummy).display(
 						RatsItemRegistry.PARTY_HAT.get(),

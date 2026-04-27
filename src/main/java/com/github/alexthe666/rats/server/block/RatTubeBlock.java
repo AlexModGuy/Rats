@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -378,10 +378,10 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
 		if (mob instanceof TamedRat rat) {
-			return rat.isInTube() || rat.isInCage() ? BlockPathTypes.WALKABLE : BlockPathTypes.BLOCKED;
+			return rat.isInTube() || rat.isInCage() ? PathType.WALKABLE : PathType.BLOCKED;
 		}
-		return BlockPathTypes.BLOCKED;
+		return PathType.BLOCKED;
 	}
 }

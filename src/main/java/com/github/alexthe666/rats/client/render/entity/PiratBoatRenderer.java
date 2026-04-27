@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class PiratBoatRenderer<T extends PiratBoat, M extends PiratBoatModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/boat/spruce.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.parse("textures/entity/boat/spruce.png");
 
 	public PiratBoatRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 0.0F);

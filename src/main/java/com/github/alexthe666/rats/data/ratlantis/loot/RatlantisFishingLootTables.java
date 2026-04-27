@@ -12,7 +12,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -27,14 +27,14 @@ public class RatlantisFishingLootTables implements LootTableSubProvider {
 		consumer.accept(RatsLootRegistry.RATLANTIS_FISH, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
-						.add(LootTableReference.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_JUNK)
+						.add(NestedLootTable.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_JUNK)
 								.setWeight(10)
 								.setQuality(-2))
-						.add(LootTableReference.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_TREASURE)
+						.add(NestedLootTable.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_TREASURE)
 								.setWeight(5)
 								.setQuality(2)
 								.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true)))))
-						.add(LootTableReference.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_FISH)
+						.add(NestedLootTable.lootTableReference(RatsLootRegistry.RATLANTIS_FISHING_FISH)
 								.setWeight(85)
 								.setQuality(-1))));
 

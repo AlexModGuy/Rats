@@ -11,10 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -56,7 +56,7 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 					FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
 					FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);
 					if (milkFluid.isEmpty()) {
-						milkFluid = new FluidStack(ForgeMod.MILK.get(), 1000);
+						milkFluid = new FluidStack(NeoForgeMod.MILK.get(), 1000);
 					}
 					if (this.rat.transportingFluid.isEmpty() || this.rat.transportingFluid.getAmount() < this.rat.getMBTransferRate()) {
 						this.rat.transportingFluid = milkFluid.copy();

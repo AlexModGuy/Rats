@@ -30,7 +30,7 @@ public class RatlantisBiomeRegistry {
 	public static final ResourceKey<Biome> RATLANTIS = makeKey("ratlantis");
 
 	private static ResourceKey<Biome> makeKey(String name) {
-		return ResourceKey.create(Registries.BIOME, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	public static void bootstrap(BootstapContext<Biome> context) {

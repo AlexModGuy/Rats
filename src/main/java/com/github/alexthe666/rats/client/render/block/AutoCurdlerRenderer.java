@@ -16,13 +16,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
 public class AutoCurdlerRenderer implements BlockEntityRenderer<AutoCurdlerBlockEntity> {
 	private static final AutoCurdlerModel<?> MODEL_AUTO_CURDLER = new AutoCurdlerModel<>();
-	private static final RenderType TEXTURE = RenderType.entityCutout(new ResourceLocation(RatsMod.MODID, "textures/block/auto_curdler.png"));
+	private static final RenderType TEXTURE = RenderType.entityCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/auto_curdler.png"));
 	private static final RenderType TEXTURE_BLOCKS = RenderType.entitySmoothCutout(InventoryMenu.BLOCK_ATLAS);
 
 	public AutoCurdlerRenderer(BlockEntityRendererProvider.Context context) {

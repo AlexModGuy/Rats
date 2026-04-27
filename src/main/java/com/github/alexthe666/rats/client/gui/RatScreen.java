@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RatScreen extends AbstractContainerScreen<RatMenu> {
-	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_inventory.png");
-	private static final ResourceLocation TEXTURE_BACKDROP = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_inventory_backdrop.png");
+	protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_inventory.png");
+	private static final ResourceLocation TEXTURE_BACKDROP = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_inventory_backdrop.png");
 	private int currentDisplayCommand = 0;
 	private final TamedRat rat;
 

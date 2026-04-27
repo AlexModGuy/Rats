@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistRecipe> {
 
-	protected static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/jei/archeologist_rat_jei.png");
+	protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/jei/archeologist_rat_jei.png");
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable arrow;

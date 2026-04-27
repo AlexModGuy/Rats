@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RatArrowRenderer extends ArrowRenderer<RatArrow> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/rat_arrow.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat_arrow.png");
 
 	public RatArrowRenderer(EntityRendererProvider.Context context) {
 		super(context);

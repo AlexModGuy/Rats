@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface SelectedRat {
 
-	ResourceLocation ID = new ResourceLocation(RatsMod.MODID, "cap_selected_rat");
+	ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "cap_selected_rat");
 
 	void setPlayer(Player player);
 

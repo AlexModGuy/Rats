@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.layers.CrossedArmsItemLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class PlagueDoctorRenderer extends MobRenderer<PlagueDoctor, PlagueDoctorModel<PlagueDoctor>> {
-	private static final ResourceLocation DOCTOR = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_doctor.png");
+	private static final ResourceLocation DOCTOR = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/plague_doctor.png");
 
 	public PlagueDoctorRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlagueDoctorModel<>(context.bakeLayer(RatsModelLayers.PLAGUE_DOCTOR)), 0.5F);

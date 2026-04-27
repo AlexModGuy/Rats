@@ -29,19 +29,19 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ import java.util.Optional;
 public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, MenuProvider {
 	private static final int[] SLOTS_TOP = new int[]{0};
 	private static final int[] SLOTS_BOTTOM = new int[]{1};
-	private final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> fluidStack.getFluid().isSame(ForgeMod.MILK.get()));
+	private final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> fluidStack.getFluid().isSame(NeoForgeMod.MILK.get()));
 	final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
 	private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> this.tank);
 	private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
@@ -89,7 +89,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 			return true;
 		}
 		Optional<FluidStack> fluidStack = FluidUtil.getFluidContained(stack);
-		return fluidStack.isPresent() && fluidStack.get().getFluid().isSame(ForgeMod.MILK.get());
+		return fluidStack.isPresent() && fluidStack.get().getFluid().isSame(NeoForgeMod.MILK.get());
 	}
 
 	@Override

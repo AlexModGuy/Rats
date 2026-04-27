@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.server.message;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.Objects;
 import java.util.function.Supplier;

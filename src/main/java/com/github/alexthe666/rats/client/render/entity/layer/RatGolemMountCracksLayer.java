@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 
 public class RatGolemMountCracksLayer extends RenderLayer<RatGolemMount, RatGolemMountModel<RatGolemMount>> {
-	private static final Map<RatGolemMount.Cracks, ResourceLocation> CRACK_MAP = ImmutableMap.of(RatGolemMount.Cracks.LOW, new ResourceLocation("textures/entity/iron_golem/iron_golem_crackiness_low.png"), RatGolemMount.Cracks.MEDIUM, new ResourceLocation("textures/entity/iron_golem/iron_golem_crackiness_medium.png"), RatGolemMount.Cracks.HIGH, new ResourceLocation("textures/entity/iron_golem/iron_golem_crackiness_high.png"));
+	private static final Map<RatGolemMount.Cracks, ResourceLocation> CRACK_MAP = ImmutableMap.of(RatGolemMount.Cracks.LOW, ResourceLocation.parse("textures/entity/iron_golem/iron_golem_crackiness_low.png"), RatGolemMount.Cracks.MEDIUM, ResourceLocation.parse("textures/entity/iron_golem/iron_golem_crackiness_medium.png"), RatGolemMount.Cracks.HIGH, ResourceLocation.parse("textures/entity/iron_golem/iron_golem_crackiness_high.png"));
 
 	public RatGolemMountCracksLayer(RenderLayerParent<RatGolemMount, RatGolemMountModel<RatGolemMount>> parent) {
 		super(parent);

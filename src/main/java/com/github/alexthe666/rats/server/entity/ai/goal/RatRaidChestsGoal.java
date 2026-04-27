@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 
@@ -37,7 +37,7 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 		if (!this.rat.canMove() || this.rat.getOwner() != null || !RatConfig.ratsStealItems) {
 			return false;
 		}
-		return ForgeEventFactory.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
+		return EventHooks.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class CarratRatUpgradeItem extends BaseRatUpgradeItem implements ChangesT
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/carrat.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/carrat.png");
 	}
 
 	@Override

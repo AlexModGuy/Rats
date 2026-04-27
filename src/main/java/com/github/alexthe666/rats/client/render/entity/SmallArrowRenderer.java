@@ -14,7 +14,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class SmallArrowRenderer extends ArrowRenderer<SmallArrow> {
-	public static final ResourceLocation ARROW = new ResourceLocation("textures/entity/projectiles/arrow.png");
+	public static final ResourceLocation ARROW = ResourceLocation.parse("textures/entity/projectiles/arrow.png");
 
 	public SmallArrowRenderer(EntityRendererProvider.Context context) {
 		super(context);

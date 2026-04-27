@@ -18,9 +18,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class EnergyRatUpgradeItem extends BaseRatUpgradeItem implements ChangesO
 	@Override
 	public @Nullable RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
 		float f = (float) rat.tickCount + partialTicks;
-		return rat.getHeldRF() > 0 ? RenderType.energySwirl(new ResourceLocation(RatsMod.MODID, "textures/entity/psychic.png"), f * 0.01F, f * 0.01F) : null;
+		return rat.getHeldRF() > 0 ? RenderType.energySwirl(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/psychic.png"), f * 0.01F, f * 0.01F) : null;
 	}
 
 	@Override

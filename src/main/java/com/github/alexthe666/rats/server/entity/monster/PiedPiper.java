@@ -40,7 +40,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class PiedPiper extends Raider implements RatSummoner {
@@ -184,7 +184,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 			if (this.getRatsSummoned() < 6 && this.ratCooldown == 0) {
 				this.level().broadcastEntityEvent(this, (byte) 82);
 				Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.level());
-				ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevel) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+				EventHooks.onFinalizeSpawn(rat, (ServerLevel) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 				rat.copyPosition(this);
 				this.level().addFreshEntity(rat);
 				rat.setPlagued(false);

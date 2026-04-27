@@ -18,7 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.neoforged.neoforge.client.ClientHooks;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 			stack.translate(0, -0.77F, 0);
 			ItemStack itemstack = rat.getItemBySlot(EquipmentSlot.HEAD);
 			if (itemstack.getItem() instanceof ArmorItem) {
-				Model model = ForgeHooksClient.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.backup);
+				Model model = ClientHooks.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.backup);
 				ResourceLocation tex = getArmorResource(rat, itemstack, EquipmentSlot.HEAD, null);
 				VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(tex), false, false);
 				model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -61,11 +61,11 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 		}
 		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
 
-		s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
+		s1 = net.neoforged.neoforge.client.ClientHooks.getArmorTexture(entity, stack, s1, slot, type);
 		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
 		if (resourcelocation == null) {
-			resourcelocation = new ResourceLocation(s1);
+			resourcelocation = ResourceLocation.parse(s1);
 			ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
 		}
 

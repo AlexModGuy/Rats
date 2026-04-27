@@ -9,26 +9,26 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RatsBlockTags extends BlockTagsProvider {
 
-	public static final TagKey<Block> MARBLED_CHEESE = BlockTags.create(new ResourceLocation(RatsMod.MODID, "marbled_cheese"));
-	public static final TagKey<Block> TRASH_CAN_BLACKLIST = BlockTags.create(new ResourceLocation(RatsMod.MODID, "trash_can_blacklist"));
-	public static final TagKey<Block> QUARRY_IGNORABLES = BlockTags.create(new ResourceLocation(RatsMod.MODID, "quarry_ignoreables"));
-	public static final TagKey<Block> UNRAIDABLE_CONTAINERS = BlockTags.create(new ResourceLocation(RatsMod.MODID, "unraidable_containers"));
-	public static final TagKey<Block> DIGGABLE_BLOCKS = BlockTags.create(new ResourceLocation(RatsMod.MODID, "diggable_blocks"));
+	public static final TagKey<Block> MARBLED_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "marbled_cheese"));
+	public static final TagKey<Block> TRASH_CAN_BLACKLIST = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "trash_can_blacklist"));
+	public static final TagKey<Block> QUARRY_IGNORABLES = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "quarry_ignoreables"));
+	public static final TagKey<Block> UNRAIDABLE_CONTAINERS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "unraidable_containers"));
+	public static final TagKey<Block> DIGGABLE_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "diggable_blocks"));
 
-	public static final TagKey<Block> STORAGE_BLOCKS_CHEESE = BlockTags.create(new ResourceLocation("forge", "storage_blocks/cheese"));
-	public static final TagKey<Block> STORAGE_BLOCKS_BLUE_CHEESE = BlockTags.create(new ResourceLocation("forge", "storage_blocks/blue_cheese"));
-	public static final TagKey<Block> STORAGE_BLOCKS_NETHER_CHEESE = BlockTags.create(new ResourceLocation("forge", "storage_blocks/nether_cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_BLUE_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/blue_cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_NETHER_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/nether_cheese"));
 
-	public static final TagKey<Block> CRAFTING_TABLES = BlockTags.create(new ResourceLocation("forge", "crafting_tables"));
+	public static final TagKey<Block> CRAFTING_TABLES = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "crafting_tables"));
 
 	public RatsBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);

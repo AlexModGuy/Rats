@@ -25,7 +25,7 @@ import java.util.Objects;
 
 @JeiPlugin
 public class RatsJEIPlugin implements IModPlugin {
-	public static final ResourceLocation MOD = new ResourceLocation(RatsMod.MODID, "rats");
+	public static final ResourceLocation MOD = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rats");
 
 	private void addDescription(IRecipeRegistration registry, ItemStack itemStack) {
 		registry.addIngredientInfo(itemStack, VanillaTypes.ITEM_STACK, Component.translatable(itemStack.getDescriptionId() + ".jei_desc"));

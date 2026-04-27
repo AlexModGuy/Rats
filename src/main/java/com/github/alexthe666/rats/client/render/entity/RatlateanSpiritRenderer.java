@@ -12,8 +12,8 @@ import net.minecraft.world.entity.Mob;
 
 public class RatlateanSpiritRenderer<T extends Mob> extends MobRenderer<T, RatlanteanSpiritModel<T>> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ratlantean_spirit.png");
-	private static final ResourceLocation TEXTURE_CLOUD = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_cloud.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ratlantean_spirit.png");
+	private static final ResourceLocation TEXTURE_CLOUD = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/plague_cloud.png");
 
 	public RatlateanSpiritRenderer(EntityRendererProvider.Context context, boolean cloud) {
 		super(context, new RatlanteanSpiritModel<>(), 0.5F);

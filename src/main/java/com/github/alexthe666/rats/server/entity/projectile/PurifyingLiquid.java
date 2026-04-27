@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 									Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.level());
 									rat.copyPosition(living);
 									if (!this.level().isClientSide()) {
-										ForgeEventFactory.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+										EventHooks.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
 									}
 									rat.setTame(false);
 									rat.setOwnerUUID(null);

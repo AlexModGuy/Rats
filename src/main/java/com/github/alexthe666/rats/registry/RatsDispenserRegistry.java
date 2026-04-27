@@ -32,8 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RatsDispenserRegistry {
 
@@ -109,7 +109,7 @@ public class RatsDispenserRegistry {
 			}
 		});
 
-		for (Item item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
+		for (Item item : NeoForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
 			DispenserBlock.registerBehavior(item, new OptionalDispenseItemBehavior() {
 				@Override
 				protected ItemStack execute(BlockSource source, ItemStack stack) {
@@ -179,7 +179,7 @@ public class RatsDispenserRegistry {
 					doctor.copyPosition(villager);
 					villager.discard();
 					doctor.setWillDespawn(false);
-					ForgeEventFactory.onFinalizeSpawn(doctor, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
+					EventHooks.onFinalizeSpawn(doctor, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
 					source.getLevel().addFreshEntity(doctor);
 					doctor.setNoAi(villager.isNoAi());
 					if (villager.hasCustomName()) {
@@ -209,7 +209,7 @@ public class RatsDispenserRegistry {
 					BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), source.getLevel());
 					death.copyPosition(doctor);
 					doctor.discard();
-					ForgeEventFactory.onFinalizeSpawn(death, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
+					EventHooks.onFinalizeSpawn(death, source.getLevel(), source.getLevel().getCurrentDifficultyAt(source.getPos()), MobSpawnType.CONVERSION, null, null);
 					source.getLevel().addFreshEntity(death);
 					death.setNoAi(doctor.isNoAi());
 					if (doctor.hasCustomName()) {

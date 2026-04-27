@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class RatChickenMountRenderer extends MobRenderer<RatChickenMount, ChickenModel<RatChickenMount>> {
-	private static final ResourceLocation CHICKEN_TEXTURES = new ResourceLocation("textures/entity/chicken.png");
+	private static final ResourceLocation CHICKEN_TEXTURES = ResourceLocation.parse("textures/entity/chicken.png");
 
 	public RatChickenMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new ChickenModel<>(context.bakeLayer(ModelLayers.CHICKEN)), 0.3F);

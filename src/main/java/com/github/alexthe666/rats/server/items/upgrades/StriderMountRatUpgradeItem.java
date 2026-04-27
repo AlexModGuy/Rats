@@ -14,10 +14,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class StriderMountRatUpgradeItem<T extends Mob & RatMount> extends MountRatUpgradeItem<T> implements HoldsItemUpgrade {
-	public StriderMountRatUpgradeItem(Properties properties, int rarity, int textLength, RegistryObject<EntityType<T>> entityType) {
+	public StriderMountRatUpgradeItem(Properties properties, int rarity, int textLength, DeferredHolder<EntityType<?>, EntityType<T>> entityType) {
 		super(properties, rarity, textLength, entityType);
 	}
 

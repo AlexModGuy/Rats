@@ -18,10 +18,10 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -142,7 +142,7 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 		List<ItemStack> result = this.rat.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params);
 		if (!result.isEmpty()) {
 			ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
-			MinecraftForge.EVENT_BUS.post(event);
+			NeoForge.EVENT_BUS.post(event);
 			if (!event.isCanceled()) {
 				this.holdItemHarvestedIfPossible(this.rat, result);
 			}

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.IForgeShearable;
+import net.neoforged.neoforge.common.IForgeShearable;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

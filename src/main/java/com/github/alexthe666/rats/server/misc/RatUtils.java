@@ -28,11 +28,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,15 +177,15 @@ public class RatUtils {
 			return false;
 		}
 		float hardness = blockState.getDestroySpeed(level, pos);
-		return hardness >= 0.0F && hardness <= RatConfig.ratStrengthThreshold && ForgeHooks.canEntityDestroy(level, pos, rat);
+		return hardness >= 0.0F && hardness <= RatConfig.ratStrengthThreshold && CommonHooks.canEntityDestroy(level, pos, rat);
 	}
 
 	public static boolean canRatPlaceBlock(Level level, BlockPos pos, DiggingRat rat) {
-		return ForgeEventFactory.getMobGriefingEvent(level, rat) && !ForgeEventFactory.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
+		return EventHooks.getMobGriefingEvent(level, rat) && !EventHooks.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
 	}
 
 	public static boolean isBlockProtected(Level level, BlockPos pos, DiggingRat rat) {
-		return !ForgeEventFactory.getMobGriefingEvent(level, rat) || !ForgeEventFactory.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
+		return !EventHooks.getMobGriefingEvent(level, rat) || !EventHooks.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
 	}
 
 	public static boolean isOpenRatTube(BlockGetter getter, BlockPos pos) {
@@ -271,7 +271,7 @@ public class RatUtils {
 			newRat.setLeashedTo(rat.getLeashHolder(), true);
 			rat.setLeashedTo(null, true);
 		}
-		ForgeEventFactory.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+		EventHooks.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
 		newRat.readAdditionalSaveData(tag);
 		newRat.setColorVariant(rat.getColorVariant());
 		for (EquipmentSlot slot : EquipmentSlot.values()) {

@@ -37,9 +37,9 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 	@Override
 	public RenderType getEyeTexture(ItemStack stack) {
 		if (isSoulVersion(stack)) {
-			return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat_eye.png"));
+			return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat_eye.png"));
 		}
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png"));
+		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/demon_rat_eye.png"));
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 	@Override
 	public @Nullable RenderType getOverlayTexture(ItemStack stack, TamedRat rat, float partialTicks) {
 		if (isSoulVersion(stack)) {
-			return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat.png"));
+			return RenderType.entitySmoothCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/soul_demon_rat.png"));
 		}
-		return RenderType.entitySmoothCutout(new ResourceLocation(RatsMod.MODID, "textures/entity/demon_rat/demon_rat.png"));
+		return RenderType.entitySmoothCutout(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/demon_rat/demon_rat.png"));
 	}
 }

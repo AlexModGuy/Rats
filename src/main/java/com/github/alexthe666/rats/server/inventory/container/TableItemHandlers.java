@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.server.block.entity.RatCraftingTableBlockEntit
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class TableItemHandlers {

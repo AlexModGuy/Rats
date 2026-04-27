@@ -15,29 +15,29 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RatsItemTags extends ItemTagsProvider {
 
-	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(new ResourceLocation("forge", "cheese"));
+	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "cheese"));
 
-	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(new ResourceLocation("forge", "crafting_tables"));
-	public static final TagKey<Item> VEGETABLES = ItemTags.create(new ResourceLocation("forge", "vegetables"));
-	public static final TagKey<Item> PLASTICS = ItemTags.create(new ResourceLocation("forge", "plastics"));
-	public static final TagKey<Item> HIDES_RAT_WHISKERS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "hides_rat_whiskers"));
+	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "crafting_tables"));
+	public static final TagKey<Item> VEGETABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "vegetables"));
+	public static final TagKey<Item> PLASTICS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "plastics"));
+	public static final TagKey<Item> HIDES_RAT_WHISKERS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hides_rat_whiskers"));
 
-	public static final TagKey<Item> IGLOOS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "igloos"));
-	public static final TagKey<Item> TUBES = ItemTags.create(new ResourceLocation(RatsMod.MODID, "tubes"));
-	public static final TagKey<Item> HAMMOCKS = ItemTags.create(new ResourceLocation(RatsMod.MODID, "hammocks"));
-	public static final TagKey<Item> MARBLED_CHEESE = ItemTags.create(new ResourceLocation(RatsMod.MODID, "marbled_cheese"));
+	public static final TagKey<Item> IGLOOS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "igloos"));
+	public static final TagKey<Item> TUBES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "tubes"));
+	public static final TagKey<Item> HAMMOCKS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hammocks"));
+	public static final TagKey<Item> MARBLED_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "marbled_cheese"));
 
-	public static final TagKey<Item> STORAGE_BLOCKS_CHEESE = ItemTags.create(new ResourceLocation("forge", "storage_blocks/cheese"));
-	public static final TagKey<Item> STORAGE_BLOCKS_BLUE_CHEESE = ItemTags.create(new ResourceLocation("forge", "storage_blocks/blue_cheese"));
-	public static final TagKey<Item> STORAGE_BLOCKS_NETHER_CHEESE = ItemTags.create(new ResourceLocation("forge", "storage_blocks/nether_cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_BLUE_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/blue_cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_NETHER_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/nether_cheese"));
 
 	public RatsItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tags, @Nullable ExistingFileHelper helper) {
 		super(output, provider, tags, RatsMod.MODID, helper);
@@ -56,9 +56,9 @@ public class RatsItemTags extends ItemTagsProvider {
 		this.copy(RatsBlockTags.STORAGE_BLOCKS_NETHER_CHEESE, STORAGE_BLOCKS_NETHER_CHEESE);
 
 		for (DyeColor color : DyeColor.values()) {
-			this.tag(HAMMOCKS).add(ResourceKey.create(Registries.ITEM, new ResourceLocation(RatsMod.MODID, "rat_hammock_" + color.getName())));
-			this.tag(IGLOOS).add(ResourceKey.create(Registries.ITEM, new ResourceLocation(RatsMod.MODID, "rat_igloo_" + color.getName())));
-			this.tag(TUBES).add(ResourceKey.create(Registries.ITEM, new ResourceLocation(RatsMod.MODID, "rat_tube_" + color.getName())));
+			this.tag(HAMMOCKS).add(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_hammock_" + color.getName())));
+			this.tag(IGLOOS).add(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_igloo_" + color.getName())));
+			this.tag(TUBES).add(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_tube_" + color.getName())));
 		}
 
 		this.tag(HIDES_RAT_WHISKERS).addTag(Tags.Items.HEADS).add(

@@ -5,7 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
 
 public class RatTubeMoveControl extends RatMoveControl {
@@ -39,7 +39,7 @@ public class RatTubeMoveControl extends RatMoveControl {
 			PathNavigation pathnavigate = this.rat.getNavigation();
 
 			NodeEvaluator nodeprocessor = pathnavigate.getNodeEvaluator();
-			if (nodeprocessor.getBlockPathType(this.rat.level(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != BlockPathTypes.WALKABLE) {
+			if (nodeprocessor.getBlockPathType(this.rat.level(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != PathType.WALKABLE) {
 				this.strafeForwards = 1.0F;
 				this.strafeRight = 0.0F;
 				f1 = f;

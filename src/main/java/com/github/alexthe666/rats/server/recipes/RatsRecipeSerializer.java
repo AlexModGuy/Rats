@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSerializer<T> {
 	final SingleItemMaker<T> factory;
@@ -29,7 +29,7 @@ public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSeri
 
 		String s1 = GsonHelper.getAsString(object, "result");
 		int i = GsonHelper.getAsInt(object, "count");
-		ItemStack itemstack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(s1)), i);
+		ItemStack itemstack = new ItemStack(NeoForgeRegistries.ITEMS.getValue(ResourceLocation.parse(s1)), i);
 		return this.factory.create(id, s, ingredient, itemstack);
 	}
 

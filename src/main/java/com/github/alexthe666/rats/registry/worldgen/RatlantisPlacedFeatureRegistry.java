@@ -24,7 +24,7 @@ public class RatlantisPlacedFeatureRegistry {
 	public static final ResourceKey<PlacedFeature> ORATCHALCUM_ORE = registerKey("oratchalcum_ore");
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	public static void bootstrap(BootstapContext<PlacedFeature> context) {

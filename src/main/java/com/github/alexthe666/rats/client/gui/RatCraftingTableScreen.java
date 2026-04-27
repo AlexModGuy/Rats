@@ -24,8 +24,8 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import java.util.Optional;
 
 public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> implements RecipeUpdateListener {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
-	private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
+	private static final ResourceLocation RECIPE_BUTTON_LOCATION = ResourceLocation.parse("textures/gui/recipe_button.png");
 	private final Inventory playerInventory;
 	private final RatCraftingTableMenu table;
 

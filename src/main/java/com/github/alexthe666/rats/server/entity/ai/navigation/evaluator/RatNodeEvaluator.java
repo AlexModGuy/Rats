@@ -8,42 +8,42 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class RatNodeEvaluator extends WalkNodeEvaluator {
 
 	@Override
-	protected BlockPathTypes evaluateBlockPathType(BlockGetter getter, BlockPos pos, BlockPathTypes types) {
+	protected PathType evaluateBlockPathType(BlockGetter getter, BlockPos pos, PathType types) {
 		Block block = getter.getBlockState(pos).getBlock();
 		if (this.mob instanceof TamedRat rat) {
 			if (block instanceof RatHoleBlock || block instanceof RatTrapBlock || block instanceof RatCageBlock || RatUtils.isOpenRatTube(getter, pos)) {
-				types = BlockPathTypes.WALKABLE;
+				types = PathType.WALKABLE;
 			}
 			if (block instanceof RatQuarryPlatformBlock) {
-				types = BlockPathTypes.OPEN;
+				types = PathType.OPEN;
 			}
 			if (block instanceof SlabBlock) {
-				types = BlockPathTypes.WALKABLE;
+				types = PathType.WALKABLE;
 			}
 
-			if (types == BlockPathTypes.DOOR_WOOD_CLOSED && this.canOpenDoors() && this.canPassDoors()) {
-				types = BlockPathTypes.WALKABLE_DOOR;
+			if (types == PathType.DOOR_WOOD_CLOSED && this.canOpenDoors() && this.canPassDoors()) {
+				types = PathType.WALKABLE_DOOR;
 			}
 
-			if (types == BlockPathTypes.DOOR_OPEN && !this.canPassDoors()) {
-				types = BlockPathTypes.BLOCKED;
+			if (types == PathType.DOOR_OPEN && !this.canPassDoors()) {
+				types = PathType.BLOCKED;
 			}
 
-			if (types == BlockPathTypes.RAIL && !(block instanceof BaseRailBlock) && !(getter.getBlockState(pos.below()).getBlock() instanceof BaseRailBlock)) {
-				types = BlockPathTypes.UNPASSABLE_RAIL;
+			if (types == PathType.RAIL && !(block instanceof BaseRailBlock) && !(getter.getBlockState(pos.below()).getBlock() instanceof BaseRailBlock)) {
+				types = PathType.UNPASSABLE_RAIL;
 			}
 
 			if (rat.isInCage()) {
 				if (block instanceof RatCageBlock || block instanceof RatTubeBlock) {
-					types = BlockPathTypes.WALKABLE;
+					types = PathType.WALKABLE;
 				} else {
-					types = BlockPathTypes.BLOCKED;
+					types = PathType.BLOCKED;
 				}
 			}
 		}

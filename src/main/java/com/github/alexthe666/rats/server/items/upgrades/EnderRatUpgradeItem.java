@@ -18,7 +18,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(RatsMod.MODID, "textures/entity/rat/upgrades/ender.png");
+		return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/upgrades/ender.png");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class EnderRatUpgradeItem extends BaseRatUpgradeItem implements ChangesTe
 
 	@Override
 	public RenderType getEyeTexture(ItemStack stack) {
-		return RenderType.eyes(new ResourceLocation(RatsMod.MODID, "textures/entity/rat/eyes/ender.png"));
+		return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/eyes/ender.png"));
 	}
 
 	@Override

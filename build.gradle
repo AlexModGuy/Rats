@@ -1,25 +1,20 @@
 plugins {
+    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
 def secrets = new Properties()
 def secretsFile = file('secrets.properties')
 if (secretsFile.exists()) {
-    secretsFile.withInputStream {
-        stream -> secrets.load(stream)
-    }
+    secretsFile.withInputStream { stream -> secrets.load(stream) }
 
     fileTree("secrets").matching {
         include "**/*.properties"
-    }.each {
-        File file ->
-            file.withInputStream {
-                stream -> secrets.load(stream)
-            }
+    }.each { File file ->
+        file.withInputStream { stream -> secrets.load(stream) }
     }
 }
 
@@ -30,109 +25,92 @@ base {
     archivesName = mod_name
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:all,-classfile,-processing,-deprecation,-serial,-this-escape' << '-Xmaxerrs' << '5000'
+}
 
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
+repositories {
+    maven {
+        name = 'Curseforge Maven'
+        url = 'https://www.cursemaven.com'
+        content { includeGroup 'curse.maven' }
+    }
+    maven {
+        name = "Jared's Maven" // JEI
+        url = 'https://maven.blamejared.com/'
+    }
+}
 
-    copyIdeResources = true
+neoForge {
+    version = project.neoforge_version
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformers = files('src/main/resources/META-INF/accesstransformer.cfg')
+    validateAccessTransformers = true
 
     runs {
         configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-            property 'fml.earlyprogresswindow', 'false'
-            property 'mixin.env.disableRefMap', 'true'
-			arg '-mixin.config=citadel.mixins.json'
-			arg '-mixin.config=rats.mixins.json'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            systemProperty 'forge.logging.console.level', 'debug'
+            systemProperty 'fml.earlyprogresswindow', 'false'
+            logLevel = org.slf4j.event.Level.DEBUG
         }
 
         client {
-            taskName "Minecraft_Client_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
+            client()
+            programArguments.addAll '--username', (secrets.getProperty('username') ?: 'Dev')
+            if (secrets.getProperty('uuid')) {
+                programArguments.addAll '--uuid', secrets.getProperty('uuid')
+            }
         }
 
         server {
-            taskName "Minecraft_Server_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
+            server()
+            programArgument '--nogui'
         }
 
-       gameTestServer {
-           taskName "Minecraft_GameTestServer_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
+        gameTestServer {
+            type = 'gameTestServer'
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
         }
 
         data {
-            taskName "Minecraft_Data_${project.minecraft_version}"
-            workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            data()
+            programArguments.addAll(
+                    '--mod', mod_id,
+                    '--all',
+                    '--output', file('src/generated/resources/').absolutePath,
+                    '--existing', file('src/main/resources/').absolutePath
+            )
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {
-    maven {
-        name 'Curseforge Maven'
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name 'Jared\'s Maven' // JEI
-        url 'https://maven.blamejared.com/'
-    }
-}
-
 dependencies {
-    minecraft "net.neoforged:forge:${project.minecraft_version}-${project.neo_version}"
-
-    implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
-    implementation fg.deobf("curse.maven:citadel-331936:5143956")
-    implementation fg.deobf("curse.maven:jade-324717:4681833")
-
-    runtimeOnly fg.deobf("curse.maven:spark-361579:4738952")
-	runtimeOnly fg.deobf("curse.maven:debug-utils-783008:4644077")
-	runtimeOnly fg.deobf("curse.maven:armorpoints-396094:4613606")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-}
-
-mixin {
-    add sourceSets.main, "${project.mod_id}.refmap.json"
-    config "${project.mod_id}.mixins.json"
+    implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+    implementation "curse.maven:citadel-331936:${project.citadel_file_id}"
+    implementation "curse.maven:jade-324717:${project.jade_file_id}"
 }
 
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : "AlexThe666",
-                'Specification-Version'   : "1",
+                'Specification-Vendor'    : 'AlexThe666',
+                'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : "AlexThe666",
+                'Implementation-Vendor'   : 'AlexThe666',
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
-
-    finalizedBy 'reobfJar'
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }

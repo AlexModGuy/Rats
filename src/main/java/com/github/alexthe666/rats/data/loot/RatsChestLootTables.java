@@ -10,7 +10,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
@@ -20,7 +20,7 @@ public class RatsChestLootTables implements LootTableSubProvider {
 
 	@Override
 	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/hammocks"), LootTable.lootTable()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/hammocks"), LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.add(EmptyLootItem.emptyItem().setWeight(8))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_HAMMOCKS[0].get()))
@@ -40,7 +40,7 @@ public class RatsChestLootTables implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_HAMMOCKS[14].get()))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_HAMMOCKS[15].get()))));
 
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/igloos"), LootTable.lootTable()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/igloos"), LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.add(EmptyLootItem.emptyItem().setWeight(8))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_IGLOOS[0].get()))
@@ -60,7 +60,7 @@ public class RatsChestLootTables implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_IGLOOS[14].get()))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_IGLOOS[15].get()))));
 
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/tubes"), LootTable.lootTable()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/tubes"), LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.add(EmptyLootItem.emptyItem().setWeight(8))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_TUBES[0].get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 16.0F))))
@@ -80,7 +80,7 @@ public class RatsChestLootTables implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_TUBES[14].get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 16.0F))))
 						.add(LootItem.lootTableItem(RatsItemRegistry.RAT_TUBES[15].get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 16.0F))))));
 
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/pet_shop"), LootTable.lootTable().withPool(LootPool.lootPool()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/pet_shop"), LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(UniformGenerator.between(5.0F, 18.0F))
 				.setBonusRolls(UniformGenerator.between(0.0F, 2.0F))
 				.add(LootItem.lootTableItem(Items.WHEAT_SEEDS).setWeight(45).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 10.0F))))
@@ -118,12 +118,12 @@ public class RatsChestLootTables implements LootTableSubProvider {
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_BREEDING_LANTERN.get()).setWeight(5))
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_WHEEL.get()).setWeight(5))
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_UPGRADE_BASIC.get()))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/hammocks")))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/igloos")))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/tubes")))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/hammocks")))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/igloos")))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/tubes")))
 		));
 
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/pet_shop_upstairs"), LootTable.lootTable().withPool(LootPool.lootPool()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/pet_shop_upstairs"), LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(UniformGenerator.between(5.0F, 25.0F))
 				.setBonusRolls(UniformGenerator.between(0.0F, 2.0F))
 				.add(LootItem.lootTableItem(RatsBlockRegistry.BLOCK_OF_CHEESE.get()).setWeight(40).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
@@ -139,12 +139,12 @@ public class RatsChestLootTables implements LootTableSubProvider {
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_BREEDING_LANTERN.get()).setWeight(25))
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_WHEEL.get()).setWeight(25))
 				.add(LootItem.lootTableItem(RatsItemRegistry.RAT_UPGRADE_BASIC.get()).setWeight(5))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/hammocks")).setWeight(3))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/igloos")).setWeight(3))
-				.add(LootTableReference.lootTableReference(new ResourceLocation(RatsMod.MODID, "chest/tubes")).setWeight(3))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/hammocks")).setWeight(3))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/igloos")).setWeight(3))
+				.add(NestedLootTable.lootTableReference(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/tubes")).setWeight(3))
 		));
 
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/plague_doctor_hut"), LootTable.lootTable().withPool(LootPool.lootPool()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/plague_doctor_hut"), LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(UniformGenerator.between(3.0F, 10.0F))
 				.setBonusRolls(UniformGenerator.between(0.0F, 2.0F))
 				.add(LootItem.lootTableItem(Items.WHEAT_SEEDS).setWeight(45).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 10.0F))))

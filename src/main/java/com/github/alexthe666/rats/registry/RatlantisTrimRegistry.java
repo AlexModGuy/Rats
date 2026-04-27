@@ -20,7 +20,7 @@ public class RatlantisTrimRegistry {
 	public static final ResourceKey<TrimMaterial> ORATCHALCUM = registerKey("oratchalcum");
 
 	private static ResourceKey<TrimMaterial> registerKey(String name) {
-		return ResourceKey.create(Registries.TRIM_MATERIAL, new ResourceLocation(RatsMod.MODID, name));
+		return ResourceKey.create(Registries.TRIM_MATERIAL, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
 	public static void bootstrap(BootstapContext<TrimMaterial> context) {

@@ -6,20 +6,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.RecordItem;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Supplier;
 
 public record UpdateRatMusicPacket(int id, RecordItem record) {
 
 	public static UpdateRatMusicPacket decode(FriendlyByteBuf buf) {
-		return new UpdateRatMusicPacket(buf.readInt(), (RecordItem) buf.readRegistryIdUnsafe(ForgeRegistries.ITEMS));
+		return new UpdateRatMusicPacket(buf.readInt(), (RecordItem) buf.readRegistryIdUnsafe(NeoForgeRegistries.ITEMS));
 	}
 
 	public static void encode(UpdateRatMusicPacket packet, FriendlyByteBuf buf) {
 		buf.writeInt(packet.id());
-		buf.writeRegistryIdUnsafe(ForgeRegistries.ITEMS, packet.record());
+		buf.writeRegistryIdUnsafe(NeoForgeRegistries.ITEMS, packet.record());
 	}
 
 	public static class Handler {

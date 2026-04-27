@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -28,13 +28,13 @@ public class EntityRenderingUtil {
 	@Nullable
 	public static LivingEntity fetchEntity(@Nullable ResourceLocation entityName, @Nullable Level level) {
 		if (entityName != null && level != null && !IGNORED_ENTITIES.contains(entityName)) {
-			EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(entityName);
+			EntityType<?> type = NeoForgeRegistries.ENTITY_TYPES.getValue(entityName);
 			if (type != null) {
 				Entity entity;
 				if (type == EntityType.PLAYER) {
 					entity = Minecraft.getInstance().player;
 				} else {
-					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> ForgeRegistries.ENTITY_TYPES.getValue(t).create(level));
+					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> NeoForgeRegistries.ENTITY_TYPES.getValue(t).create(level));
 				}
 				if (entity instanceof LivingEntity living) {
 					return living;

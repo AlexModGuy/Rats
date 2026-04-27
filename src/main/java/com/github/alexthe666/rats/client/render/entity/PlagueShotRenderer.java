@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 
 public class PlagueShotRenderer extends EntityRenderer<PlagueShot> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/plague_cloud.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/plague_cloud.png");
 	private static final RatlanteanSpiritModel<PlagueShot> MODEL_SPIRIT = new RatlanteanSpiritModel<>();
 
 	public PlagueShotRenderer(EntityRendererProvider.Context context) {

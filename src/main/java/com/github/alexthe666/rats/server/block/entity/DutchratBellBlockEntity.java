@@ -21,7 +21,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class DutchratBellBlockEntity extends BlockEntity {
 	public int ticks;
@@ -77,7 +77,7 @@ public class DutchratBellBlockEntity extends BlockEntity {
 					Dutchrat dutchrat = new Dutchrat(RatlantisEntityRegistry.DUTCHRAT.get(), level);
 					dutchrat.setPos(pos.getX() + 0.5D, pos.getY() + 10.0D, pos.getZ() + 0.5D);
 					dutchrat.setBellSummoned();
-					ForgeEventFactory.onFinalizeSpawn(dutchrat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+					EventHooks.onFinalizeSpawn(dutchrat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
 					dutchrat.restrictTo(pos, RatConfig.dutchratRestrictionRadius);
 					level.addFreshEntity(dutchrat);
 					level.blockEvent(pos, state.getBlock(), 2, Direction.NORTH.get2DDataValue());

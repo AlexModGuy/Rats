@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 public class PiratBoatSailLayer<T extends PiratBoat, M extends EntityModel<T>> extends RenderLayer<T, M> {
 	public static final PiratCannonModel<?> MODEL_PIRAT_CANNON = new PiratCannonModel<>();
-	public static final ResourceLocation TEXTURE_PIRATE_CANNON = new ResourceLocation(RatsMod.MODID, "textures/entity/pirat/pirat_cannon.png");
-	public static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = new ResourceLocation(RatsMod.MODID, "textures/entity/pirat/pirat_cannon_fire.png");
+	public static final ResourceLocation TEXTURE_PIRATE_CANNON = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/pirat/pirat_cannon.png");
+	public static final ResourceLocation TEXTURE_PIRATE_CANNON_FIRE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/pirat/pirat_cannon_fire.png");
 
 	public PiratBoatSailLayer(RenderLayerParent<T, M> parent) {
 		super(parent);

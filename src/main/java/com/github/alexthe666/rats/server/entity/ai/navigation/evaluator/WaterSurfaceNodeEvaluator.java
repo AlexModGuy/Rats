@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 
-	private final Long2ObjectMap<BlockPathTypes> pathTypesByPosCache = new Long2ObjectOpenHashMap<>();
+	private final Long2ObjectMap<PathType> pathTypesByPosCache = new Long2ObjectOpenHashMap<>();
 
 	@Override
 	public void prepare(PathNavigationRegion region, Mob mob) {
@@ -78,8 +78,8 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 	@Nullable
 	protected Node findAcceptedNode(int x, int y, int z) {
 		Node node = null;
-		BlockPathTypes blockpathtypes = this.getCachedBlockType(x, y, z);
-		if (blockpathtypes == BlockPathTypes.WATER) {
+		PathType blockpathtypes = this.getCachedBlockType(x, y, z);
+		if (blockpathtypes == PathType.WATER) {
 			float f = this.mob.getPathfindingMalus(blockpathtypes);
 			if (f >= 0.0F) {
 				node = this.getNode(x, y, z);
@@ -94,17 +94,17 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 		return node;
 	}
 
-	protected BlockPathTypes getCachedBlockType(int x, int y, int z) {
+	protected PathType getCachedBlockType(int x, int y, int z) {
 		return this.pathTypesByPosCache.computeIfAbsent(BlockPos.asLong(x, y, z), type -> this.getBlockPathType(this.level, x, y, z));
 	}
 
 	@Override
-	public BlockPathTypes getBlockPathType(BlockGetter getter, int x, int y, int z) {
+	public PathType getBlockPathType(BlockGetter getter, int x, int y, int z) {
 		return this.getBlockPathType(getter, x, y, z, this.mob);
 	}
 
 	@Override
-	public BlockPathTypes getBlockPathType(BlockGetter getter, int x, int y, int z, Mob mob) {
+	public PathType getBlockPathType(BlockGetter getter, int x, int y, int z, Mob mob) {
 		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
 		for (int i = x; i < x + this.entityWidth; ++i) {
@@ -113,11 +113,11 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 					FluidState fluidstate = getter.getFluidState(mutablePos.set(i, j, k));
 					BlockState blockstate = getter.getBlockState(mutablePos.set(i, j, k));
 					if (fluidstate.isEmpty() && blockstate.isPathfindable(getter, mutablePos.below(), PathComputationType.WATER) && blockstate.isAir()) {
-						return BlockPathTypes.WATER;
+						return PathType.WATER;
 					}
 
 					if (!fluidstate.is(Fluids.WATER)) {
-						return BlockPathTypes.OPEN;
+						return PathType.OPEN;
 					}
 				}
 			}
@@ -125,6 +125,6 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 
 		BlockState currentState = getter.getBlockState(mutablePos);
 		BlockState aboveState = getter.getBlockState(mutablePos.above());
-		return currentState.isPathfindable(getter, mutablePos, PathComputationType.WATER) && aboveState.isAir() ? BlockPathTypes.WATER : BlockPathTypes.OPEN;
+		return currentState.isPathfindable(getter, mutablePos, PathComputationType.WATER) && aboveState.isAir() ? PathType.WATER : PathType.OPEN;
 	}
 }

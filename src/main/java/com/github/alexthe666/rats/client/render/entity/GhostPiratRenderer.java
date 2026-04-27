@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GhostPiratRenderer extends AbstractRatRenderer<GhostPirat, RatModel<GhostPirat>> {
 
-	private static final ResourceLocation BASE_TEXTURE = new ResourceLocation(RatsMod.MODID, "textures/entity/ghost_pirat/ghost_pirat.png");
+	private static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ghost_pirat/ghost_pirat.png");
 
 	public GhostPiratRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatModel<>());
@@ -35,7 +35,7 @@ public class GhostPiratRenderer extends AbstractRatRenderer<GhostPirat, RatModel
 	}
 
 	private static class GhostPiratLayer<T extends AbstractRat> extends RenderLayer<T, RatModel<T>> {
-		private static final ResourceLocation GHOST_OVERLAY = new ResourceLocation(RatsMod.MODID, "textures/entity/ghost_pirat/ghost_pirat_overlay.png");
+		private static final ResourceLocation GHOST_OVERLAY = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/ghost_pirat/ghost_pirat_overlay.png");
 
 		public GhostPiratLayer(RenderLayerParent<T, RatModel<T>> parent) {
 			super(parent);

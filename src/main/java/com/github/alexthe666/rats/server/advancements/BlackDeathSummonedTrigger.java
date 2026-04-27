@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class BlackDeathSummonedTrigger extends SimpleCriterionTrigger<BlackDeathSummonedTrigger.TriggerInstance> {
 
-	static final ResourceLocation ID = new ResourceLocation(RatsMod.MODID, "black_death_summoned");
+	static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "black_death_summoned");
 
 	@Override
 	protected BlackDeathSummonedTrigger.TriggerInstance createInstance(JsonObject object, ContextAwarePredicate predicate, DeserializationContext context) {

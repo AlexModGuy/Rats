@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -63,14 +63,14 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 								return;
 							if (RatConfig.ratsSpawnLikeMonsters && !this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random))
 								return;
-							ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
+							EventHooks.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
 							this.postInitSpawn(mob, random);
 							level.tryAddFreshEntityWithPassengers(mob);
 						} else {
 							if (mob instanceof PiedPiper && !level.getGameRules().getBoolean(RatsMod.SPAWN_PIPERS))
 								return;
 							if (this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random)) {
-								ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
+								EventHooks.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
 								this.postInitSpawn(mob, random);
 								level.tryAddFreshEntityWithPassengers(mob);
 							}

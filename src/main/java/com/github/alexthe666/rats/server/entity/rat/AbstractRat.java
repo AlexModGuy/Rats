@@ -53,7 +53,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,9 +86,9 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	protected AbstractRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
 		this.moveControl = new RatMoveControl(this);
-		this.setPathfindingMalus(BlockPathTypes.FENCE, RatConfig.ratsClimbOverFences ? 0.0F : -1.0F);
-		this.setPathfindingMalus(BlockPathTypes.RAIL, 0.0F);
-		this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+		this.setPathfindingMalus(PathType.FENCE, RatConfig.ratsClimbOverFences ? 0.0F : -1.0F);
+		this.setPathfindingMalus(PathType.RAIL, 0.0F);
+		this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
 	}
 
 	@Override

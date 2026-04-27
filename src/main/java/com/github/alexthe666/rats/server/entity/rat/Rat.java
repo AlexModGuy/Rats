@@ -43,7 +43,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -211,7 +211,7 @@ public class Rat extends DiggingRat {
 		if (this.ratKingTransformTicks == 200 && !this.level().isClientSide()) {
 			RatKing king = new RatKing(RatsEntityRegistry.RAT_KING.get(), this.level());
 			king.copyPosition(this);
-			ForgeEventFactory.onFinalizeSpawn(king, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+			EventHooks.onFinalizeSpawn(king, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
 			this.level().addFreshEntity(king);
 			this.discard();
 		}

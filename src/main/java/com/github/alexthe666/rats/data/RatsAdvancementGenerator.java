@@ -16,12 +16,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.data.advancements.AdvancementProvider;
 
 import java.util.function.Consumer;
 
-public class RatsAdvancementGenerator implements ForgeAdvancementProvider.AdvancementGenerator {
+public class RatsAdvancementGenerator implements AdvancementProvider.AdvancementGenerator {
 
 	@Override
 	public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
@@ -33,7 +33,7 @@ public class RatsAdvancementGenerator implements ForgeAdvancementProvider.Advanc
 						RatsBlockRegistry.BLOCK_OF_CHEESE.get(),
 						Component.translatable("advancement.rats.root.title"),
 						Component.translatable("advancement.rats.root.desc"),
-						new ResourceLocation(RatsMod.MODID, "textures/block/block_of_cheese.png"),
+						ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/block/block_of_cheese.png"),
 						FrameType.TASK,
 						false, false, false)
 				.addCriterion("tick", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.ANY))

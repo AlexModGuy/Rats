@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+issueTrackerURL="https://github.com/Alex-the-666/Rats/issues"
+license="GNU LESSER GENERAL PUBLIC LICENSE"
+
+[[mods]]
+modId="rats"
+version="${file.jarVersion}"
+displayName="Rats"
+itemIcon="rats:cheese"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/rats"
+logoFile="rats_logo.png"
+authors="AlexThe666, GizmoTheMoonPig"
+description='''What are we going to do today Pinky?'''
+
+# load before us so we can properly replace the milk texture
+[[dependencies.rats]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neoforge_version_range}"
+    ordering="BEFORE"
+    side="BOTH"
+
+[[dependencies.rats]]
+    modId="citadel"
+    type="required"
+    versionRange="[2.7.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.rats]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[mixins]]
+    config="rats.mixins.json"
+
+[modproperties.rats]
+    configuredBackground="rats:textures/block/marbled_cheese.png"

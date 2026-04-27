@@ -18,12 +18,12 @@ import net.minecraft.world.entity.Entity;
 
 public class RatStriderMountRenderer extends MobRenderer<RatStriderMount, RatStriderMountModel<RatStriderMount>> {
 
-	private static final ResourceLocation STRIDER_LOCATION = new ResourceLocation("textures/entity/strider/strider.png");
-	private static final ResourceLocation COLD_LOCATION = new ResourceLocation("textures/entity/strider/strider_cold.png");
+	private static final ResourceLocation STRIDER_LOCATION = ResourceLocation.parse("textures/entity/strider/strider.png");
+	private static final ResourceLocation COLD_LOCATION = ResourceLocation.parse("textures/entity/strider/strider_cold.png");
 
 	public RatStriderMountRenderer(EntityRendererProvider.Context context) {
 		super(context, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), 0.5F);
-		this.addLayer(new AlwaysSaddledLayer<>(this, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), new ResourceLocation("textures/entity/strider/strider_saddle.png")));
+		this.addLayer(new AlwaysSaddledLayer<>(this, new RatStriderMountModel<>(context.bakeLayer(RatsModelLayers.RAT_STRIDER_MOUNT)), ResourceLocation.parse("textures/entity/strider/strider_saddle.png")));
 	}
 
 	public ResourceLocation getTextureLocation(RatStriderMount mount) {

@@ -26,7 +26,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 
 public class DemonRat extends AbstractRat implements Enemy {
@@ -36,8 +36,8 @@ public class DemonRat extends AbstractRat implements Enemy {
 	public DemonRat(EntityType<? extends AbstractRat> type, Level level) {
 		super(type, level);
 		this.xpReward = 5;
-		this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+		this.setPathfindingMalus(PathType.DANGER_FIRE, 16.0F);
+		this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
 	}
 
 	@Override

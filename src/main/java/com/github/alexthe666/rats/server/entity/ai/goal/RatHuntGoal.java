@@ -7,7 +7,7 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -41,7 +41,7 @@ public class RatHuntGoal extends TargetGoal {
 	}
 
 	protected void findTarget() {
-		this.target = this.rat.level().getNearestEntity(this.rat.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), entity -> (!(entity instanceof OwnableEntity ownable) || ownable.getOwner() != this.rat.getOwner()) && entity != this.rat.getOwner() && this.targetsList.getFirst() == this.targetsList.getSecond().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())), TargetingConditions.DEFAULT, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
+		this.target = this.rat.level().getNearestEntity(this.rat.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), entity -> (!(entity instanceof OwnableEntity ownable) || ownable.getOwner() != this.rat.getOwner()) && entity != this.rat.getOwner() && this.targetsList.getFirst() == this.targetsList.getSecond().contains(NeoForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())), TargetingConditions.DEFAULT, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import java.util.function.BiConsumer;
 public class RatlantisChestLootTables implements LootTableSubProvider {
 	@Override
 	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-		consumer.accept(new ResourceLocation(RatsMod.MODID, "chest/dutchrat_ship"), LootTable.lootTable().withPool(LootPool.lootPool()
+		consumer.accept(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "chest/dutchrat_ship"), LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(UniformGenerator.between(3.0F, 10.0F))
 				.setBonusRolls(UniformGenerator.between(0.0F, 2.0F))
 				.add(LootItem.lootTableItem(RatlantisItemRegistry.ORATCHALCUM_NUGGET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F))))
