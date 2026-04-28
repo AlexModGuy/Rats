@@ -163,7 +163,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
 		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData);
 		this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);
-		this.populateDefaultEquipmentEnchantments(level.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(level, level.getRandom(), difficulty);
 		return spawnData;
 	}
 
