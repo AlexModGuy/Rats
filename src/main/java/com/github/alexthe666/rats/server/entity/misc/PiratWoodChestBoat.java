@@ -29,7 +29,7 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 
 	private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
 	@Nullable
-	private ResourceLocation lootTable;
+	private net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> lootTable;
 	private long lootTableSeed;
 
 	public PiratWoodChestBoat(EntityType<? extends PiratWoodBoat> type, Level level) {
@@ -57,13 +57,13 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		this.addChestVehicleSaveData(tag);
+		this.addChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.readChestVehicleSaveData(tag);
+		this.readChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
@@ -174,13 +174,13 @@ public class PiratWoodChestBoat extends PiratWoodBoat implements HasCustomInvent
 
 	@Nullable
 	@Override
-	public ResourceLocation getLootTable() {
+	public net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getLootTable() {
 		return this.lootTable;
 	}
 
 	@Override
-	public void setLootTable(@Nullable ResourceLocation location) {
-		this.lootTable = location;
+	public void setLootTable(@Nullable net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> key) {
+		this.lootTable = key;
 	}
 
 	@Override

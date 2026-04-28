@@ -44,13 +44,19 @@ public class RatArrow extends AbstractArrow {
 	}
 
 	public RatArrow(EntityType<? extends AbstractArrow> type, Level level, LivingEntity shooter, ItemStack stack) {
-		super(type, shooter, level);
+		// 1.21: AbstractArrow ctor takes (type, shooter, level, pickup, weapon).
+		super(type, shooter, level, stack, null);
 		this.stack = stack;
 	}
 
 	@Override
 	protected ItemStack getPickupItem() {
 		return new ItemStack(Items.ARROW);
+	}
+
+	@Override
+	protected ItemStack getDefaultPickupItem() {
+		return new ItemStack(RatsItemRegistry.RAT_ARROW.get());
 	}
 
 	private void spawnRat(@Nullable Entity entity, BlockPos pos) {
@@ -137,17 +143,12 @@ public class RatArrow extends AbstractArrow {
 					livingentity.setArrowCount(livingentity.getArrowCount() + 1);
 				}
 
-				if (this.getKnockback() > 0) {
-					double d0 = Math.max(0.0D, 1.0D - livingentity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-					Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) this.getKnockback() * 0.6D * d0);
-					if (vec3.lengthSqr() > 0.0D) {
-						livingentity.push(vec3.x, 0.1D, vec3.z);
-					}
-				}
+				// PORT-STUB: 1.21 AbstractArrow.getKnockback() removed; knockback is now driven by enchantments via EnchantmentHelper directly.
+				// Manual knockback application skipped until the new Punch enchantment lookup is wired up.
 
-				if (!this.level().isClientSide() && entity1 instanceof LivingEntity living) {
-					EnchantmentHelper.doPostHurtEffects(livingentity, entity1);
-					EnchantmentHelper.doPostDamageEffects(living, livingentity);
+				if (!this.level().isClientSide() && entity1 instanceof LivingEntity && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+					// 1.21: doPostHurtEffects/doPostDamageEffects collapsed into doPostAttackEffects via EnchantmentHelper.
+					EnchantmentHelper.doPostAttackEffects(serverLevel, entity, damagesource);
 				}
 
 				this.doPostHurtEffects(livingentity);
