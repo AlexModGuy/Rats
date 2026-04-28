@@ -30,10 +30,18 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Map;
 
 public class CheeseCauldronBlock extends AbstractCauldronBlock {
+	public static final com.mojang.serialization.MapCodec<CheeseCauldronBlock> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(instance -> instance.group(
+			propertiesCodec()
+	).apply(instance, props -> new CheeseCauldronBlock(props, null, CauldronInteraction.WATER)));
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends AbstractCauldronBlock> codec() {
+		return CODEC;
+	}
 
 	private final DeferredHolder<Block, Block> drop;
 
-	public CheeseCauldronBlock(BlockBehaviour.Properties properties, DeferredHolder<Block, Block> dropBlock, Map<Item, CauldronInteraction> interaction) {
+	public CheeseCauldronBlock(BlockBehaviour.Properties properties, DeferredHolder<Block, Block> dropBlock, CauldronInteraction.InteractionMap interaction) {
 		super(properties, interaction);
 		this.drop = dropBlock;
 	}

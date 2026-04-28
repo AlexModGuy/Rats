@@ -103,9 +103,20 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 		}
 	}
 
-	@Override
+	// PORT-STUB: 1.21 BlockEntity.getRenderBoundingBox no longer overridable on BaseContainerBlockEntity (moved to client BER).
+	@SuppressWarnings("unused")
 	public AABB getRenderBoundingBox() {
-		return new AABB(this.getBlockPos(), this.getBlockPos().offset(1, 2, 1));
+		return new AABB(net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos()), net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos().offset(1, 2, 1)));
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.combinerStacks;
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.combinerStacks = items;
 	}
 
 	@Override

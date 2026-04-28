@@ -314,16 +314,16 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		BlockEntity tileentity = level.getBlockEntity(pos);
 		if (tileentity instanceof RatTubeBlockEntity && !player.isCreative()) {
 			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getTubeItem(level, pos));
 		}
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter getter, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader getter, BlockPos pos, BlockState state) {
 		return getTubeItem(getter, pos);
 	}
 

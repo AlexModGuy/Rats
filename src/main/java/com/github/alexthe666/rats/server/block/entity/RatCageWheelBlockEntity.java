@@ -48,7 +48,8 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 	@Override
 	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		compound.putInt("UseTicks", this.useTicks);
-		compound.put("Energy", this.energyStorage.serializeNBT());
+		// 1.21: EnergyStorage.serializeNBT now requires HolderLookup.Provider.
+		compound.put("Energy", this.energyStorage.serializeNBT(registries));
 
 		compound.putInt("DismountCooldown", this.dismountCooldown);
 		super.saveAdditional(compound, registries);
@@ -60,7 +61,7 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 		this.useTicks = compound.getInt("UseTicks");
 		this.dismountCooldown = compound.getInt("DismountCooldown");
 		if (compound.contains("Energy")) {
-			this.energyStorage.deserializeNBT(compound.get("Energy"));
+			this.energyStorage.deserializeNBT(registries, compound.get("Energy"));
 		}
 	}
 
