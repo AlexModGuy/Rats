@@ -11,14 +11,15 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.Objects;
 
-public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
+// PORT-STUB: 1.21 RecipeBookMenu became RecipeBookMenu<I extends RecipeInput, R extends Recipe<I>>;
+// the rat crafting table doesn't expose a RecipeInput so we extend AbstractContainerMenu directly
+// and lose recipe-book button integration until properly migrated.
+public class RatCraftingTableMenu extends AbstractContainerMenu {
 
 	private final RatCraftingTableBlockEntity table;
 	private final ContainerData data;
@@ -146,52 +147,11 @@ public class RatCraftingTableMenu extends RecipeBookMenu<Container> {
 		}
 	}
 
-	@Override
-	public void fillCraftSlotsStackedContents(StackedContents contents) {
-		this.table.bufferHandler.ifPresent(handler -> ((TableItemHandlers.BufferHandler) handler).fillStackedContents(contents));
-	}
-
-	@Override
 	public void clearCraftingContent() {
 		this.table.matrixHandler.ifPresent(h -> {
 			for (int i = 0; i < h.getSlots(); i++) {
 				h.setStackInSlot(i, ItemStack.EMPTY);
 			}
 		});
-	}
-
-	@Override
-	public boolean recipeMatches(Recipe<? super Container> recipe) {
-		return true;
-	}
-
-	@Override
-	public int getResultSlotIndex() {
-		return 0;
-	}
-
-	@Override
-	public int getGridWidth() {
-		return 3;
-	}
-
-	@Override
-	public int getGridHeight() {
-		return 3;
-	}
-
-	@Override
-	public int getSize() {
-		return 10;
-	}
-
-	@Override
-	public RecipeBookType getRecipeBookType() {
-		return RecipeBookType.CRAFTING;
-	}
-
-	@Override
-	public boolean shouldMoveToInventory(int index) {
-		return false;
 	}
 }
