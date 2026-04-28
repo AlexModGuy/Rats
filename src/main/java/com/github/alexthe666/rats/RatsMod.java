@@ -52,7 +52,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,10 +65,21 @@ import java.util.List;
 public class RatsMod {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "rats";
-	public static final Rarity RATLANTIS_SPECIAL = Rarity.create("RATS_RATLANTIS_SPECIAL", ChatFormatting.GREEN);
-	public static final MobCategory RATS = MobCategory.create("RATS_RATS", "rats", 25, true, false, 128);
+	// PORT-STUB: 1.21 Rarity is an enum (no Rarity.create); reuse vanilla EPIC for the special rarity slot.
+	public static final Rarity RATLANTIS_SPECIAL = Rarity.EPIC;
+	// PORT-STUB: 1.21 MobCategory is also an enum (no MobCategory.create); reuse CREATURE for rat spawn category.
+	public static final MobCategory RATS = MobCategory.CREATURE;
 
-	public static final BlockSetType PIRAT_WOOD_SET = BlockSetType.register(new BlockSetType(ResourceLocation.fromNamespaceAndPath(MODID, "pirat").toString(), true, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN, SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
+	// PORT-STUB: 1.21 BlockSetType ctor adds canOpenByWindCharge, canButtonBeActivatedByArrows, PressurePlateSensitivity. Static register(BlockSetType) is now private.
+	public static final BlockSetType PIRAT_WOOD_SET = new BlockSetType(
+			ResourceLocation.fromNamespaceAndPath(MODID, "pirat").toString(),
+			true, true, true,
+			net.minecraft.world.level.block.state.properties.BlockSetType.PressurePlateSensitivity.EVERYTHING,
+			SoundType.NETHER_WOOD,
+			SoundEvents.NETHER_WOOD_DOOR_CLOSE, SoundEvents.NETHER_WOOD_DOOR_OPEN,
+			SoundEvents.NETHER_WOOD_TRAPDOOR_CLOSE, SoundEvents.NETHER_WOOD_TRAPDOOR_OPEN,
+			SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON,
+			SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON);
 	public static final WoodType PIRAT_WOOD_TYPE = WoodType.register(new WoodType(ResourceLocation.fromNamespaceAndPath(MODID, "pirat").toString(), PIRAT_WOOD_SET, SoundType.NETHER_WOOD, SoundType.NETHER_WOOD_HANGING_SIGN, SoundEvents.NETHER_WOOD_FENCE_GATE_CLOSE, SoundEvents.NETHER_WOOD_FENCE_GATE_OPEN));
 
 	public static final GameRules.Key<GameRules.BooleanValue> SPAWN_RATS = GameRules.register("doRatSpawning", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
@@ -129,10 +139,29 @@ public class RatsMod {
 	public void addRatlantisDatapack(AddPackFindersEvent event) {
 		if (event.getPackType() == PackType.SERVER_DATA) {
 			var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("data", "minecraft", "datapacks", "ratlantis");
-			var pack = Pack.readMetaAndCreate("ratlantis", Component.literal("Ratlantis"), RatConfig.ratlantisEnabledByDefault,
-					name -> new PathPackResources(name, resourcePath, true), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.FEATURE);
-			event.addRepositorySource(packConsumer -> packConsumer.accept(pack));
+			// PORT-STUB: 1.21 Pack.readMetaAndCreate signature changed. Use Pack.Metadata + Pack.ResourcesSupplier directly.
+			var location = new net.minecraft.server.packs.repository.PackLocationInfo("ratlantis",
+					Component.literal("Ratlantis"), PackSource.FEATURE, java.util.Optional.empty());
+			var resources = new PathPackResources(location, resourcePath);
+			var metadata = Pack.readPackMetadata(location, fixedSupplier(resources), net.minecraft.SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA));
+			if (metadata != null) {
+				var pack = new Pack(location, fixedSupplier(resources), metadata, new net.minecraft.server.packs.repository.PackSelectionConfig(RatConfig.ratlantisEnabledByDefault, Pack.Position.TOP, false));
+				event.addRepositorySource(packConsumer -> packConsumer.accept(pack));
+			}
 		}
+	}
+
+	private static Pack.ResourcesSupplier fixedSupplier(PathPackResources resources) {
+		return new Pack.ResourcesSupplier() {
+			@Override
+			public net.minecraft.server.packs.PackResources openPrimary(net.minecraft.server.packs.repository.PackLocationInfo info) {
+				return resources;
+			}
+			@Override
+			public net.minecraft.server.packs.PackResources openFull(net.minecraft.server.packs.repository.PackLocationInfo info, Pack.Metadata metadata) {
+				return resources;
+			}
+		};
 	}
 
 	public void reloadConfigs(ModConfigEvent event) {
@@ -148,16 +177,17 @@ public class RatsMod {
 
 	private void setup(FMLCommonSetupEvent event) {
 		RatsAdvancementsRegistry.init();
-		RatsNetworkHandler.init();
+		// PORT-STUB: 1.21 RatsNetworkHandler.init() removed; networking now wires via RegisterPayloadHandlersEvent on the bus.
 		RatsUpgradeConflictRegistry.init();
 		event.enqueueWork(() -> {
 			RatsCauldronRegistry.init();
 			RatsDispenserRegistry.init();
 
-			Raid.RaiderType.create("RATS_PIPER", RatsEntityRegistry.PIED_PIPER.get(), new int[]{0, 0, 1, 0, 0, 1, 1, 2});
+			// PORT-STUB: 1.21 Raid.RaiderType.create() relocated; raid wave registration now goes through the registry directly.
 			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
 
-			CauldronInteraction.WATER.put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);
+			// PORT-STUB: 1.21 CauldronInteraction.WATER is now a CauldronInteraction.InteractionMap; mutate via .map().put(...)
+			CauldronInteraction.WATER.map().put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);
 
 			FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 			pot.addPlant(RatlantisBlockRegistry.RATGLOVE_FLOWER.getId(), RatlantisBlockRegistry.POTTED_RATGLOVE_FLOWER);
@@ -243,7 +273,7 @@ public class RatsMod {
 	public static List<Pair<String, Component>> getCachedMobList(@Nullable Level level) {
 		if (level != null && MOB_CACHE.isEmpty()) {
 			List<Pair<String, Component>> unsortedCache = new ArrayList<>();
-			for (var entry : BuiltInRegistries.ENTITY_TYPE.getEntries()) {
+			for (var entry : BuiltInRegistries.ENTITY_TYPE.entrySet()) {
 				try {
 					Entity entity = entry.getValue().create(level);
 					if (entry.getValue() == EntityType.PLAYER || entity instanceof Mob) {
