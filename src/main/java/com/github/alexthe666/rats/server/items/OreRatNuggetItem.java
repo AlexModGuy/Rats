@@ -4,8 +4,11 @@ import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -44,14 +47,12 @@ public class OreRatNuggetItem extends Item {
 	}
 
 	public static ItemStack getStoredItem(ItemStack poopItem, ItemStack fallback) {
-		if (poopItem.getOrCreateTag().contains("OreItem")) {
-			CompoundTag poopTag = poopItem.getOrCreateTag().getCompound("OreItem");
-			ItemStack oreItem = ItemStack.of(poopTag);
-			if (oreItem.isEmpty()) {
-				return fallback;
-			} else {
-				return oreItem;
-			}
+		CustomData data = poopItem.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+		CompoundTag tag = data.copyTag();
+		if (tag.contains("OreItem")) {
+			CompoundTag oreTag = tag.getCompound("OreItem");
+			ItemStack oreItem = ItemStack.parseOptional(RegistryAccess.EMPTY, oreTag);
+			return oreItem.isEmpty() ? fallback : oreItem;
 		}
 		return fallback;
 	}
@@ -68,10 +69,9 @@ public class OreRatNuggetItem extends Item {
 	public static ItemStack saveResourceToNugget(ItemStack resource) {
 		ItemStack stack = new ItemStack(RatsItemRegistry.RAT_NUGGET_ORE.get());
 		CompoundTag nuggetTag = new CompoundTag();
-		CompoundTag oreTag = new CompoundTag();
-		resource.save(oreTag);
+		CompoundTag oreTag = (CompoundTag) resource.save(RegistryAccess.EMPTY, new CompoundTag());
 		nuggetTag.put("OreItem", oreTag);
-		stack.setTag(nuggetTag);
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nuggetTag));
 		return stack;
 	}
 
