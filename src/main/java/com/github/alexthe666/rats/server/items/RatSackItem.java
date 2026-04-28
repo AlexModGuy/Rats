@@ -78,7 +78,7 @@ public class RatSackItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		int ratCount = 0;
 		List<String> ratNames = new ArrayList<>();
 		if (stack.getTag() != null) {

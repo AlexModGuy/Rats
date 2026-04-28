@@ -47,7 +47,7 @@ public class EctoplasmItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.rats.ghost_pirat_ectoplasm.desc").withStyle(ChatFormatting.GRAY));
 	}
 }

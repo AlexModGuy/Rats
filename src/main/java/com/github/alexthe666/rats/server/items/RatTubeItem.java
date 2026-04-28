@@ -36,7 +36,7 @@ public class RatTubeItem extends Item {
 		this.color = color;
 	}
 
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc1").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.rat_tube.desc2").withStyle(ChatFormatting.GRAY));

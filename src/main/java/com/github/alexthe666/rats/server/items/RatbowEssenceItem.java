@@ -20,7 +20,7 @@ public class RatbowEssenceItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		RatsRenderType.GlintType type = RatsRenderType.GlintType.getGlintBasedOnKeyword(stack.getHoverName().getString());
 		if (type != null && type.changesItemTexture()) {
 			tooltip.add(Component.translatable(RatsLangConstants.RATBOW_ESSENCE_FLAG, WordUtils.capitalize(type.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GRAY));

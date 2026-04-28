@@ -43,7 +43,7 @@ public class HatItem extends ArmorItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.is(RatsItemRegistry.BLACK_DEATH_MASK.get())) {
 			tooltip.add(Component.translatable("item.rats.plague_doctor_mask.desc").withStyle(ChatFormatting.GRAY));
 		}

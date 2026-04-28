@@ -73,7 +73,7 @@ public class RatFluteItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.rats.rat_flute.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("item.rats.rat_flute.desc1").withStyle(ChatFormatting.GRAY));
 		if (stack.getTag() != null) {

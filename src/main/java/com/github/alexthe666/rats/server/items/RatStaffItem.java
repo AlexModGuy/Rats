@@ -25,8 +25,8 @@ public class RatStaffItem extends LoreTagItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		if (level != null && level.isClientSide() && Minecraft.getInstance().player != null) {
 			TamedRat rat = com.github.alexthe666.rats.server.capability.SelectedRat.get(Minecraft.getInstance().player);
 			if (rat != null) {

@@ -45,7 +45,7 @@ public class PlagueHealerItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(RatsLangConstants.PLAGUE_HEAL_CHANCE, (int) (this.healChance * 100F)).withStyle(ChatFormatting.GRAY));
 	}
 }

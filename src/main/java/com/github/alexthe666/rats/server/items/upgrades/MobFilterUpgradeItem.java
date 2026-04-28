@@ -65,8 +65,8 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(Component.translatable(RatsLangConstants.MOB_FILTER_MODE, Component.translatable(isWhitelist(stack) ? RatsLangConstants.MOB_FILTER_WHITELIST : RatsLangConstants.MOB_FILTER_BLACKLIST)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable(RatsLangConstants.MOB_FILTER_SELECTED_MOBS).withStyle(ChatFormatting.GRAY));
 		if (!getSelectedMobs(stack).isEmpty()) {

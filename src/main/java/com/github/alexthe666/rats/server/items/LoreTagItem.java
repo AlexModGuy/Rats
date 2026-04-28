@@ -26,7 +26,7 @@ public class LoreTagItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (this.lines > 0) {
 			for (int i = 0; i < this.lines; i++) {
 				tooltip.add(Component.translatable(this.getDescriptionId() + ".desc" + (this.lines == 1 ? "" : i)).withStyle(ChatFormatting.GRAY));

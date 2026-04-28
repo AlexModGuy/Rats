@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -99,7 +100,7 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 	}
 
 	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
+	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacementType type, EntityType<?> entityType) {
 		return entityType == this.getEntityToSpawn();
 	}
 }

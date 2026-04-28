@@ -40,8 +40,8 @@ public class StatBoostingRatUpgradeItem extends BaseRatUpgradeItem implements St
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		this.statChanges.get().forEach((attribute, aDouble) -> {
 			if (aDouble > 0.0D) {
 				tooltip.add(Component.translatable(RatsLangConstants.RAT_UPGRADE_STAT_BOOST, aDouble.toString(), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.AQUA));

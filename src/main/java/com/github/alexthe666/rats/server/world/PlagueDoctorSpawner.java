@@ -10,6 +10,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
@@ -128,7 +129,7 @@ public class PlagueDoctorSpawner implements CustomSpawner {
 			int k = pos.getZ() + level.getRandom().nextInt(distance * 2) - distance;
 			int l = level.getHeight(Heightmap.Types.WORLD_SURFACE, j, k);
 			BlockPos blockpos1 = new BlockPos(j, l, k);
-			if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, blockpos1, EntityType.WANDERING_TRADER)) {
+			if (NaturalSpawner.isSpawnPositionOk(SpawnPlacementTypes.ON_GROUND, level, blockpos1, EntityType.WANDERING_TRADER)) {
 				blockpos = blockpos1;
 				break;
 			}

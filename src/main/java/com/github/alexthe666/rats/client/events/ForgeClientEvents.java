@@ -52,9 +52,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -116,7 +116,8 @@ public class ForgeClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
+	public static void onLivingUpdate(EntityTickEvent.Post event) {
+		if (!(event.getEntity() instanceof net.minecraft.world.entity.LivingEntity)) return;
 		if (RatConfig.synesthesiaShader) {
 			if (event.getEntity() == Minecraft.getInstance().player) {
 				GameRenderer renderer = Minecraft.getInstance().gameRenderer;

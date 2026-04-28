@@ -1,11 +1,11 @@
 package com.github.alexthe666.rats.server.items;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.DyedItemColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -14,20 +14,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PartyHatItem extends Item implements DyeableLeatherItem {
+public class PartyHatItem extends Item {
+
+	private static final int DEFAULT_COLOR = 0x25C9E7;
+
 	public PartyHatItem(Properties properties) {
-		super(properties);
+		super(properties.component(DataComponents.DYED_COLOR, new DyedItemColor(DEFAULT_COLOR, false)));
 	}
 
-	@Override
 	public int getColor(ItemStack stack) {
-		CompoundTag compoundtag = stack.getTagElement("display");
-		return compoundtag != null && compoundtag.contains("color", 99) ? compoundtag.getInt("color") : 0x25C9E7;
+		return DyedItemColor.getOrDefault(stack, DEFAULT_COLOR);
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (stack.getTag() == null || !stack.getTag().getCompound("display").contains("color", 99)) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
+		if (color == null || color.rgb() == DEFAULT_COLOR) {
 			tooltip.add(Component.translatable("item.rats.party_hat.desc").withStyle(ChatFormatting.GRAY));
 		}
 	}

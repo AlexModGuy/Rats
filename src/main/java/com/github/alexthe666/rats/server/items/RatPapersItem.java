@@ -34,7 +34,7 @@ public class RatPapersItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (!isEntityBound(stack)) {
 			tooltip.add(Component.translatable("item.rats.rat_papers.desc0").withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("item.rats.rat_papers.desc1").withStyle(ChatFormatting.GRAY));

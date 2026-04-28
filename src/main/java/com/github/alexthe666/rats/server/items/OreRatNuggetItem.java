@@ -76,7 +76,7 @@ public class OreRatNuggetItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (flag.isCreative()) {
 			ItemStack ingot = getStoredItem(stack, new ItemStack(Items.AIR));
 			tooltip.add(Component.translatable(RatsLangConstants.ORE_NUGGET_CONTAINS, ingot.getDisplayName().getString()).withStyle(ChatFormatting.GRAY));
