@@ -93,8 +93,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(hand);
+	protected net.minecraft.world.ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity te = level.getBlockEntity(pos);
 
 		if (!player.isCrouching()) {
@@ -107,11 +106,11 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 					}
 					level.setBlockAndUpdate(pos, state.setValue(LEVEL, 0));
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-					return InteractionResult.sidedSuccess(level.isClientSide());
+					return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide());
 				} else if (state.getValue(LEVEL) < 7 && stack.getItem() instanceof BlockItem bi) {
 					if (bi.getBlock().defaultBlockState().is(RatsBlockTags.TRASH_CAN_BLACKLIST)) {
 						player.displayClientMessage(Component.literal("This block can't be used here.").withStyle(ChatFormatting.RED), true);
-						return InteractionResult.CONSUME;
+						return net.minecraft.world.ItemInteractionResult.CONSUME;
 					}
 					if (!player.isCreative()) {
 						stack.shrink(1);
@@ -123,23 +122,24 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 								0.0D, 0.0D, 0.0D);
 					}
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-					return InteractionResult.SUCCESS;
+					return net.minecraft.world.ItemInteractionResult.SUCCESS;
 				}
 			}
 		}
-		if (player.isCrouching() || stack.isEmpty()) {
-			if (te instanceof TrashCanBlockEntity trashCan) {
-				if (trashCan.lidProgress == 0.0F || trashCan.lidProgress == 20.0F) {
-					level.playSound(player, pos, RatsSoundRegistry.TRASH_CAN.get(), SoundSource.BLOCKS, 0.5F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+		return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
 
-					level.setBlockAndUpdate(pos, state.setValue(OPEN, !state.getValue(OPEN)));
-					return InteractionResult.SUCCESS;
-				}
-				return InteractionResult.PASS;
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		BlockEntity te = level.getBlockEntity(pos);
+		if (te instanceof TrashCanBlockEntity trashCan) {
+			if (trashCan.lidProgress == 0.0F || trashCan.lidProgress == 20.0F) {
+				level.playSound(player, pos, RatsSoundRegistry.TRASH_CAN.get(), SoundSource.BLOCKS, 0.5F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+				level.setBlockAndUpdate(pos, state.setValue(OPEN, !state.getValue(OPEN)));
+				return InteractionResult.SUCCESS;
 			}
+			return InteractionResult.PASS;
 		}
-
-
 		return InteractionResult.PASS;
 	}
 
@@ -169,7 +169,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.rats.trash_can.desc0").withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable("block.rats.trash_can.desc1").withStyle(ChatFormatting.GRAY));
 	}
@@ -180,7 +180,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 
