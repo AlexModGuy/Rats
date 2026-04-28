@@ -63,7 +63,7 @@ public class RatCraftingTableBlock extends BaseEntityBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
 		BlockEntity be = level.getBlockEntity(pos);
-		if (stack.hasCustomHoverName() && be instanceof RatCraftingTableBlockEntity table) {
+		if (stack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME) && be instanceof RatCraftingTableBlockEntity table) {
 			table.setCustomName(stack.getDisplayName());
 		}
 	}

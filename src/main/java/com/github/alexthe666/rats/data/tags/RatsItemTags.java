@@ -65,7 +65,7 @@ public class RatsItemTags extends ItemTagsProvider {
 				Items.CARVED_PUMPKIN, Items.JACK_O_LANTERN,
 				RatsItemRegistry.BLACK_DEATH_MASK.get(), RatsItemRegistry.PLAGUE_DOCTOR_MASK.get());
 
-		this.tag(Tags.Items.ARMORS_HELMETS).add(
+		this.tag(net.minecraft.tags.ItemTags.HEAD_ARMOR).add(
 				RatsItemRegistry.PIPER_HAT.get(), RatsItemRegistry.ARCHEOLOGIST_HAT.get(),
 				RatsItemRegistry.FARMER_HAT.get(), RatsItemRegistry.FISHERMAN_HAT.get(),
 				RatsItemRegistry.PLAGUE_DOCTOR_MASK.get(), RatsItemRegistry.BLACK_DEATH_MASK.get(),

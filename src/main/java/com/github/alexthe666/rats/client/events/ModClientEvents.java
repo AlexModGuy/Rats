@@ -109,7 +109,7 @@ public class ModClientEvents {
 			ItemProperties.register(RatlantisItemRegistry.RATLANTIS_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, living, i) -> living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
 
 			ItemProperties.register(RatsItemRegistry.RATBOW_ESSENCE.get(), ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "special"), (stack, level, entity, i) -> {
-				if (stack.hasCustomHoverName()) {
+				if (stack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
 					RatsRenderType.GlintType type = RatsRenderType.GlintType.getGlintBasedOnKeyword(stack.getHoverName().getString());
 					return type != null && type.changesItemTexture() ? type.ordinal() + 1 : 0;
 				}
